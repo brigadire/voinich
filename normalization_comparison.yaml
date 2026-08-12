@@ -1,0 +1,2617 @@
+meta:
+    random_baselines: 100
+    random_seed: 1
+    sequence_analyzer: bin/sequence-analyze
+    random_matching: same multi-member class sizes; members sampled without replacement from logarithmic base-2 frequency bins with nearest-bin fallback
+    empirical_tests: upper tail for repeat counts, maximum length, and coverage; lower tail for both entropy metrics; +1 correction
+models:
+    - threshold: 0.7
+      label: "070"
+      normalization:
+        raw_unique_tokens: 8349
+        normalized_unique_symbols: 8342
+        classified_tokens: 12
+        singleton_tokens: 8337
+        classes: 8342
+        multi_member_classes: 5
+        tokens_in_multi_member_classes: 12
+        largest_class: 3
+        token_occurrence_coverage: 0.08874431043793556
+        compression_ratio: 0.999161576236675
+      max_cross_line_sequence_length:
+        raw_value: 4
+        structural_value: 4
+        absolute_delta: 0
+        ratio: 1
+        empirical_test_direction: random >= structural
+        random:
+            runs: 100
+            mean: 4.05
+            stddev: 0.21794494717703367
+            min: 4
+            max: 5
+            percentile_05: 4
+            percentile_50: 4
+            percentile_95: 4.049999999999997
+        z_score: -0.22941573387056097
+        empirical_p: 1
+      ngrams:
+        - "n": 2
+          cross_line_repeated:
+            raw_value: 2481
+            structural_value: 2435
+            absolute_delta: -46
+            ratio: 0.9814590890769851
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 2485.65
+                stddev: 14.087849374549688
+                min: 2455
+                max: 2518
+                percentile_05: 2463
+                percentile_50: 2484.5
+                percentile_95: 2509
+            z_score: -3.595296815956985
+            empirical_p: 1
+        - "n": 3
+          cross_line_repeated:
+            raw_value: 162
+            structural_value: 247
+            absolute_delta: 85
+            ratio: 1.5246913580246915
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 198.77
+                stddev: 10.4411254182679
+                min: 181
+                max: 231
+                percentile_05: 184
+                percentile_50: 196
+                percentile_95: 218
+            z_score: 4.619233853432724
+            empirical_p: 0.009900990099009901
+        - "n": 4
+          cross_line_repeated:
+            raw_value: 1
+            structural_value: 8
+            absolute_delta: 7
+            ratio: 8
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 2.11
+                stddev: 1.0382196299434905
+                min: 1
+                max: 6
+                percentile_05: 1
+                percentile_50: 2
+                percentile_95: 4
+            z_score: 5.673173411603274
+            empirical_p: 0.009900990099009901
+        - "n": 5
+          cross_line_repeated:
+            raw_value: 0
+            structural_value: 0
+            absolute_delta: 0
+            ratio: 0
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0.05
+                stddev: 0.21794494717703367
+                min: 0
+                max: 1
+                percentile_05: 0
+                percentile_50: 0
+                percentile_95: 0.04999999999999716
+            z_score: -0.2294157338705618
+            empirical_p: 1
+        - "n": 6
+          cross_line_repeated:
+            raw_value: 0
+            structural_value: 0
+            absolute_delta: 0
+            ratio: 0
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0
+                stddev: 0
+                min: 0
+                max: 0
+                percentile_05: 0
+                percentile_50: 0
+                percentile_95: 0
+            z_score: 0
+            empirical_p: 1
+        - "n": 7
+          cross_line_repeated:
+            raw_value: 0
+            structural_value: 0
+            absolute_delta: 0
+            ratio: 0
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0
+                stddev: 0
+                min: 0
+                max: 0
+                percentile_05: 0
+                percentile_50: 0
+                percentile_95: 0
+            z_score: 0
+            empirical_p: 1
+        - "n": 8
+          cross_line_repeated:
+            raw_value: 0
+            structural_value: 0
+            absolute_delta: 0
+            ratio: 0
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0
+                stddev: 0
+                min: 0
+                max: 0
+                percentile_05: 0
+                percentile_50: 0
+                percentile_95: 0
+            z_score: 0
+            empirical_p: 1
+      context_order:
+        - context_length: 1
+          conditional_entropy:
+            raw_value: 4.391903476968787
+            structural_value: 4.394089786359147
+            absolute_delta: 0.0021863093903595754
+            ratio: 1.0004978045172952
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 4.431878070458798
+                stddev: 0.00596089715707809
+                min: 4.417636659818157
+                max: 4.447552039744391
+                percentile_05: 4.423282816975271
+                percentile_50: 4.431046643546507
+                percentile_95: 4.44165427151532
+            z_score: -6.339361861793022
+            empirical_p: 0.009900990099009901
+          repeated_context_conditional_entropy:
+            raw_value: 5.098331841718131
+            structural_value: 5.100869814339608
+            absolute_delta: 0.002537972621476925
+            ratio: 1.0004978045172952
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 5.144736263836834
+                stddev: 0.0069196948294759746
+                min: 5.128204152482175
+                max: 5.16293135785789
+                percentile_05: 5.134758482049848
+                percentile_50: 5.143771103668077
+                percentile_95: 5.156084946110678
+            z_score: -6.339361861793043
+            empirical_p: 0.009900990099009901
+          repeated_context_coverage:
+            raw_value: 0.8614393125671321
+            structural_value: 0.8614393125671321
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0.8614393125671325
+                stddev: 0
+                min: 0.8614393125671321
+                max: 0.8614393125671321
+                percentile_05: 0.8614393125671321
+                percentile_50: 0.8614393125671321
+                percentile_95: 0.8614393125671321
+            z_score: 0
+            empirical_p: 1
+        - context_length: 2
+          conditional_entropy:
+            raw_value: 0.44511401712533716
+            structural_value: 0.552119896904723
+            absolute_delta: 0.1070058797793858
+            ratio: 1.2404010560495438
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.510824660368899
+                stddev: 0.00752826302713147
+                min: 0.4972734323814781
+                max: 0.5330564427515743
+                percentile_05: 0.5000582509706224
+                percentile_50: 0.5099223167780076
+                percentile_95: 0.5240267053242025
+            z_score: 5.4853604858116825
+            empirical_p: 1
+          repeated_context_conditional_entropy:
+            raw_value: 1.8606187824860065
+            structural_value: 2.1236952186214966
+            absolute_delta: 0.26307643613549003
+            ratio: 1.1413919060754556
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 2.0043208159069055
+                stddev: 0.021717671266167787
+                min: 1.9556875272601164
+                max: 2.070341716403432
+                percentile_05: 1.9723409728336123
+                percentile_50: 1.9992551060698394
+                percentile_95: 2.037759297579452
+            z_score: 5.4966483860797215
+            empirical_p: 1
+          repeated_context_coverage:
+            raw_value: 0.23922902494331066
+            structural_value: 0.25998075998076
+            absolute_delta: 0.020751735037449315
+            ratio: 1.0867442194456411
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0.2548526077097505
+                stddev: 0.001334798399241883
+                min: 0.2521129663986807
+                max: 0.2579880437023294
+                percentile_05: 0.25289287432144575
+                percentile_50: 0.25456950456950456
+                percentile_95: 0.257403971689686
+            z_score: 3.8418927337057744
+            empirical_p: 0.009900990099009901
+        - context_length: 3
+          conditional_entropy:
+            raw_value: 0.012694814499755756
+            structural_value: 0.026471786387693343
+            absolute_delta: 0.013776971887937587
+            ratio: 2.0852440489148267
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.016383013624265665
+                stddev: 0.0012973170329607117
+                min: 0.014311674416492308
+                max: 0.021088695497105413
+                percentile_05: 0.014682919346735112
+                percentile_50: 0.016163636649105396
+                percentile_95: 0.018812138188675238
+            z_score: 7.7766440331113795
+            empirical_p: 1
+          repeated_context_conditional_entropy:
+            raw_value: 0.9353223830988686
+            structural_value: 1.1920920369127077
+            absolute_delta: 0.2567696538138391
+            ratio: 1.274525295720093
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.987518336875051
+                stddev: 0.02753570209941849
+                min: 0.9431718585850413
+                max: 1.069250408173163
+                percentile_05: 0.9488743402183597
+                percentile_50: 0.9852287423211732
+                percentile_95: 1.0368134390910246
+            z_score: 7.429398360682331
+            empirical_p: 1
+          repeated_context_coverage:
+            raw_value: 0.013572661928281732
+            structural_value: 0.022206159900413604
+            absolute_delta: 0.008633497972131872
+            ratio: 1.636094674556213
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0.016571497409950613
+                stddev: 0.0009242271692993522
+                min: 0.014978115086535758
+                max: 0.01979681162912099
+                percentile_05: 0.01541982893627274
+                percentile_50: 0.016463879853832873
+                percentile_95: 0.018192587238485325
+            z_score: 6.09662069849621
+            empirical_p: 0.009900990099009901
+        - context_length: 4
+          conditional_entropy:
+            raw_value: 0.000442328716225852
+            structural_value: 0.0011121531265411478
+            absolute_delta: 0.0006698244103152959
+            ratio: 2.5143136444555076
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.0005415030200941573
+                stddev: 0.00011741020268655768
+                min: 0.000442328716225852
+                max: 0.0010886985073519674
+                percentile_05: 0.000442328716225852
+                percentile_50: 0.0005380179176994657
+                percentile_95: 0.0008250855221203067
+            z_score: 4.860311058063819
+            empirical_p: 1
+          repeated_context_conditional_entropy:
+            raw_value: 0.14911471770704082
+            structural_value: 0.3058567433925859
+            absolute_delta: 0.15674202568554507
+            ratio: 2.0511506046873875
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.1756629463273295
+                stddev: 0.030422529558866658
+                min: 0.14911471770704082
+                max: 0.3074984797589658
+                percentile_05: 0.14911471770704082
+                percentile_50: 0.1757048827786958
+                percentile_95: 0.2463587499690933
+            z_score: 4.279519124579545
+            empirical_p: 0.9900990099009901
+          repeated_context_coverage:
+            raw_value: 0.002966365245682025
+            structural_value: 0.003636189655997321
+            absolute_delta: 0.0006698244103152959
+            ratio: 1.2258064516129032
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0.003064446677192476
+                stddev: 0.000107703499205688
+                min: 0.002966365245682025
+                max: 0.003540500454523707
+                percentile_05: 0.002966365245682025
+                percentile_50: 0.0030620544471556383
+                percentile_95: 0.003301277450839673
+            z_score: 5.308490281387722
+            empirical_p: 0.009900990099009901
+        - context_length: 5
+          conditional_entropy:
+            raw_value: 0.0004222093530207769
+            structural_value: 0.0004222093530207769
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.0004280368588482829
+                stddev: 2.540150899499227e-05
+                min: 0.0004222093530207769
+                max: 0.0005387594695708934
+                percentile_05: 0.0004222093530207769
+                percentile_50: 0.0004222093530207769
+                percentile_95: 0.0004280368588482824
+            z_score: -0.22941573387056818
+            empirical_p: 0.9504950495049505
+          repeated_context_conditional_entropy:
+            raw_value: 0.12491573272131952
+            structural_value: 0.12491573272131952
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.12637420650011744
+                stddev: 0.006357339813583509
+                min: 0.12491573272131952
+                max: 0.15408520829727554
+                percentile_05: 0.12491573272131952
+                percentile_50: 0.12491573272131952
+                percentile_95: 0.12637420650011724
+            z_score: -0.22941573387057998
+            empirical_p: 0.9504950495049505
+          repeated_context_coverage:
+            raw_value: 0.00337995337995338
+            structural_value: 0.00337995337995338
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0.0033857808857808928
+                stddev: 2.540150899499222e-05
+                min: 0.00337995337995338
+                max: 0.0034965034965034965
+                percentile_05: 0.00337995337995338
+                percentile_50: 0.00337995337995338
+                percentile_95: 0.0033857808857808854
+            z_score: -0.22941573387082898
+            empirical_p: 1
+        - context_length: 6
+          conditional_entropy:
+            raw_value: 0.0005273775293227932
+            structural_value: 0.0005273775293227932
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.0005273775293227944
+                stddev: 0
+                min: 0.0005273775293227932
+                max: 0.0005273775293227932
+                percentile_05: 0.0005273775293227932
+                percentile_50: 0.0005273775293227932
+                percentile_95: 0.0005273775293227932
+            z_score: 0
+            empirical_p: 1
+          repeated_context_conditional_entropy:
+            raw_value: 0.12937700888993806
+            structural_value: 0.12937700888993806
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.12937700888993794
+                stddev: 0
+                min: 0.12937700888993806
+                max: 0.12937700888993806
+                percentile_05: 0.12937700888993806
+                percentile_50: 0.12937700888993806
+                percentile_95: 0.12937700888993806
+            z_score: 0
+            empirical_p: 1
+          repeated_context_coverage:
+            raw_value: 0.004076284757606638
+            structural_value: 0.004076284757606638
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0.004076284757606633
+                stddev: 0
+                min: 0.004076284757606638
+                max: 0.004076284757606638
+                percentile_05: 0.004076284757606638
+                percentile_50: 0.004076284757606638
+                percentile_95: 0.004076284757606638
+            z_score: 0
+            empirical_p: 1
+        - context_length: 7
+          conditional_entropy:
+            raw_value: 0.0005633802816901409
+            structural_value: 0.0005633802816901409
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.0005633802816901401
+                stddev: 0
+                min: 0.0005633802816901409
+                max: 0.0005633802816901409
+                percentile_05: 0.0005633802816901409
+                percentile_50: 0.0005633802816901409
+                percentile_95: 0.0005633802816901409
+            z_score: 0
+            empirical_p: 1
+          repeated_context_conditional_entropy:
+            raw_value: 0.1111111111111111
+            structural_value: 0.1111111111111111
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.11111111111111088
+                stddev: 0
+                min: 0.1111111111111111
+                max: 0.1111111111111111
+                percentile_05: 0.1111111111111111
+                percentile_50: 0.1111111111111111
+                percentile_95: 0.1111111111111111
+            z_score: 0
+            empirical_p: 1
+          repeated_context_coverage:
+            raw_value: 0.0050704225352112674
+            structural_value: 0.0050704225352112674
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0.005070422535211272
+                stddev: 0
+                min: 0.0050704225352112674
+                max: 0.0050704225352112674
+                percentile_05: 0.0050704225352112674
+                percentile_50: 0.0050704225352112674
+                percentile_95: 0.0050704225352112674
+            z_score: 0
+            empirical_p: 1
+    - threshold: 0.75
+      label: "075"
+      normalization:
+        raw_unique_tokens: 8349
+        normalized_unique_symbols: 8346
+        classified_tokens: 6
+        singleton_tokens: 8343
+        classes: 8346
+        multi_member_classes: 3
+        tokens_in_multi_member_classes: 6
+        largest_class: 2
+        token_occurrence_coverage: 0.04435929745159051
+        compression_ratio: 0.9996406755300036
+      max_cross_line_sequence_length:
+        raw_value: 4
+        structural_value: 4
+        absolute_delta: 0
+        ratio: 1
+        empirical_test_direction: random >= structural
+        random:
+            runs: 100
+            mean: 4.02
+            stddev: 0.13999999999999999
+            min: 4
+            max: 5
+            percentile_05: 4
+            percentile_50: 4
+            percentile_95: 4
+        z_score: -0.14285714285713982
+        empirical_p: 1
+      ngrams:
+        - "n": 2
+          cross_line_repeated:
+            raw_value: 2481
+            structural_value: 2466
+            absolute_delta: -15
+            ratio: 0.9939540507859734
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 2484.87
+                stddev: 10.462939357561035
+                min: 2461
+                max: 2509
+                percentile_05: 2468.9
+                percentile_50: 2483.5
+                percentile_95: 2501.05
+            z_score: -1.8035084936589543
+            empirical_p: 0.9801980198019802
+        - "n": 3
+          cross_line_repeated:
+            raw_value: 162
+            structural_value: 188
+            absolute_delta: 26
+            ratio: 1.1604938271604939
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 176.86
+                stddev: 7.005740503330112
+                min: 166
+                max: 207
+                percentile_05: 167.95
+                percentile_50: 175.5
+                percentile_95: 189
+            z_score: 1.5901245549567091
+            empirical_p: 0.10891089108910891
+        - "n": 4
+          cross_line_repeated:
+            raw_value: 1
+            structural_value: 3
+            absolute_delta: 2
+            ratio: 3
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 1.45
+                stddev: 0.7399324293474371
+                min: 1
+                max: 4
+                percentile_05: 1
+                percentile_50: 1
+                percentile_95: 3
+            z_score: 2.0947858730384064
+            empirical_p: 0.1188118811881188
+        - "n": 5
+          cross_line_repeated:
+            raw_value: 0
+            structural_value: 0
+            absolute_delta: 0
+            ratio: 0
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0.02
+                stddev: 0.13999999999999999
+                min: 0
+                max: 1
+                percentile_05: 0
+                percentile_50: 0
+                percentile_95: 0
+            z_score: -0.14285714285714288
+            empirical_p: 1
+        - "n": 6
+          cross_line_repeated:
+            raw_value: 0
+            structural_value: 0
+            absolute_delta: 0
+            ratio: 0
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0
+                stddev: 0
+                min: 0
+                max: 0
+                percentile_05: 0
+                percentile_50: 0
+                percentile_95: 0
+            z_score: 0
+            empirical_p: 1
+        - "n": 7
+          cross_line_repeated:
+            raw_value: 0
+            structural_value: 0
+            absolute_delta: 0
+            ratio: 0
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0
+                stddev: 0
+                min: 0
+                max: 0
+                percentile_05: 0
+                percentile_50: 0
+                percentile_95: 0
+            z_score: 0
+            empirical_p: 1
+        - "n": 8
+          cross_line_repeated:
+            raw_value: 0
+            structural_value: 0
+            absolute_delta: 0
+            ratio: 0
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0
+                stddev: 0
+                min: 0
+                max: 0
+                percentile_05: 0
+                percentile_50: 0
+                percentile_95: 0
+            z_score: 0
+            empirical_p: 1
+      context_order:
+        - context_length: 1
+          conditional_entropy:
+            raw_value: 4.391903476968787
+            structural_value: 4.396726502867729
+            absolute_delta: 0.00482302589894168
+            ratio: 1.0010981630002194
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 4.41077902476092
+                stddev: 0.003857608360399795
+                min: 4.396243673289021
+                max: 4.4230325013057605
+                percentile_05: 4.405362980559341
+                percentile_50: 4.410839469905716
+                percentile_95: 4.416804684739486
+            z_score: -3.642806780866399
+            empirical_p: 0.019801980198019802
+          repeated_context_conditional_entropy:
+            raw_value: 5.098331841718131
+            structural_value: 5.103930641109546
+            absolute_delta: 0.005598799391415277
+            ratio: 1.0010981630002194
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 5.120243481362114
+                stddev: 0.004478096488194861
+                min: 5.103370149416556
+                max: 5.13446790363549
+                percentile_05: 5.113956277931105
+                percentile_50: 5.120313648980327
+                percentile_95: 5.127238355975639
+            z_score: -3.642806780865913
+            empirical_p: 0.019801980198019802
+          repeated_context_coverage:
+            raw_value: 0.8614393125671321
+            structural_value: 0.8614393125671321
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0.8614393125671325
+                stddev: 0
+                min: 0.8614393125671321
+                max: 0.8614393125671321
+                percentile_05: 0.8614393125671321
+                percentile_50: 0.8614393125671321
+                percentile_95: 0.8614393125671321
+            z_score: 0
+            empirical_p: 1
+        - context_length: 2
+          conditional_entropy:
+            raw_value: 0.44511401712533716
+            structural_value: 0.4883660398445528
+            absolute_delta: 0.04325202271921563
+            ratio: 1.0971706597751032
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.4745162037288672
+                stddev: 0.0046680555354242795
+                min: 0.4629688033872503
+                max: 0.4875008064223013
+                percentile_05: 0.4676394238379382
+                percentile_50: 0.47451221048661046
+                percentile_95: 0.4818117190940336
+            z_score: 2.9669390200231978
+            empirical_p: 1
+          repeated_context_conditional_entropy:
+            raw_value: 1.8606187824860065
+            structural_value: 1.9682057540453548
+            absolute_delta: 0.10758697155934827
+            ratio: 1.0578232212702912
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 1.9255007551923062
+                stddev: 0.01434613647613532
+                min: 1.8960419292794861
+                max: 1.9614595620303432
+                percentile_05: 1.902580957915572
+                percentile_50: 1.9246793725551692
+                percentile_95: 1.9465127109966431
+            z_score: 2.976759556420503
+            empirical_p: 1
+          repeated_context_coverage:
+            raw_value: 0.23922902494331066
+            structural_value: 0.24812753384181957
+            absolute_delta: 0.008898508898508906
+            ratio: 1.0371966106563264
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0.24643441214869788
+                stddev: 0.0009084349515564339
+                min: 0.24400467257610114
+                max: 0.24857417714560573
+                percentile_05: 0.24506974506974508
+                percentile_50: 0.24642685356971072
+                percentile_95: 0.24789218717790146
+            z_score: 1.8637786780669794
+            empirical_p: 0.039603960396039604
+        - context_length: 3
+          conditional_entropy:
+            raw_value: 0.012694814499755756
+            structural_value: 0.015837594988310968
+            absolute_delta: 0.0031427804885552114
+            ratio: 1.2475641127812995
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.014202444485757106
+                stddev: 0.0008960400700617915
+                min: 0.013016060935928102
+                max: 0.018091900312465388
+                percentile_05: 0.01320548161323828
+                percentile_50: 0.013970742601222136
+                percentile_95: 0.01608804831555199
+            z_score: 1.824863147516495
+            empirical_p: 0.9405940594059405
+          repeated_context_conditional_entropy:
+            raw_value: 0.9353223830988686
+            structural_value: 0.9934600201357884
+            absolute_delta: 0.058137637036919765
+            ratio: 1.062157859244532
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.9583496418546473
+                stddev: 0.02016705405708217
+                min: 0.9348688475425002
+                max: 1.0286360581765424
+                percentile_05: 0.9375399013926217
+                percentile_50: 0.951578874452502
+                percentile_95: 1.0040816550221054
+            z_score: 1.7409770500818962
+            empirical_p: 0.9306930693069307
+          repeated_context_coverage:
+            raw_value: 0.013572661928281732
+            structural_value: 0.015941854395052805
+            absolute_delta: 0.0023691924667710723
+            ratio: 1.1745562130177516
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0.014808657591454862
+                stddev: 0.00064875129214961
+                min: 0.013893908364454081
+                max: 0.017588242380436093
+                percentile_05: 0.014014375778018713
+                percentile_50: 0.014636790748102639
+                percentile_95: 0.015990041360478657
+            z_score: 1.7467353318760155
+            empirical_p: 0.06930693069306931
+        - context_length: 4
+          conditional_entropy:
+            raw_value: 0.000442328716225852
+            structural_value: 0.0006337071191730793
+            absolute_delta: 0.00019137840294722737
+            ratio: 1.432661041273002
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.0004784560665939334
+                stddev: 7.119343459561832e-05
+                min: 0.000442328716225852
+                max: 0.00089732010440474
+                percentile_05: 0.000442328716225852
+                percentile_50: 0.000442328716225852
+                percentile_95: 0.0006337071191730793
+            z_score: 2.1806933948471285
+            empirical_p: 0.9900990099009901
+          repeated_context_conditional_entropy:
+            raw_value: 0.14911471770704082
+            structural_value: 0.2006835226944929
+            absolute_delta: 0.05156880498745209
+            ratio: 1.3458330993776688
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.15890576332037443
+                stddev: 0.018974998941508815
+                min: 0.14911471770704082
+                max: 0.267926964316621
+                percentile_05: 0.14911471770704082
+                percentile_50: 0.14911471770704082
+                percentile_95: 0.2006835226944929
+            z_score: 2.2017265720488353
+            empirical_p: 0.9900990099009901
+          repeated_context_coverage:
+            raw_value: 0.002966365245682025
+            structural_value: 0.003157743648629252
+            absolute_delta: 0.0001913784029472271
+            ratio: 1.064516129032258
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0.0030027271422419983
+                stddev: 7.002985297749182e-05
+                min: 0.002966365245682025
+                max: 0.0033491220515764796
+                percentile_05: 0.002966365245682025
+                percentile_50: 0.002966365245682025
+                percentile_95: 0.003157743648629252
+            z_score: 2.213577492973994
+            empirical_p: 0.0891089108910891
+        - context_length: 5
+          conditional_entropy:
+            raw_value: 0.0004222093530207769
+            structural_value: 0.0004222093530207769
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.00042454035535177936
+                stddev: 1.6317016317016318e-05
+                min: 0.0004222093530207769
+                max: 0.0005387594695708934
+                percentile_05: 0.0004222093530207769
+                percentile_50: 0.0004222093530207769
+                percentile_95: 0.0004222093530207769
+            z_score: -0.14285714285715148
+            empirical_p: 0.9801980198019802
+          repeated_context_conditional_entropy:
+            raw_value: 0.12491573272131952
+            structural_value: 0.12491573272131952
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.1254991222328388
+                stddev: 0.004083726580633842
+                min: 0.12491573272131952
+                max: 0.15408520829727554
+                percentile_05: 0.12491573272131952
+                percentile_50: 0.12491573272131952
+                percentile_95: 0.12491573272131952
+            z_score: -0.14285714285718074
+            empirical_p: 0.9801980198019802
+          repeated_context_coverage:
+            raw_value: 0.00337995337995338
+            structural_value: 0.00337995337995338
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0.00338228438228439
+                stddev: 1.6317016317016287e-05
+                min: 0.00337995337995338
+                max: 0.0034965034965034965
+                percentile_05: 0.00337995337995338
+                percentile_50: 0.00337995337995338
+                percentile_95: 0.00337995337995338
+            z_score: -0.14285714285760692
+            empirical_p: 1
+        - context_length: 6
+          conditional_entropy:
+            raw_value: 0.0005273775293227932
+            structural_value: 0.0005273775293227932
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.0005273775293227944
+                stddev: 0
+                min: 0.0005273775293227932
+                max: 0.0005273775293227932
+                percentile_05: 0.0005273775293227932
+                percentile_50: 0.0005273775293227932
+                percentile_95: 0.0005273775293227932
+            z_score: 0
+            empirical_p: 1
+          repeated_context_conditional_entropy:
+            raw_value: 0.12937700888993806
+            structural_value: 0.12937700888993806
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.12937700888993794
+                stddev: 0
+                min: 0.12937700888993806
+                max: 0.12937700888993806
+                percentile_05: 0.12937700888993806
+                percentile_50: 0.12937700888993806
+                percentile_95: 0.12937700888993806
+            z_score: 0
+            empirical_p: 1
+          repeated_context_coverage:
+            raw_value: 0.004076284757606638
+            structural_value: 0.004076284757606638
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0.004076284757606633
+                stddev: 0
+                min: 0.004076284757606638
+                max: 0.004076284757606638
+                percentile_05: 0.004076284757606638
+                percentile_50: 0.004076284757606638
+                percentile_95: 0.004076284757606638
+            z_score: 0
+            empirical_p: 1
+        - context_length: 7
+          conditional_entropy:
+            raw_value: 0.0005633802816901409
+            structural_value: 0.0005633802816901409
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.0005633802816901401
+                stddev: 0
+                min: 0.0005633802816901409
+                max: 0.0005633802816901409
+                percentile_05: 0.0005633802816901409
+                percentile_50: 0.0005633802816901409
+                percentile_95: 0.0005633802816901409
+            z_score: 0
+            empirical_p: 1
+          repeated_context_conditional_entropy:
+            raw_value: 0.1111111111111111
+            structural_value: 0.1111111111111111
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.11111111111111088
+                stddev: 0
+                min: 0.1111111111111111
+                max: 0.1111111111111111
+                percentile_05: 0.1111111111111111
+                percentile_50: 0.1111111111111111
+                percentile_95: 0.1111111111111111
+            z_score: 0
+            empirical_p: 1
+          repeated_context_coverage:
+            raw_value: 0.0050704225352112674
+            structural_value: 0.0050704225352112674
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0.005070422535211272
+                stddev: 0
+                min: 0.0050704225352112674
+                max: 0.0050704225352112674
+                percentile_05: 0.0050704225352112674
+                percentile_50: 0.0050704225352112674
+                percentile_95: 0.0050704225352112674
+            z_score: 0
+            empirical_p: 1
+    - threshold: 0.8
+      label: "080"
+      normalization:
+        raw_unique_tokens: 8349
+        normalized_unique_symbols: 8349
+        classified_tokens: 0
+        singleton_tokens: 8349
+        classes: 8349
+        multi_member_classes: 0
+        tokens_in_multi_member_classes: 0
+        largest_class: 1
+        token_occurrence_coverage: 0
+        compression_ratio: 1
+      max_cross_line_sequence_length:
+        raw_value: 4
+        structural_value: 4
+        absolute_delta: 0
+        ratio: 1
+        empirical_test_direction: random >= structural
+        random:
+            runs: 100
+            mean: 4
+            stddev: 0
+            min: 4
+            max: 4
+            percentile_05: 4
+            percentile_50: 4
+            percentile_95: 4
+        z_score: 0
+        empirical_p: 1
+      ngrams:
+        - "n": 2
+          cross_line_repeated:
+            raw_value: 2481
+            structural_value: 2481
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 2481
+                stddev: 0
+                min: 2481
+                max: 2481
+                percentile_05: 2481
+                percentile_50: 2481
+                percentile_95: 2481
+            z_score: 0
+            empirical_p: 1
+        - "n": 3
+          cross_line_repeated:
+            raw_value: 162
+            structural_value: 162
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 162
+                stddev: 0
+                min: 162
+                max: 162
+                percentile_05: 162
+                percentile_50: 162
+                percentile_95: 162
+            z_score: 0
+            empirical_p: 1
+        - "n": 4
+          cross_line_repeated:
+            raw_value: 1
+            structural_value: 1
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 1
+                stddev: 0
+                min: 1
+                max: 1
+                percentile_05: 1
+                percentile_50: 1
+                percentile_95: 1
+            z_score: 0
+            empirical_p: 1
+        - "n": 5
+          cross_line_repeated:
+            raw_value: 0
+            structural_value: 0
+            absolute_delta: 0
+            ratio: 0
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0
+                stddev: 0
+                min: 0
+                max: 0
+                percentile_05: 0
+                percentile_50: 0
+                percentile_95: 0
+            z_score: 0
+            empirical_p: 1
+        - "n": 6
+          cross_line_repeated:
+            raw_value: 0
+            structural_value: 0
+            absolute_delta: 0
+            ratio: 0
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0
+                stddev: 0
+                min: 0
+                max: 0
+                percentile_05: 0
+                percentile_50: 0
+                percentile_95: 0
+            z_score: 0
+            empirical_p: 1
+        - "n": 7
+          cross_line_repeated:
+            raw_value: 0
+            structural_value: 0
+            absolute_delta: 0
+            ratio: 0
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0
+                stddev: 0
+                min: 0
+                max: 0
+                percentile_05: 0
+                percentile_50: 0
+                percentile_95: 0
+            z_score: 0
+            empirical_p: 1
+        - "n": 8
+          cross_line_repeated:
+            raw_value: 0
+            structural_value: 0
+            absolute_delta: 0
+            ratio: 0
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0
+                stddev: 0
+                min: 0
+                max: 0
+                percentile_05: 0
+                percentile_50: 0
+                percentile_95: 0
+            z_score: 0
+            empirical_p: 1
+      context_order:
+        - context_length: 1
+          conditional_entropy:
+            raw_value: 4.391903476968787
+            structural_value: 4.391903476968787
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 4.391903476968779
+                stddev: 0
+                min: 4.391903476968787
+                max: 4.391903476968787
+                percentile_05: 4.391903476968787
+                percentile_50: 4.391903476968787
+                percentile_95: 4.391903476968787
+            z_score: 0
+            empirical_p: 1
+          repeated_context_conditional_entropy:
+            raw_value: 5.098331841718131
+            structural_value: 5.098331841718131
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 5.09833184171812
+                stddev: 0
+                min: 5.098331841718131
+                max: 5.098331841718131
+                percentile_05: 5.098331841718131
+                percentile_50: 5.098331841718131
+                percentile_95: 5.098331841718131
+            z_score: 0
+            empirical_p: 1
+          repeated_context_coverage:
+            raw_value: 0.8614393125671321
+            structural_value: 0.8614393125671321
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0.8614393125671325
+                stddev: 0
+                min: 0.8614393125671321
+                max: 0.8614393125671321
+                percentile_05: 0.8614393125671321
+                percentile_50: 0.8614393125671321
+                percentile_95: 0.8614393125671321
+            z_score: 0
+            empirical_p: 1
+        - context_length: 2
+          conditional_entropy:
+            raw_value: 0.44511401712533716
+            structural_value: 0.44511401712533716
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.4451140171253367
+                stddev: 0
+                min: 0.44511401712533716
+                max: 0.44511401712533716
+                percentile_05: 0.44511401712533716
+                percentile_50: 0.44511401712533716
+                percentile_95: 0.44511401712533716
+            z_score: 0
+            empirical_p: 1
+          repeated_context_conditional_entropy:
+            raw_value: 1.8606187824860065
+            structural_value: 1.8606187824860065
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 1.8606187824860028
+                stddev: 0
+                min: 1.8606187824860065
+                max: 1.8606187824860065
+                percentile_05: 1.8606187824860065
+                percentile_50: 1.8606187824860065
+                percentile_95: 1.8606187824860065
+            z_score: 0
+            empirical_p: 1
+          repeated_context_coverage:
+            raw_value: 0.23922902494331066
+            structural_value: 0.23922902494331066
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0.23922902494331044
+                stddev: 0
+                min: 0.23922902494331066
+                max: 0.23922902494331066
+                percentile_05: 0.23922902494331066
+                percentile_50: 0.23922902494331066
+                percentile_95: 0.23922902494331066
+            z_score: 0
+            empirical_p: 1
+        - context_length: 3
+          conditional_entropy:
+            raw_value: 0.012694814499755756
+            structural_value: 0.012694814499755756
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.012694814499755765
+                stddev: 0
+                min: 0.012694814499755756
+                max: 0.012694814499755756
+                percentile_05: 0.012694814499755756
+                percentile_50: 0.012694814499755756
+                percentile_95: 0.012694814499755756
+            z_score: 0
+            empirical_p: 1
+          repeated_context_conditional_entropy:
+            raw_value: 0.9353223830988686
+            structural_value: 0.9353223830988686
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.9353223830988678
+                stddev: 0
+                min: 0.9353223830988686
+                max: 0.9353223830988686
+                percentile_05: 0.9353223830988686
+                percentile_50: 0.9353223830988686
+                percentile_95: 0.9353223830988686
+            z_score: 0
+            empirical_p: 1
+          repeated_context_coverage:
+            raw_value: 0.013572661928281732
+            structural_value: 0.013572661928281732
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0.013572661928281724
+                stddev: 0
+                min: 0.013572661928281732
+                max: 0.013572661928281732
+                percentile_05: 0.013572661928281732
+                percentile_50: 0.013572661928281732
+                percentile_95: 0.013572661928281732
+            z_score: 0
+            empirical_p: 1
+        - context_length: 4
+          conditional_entropy:
+            raw_value: 0.000442328716225852
+            structural_value: 0.000442328716225852
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.00044232871622585274
+                stddev: 0
+                min: 0.000442328716225852
+                max: 0.000442328716225852
+                percentile_05: 0.000442328716225852
+                percentile_50: 0.000442328716225852
+                percentile_95: 0.000442328716225852
+            z_score: 0
+            empirical_p: 1
+          repeated_context_conditional_entropy:
+            raw_value: 0.14911471770704082
+            structural_value: 0.14911471770704082
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.14911471770704096
+                stddev: 0
+                min: 0.14911471770704082
+                max: 0.14911471770704082
+                percentile_05: 0.14911471770704082
+                percentile_50: 0.14911471770704082
+                percentile_95: 0.14911471770704082
+            z_score: 0
+            empirical_p: 1
+          repeated_context_coverage:
+            raw_value: 0.002966365245682025
+            structural_value: 0.002966365245682025
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0.0029663652456820232
+                stddev: 0
+                min: 0.002966365245682025
+                max: 0.002966365245682025
+                percentile_05: 0.002966365245682025
+                percentile_50: 0.002966365245682025
+                percentile_95: 0.0029663652456820245
+            z_score: 0
+            empirical_p: 1
+        - context_length: 5
+          conditional_entropy:
+            raw_value: 0.0004222093530207769
+            structural_value: 0.0004222093530207769
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.00042220935302077705
+                stddev: 0
+                min: 0.0004222093530207769
+                max: 0.0004222093530207769
+                percentile_05: 0.0004222093530207769
+                percentile_50: 0.0004222093530207769
+                percentile_95: 0.0004222093530207769
+            z_score: 0
+            empirical_p: 1
+          repeated_context_conditional_entropy:
+            raw_value: 0.12491573272131952
+            structural_value: 0.12491573272131952
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.12491573272131969
+                stddev: 0
+                min: 0.12491573272131952
+                max: 0.12491573272131952
+                percentile_05: 0.12491573272131952
+                percentile_50: 0.12491573272131952
+                percentile_95: 0.12491573272131952
+            z_score: 0
+            empirical_p: 1
+          repeated_context_coverage:
+            raw_value: 0.00337995337995338
+            structural_value: 0.00337995337995338
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0.003379953379953388
+                stddev: 0
+                min: 0.00337995337995338
+                max: 0.00337995337995338
+                percentile_05: 0.00337995337995338
+                percentile_50: 0.00337995337995338
+                percentile_95: 0.00337995337995338
+            z_score: 0
+            empirical_p: 1
+        - context_length: 6
+          conditional_entropy:
+            raw_value: 0.0005273775293227932
+            structural_value: 0.0005273775293227932
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.0005273775293227944
+                stddev: 0
+                min: 0.0005273775293227932
+                max: 0.0005273775293227932
+                percentile_05: 0.0005273775293227932
+                percentile_50: 0.0005273775293227932
+                percentile_95: 0.0005273775293227932
+            z_score: 0
+            empirical_p: 1
+          repeated_context_conditional_entropy:
+            raw_value: 0.12937700888993806
+            structural_value: 0.12937700888993806
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.12937700888993794
+                stddev: 0
+                min: 0.12937700888993806
+                max: 0.12937700888993806
+                percentile_05: 0.12937700888993806
+                percentile_50: 0.12937700888993806
+                percentile_95: 0.12937700888993806
+            z_score: 0
+            empirical_p: 1
+          repeated_context_coverage:
+            raw_value: 0.004076284757606638
+            structural_value: 0.004076284757606638
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0.004076284757606633
+                stddev: 0
+                min: 0.004076284757606638
+                max: 0.004076284757606638
+                percentile_05: 0.004076284757606638
+                percentile_50: 0.004076284757606638
+                percentile_95: 0.004076284757606638
+            z_score: 0
+            empirical_p: 1
+        - context_length: 7
+          conditional_entropy:
+            raw_value: 0.0005633802816901409
+            structural_value: 0.0005633802816901409
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.0005633802816901401
+                stddev: 0
+                min: 0.0005633802816901409
+                max: 0.0005633802816901409
+                percentile_05: 0.0005633802816901409
+                percentile_50: 0.0005633802816901409
+                percentile_95: 0.0005633802816901409
+            z_score: 0
+            empirical_p: 1
+          repeated_context_conditional_entropy:
+            raw_value: 0.1111111111111111
+            structural_value: 0.1111111111111111
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.11111111111111088
+                stddev: 0
+                min: 0.1111111111111111
+                max: 0.1111111111111111
+                percentile_05: 0.1111111111111111
+                percentile_50: 0.1111111111111111
+                percentile_95: 0.1111111111111111
+            z_score: 0
+            empirical_p: 1
+          repeated_context_coverage:
+            raw_value: 0.0050704225352112674
+            structural_value: 0.0050704225352112674
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0.005070422535211272
+                stddev: 0
+                min: 0.0050704225352112674
+                max: 0.0050704225352112674
+                percentile_05: 0.0050704225352112674
+                percentile_50: 0.0050704225352112674
+                percentile_95: 0.0050704225352112674
+            z_score: 0
+            empirical_p: 1
+    - threshold: 0.85
+      label: "085"
+      normalization:
+        raw_unique_tokens: 8349
+        normalized_unique_symbols: 8349
+        classified_tokens: 0
+        singleton_tokens: 8349
+        classes: 8349
+        multi_member_classes: 0
+        tokens_in_multi_member_classes: 0
+        largest_class: 1
+        token_occurrence_coverage: 0
+        compression_ratio: 1
+      max_cross_line_sequence_length:
+        raw_value: 4
+        structural_value: 4
+        absolute_delta: 0
+        ratio: 1
+        empirical_test_direction: random >= structural
+        random:
+            runs: 100
+            mean: 4
+            stddev: 0
+            min: 4
+            max: 4
+            percentile_05: 4
+            percentile_50: 4
+            percentile_95: 4
+        z_score: 0
+        empirical_p: 1
+      ngrams:
+        - "n": 2
+          cross_line_repeated:
+            raw_value: 2481
+            structural_value: 2481
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 2481
+                stddev: 0
+                min: 2481
+                max: 2481
+                percentile_05: 2481
+                percentile_50: 2481
+                percentile_95: 2481
+            z_score: 0
+            empirical_p: 1
+        - "n": 3
+          cross_line_repeated:
+            raw_value: 162
+            structural_value: 162
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 162
+                stddev: 0
+                min: 162
+                max: 162
+                percentile_05: 162
+                percentile_50: 162
+                percentile_95: 162
+            z_score: 0
+            empirical_p: 1
+        - "n": 4
+          cross_line_repeated:
+            raw_value: 1
+            structural_value: 1
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 1
+                stddev: 0
+                min: 1
+                max: 1
+                percentile_05: 1
+                percentile_50: 1
+                percentile_95: 1
+            z_score: 0
+            empirical_p: 1
+        - "n": 5
+          cross_line_repeated:
+            raw_value: 0
+            structural_value: 0
+            absolute_delta: 0
+            ratio: 0
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0
+                stddev: 0
+                min: 0
+                max: 0
+                percentile_05: 0
+                percentile_50: 0
+                percentile_95: 0
+            z_score: 0
+            empirical_p: 1
+        - "n": 6
+          cross_line_repeated:
+            raw_value: 0
+            structural_value: 0
+            absolute_delta: 0
+            ratio: 0
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0
+                stddev: 0
+                min: 0
+                max: 0
+                percentile_05: 0
+                percentile_50: 0
+                percentile_95: 0
+            z_score: 0
+            empirical_p: 1
+        - "n": 7
+          cross_line_repeated:
+            raw_value: 0
+            structural_value: 0
+            absolute_delta: 0
+            ratio: 0
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0
+                stddev: 0
+                min: 0
+                max: 0
+                percentile_05: 0
+                percentile_50: 0
+                percentile_95: 0
+            z_score: 0
+            empirical_p: 1
+        - "n": 8
+          cross_line_repeated:
+            raw_value: 0
+            structural_value: 0
+            absolute_delta: 0
+            ratio: 0
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0
+                stddev: 0
+                min: 0
+                max: 0
+                percentile_05: 0
+                percentile_50: 0
+                percentile_95: 0
+            z_score: 0
+            empirical_p: 1
+      context_order:
+        - context_length: 1
+          conditional_entropy:
+            raw_value: 4.391903476968787
+            structural_value: 4.391903476968787
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 4.391903476968779
+                stddev: 0
+                min: 4.391903476968787
+                max: 4.391903476968787
+                percentile_05: 4.391903476968787
+                percentile_50: 4.391903476968787
+                percentile_95: 4.391903476968787
+            z_score: 0
+            empirical_p: 1
+          repeated_context_conditional_entropy:
+            raw_value: 5.098331841718131
+            structural_value: 5.098331841718131
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 5.09833184171812
+                stddev: 0
+                min: 5.098331841718131
+                max: 5.098331841718131
+                percentile_05: 5.098331841718131
+                percentile_50: 5.098331841718131
+                percentile_95: 5.098331841718131
+            z_score: 0
+            empirical_p: 1
+          repeated_context_coverage:
+            raw_value: 0.8614393125671321
+            structural_value: 0.8614393125671321
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0.8614393125671325
+                stddev: 0
+                min: 0.8614393125671321
+                max: 0.8614393125671321
+                percentile_05: 0.8614393125671321
+                percentile_50: 0.8614393125671321
+                percentile_95: 0.8614393125671321
+            z_score: 0
+            empirical_p: 1
+        - context_length: 2
+          conditional_entropy:
+            raw_value: 0.44511401712533716
+            structural_value: 0.44511401712533716
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.4451140171253367
+                stddev: 0
+                min: 0.44511401712533716
+                max: 0.44511401712533716
+                percentile_05: 0.44511401712533716
+                percentile_50: 0.44511401712533716
+                percentile_95: 0.44511401712533716
+            z_score: 0
+            empirical_p: 1
+          repeated_context_conditional_entropy:
+            raw_value: 1.8606187824860065
+            structural_value: 1.8606187824860065
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 1.8606187824860028
+                stddev: 0
+                min: 1.8606187824860065
+                max: 1.8606187824860065
+                percentile_05: 1.8606187824860065
+                percentile_50: 1.8606187824860065
+                percentile_95: 1.8606187824860065
+            z_score: 0
+            empirical_p: 1
+          repeated_context_coverage:
+            raw_value: 0.23922902494331066
+            structural_value: 0.23922902494331066
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0.23922902494331044
+                stddev: 0
+                min: 0.23922902494331066
+                max: 0.23922902494331066
+                percentile_05: 0.23922902494331066
+                percentile_50: 0.23922902494331066
+                percentile_95: 0.23922902494331066
+            z_score: 0
+            empirical_p: 1
+        - context_length: 3
+          conditional_entropy:
+            raw_value: 0.012694814499755756
+            structural_value: 0.012694814499755756
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.012694814499755765
+                stddev: 0
+                min: 0.012694814499755756
+                max: 0.012694814499755756
+                percentile_05: 0.012694814499755756
+                percentile_50: 0.012694814499755756
+                percentile_95: 0.012694814499755756
+            z_score: 0
+            empirical_p: 1
+          repeated_context_conditional_entropy:
+            raw_value: 0.9353223830988686
+            structural_value: 0.9353223830988686
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.9353223830988678
+                stddev: 0
+                min: 0.9353223830988686
+                max: 0.9353223830988686
+                percentile_05: 0.9353223830988686
+                percentile_50: 0.9353223830988686
+                percentile_95: 0.9353223830988686
+            z_score: 0
+            empirical_p: 1
+          repeated_context_coverage:
+            raw_value: 0.013572661928281732
+            structural_value: 0.013572661928281732
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0.013572661928281724
+                stddev: 0
+                min: 0.013572661928281732
+                max: 0.013572661928281732
+                percentile_05: 0.013572661928281732
+                percentile_50: 0.013572661928281732
+                percentile_95: 0.013572661928281732
+            z_score: 0
+            empirical_p: 1
+        - context_length: 4
+          conditional_entropy:
+            raw_value: 0.000442328716225852
+            structural_value: 0.000442328716225852
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.00044232871622585274
+                stddev: 0
+                min: 0.000442328716225852
+                max: 0.000442328716225852
+                percentile_05: 0.000442328716225852
+                percentile_50: 0.000442328716225852
+                percentile_95: 0.000442328716225852
+            z_score: 0
+            empirical_p: 1
+          repeated_context_conditional_entropy:
+            raw_value: 0.14911471770704082
+            structural_value: 0.14911471770704082
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.14911471770704096
+                stddev: 0
+                min: 0.14911471770704082
+                max: 0.14911471770704082
+                percentile_05: 0.14911471770704082
+                percentile_50: 0.14911471770704082
+                percentile_95: 0.14911471770704082
+            z_score: 0
+            empirical_p: 1
+          repeated_context_coverage:
+            raw_value: 0.002966365245682025
+            structural_value: 0.002966365245682025
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0.0029663652456820232
+                stddev: 0
+                min: 0.002966365245682025
+                max: 0.002966365245682025
+                percentile_05: 0.002966365245682025
+                percentile_50: 0.002966365245682025
+                percentile_95: 0.0029663652456820245
+            z_score: 0
+            empirical_p: 1
+        - context_length: 5
+          conditional_entropy:
+            raw_value: 0.0004222093530207769
+            structural_value: 0.0004222093530207769
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.00042220935302077705
+                stddev: 0
+                min: 0.0004222093530207769
+                max: 0.0004222093530207769
+                percentile_05: 0.0004222093530207769
+                percentile_50: 0.0004222093530207769
+                percentile_95: 0.0004222093530207769
+            z_score: 0
+            empirical_p: 1
+          repeated_context_conditional_entropy:
+            raw_value: 0.12491573272131952
+            structural_value: 0.12491573272131952
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.12491573272131969
+                stddev: 0
+                min: 0.12491573272131952
+                max: 0.12491573272131952
+                percentile_05: 0.12491573272131952
+                percentile_50: 0.12491573272131952
+                percentile_95: 0.12491573272131952
+            z_score: 0
+            empirical_p: 1
+          repeated_context_coverage:
+            raw_value: 0.00337995337995338
+            structural_value: 0.00337995337995338
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0.003379953379953388
+                stddev: 0
+                min: 0.00337995337995338
+                max: 0.00337995337995338
+                percentile_05: 0.00337995337995338
+                percentile_50: 0.00337995337995338
+                percentile_95: 0.00337995337995338
+            z_score: 0
+            empirical_p: 1
+        - context_length: 6
+          conditional_entropy:
+            raw_value: 0.0005273775293227932
+            structural_value: 0.0005273775293227932
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.0005273775293227944
+                stddev: 0
+                min: 0.0005273775293227932
+                max: 0.0005273775293227932
+                percentile_05: 0.0005273775293227932
+                percentile_50: 0.0005273775293227932
+                percentile_95: 0.0005273775293227932
+            z_score: 0
+            empirical_p: 1
+          repeated_context_conditional_entropy:
+            raw_value: 0.12937700888993806
+            structural_value: 0.12937700888993806
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.12937700888993794
+                stddev: 0
+                min: 0.12937700888993806
+                max: 0.12937700888993806
+                percentile_05: 0.12937700888993806
+                percentile_50: 0.12937700888993806
+                percentile_95: 0.12937700888993806
+            z_score: 0
+            empirical_p: 1
+          repeated_context_coverage:
+            raw_value: 0.004076284757606638
+            structural_value: 0.004076284757606638
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0.004076284757606633
+                stddev: 0
+                min: 0.004076284757606638
+                max: 0.004076284757606638
+                percentile_05: 0.004076284757606638
+                percentile_50: 0.004076284757606638
+                percentile_95: 0.004076284757606638
+            z_score: 0
+            empirical_p: 1
+        - context_length: 7
+          conditional_entropy:
+            raw_value: 0.0005633802816901409
+            structural_value: 0.0005633802816901409
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.0005633802816901401
+                stddev: 0
+                min: 0.0005633802816901409
+                max: 0.0005633802816901409
+                percentile_05: 0.0005633802816901409
+                percentile_50: 0.0005633802816901409
+                percentile_95: 0.0005633802816901409
+            z_score: 0
+            empirical_p: 1
+          repeated_context_conditional_entropy:
+            raw_value: 0.1111111111111111
+            structural_value: 0.1111111111111111
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.11111111111111088
+                stddev: 0
+                min: 0.1111111111111111
+                max: 0.1111111111111111
+                percentile_05: 0.1111111111111111
+                percentile_50: 0.1111111111111111
+                percentile_95: 0.1111111111111111
+            z_score: 0
+            empirical_p: 1
+          repeated_context_coverage:
+            raw_value: 0.0050704225352112674
+            structural_value: 0.0050704225352112674
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0.005070422535211272
+                stddev: 0
+                min: 0.0050704225352112674
+                max: 0.0050704225352112674
+                percentile_05: 0.0050704225352112674
+                percentile_50: 0.0050704225352112674
+                percentile_95: 0.0050704225352112674
+            z_score: 0
+            empirical_p: 1
+    - threshold: 0.9
+      label: "090"
+      normalization:
+        raw_unique_tokens: 8349
+        normalized_unique_symbols: 8349
+        classified_tokens: 0
+        singleton_tokens: 8349
+        classes: 8349
+        multi_member_classes: 0
+        tokens_in_multi_member_classes: 0
+        largest_class: 1
+        token_occurrence_coverage: 0
+        compression_ratio: 1
+      max_cross_line_sequence_length:
+        raw_value: 4
+        structural_value: 4
+        absolute_delta: 0
+        ratio: 1
+        empirical_test_direction: random >= structural
+        random:
+            runs: 100
+            mean: 4
+            stddev: 0
+            min: 4
+            max: 4
+            percentile_05: 4
+            percentile_50: 4
+            percentile_95: 4
+        z_score: 0
+        empirical_p: 1
+      ngrams:
+        - "n": 2
+          cross_line_repeated:
+            raw_value: 2481
+            structural_value: 2481
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 2481
+                stddev: 0
+                min: 2481
+                max: 2481
+                percentile_05: 2481
+                percentile_50: 2481
+                percentile_95: 2481
+            z_score: 0
+            empirical_p: 1
+        - "n": 3
+          cross_line_repeated:
+            raw_value: 162
+            structural_value: 162
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 162
+                stddev: 0
+                min: 162
+                max: 162
+                percentile_05: 162
+                percentile_50: 162
+                percentile_95: 162
+            z_score: 0
+            empirical_p: 1
+        - "n": 4
+          cross_line_repeated:
+            raw_value: 1
+            structural_value: 1
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 1
+                stddev: 0
+                min: 1
+                max: 1
+                percentile_05: 1
+                percentile_50: 1
+                percentile_95: 1
+            z_score: 0
+            empirical_p: 1
+        - "n": 5
+          cross_line_repeated:
+            raw_value: 0
+            structural_value: 0
+            absolute_delta: 0
+            ratio: 0
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0
+                stddev: 0
+                min: 0
+                max: 0
+                percentile_05: 0
+                percentile_50: 0
+                percentile_95: 0
+            z_score: 0
+            empirical_p: 1
+        - "n": 6
+          cross_line_repeated:
+            raw_value: 0
+            structural_value: 0
+            absolute_delta: 0
+            ratio: 0
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0
+                stddev: 0
+                min: 0
+                max: 0
+                percentile_05: 0
+                percentile_50: 0
+                percentile_95: 0
+            z_score: 0
+            empirical_p: 1
+        - "n": 7
+          cross_line_repeated:
+            raw_value: 0
+            structural_value: 0
+            absolute_delta: 0
+            ratio: 0
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0
+                stddev: 0
+                min: 0
+                max: 0
+                percentile_05: 0
+                percentile_50: 0
+                percentile_95: 0
+            z_score: 0
+            empirical_p: 1
+        - "n": 8
+          cross_line_repeated:
+            raw_value: 0
+            structural_value: 0
+            absolute_delta: 0
+            ratio: 0
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0
+                stddev: 0
+                min: 0
+                max: 0
+                percentile_05: 0
+                percentile_50: 0
+                percentile_95: 0
+            z_score: 0
+            empirical_p: 1
+      context_order:
+        - context_length: 1
+          conditional_entropy:
+            raw_value: 4.391903476968787
+            structural_value: 4.391903476968787
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 4.391903476968779
+                stddev: 0
+                min: 4.391903476968787
+                max: 4.391903476968787
+                percentile_05: 4.391903476968787
+                percentile_50: 4.391903476968787
+                percentile_95: 4.391903476968787
+            z_score: 0
+            empirical_p: 1
+          repeated_context_conditional_entropy:
+            raw_value: 5.098331841718131
+            structural_value: 5.098331841718131
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 5.09833184171812
+                stddev: 0
+                min: 5.098331841718131
+                max: 5.098331841718131
+                percentile_05: 5.098331841718131
+                percentile_50: 5.098331841718131
+                percentile_95: 5.098331841718131
+            z_score: 0
+            empirical_p: 1
+          repeated_context_coverage:
+            raw_value: 0.8614393125671321
+            structural_value: 0.8614393125671321
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0.8614393125671325
+                stddev: 0
+                min: 0.8614393125671321
+                max: 0.8614393125671321
+                percentile_05: 0.8614393125671321
+                percentile_50: 0.8614393125671321
+                percentile_95: 0.8614393125671321
+            z_score: 0
+            empirical_p: 1
+        - context_length: 2
+          conditional_entropy:
+            raw_value: 0.44511401712533716
+            structural_value: 0.44511401712533716
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.4451140171253367
+                stddev: 0
+                min: 0.44511401712533716
+                max: 0.44511401712533716
+                percentile_05: 0.44511401712533716
+                percentile_50: 0.44511401712533716
+                percentile_95: 0.44511401712533716
+            z_score: 0
+            empirical_p: 1
+          repeated_context_conditional_entropy:
+            raw_value: 1.8606187824860065
+            structural_value: 1.8606187824860065
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 1.8606187824860028
+                stddev: 0
+                min: 1.8606187824860065
+                max: 1.8606187824860065
+                percentile_05: 1.8606187824860065
+                percentile_50: 1.8606187824860065
+                percentile_95: 1.8606187824860065
+            z_score: 0
+            empirical_p: 1
+          repeated_context_coverage:
+            raw_value: 0.23922902494331066
+            structural_value: 0.23922902494331066
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0.23922902494331044
+                stddev: 0
+                min: 0.23922902494331066
+                max: 0.23922902494331066
+                percentile_05: 0.23922902494331066
+                percentile_50: 0.23922902494331066
+                percentile_95: 0.23922902494331066
+            z_score: 0
+            empirical_p: 1
+        - context_length: 3
+          conditional_entropy:
+            raw_value: 0.012694814499755756
+            structural_value: 0.012694814499755756
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.012694814499755765
+                stddev: 0
+                min: 0.012694814499755756
+                max: 0.012694814499755756
+                percentile_05: 0.012694814499755756
+                percentile_50: 0.012694814499755756
+                percentile_95: 0.012694814499755756
+            z_score: 0
+            empirical_p: 1
+          repeated_context_conditional_entropy:
+            raw_value: 0.9353223830988686
+            structural_value: 0.9353223830988686
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.9353223830988678
+                stddev: 0
+                min: 0.9353223830988686
+                max: 0.9353223830988686
+                percentile_05: 0.9353223830988686
+                percentile_50: 0.9353223830988686
+                percentile_95: 0.9353223830988686
+            z_score: 0
+            empirical_p: 1
+          repeated_context_coverage:
+            raw_value: 0.013572661928281732
+            structural_value: 0.013572661928281732
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0.013572661928281724
+                stddev: 0
+                min: 0.013572661928281732
+                max: 0.013572661928281732
+                percentile_05: 0.013572661928281732
+                percentile_50: 0.013572661928281732
+                percentile_95: 0.013572661928281732
+            z_score: 0
+            empirical_p: 1
+        - context_length: 4
+          conditional_entropy:
+            raw_value: 0.000442328716225852
+            structural_value: 0.000442328716225852
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.00044232871622585274
+                stddev: 0
+                min: 0.000442328716225852
+                max: 0.000442328716225852
+                percentile_05: 0.000442328716225852
+                percentile_50: 0.000442328716225852
+                percentile_95: 0.000442328716225852
+            z_score: 0
+            empirical_p: 1
+          repeated_context_conditional_entropy:
+            raw_value: 0.14911471770704082
+            structural_value: 0.14911471770704082
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.14911471770704096
+                stddev: 0
+                min: 0.14911471770704082
+                max: 0.14911471770704082
+                percentile_05: 0.14911471770704082
+                percentile_50: 0.14911471770704082
+                percentile_95: 0.14911471770704082
+            z_score: 0
+            empirical_p: 1
+          repeated_context_coverage:
+            raw_value: 0.002966365245682025
+            structural_value: 0.002966365245682025
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0.0029663652456820232
+                stddev: 0
+                min: 0.002966365245682025
+                max: 0.002966365245682025
+                percentile_05: 0.002966365245682025
+                percentile_50: 0.002966365245682025
+                percentile_95: 0.0029663652456820245
+            z_score: 0
+            empirical_p: 1
+        - context_length: 5
+          conditional_entropy:
+            raw_value: 0.0004222093530207769
+            structural_value: 0.0004222093530207769
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.00042220935302077705
+                stddev: 0
+                min: 0.0004222093530207769
+                max: 0.0004222093530207769
+                percentile_05: 0.0004222093530207769
+                percentile_50: 0.0004222093530207769
+                percentile_95: 0.0004222093530207769
+            z_score: 0
+            empirical_p: 1
+          repeated_context_conditional_entropy:
+            raw_value: 0.12491573272131952
+            structural_value: 0.12491573272131952
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.12491573272131969
+                stddev: 0
+                min: 0.12491573272131952
+                max: 0.12491573272131952
+                percentile_05: 0.12491573272131952
+                percentile_50: 0.12491573272131952
+                percentile_95: 0.12491573272131952
+            z_score: 0
+            empirical_p: 1
+          repeated_context_coverage:
+            raw_value: 0.00337995337995338
+            structural_value: 0.00337995337995338
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0.003379953379953388
+                stddev: 0
+                min: 0.00337995337995338
+                max: 0.00337995337995338
+                percentile_05: 0.00337995337995338
+                percentile_50: 0.00337995337995338
+                percentile_95: 0.00337995337995338
+            z_score: 0
+            empirical_p: 1
+        - context_length: 6
+          conditional_entropy:
+            raw_value: 0.0005273775293227932
+            structural_value: 0.0005273775293227932
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.0005273775293227944
+                stddev: 0
+                min: 0.0005273775293227932
+                max: 0.0005273775293227932
+                percentile_05: 0.0005273775293227932
+                percentile_50: 0.0005273775293227932
+                percentile_95: 0.0005273775293227932
+            z_score: 0
+            empirical_p: 1
+          repeated_context_conditional_entropy:
+            raw_value: 0.12937700888993806
+            structural_value: 0.12937700888993806
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.12937700888993794
+                stddev: 0
+                min: 0.12937700888993806
+                max: 0.12937700888993806
+                percentile_05: 0.12937700888993806
+                percentile_50: 0.12937700888993806
+                percentile_95: 0.12937700888993806
+            z_score: 0
+            empirical_p: 1
+          repeated_context_coverage:
+            raw_value: 0.004076284757606638
+            structural_value: 0.004076284757606638
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0.004076284757606633
+                stddev: 0
+                min: 0.004076284757606638
+                max: 0.004076284757606638
+                percentile_05: 0.004076284757606638
+                percentile_50: 0.004076284757606638
+                percentile_95: 0.004076284757606638
+            z_score: 0
+            empirical_p: 1
+        - context_length: 7
+          conditional_entropy:
+            raw_value: 0.0005633802816901409
+            structural_value: 0.0005633802816901409
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.0005633802816901401
+                stddev: 0
+                min: 0.0005633802816901409
+                max: 0.0005633802816901409
+                percentile_05: 0.0005633802816901409
+                percentile_50: 0.0005633802816901409
+                percentile_95: 0.0005633802816901409
+            z_score: 0
+            empirical_p: 1
+          repeated_context_conditional_entropy:
+            raw_value: 0.1111111111111111
+            structural_value: 0.1111111111111111
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random <= structural
+            random:
+                runs: 100
+                mean: 0.11111111111111088
+                stddev: 0
+                min: 0.1111111111111111
+                max: 0.1111111111111111
+                percentile_05: 0.1111111111111111
+                percentile_50: 0.1111111111111111
+                percentile_95: 0.1111111111111111
+            z_score: 0
+            empirical_p: 1
+          repeated_context_coverage:
+            raw_value: 0.0050704225352112674
+            structural_value: 0.0050704225352112674
+            absolute_delta: 0
+            ratio: 1
+            empirical_test_direction: random >= structural
+            random:
+                runs: 100
+                mean: 0.005070422535211272
+                stddev: 0
+                min: 0.0050704225352112674
+                max: 0.0050704225352112674
+                percentile_05: 0.0050704225352112674
+                percentile_50: 0.0050704225352112674
+                percentile_95: 0.0050704225352112674
+            z_score: 0
+            empirical_p: 1

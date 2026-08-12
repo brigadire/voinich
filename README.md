@@ -1,11 +1,13 @@
 # Анализ структуры корпуса
 
-Репозиторий содержит четыре Go-программы:
+Репозиторий содержит основной конвейер анализа и эксперимент структурной нормализации:
 
 1. корневая программа строит частотный словарь и статистику окружения из текста;
 2. `dict-analyze` рассчитывает метрики для каждого токена и перехода;
 3. `structural-analyze` строит интерпретируемые рейтинги структурных особенностей.
 4. `sequence-analyze` независимо исследует точные последовательности непосредственно в исходном тексте.
+5. `structural-normalize` строит complete-link классы по готовому структурному сходству.
+6. `normalization-compare` сравнивает raw/normalized последовательности с matched random baseline.
 
 Типичный конвейер:
 
@@ -41,6 +43,8 @@ go build -o bin/dictionary-build .
 go build -o bin/dict-analyze ./dict-analyze
 go build -o bin/structural-analyze ./structural-analyze
 go build -o bin/sequence-analyze ./sequence-analyze
+go build -o bin/structural-normalize ./structural-normalize
+go build -o bin/normalization-compare ./normalization-compare
 ```
 
 ## Быстрый запуск полного анализа
@@ -351,6 +355,75 @@ H(next | previous k tokens)
 
 `context_extensions` сравнивает распределение после короткого контекста `B…` и после расширенного слева `A B…`. В раздел входят только случаи с положительным `entropy_reduction` и не менее `context-min-observations` наблюдений длинного контекста; сортировка выполняется прежде всего по снижению энтропии.
 
+## 5. Эксперимент структурной нормализации
+
+Эксперимент использует только `equivalence_candidates` из независимо построенного `structural_analysis.yaml`:
+
+```text
+structural_analysis.yaml
+       ↓
+structural-normalize
+       ↓
+normalized_070.txt … normalized_090.txt
+       ↓
+sequence-analyze
+       ↓
+normalization-compare + matched random baseline
+       ↓
+normalization_comparison.yaml
+```
+
+Структурные классы не являются семантическими классами. Similarity означает только сходство позиции и непосредственных левого/правого контекстов. При построении классов не используются n-граммы, результаты `sequence-analyze`, написание токенов, edit distance или сведения о содержании документа.
+
+Основной воспроизводимый запуск:
+
+```bash
+./run-normalization-analysis.sh
+```
+
+Он строит пять заранее заданных моделей, запускает одинаковый sequence-анализ и выполняет по 100 matched random прогонов для каждого threshold.
+
+Нормализатор можно запустить отдельно:
+
+```bash
+go run ./structural-normalize \
+  -input data_work/ivtt_output_1786282555007.txt \
+  -structural dataset/structural_analysis.yaml \
+  -output normalized.txt \
+  -classes structural_classes.yaml \
+  -thresholds 0.70,0.75,0.80,0.85,0.90 \
+  -singleton-mode preserve
+```
+
+Кластеризация — детерминированный agglomerative complete-link. Объединение допустимо, только если similarity известна для каждой пары будущего класса и каждая пара проходит общий и дополнительные component thresholds. Поэтому цепочка `A~B`, `B~C` не объединяет автоматически `A/B/C`, если `A~C` отсутствует или не проходит порог.
+
+Дополнительные параметры:
+
+| Флаг | По умолчанию | Назначение |
+| --- | ---: | --- |
+| `-min-position-similarity` | `0` | Минимум позиционного сходства |
+| `-min-left-context-similarity` | `0` | Минимум сходства левого контекста |
+| `-min-right-context-similarity` | `0` | Минимум сходства правого контекста |
+| `-min-token-count` | из structural metadata, иначе `10` | Минимальная частота объединяемого токена |
+| `-singleton-mode` | `preserve` | `preserve` сохраняет surface-токен; `class` назначает singleton ID |
+| `-random-baselines` | `100` | Число контрольных прогонов |
+| `-random-seed` | `1` | Базовый seed воспроизводимого контроля |
+
+`structural_classes.yaml` хранит все члены и исходные минимальные/средние pairwise similarity, coverage нормализации и compression ratio. Идентификаторы `C0001…` детерминированы и не пересекаются с исходным алфавитом. Нормализация сохраняет физические границы строк, число токенов и число переходов.
+
+`normalization-compare` строит случайные классы тех же размеров из токенов с `count >= min_token_count`. Частоты сопоставляются через логарифмические base-2 bins, выбор выполняется без возвращения, а при пустом bin используется ближайший. Каждый прогон определяется `random_seed`, threshold и номером прогона.
+
+Сравнение сохраняет без универсального score:
+
+- межстрочные повторы для каждого `n`;
+- максимальную длину межстрочного повтора;
+- conditional entropy и repeated-context conditional entropy для каждого `k`;
+- repeated-context coverage;
+- mean, stddev, min/max и перцентили random baseline;
+- z-score и empirical p с поправкой `+1`.
+
+Для количества повторов, длины и coverage используется верхний хвост `random >= structural`; для entropy — нижний хвост `random <= structural`. Рост повторяемости сам по себе ожидаем при уменьшении алфавита, поэтому его нельзя интерпретировать отдельно от compression ratio и matched random baseline. Ни классы, ни результаты эксперимента не являются выводами о значении токенов.
+
 ## Структура репозитория
 
 ```text
@@ -359,6 +432,9 @@ H(next | previous k tokens)
 ├── dict-analyze/              # анализ каждого токена и перехода
 ├── structural-analyze/        # корпусные рейтинги и группы сходства
 ├── sequence-analyze/          # точные n-граммы исходного текста
+├── structural-normalize/      # complete-link нормализация
+├── normalization-compare/     # raw/structural/random сравнение
+├── internal/normalization/    # общее ядро классов и random matching
 ├── dataset/                   # готовые входы структурного анализатора
 ├── data/ и data_work/         # исходные и подготовленные тексты
 ├── tasks/                     # формулировки задач
