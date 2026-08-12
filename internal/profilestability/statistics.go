@@ -27,14 +27,17 @@ func Summarize(values []float64, percentiles bool) Distribution {
 		result.Stddev = 0
 	}
 	if percentiles {
-		result.Percentile025 = percentile(sorted, .025)
-		result.Percentile50 = percentile(sorted, .5)
-		result.Percentile975 = percentile(sorted, .975)
+		result.Percentile025 = Percentile(sorted, .025)
+		result.Percentile50 = Percentile(sorted, .5)
+		result.Percentile975 = Percentile(sorted, .975)
 	}
 	return result
 }
 
-func percentile(sorted []float64, probability float64) float64 {
+// Percentile returns the linearly-interpolated value at the given probability
+// (0-1) within an already ascending-sorted slice. Exported for reuse by
+// downstream analyses that need percentiles beyond the fixed 2.5/50/97.5 set.
+func Percentile(sorted []float64, probability float64) float64 {
 	if len(sorted) == 1 {
 		return sorted[0]
 	}
@@ -47,7 +50,9 @@ func percentile(sorted []float64, probability float64) float64 {
 	return sorted[lower]*(1-weight) + sorted[upper]*weight
 }
 
-func jaccard(left, right []Neighbor) float64 {
+// Jaccard is the exported form of the neighbor-set overlap ratio, reused by
+// downstream reliability analyses that recompute neighbor sets per threshold.
+func Jaccard(left, right []Neighbor) float64 {
 	leftSet, rightSet := make(map[string]bool), make(map[string]bool)
 	for _, item := range left {
 		leftSet[item.Token] = true
@@ -68,7 +73,9 @@ func jaccard(left, right []Neighbor) float64 {
 	return float64(intersection) / float64(union)
 }
 
-func overlapAt(left, right []Neighbor, k int) float64 {
+// OverlapAt is the exported top-K neighbor overlap ratio (intersection over
+// min(k, available)), reused by downstream reliability analyses.
+func OverlapAt(left, right []Neighbor, k int) float64 {
 	if len(left) < k {
 		k = len(left)
 	}
@@ -114,10 +121,13 @@ func spearmanCommon(left, right []Neighbor) (float64, int, bool) {
 		leftValues[i] = float64(ranksLeft[token])
 		rightValues[i] = float64(ranksRight[token])
 	}
-	return pearson(leftValues, rightValues), len(tokens), true
+	return Pearson(leftValues, rightValues), len(tokens), true
 }
 
-func pearson(left, right []float64) float64 {
+// Pearson is the exported linear correlation coefficient, reused by
+// downstream analyses to compute rank correlations on top of Pearson once
+// values have already been converted to ranks.
+func Pearson(left, right []float64) float64 {
 	if len(left) != len(right) || len(left) == 0 {
 		return 0
 	}

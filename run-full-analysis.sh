@@ -39,3 +39,20 @@ go run ./structural-profile-stability \
   -threshold 0.70 \
   -threshold-margin 0.05 \
   -output structural_profile_stability.yaml
+
+go run ./structural-reliability \
+  -input "$input" \
+  -classes structural_classes.yaml \
+  -folds 5 \
+  -fold-seed 1 \
+  -min-token-count 10 \
+  -neighbors 10 \
+  -bootstrap-runs 200 \
+  -bootstrap-seed 1 \
+  -threshold 0.70 \
+  -threshold-margin 0.05 \
+  -count-thresholds 10,20,40,80,160,320 \
+  -subsample-min-full-count 160 \
+  -subsample-runs 100 \
+  -subsample-seed 1 \
+  -output structural_reliability.yaml

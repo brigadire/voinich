@@ -10,6 +10,7 @@
 6. `normalization-compare` сравнивает raw/normalized последовательности с matched random baseline.
 7. `structural-validate` проверяет структурную нормализацию вне обучающей выборки и оценивает вклад отдельных классов.
 8. `structural-profile-stability` разделяет нестабильность профилей, similarity, ближайших соседей и hard classes.
+9. `structural-reliability` измеряет статистическую воспроизводимость position/left/right компонентов как функцию числа наблюдений и готовит reliability-таблицу для будущей soft structural model.
 
 Типичный конвейер:
 
@@ -49,6 +50,7 @@ go build -o bin/structural-normalize ./structural-normalize
 go build -o bin/normalization-compare ./normalization-compare
 go build -o bin/structural-validate ./structural-validate
 go build -o bin/structural-profile-stability ./structural-profile-stability
+go build -o bin/structural-reliability ./structural-reliability
 ```
 
 ## Быстрый запуск полного анализа
@@ -489,6 +491,55 @@ Full corpus, каждый TRAIN, соответствующий TEST и кажд
 
 Инструмент не читает `sequence_analysis.yaml`, normalization comparison или нормализованные корпусы и не выполняет семантической интерпретации.
 
+## 8. Reliability структурных профилей
+
+`structural-reliability` продолжает `structural-profile-stability`: он измеряет, насколько статистически воспроизводимы `position_similarity`, `left_context_similarity` и `right_context_similarity` как функция числа наблюдений, и готовит эмпирическую reliability-таблицу для будущего soft structural analyzer.
+
+```text
+structural-profile-stability
+          ↓
+structural-reliability
+          ↓
+   [future experiment]
+reliability-aware soft structural model
+```
+
+```bash
+go run ./structural-reliability \
+  -input data_work/ivtt_output_1786282555007.txt \
+  -classes structural_classes.yaml \
+  -folds 5 \
+  -fold-seed 1 \
+  -min-token-count 10 \
+  -neighbors 10 \
+  -bootstrap-runs 200 \
+  -bootstrap-seed 1 \
+  -threshold 0.70 \
+  -threshold-margin 0.05 \
+  -count-thresholds 10,20,40,80,160,320 \
+  -subsample-min-full-count 160 \
+  -subsample-runs 100 \
+  -subsample-seed 1 \
+  -output structural_reliability.yaml
+```
+
+**На этом этапе similarity model не меняется, никакая нормализация не запускается.** Формула, веса, threshold и complete-link clustering переиспользуются буквально из `internal/profilestability` и `internal/normalization`; инструмент только пересчитывает eligibility, TRAIN/TEST-профили, ближайших соседей и bootstrap при разных `min_token_count`, как если бы `structural-profile-stability` запускался отдельно для каждого порога.
+
+Результат содержит:
+
+- `cumulative_thresholds` — self-profile TRAIN–TRAIN/TRAIN–TEST stability, nearest-neighbor stability и pair stability для каждого `count >= min_count` из `-count-thresholds`; ближайшие соседи каждый раз пересчитываются только среди токенов, eligible при этом пороге, чтобы редкие токены не искажали геометрию частого подпространства;
+- `frequency_bins` — те же метрики для непересекающихся интервалов частоты (`10–19`, `20–39`, …, `320+`), локализующие изменение stability;
+- `continuous_token_metrics` и `continuous_pair_metrics` — те же величины без предварительной дискретизации, по одному токену/паре;
+- `correlations` — Spearman `rho` между `log2(count)` и каждой компонентой stability, между sample size пары и её нестабильностью, и между context diversity (unique predecessors/successors, entropy, effective observations) и остаточной нестабильностью;
+- `subsampling` — контролируемый эксперимент на одних и тех же частых токенах (`full_count >= 160` по умолчанию): реальные occurrences (позиция, предшественник, последователь) искусственно ограничиваются до `n = 10, 20, 40, 80, 160`, полученный профиль сравнивается с profile по всем occurrences того же токена; агрегаты, per-token результаты и heterogeneity across tokens сохраняются отдельно;
+- `reliability_curves` и `reliability_thresholds` — эмпирическая lookup-таблица `reliability(component, n)` (точная точка → линейная интерполяция по `log2(n)` между тестированными размерами → значение крайней точки за пределами тестированного диапазона, никогда не экстраполируется выше наблюдённого максимума) и минимальный протестированный `n`, при котором каждая компонента достигает 0.80/0.90/0.95;
+- `context_diversity` — unique predecessors/successors, left/right entropy и effective observations (`count / max(1, unique neighbors)`) для каждого токена;
+- `reference_pairs` — reliability diagnostics (counts, similarities, component reliability, bootstrap CI, `P(similarity>=0.70)`) для `chedy/shedy`, `qokedy/qokeedy` и всех остальных пар из текущих 10 reference classes threshold 0.70.
+
+Диагностические `position_reliability_pair`/`left_reliability_pair`/`right_reliability_pair` и `component_support = component_similarity * component_reliability` вычисляются только для анализа; они не объединяются в новую similarity, не используются для построения классов и не запускают sequence normalization.
+
+`reliability(component, n)` вынесена в переиспользуемый `internal/structuralreliability.ReliabilityTable`, чтобы следующий (пока не реализованный) reliability-aware soft structural analyzer мог использовать её без повторения subsampling-эксперимента.
+
 ## Структура репозитория
 
 ```text
@@ -504,6 +555,8 @@ Full corpus, каждый TRAIN, соответствующий TEST и кажд
 ├── internal/validation/       # TRAIN-only статистики, split и метрики
 ├── structural-profile-stability/ # устойчивость структурной геометрии
 ├── internal/profilestability/ # profile/fold/bootstrap/rank расчёты
+├── structural-reliability/    # reliability similarity-компонентов как функция count
+├── internal/structuralreliability/ # cumulative/bin/subsampling/reliability расчёты
 ├── run-full-analysis.sh       # полный пересчёт конвейера и экспериментов
 ├── dataset/                   # готовые входы структурного анализатора
 ├── data/ и data_work/         # исходные и подготовленные тексты
@@ -519,4 +572,4 @@ go test ./...
 go vet ./...
 ```
 
-Тесты проверяют подсчёт окружений и позиций, формулы вероятностей, PMI, самопереходы, сходство контекстов, точные n-граммы, границы строк, контексты последовательностей, максимальные повторы, координаты, пороги, детерминированную сортировку, отсутствие TEST leakage, fold-инварианты, стабильность классов и ablation.
+Тесты проверяют подсчёт окружений и позиций, формулы вероятностей, PMI, самопереходы, сходство контекстов, точные n-граммы, границы строк, контексты последовательностей, максимальные повторы, координаты, пороги, детерминированную сортировку, отсутствие TEST leakage, fold-инварианты, стабильность классов и ablation, а также (для `structural-reliability`) пересчёт eligibility и соседей при разных порогах, Spearman correlation, детерминированный occurrence-level subsampling, интерполяцию `reliability(component, n)` по `log2(n)` с ограничением снизу/сверху, context diversity и байтовую идентичность повторного YAML-вывода.

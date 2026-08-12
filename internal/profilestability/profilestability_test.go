@@ -58,7 +58,7 @@ func TestThresholdNoiseAndUnstableGeometry(t *testing.T) {
 	}
 	left := []Neighbor{{Token: "A"}, {Token: "B"}, {Token: "C"}}
 	right := []Neighbor{{Token: "X"}, {Token: "Y"}, {Token: "Z"}}
-	if jaccard(left, right) != 0 {
+	if Jaccard(left, right) != 0 {
 		t.Fatal("disjoint geometry has nonzero Jaccard")
 	}
 }

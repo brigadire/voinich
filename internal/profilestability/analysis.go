@@ -64,10 +64,10 @@ func buildNeighborStability(token string, full []Neighbor, folds []foldData, k i
 				continue
 			}
 			result.FoldPairComparisons++
-			jaccards = append(jaccards, jaccard(left, right))
-			top3 = append(top3, overlapAt(left, right, 3))
-			top5 = append(top5, overlapAt(left, right, 5))
-			top10 = append(top10, overlapAt(left, right, k))
+			jaccards = append(jaccards, Jaccard(left, right))
+			top3 = append(top3, OverlapAt(left, right, 3))
+			top5 = append(top5, OverlapAt(left, right, 5))
+			top10 = append(top10, OverlapAt(left, right, k))
 			if len(left) > 0 && len(right) > 0 && left[0].Token == right[0].Token {
 				top1Equal++
 			}
