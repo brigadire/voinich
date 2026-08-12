@@ -8,6 +8,7 @@
 4. `sequence-analyze` независимо исследует точные последовательности непосредственно в исходном тексте.
 5. `structural-normalize` строит complete-link классы по готовому структурному сходству.
 6. `normalization-compare` сравнивает raw/normalized последовательности с matched random baseline.
+7. `structural-validate` проверяет структурную нормализацию вне обучающей выборки и оценивает вклад отдельных классов.
 
 Типичный конвейер:
 
@@ -45,6 +46,7 @@ go build -o bin/structural-analyze ./structural-analyze
 go build -o bin/sequence-analyze ./sequence-analyze
 go build -o bin/structural-normalize ./structural-normalize
 go build -o bin/normalization-compare ./normalization-compare
+go build -o bin/structural-validate ./structural-validate
 ```
 
 ## Быстрый запуск полного анализа
@@ -424,6 +426,26 @@ go run ./structural-normalize \
 
 Для количества повторов, длины и coverage используется верхний хвост `random >= structural`; для entropy — нижний хвост `random <= structural`. Рост повторяемости сам по себе ожидаем при уменьшении алфавита, поэтому его нельзя интерпретировать отдельно от compression ratio и matched random baseline. Ни классы, ни результаты эксперимента не являются выводами о значении токенов.
 
+## 6. Out-of-sample validation
+
+`structural-validate` выполняет детерминированную line-based cross-validation без утечки TEST-данных:
+
+```bash
+go run ./structural-validate \
+  -input data_work/ivtt_output_1786282555007.txt \
+  -classes structural_classes.yaml \
+  -folds 5 \
+  -fold-seed 1 \
+  -threshold 0.70 \
+  -random-baselines 100 \
+  -random-seed 1 \
+  -output structural_validation.yaml
+```
+
+В каждом fold словарь, позиционные и контекстные статистики, pairwise similarity и complete-link классы заново строятся только по TRAIN. Зафиксированные классы затем применяются к RAW TEST; неизвестные TRAIN токены остаются неизменными. Matched random модели также используют только размеры классов и частоты TRAIN.
+
+Результат содержит метрики каждого fold для `n=2..8`, reconstructed surface-realizations новых межстрочных повторов, random distributions и empirical p, агрегированные и pooled fold-level counts, устойчивость пар токенов между TRAIN folds. Отдельные разделы `leave_one_class_out` и `member_ablation` оценивают концентрацию full-corpus эффекта, не меняя сами классы.
+
 ## Структура репозитория
 
 ```text
@@ -435,6 +457,8 @@ go run ./structural-normalize \
 ├── structural-normalize/      # complete-link нормализация
 ├── normalization-compare/     # raw/structural/random сравнение
 ├── internal/normalization/    # общее ядро классов и random matching
+├── structural-validate/       # out-of-sample validation и ablation
+├── internal/validation/       # TRAIN-only статистики, split и метрики
 ├── dataset/                   # готовые входы структурного анализатора
 ├── data/ и data_work/         # исходные и подготовленные тексты
 ├── tasks/                     # формулировки задач
@@ -449,4 +473,4 @@ go test ./...
 go vet ./...
 ```
 
-Тесты проверяют подсчёт окружений и позиций, формулы вероятностей, PMI, самопереходы, сходство контекстов, точные n-граммы, границы строк, контексты последовательностей, максимальные повторы, координаты, пороги и детерминированную сортировку.
+Тесты проверяют подсчёт окружений и позиций, формулы вероятностей, PMI, самопереходы, сходство контекстов, точные n-граммы, границы строк, контексты последовательностей, максимальные повторы, координаты, пороги, детерминированную сортировку, отсутствие TEST leakage, fold-инварианты, стабильность классов и ablation.
