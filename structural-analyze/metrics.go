@@ -244,22 +244,25 @@ func selfTransitionRanking(dataset *Dataset, parameters Parameters) []SelfTransi
 		if expected > 0 {
 			enrichment = float64(count) / expected
 		}
+		reliabilityValue := reliability(count, parameters.ReliabilityPriorCount)
 		results = append(results, SelfTransitionResult{
-			Token:       token.Token,
-			TokenCount:  token.Count,
-			Count:       count,
-			Outgoing:    dataset.Outgoing[token.Token],
-			Incoming:    dataset.Incoming[token.Token],
-			Probability: ratio(count, dataset.Outgoing[token.Token]),
-			Expected:    expected,
-			Enrichment:  enrichment,
+			Token:        token.Token,
+			TokenCount:   token.Count,
+			Count:        count,
+			Outgoing:     dataset.Outgoing[token.Token],
+			Incoming:     dataset.Incoming[token.Token],
+			Probability:  ratio(count, dataset.Outgoing[token.Token]),
+			Expected:     expected,
+			Enrichment:   enrichment,
+			Reliability:  reliabilityValue,
+			RankingScore: enrichment * reliabilityValue,
 		})
 	}
 	sort.Slice(results, func(i, j int) bool {
-		if results[i].Enrichment == results[j].Enrichment {
+		if results[i].RankingScore == results[j].RankingScore {
 			return results[i].Token < results[j].Token
 		}
-		return results[i].Enrichment > results[j].Enrichment
+		return results[i].RankingScore > results[j].RankingScore
 	})
 	return limitSlice(results, parameters.MaxItemsPerSection)
 }
@@ -314,7 +317,7 @@ func equivalenceRanking(dataset *Dataset, parameters Parameters) []EquivalenceCa
 		}
 		return results[i].RankingScore > results[j].RankingScore
 	})
-	return limitSlice(results, parameters.MaxItemsPerSection)
+	return limitSlice(results, parameters.MaxEquivalenceCandidates)
 }
 
 func reliability(count int, prior float64) float64 {
@@ -340,8 +343,13 @@ func positionJSD(left, right map[int]int) float64 {
 	for position := range right {
 		positions[position] = struct{}{}
 	}
-	value := 0.0
+	orderedPositions := make([]int, 0, len(positions))
 	for position := range positions {
+		orderedPositions = append(orderedPositions, position)
+	}
+	sort.Ints(orderedPositions)
+	value := 0.0
+	for _, position := range orderedPositions {
 		leftProbability := ratio(left[position], leftTotal)
 		rightProbability := ratio(right[position], rightTotal)
 		middle := (leftProbability + rightProbability) / 2

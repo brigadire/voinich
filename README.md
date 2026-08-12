@@ -9,6 +9,7 @@
 5. `structural-normalize` строит complete-link классы по готовому структурному сходству.
 6. `normalization-compare` сравнивает raw/normalized последовательности с matched random baseline.
 7. `structural-validate` проверяет структурную нормализацию вне обучающей выборки и оценивает вклад отдельных классов.
+8. `structural-profile-stability` разделяет нестабильность профилей, similarity, ближайших соседей и hard classes.
 
 Типичный конвейер:
 
@@ -47,6 +48,7 @@ go build -o bin/sequence-analyze ./sequence-analyze
 go build -o bin/structural-normalize ./structural-normalize
 go build -o bin/normalization-compare ./normalization-compare
 go build -o bin/structural-validate ./structural-validate
+go build -o bin/structural-profile-stability ./structural-profile-stability
 ```
 
 ## Быстрый запуск полного анализа
@@ -66,6 +68,12 @@ go run ./sequence-analyze \
 
 `sequence-analyze` является независимой ветвью конвейера. Он читает исходный текст и не пытается восстанавливать цепочки из агрегированных соседей `dictionary.yaml`.
 
+Полный пересчёт всех этапов, включая 100 random baselines и out-of-sample validation:
+
+```bash
+./run-full-analysis.sh
+```
+
 ## 1. Генератор словаря
 
 Исходный код находится в корневом [main.go](main.go). Программа читает обычный текст и создаёт YAML-словарь.
@@ -81,7 +89,7 @@ go run . <input.txt> [dictionary.yaml]
 Для каждого токена сохраняются:
 
 - общее число появлений `count`;
-- три наиболее частые абсолютные позиции в строке;
+- полное распределение абсолютных позиций в строке;
 - полные таблицы непосредственных предшественников и последователей;
 - число появлений в начале и конце строки.
 
@@ -143,6 +151,7 @@ P(end|A)   = line_end_count(A) / count(A)
 P(B|A)     = count(A→B) / ΣX count(A→X)
 
 asymmetry(A,B) = (P(B|A) − P(A|B)) / (P(B|A) + P(A|B))
+restriction(A) = 1 − H(neighbor|A) / log2(unique observed neighbors)
 ```
 
 Асимметрия находится в диапазоне `[-1, 1]`: положительное значение означает преимущество направления `A → B`, отрицательное — `B → A`.
@@ -189,7 +198,8 @@ go run ./structural-analyze \
 | `-min-self-transition-count` | `3` | Минимальное число самопереходов |
 | `-reliability-prior` | `10` | Псевдочастота, уменьшающая рейтинг малых выборок |
 | `-min-similarity` | `0.7` | Минимальное исходное сходство пары токенов |
-| `-max-items` | `100` | Максимальное число записей в каждом разделе; `0` отключает ограничение |
+| `-max-items` | `100` | Максимальное число записей в презентационных рейтингах; `0` отключает ограничение |
+| `-max-equivalence-candidates` | `0` | Независимый лимит полного downstream-набора similarity-пар; `0` отключает ограничение |
 | `-dominant-context-limit` | `5` | Число показываемых доминирующих соседей |
 
 Пороговые значения применяются только к рейтингам. Редкие токены и переходы не удаляются из исходных корпусных распределений и ожидаемых частот.
@@ -226,7 +236,11 @@ predictability = 1 − entropy / log2(unique observed neighbors)
 ```text
 expected(A→A) = outgoing(A) × incoming(A) / all_transitions
 enrichment    = observed / expected
+reliability   = observed / (observed + reliability_prior)
+ranking_score = enrichment × reliability
 ```
+
+Сортировка выполняется по `ranking_score`, поэтому большой enrichment с минимально допустимым числом наблюдений не получает автоматического преимущества.
 
 Самопереходы с частотой ниже `min_self_transition_count` не показываются.
 
@@ -247,21 +261,15 @@ reliability = observations / (observations + reliability_prior)
 ranking_score = raw_score × reliability
 ```
 
-Для позиционных рейтингов он дополнительно умножается на долю сохранённых позиционных наблюдений. В YAML всегда сохраняются исходная метрика, reliability и итоговый `ranking_score`, поэтому результат можно проверить и переинтерпретировать.
-
-## Ограничение позиционной статистики
-
-Генератор словаря сохраняет только три наиболее частые позиции каждого токена. Поэтому сумма `position_in_string[].count` обычно меньше `count`, а корпусное позиционное распределение неполно.
-
-`structural-analyze` явно записывает это в:
+Для позиционных рейтингов он дополнительно умножается на долю сохранённых позиционных наблюдений. Генератор сохраняет все наблюдавшиеся позиции, поэтому для актуального словаря ожидается полное покрытие:
 
 ```yaml
 meta:
-  position_observations: 24162
-  position_coverage: 0.6213387507393217
+  position_observations: 38887
+  position_coverage: 1
 ```
 
-Поля `position_coverage` и `reliability` уменьшают влияние неполных наблюдений, но не восстанавливают утраченные позиции. Для полного позиционного анализа генератор словаря должен сохранять все позиции, после чего необходимо заново создать оба файла в `dataset/`.
+В YAML всегда сохраняются исходная метрика, coverage, reliability и итоговый `ranking_score`, поэтому результат можно проверить и переинтерпретировать.
 
 ## 4. Анализатор последовательностей `sequence-analyze`
 
@@ -316,7 +324,7 @@ go run ./sequence-analyze \
 - `maximal_repeated_sequences` — повторы, которые нельзя расширить одним и тем же токеном без уменьшения частоты, с координатами всех появлений.
 - `maximal_cross_line_sequences` — максимальные повторы, независимо воспроизводящиеся минимум в двух строках;
 - `context_order_analysis` — условная энтропия следующего токена для левого контекста длиной 1…7 и показатели разреженности;
-- `context_extensions` — случаи, где добавление ещё одного токена слева снижает энтропию следующего токена при достаточном числе наблюдений.
+- `context_extensions` — случаи, где добавление ещё одного токена слева меняет энтропию следующего токена при достаточном числе наблюдений.
 
 `count` учитывает все, в том числе перекрывающиеся, появления. `line_count` считает различные строки. Координаты используют физический номер строки с единицы и смещение токена с нуля.
 
@@ -355,7 +363,7 @@ H(next | previous k tokens)
 
 Для `k >= 2` поля `entropy_delta_from_previous` и `repeated_entropy_delta_from_previous` показывают разность энтропий между длинами `k-1` и `k`. Положительное значение означает диагностическое снижение неопределённости, но не является свидетельством правила, грамматики или семантики. При малом coverage падение общей энтропии обычно объясняется тем, что почти все длинные контексты уникальны.
 
-`context_extensions` сравнивает распределение после короткого контекста `B…` и после расширенного слева `A B…`. В раздел входят только случаи с положительным `entropy_reduction` и не менее `context-min-observations` наблюдений длинного контекста; сортировка выполняется прежде всего по снижению энтропии.
+`context_extensions` сравнивает распределение после короткого контекста `B…` и после расширенного слева `A B…`. В раздел входят ненулевые изменения при наличии не менее `context-min-observations` наблюдений длинного контекста; отрицательный `entropy_reduction` означает рост энтропии. Сортировка выполняется по абсолютной величине изменения.
 
 ## 5. Эксперимент структурной нормализации
 
@@ -446,6 +454,41 @@ go run ./structural-validate \
 
 Результат содержит метрики каждого fold для `n=2..8`, reconstructed surface-realizations новых межстрочных повторов, random distributions и empirical p, агрегированные и pooled fold-level counts, устойчивость пар токенов между TRAIN folds. Отдельные разделы `leave_one_class_out` и `member_ablation` оценивают концентрацию full-corpus эффекта, не меняя сами классы.
 
+LOCO и member-ablation всегда используют заранее заданную full-corpus модель `threshold=0.70`, даже если CV запускается как вторичный sensitivity-анализ с другим threshold.
+
+## 7. Устойчивость структурных профилей
+
+`structural-profile-stability` исследует уже существующую геометрию similarity, не меняя формулу, веса, threshold или complete-link clustering:
+
+```bash
+go run ./structural-profile-stability \
+  -input data_work/ivtt_output_1786282555007.txt \
+  -classes structural_classes.yaml \
+  -folds 5 \
+  -fold-seed 1 \
+  -min-token-count 10 \
+  -neighbors 10 \
+  -bootstrap-runs 200 \
+  -bootstrap-seed 1 \
+  -threshold 0.70 \
+  -threshold-margin 0.05 \
+  -output structural_profile_stability.yaml
+```
+
+Full corpus, каждый TRAIN, соответствующий TEST и каждый line-bootstrap sample получают независимые профили. Similarity остаётся средним `position_similarity = 1−JSD`, левого cosine и правого cosine. Eligibility проверяется отдельно в каждой выборке; отсутствие редкого токена не считается нестабильностью.
+
+Результат содержит:
+
+- same-token TRAIN–TRAIN и TRAIN–TEST stability компонентов;
+- top-K Jaccard, top-1 recovery, overlap@3/5/10 и Spearman rank correlation;
+- fold-level similarity, threshold crossings и margin для candidate pairs;
+- 200-run bootstrap CI и вероятность `similarity >= 0.70`;
+- зависимость от частоты токена и пары;
+- подробный отчёт для всех актуальных full-corpus классов threshold 0.70;
+- диагностический пересчёт similarity без каждой из трёх компонент, не используемый для новых классов.
+
+Инструмент не читает `sequence_analysis.yaml`, normalization comparison или нормализованные корпусы и не выполняет семантической интерпретации.
+
 ## Структура репозитория
 
 ```text
@@ -459,6 +502,9 @@ go run ./structural-validate \
 ├── internal/normalization/    # общее ядро классов и random matching
 ├── structural-validate/       # out-of-sample validation и ablation
 ├── internal/validation/       # TRAIN-only статистики, split и метрики
+├── structural-profile-stability/ # устойчивость структурной геометрии
+├── internal/profilestability/ # profile/fold/bootstrap/rank расчёты
+├── run-full-analysis.sh       # полный пересчёт конвейера и экспериментов
 ├── dataset/                   # готовые входы структурного анализатора
 ├── data/ и data_work/         # исходные и подготовленные тексты
 ├── tasks/                     # формулировки задач

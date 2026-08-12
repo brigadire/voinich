@@ -5,6 +5,7 @@ import (
 	"io"
 	"math"
 	"os"
+	"sort"
 
 	"gopkg.in/yaml.v3"
 )
@@ -233,7 +234,13 @@ func entropy(counts map[string]int) (int, float64) {
 	}
 	unique := 0
 	value := 0.0
-	for _, count := range counts {
+	keys := make([]string, 0, len(counts))
+	for key := range counts {
+		keys = append(keys, key)
+	}
+	sort.Strings(keys)
+	for _, key := range keys {
+		count := counts[key]
 		if count == 0 {
 			continue
 		}

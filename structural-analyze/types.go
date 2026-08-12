@@ -65,6 +65,7 @@ type Parameters struct {
 	ReliabilityPriorCount    float64 `yaml:"reliability_prior_count"`
 	MinEquivalenceSimilarity float64 `yaml:"min_equivalence_similarity"`
 	MaxItemsPerSection       int     `yaml:"max_items_per_section"`
+	MaxEquivalenceCandidates int     `yaml:"max_equivalence_candidates"`
 	DominantContextLimit     int     `yaml:"dominant_context_limit"`
 }
 
@@ -154,14 +155,16 @@ type SignificantTransition struct {
 }
 
 type SelfTransitionResult struct {
-	Token       string  `yaml:"token"`
-	TokenCount  int     `yaml:"token_count"`
-	Count       int     `yaml:"count"`
-	Outgoing    int     `yaml:"outgoing"`
-	Incoming    int     `yaml:"incoming"`
-	Probability float64 `yaml:"probability"`
-	Expected    float64 `yaml:"expected"`
-	Enrichment  float64 `yaml:"enrichment"`
+	Token        string  `yaml:"token"`
+	TokenCount   int     `yaml:"token_count"`
+	Count        int     `yaml:"count"`
+	Outgoing     int     `yaml:"outgoing"`
+	Incoming     int     `yaml:"incoming"`
+	Probability  float64 `yaml:"probability"`
+	Expected     float64 `yaml:"expected"`
+	Enrichment   float64 `yaml:"enrichment"`
+	Reliability  float64 `yaml:"reliability"`
+	RankingScore float64 `yaml:"ranking_score"`
 }
 
 type EquivalenceCandidate struct {

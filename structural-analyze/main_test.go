@@ -56,11 +56,42 @@ func TestLoadDatasetAndBuildOutput(t *testing.T) {
 	}
 	assertClose(t, "self expected", output.SelfTransitions[0].Expected, 1)
 	assertClose(t, "self enrichment", output.SelfTransitions[0].Enrichment, 1)
+	assertClose(t, "self reliability", output.SelfTransitions[0].Reliability, 0.5)
+	assertClose(t, "self ranking score", output.SelfTransitions[0].RankingScore, 0.5)
 	if len(output.EquivalenceCandidates) != 1 {
 		t.Fatalf("equivalence candidates = %d, want 1", len(output.EquivalenceCandidates))
 	}
 	if output.PositionalSpecialization[0].Reliability >= 1 {
 		t.Fatalf("reliability must shrink ranking: %+v", output.PositionalSpecialization[0])
+	}
+}
+
+func TestSelfTransitionsUseReliabilityForRanking(t *testing.T) {
+	dataset := &Dataset{
+		Tokens:   []DictionaryToken{{Token: "low", Count: 10}, {Token: "supported", Count: 20}},
+		Right:    map[string]map[string]int{"low": {"low": 1}, "supported": {"supported": 4}},
+		Outgoing: map[string]int{"low": 10, "supported": 20}, Incoming: map[string]int{"low": 10, "supported": 20},
+		Meta: Meta{Transitions: 100},
+	}
+	result := selfTransitionRanking(dataset, Parameters{MinTokenCountForRanking: 1, MinSelfTransitionCount: 1, ReliabilityPriorCount: 10})
+	if len(result) != 2 || result[0].Token != "supported" {
+		t.Fatalf("self-transition reliability ranking = %+v", result)
+	}
+}
+
+func TestEquivalenceCandidatesHaveIndependentLimit(t *testing.T) {
+	dataset := &Dataset{
+		Tokens:    []DictionaryToken{{Token: "A", Count: 10}, {Token: "B", Count: 10}, {Token: "C", Count: 10}, {Token: "D", Count: 10}},
+		Positions: map[string]map[int]int{"A": {0: 10}, "B": {0: 10}, "C": {0: 10}, "D": {0: 10}},
+		Left:      map[string]map[string]int{}, Right: map[string]map[string]int{},
+	}
+	parameters := Parameters{MinTokenCountForRanking: 10, MinEquivalenceSimilarity: 0, MaxItemsPerSection: 1}
+	if got := len(equivalenceRanking(dataset, parameters)); got != 6 {
+		t.Fatalf("unlimited equivalence candidates = %d, want 6", got)
+	}
+	parameters.MaxEquivalenceCandidates = 2
+	if got := len(equivalenceRanking(dataset, parameters)); got != 2 {
+		t.Fatalf("limited equivalence candidates = %d, want 2", got)
 	}
 }
 

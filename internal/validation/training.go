@@ -22,7 +22,7 @@ func BuildTrainModel(train Corpus, config Config) (normalization.Model, map[stri
 			eligible[token] = true
 		}
 	}
-	candidates := equivalenceCandidates(stats, config.MinTokenCount, math.Min(config.Threshold, 0.70), 100)
+	candidates := equivalenceCandidates(stats, config.MinTokenCount, math.Min(config.Threshold, 0.70), 0)
 	input := normalization.StructuralInput{EquivalenceCandidates: candidates}
 	input.Parameters.MinTokenCountForRanking = config.MinTokenCount
 	models, _, err := normalization.BuildModels(normalizationCorpus(train), input, normalization.Config{
@@ -56,7 +56,7 @@ func collectTrainingStats(corpus Corpus) trainingStats {
 		}
 	}
 	for token, positions := range allPositions {
-		stats.Positions[token] = topPositionCounts(positions, 3)
+		stats.Positions[token] = positions
 	}
 	return stats
 }
@@ -66,28 +66,6 @@ func incrementNeighbor(contexts map[string]map[string]int, token, neighbor strin
 		contexts[token] = make(map[string]int)
 	}
 	contexts[token][neighbor]++
-}
-
-func topPositionCounts(counts map[int]int, limit int) map[int]int {
-	type item struct{ position, count int }
-	items := make([]item, 0, len(counts))
-	for position, count := range counts {
-		items = append(items, item{position, count})
-	}
-	sort.Slice(items, func(i, j int) bool {
-		if items[i].count != items[j].count {
-			return items[i].count > items[j].count
-		}
-		return items[i].position < items[j].position
-	})
-	if len(items) > limit {
-		items = items[:limit]
-	}
-	result := make(map[int]int, len(items))
-	for _, item := range items {
-		result[item.position] = item.count
-	}
-	return result
 }
 
 func equivalenceCandidates(stats trainingStats, minCount int, minSimilarity float64, limit int) []normalization.Candidate {

@@ -373,7 +373,27 @@ func RandomModel(structural Model, corpus Corpus, minTokenCount int, seed int64,
 		}
 		model.Classes = append(model.Classes, class)
 	}
-	model.Stats = structural.Stats
+	classifiedOccurrences := 0
+	for _, class := range model.Classes {
+		if class.Size < 2 {
+			continue
+		}
+		model.Stats.MultiMemberClasses++
+		model.Stats.TokensInMultiClasses += class.Size
+		model.Stats.ClassifiedTokens += class.Size
+		if class.Size > model.Stats.LargestClass {
+			model.Stats.LargestClass = class.Size
+		}
+		for _, member := range class.Members {
+			classifiedOccurrences += member.Count
+		}
+	}
+	model.Stats.RawUniqueTokens = len(corpus.Counts)
+	model.Stats.Classes = len(model.Classes)
+	model.Stats.SingletonTokens = len(corpus.Counts) - model.Stats.TokensInMultiClasses
+	model.Stats.NormalizedUniqueSymbols = len(corpus.Counts) - model.Stats.TokensInMultiClasses + model.Stats.MultiMemberClasses
+	model.Stats.TokenOccurrenceCoverage = float64(classifiedOccurrences) / float64(corpus.Occurrences)
+	model.Stats.CompressionRatio = float64(model.Stats.NormalizedUniqueSymbols) / float64(model.Stats.RawUniqueTokens)
 	return model
 }
 

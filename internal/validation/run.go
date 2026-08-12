@@ -12,6 +12,8 @@ import (
 	"zcore.dev/voinich/internal/normalization"
 )
 
+const leaveOneOutThreshold = .70
+
 func Run(config Config) (Output, error) {
 	if err := validateConfig(config); err != nil {
 		return Output{}, err
@@ -24,7 +26,7 @@ func Run(config Config) (Output, error) {
 	if err != nil {
 		return Output{}, fmt.Errorf("load full-corpus classes: %w", err)
 	}
-	fullModel, err := selectModel(classes.Models, config.Threshold)
+	fullModel, err := selectModel(classes.Models, leaveOneOutThreshold)
 	if err != nil {
 		return Output{}, err
 	}
@@ -40,11 +42,12 @@ func Run(config Config) (Output, error) {
 			Folds: config.Folds, FoldSeed: config.FoldSeed, Threshold: config.Threshold,
 			MinTokenCount: config.MinTokenCount, RandomBaselines: config.RandomBaselines,
 			RandomSeed: config.RandomSeed, MinN: config.MinN, MaxN: config.MaxN, MaxContext: config.MaxContext,
+			LeaveOneOutThreshold: leaveOneOutThreshold,
 		},
 		Methodology: Methodology{
-			SplitUnit:            "physical line",
+			SplitUnit:            "line",
 			Split:                "line indexes are deterministically shuffled with math/rand using fold_seed, assigned round-robin to folds, then restored to source order; a line is never split",
-			Training:             "each fold recomputes dictionary counts, top-3 position observations, full predecessor/successor counts, pair similarities, and complete-link classes from TRAIN lines only; full-corpus structural_analysis.yaml is not read",
+			Training:             "each fold recomputes dictionary counts, all position observations, full predecessor/successor counts, pair similarities, and complete-link classes from TRAIN lines only; full-corpus structural_analysis.yaml is not read",
 			Eligibility:          "TRAIN token count >= min_token_count; TEST counts never affect eligibility or candidate generation",
 			Clustering:           "deterministic agglomerative complete-link using the arithmetic mean of TRAIN-only position similarity (1-JSD) and left/right cosine similarities; every pair must be present and >= threshold",
 			TestApplication:      "fixed TRAIN multi-member mappings are applied to TEST; unknown and singleton tokens retain their surface form; TEST never changes a class",

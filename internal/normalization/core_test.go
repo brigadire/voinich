@@ -134,6 +134,21 @@ func TestRandomModelSizeBinsAndSeed(t *testing.T) {
 	if !reflect.DeepEqual(gotSizes, wantSizes) {
 		t.Fatalf("random class sizes = %v, want %v", gotSizes, wantSizes)
 	}
+	classifiedOccurrences := 0
+	for _, class := range first.Classes {
+		if class.Size > 1 {
+			for _, member := range class.Members {
+				classifiedOccurrences += member.Count
+			}
+		}
+	}
+	wantCoverage := float64(classifiedOccurrences) / float64(corpus.Occurrences)
+	if first.Stats.TokenOccurrenceCoverage != wantCoverage {
+		t.Fatalf("random coverage = %v, want %v", first.Stats.TokenOccurrenceCoverage, wantCoverage)
+	}
+	if first.Stats.MultiMemberClasses != 2 || first.Stats.TokensInMultiClasses != 5 || first.Stats.SingletonTokens != 1 {
+		t.Fatalf("random stats were not recomputed: %+v", first.Stats)
+	}
 }
 
 func candidate(a, b string, similarity float64) Candidate {

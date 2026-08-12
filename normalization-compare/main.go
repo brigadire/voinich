@@ -176,6 +176,9 @@ func main() {
 			if err != nil {
 				fatal(err.Error())
 			}
+			if analysis.Meta != raw.Meta {
+				fatal(fmt.Sprintf("random corpus invariants changed for threshold %s run %d", model.Label, run))
+			}
 			randomMetrics = append(randomMetrics, extractMetrics(analysis))
 		}
 		output.Models = append(output.Models, compareModel(model, extractMetrics(raw), structuralMetrics, randomMetrics))

@@ -147,9 +147,6 @@ func validateParameters(parameters Parameters) error {
 	if parameters.MaxContextLength < 1 {
 		return fmt.Errorf("max-context-length must be at least 1")
 	}
-	if parameters.MaxContextLength > parameters.MaxN-1 {
-		return fmt.Errorf("max-context-length cannot exceed max-n - 1")
-	}
 	if parameters.ContextMinObservations < 2 {
 		return fmt.Errorf("context-min-observations must be at least 2")
 	}
@@ -261,6 +258,20 @@ func buildOutput(stats *corpusStats) Output {
 	sort.Slice(output.MaximalCrossLineSequences, func(i, j int) bool {
 		left := output.MaximalCrossLineSequences[i]
 		right := output.MaximalCrossLineSequences[j]
+		if left.N != right.N {
+			return left.N > right.N
+		}
+		if left.LineCount != right.LineCount {
+			return left.LineCount > right.LineCount
+		}
+		if left.Count != right.Count {
+			return left.Count > right.Count
+		}
+		return compareTokens(left.Tokens, right.Tokens) < 0
+	})
+	sort.Slice(output.MaximalRepeatedSequences, func(i, j int) bool {
+		left := output.MaximalRepeatedSequences[i]
+		right := output.MaximalRepeatedSequences[j]
 		if left.N != right.N {
 			return left.N > right.N
 		}
@@ -528,7 +539,7 @@ func contextExtensions(stats *corpusStats) []ContextExtensionResult {
 			shortUnique, shortEntropy, _, _ := contextMetrics(short.Next)
 			longUnique, longEntropy, _, _ := contextMetrics(long.Next)
 			reduction := shortEntropy - longEntropy
-			if reduction <= 0 {
+			if reduction == 0 {
 				continue
 			}
 			results = append(results, ContextExtensionResult{
@@ -547,8 +558,10 @@ func contextExtensions(stats *corpusStats) []ContextExtensionResult {
 		}
 	}
 	sort.Slice(results, func(i, j int) bool {
-		if results[i].EntropyReduction != results[j].EntropyReduction {
-			return results[i].EntropyReduction > results[j].EntropyReduction
+		leftChange := math.Abs(results[i].EntropyReduction)
+		rightChange := math.Abs(results[j].EntropyReduction)
+		if leftChange != rightChange {
+			return leftChange > rightChange
 		}
 		if results[i].LongCount != results[j].LongCount {
 			return results[i].LongCount > results[j].LongCount

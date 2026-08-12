@@ -270,6 +270,40 @@ func TestContextExtensionsAndObservationThreshold(t *testing.T) {
 	}
 }
 
+func TestContextExtensionsIncludeEntropyIncrease(t *testing.T) {
+	lines := [][]string{
+		{"P", "A", "X"}, {"P", "A", "Y"},
+		{"Q", "A", "X"}, {"Q", "A", "X"},
+	}
+	parameters := testParameters(2, 3)
+	parameters.ContextMinObservations = 2
+	output, err := analyzeLines(lines, parameters)
+	if err != nil {
+		t.Fatal(err)
+	}
+	foundIncrease := false
+	for _, extension := range output.ContextExtensions {
+		if reflect.DeepEqual(extension.LongContext, []string{"P", "A"}) && extension.EntropyReduction < 0 {
+			foundIncrease = true
+		}
+	}
+	if !foundIncrease {
+		t.Fatalf("entropy-increasing context extension is absent: %+v", output.ContextExtensions)
+	}
+}
+
+func TestContextLengthMayExceedNGramRange(t *testing.T) {
+	parameters := testParameters(2, 2)
+	parameters.MaxContextLength = 3
+	output, err := analyzeLines([][]string{{"A", "B", "C", "D"}}, parameters)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(output.ContextOrderAnalysis) != 3 {
+		t.Fatalf("context orders = %d, want 3", len(output.ContextOrderAnalysis))
+	}
+}
+
 func assertSummary(t *testing.T, got, want NGramSummary) {
 	t.Helper()
 	if got != want {

@@ -62,6 +62,40 @@ func TestCountUniqueAndEntropy(t *testing.T) {
 	assertClose(t, "entropy", entropy, 1)
 }
 
+func TestRestrictionUsesUniqueOutcomesNotObservationCount(t *testing.T) {
+	if got := calculateRestriction(1, 2); got != 0 {
+		t.Fatalf("restriction for uniform binary distribution = %v, want 0", got)
+	}
+	if got := calculateRestriction(0, 1); got != 1 {
+		t.Fatalf("restriction for deterministic distribution = %v, want 1", got)
+	}
+	counts := map[string]int{"x": 500, "y": 500}
+	unique, entropy := countUniqueAndEntropy(counts)
+	if got := calculateRestriction(entropy, unique); got != 0 {
+		t.Fatalf("restriction changed with sample size: %v", got)
+	}
+}
+
+func TestPositionalSpecializationKnownValues(t *testing.T) {
+	assertClose(t, "identical positions", positionalSpecialization([]Position{{Position: 0, Count: 2}, {Position: 1, Count: 2}}, map[int]int{0: 10, 1: 10}), 0)
+	assertClose(t, "disjoint positions", positionalSpecialization([]Position{{Position: 0, Count: 2}}, map[int]int{1: 10}), 1)
+}
+
+func TestValidateTokenRejectsInvalidCountsAndNeighbors(t *testing.T) {
+	tests := []Tokens{
+		{Token: "x", Count: -1},
+		{Token: "x", Count: 1, LineStartCount: 2},
+		{Token: "x", Count: 1, LineEndCount: 2},
+		{Token: "x", Count: 1, WordAfter: []Token{{Token: "", Count: 1}}},
+		{Token: "x", Count: 1, WordBefore: []Token{{Token: "y", Count: -1}}},
+	}
+	for _, item := range tests {
+		if err := validateToken(item); err == nil {
+			t.Fatalf("validateToken(%+v) returned nil error", item)
+		}
+	}
+}
+
 func TestReadFileTokenRejectsDuplicateToken(t *testing.T) {
 	fileName := filepath.Join(t.TempDir(), "dictionary.yaml")
 	data := []byte("- token: a\n  count: 1\n- token: a\n  count: 1\n")

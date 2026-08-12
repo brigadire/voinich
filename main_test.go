@@ -35,7 +35,7 @@ func TestReadFileTokenPlainText(t *testing.T) {
 	assertPositions(t, alpha.PositionInString, wantPositions)
 }
 
-func TestReadFileTokenTopThreePositions(t *testing.T) {
+func TestReadFileTokenPreservesAllPositions(t *testing.T) {
 	fileName := writeTestInput(t, "alpha x\ny alpha\ny alpha z\na b alpha\nalpha\nd e f alpha\n")
 
 	tokens, err := readFileToken(fileName)
@@ -48,6 +48,7 @@ func TestReadFileTokenTopThreePositions(t *testing.T) {
 		{Position: 0, Count: 2},
 		{Position: 1, Count: 2},
 		{Position: 2, Count: 1},
+		{Position: 3, Count: 1},
 	}
 	assertPositions(t, alpha.PositionInString, want)
 }

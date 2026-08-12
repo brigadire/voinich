@@ -86,6 +86,14 @@ func TestTrainClassRemainsFixedUnderDifferentTestContexts(t *testing.T) {
 	}
 }
 
+func TestTrainingPreservesAllPositionObservations(t *testing.T) {
+	train := testCorpus([][]string{{"X"}, {"a", "X"}, {"a", "b", "X"}, {"a", "b", "c", "X"}})
+	stats := collectTrainingStats(train)
+	if len(stats.Positions["X"]) != 4 || sumIntCounts(stats.Positions["X"]) != 4 {
+		t.Fatalf("TRAIN positions were truncated: %+v", stats.Positions["X"])
+	}
+}
+
 func TestTestOnlyTokenIsPreservedAndRandomUsesTrainCounts(t *testing.T) {
 	train := testCorpus([][]string{
 		{"L", "A", "R"}, {"L", "A", "R"}, {"L", "A", "R"},

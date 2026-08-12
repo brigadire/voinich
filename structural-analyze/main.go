@@ -19,6 +19,7 @@ func main() {
 	reliabilityPrior := flag.Float64("reliability-prior", 10, "pseudo-count used for ranking reliability")
 	minSimilarity := flag.Float64("min-similarity", 0.7, "minimum raw equivalence similarity")
 	maxItems := flag.Int("max-items", 100, "maximum entries per section; 0 means unlimited")
+	maxEquivalenceCandidates := flag.Int("max-equivalence-candidates", 0, "maximum equivalence candidates; 0 means unlimited")
 	dominantLimit := flag.Int("dominant-context-limit", 5, "maximum dominant neighbors per constrained token")
 	flag.Parse()
 
@@ -30,6 +31,7 @@ func main() {
 		ReliabilityPriorCount:    *reliabilityPrior,
 		MinEquivalenceSimilarity: *minSimilarity,
 		MaxItemsPerSection:       *maxItems,
+		MaxEquivalenceCandidates: *maxEquivalenceCandidates,
 		DominantContextLimit:     *dominantLimit,
 	}
 	if err := validateParameters(parameters); err != nil {
@@ -71,6 +73,9 @@ func validateParameters(parameters Parameters) error {
 	}
 	if parameters.MaxItemsPerSection < 0 {
 		return fmt.Errorf("max-items cannot be negative")
+	}
+	if parameters.MaxEquivalenceCandidates < 0 {
+		return fmt.Errorf("max-equivalence-candidates cannot be negative")
 	}
 	if parameters.DominantContextLimit < 0 {
 		return fmt.Errorf("dominant-context-limit cannot be negative")

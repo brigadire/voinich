@@ -30,15 +30,16 @@ type Corpus struct {
 }
 
 type Parameters struct {
-	Folds           int     `yaml:"folds"`
-	FoldSeed        int64   `yaml:"fold_seed"`
-	Threshold       float64 `yaml:"threshold"`
-	MinTokenCount   int     `yaml:"min_token_count"`
-	RandomBaselines int     `yaml:"random_baselines"`
-	RandomSeed      int64   `yaml:"random_seed"`
-	MinN            int     `yaml:"min_n"`
-	MaxN            int     `yaml:"max_n"`
-	MaxContext      int     `yaml:"max_context_length"`
+	Folds                int     `yaml:"folds"`
+	FoldSeed             int64   `yaml:"fold_seed"`
+	Threshold            float64 `yaml:"threshold"`
+	MinTokenCount        int     `yaml:"min_token_count"`
+	RandomBaselines      int     `yaml:"random_baselines"`
+	RandomSeed           int64   `yaml:"random_seed"`
+	MinN                 int     `yaml:"min_n"`
+	MaxN                 int     `yaml:"max_n"`
+	MaxContext           int     `yaml:"max_context_length"`
+	LeaveOneOutThreshold float64 `yaml:"leave_one_class_out_threshold"`
 }
 
 type Meta struct {

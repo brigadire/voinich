@@ -1,4 +1,5 @@
 package main
+
 //recovered version
 import (
 	"bufio"
@@ -28,8 +29,8 @@ type Tokens struct {
 	PositionInString []Position `yaml:"position_in_string"`
 	WordBefore       []Token    `yaml:"word_before"`
 	WordAfter        []Token    `yaml:"word_after"`
-	LineStartCount			int        `yaml:"line_start_count"`
-	LineEndCount			int        `yaml:"line_end_count"`
+	LineStartCount   int        `yaml:"line_start_count"`
+	LineEndCount     int        `yaml:"line_end_count"`
 }
 
 func readFileToken(fileName string) ([]Tokens, error) {
@@ -84,7 +85,7 @@ func readFileToken(fileName string) ([]Tokens, error) {
 			if position == len(lineTokens)-1 {
 				endCountMap[token]++
 			}
-				
+
 		}
 	}
 
@@ -93,7 +94,7 @@ func readFileToken(fileName string) ([]Tokens, error) {
 		result = append(result, Tokens{
 			Token:            token,
 			Count:            count,
-			PositionInString: topPositions(positionMap[token], 3),
+			PositionInString: topPositions(positionMap[token], 0),
 			WordBefore:       topTokens(wordBeforeMap[token], 0),
 			WordAfter:        topTokens(wordAfterMap[token], 0),
 			LineStartCount:   startCountMap[token],
@@ -130,7 +131,7 @@ func topPositions(counts map[int]int, limit int) []Position {
 		return positions[i].Count > positions[j].Count
 	})
 
-	if len(positions) > limit {
+	if limit > 0 && len(positions) > limit {
 		positions = positions[:limit]
 	}
 	return positions

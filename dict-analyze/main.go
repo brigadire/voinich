@@ -160,7 +160,13 @@ func countUniqueAndEntropy(counts map[string]int) (int, float64) {
 
 	entropy := 0.0
 	unique := 0
-	for _, count := range counts {
+	keys := make([]string, 0, len(counts))
+	for key := range counts {
+		keys = append(keys, key)
+	}
+	sort.Strings(keys)
+	for _, key := range keys {
+		count := counts[key]
 		if count == 0 {
 			continue
 		}
@@ -181,14 +187,14 @@ func sumCounts(counts map[string]int) int {
 
 // calculateRestriction returns 1 for a deterministic environment and tends
 // to 0 as every observed transition goes to a different neighbor.
-func calculateRestriction(entropy float64, transitionCount int) float64 {
-	if transitionCount == 0 {
+func calculateRestriction(entropy float64, uniqueOutcomes int) float64 {
+	if uniqueOutcomes == 0 {
 		return 0
 	}
-	if transitionCount == 1 {
+	if uniqueOutcomes == 1 {
 		return 1
 	}
-	return clamp01(1 - entropy/math.Log2(float64(transitionCount)))
+	return clamp01(1 - entropy/math.Log2(float64(uniqueOutcomes)))
 }
 
 func clamp01(value float64) float64 {
@@ -214,7 +220,6 @@ func analyzeTokens(tokens []Tokens, wordBeforeMap, wordAfterMap map[string]map[s
 		rightTokens := wordAfterMap[token.Token]
 		leftUnique, leftEntropy := countUniqueAndEntropy(leftTokens)
 		rightUnique, rightEntropy := countUniqueAndEntropy(rightTokens)
-		leftTotal := sumCounts(leftTokens)
 		rightTotal := outgoingTotals[token.Token]
 
 		selfCount := rightTokens[token.Token]
@@ -232,8 +237,8 @@ func analyzeTokens(tokens []Tokens, wordBeforeMap, wordAfterMap map[string]map[s
 			},
 			StructuralScores: StructuralScores{
 				PositionalSpecialization: positionalSpecialization(token.PositionInString, corpusPositions),
-				SuccessorRestriction:     calculateRestriction(rightEntropy, rightTotal),
-				PredecessorRestriction:   calculateRestriction(leftEntropy, leftTotal),
+				SuccessorRestriction:     calculateRestriction(rightEntropy, rightUnique),
+				PredecessorRestriction:   calculateRestriction(leftEntropy, leftUnique),
 			},
 		}
 	}
@@ -301,9 +306,21 @@ func positionalSpecialization(positions []Position, corpus map[int]int) float64 
 	}
 
 	divergence := 0.0
-	for position, corpusCount := range corpus {
+	allPositions := make(map[int]struct{}, len(tokenCounts)+len(corpus))
+	for position := range tokenCounts {
+		allPositions[position] = struct{}{}
+	}
+	for position := range corpus {
+		allPositions[position] = struct{}{}
+	}
+	orderedPositions := make([]int, 0, len(allPositions))
+	for position := range allPositions {
+		orderedPositions = append(orderedPositions, position)
+	}
+	sort.Ints(orderedPositions)
+	for _, position := range orderedPositions {
 		p := float64(tokenCounts[position]) / float64(tokenTotal)
-		q := float64(corpusCount) / float64(corpusTotal)
+		q := float64(corpus[position]) / float64(corpusTotal)
 		middle := (p + q) / 2
 		if p > 0 {
 			divergence += 0.5 * p * math.Log2(p/middle)
