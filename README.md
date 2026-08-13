@@ -17,6 +17,8 @@
 13. `structural-pair-decompose` объясняет выбранные structural-distant пары через позиционные и контекстные распределения, matched controls и family-матрицы.
 14. `distance-context-analyze` проверяет structural context similarity на каждом точном расстоянии, в обоих направлениях и в continuous/line-bounded режимах.
 15. `structural-projection-analyze` проверяет дальние контексты после soft structural projection с directional ablation, random/generic smoothing и shuffled-corpus controls.
+16. `property-trajectory-analyze` проверяет траектории внутренних формальных свойств последующих токенов.
+17. `local-regime-analyze` отделяет дальнюю последовательную структуру от общей локальной нестационарности корпуса.
 
 Типичный конвейер:
 
@@ -71,6 +73,7 @@ go build -o workdir/bin/structural-graphemic ./structural-graphemic
 go build -o workdir/bin/structural-pair-decompose ./structural-pair-decompose
 go build -o workdir/bin/distance-context-analyze ./distance-context-analyze
 go build -o workdir/bin/structural-projection-analyze ./structural-projection-analyze
+go build -o workdir/bin/local-regime-analyze ./local-regime-analyze
 ```
 
 Графемно-структурный анализ запускается поверх неизменённого pair dataset:
@@ -137,6 +140,25 @@ shuffle controls в `workdir/structural_projection_*`,
 Во время длительного запуска прогресс семи стадий, elapsed time и ETA выводятся
 в stderr; `-quiet` полностью отключает этот вывод. В интерактивном терминале
 строка обновляется на месте, а в CI остаются обычные периодические сообщения.
+
+Local-regime анализ напрямую строит sparse token-frequency profiles вне
+исключённого центрального промежутка и выполняет фиксированные sweeps радиусов,
+gap и размеров local-block shuffle:
+
+```bash
+go run ./local-regime-analyze \
+  -regime-radius 100 \
+  -regime-gap 20 \
+  -regime-controls-k 5
+```
+
+Основной режим непрерывен; `-respect-line-boundaries` включает дополнительный
+line-bounded diagnostic. Команда сохраняет pair/occurrence/token profiles,
+matched controls, sliding-window и change-point таблицы, три shuffle controls,
+Markdown-отчёт и SVG в `workdir/`. Параметры `-regime-radius` и `-regime-gap`
+задают primary результат, но обязательные radii 50/100/200/500 и gaps
+10/20/30/50 всегда сохраняются. Семистадийный status bar выводит elapsed/ETA в
+stderr и отключается флагом `-quiet`.
 
 ## Быстрый запуск полного анализа
 
