@@ -17,8 +17,9 @@
 13. `structural-pair-decompose` объясняет выбранные structural-distant пары через позиционные и контекстные распределения, matched controls и family-матрицы.
 14. `distance-context-analyze` проверяет structural context similarity на каждом точном расстоянии, в обоих направлениях и в continuous/line-bounded режимах.
 15. `structural-projection-analyze` проверяет дальние контексты после soft structural projection с directional ablation, random/generic smoothing и shuffled-corpus controls.
-16. `property-trajectory-analyze` проверяет траектории внутренних формальных свойств последующих токенов.
-17. `local-regime-analyze` отделяет дальнюю последовательную структуру от общей локальной нестационарности корпуса.
+16. `global-regime-analyze` вслепую исследует непрерывный корпус: строит многомасштабный change profile, сопоставляет границы между масштабами и сравнивает unconstrained clustering с contiguous segmentation.
+17. `property-trajectory-analyze` проверяет траектории внутренних формальных свойств последующих токенов.
+18. `local-regime-analyze` отделяет дальнюю последовательную структуру от общей локальной нестационарности корпуса.
 
 Типичный конвейер:
 
@@ -73,6 +74,7 @@ go build -o workdir/bin/structural-graphemic ./structural-graphemic
 go build -o workdir/bin/structural-pair-decompose ./structural-pair-decompose
 go build -o workdir/bin/distance-context-analyze ./distance-context-analyze
 go build -o workdir/bin/structural-projection-analyze ./structural-projection-analyze
+go build -o workdir/bin/global-regime-analyze ./global-regime-analyze
 go build -o workdir/bin/local-regime-analyze ./local-regime-analyze
 ```
 
@@ -159,6 +161,23 @@ Markdown-отчёт и SVG в `workdir/`. Параметры `-regime-radius` и
 задают primary результат, но обязательные radii 50/100/200/500 и gaps
 10/20/30/50 всегда сохраняются. Семистадийный status bar выводит elapsed/ETA в
 stderr и отключается флагом `-quiet`.
+
+Global distributional regime discovery не использует заранее выбранные пары
+или metadata рукописи и рассматривает корпус как одну непрерывную token sequence:
+
+```bash
+go run ./global-regime-analyze \
+  -window-sizes 50,100,200,500,1000
+```
+
+По умолчанию шаг каждого масштаба равен `max(1, window_size/10)`; `-step`
+задаёт один фиксированный шаг. Команда сохраняет полный continuous JS change
+profile с weighted overlap/cosine diagnostics, результаты threshold peaks,
+PELT и binary segmentation, `stable_distributional_boundaries.tsv`, а также
+K=2..15 sweeps для hierarchical, JS k-medoids и отдельной contiguous
+segmentation. Unconstrained cluster assignments позволяют одному regime
+повторяться в удалённых частях корпуса. Семистадийный status bar с elapsed/ETA
+выводится в stderr и отключается флагом `-quiet`.
 
 ## Быстрый запуск полного анализа
 
