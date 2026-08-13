@@ -12,6 +12,7 @@
 8. `structural-profile-stability` разделяет нестабильность профилей, similarity, ближайших соседей и hard classes.
 9. `structural-reliability` измеряет статистическую воспроизводимость position/left/right компонентов как функцию числа наблюдений и готовит reliability-таблицу для будущей soft structural model.
 10. `soft-structural-space` хранит полное continuous pair space, разделяя structural similarity и evidence reliability.
+11. `begin-end-analyze` ранжирует нейтральные кандидаты на направленные дальние парные зависимости.
 
 Типичный конвейер:
 
@@ -53,6 +54,7 @@ go build -o bin/structural-validate ./structural-validate
 go build -o bin/structural-profile-stability ./structural-profile-stability
 go build -o bin/structural-reliability ./structural-reliability
 go build -o bin/soft-structural-space ./soft-structural-space
+go build -o bin/begin-end-analyze ./begin-end-analyze
 ```
 
 ## Быстрый запуск полного анализа
@@ -66,6 +68,10 @@ go run ./structural-analyze -output structural_analysis.yaml
 go run ./sequence-analyze \
   -input data_work/ivtt_output_1786282555007.txt \
   -output sequence_analysis.yaml
+go run ./begin-end-analyze \
+  -dictionary dataset/dictionary.yaml \
+  -corpus data_work/ivtt_output_1786282555007.txt \
+  -output-dir begin_end_results
 ```
 
 `structural-analyze` по умолчанию читает файлы из `dataset/`, поэтому первые два этапа можно пропустить, если готовый набор данных уже актуален.
@@ -568,6 +574,33 @@ Raw similarity буквально переиспользует `internal/profile
 
 Soft structural space пока **не** объединяет токены, не изменяет корпус, не ищет последовательности и не вводит semantic classes.
 
+## 10. Поиск направленных парных зависимостей `begin-end-analyze`
+
+Инструмент читает агрегированный YAML-словарь совместно с исходным линейным корпусом. Он не восстанавливает дальний порядок из `word_before`/`word_after`: эти поля используются только для отделения тривиальных смежных пар.
+
+```bash
+go run ./begin-end-analyze \
+  -dictionary dataset/dictionary.yaml \
+  -corpus data_work/ivtt_output_1786282555007.txt \
+  -max-window 55 \
+  -permutations 100 \
+  -min-frequency 10 \
+  -random-seed 1 \
+  -permutation-mode page \
+  -max-candidates 1000 \
+  -output-dir begin_end_results
+```
+
+Флаги `-permutation-mode page` и `line` соответственно перемешивают токены внутри страницы с восстановлением исходных длин строк или независимо внутри каждой строки. Страницы разделяются пустыми строками, form-feed, строками `# page:` или `=== page ... ===`. Если разделителей нет, весь файл считается одной страницей, `page_boundaries_known` имеет значение `false`, а отчёт явно помечает page-level выводы как предварительные.
+
+Результаты:
+
+- `begin_end_candidates.yaml` — ранжированные кандидаты со всеми исходными метриками и отдельно вынесенными почти всегда смежными парами;
+- `begin_end_top.tsv` — компактные первые 100 строк рейтинга;
+- `begin_end_report.md` — лучшие line/page пары, направленность, относительный постраничный баланс, четыре порядка и ограничения интерпретации.
+
+По умолчанию токены с `?` исключаются; `-include-unclear` включает их. Формы `@NNN;` не разбиваются. `-max-candidates 0` отключает ограничение полного YAML-списка. Результат нейтрален: opening/closing candidate означает только наблюдаемое направление и не присваивает токену семантику оператора.
+
 ## Структура репозитория
 
 ```text
@@ -586,6 +619,7 @@ Soft structural space пока **не** объединяет токены, не 
 ├── soft-structural-space/     # reliability-aware continuous pair space
 ├── internal/softstructural/   # pair, neighbor, graph и summary расчёты
 ├── structural-reliability/    # reliability similarity-компонентов как функция count
+├── begin-end-analyze/         # кандидаты на направленные дальние парные зависимости
 ├── internal/structuralreliability/ # cumulative/bin/subsampling/reliability расчёты
 ├── run-full-analysis.sh       # полный пересчёт конвейера и экспериментов
 ├── dataset/                   # готовые входы структурного анализатора
