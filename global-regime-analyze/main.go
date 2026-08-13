@@ -36,7 +36,7 @@ func (v *intList) Set(s string) error {
 func main() {
 	c := globalregime.Config{}
 	sizes := intList{50, 100, 200, 500, 1000}
-	flag.StringVar(&c.CorpusPath, "corpus", "data_work/ivtt_output_1786282555007.txt", "tokenized continuous corpus")
+	flag.StringVar(&c.CorpusPath, "corpus", "data_work/ZL3b-x7.txt", "IVTT -x7 continuous corpus")
 	flag.StringVar(&c.OutputDir, "output-dir", workdir.Dir, "result directory")
 	flag.Var(&sizes, "window-sizes", "comma-separated sliding window sizes")
 	flag.IntVar(&c.Step, "step", 0, "fixed window step (0 uses max(1, window_size/10))")

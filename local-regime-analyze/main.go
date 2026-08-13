@@ -11,7 +11,7 @@ import (
 
 func main() {
 	c := localregime.Config{}
-	flag.StringVar(&c.CorpusPath, "corpus", "data_work/ivtt_output_1786282555007.txt", "tokenized linear corpus")
+	flag.StringVar(&c.CorpusPath, "corpus", "data_work/ZL3b-x7.txt", "IVTT -x7 linear corpus")
 	flag.StringVar(&c.DistancePairsPath, "distance-pairs", workdir.Path("distance_context_pairs.yaml"), "previous distance-context pair YAML")
 	flag.StringVar(&c.ControlsPath, "controls", workdir.Path("distance_context_controls.tsv"), "existing matched controls (optional)")
 	flag.StringVar(&c.OutputDir, "output-dir", workdir.Dir, "result directory")

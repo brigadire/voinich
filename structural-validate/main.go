@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	input := flag.String("input", "data_work/ivtt_output_1786282555007.txt", "raw corpus")
+	input := flag.String("input", "data_work/ZL3b-x7.txt", "IVTT -x7 derived corpus")
 	classes := flag.String("classes", workdir.Path("structural_classes.yaml"), "full-corpus classes used only for leave-one-class-out")
 	output := flag.String("output", workdir.Path("structural_validation.yaml"), "validation YAML")
 	folds := flag.Int("folds", 5, "number of line-based cross-validation folds")

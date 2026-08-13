@@ -98,7 +98,7 @@ type metrics struct {
 
 func main() {
 	classesPath := flag.String("classes", workdir.Path("structural_classes.yaml"), "structural class-map YAML")
-	inputPath := flag.String("input", "data_work/ivtt_output_1786282555007.txt", "raw corpus for random baselines")
+	inputPath := flag.String("input", "data_work/ZL3b-x7.txt", "IVTT -x7 corpus for random baselines")
 	rawAnalysisPath := flag.String("raw-analysis", workdir.Path("sequence_analysis.yaml"), "immutable raw sequence analysis")
 	normalizedPattern := flag.String("normalized-pattern", workdir.Path("normalized_%s.txt"), "normalized corpus path pattern")
 	analysisPattern := flag.String("analysis-pattern", workdir.Path("sequence_analysis_%s.yaml"), "structural sequence-analysis output pattern")

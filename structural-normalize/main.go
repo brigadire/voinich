@@ -13,7 +13,7 @@ import (
 )
 
 func main() {
-	inputPath := flag.String("input", "data_work/ivtt_output_1786282555007.txt", "raw corpus")
+	inputPath := flag.String("input", "data_work/ZL3b-x7.txt", "IVTT -x7 derived corpus")
 	structuralPath := flag.String("structural", workdir.Path("dataset", "structural_analysis.yaml"), "structural analysis YAML")
 	outputPattern := flag.String("output", workdir.Path("normalized.txt"), "normalized corpus base name")
 	classesPath := flag.String("classes", workdir.Path("structural_classes.yaml"), "class-map YAML")

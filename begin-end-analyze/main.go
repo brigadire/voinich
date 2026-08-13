@@ -11,7 +11,7 @@ import (
 
 func main() {
 	dictionary := flag.String("dictionary", workdir.Path("dataset", "dictionary.yaml"), "input YAML dictionary")
-	corpusPath := flag.String("corpus", "data_work/ivtt_output_1786282555007.txt", "linear source corpus")
+	corpusPath := flag.String("corpus", "data_work/ZL3b-x7.txt", "IVTT -x7 linear corpus")
 	maxWindow := flag.Int("max-window", 55, "maximum token-distance window")
 	permutations := flag.Int("permutations", 100, "number of boundary-preserving permutations")
 	minFrequency := flag.Int("min-frequency", 10, "minimum token frequency")

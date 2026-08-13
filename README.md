@@ -20,6 +20,7 @@
 16. `global-regime-analyze` вслепую исследует непрерывный корпус: строит многомасштабный change profile, сопоставляет границы между масштабами и сравнивает unconstrained clustering с contiguous segmentation.
 17. `property-trajectory-analyze` проверяет траектории внутренних формальных свойств последующих токенов.
 18. `local-regime-analyze` отделяет дальнюю последовательную структуру от общей локальной нестационарности корпуса.
+19. `metadata-validate` строго сопоставляет metadata исходного IVTFF с frozen IVTT-корпусом и независимо проверяет уже зафиксированные distributional boundaries и clusters.
 
 Типичный конвейер:
 
@@ -76,6 +77,7 @@ go build -o workdir/bin/distance-context-analyze ./distance-context-analyze
 go build -o workdir/bin/structural-projection-analyze ./structural-projection-analyze
 go build -o workdir/bin/global-regime-analyze ./global-regime-analyze
 go build -o workdir/bin/local-regime-analyze ./local-regime-analyze
+go build -o workdir/bin/metadata-validate ./metadata-validate
 ```
 
 Графемно-структурный анализ запускается поверх неизменённого pair dataset:
@@ -179,20 +181,59 @@ segmentation. Unconstrained cluster assignments позволяют одному 
 повторяться в удалённых частях корпуса. Семистадийный status bar с elapsed/ETA
 выводится в stderr и отключается флагом `-quiet`.
 
+Исходником и источником истины для корпуса является IVTFF-файл
+`data/ZL3b-n.txt`. Все текстовые анализаторы читают его детерминированный
+производный файл `data_work/ZL3b-x7.txt`, полученный IVTT с preset
+`-x7 ASCII Full`:
+
+```bash
+./ivtt/ivtt -x7 data/ZL3b-n.txt data_work/ZL3b-x7.txt
+```
+
+Timestamp-named IVTT exports не входят в контракт пайплайна и не используются
+как defaults. Производный `ZL3b-x7.txt` не является отдельным источником
+истины: при необходимости он заново создаётся из `data/ZL3b-n.txt` указанной
+командой. `run-full-analysis.sh` выполняет эту конвертацию перед анализом.
+
+Blind metadata validation сопоставляет metadata исходного IVTFF с тем же
+`data_work/ZL3b-x7.txt`. Минимальный IVTFF parser не заменяет IVTT и не создаёт
+новую транслитерацию: он извлекает page/locus metadata и строит только
+представление, необходимое для строгого сопоставления с производными tokens.
+
+```bash
+go run ./metadata-validate \
+  -ivtff data/ZL3b-n.txt \
+  -frozen-corpus data_work/ZL3b-x7.txt \
+  -discovery-dir workdir \
+  -output-dir workdir \
+  -permutations 10000 \
+  -seed 1 \
+  -boundary-tolerances 10,25,50,100,200
+```
+
+Выравнивание не использует fuzzy matching, пропуски или исправления. До начала
+validation проверяется инвариант: конкатенация диапазонов frozen tokens в
+порядке IVTFF loci должна быть token-identical всему frozen corpus, а число
+токенов должно совпадать с frozen discovery metadata. При первом несовпадении
+команда записывает `alignment_report.md` с контекстом и завершает работу.
+Позиции токенов и discovery boundaries в output имеют zero-based convention:
+boundary `p` находится между токенами `p-1` и `p`. Семистадийный status bar с
+elapsed/ETA выводится в stderr; `-quiet` полностью его отключает.
+
 ## Быстрый запуск полного анализа
 
 Из корня репозитория:
 
 ```bash
-go run . data_work/ivtt_output_1786282555007.txt workdir/dataset/dictionary.yaml
+go run . data_work/ZL3b-x7.txt workdir/dataset/dictionary.yaml
 go run ./dict-analyze workdir/dataset/dictionary.yaml workdir/dataset/tokens_analysis.yaml
 go run ./structural-analyze -output workdir/dataset/structural_analysis.yaml
 go run ./sequence-analyze \
-  -input data_work/ivtt_output_1786282555007.txt \
+  -input data_work/ZL3b-x7.txt \
   -output workdir/sequence_analysis.yaml
 go run ./begin-end-analyze \
   -dictionary workdir/dataset/dictionary.yaml \
-  -corpus data_work/ivtt_output_1786282555007.txt \
+  -corpus data_work/ZL3b-x7.txt \
   -output-dir workdir
 ```
 
@@ -417,7 +458,7 @@ go run ./sequence-analyze
 
 ```bash
 go run ./sequence-analyze \
-  -input data_work/ivtt_output_1786282555007.txt \
+  -input data_work/ZL3b-x7.txt \
   -output workdir/sequence_analysis.yaml \
   -min-n 2 \
   -max-n 8 \
@@ -431,7 +472,7 @@ go run ./sequence-analyze \
 
 | Флаг | По умолчанию | Назначение |
 | --- | ---: | --- |
-| `-input` | `data_work/ivtt_output_1786282555007.txt` | Исходный корпус |
+| `-input` | `data_work/ZL3b-x7.txt` | Производный IVTT -x7 корпус |
 | `-output` | `workdir/sequence_analysis.yaml` | Выходной YAML |
 | `-min-n` | `2` | Минимальная длина n-граммы |
 | `-max-n` | `8` | Максимальная длина n-граммы |
@@ -529,7 +570,7 @@ workdir/normalization_comparison.yaml
 
 ```bash
 go run ./structural-normalize \
-  -input data_work/ivtt_output_1786282555007.txt \
+  -input data_work/ZL3b-x7.txt \
   -structural workdir/dataset/structural_analysis.yaml \
   -output workdir/normalized.txt \
   -classes workdir/structural_classes.yaml \
@@ -572,7 +613,7 @@ go run ./structural-normalize \
 
 ```bash
 go run ./structural-validate \
-  -input data_work/ivtt_output_1786282555007.txt \
+  -input data_work/ZL3b-x7.txt \
   -classes workdir/structural_classes.yaml \
   -folds 5 \
   -fold-seed 1 \
@@ -594,7 +635,7 @@ LOCO и member-ablation всегда используют заранее зад�
 
 ```bash
 go run ./structural-profile-stability \
-  -input data_work/ivtt_output_1786282555007.txt \
+  -input data_work/ZL3b-x7.txt \
   -classes workdir/structural_classes.yaml \
   -folds 5 \
   -fold-seed 1 \
@@ -636,7 +677,7 @@ reliability-aware soft structural model
 
 ```bash
 go run ./structural-reliability \
-  -input data_work/ivtt_output_1786282555007.txt \
+  -input data_work/ZL3b-x7.txt \
   -classes workdir/structural_classes.yaml \
   -folds 5 \
   -fold-seed 1 \
@@ -703,7 +744,7 @@ Soft structural space пока **не** объединяет токены, не 
 ```bash
 go run ./begin-end-analyze \
   -dictionary workdir/dataset/dictionary.yaml \
-  -corpus data_work/ivtt_output_1786282555007.txt \
+  -corpus data_work/ZL3b-x7.txt \
   -max-window 55 \
   -permutations 100 \
   -min-frequency 10 \

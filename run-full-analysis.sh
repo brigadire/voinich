@@ -3,11 +3,16 @@ set -euo pipefail
 
 export GOCACHE="${TMPDIR:-/tmp}/voinich-go-cache"
 
-input="data_work/ivtt_output_1786282555007.txt"
+ivtff="data/ZL3b-n.txt"
+input="data_work/ZL3b-x7.txt"
 workdir="workdir"
 dataset="$workdir/dataset"
 
 mkdir -p "$dataset"
+
+# The IVTFF source is authoritative. All analyzers consume this deterministic
+# IVTT -x7 derivative and never the former timestamp-named export.
+./ivtt/ivtt -x7 "$ivtff" "$input"
 
 go run . "$input" "$dataset/dictionary.yaml"
 go run ./dict-analyze "$dataset/dictionary.yaml" "$dataset/tokens_analysis.yaml"
