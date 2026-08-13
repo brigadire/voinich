@@ -21,6 +21,7 @@
 17. `property-trajectory-analyze` проверяет траектории внутренних формальных свойств последующих токенов.
 18. `local-regime-analyze` отделяет дальнюю последовательную структуру от общей локальной нестационарности корпуса.
 19. `metadata-validate` строго сопоставляет metadata исходного IVTFF с frozen IVTT-корпусом и независимо проверяет уже зафиксированные distributional boundaries и clusters.
+20. `cluster-metadata-global` подтверждающе проверяет association blind distributional regimes с Currier/hand по всему заранее зафиксированному frozen search space (window_size x method x K) с единой block-aware permutation на весь search space.
 
 Типичный конвейер:
 
@@ -78,6 +79,7 @@ go build -o workdir/bin/structural-projection-analyze ./structural-projection-an
 go build -o workdir/bin/global-regime-analyze ./global-regime-analyze
 go build -o workdir/bin/local-regime-analyze ./local-regime-analyze
 go build -o workdir/bin/metadata-validate ./metadata-validate
+go build -o workdir/bin/cluster-metadata-global ./cluster-metadata-global
 ```
 
 Графемно-структурный анализ запускается поверх неизменённого pair dataset:
@@ -219,6 +221,41 @@ validation проверяется инвариант: конкатенация �
 Позиции токенов и discovery boundaries в output имеют zero-based convention:
 boundary `p` находится между токенами `p-1` и `p`. Семистадийный status bar с
 elapsed/ETA выводится в stderr; `-quiet` полностью его отключает.
+
+Существующий `cluster_metadata_permutations.yaml` из `metadata-validate`
+фиксирует только window=200 и корректирует выбор K. `cluster-metadata-global`
+подтверждающе проверяет тот же blind association по ВСЕМУ заранее
+зафиксированному frozen search space: window_size ∈ {50,100,200,500,1000},
+method ∈ {contiguous_segmentation, hierarchical, k_medoids}, K ∈ 2..15.
+Discovery (windows, clustering, cluster assignments) не пересчитывается —
+только читается как frozen input; переставляется исключительно metadata.
+
+```bash
+go run ./cluster-metadata-global \
+  -discovery-dir workdir \
+  -token-metadata-map workdir/metadata-validation/token_metadata_map.tsv \
+  -metadata-report workdir/metadata-validation/metadata_validation_report.md \
+  -output-dir workdir/metadata-validation \
+  -permutations 10000 \
+  -seed 1
+```
+
+Block-aware permutation генерирует одну переставленную metadata realization
+на replicate, которая используется без изменений для ВСЕГО search space
+(нельзя генерировать отдельную permutation на каждый window/method/K).
+Переставляются только labels между существующими contiguous metadata
+blocks; block lengths и unknown-token mask сохраняются точно, поэтому набор
+valid windows идентичен между observed и каждым null replicate. Основные
+статистики: per-method max NMI over window×K, global max NMI over
+window×method×K и scale-persistence (mean/min пяти заранее заданных
+scale-specific max-over-K значений) — отдельно для Currier и hand, с ARI как
+secondary metric. Purity ≥0.8/≥0.9 повторяют тот же global correction как
+sensitivity analysis, а не primary evidence. Empirical p-values используют
+`(exceedances + 1) / (permutations + 1)` и никогда не равны нулю. Раздел
+"Global multiple-comparison correction" добавляется в существующий
+`metadata_validation_report.md` (создаётся, если файл ещё не существует).
+Пятистадийный status bar с elapsed/ETA выводится в stderr; `-quiet` полностью
+его отключает.
 
 ## Быстрый запуск полного анализа
 
