@@ -11,6 +11,7 @@
 7. `structural-validate` проверяет структурную нормализацию вне обучающей выборки и оценивает вклад отдельных классов.
 8. `structural-profile-stability` разделяет нестабильность профилей, similarity, ближайших соседей и hard classes.
 9. `structural-reliability` измеряет статистическую воспроизводимость position/left/right компонентов как функцию числа наблюдений и готовит reliability-таблицу для будущей soft structural model.
+10. `soft-structural-space` хранит полное continuous pair space, разделяя structural similarity и evidence reliability.
 
 Типичный конвейер:
 
@@ -51,6 +52,7 @@ go build -o bin/normalization-compare ./normalization-compare
 go build -o bin/structural-validate ./structural-validate
 go build -o bin/structural-profile-stability ./structural-profile-stability
 go build -o bin/structural-reliability ./structural-reliability
+go build -o bin/soft-structural-space ./soft-structural-space
 ```
 
 ## Быстрый запуск полного анализа
@@ -540,6 +542,32 @@ go run ./structural-reliability \
 
 `reliability(component, n)` вынесена в переиспользуемый `internal/structuralreliability.ReliabilityTable`, чтобы следующий (пока не реализованный) reliability-aware soft structural analyzer мог использовать её без повторения subsampling-эксперимента.
 
+## 9. Reliability-aware soft structural space
+
+`soft-structural-space` строит полное попарное continuous-пространство для токенов с достаточным числом наблюдений и хранит similarity отдельно от reliability:
+
+```bash
+go run ./soft-structural-space \
+  -dictionary dataset/dictionary.yaml \
+  -analysis dataset/tokens_analysis.yaml \
+  -reliability structural_reliability.yaml \
+  -output soft_structural_space.yaml \
+  -pairs-output soft_structural_pairs.tsv
+```
+
+```text
+structural-reliability
+          ↓
+soft-structural-space
+          ↓
+      [future]
+soft-sequence-analysis
+```
+
+Raw similarity буквально переиспользует `internal/profilestability.Compare`. Для каждой компоненты рядом хранится эмпирическая pair reliability (геометрическое среднее reliability двух токенов), а `evidence_strength` является их средним и не зависит от similarity. Weighted evidence mean, graph, несколько neighbor rankings и mutual-nearest-neighbor пары являются только диагностическими представлениями; они не задают новую модель сходства или классы. Полный детерминированный список пар записывается в TSV, а YAML содержит distributions, 2D buckets, локальные neighborhoods, reference pairs и presentation-filtered graph.
+
+Soft structural space пока **не** объединяет токены, не изменяет корпус, не ищет последовательности и не вводит semantic classes.
+
 ## Структура репозитория
 
 ```text
@@ -555,6 +583,8 @@ go run ./structural-reliability \
 ├── internal/validation/       # TRAIN-only статистики, split и метрики
 ├── structural-profile-stability/ # устойчивость структурной геометрии
 ├── internal/profilestability/ # profile/fold/bootstrap/rank расчёты
+├── soft-structural-space/     # reliability-aware continuous pair space
+├── internal/softstructural/   # pair, neighbor, graph и summary расчёты
 ├── structural-reliability/    # reliability similarity-компонентов как функция count
 ├── internal/structuralreliability/ # cumulative/bin/subsampling/reliability расчёты
 ├── run-full-analysis.sh       # полный пересчёт конвейера и экспериментов

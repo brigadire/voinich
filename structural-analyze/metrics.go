@@ -3,6 +3,8 @@ package main
 import (
 	"math"
 	"sort"
+
+	"zcore.dev/voinich/internal/profilestability"
 )
 
 func buildOutput(dataset *Dataset, parameters Parameters) Output {
@@ -279,10 +281,14 @@ func equivalenceRanking(dataset *Dataset, parameters Parameters) []EquivalenceCa
 		for j := i + 1; j < len(eligible); j++ {
 			left := eligible[i]
 			right := eligible[j]
-			positionSimilarity := 1 - positionJSD(dataset.Positions[left.Token], dataset.Positions[right.Token])
-			leftSimilarity := cosineSimilarity(dataset.Left[left.Token], dataset.Left[right.Token])
-			rightSimilarity := cosineSimilarity(dataset.Right[left.Token], dataset.Right[right.Token])
-			similarity := (positionSimilarity + leftSimilarity + rightSimilarity) / 3
+			components := profilestability.Compare(
+				profilestability.Profile{Count: left.Count, Positions: dataset.Positions[left.Token], Left: dataset.Left[left.Token], Right: dataset.Right[left.Token]},
+				profilestability.Profile{Count: right.Count, Positions: dataset.Positions[right.Token], Left: dataset.Left[right.Token], Right: dataset.Right[right.Token]},
+			)
+			positionSimilarity := components.PositionSimilarity
+			leftSimilarity := components.LeftSimilarity
+			rightSimilarity := components.RightSimilarity
+			similarity := components.Similarity
 			if similarity < parameters.MinEquivalenceSimilarity {
 				continue
 			}
