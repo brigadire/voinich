@@ -16,6 +16,7 @@
 12. `structural-graphemic` независимо сопоставляет готовое structural similarity с графемным edit distance.
 13. `structural-pair-decompose` объясняет выбранные structural-distant пары через позиционные и контекстные распределения, matched controls и family-матрицы.
 14. `distance-context-analyze` проверяет structural context similarity на каждом точном расстоянии, в обоих направлениях и в continuous/line-bounded режимах.
+15. `structural-projection-analyze` проверяет дальние контексты после soft structural projection с directional ablation, random/generic smoothing и shuffled-corpus controls.
 
 Типичный конвейер:
 
@@ -69,6 +70,7 @@ go build -o workdir/bin/begin-end-analyze ./begin-end-analyze
 go build -o workdir/bin/structural-graphemic ./structural-graphemic
 go build -o workdir/bin/structural-pair-decompose ./structural-pair-decompose
 go build -o workdir/bin/distance-context-analyze ./distance-context-analyze
+go build -o workdir/bin/structural-projection-analyze ./structural-projection-analyze
 ```
 
 Графемно-структурный анализ запускается поверх неизменённого pair dataset:
@@ -111,6 +113,30 @@ go run ./distance-context-analyze
 прямого контроля; последний флаг помечает line-bounded режим как запрошенный
 primary mode. Команда создаёт distance/sequence/family YAML, два TSV-рейтинга,
 Markdown-отчёт и SVG-профили в `workdir/plots/`.
+
+Следующий этап сохраняет token-level JS и параллельно проецирует exact-distance
+распределения в soft structural space:
+
+```bash
+go run ./structural-projection-analyze \
+  -min-structural-similarity 0.65 \
+  -min-reliability 0.70 \
+  -random-projections 200
+```
+
+Основной режим использует веса `similarity × reliability` с обязательным
+self-weight 1. Directional ablation для будущего контекста исключает
+right-context компонент, а для прошлого — left-context компонент. Доступны
+`-projection-k`, `-projection-mode`, `-top`, `-pair` и `-family`.
+`-projection-mode` выбирает primary ranking, сохраняя full и ablated серии для
+прямого сравнения. Команда также сохраняет заранее заданные threshold/KNN
+sweeps, family/singleton control,
+position-wise suffix projection, soft transition matrix и global/line-preserving
+shuffle controls в `workdir/structural_projection_*`,
+`workdir/projected_sequence_context.yaml` и `workdir/plots/`.
+Во время длительного запуска прогресс семи стадий, elapsed time и ETA выводятся
+в stderr; `-quiet` полностью отключает этот вывод. В интерактивном терминале
+строка обновляется на месте, а в CI остаются обычные периодические сообщения.
 
 ## Быстрый запуск полного анализа
 
