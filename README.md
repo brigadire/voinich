@@ -13,6 +13,7 @@
 9. `structural-reliability` измеряет статистическую воспроизводимость position/left/right компонентов как функцию числа наблюдений и готовит reliability-таблицу для будущей soft structural model.
 10. `soft-structural-space` хранит полное continuous pair space, разделяя structural similarity и evidence reliability.
 11. `begin-end-analyze` ранжирует нейтральные кандидаты на направленные дальние парные зависимости.
+12. `structural-graphemic` независимо сопоставляет готовое structural similarity с графемным edit distance.
 
 Типичный конвейер:
 
@@ -55,7 +56,23 @@ go build -o bin/structural-profile-stability ./structural-profile-stability
 go build -o bin/structural-reliability ./structural-reliability
 go build -o bin/soft-structural-space ./soft-structural-space
 go build -o bin/begin-end-analyze ./begin-end-analyze
+go build -o bin/structural-graphemic ./structural-graphemic
 ```
+
+Графемно-структурный анализ запускается поверх неизменённого pair dataset:
+
+```bash
+go run ./structural-graphemic \
+  -input soft_structural_pairs.tsv \
+  -output-dir . \
+  -min-structural-similarity 0.65 \
+  -min-reliability 0.70 \
+  -min-graphemic-distance 0.60
+```
+
+Команда считает `@NNN;` одной графемой и создаёт полный расширенный TSV,
+два рейтинга, YAML-компоненты, Markdown-отчёт и SVG-график. Пороговые значения
+управляют только выборками и не входят в формулу structural similarity.
 
 ## Быстрый запуск полного анализа
 
