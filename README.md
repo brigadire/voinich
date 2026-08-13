@@ -14,6 +14,7 @@
 10. `soft-structural-space` хранит полное continuous pair space, разделяя structural similarity и evidence reliability.
 11. `begin-end-analyze` ранжирует нейтральные кандидаты на направленные дальние парные зависимости.
 12. `structural-graphemic` независимо сопоставляет готовое structural similarity с графемным edit distance.
+13. `structural-pair-decompose` объясняет выбранные structural-distant пары через позиционные и контекстные распределения, matched controls и family-матрицы.
 
 Типичный конвейер:
 
@@ -57,6 +58,7 @@ go build -o bin/structural-reliability ./structural-reliability
 go build -o bin/soft-structural-space ./soft-structural-space
 go build -o bin/begin-end-analyze ./begin-end-analyze
 go build -o bin/structural-graphemic ./structural-graphemic
+go build -o bin/structural-pair-decompose ./structural-pair-decompose
 ```
 
 Графемно-структурный анализ запускается поверх неизменённого pair dataset:
@@ -73,6 +75,19 @@ go run ./structural-graphemic \
 Команда считает `@NNN;` одной графемой и создаёт полный расширенный TSV,
 два рейтинга, YAML-компоненты, Markdown-отчёт и SVG-график. Пороговые значения
 управляют только выборками и не входят в формулу structural similarity.
+
+Декомпозиция по умолчанию анализирует TOP 50 distant-пар и все рёбра family:
+
+```bash
+go run ./structural-pair-decompose
+```
+
+Для узкого запуска доступны `-top N`, `-pair tokenA,tokenB` и `-family ID`.
+Команда создаёт `pair_decomposition.yaml`, два компактных TSV,
+`family_decomposition.yaml`, `structural_pair_report.md` и SVG в `plots/`.
+Все метрики считаются по полным распределениям; `-context-limit` ограничивает
+только отображаемые списки. Structural similarity копируется из существующего
+pair dataset без изменения формулы.
 
 ## Быстрый запуск полного анализа
 

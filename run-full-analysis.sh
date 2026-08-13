@@ -56,3 +56,7 @@ go run ./structural-reliability \
   -subsample-runs 100 \
   -subsample-seed 1 \
   -output structural_reliability.yaml
+
+go run ./soft-structural-space
+go run ./structural-graphemic
+go run ./structural-pair-decompose
