@@ -15,6 +15,7 @@
 11. `begin-end-analyze` ранжирует нейтральные кандидаты на направленные дальние парные зависимости.
 12. `structural-graphemic` независимо сопоставляет готовое structural similarity с графемным edit distance.
 13. `structural-pair-decompose` объясняет выбранные structural-distant пары через позиционные и контекстные распределения, matched controls и family-матрицы.
+14. `distance-context-analyze` проверяет structural context similarity на каждом точном расстоянии, в обоих направлениях и в continuous/line-bounded режимах.
 
 Типичный конвейер:
 
@@ -59,6 +60,7 @@ go build -o bin/soft-structural-space ./soft-structural-space
 go build -o bin/begin-end-analyze ./begin-end-analyze
 go build -o bin/structural-graphemic ./structural-graphemic
 go build -o bin/structural-pair-decompose ./structural-pair-decompose
+go build -o bin/distance-context-analyze ./distance-context-analyze
 ```
 
 Графемно-структурный анализ запускается поверх неизменённого pair dataset:
@@ -88,6 +90,19 @@ go run ./structural-pair-decompose
 Все метрики считаются по полным распределениям; `-context-limit` ограничивает
 только отображаемые списки. Structural similarity копируется из существующего
 pair dataset без изменения формулы.
+
+Distance-specific анализ по умолчанию использует исходный корпус как одну
+непрерывную последовательность и считает точные расстояния `+1..+20` отдельно:
+
+```bash
+go run ./distance-context-analyze
+```
+
+Доступны `-max-distance`, `-min-observations`, `-top`, `-pair`, `-family` и
+`-respect-line-boundaries`. Оба boundary-режима сохраняются в результатах для
+прямого контроля; последний флаг помечает line-bounded режим как запрошенный
+primary mode. Команда создаёт distance/sequence/family YAML, два TSV-рейтинга,
+Markdown-отчёт и SVG-профили в `plots/`.
 
 ## Быстрый запуск полного анализа
 
