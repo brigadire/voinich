@@ -7,12 +7,13 @@ import (
 
 	"gopkg.in/yaml.v3"
 	"zcore.dev/voinich/internal/validation"
+	"zcore.dev/voinich/internal/workdir"
 )
 
 func main() {
 	input := flag.String("input", "data_work/ivtt_output_1786282555007.txt", "raw corpus")
-	classes := flag.String("classes", "structural_classes.yaml", "full-corpus classes used only for leave-one-class-out")
-	output := flag.String("output", "structural_validation.yaml", "validation YAML")
+	classes := flag.String("classes", workdir.Path("structural_classes.yaml"), "full-corpus classes used only for leave-one-class-out")
+	output := flag.String("output", workdir.Path("structural_validation.yaml"), "validation YAML")
 	folds := flag.Int("folds", 5, "number of line-based cross-validation folds")
 	foldSeed := flag.Int64("fold-seed", 1, "deterministic fold split seed")
 	threshold := flag.Float64("threshold", .70, "fixed complete-link threshold")
@@ -38,6 +39,10 @@ func main() {
 	data, err := yaml.Marshal(result)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "Error: encode output:", err)
+		os.Exit(1)
+	}
+	if err := workdir.EnsureParent(*output); err != nil {
+		fmt.Fprintln(os.Stderr, "Error: create output directory:", err)
 		os.Exit(1)
 	}
 	if err := os.WriteFile(*output, data, 0o644); err != nil {

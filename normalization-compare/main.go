@@ -11,6 +11,7 @@ import (
 
 	"gopkg.in/yaml.v3"
 	"zcore.dev/voinich/internal/normalization"
+	"zcore.dev/voinich/internal/workdir"
 )
 
 type SequenceSummary struct {
@@ -96,13 +97,13 @@ type metrics struct {
 }
 
 func main() {
-	classesPath := flag.String("classes", "structural_classes.yaml", "structural class-map YAML")
+	classesPath := flag.String("classes", workdir.Path("structural_classes.yaml"), "structural class-map YAML")
 	inputPath := flag.String("input", "data_work/ivtt_output_1786282555007.txt", "raw corpus for random baselines")
-	rawAnalysisPath := flag.String("raw-analysis", "sequence_analysis.yaml", "immutable raw sequence analysis")
-	normalizedPattern := flag.String("normalized-pattern", "normalized_%s.txt", "normalized corpus path pattern")
-	analysisPattern := flag.String("analysis-pattern", "sequence_analysis_%s.yaml", "structural sequence-analysis output pattern")
-	sequenceAnalyzer := flag.String("sequence-analyzer", "bin/sequence-analyze", "compiled sequence-analyze executable")
-	outputPath := flag.String("output", "normalization_comparison.yaml", "comparison YAML")
+	rawAnalysisPath := flag.String("raw-analysis", workdir.Path("sequence_analysis.yaml"), "immutable raw sequence analysis")
+	normalizedPattern := flag.String("normalized-pattern", workdir.Path("normalized_%s.txt"), "normalized corpus path pattern")
+	analysisPattern := flag.String("analysis-pattern", workdir.Path("sequence_analysis_%s.yaml"), "structural sequence-analysis output pattern")
+	sequenceAnalyzer := flag.String("sequence-analyzer", workdir.Path("bin", "sequence-analyze"), "compiled sequence-analyze executable")
+	outputPath := flag.String("output", workdir.Path("normalization_comparison.yaml"), "comparison YAML")
 	randomRuns := flag.Int("random-baselines", 100, "matched random runs per threshold")
 	randomSeed := flag.Int64("random-seed", 1, "base random seed")
 	flag.Parse()
@@ -186,6 +187,9 @@ func main() {
 	}
 	data, err := yaml.Marshal(output)
 	if err != nil {
+		fatal(err.Error())
+	}
+	if err := workdir.EnsureParent(*outputPath); err != nil {
 		fatal(err.Error())
 	}
 	if err := os.WriteFile(*outputPath, data, 0o644); err != nil {

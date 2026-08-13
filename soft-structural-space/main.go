@@ -6,15 +6,16 @@ import (
 	"os"
 
 	"zcore.dev/voinich/internal/softstructural"
+	"zcore.dev/voinich/internal/workdir"
 )
 
 func main() {
 	c := softstructural.Config{}
-	flag.StringVar(&c.DictionaryPath, "dictionary", "dataset/dictionary.yaml", "path to dictionary YAML")
-	flag.StringVar(&c.AnalysisPath, "analysis", "dataset/tokens_analysis.yaml", "path to token analysis YAML")
-	flag.StringVar(&c.ReliabilityPath, "reliability", "structural_reliability.yaml", "path to structural reliability YAML")
-	flag.StringVar(&c.OutputPath, "output", "soft_structural_space.yaml", "path to summary YAML")
-	flag.StringVar(&c.PairsPath, "pairs-output", "soft_structural_pairs.tsv", "path to machine-oriented pair TSV")
+	flag.StringVar(&c.DictionaryPath, "dictionary", workdir.Path("dataset", "dictionary.yaml"), "path to dictionary YAML")
+	flag.StringVar(&c.AnalysisPath, "analysis", workdir.Path("dataset", "tokens_analysis.yaml"), "path to token analysis YAML")
+	flag.StringVar(&c.ReliabilityPath, "reliability", workdir.Path("structural_reliability.yaml"), "path to structural reliability YAML")
+	flag.StringVar(&c.OutputPath, "output", workdir.Path("soft_structural_space.yaml"), "path to summary YAML")
+	flag.StringVar(&c.PairsPath, "pairs-output", workdir.Path("soft_structural_pairs.tsv"), "path to machine-oriented pair TSV")
 	flag.IntVar(&c.MinTokenCount, "min-token-count", 10, "minimum token occurrence count")
 	flag.IntVar(&c.Neighbors, "neighbors", 5, "number of neighbors and mutual-neighbor K")
 	flag.Float64Var(&c.MinEvidenceStrength, "min-evidence-strength", .7, "presentation filter for high-evidence raw neighbors")
@@ -27,6 +28,14 @@ func main() {
 	out, pairs, err := softstructural.BuildAll(c)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "Error:", err)
+		os.Exit(1)
+	}
+	if err = workdir.EnsureParent(c.OutputPath); err != nil {
+		fmt.Fprintln(os.Stderr, "Error creating output directory:", err)
+		os.Exit(1)
+	}
+	if err = workdir.EnsureParent(c.PairsPath); err != nil {
+		fmt.Fprintln(os.Stderr, "Error creating pairs directory:", err)
 		os.Exit(1)
 	}
 	if err = softstructural.WriteTSV(c.PairsPath, pairs); err == nil {

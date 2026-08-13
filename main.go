@@ -11,6 +11,7 @@ import (
 	"strings"
 
 	"gopkg.in/yaml.v3"
+	"zcore.dev/voinich/internal/workdir"
 )
 
 type Position struct {
@@ -198,12 +199,12 @@ func writeTokensYAML(fileName string, tokens []Tokens) error {
 func main() {
 	flag.Parse()
 	if flag.NArg() < 1 {
-		fmt.Fprintln(os.Stderr, "Usage: go run . <input_file> [output.yaml]")
+		fmt.Fprintln(os.Stderr, "Usage: go run . <input_file> [workdir/dataset/dictionary.yaml]")
 		os.Exit(1)
 	}
 
 	fileName := flag.Arg(0)
-	outputFileName := "output.yaml"
+	outputFileName := workdir.Path("dataset", "dictionary.yaml")
 	if flag.NArg() >= 2 {
 		outputFileName = flag.Arg(1)
 	}
@@ -214,6 +215,10 @@ func main() {
 		os.Exit(1)
 	}
 
+	if err := workdir.EnsureParent(outputFileName); err != nil {
+		fmt.Fprintf(os.Stderr, "Error creating output directory: %v\n", err)
+		os.Exit(1)
+	}
 	if err := writeTokensYAML(outputFileName, tokens); err != nil {
 		fmt.Fprintf(os.Stderr, "Error writing output: %v\n", err)
 		os.Exit(1)

@@ -9,6 +9,7 @@ import (
 	"sort"
 
 	"gopkg.in/yaml.v3"
+	"zcore.dev/voinich/internal/workdir"
 )
 
 type Position struct {
@@ -354,11 +355,11 @@ func writeTokensAnalysisYAML(fileName string, analyses []TokenAnalysis) error {
 func main() {
 	flag.Parse()
 	if flag.NArg() < 1 {
-		fmt.Fprintln(os.Stderr, "Usage: dict-analyze <dictionary.yaml> [tokens_analysis.yaml]")
+		fmt.Fprintln(os.Stderr, "Usage: dict-analyze <dictionary.yaml> [workdir/dataset/tokens_analysis.yaml]")
 		os.Exit(1)
 	}
 
-	outputFileName := "tokens_analysis.yaml"
+	outputFileName := workdir.Path("dataset", "tokens_analysis.yaml")
 	if flag.NArg() >= 2 {
 		outputFileName = flag.Arg(1)
 	}
@@ -370,6 +371,10 @@ func main() {
 	}
 
 	analyses := analyzeTokens(tokens, wordBeforeMap, wordAfterMap)
+	if err := workdir.EnsureParent(outputFileName); err != nil {
+		fmt.Fprintf(os.Stderr, "Error creating output directory: %v\n", err)
+		os.Exit(1)
+	}
 	if err := writeTokensAnalysisYAML(outputFileName, analyses); err != nil {
 		fmt.Fprintf(os.Stderr, "Error writing output: %v\n", err)
 		os.Exit(1)

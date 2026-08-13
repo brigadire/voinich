@@ -9,12 +9,13 @@ import (
 
 	"gopkg.in/yaml.v3"
 	"zcore.dev/voinich/internal/structuralreliability"
+	"zcore.dev/voinich/internal/workdir"
 )
 
 func main() {
 	input := flag.String("input", "data_work/ivtt_output_1786282555007.txt", "raw corpus")
-	classes := flag.String("classes", "structural_classes.yaml", "full-corpus structural classes")
-	output := flag.String("output", "structural_reliability.yaml", "output YAML")
+	classes := flag.String("classes", workdir.Path("structural_classes.yaml"), "full-corpus structural classes")
+	output := flag.String("output", workdir.Path("structural_reliability.yaml"), "output YAML")
 	folds := flag.Int("folds", 5, "number of deterministic line folds")
 	foldSeed := flag.Int64("fold-seed", 1, "fold assignment seed")
 	minCount := flag.Int("min-token-count", 10, "base minimum count independently in each sample")
@@ -49,6 +50,10 @@ func main() {
 	data, err := yaml.Marshal(result)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "Error: encode output:", err)
+		os.Exit(1)
+	}
+	if err := workdir.EnsureParent(*output); err != nil {
+		fmt.Fprintln(os.Stderr, "Error: create output directory:", err)
 		os.Exit(1)
 	}
 	if err := os.WriteFile(*output, data, 0o644); err != nil {

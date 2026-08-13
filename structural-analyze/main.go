@@ -6,12 +6,13 @@ import (
 	"os"
 
 	"gopkg.in/yaml.v3"
+	"zcore.dev/voinich/internal/workdir"
 )
 
 func main() {
-	dictionaryPath := flag.String("dictionary", "dataset/dictionary.yaml", "path to dictionary.yaml")
-	analysisPath := flag.String("analysis", "dataset/tokens_analysis.yaml", "path to tokens_analysis.yaml")
-	outputPath := flag.String("output", "structural_analysis.yaml", "path to the result YAML")
+	dictionaryPath := flag.String("dictionary", workdir.Path("dataset", "dictionary.yaml"), "path to dictionary.yaml")
+	analysisPath := flag.String("analysis", workdir.Path("dataset", "tokens_analysis.yaml"), "path to tokens_analysis.yaml")
+	outputPath := flag.String("output", workdir.Path("dataset", "structural_analysis.yaml"), "path to the result YAML")
 	minTokenCount := flag.Int("min-token-count", 10, "minimum token frequency for ranked sections")
 	minTransitionCount := flag.Int("min-transition-count", 3, "minimum transition frequency")
 	minContextObservations := flag.Int("min-context-observations", 10, "minimum observed predecessors or successors for predictability rankings")
@@ -45,6 +46,10 @@ func main() {
 		os.Exit(1)
 	}
 	result := buildOutput(dataset, parameters)
+	if err := workdir.EnsureParent(*outputPath); err != nil {
+		fmt.Fprintf(os.Stderr, "Error creating output directory: %v\n", err)
+		os.Exit(1)
+	}
 	if err := writeOutput(*outputPath, result); err != nil {
 		fmt.Fprintf(os.Stderr, "Error writing output: %v\n", err)
 		os.Exit(1)

@@ -5,16 +5,18 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+
+	"zcore.dev/voinich/internal/workdir"
 )
 
 func main() {
-	dictionary := flag.String("dictionary", "dataset/dictionary.yaml", "input YAML dictionary")
+	dictionary := flag.String("dictionary", workdir.Path("dataset", "dictionary.yaml"), "input YAML dictionary")
 	corpusPath := flag.String("corpus", "data_work/ivtt_output_1786282555007.txt", "linear source corpus")
 	maxWindow := flag.Int("max-window", 55, "maximum token-distance window")
 	permutations := flag.Int("permutations", 100, "number of boundary-preserving permutations")
 	minFrequency := flag.Int("min-frequency", 10, "minimum token frequency")
 	randomSeed := flag.Int64("random-seed", 1, "random seed")
-	outputDir := flag.String("output-dir", ".", "result directory")
+	outputDir := flag.String("output-dir", workdir.Dir, "result directory")
 	permutationMode := flag.String("permutation-mode", "page", "page or line")
 	includeUnclear := flag.Bool("include-unclear", false, "include tokens containing ? in main ranking")
 	maxCandidates := flag.Int("max-candidates", 1000, "maximum non-local candidates in YAML; 0 means unlimited")

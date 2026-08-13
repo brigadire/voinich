@@ -21,13 +21,21 @@
 
 ```text
 исходный текст
-    → dictionary.yaml
-    → tokens_analysis.yaml
-    → structural_analysis.yaml
+    → workdir/dataset/dictionary.yaml
+    → workdir/dataset/tokens_analysis.yaml
+    → workdir/dataset/structural_analysis.yaml
 
 исходный текст
-    → sequence_analysis.yaml
+    → workdir/sequence_analysis.yaml
 ```
+
+## Контракт выходных данных
+
+Все промежуточные и итоговые результаты приложений сохраняются в `./workdir`.
+Содержимое этой директории не версионируется. Общий программный контракт
+находится в `internal/workdir`, а нормативные правила для существующих и новых
+этапов описаны в [PIPELINE_OUTPUT_CONTRACT.md](PIPELINE_OUTPUT_CONTRACT.md).
+Исходные корпуса не являются результатами и остаются в `data/` и `data_work/`.
 
 ## Требования
 
@@ -46,29 +54,29 @@ go vet ./...
 При необходимости программы можно собрать отдельно:
 
 ```bash
-mkdir -p bin
-go build -o bin/dictionary-build .
-go build -o bin/dict-analyze ./dict-analyze
-go build -o bin/structural-analyze ./structural-analyze
-go build -o bin/sequence-analyze ./sequence-analyze
-go build -o bin/structural-normalize ./structural-normalize
-go build -o bin/normalization-compare ./normalization-compare
-go build -o bin/structural-validate ./structural-validate
-go build -o bin/structural-profile-stability ./structural-profile-stability
-go build -o bin/structural-reliability ./structural-reliability
-go build -o bin/soft-structural-space ./soft-structural-space
-go build -o bin/begin-end-analyze ./begin-end-analyze
-go build -o bin/structural-graphemic ./structural-graphemic
-go build -o bin/structural-pair-decompose ./structural-pair-decompose
-go build -o bin/distance-context-analyze ./distance-context-analyze
+mkdir -p workdir/bin
+go build -o workdir/bin/dictionary-build .
+go build -o workdir/bin/dict-analyze ./dict-analyze
+go build -o workdir/bin/structural-analyze ./structural-analyze
+go build -o workdir/bin/sequence-analyze ./sequence-analyze
+go build -o workdir/bin/structural-normalize ./structural-normalize
+go build -o workdir/bin/normalization-compare ./normalization-compare
+go build -o workdir/bin/structural-validate ./structural-validate
+go build -o workdir/bin/structural-profile-stability ./structural-profile-stability
+go build -o workdir/bin/structural-reliability ./structural-reliability
+go build -o workdir/bin/soft-structural-space ./soft-structural-space
+go build -o workdir/bin/begin-end-analyze ./begin-end-analyze
+go build -o workdir/bin/structural-graphemic ./structural-graphemic
+go build -o workdir/bin/structural-pair-decompose ./structural-pair-decompose
+go build -o workdir/bin/distance-context-analyze ./distance-context-analyze
 ```
 
 Графемно-структурный анализ запускается поверх неизменённого pair dataset:
 
 ```bash
 go run ./structural-graphemic \
-  -input soft_structural_pairs.tsv \
-  -output-dir . \
+  -input workdir/soft_structural_pairs.tsv \
+  -output-dir workdir \
   -min-structural-similarity 0.65 \
   -min-reliability 0.70 \
   -min-graphemic-distance 0.60
@@ -85,8 +93,8 @@ go run ./structural-pair-decompose
 ```
 
 Для узкого запуска доступны `-top N`, `-pair tokenA,tokenB` и `-family ID`.
-Команда создаёт `pair_decomposition.yaml`, два компактных TSV,
-`family_decomposition.yaml`, `structural_pair_report.md` и SVG в `plots/`.
+Команда создаёт `workdir/pair_decomposition.yaml`, два компактных TSV,
+`workdir/family_decomposition.yaml`, `workdir/structural_pair_report.md` и SVG в `workdir/plots/`.
 Все метрики считаются по полным распределениям; `-context-limit` ограничивает
 только отображаемые списки. Structural similarity копируется из существующего
 pair dataset без изменения формулы.
@@ -102,26 +110,26 @@ go run ./distance-context-analyze
 `-respect-line-boundaries`. Оба boundary-режима сохраняются в результатах для
 прямого контроля; последний флаг помечает line-bounded режим как запрошенный
 primary mode. Команда создаёт distance/sequence/family YAML, два TSV-рейтинга,
-Markdown-отчёт и SVG-профили в `plots/`.
+Markdown-отчёт и SVG-профили в `workdir/plots/`.
 
 ## Быстрый запуск полного анализа
 
 Из корня репозитория:
 
 ```bash
-go run . data_work/ivtt_output_1786282555007.txt dataset/dictionary.yaml
-go run ./dict-analyze dataset/dictionary.yaml dataset/tokens_analysis.yaml
-go run ./structural-analyze -output structural_analysis.yaml
+go run . data_work/ivtt_output_1786282555007.txt workdir/dataset/dictionary.yaml
+go run ./dict-analyze workdir/dataset/dictionary.yaml workdir/dataset/tokens_analysis.yaml
+go run ./structural-analyze -output workdir/dataset/structural_analysis.yaml
 go run ./sequence-analyze \
   -input data_work/ivtt_output_1786282555007.txt \
-  -output sequence_analysis.yaml
+  -output workdir/sequence_analysis.yaml
 go run ./begin-end-analyze \
-  -dictionary dataset/dictionary.yaml \
+  -dictionary workdir/dataset/dictionary.yaml \
   -corpus data_work/ivtt_output_1786282555007.txt \
-  -output-dir begin_end_results
+  -output-dir workdir
 ```
 
-`structural-analyze` по умолчанию читает файлы из `dataset/`, поэтому первые два этапа можно пропустить, если готовый набор данных уже актуален.
+`structural-analyze` по умолчанию читает файлы из `workdir/dataset/`, поэтому первые два этапа можно пропустить, если готовый набор данных уже актуален.
 
 `sequence-analyze` является независимой ветвью конвейера. Он читает исходный текст и не пытается восстанавливать цепочки из агрегированных соседей `dictionary.yaml`.
 
@@ -138,10 +146,10 @@ go run ./begin-end-analyze \
 Запуск:
 
 ```bash
-go run . <input.txt> [dictionary.yaml]
+go run . <input.txt> [workdir/dataset/dictionary.yaml]
 ```
 
-Если второй аргумент не указан, результат записывается в `output.yaml`.
+Если второй аргумент не указан, результат записывается в `workdir/dataset/dictionary.yaml`.
 
 Для каждого токена сохраняются:
 
@@ -184,10 +192,10 @@ go run . <input.txt> [dictionary.yaml]
 Запуск:
 
 ```bash
-go run ./dict-analyze <dictionary.yaml> [tokens_analysis.yaml]
+go run ./dict-analyze <dictionary.yaml> [workdir/dataset/tokens_analysis.yaml]
 ```
 
-Выходной файл по умолчанию — `tokens_analysis.yaml`.
+Выходной файл по умолчанию — `workdir/dataset/tokens_analysis.yaml`.
 
 Для каждого токена рассчитываются:
 
@@ -229,9 +237,9 @@ go run ./structural-analyze
 
 ```bash
 go run ./structural-analyze \
-  -dictionary dataset/dictionary.yaml \
-  -analysis dataset/tokens_analysis.yaml \
-  -output structural_analysis.yaml \
+  -dictionary workdir/dataset/dictionary.yaml \
+  -analysis workdir/dataset/tokens_analysis.yaml \
+  -output workdir/dataset/structural_analysis.yaml \
   -min-token-count 10 \
   -min-transition-count 3 \
   -min-context-observations 10 \
@@ -246,9 +254,9 @@ go run ./structural-analyze \
 
 | Флаг | Значение по умолчанию | Назначение |
 | --- | ---: | --- |
-| `-dictionary` | `dataset/dictionary.yaml` | Входной словарь |
-| `-analysis` | `dataset/tokens_analysis.yaml` | Результат `dict-analyze` |
-| `-output` | `structural_analysis.yaml` | Выходной YAML |
+| `-dictionary` | `workdir/dataset/dictionary.yaml` | Входной словарь |
+| `-analysis` | `workdir/dataset/tokens_analysis.yaml` | Результат `dict-analyze` |
+| `-output` | `workdir/dataset/structural_analysis.yaml` | Выходной YAML |
 | `-min-token-count` | `10` | Минимальная частота токена для рейтингов |
 | `-min-transition-count` | `3` | Минимальная частота перехода для раздела значимых переходов |
 | `-min-context-observations` | `10` | Минимум наблюдаемых соседей для рейтингов predictability |
@@ -343,7 +351,7 @@ go run ./sequence-analyze
 ```bash
 go run ./sequence-analyze \
   -input data_work/ivtt_output_1786282555007.txt \
-  -output sequence_analysis.yaml \
+  -output workdir/sequence_analysis.yaml \
   -min-n 2 \
   -max-n 8 \
   -min-count 2 \
@@ -357,7 +365,7 @@ go run ./sequence-analyze \
 | Флаг | По умолчанию | Назначение |
 | --- | ---: | --- |
 | `-input` | `data_work/ivtt_output_1786282555007.txt` | Исходный корпус |
-| `-output` | `sequence_analysis.yaml` | Выходной YAML |
+| `-output` | `workdir/sequence_analysis.yaml` | Выходной YAML |
 | `-min-n` | `2` | Минимальная длина n-граммы |
 | `-max-n` | `8` | Максимальная длина n-граммы |
 | `-min-count` | `2` | Минимальная частота для разделов повторов |
@@ -369,7 +377,7 @@ go run ./sequence-analyze \
 
 Токенизация выполняется через `strings.Fields`. Каждая непустая физическая строка файла является отдельной последовательностью; n-граммы не пересекают границы строк. Содержимое токенов, регистр и пунктуация сохраняются без изменений.
 
-Выходной `sequence_analysis.yaml` содержит:
+Выходной `workdir/sequence_analysis.yaml` содержит:
 
 - `meta` — число токенов, непустых строк и переходов с проверкой инварианта `tokens - lines = transitions`;
 - `ngram_summary` — полную статистику для каждой длины, включая hapax и повторы; пороги на неё не влияют;
@@ -424,20 +432,20 @@ H(next | previous k tokens)
 
 ## 5. Эксперимент структурной нормализации
 
-Эксперимент использует только `equivalence_candidates` из независимо построенного `structural_analysis.yaml`:
+Эксперимент использует только `equivalence_candidates` из независимо построенного `workdir/dataset/structural_analysis.yaml`:
 
 ```text
-structural_analysis.yaml
+workdir/dataset/structural_analysis.yaml
        ↓
 structural-normalize
        ↓
-normalized_070.txt … normalized_090.txt
+workdir/normalized_070.txt … workdir/normalized_090.txt
        ↓
 sequence-analyze
        ↓
 normalization-compare + matched random baseline
        ↓
-normalization_comparison.yaml
+workdir/normalization_comparison.yaml
 ```
 
 Структурные классы не являются семантическими классами. Similarity означает только сходство позиции и непосредственных левого/правого контекстов. При построении классов не используются n-граммы, результаты `sequence-analyze`, написание токенов, edit distance или сведения о содержании документа.
@@ -455,9 +463,9 @@ normalization_comparison.yaml
 ```bash
 go run ./structural-normalize \
   -input data_work/ivtt_output_1786282555007.txt \
-  -structural dataset/structural_analysis.yaml \
-  -output normalized.txt \
-  -classes structural_classes.yaml \
+  -structural workdir/dataset/structural_analysis.yaml \
+  -output workdir/normalized.txt \
+  -classes workdir/structural_classes.yaml \
   -thresholds 0.70,0.75,0.80,0.85,0.90 \
   -singleton-mode preserve
 ```
@@ -476,7 +484,7 @@ go run ./structural-normalize \
 | `-random-baselines` | `100` | Число контрольных прогонов |
 | `-random-seed` | `1` | Базовый seed воспроизводимого контроля |
 
-`structural_classes.yaml` хранит все члены и исходные минимальные/средние pairwise similarity, coverage нормализации и compression ratio. Идентификаторы `C0001…` детерминированы и не пересекаются с исходным алфавитом. Нормализация сохраняет физические границы строк, число токенов и число переходов.
+`workdir/structural_classes.yaml` хранит все члены и исходные минимальные/средние pairwise similarity, coverage нормализации и compression ratio. Идентификаторы `C0001…` детерминированы и не пересекаются с исходным алфавитом. Нормализация сохраняет физические границы строк, число токенов и число переходов.
 
 `normalization-compare` строит случайные классы тех же размеров из токенов с `count >= min_token_count`. Частоты сопоставляются через логарифмические base-2 bins, выбор выполняется без возвращения, а при пустом bin используется ближайший. Каждый прогон определяется `random_seed`, threshold и номером прогона.
 
@@ -498,13 +506,13 @@ go run ./structural-normalize \
 ```bash
 go run ./structural-validate \
   -input data_work/ivtt_output_1786282555007.txt \
-  -classes structural_classes.yaml \
+  -classes workdir/structural_classes.yaml \
   -folds 5 \
   -fold-seed 1 \
   -threshold 0.70 \
   -random-baselines 100 \
   -random-seed 1 \
-  -output structural_validation.yaml
+  -output workdir/structural_validation.yaml
 ```
 
 В каждом fold словарь, позиционные и контекстные статистики, pairwise similarity и complete-link классы заново строятся только по TRAIN. Зафиксированные классы затем применяются к RAW TEST; неизвестные TRAIN токены остаются неизменными. Matched random модели также используют только размеры классов и частоты TRAIN.
@@ -520,7 +528,7 @@ LOCO и member-ablation всегда используют заранее зад�
 ```bash
 go run ./structural-profile-stability \
   -input data_work/ivtt_output_1786282555007.txt \
-  -classes structural_classes.yaml \
+  -classes workdir/structural_classes.yaml \
   -folds 5 \
   -fold-seed 1 \
   -min-token-count 10 \
@@ -529,7 +537,7 @@ go run ./structural-profile-stability \
   -bootstrap-seed 1 \
   -threshold 0.70 \
   -threshold-margin 0.05 \
-  -output structural_profile_stability.yaml
+  -output workdir/structural_profile_stability.yaml
 ```
 
 Full corpus, каждый TRAIN, соответствующий TEST и каждый line-bootstrap sample получают независимые профили. Similarity остаётся средним `position_similarity = 1−JSD`, левого cosine и правого cosine. Eligibility проверяется отдельно в каждой выборке; отсутствие редкого токена не считается нестабильностью.
@@ -544,7 +552,7 @@ Full corpus, каждый TRAIN, соответствующий TEST и кажд
 - подробный отчёт для всех актуальных full-corpus классов threshold 0.70;
 - диагностический пересчёт similarity без каждой из трёх компонент, не используемый для новых классов.
 
-Инструмент не читает `sequence_analysis.yaml`, normalization comparison или нормализованные корпусы и не выполняет семантической интерпретации.
+Инструмент не читает `workdir/sequence_analysis.yaml`, normalization comparison или нормализованные корпусы и не выполняет семантической интерпретации.
 
 ## 8. Reliability структурных профилей
 
@@ -562,7 +570,7 @@ reliability-aware soft structural model
 ```bash
 go run ./structural-reliability \
   -input data_work/ivtt_output_1786282555007.txt \
-  -classes structural_classes.yaml \
+  -classes workdir/structural_classes.yaml \
   -folds 5 \
   -fold-seed 1 \
   -min-token-count 10 \
@@ -575,7 +583,7 @@ go run ./structural-reliability \
   -subsample-min-full-count 160 \
   -subsample-runs 100 \
   -subsample-seed 1 \
-  -output structural_reliability.yaml
+  -output workdir/structural_reliability.yaml
 ```
 
 **На этом этапе similarity model не меняется, никакая нормализация не запускается.** Формула, веса, threshold и complete-link clustering переиспользуются буквально из `internal/profilestability` и `internal/normalization`; инструмент только пересчитывает eligibility, TRAIN/TEST-профили, ближайших соседей и bootstrap при разных `min_token_count`, как если бы `structural-profile-stability` запускался отдельно для каждого порога.
@@ -601,11 +609,11 @@ go run ./structural-reliability \
 
 ```bash
 go run ./soft-structural-space \
-  -dictionary dataset/dictionary.yaml \
-  -analysis dataset/tokens_analysis.yaml \
-  -reliability structural_reliability.yaml \
-  -output soft_structural_space.yaml \
-  -pairs-output soft_structural_pairs.tsv
+  -dictionary workdir/dataset/dictionary.yaml \
+  -analysis workdir/dataset/tokens_analysis.yaml \
+  -reliability workdir/structural_reliability.yaml \
+  -output workdir/soft_structural_space.yaml \
+  -pairs-output workdir/soft_structural_pairs.tsv
 ```
 
 ```text
@@ -627,7 +635,7 @@ Soft structural space пока **не** объединяет токены, не 
 
 ```bash
 go run ./begin-end-analyze \
-  -dictionary dataset/dictionary.yaml \
+  -dictionary workdir/dataset/dictionary.yaml \
   -corpus data_work/ivtt_output_1786282555007.txt \
   -max-window 55 \
   -permutations 100 \
@@ -635,7 +643,7 @@ go run ./begin-end-analyze \
   -random-seed 1 \
   -permutation-mode page \
   -max-candidates 1000 \
-  -output-dir begin_end_results
+  -output-dir workdir
 ```
 
 Флаги `-permutation-mode page` и `line` соответственно перемешивают токены внутри страницы с восстановлением исходных длин строк или независимо внутри каждой строки. Страницы разделяются пустыми строками, form-feed, строками `# page:` или `=== page ... ===`. Если разделителей нет, весь файл считается одной страницей, `page_boundaries_known` имеет значение `false`, а отчёт явно помечает page-level выводы как предварительные.
@@ -669,11 +677,11 @@ go run ./begin-end-analyze \
 ├── begin-end-analyze/         # кандидаты на направленные дальние парные зависимости
 ├── internal/structuralreliability/ # cumulative/bin/subsampling/reliability расчёты
 ├── run-full-analysis.sh       # полный пересчёт конвейера и экспериментов
-├── dataset/                   # готовые входы структурного анализатора
+├── internal/workdir/          # единый программный контракт выходных путей
+├── workdir/                   # игнорируемые результаты, dataset, plots и bin
 ├── data/ и data_work/         # исходные и подготовленные тексты
 ├── tasks/                     # формулировки задач
-├── structural_analysis.yaml   # пример итогового результата
-└── sequence_analysis.yaml     # анализ наблюдавшихся последовательностей
+└── PIPELINE_OUTPUT_CONTRACT.md # правило для новых приложений пайплайна
 ```
 
 ## Тестирование

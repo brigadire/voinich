@@ -6,15 +6,16 @@ import (
 	"os"
 
 	"zcore.dev/voinich/internal/pairdecomposition"
+	"zcore.dev/voinich/internal/workdir"
 )
 
 func main() {
 	c := pairdecomposition.Config{}
-	flag.StringVar(&c.DictionaryPath, "dictionary", "dataset/dictionary.yaml", "path to the full dictionary YAML")
-	flag.StringVar(&c.PairsPath, "pairs", "structural_graphemic_pairs.tsv", "path to the full structural/graphemic pair TSV")
-	flag.StringVar(&c.DistantPath, "distant", "structural_distant_top.tsv", "ranked structural-distant pair TSV")
-	flag.StringVar(&c.FamiliesPath, "families", "structural_distant_families.yaml", "structural-distant family YAML")
-	flag.StringVar(&c.OutputDir, "output-dir", ".", "directory for reports and plots")
+	flag.StringVar(&c.DictionaryPath, "dictionary", workdir.Path("dataset", "dictionary.yaml"), "path to the full dictionary YAML")
+	flag.StringVar(&c.PairsPath, "pairs", workdir.Path("structural_graphemic_pairs.tsv"), "path to the full structural/graphemic pair TSV")
+	flag.StringVar(&c.DistantPath, "distant", workdir.Path("structural_distant_top.tsv"), "ranked structural-distant pair TSV")
+	flag.StringVar(&c.FamiliesPath, "families", workdir.Path("structural_distant_families.yaml"), "structural-distant family YAML")
+	flag.StringVar(&c.OutputDir, "output-dir", workdir.Dir, "directory for reports and plots")
 	flag.IntVar(&c.TopN, "top", 50, "number of ranked pairs; 0 means all")
 	flag.StringVar(&c.Pair, "pair", "", "analyze one pair as tokenA,tokenB")
 	flag.IntVar(&c.FamilyID, "family", 0, "analyze one family ID; 0 means all in default mode")

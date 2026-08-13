@@ -6,11 +6,12 @@ import (
 	"os"
 
 	"gopkg.in/yaml.v3"
+	"zcore.dev/voinich/internal/workdir"
 )
 
 func main() {
 	input := flag.String("input", "data_work/ivtt_output_1786282555007.txt", "source corpus")
-	output := flag.String("output", "sequence_analysis.yaml", "output YAML")
+	output := flag.String("output", workdir.Path("sequence_analysis.yaml"), "output YAML")
 	minN := flag.Int("min-n", 2, "minimum n-gram length")
 	maxN := flag.Int("max-n", 8, "maximum n-gram length")
 	minCount := flag.Int("min-count", 2, "minimum count for repeated sequence sections")
@@ -33,6 +34,10 @@ func main() {
 	data, err := yaml.Marshal(result)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error encoding YAML: %v\n", err)
+		os.Exit(1)
+	}
+	if err := workdir.EnsureParent(*output); err != nil {
+		fmt.Fprintf(os.Stderr, "Error creating output directory: %v\n", err)
 		os.Exit(1)
 	}
 	if err := os.WriteFile(*output, data, 0o644); err != nil {

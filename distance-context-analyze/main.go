@@ -6,15 +6,16 @@ import (
 	"os"
 
 	"zcore.dev/voinich/internal/distancecontext"
+	"zcore.dev/voinich/internal/workdir"
 )
 
 func main() {
 	c := distancecontext.Config{}
 	flag.StringVar(&c.CorpusPath, "corpus", "data_work/ivtt_output_1786282555007.txt", "tokenized corpus in original line order")
-	flag.StringVar(&c.DistantPath, "distant-pairs", "structural_distant_top.tsv", "ranked structural-distant pair TSV")
-	flag.StringVar(&c.FamiliesPath, "families", "structural_distant_families.yaml", "structural-distant family YAML")
-	flag.StringVar(&c.ControlsPath, "controls", "pair_controls.tsv", "matched negative-control TSV")
-	flag.StringVar(&c.OutputDir, "output-dir", ".", "result directory")
+	flag.StringVar(&c.DistantPath, "distant-pairs", workdir.Path("structural_distant_top.tsv"), "ranked structural-distant pair TSV")
+	flag.StringVar(&c.FamiliesPath, "families", workdir.Path("structural_distant_families.yaml"), "structural-distant family YAML")
+	flag.StringVar(&c.ControlsPath, "controls", workdir.Path("pair_controls.tsv"), "matched negative-control TSV")
+	flag.StringVar(&c.OutputDir, "output-dir", workdir.Dir, "result directory")
 	flag.IntVar(&c.MaxDistance, "max-distance", 20, "largest exact context distance")
 	flag.IntVar(&c.MinObservations, "min-observations", 30, "minimum observations per side for a reliable comparison")
 	flag.IntVar(&c.TopN, "top", 50, "number of ranked structural-distant pairs; 0 disables ranked additions")

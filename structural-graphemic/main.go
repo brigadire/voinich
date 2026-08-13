@@ -6,11 +6,12 @@ import (
 	"os"
 
 	"zcore.dev/voinich/internal/graphemic"
+	"zcore.dev/voinich/internal/workdir"
 )
 
 func main() {
-	input := flag.String("input", "soft_structural_pairs.tsv", "existing structural pair TSV")
-	output := flag.String("output-dir", ".", "result directory")
+	input := flag.String("input", workdir.Path("soft_structural_pairs.tsv"), "existing structural pair TSV")
+	output := flag.String("output-dir", workdir.Dir, "result directory")
 	minStructural := flag.Float64("min-structural-similarity", .65, "minimum unchanged structural similarity")
 	minReliability := flag.Float64("min-reliability", .7, "minimum evidence reliability")
 	minDistance := flag.Float64("min-graphemic-distance", .6, "minimum normalized graphemic distance")

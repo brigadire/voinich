@@ -9,13 +9,14 @@ import (
 
 	"gopkg.in/yaml.v3"
 	"zcore.dev/voinich/internal/normalization"
+	"zcore.dev/voinich/internal/workdir"
 )
 
 func main() {
 	inputPath := flag.String("input", "data_work/ivtt_output_1786282555007.txt", "raw corpus")
-	structuralPath := flag.String("structural", "dataset/structural_analysis.yaml", "structural analysis YAML")
-	outputPattern := flag.String("output", "normalized.txt", "normalized corpus base name")
-	classesPath := flag.String("classes", "structural_classes.yaml", "class-map YAML")
+	structuralPath := flag.String("structural", workdir.Path("dataset", "structural_analysis.yaml"), "structural analysis YAML")
+	outputPattern := flag.String("output", workdir.Path("normalized.txt"), "normalized corpus base name")
+	classesPath := flag.String("classes", workdir.Path("structural_classes.yaml"), "class-map YAML")
 	thresholdText := flag.String("thresholds", "0.70,0.75,0.80,0.85,0.90", "comma-separated complete-link thresholds")
 	minPosition := flag.Float64("min-position-similarity", 0, "minimum position similarity")
 	minLeft := flag.Float64("min-left-context-similarity", 0, "minimum left-context similarity")
@@ -59,6 +60,12 @@ func main() {
 	models, _, err := normalization.BuildModels(corpus, structural, config)
 	if err != nil {
 		fatal(fmt.Sprintf("build classes: %v", err))
+	}
+	if err := workdir.EnsureParent(*outputPattern); err != nil {
+		fatal(fmt.Sprintf("create output directory: %v", err))
+	}
+	if err := workdir.EnsureParent(*classesPath); err != nil {
+		fatal(fmt.Sprintf("create classes directory: %v", err))
 	}
 	for _, model := range models {
 		path := thresholdPath(*outputPattern, model.Label, len(models))
