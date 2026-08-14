@@ -916,6 +916,24 @@ go run ./higher-order-sequence-validate \
 
 Восьмистадийный status bar показывает elapsed/ETA; `-quiet` его отключает. Прогресс сохраняется в `<output-dir>/checkpoint.json` после каждого завершённого этапа анализа (occurrences/conditional probabilities, conditional-neighbor permutation CMI, leave-one-block-out, context/continuation/cross-block/meta-analysis, jackknife, position/structural-family controls) для каждого frozen candidate по отдельности; совпадающий по входам и параметрам checkpoint автоматически продолжается с прерванного места, а `-checkpoint-path -` отключает механизм. После успешной записи всех TSV, YAML, Markdown и SVG checkpoint удаляется. Primary conditional-dependence permutation test использует 10000 permutations (secondary descriptive candidate — 1000) и корректируется BH FDR только внутри primary family. Каждому frozen sequence присваивается один diagnostic status: `HIGHER_ORDER_REPLICATED`, `FIRST_ORDER_EXPLAINED`, `POSITION_DEPENDENT`, `METADATA_LIMITED`, `SINGLE_BLOCK_SENSITIVE` или `INSUFFICIENT_SUPPORT`.
 
+## Directed transition network `transition-network-validate`
+
+`transition-network-validate` проверяет полную заранее определённую матрицу наблюдавшихся adjacent transitions `A -> B` без нового token/candidate mining. Эффекты нормализуются на частоты destination внутри каждого physical block; preferred и depleted edges проверяются within-block destination permutation null, раздельным BH FDR, cross-block sign replication и LOBO transfer. Отдельно валидируются outgoing/incoming profiles, entropy, metadata transfer, topology и held-out модели M0/M1/M2.
+
+```bash
+go run ./transition-network-validate \
+  -corpus data_work/ZL3b-x7.txt \
+  -token-metadata-map workdir/metadata-validation/token_metadata_map.tsv \
+  -output-dir workdir/transition-network \
+  -min-token-count 10 \
+  -min-block-token-count 5 \
+  -permutations 1000 \
+  -refine-permutations 10000 \
+  -seed 1
+```
+
+Восьмистадийный status bar с elapsed/ETA выводится в stderr, `-quiet` его отключает. После каждого permutation replicate атомарно сохраняется `<output-dir>/checkpoint.json`; checkpoint возобновляется только при совпадении SHA256 входов и всех параметров. `-checkpoint-path -` отключает сохранение, после полного успешного запуска checkpoint удаляется. Результат включает 15 TSV/YAML/Markdown файлов, preferred/depleted GraphML и десять компактных SVG diagnostics.
+
 ## 10. Поиск направленных парных зависимостей `begin-end-analyze`
 
 Инструмент читает агрегированный YAML-словарь совместно с исходным линейным корпусом. Он не восстанавливает дальний порядок из `word_before`/`word_after`: эти поля используются только для отделения тривиальных смежных пар.
@@ -968,6 +986,8 @@ go run ./begin-end-analyze \
 ├── internal/replicatedlocalaudit/ # LOBO, null models, checkpoint и audit outputs
 ├── higher-order-sequence-validate/ # frozen n>=3 sequences: P(C|A,B) vs P(C|B)
 ├── internal/higherorderseq/    # conditional probabilities, CMI, LOBO, jackknife, checkpoint
+├── transition-network-validate/ # directed adjacent-transition network validation
+├── internal/transitionnetwork/  # edge/profile nulls, LOBO, graph transfer и prediction
 ├── internal/structuralreliability/ # cumulative/bin/subsampling/reliability расчёты
 ├── run-full-analysis.sh       # полный пересчёт конвейера и экспериментов
 ├── internal/workdir/          # единый программный контракт выходных путей
