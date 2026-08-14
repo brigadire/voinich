@@ -23,6 +23,7 @@
 19. `metadata-validate` строго сопоставляет metadata исходного IVTFF с frozen IVTT-корпусом и независимо проверяет уже зафиксированные distributional boundaries и clusters.
 20. `cluster-metadata-global` подтверждающе проверяет association blind distributional regimes с Currier/hand по всему заранее зафиксированному frozen search space (window_size x method x K) с единой block-aware permutation на весь search space.
 21. `conditional-regime-analyze` проверяет, остаётся ли внутри Currier/hand-controlled material и после удаления Currier x hand signature воспроизводимая distributional structure.
+22. `residual-diagnostic-analyze` объясняет metadata association frozen residual K=2 через held-out drift, covariance/dispersion, physical blocks, position и leakage-safe whitening, не расширяя discovery search.
 
 Типичный конвейер:
 
@@ -82,6 +83,7 @@ go build -o workdir/bin/local-regime-analyze ./local-regime-analyze
 go build -o workdir/bin/metadata-validate ./metadata-validate
 go build -o workdir/bin/cluster-metadata-global ./cluster-metadata-global
 go build -o workdir/bin/conditional-regime-analyze ./conditional-regime-analyze
+go build -o workdir/bin/residual-diagnostic-analyze ./residual-diagnostic-analyze
 ```
 
 Графемно-структурный анализ запускается поверх неизменённого pair dataset:
@@ -320,6 +322,29 @@ checkpoint игнорируется и запуск идёт с нуля. Это
 расчёт с сохранённого момента после сбоя, kill или перезагрузки без потери
 уже проделанной работы. После успешного завершения checkpoint-файл
 удаляется.
+
+`residual-diagnostic-analyze` использует только уже выбранное решение
+`window=500`, `K=2`, `k_medoids`; новые window sizes, K, методы кластеризации
+и token features не ищутся. Команда математически проверяет train/held-out
+centering, описывает состав и contiguous runs frozen clusters, измеряет
+dispersion/covariance и norm-only association, выполняет strict
+leave-physical-block-out linear classification и применяет train-only
+joint-class whitening с фиксированным `0.9 Σ + 0.1 diag(Σ)` shrinkage.
+
+```bash
+go run ./residual-diagnostic-analyze \
+  -conditional-dir workdir/conditional-regimes \
+  -token-metadata-map workdir/metadata-validation/token_metadata_map.tsv \
+  -output-dir workdir/residual-diagnostics \
+  -window-size 500 \
+  -k 2 \
+  -permutations 1000 \
+  -seed 1
+```
+
+Десятистадийный status bar с elapsed/ETA выводится в stderr; `-quiet`
+полностью его отключает. Existing conditional results читаются как frozen
+inputs и не изменяются.
 
 ## Быстрый запуск полного анализа
 
