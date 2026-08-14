@@ -84,6 +84,7 @@ go build -o workdir/bin/metadata-validate ./metadata-validate
 go build -o workdir/bin/cluster-metadata-global ./cluster-metadata-global
 go build -o workdir/bin/conditional-regime-analyze ./conditional-regime-analyze
 go build -o workdir/bin/residual-diagnostic-analyze ./residual-diagnostic-analyze
+go build -o workdir/bin/token-relation-validate ./token-relation-validate
 ```
 
 Графемно-структурный анализ запускается поверх неизменённого pair dataset:
@@ -863,6 +864,23 @@ Raw similarity буквально переиспользует `internal/profile
 
 Soft structural space пока **не** объединяет токены, не изменяет корпус, не ищет последовательности и не вводит semantic classes.
 
+## Cross-metadata validation локальных отношений
+
+`token-relation-validate` не выполняет новый discovery: он фиксирует кандидатов из pre-metadata outputs, пересчитывает всё evidence на canonical corpus и использует contiguous `Currier×hand` runs как независимые physical blocks.
+
+```bash
+go run ./token-relation-validate \
+  -corpus data_work/ZL3b-x7.txt \
+  -token-metadata-map workdir/metadata-validation/token_metadata_map.tsv \
+  -discovery-dir workdir \
+  -output-dir workdir/token-relation-validation \
+  -permutations 1000 \
+  -refine-permutations 10000 \
+  -seed 1
+```
+
+Восьмистадийный status bar с elapsed/ETA выводится в stderr; `-quiet` полностью его отключает. Длительные permutation stages сохраняются в `checkpoint.json` и возобновляются детерминированно. `-checkpoint-path -` отключает checkpointing. Unknown-metadata runs учитываются только в audit и не увеличивают primary replication. Итог включает frozen inventory, block-level/summary TSV для directional, exact-distance, structural и sequence families, leave-one-block-out transfer, metadata matrices, controls, BH FDR, classification, rule-like descriptive output, YAML, Markdown и пять SVG-графиков.
+
 ## 10. Поиск направленных парных зависимостей `begin-end-analyze`
 
 Инструмент читает агрегированный YAML-словарь совместно с исходным линейным корпусом. Он не восстанавливает дальний порядок из `word_before`/`word_after`: эти поля используются только для отделения тривиальных смежных пар.
@@ -909,6 +927,8 @@ go run ./begin-end-analyze \
 ├── internal/softstructural/   # pair, neighbor, graph и summary расчёты
 ├── structural-reliability/    # reliability similarity-компонентов как функция count
 ├── begin-end-analyze/         # кандидаты на направленные дальние парные зависимости
+├── token-relation-validate/   # frozen cross-metadata validation локальных отношений
+├── internal/tokenrelationvalidation/ # blocks, transfer, controls, FDR и отчёты
 ├── internal/structuralreliability/ # cumulative/bin/subsampling/reliability расчёты
 ├── run-full-analysis.sh       # полный пересчёт конвейера и экспериментов
 ├── internal/workdir/          # единый программный контракт выходных путей
