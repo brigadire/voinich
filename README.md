@@ -152,6 +152,8 @@ shuffle controls в `workdir/structural_projection_*`,
 Во время длительного запуска прогресс семи стадий, elapsed time и ETA выводятся
 в stderr; `-quiet` полностью отключает этот вывод. В интерактивном терминале
 строка обновляется на месте, а в CI остаются обычные периодические сообщения.
+Флаги `-cpuprofile`, `-memprofile` и `-trace` включают opt-in профилирование
+(см. [«Профилирование»](#профилирование)).
 
 Local-regime анализ напрямую строит sparse token-frequency profiles вне
 исключённого центрального промежутка и выполняет фиксированные sweeps радиусов,
@@ -932,7 +934,7 @@ go run ./transition-network-validate \
   -seed 1
 ```
 
-Восьмистадийный status bar с elapsed/ETA выводится в stderr, `-quiet` его отключает. После каждого permutation replicate атомарно сохраняется `<output-dir>/checkpoint.json`; checkpoint возобновляется только при совпадении SHA256 входов и всех параметров. `-checkpoint-path -` отключает сохранение, после полного успешного запуска checkpoint удаляется. Результат включает 15 TSV/YAML/Markdown файлов, preferred/depleted GraphML и десять компактных SVG diagnostics.
+Восьмистадийный status bar с elapsed/ETA выводится в stderr, `-quiet` его отключает. После каждого permutation replicate атомарно сохраняется `<output-dir>/checkpoint.json`; checkpoint возобновляется только при совпадении SHA256 входов и всех параметров. `-checkpoint-path -` отключает сохранение, после полного успешного запуска checkpoint удаляется. Результат включает 15 TSV/YAML/Markdown файлов, preferred/depleted GraphML и десять компактных SVG diagnostics. Флаги `-cpuprofile`, `-memprofile` и `-trace` включают opt-in профилирование (см. [«Профилирование»](#профилирование)).
 
 ## 10. Поиск направленных парных зависимостей `begin-end-analyze`
 
@@ -1005,5 +1007,31 @@ go vet ./...
 ```
 
 Тесты проверяют подсчёт окружений и позиций, формулы вероятностей, PMI, самопереходы, сходство контекстов, точные n-граммы, границы строк, контексты последовательностей, максимальные повторы, координаты, пороги, детерминированную сортировку, отсутствие TEST leakage, fold-инварианты, стабильность классов и ablation, а также (для `structural-reliability`) пересчёт eligibility и соседей при разных порогах, Spearman correlation, детерминированный occurrence-level subsampling, интерполяцию `reliability(component, n)` по `log2(n)` с ограничением снизу/сверху, context diversity и байтовую идентичность повторного YAML-вывода.
+
+## Профилирование
+
+`internal/profiling` даёт opt-in CPU/heap/trace профилирование через стандартные флаги `-cpuprofile`, `-memprofile` и `-trace`; без них профилирование полностью выключено, и ни алгоритмы, ни статистика, ни output не меняются. Сейчас флаги подключены в `transition-network-validate` и `structural-projection-analyze` через общий helper; остальные CLI можно подключить тем же способом. Родительские директории создаются автоматически, ошибки открытия/записи profile файла завершают программу ненулевым кодом с диагностикой в stderr. Heap profile снимается после `runtime.GC()` по завершении вычислений. Elapsed runtime всего процесса всегда печатается в stderr, независимо от профилирования.
+
+```bash
+go run ./transition-network-validate \
+  -corpus data_work/ZL3b-x7.txt \
+  -token-metadata-map workdir/metadata-validation/token_metadata_map.tsv \
+  -output-dir workdir/transition-network-profile \
+  -min-token-count 10 \
+  -min-block-token-count 5 \
+  -permutations 1000 \
+  -refine-permutations 10000 \
+  -seed 1 \
+  -cpuprofile profiles/transition.cpu.pprof \
+  -memprofile profiles/transition.mem.pprof
+```
+
+```bash
+go tool pprof -top profiles/transition.cpu.pprof
+go tool pprof -top -cum profiles/transition.cpu.pprof
+go tool pprof -top -alloc_space profiles/transition.mem.pprof
+go tool pprof -http=:8080 profiles/transition.cpu.pprof
+go tool trace profiles/transition.trace
+```
 
 Для `higher-order-sequence-validate` тесты дополнительно проверяют programmatic frozen candidate extraction (без hardcoded списков), защиту physical-block boundary при ABC occurrence extraction, count(B)/count(AB)/count(BC)/count(ABC), P(C|B)/P(C|A,B)/enrichment/reverse conditional probability, суммирование continuation distributions к 1 и энтропию, сохранение marginals и отсутствие cross-block leakage в conditional-neighbor permutation, CMI, additive smoothing alpha=0.5, zero-leakage leave-one-block-out и M1/M2 log loss, context alternative enumeration, normalized block position, jackknife (ровно один исключённый block), BH FDR, checkpoint fingerprint, outcome classification и байтовую идентичность результатов при том же seed — в том числе после прерывания и возобновления с checkpoint.

@@ -4,12 +4,19 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"time"
 
+	"zcore.dev/voinich/internal/profiling"
 	"zcore.dev/voinich/internal/structuralprojection"
 	"zcore.dev/voinich/internal/workdir"
 )
 
 func main() {
+	os.Exit(run())
+}
+
+func run() (code int) {
+	start := time.Now()
 	c := structuralprojection.Config{}
 	flag.StringVar(&c.CorpusPath, "corpus", "data_work/ZL3b-x7.txt", "IVTT -x7 tokenized corpus")
 	flag.StringVar(&c.StructuralPairsPath, "structural-pairs", workdir.Path("soft_structural_pairs.tsv"), "soft structural pair TSV")
@@ -28,9 +35,26 @@ func main() {
 	flag.StringVar(&c.Pair, "pair", "", "analyze only tokenA,tokenB")
 	flag.IntVar(&c.FamilyID, "family", 0, "analyze only one family ID")
 	flag.BoolVar(&c.Quiet, "quiet", false, "disable progress output")
+	prof := profiling.RegisterFlags(flag.CommandLine)
 	flag.Parse()
+
+	defer profiling.PrintElapsed(os.Stderr, start)
+
+	sess, err := profiling.Start(prof)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "Error:", err)
+		return 1
+	}
+	defer func() {
+		if err := sess.Stop(); err != nil {
+			fmt.Fprintln(os.Stderr, "Error:", err)
+			code = 1
+		}
+	}()
+
 	if err := structuralprojection.RunAndWrite(c); err != nil {
 		fmt.Fprintln(os.Stderr, "Error:", err)
-		os.Exit(1)
+		return 1
 	}
+	return 0
 }
