@@ -1,0 +1,63 @@
+package main
+
+import (
+	"flag"
+	"fmt"
+	"os"
+	"strconv"
+	"strings"
+
+	"zcore.dev/voinich/internal/conditionalregime"
+	"zcore.dev/voinich/internal/workdir"
+)
+
+type intList []int
+
+func (l *intList) String() string {
+	s := make([]string, len(*l))
+	for i, v := range *l {
+		s[i] = strconv.Itoa(v)
+	}
+	return strings.Join(s, ",")
+}
+func (l *intList) Set(s string) error {
+	*l = nil
+	for _, part := range strings.Split(s, ",") {
+		v, err := strconv.Atoi(strings.TrimSpace(part))
+		if err != nil {
+			return fmt.Errorf("invalid integer %q", part)
+		}
+		*l = append(*l, v)
+	}
+	return nil
+}
+
+func main() {
+	c := conditionalregime.Config{}
+	var windowSizes, residualWindowSizes intList
+	flag.StringVar(&c.CorpusPath, "corpus", "data_work/ZL3b-x7.txt", "canonical IVTT -x7 corpus, unchanged")
+	flag.StringVar(&c.TokenMetadataMap, "token-metadata-map", "workdir/metadata-validation/token_metadata_map.tsv", "frozen token_metadata_map.tsv from metadata-validate")
+	flag.StringVar(&c.OutputDir, "output-dir", workdir.Path("conditional-regimes"), "result directory")
+	flag.Var(&windowSizes, "window-sizes", "frozen within-class scales (Part A)")
+	flag.Var(&residualWindowSizes, "residual-window-sizes", "frozen pooled residual scales (Part B)")
+	flag.IntVar(&c.MinClassTokens, "min-class-tokens", 1000, "minimum total tokens for a class to be eligible")
+	flag.IntVar(&c.MinBlockTokens, "min-block-tokens", 500, "minimum largest contiguous block for a class to be eligible")
+	flag.IntVar(&c.KMin, "k-min", 2, "minimum K")
+	flag.IntVar(&c.KMaxWithin, "k-max-within", 10, "maximum K for within-class discovery (Part A)")
+	flag.IntVar(&c.KMaxResidual, "k-max-residual", 15, "maximum K for pooled residual clustering (Part B)")
+	flag.IntVar(&c.Permutations, "permutations", 1000, "primary block-aware null permutations")
+	flag.Int64Var(&c.Seed, "seed", 1, "deterministic random seed")
+	flag.StringVar(&c.CheckpointPath, "checkpoint-path", "", "progress checkpoint file (default <output-dir>/checkpoint.json; \"-\" disables checkpointing)")
+	flag.BoolVar(&c.Quiet, "quiet", false, "disable status bar")
+	flag.Parse()
+	c.WindowSizes = []int(windowSizes)
+	c.ResidualWindowSizes = []int(residualWindowSizes)
+	if c.Permutations < 1 {
+		fmt.Fprintln(os.Stderr, "Error: permutations must be positive")
+		os.Exit(2)
+	}
+	if err := conditionalregime.RunAndWrite(c); err != nil {
+		fmt.Fprintln(os.Stderr, "Error:", err)
+		os.Exit(1)
+	}
+}

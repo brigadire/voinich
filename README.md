@@ -22,6 +22,7 @@
 18. `local-regime-analyze` отделяет дальнюю последовательную структуру от общей локальной нестационарности корпуса.
 19. `metadata-validate` строго сопоставляет metadata исходного IVTFF с frozen IVTT-корпусом и независимо проверяет уже зафиксированные distributional boundaries и clusters.
 20. `cluster-metadata-global` подтверждающе проверяет association blind distributional regimes с Currier/hand по всему заранее зафиксированному frozen search space (window_size x method x K) с единой block-aware permutation на весь search space.
+21. `conditional-regime-analyze` проверяет, остаётся ли внутри Currier/hand-controlled material и после удаления Currier x hand signature воспроизводимая distributional structure.
 
 Типичный конвейер:
 
@@ -80,6 +81,7 @@ go build -o workdir/bin/global-regime-analyze ./global-regime-analyze
 go build -o workdir/bin/local-regime-analyze ./local-regime-analyze
 go build -o workdir/bin/metadata-validate ./metadata-validate
 go build -o workdir/bin/cluster-metadata-global ./cluster-metadata-global
+go build -o workdir/bin/conditional-regime-analyze ./conditional-regime-analyze
 ```
 
 Графемно-структурный анализ запускается поверх неизменённого pair dataset:
@@ -256,6 +258,68 @@ sensitivity analysis, а не primary evidence. Empirical p-values исполь�
 `metadata_validation_report.md` (создаётся, если файл ещё не существует).
 Пятистадийный status bar с elapsed/ETA выводится в stderr; `-quiet` полностью
 его отключает.
+
+`cluster-metadata-global` показал, что blind distributional regimes значимо
+связаны с Currier и Davis hand. `conditional-regime-analyze` задаёт более
+строгий вопрос: остаётся ли внутри Currier×hand-controlled material
+воспроизводимая структура? Discovery никогда не видит "улучшенный" корпус:
+Part A кластеризует окна внутри одного physical block одного Currier×hand
+class (окно никогда не пересекает metadata-границу), Part B удаляет
+ожидаемую per-class distributional signature (train-only centering по
+contiguous block/fold, без held-out leakage) и кластеризует residual окна
+всех eligible classes вместе, а Part C ищет change points тем же методом,
+что и `global-regime-analyze`, но внутри controlled blocks. Везде
+используется то же token-frequency window representation и те же
+clustering/change-point примитивы, что и в `global-regime-analyze` — никаких
+новых признаков.
+
+```bash
+go run ./conditional-regime-analyze \
+  -corpus data_work/ZL3b-x7.txt \
+  -token-metadata-map workdir/metadata-validation/token_metadata_map.tsv \
+  -output-dir workdir/conditional-regimes \
+  -window-sizes 50,100,200,500 \
+  -residual-window-sizes 50,100,200,500,1000 \
+  -min-class-tokens 1000 \
+  -min-block-tokens 500 \
+  -k-min 2 \
+  -k-max-within 10 \
+  -k-max-residual 15 \
+  -permutations 1000 \
+  -seed 1
+```
+
+Primary conditioning variable — joint `Currier × hand` class; Currier-only и
+hand-only разбиения анализируются как secondary. Unknown Currier/hand
+исключаются из conditioning (никогда не создаётся класс `UNKNOWN/Hx`), а
+каждый contiguous run одного joint class сначала считается отдельным
+physical block — несмежные блоки одного класса никогда не склеиваются в один
+искусственный поток. Class eligible только при total ≥1000 токенов и largest
+contiguous block ≥500 токенов; `window_size=1000` для Part A разрешён только
+как secondary diagnostic при block ≥3000 токенов. Null A (shuffle токенов
+внутри каждого block) и Null B (shuffle порядка окон внутри block) — два
+обязательных null model; primary run использует 1000 permutations, а
+заранее зафиксированное правило (`empirical_p < 0.01` и `effect_size ≥ 2.0`
+на primary pass) отбирает не более 5 сильнейших candidates для refinement на
+10000 permutations. Multiple-comparison correction для Part B использует тот
+же принцип "одна permutation — весь search space", что и
+`cluster-metadata-global`, отдельно для k_medoids (primary) и hierarchical
+(secondary). Семистадийный status bar с elapsed/ETA выводится в stderr;
+`-quiet` полностью его отключает.
+
+Part B's global permutation correction — самый дорогой цикл во всём
+конвейере, поэтому прогресс сохраняется в checkpoint-файл
+(`<output-dir>/checkpoint.json` по умолчанию, флаг `-checkpoint-path`,
+`-checkpoint-path -` отключает checkpointing): после каждого завершённого
+class×window_size combo на Parts A/B и — для permutation correction —
+после каждого отдельного replicate. Если при старте существует checkpoint,
+полученный с теми же corpus/metadata/параметрами (проверяется по SHA256
+входов и полному набору CLI-параметров), уже выполненная работа
+подгружается вместо пересчёта; при малейшем расхождении параметров
+checkpoint игнорируется и запуск идёт с нуля. Это позволяет продолжить
+расчёт с сохранённого момента после сбоя, kill или перезагрузки без потери
+уже проделанной работы. После успешного завершения checkpoint-файл
+удаляется.
 
 ## Быстрый запуск полного анализа
 
