@@ -881,6 +881,23 @@ go run ./token-relation-validate \
 
 Восьмистадийный status bar с elapsed/ETA выводится в stderr; `-quiet` полностью его отключает. Длительные permutation stages сохраняются в `checkpoint.json` и возобновляются детерминированно. `-checkpoint-path -` отключает checkpointing. Unknown-metadata runs учитываются только в audit и не увеличивают primary replication. Итог включает frozen inventory, block-level/summary TSV для directional, exact-distance, structural и sequence families, leave-one-block-out transfer, metadata matrices, controls, BH FDR, classification, rule-like descriptive output, YAML, Markdown и пять SVG-графиков.
 
+## Confirmatory audit воспроизводимой локальной структуры
+
+`replicated-local-structure-audit` работает только с frozen inventory предыдущего validation. Он отдельно проверяет FDR-significant distance profiles через leakage-free block LOBO, frequency-matched null и jackknife, а все ранее UNIVERSAL sequences — через within-block shuffle и secondary first-order Markov null.
+
+```bash
+go run ./replicated-local-structure-audit \
+  -corpus data_work/ZL3b-x7.txt \
+  -token-metadata-map workdir/metadata-validation/token_metadata_map.tsv \
+  -relation-dir workdir/token-relation-validation \
+  -discovery-dir workdir \
+  -output-dir workdir/replicated-local-structure \
+  -permutations 1000 \
+  -seed 1
+```
+
+Восьмистадийный status bar показывает elapsed/ETA; `-quiet` его отключает. После каждого null replicate атомарно обновляется `<output-dir>/checkpoint.json`, а совпадающий по входам и параметрам checkpoint автоматически продолжается. `-checkpoint-path -` отключает механизм. После успешной записи всех TSV, YAML и Markdown checkpoint удаляется. Distance и sequence p-values корректируются BH раздельно, а новые diagnostic statuses не заменяют исходную классификацию.
+
 ## 10. Поиск направленных парных зависимостей `begin-end-analyze`
 
 Инструмент читает агрегированный YAML-словарь совместно с исходным линейным корпусом. Он не восстанавливает дальний порядок из `word_before`/`word_after`: эти поля используются только для отделения тривиальных смежных пар.
@@ -929,6 +946,8 @@ go run ./begin-end-analyze \
 ├── begin-end-analyze/         # кандидаты на направленные дальние парные зависимости
 ├── token-relation-validate/   # frozen cross-metadata validation локальных отношений
 ├── internal/tokenrelationvalidation/ # blocks, transfer, controls, FDR и отчёты
+├── replicated-local-structure-audit/ # confirmatory audit frozen distance/sequence relations
+├── internal/replicatedlocalaudit/ # LOBO, null models, checkpoint и audit outputs
 ├── internal/structuralreliability/ # cumulative/bin/subsampling/reliability расчёты
 ├── run-full-analysis.sh       # полный пересчёт конвейера и экспериментов
 ├── internal/workdir/          # единый программный контракт выходных путей
