@@ -24,6 +24,7 @@
 20. `cluster-metadata-global` подтверждающе проверяет association blind distributional regimes с Currier/hand по всему заранее зафиксированному frozen search space (window_size x method x K) с единой block-aware permutation на весь search space.
 21. `conditional-regime-analyze` проверяет, остаётся ли внутри Currier/hand-controlled material и после удаления Currier x hand signature воспроизводимая distributional structure.
 22. `residual-diagnostic-analyze` объясняет metadata association frozen residual K=2 через held-out drift, covariance/dispersion, physical blocks, position и leakage-safe whitening, не расширяя discovery search.
+23. `higher-order-sequence-validate` проверяет для frozen n>=3 sequences, несёт ли первый токен дополнительную информацию о третьем при фиксированном втором (P(C|A,B) vs P(C|B)), не выполняя новый sequence discovery.
 
 Типичный конвейер:
 
@@ -898,6 +899,23 @@ go run ./replicated-local-structure-audit \
 
 Восьмистадийный status bar показывает elapsed/ETA; `-quiet` его отключает. После каждого null replicate атомарно обновляется `<output-dir>/checkpoint.json`, а совпадающий по входам и параметрам checkpoint автоматически продолжается. `-checkpoint-path -` отключает механизм. После успешной записи всех TSV, YAML и Markdown checkpoint удаляется. Distance и sequence p-values корректируются BH раздельно, а новые diagnostic statuses не заменяют исходную классификацию.
 
+## Higher-order sequential dependence `higher-order-sequence-validate`
+
+`higher-order-sequence-validate` берёт только frozen n>=3 sequences из `replicated-local-structure-audit` (программно, без hardcoded списка: shuffle FDR q<=0.05 из `strict_replicated_sequences.tsv`, разделение на primary/secondary по `markov_block_p` из `sequence_null_validation.tsv`) и проверяет более сильную гипотезу: несёт ли первый токен A дополнительную информацию о третьем токене C при уже известном втором токене B, то есть P(C|A,B) против P(C|B). Никакой новый bigram/trigram discovery не выполняется.
+
+```bash
+go run ./higher-order-sequence-validate \
+  -corpus data_work/ZL3b-x7.txt \
+  -token-metadata-map workdir/metadata-validation/token_metadata_map.tsv \
+  -audit-dir workdir/replicated-local-structure \
+  -discovery-dir workdir \
+  -output-dir workdir/higher-order-sequences \
+  -permutations 10000 \
+  -seed 1
+```
+
+Восьмистадийный status bar показывает elapsed/ETA; `-quiet` его отключает. Прогресс сохраняется в `<output-dir>/checkpoint.json` после каждого завершённого этапа анализа (occurrences/conditional probabilities, conditional-neighbor permutation CMI, leave-one-block-out, context/continuation/cross-block/meta-analysis, jackknife, position/structural-family controls) для каждого frozen candidate по отдельности; совпадающий по входам и параметрам checkpoint автоматически продолжается с прерванного места, а `-checkpoint-path -` отключает механизм. После успешной записи всех TSV, YAML, Markdown и SVG checkpoint удаляется. Primary conditional-dependence permutation test использует 10000 permutations (secondary descriptive candidate — 1000) и корректируется BH FDR только внутри primary family. Каждому frozen sequence присваивается один diagnostic status: `HIGHER_ORDER_REPLICATED`, `FIRST_ORDER_EXPLAINED`, `POSITION_DEPENDENT`, `METADATA_LIMITED`, `SINGLE_BLOCK_SENSITIVE` или `INSUFFICIENT_SUPPORT`.
+
 ## 10. Поиск направленных парных зависимостей `begin-end-analyze`
 
 Инструмент читает агрегированный YAML-словарь совместно с исходным линейным корпусом. Он не восстанавливает дальний порядок из `word_before`/`word_after`: эти поля используются только для отделения тривиальных смежных пар.
@@ -948,6 +966,8 @@ go run ./begin-end-analyze \
 ├── internal/tokenrelationvalidation/ # blocks, transfer, controls, FDR и отчёты
 ├── replicated-local-structure-audit/ # confirmatory audit frozen distance/sequence relations
 ├── internal/replicatedlocalaudit/ # LOBO, null models, checkpoint и audit outputs
+├── higher-order-sequence-validate/ # frozen n>=3 sequences: P(C|A,B) vs P(C|B)
+├── internal/higherorderseq/    # conditional probabilities, CMI, LOBO, jackknife, checkpoint
 ├── internal/structuralreliability/ # cumulative/bin/subsampling/reliability расчёты
 ├── run-full-analysis.sh       # полный пересчёт конвейера и экспериментов
 ├── internal/workdir/          # единый программный контракт выходных путей
@@ -965,3 +985,5 @@ go vet ./...
 ```
 
 Тесты проверяют подсчёт окружений и позиций, формулы вероятностей, PMI, самопереходы, сходство контекстов, точные n-граммы, границы строк, контексты последовательностей, максимальные повторы, координаты, пороги, детерминированную сортировку, отсутствие TEST leakage, fold-инварианты, стабильность классов и ablation, а также (для `structural-reliability`) пересчёт eligibility и соседей при разных порогах, Spearman correlation, детерминированный occurrence-level subsampling, интерполяцию `reliability(component, n)` по `log2(n)` с ограничением снизу/сверху, context diversity и байтовую идентичность повторного YAML-вывода.
+
+Для `higher-order-sequence-validate` тесты дополнительно проверяют programmatic frozen candidate extraction (без hardcoded списков), защиту physical-block boundary при ABC occurrence extraction, count(B)/count(AB)/count(BC)/count(ABC), P(C|B)/P(C|A,B)/enrichment/reverse conditional probability, суммирование continuation distributions к 1 и энтропию, сохранение marginals и отсутствие cross-block leakage в conditional-neighbor permutation, CMI, additive smoothing alpha=0.5, zero-leakage leave-one-block-out и M1/M2 log loss, context alternative enumeration, normalized block position, jackknife (ровно один исключённый block), BH FDR, checkpoint fingerprint, outcome classification и байтовую идентичность результатов при том же seed — в том числе после прерывания и возобновления с checkpoint.
