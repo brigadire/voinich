@@ -50,8 +50,9 @@ func RunAndWrite(c Config) error {
 	for i := range a.Stability {
 		stab[a.Stability[i].Direction+"\x00"+a.Stability[i].Token] = &a.Stability[i]
 	}
+	ws := newPermWorkspace(a, c.MinBlockTokenCount)
 	for rep := cp.Completed; rep < c.Permutations; rep++ {
-		es, outs, ins := permutedStatistics(a, rep, c.Seed, c.MinBlockTokenCount)
+		es, outs, ins := ws.run(c.Seed, rep, true)
 		for e, v := range es {
 			r := summaryByKey[e.String()]
 			if r == nil {
@@ -129,7 +130,7 @@ func RunAndWrite(c Config) error {
 		extra := c.RefinePermutations - c.Permutations
 		for n := cp.RefineCompleted; n < extra; n++ {
 			rep := c.Permutations + n
-			es, _, _ := permutedStatistics(a, rep, c.Seed, c.MinBlockTokenCount)
+			es, _, _ := ws.run(c.Seed, rep, false)
 			for e, v := range es {
 				r := summaryByKey[e.String()]
 				if r != nil && set[e.String()] && ((r.ExpectedSign == "preferred" && v >= r.MedianLog2) || (r.ExpectedSign == "depleted" && v <= r.MedianLog2)) {
