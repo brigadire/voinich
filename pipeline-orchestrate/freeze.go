@@ -1,0 +1,234 @@
+package main
+
+import (
+	"crypto/sha256"
+	"encoding/hex"
+	"fmt"
+	"io"
+	"io/fs"
+	"os"
+	"path/filepath"
+	"sort"
+	"strings"
+	"time"
+
+	"zcore.dev/voinich/internal/workdir"
+)
+
+func frozenMarkerPath(experimentDir string) string { return filepath.Join(experimentDir, "FROZEN") }
+
+// isFrozen reports whether experimentDir already has a FROZEN marker -
+// Task36's "no subsequent change may silently overwrite this baseline".
+func isFrozen(experimentDir string) (bool, error) {
+	_, err := os.Stat(frozenMarkerPath(experimentDir))
+	if os.IsNotExist(err) {
+		return false, nil
+	}
+	return err == nil, nil
+}
+
+// snapshotOutputs copies every file under workdir/ (excluding workdir/bin,
+// the build scratch area - never a scientific output) into
+// experimentDir/outputs, preserving relative paths, and returns the
+// (sorted) list of relative paths copied.
+func snapshotOutputs(experimentDir string) ([]string, error) {
+	src := workdir.Dir
+	dst := filepath.Join(experimentDir, "outputs")
+	if err := os.MkdirAll(dst, 0755); err != nil {
+		return nil, err
+	}
+	var relPaths []string
+	err := filepath.WalkDir(src, func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		rel, err := filepath.Rel(src, path)
+		if err != nil {
+			return err
+		}
+		if rel == "." {
+			return nil
+		}
+		if rel == "bin" || strings.HasPrefix(rel, "bin"+string(filepath.Separator)) {
+			if d.IsDir() {
+				return filepath.SkipDir
+			}
+			return nil
+		}
+		if d.IsDir() {
+			return os.MkdirAll(filepath.Join(dst, rel), 0755)
+		}
+		if err := copyFile(path, filepath.Join(dst, rel)); err != nil {
+			return fmt.Errorf("copy %s: %w", rel, err)
+		}
+		relPaths = append(relPaths, rel)
+		return nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	sort.Strings(relPaths)
+	return relPaths, nil
+}
+
+func copyFile(src, dst string) error {
+	in, err := os.Open(src)
+	if err != nil {
+		return err
+	}
+	defer in.Close()
+	if err := os.MkdirAll(filepath.Dir(dst), 0755); err != nil {
+		return err
+	}
+	out, err := os.Create(dst)
+	if err != nil {
+		return err
+	}
+	defer out.Close()
+	_, err = io.Copy(out, in)
+	return err
+}
+
+// writeChecksums computes SHA256 for every file under outputs/ (by its
+// relative path) in the standard `sha256sum`-compatible format, so
+// `sha256sum -c checksums.sha256` (run from experimentDir/outputs)
+// verifies the frozen baseline at any point in the future.
+func writeChecksums(experimentDir string, relPaths []string) (string, error) {
+	outputsDir := filepath.Join(experimentDir, "outputs")
+	path := filepath.Join(experimentDir, "checksums.sha256")
+	f, err := os.Create(path)
+	if err != nil {
+		return "", err
+	}
+	defer f.Close()
+	h := sha256.New()
+	for _, rel := range relPaths {
+		sum, err := sha256File(filepath.Join(outputsDir, rel))
+		if err != nil {
+			return "", err
+		}
+		line := fmt.Sprintf("%s  %s\n", sum, rel)
+		if _, err := f.WriteString(line); err != nil {
+			return "", err
+		}
+		io.WriteString(h, line)
+	}
+	return hex.EncodeToString(h.Sum(nil)), nil
+}
+
+// writeReport writes the Task36 final report: per-stage wall-time/status/
+// resource usage, total wall-time, and pointers to the manifest and
+// checksums.
+func writeReport(experimentDir string, m *Manifest, rs *RunState) error {
+	var b strings.Builder
+	fmt.Fprintf(&b, "# Voynich Baseline - Experiment Report\n\n")
+	fmt.Fprintf(&b, "ExperimentID: `%s`\n\n", m.ExperimentID)
+	fmt.Fprintf(&b, "Git commit: `%s`%s\n\n", m.GitCommit, dirtyNote(m.GitDirty))
+	fmt.Fprintf(&b, "Created: %s\n\n", m.CreatedAt.Format(time.RFC3339))
+	fmt.Fprintf(&b, "Platform: %s/%s, Go %s, host `%s`, %d CPUs\n\n", m.GOOS, m.GOARCH, m.GoVersion, m.Hostname, m.NumCPU)
+	fmt.Fprintf(&b, "IVTFF source: `%s` (sha256 `%s`)\n\n", m.IVTFFPath, m.IVTFFSHA256)
+	fmt.Fprintf(&b, "Frozen corpus: `%s` (sha256 `%s`)\n\n", m.CorpusPath, m.CorpusSHA256)
+	fmt.Fprintf(&b, "Executor: `%s` - %s\n\n", m.Executor, m.ExecutorNote)
+	fmt.Fprintf(&b, "Workers:\n\n")
+	for _, w := range m.Workers {
+		fmt.Fprintf(&b, "- %s: `%s`\n", w.Kind, w.Name)
+	}
+	fmt.Fprintf(&b, "\n## Stage results\n\n")
+	fmt.Fprintf(&b, "| # | Stage | Status | Wall time | User CPU | Sys CPU | Max RSS |\n")
+	fmt.Fprintf(&b, "|---|---|---|---|---|---|---|\n")
+	var total time.Duration
+	for i, sr := range rs.Stages {
+		total += time.Duration(sr.DurationSeconds * float64(time.Second))
+		fmt.Fprintf(&b, "| %d | %s | %s | %.1fs | %.1fs | %.1fs | %d KB |\n",
+			i+1, sr.Name, sr.Status, sr.DurationSeconds, sr.UserCPUSeconds, sr.SysCPUSeconds, sr.MaxRSSKB)
+	}
+	fmt.Fprintf(&b, "\n**Total wall time (sum of stages): %s**\n\n", total.Round(time.Second))
+	fmt.Fprintf(&b, "Full manifest: `manifest.json`. Per-file checksums: `checksums.sha256`. Per-stage logs: `logs/`.\n")
+	return os.WriteFile(filepath.Join(experimentDir, "REPORT.md"), []byte(b.String()), 0644)
+}
+
+func dirtyNote(dirty bool) string {
+	if dirty {
+		return " (**dirty working tree at manifest time**)"
+	}
+	return ""
+}
+
+// freezeExperiment finalizes a fully-completed run: snapshot workdir/'s
+// outputs, checksum them, write the report, and write the FROZEN marker
+// that refuses any further run/freeze against this directory.
+func freezeExperiment(experimentDir string, force bool) error {
+	frozen, err := isFrozen(experimentDir)
+	if err != nil {
+		return err
+	}
+	if frozen && !force {
+		return fmt.Errorf("experiment %s is already FROZEN; pass -force to refreeze (this OVERWRITES the existing baseline - only do this deliberately)", experimentDir)
+	}
+	m, err := loadManifest(experimentDir)
+	if err != nil {
+		return fmt.Errorf("load manifest: %w", err)
+	}
+	rs, err := loadRunState(experimentDir)
+	if err != nil {
+		return fmt.Errorf("load run-state: %w", err)
+	}
+	if !rs.allCompleted() {
+		return fmt.Errorf("not all stages completed; refusing to freeze an incomplete run")
+	}
+
+	relPaths, err := snapshotOutputs(experimentDir)
+	if err != nil {
+		return fmt.Errorf("snapshot outputs: %w", err)
+	}
+	checksumsDigest, err := writeChecksums(experimentDir, relPaths)
+	if err != nil {
+		return fmt.Errorf("write checksums: %w", err)
+	}
+	if err := writeReport(experimentDir, m, rs); err != nil {
+		return fmt.Errorf("write report: %w", err)
+	}
+
+	marker := fmt.Sprintf("Voynich Baseline frozen at %s\nExperimentID: %s\nchecksums.sha256 sha256: %s\nFiles: %d\n",
+		time.Now().UTC().Format(time.RFC3339), m.ExperimentID, checksumsDigest, len(relPaths))
+	if err := os.WriteFile(frozenMarkerPath(experimentDir), []byte(marker), 0444); err != nil {
+		return fmt.Errorf("write FROZEN marker: %w", err)
+	}
+	fmt.Printf("Frozen %s: %d output files, checksums.sha256 sha256=%s\n", experimentDir, len(relPaths), checksumsDigest)
+	return nil
+}
+
+// verifyExperiment recomputes every checksum in checksums.sha256 and
+// reports any mismatch or missing file - the drift-detection mechanism
+// backing "no change may silently overwrite the baseline".
+func verifyExperiment(experimentDir string) error {
+	outputsDir := filepath.Join(experimentDir, "outputs")
+	b, err := os.ReadFile(filepath.Join(experimentDir, "checksums.sha256"))
+	if err != nil {
+		return err
+	}
+	lines := strings.Split(strings.TrimRight(string(b), "\n"), "\n")
+	mismatches := 0
+	for _, line := range lines {
+		parts := strings.SplitN(line, "  ", 2)
+		if len(parts) != 2 {
+			continue
+		}
+		want, rel := parts[0], parts[1]
+		got, err := sha256File(filepath.Join(outputsDir, rel))
+		if err != nil {
+			fmt.Printf("MISSING  %s: %v\n", rel, err)
+			mismatches++
+			continue
+		}
+		if got != want {
+			fmt.Printf("MISMATCH %s: want %s got %s\n", rel, want, got)
+			mismatches++
+		}
+	}
+	if mismatches > 0 {
+		return fmt.Errorf("%d file(s) failed verification", mismatches)
+	}
+	fmt.Printf("Verified %d files: all match checksums.sha256\n", len(lines))
+	return nil
+}
