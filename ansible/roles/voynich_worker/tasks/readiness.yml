@@ -1,0 +1,62 @@
+---
+# Task35 phase 8: verify more than process existence. At minimum: process
+# alive, mTLS handshake succeeds, and the coordinator recognizes this
+# specific worker credential. Deployment fails (not just warns) if any of
+# these do not hold within the bounded readiness window.
+
+- name: readiness - verify the managed process is alive
+  ansible.builtin.include_tasks: is_running.yml
+
+- name: readiness - fail fast if the process never came up
+  ansible.builtin.fail:
+    msg: >-
+      voynich_worker: managed process is not running on
+      {{ inventory_hostname }} after start - check
+      {{ voynich_worker_log_dir }}/worker.log on that host.
+  when: not voynich_worker_is_running
+
+- name: readiness - verify curl is available for the mTLS probe
+  ansible.builtin.command: curl --version
+  changed_when: false
+  failed_when: false
+  register: voynich_worker_curl_check
+
+- name: readiness - fail if curl is missing
+  ansible.builtin.fail:
+    msg: >-
+      curl is required on the worker host to verify mTLS readiness
+      (Task35 phase 8); install it or provide an alternative probe.
+  when: voynich_worker_curl_check.rc != 0
+
+# GET /v1/handshake with this host's own installed credentials exercises
+# exactly the same mTLS + protocol path the real worker process uses at
+# its own startup handshake (internal/conditionalregime/remote.go): a
+# revoked, foreign-CA, wrong-EKU or otherwise rejected certificate fails
+# here the same way it would fail for the worker itself, so a 200 is
+# proof the coordinator authenticated and recognized this specific
+# worker identity - not merely that some TCP port answered.
+- name: readiness - probe the coordinator with this worker's own mTLS credentials
+  ansible.builtin.command:
+    cmd: >-
+      curl -sS -o /dev/null -w '%{http_code}'
+      --cacert {{ (voynich_worker_install_dir ~ '/pki/ca.crt') | quote }}
+      --cert {{ (voynich_worker_install_dir ~ '/pki/worker.crt') | quote }}
+      --key {{ (voynich_worker_install_dir ~ '/pki/worker.key') | quote }}
+      {{ (voynich_worker_coordinator_url ~ '/v1/handshake') | quote }}
+  register: voynich_worker_handshake_probe
+  changed_when: false
+  failed_when: false
+  until: (voynich_worker_handshake_probe.stdout | default('')) == '200'
+  retries: "{{ ((voynich_worker_readiness_timeout_seconds | float) / (voynich_worker_readiness_poll_interval_seconds | float)) | round(0, 'ceil') | int }}"
+  delay: "{{ voynich_worker_readiness_poll_interval_seconds }}"
+
+- name: readiness - fail deployment if the worker cannot authenticate to the coordinator
+  ansible.builtin.fail:
+    msg: >-
+      voynich_worker: mTLS handshake against
+      {{ voynich_worker_coordinator_url }}/v1/handshake did not return 200
+      within {{ voynich_worker_readiness_timeout_seconds }}s (last status:
+      {{ voynich_worker_handshake_probe.stdout | default('none') }}).
+      The process may be running but unauthenticated/unrecognized - this
+      deployment fails rather than reporting a false success (phase 8).
+  when: (voynich_worker_handshake_probe.stdout | default('')) != '200'

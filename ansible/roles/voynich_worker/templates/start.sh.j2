@@ -1,0 +1,24 @@
+#!/bin/bash
+# Rendered by the voynich_worker role - do not edit on the target host,
+# it will be overwritten (and the worker restarted) on the next deploy.
+#
+# setsid starts a brand-new session so the worker survives the SSH session
+# that launched it; nohup+redirected stdio and disown complete the
+# detachment. The worker's own graceful shutdown listens for SIGINT
+# (Go's signal.NotifyContext(context.Background(), os.Interrupt)) - see
+# tasks/stop.yml.
+set -euo pipefail
+
+mkdir -p {{ voynich_worker_log_dir | quote }} {{ voynich_worker_cache_dir | quote }}
+
+setsid nohup {{ (voynich_worker_install_dir ~ '/bin/conditional-regime-analyze') | quote }} \
+  -coordinator {{ voynich_worker_coordinator_url | quote }} \
+  -ca {{ (voynich_worker_install_dir ~ '/pki/ca.crt') | quote }} \
+  -tls-cert {{ (voynich_worker_install_dir ~ '/pki/worker.crt') | quote }} \
+  -tls-key {{ (voynich_worker_install_dir ~ '/pki/worker.key') | quote }} \
+  -remote-cache-dir {{ voynich_worker_cache_dir | quote }} \
+  -remote-concurrency {{ voynich_worker_concurrency | int }} \
+  >>{{ (voynich_worker_log_dir ~ '/worker.log') | quote }} 2>&1 </dev/null &
+
+echo $! > {{ (voynich_worker_install_dir ~ '/worker.pid') | quote }}
+disown

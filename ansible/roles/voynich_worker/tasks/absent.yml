@@ -1,0 +1,43 @@
+---
+# Task35 phase 9: state=absent. Stop the exact managed process, then
+# remove every managed artifact. Repeated runs are safe no-ops, and only
+# the configured voynich_worker_install_dir is ever touched - never a
+# broader /tmp sweep.
+
+- name: absent - stop the exact managed process (steps 1-4 - graceful, bounded, force if needed, PID metadata)
+  ansible.builtin.include_tasks: stop.yml
+
+- name: absent - remove worker cert/key and the copied CA (step 5)
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - "{{ voynich_worker_install_dir }}/pki/worker.key"
+    - "{{ voynich_worker_install_dir }}/pki/worker.crt"
+    - "{{ voynich_worker_install_dir }}/pki/ca.crt"
+
+- name: absent - remove managed caches/input bundles (step 6)
+  ansible.builtin.file:
+    path: "{{ voynich_worker_cache_dir }}"
+    state: absent
+
+- name: absent - remove the executable (step 7)
+  ansible.builtin.file:
+    path: "{{ voynich_worker_install_dir }}/bin/conditional-regime-analyze"
+    state: absent
+
+- name: absent - remove the complete managed directory (step 8)
+  ansible.builtin.file:
+    path: "{{ voynich_worker_install_dir }}"
+    state: absent
+
+- name: absent - verify no managed process remains (step 9)
+  ansible.builtin.assert:
+    that:
+      - voynich_worker_stop_verified | default(true)
+    fail_msg: >-
+      voynich_worker: stop.yml could not confirm the managed process on
+      {{ inventory_hostname }} exited before this role deleted its
+      managed directory - investigate before re-running (see
+      voynich_worker_running_pid recorded in stop.yml's run).
+    success_msg: "voynich_worker: confirmed no managed process remains on {{ inventory_hostname }}."

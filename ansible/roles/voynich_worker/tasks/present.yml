@@ -1,0 +1,112 @@
+---
+# Task35 phase 5/8: state=present. Create the managed directory, install
+# binary+config+credentials, start idempotently, and verify readiness -
+# failing the whole play if the worker cannot authenticate.
+
+- name: present - assert credential source variables are set
+  ansible.builtin.assert:
+    that:
+      - voynich_worker_ca_src | length > 0
+      - voynich_worker_cert_src | length > 0
+      - voynich_worker_key_src | length > 0
+    fail_msg: >-
+      voynich_worker_ca_src, voynich_worker_cert_src and
+      voynich_worker_key_src must all be set (per-host, from
+      conditional-regime-pki issue-worker output). See README.md.
+
+- name: present - assert the CA private key is never the configured source
+  ansible.builtin.assert:
+    that:
+      - (voynich_worker_ca_src | basename) != 'ca.key'
+      - (voynich_worker_key_src | basename) != 'ca.key'
+      - voynich_worker_key_src != voynich_worker_ca_src
+      - voynich_worker_key_src != voynich_worker_cert_src
+    fail_msg: >-
+      Refusing to proceed: one of the configured credential sources looks
+      like the project CA's own private key, or two roles collapse onto
+      the same file. Task34/35 never deploy ca.key to a worker.
+
+- name: present - stat credential sources on the controller
+  delegate_to: localhost
+  become: false
+  ansible.builtin.stat:
+    path: "{{ item }}"
+  loop:
+    - "{{ voynich_worker_ca_src }}"
+    - "{{ voynich_worker_cert_src }}"
+    - "{{ voynich_worker_key_src }}"
+  register: voynich_worker_cred_stat
+
+- name: present - fail if any credential source is missing
+  ansible.builtin.assert:
+    that:
+      - voynich_worker_cred_stat.results | map(attribute='stat') | map(attribute='exists') | select('==', false) | list | length == 0
+    fail_msg: >-
+      One or more of voynich_worker_ca_src/cert_src/key_src does not exist
+      on the controller: {{ voynich_worker_cred_stat.results
+        | rejectattr('stat.exists') | map(attribute='item') | list }}
+
+- name: present - guard against an accidentally shared worker private key
+  ansible.builtin.include_tasks: guard_shared_key.yml
+
+- name: present - create the managed directory tree
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0700'
+  loop:
+    - "{{ voynich_worker_install_dir }}"
+    - "{{ voynich_worker_install_dir }}/bin"
+    - "{{ voynich_worker_install_dir }}/pki"
+    - "{{ voynich_worker_install_dir }}/run"
+    - "{{ voynich_worker_cache_dir }}"
+    - "{{ voynich_worker_log_dir }}"
+
+- name: present - obtain and install the worker binary
+  ansible.builtin.include_tasks: build.yml
+
+- name: present - install the project CA certificate (never ca.key)
+  ansible.builtin.copy:
+    src: "{{ voynich_worker_ca_src }}"
+    dest: "{{ voynich_worker_install_dir }}/pki/ca.crt"
+    mode: '0644'
+  notify: restart voynich worker
+
+- name: present - install this host's worker certificate
+  ansible.builtin.copy:
+    src: "{{ voynich_worker_cert_src }}"
+    dest: "{{ voynich_worker_install_dir }}/pki/worker.crt"
+    mode: '0644'
+  notify: restart voynich worker
+
+- name: present - install this host's worker private key
+  ansible.builtin.copy:
+    src: "{{ voynich_worker_key_src }}"
+    dest: "{{ voynich_worker_install_dir }}/pki/worker.key"
+    mode: '0600'
+  no_log: true
+  diff: false
+  notify: restart voynich worker
+
+- name: present - render the start script
+  ansible.builtin.template:
+    src: start.sh.j2
+    dest: "{{ voynich_worker_install_dir }}/run/start.sh"
+    mode: '0700'
+  notify: restart voynich worker
+
+- name: present - apply any pending restart before the idempotent start check
+  ansible.builtin.meta: flush_handlers
+
+# --check cannot start a real process or verify a real mTLS handshake (there
+# is nothing real to start or probe - phase 13's documented --check
+# limitation, see README.md). Everything above (assertions, the shared-key
+# guard, and what copy/template *would* change) still runs and reports
+# accurately in --check mode.
+- name: present - ensure the worker is running (idempotent)
+  ansible.builtin.include_tasks: start.yml
+  when: not ansible_check_mode
+
+- name: present - verify readiness
+  ansible.builtin.include_tasks: readiness.yml
+  when: not ansible_check_mode

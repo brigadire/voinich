@@ -212,3 +212,105 @@ No code path in the coordinator or worker ever logs a private key, or any
 field of `ca.key`. The coordinator's default TLS error log records rejected
 connection attempts (missing/foreign/expired/revoked certificates) for
 audit purposes - this is a security signal, not a secret.
+
+## Fleet deployment with the voynich_worker Ansible role (Task35)
+
+Operators do not need to SSH to every worker host by hand. `ansible/`
+(repo root) provides a role that builds, installs, configures, starts,
+verifies and removes ephemeral workers under `/tmp` - it manages workers
+only, never the coordinator and never `ca.key`. Full variable reference,
+lifecycle mechanics, and idempotency evidence are in
+`ansible/roles/voynich_worker/README.md`; this section is the quick
+end-to-end path.
+
+### Prerequisites
+
+- A running coordinator (Sections 1-4 above) reachable from every worker
+  host over HTTPS.
+- `ca.crt` and one `worker-<id>.crt`/`worker-<id>.key` pair per worker host,
+  already issued via `conditional-regime-pki issue-worker` (Section 3) -
+  the role never generates or renews certificates itself.
+- Go toolchain on the Ansible controller (default build mode compiles
+  there) or a prebuilt binary; `curl` on every worker host (used for the
+  post-start mTLS readiness check).
+
+### Variables and per-host certificate mapping
+
+Every worker host gets its own `voynich_worker_cert_src`/`_key_src` in
+`host_vars` (or inline per-host, as in `ansible/inventory.example.yml`);
+`voynich_worker_ca_src` and `voynich_worker_coordinator_url` are typically
+group-level since only `ca.crt` (never `ca.key`) and the coordinator's
+address are safe to share. The role refuses to proceed if two hosts in the
+same run resolve to an identical private key, unless
+`voynich_worker_allow_shared_key: true` is set for a deliberate scratch
+environment. See the README's variable table for the complete list
+(`voynich_worker_state`, `_install_dir`, `_coordinator_url`,
+`_concurrency`, `_ca_src`, `_cert_src`, `_key_src`, `_build_mode`,
+`_log_dir`, and more).
+
+### Build strategy
+
+Default `voynich_worker_build_mode: copy_from_controller_build` builds
+`go build ./conditional-regime-analyze` once per unique GOOS/GOARCH pair
+actually present among the target hosts (never once per identical host),
+then copies the matching binary to each; `build_on_target` builds directly
+on each host; `prebuilt` copies an already-built binary. Every mode writes
+`bin/VERSION.json` on the target recording build mode, GOOS/GOARCH, the
+binary's SHA256, and the controller's git commit, so a deployed worker's
+provenance is always inspectable without running it.
+
+### Deploy, verify, roll out
+
+```bash
+cd ansible
+cp inventory.example.yml inventory.yml   # then edit: real hosts, real cert/key paths
+ansible-playbook -i inventory.yml deploy-workers.yml                     # all workers
+ansible-playbook -i inventory.yml deploy-workers.yml --limit worker1     # one host
+ansible-playbook -i inventory.yml deploy-workers.yml -e serial_size=1    # rolling, one at a time
+```
+
+A successful run means: the binary and this host's unique credentials are
+installed under `voynich_worker_install_dir` (default `/tmp/voynich-worker`),
+the worker process is started (surviving the SSH session that launched it),
+and - the deployment fails otherwise - a `GET /v1/handshake` probe from the
+worker host, using the exact credentials just installed, returned HTTP 200
+from the coordinator. That is the same mTLS-authenticated path the real
+worker uses at its own startup handshake: a revoked, foreign, expired or
+otherwise rejected certificate fails this check exactly as it would fail
+the real worker, so "deployed" always means "authenticated," not just
+"a process is running."
+
+### Removal
+
+```bash
+ansible-playbook -i inventory.yml deploy-workers.yml -e voynich_worker_state=absent                  # everywhere
+ansible-playbook -i inventory.yml deploy-workers.yml -e voynich_worker_state=absent --limit worker1  # one host
+```
+
+Stops the exact managed process (graceful SIGINT, bounded wait, SIGKILL
+only after that timeout, with an internal check that the *specific* PID
+signaled is actually gone), then removes the worker's key/certificate/copied
+CA, cache, binary, and the complete managed directory. Only
+`voynich_worker_install_dir` is ever touched; repeated `absent` runs are
+safe no-ops.
+
+### `/tmp` and reboot behavior
+
+Workers are deliberately not persisted across reboots (no boot-time service
+is installed by default): `/tmp` being cleared is expected and tolerated,
+matching the coordinator's own tolerance for a worker vanishing mid-lease
+(above). Re-running the role after `/tmp` loss recreates the worker from
+scratch.
+
+### Security
+
+Never deploy `ca.key` to a worker (the role asserts none of
+`_ca_src`/`_cert_src`/`_key_src` resolve to a file literally named `ca.key`);
+private key files are installed `0600` with `no_log`/`diff: false`; the
+coordinator URL must be `https://`; and there is no insecure-TLS variable
+to accidentally enable, because the underlying binary has no such flag.
+To protect worker private keys committed alongside Ansible material, use
+[Ansible Vault](https://docs.ansible.com/ansible/latest/vault_guide/index.html)
+(`ansible-vault encrypt files/certs/worker-1/worker.key`) or an
+operator-controlled equivalent - this role requires no new
+secret-management service.

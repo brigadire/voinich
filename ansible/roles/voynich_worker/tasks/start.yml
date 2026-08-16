@@ -1,0 +1,18 @@
+---
+# Task35 phase 6: idempotent start - a no-op if a valid managed process is
+# already running, so re-running the role (or a handler firing after an
+# unrelated change) never launches a second worker.
+
+- name: start - determine current run state
+  ansible.builtin.include_tasks: is_running.yml
+
+- name: start - launch the worker
+  ansible.builtin.command: "/bin/bash {{ voynich_worker_install_dir }}/run/start.sh"
+  when: not voynich_worker_is_running
+  changed_when: true
+
+- name: start - wait for the PID file the launch script writes
+  ansible.builtin.wait_for:
+    path: "{{ voynich_worker_install_dir }}/worker.pid"
+    timeout: 5
+  when: not voynich_worker_is_running

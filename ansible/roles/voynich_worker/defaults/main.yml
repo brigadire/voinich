@@ -1,0 +1,69 @@
+---
+# Task35 default variables for the voynich_worker role.
+# See README.md for the full description of every variable and how it maps
+# onto the Task33/34 conditional-regime-analyze worker interface.
+
+# --- Core state model ---------------------------------------------------
+voynich_worker_state: present            # present|absent
+voynich_worker_install_dir: /tmp/voynich-worker
+
+# --- Worker runtime (maps 1:1 onto conditional-regime-analyze flags) ----
+# -coordinator https://...
+voynich_worker_coordinator_url: ""
+# -remote-concurrency N
+voynich_worker_concurrency: 1
+
+# --- Credentials (per-host; set in host_vars, never shared) -------------
+# Controller-side path to the project CA certificate (ca.crt only, never
+# ca.key - this role refuses to proceed if a *_key path looks like a CA key).
+voynich_worker_ca_src: ""
+# Controller-side path to THIS host's individual worker certificate/key,
+# issued with `conditional-regime-pki issue-worker -worker-id <this host>`.
+voynich_worker_cert_src: ""
+voynich_worker_key_src: ""
+# Purely cosmetic label for log/metadata files - never treated as the
+# authoritative worker identity, which always comes from the certificate's
+# voynich-worker:// URI SAN (Task34 phase 8). Defaults to the inventory
+# hostname.
+voynich_worker_id: "{{ inventory_hostname }}"
+
+# Guard: refuse to deploy when two or more hosts in the same play share an
+# identical private key file, unless explicitly allowed (e.g. a scratch
+# test environment). See tasks/guard_shared_key.yml.
+voynich_worker_allow_shared_key: false
+
+# --- Build strategy (phase 4) --------------------------------------------
+# copy_from_controller_build (default): `go build` once per unique
+#   GOOS/GOARCH pair actually present among this play's target hosts, on
+#   the Ansible controller, then copy the matching binary to each host.
+# build_on_target: run `go build` on each target host directly (requires a
+#   Go toolchain and this repository's source checked out on the target).
+# prebuilt: copy an already-built binary from voynich_worker_binary_src.
+voynich_worker_build_mode: copy_from_controller_build
+# Repo root containing go.mod; used by copy_from_controller_build and
+# build_on_target. Defaults to the checkout this playbook lives in.
+voynich_worker_repo_path: "{{ playbook_dir }}/.."
+voynich_worker_go_bin: go
+# Controller-local scratch directory for build_mode=copy_from_controller_build.
+# Never part of the git tree; safe to delete at any time.
+voynich_worker_controller_build_dir: /tmp/voynich-worker-controller-build
+# Used only when voynich_worker_build_mode == prebuilt.
+voynich_worker_binary_src: ""
+# Optional per-host override; auto-detected from ansible_facts otherwise.
+voynich_worker_goos: ""
+voynich_worker_goarch: ""
+
+# --- Process lifecycle (phase 6) -----------------------------------------
+# pidfile (default): setsid+nohup+PID file with cmdline-verified safe kill.
+#   Portable, no systemd assumption.
+# systemd-run: transient `systemd-run --collect` unit/scope. Requires
+#   systemd on the target; falls back to pidfile automatically if absent.
+voynich_worker_process_manager: pidfile
+voynich_worker_log_dir: "{{ voynich_worker_install_dir }}/log"
+voynich_worker_cache_dir: "{{ voynich_worker_install_dir }}/cache"
+# Bounded graceful-shutdown wait (SIGINT, matching the binary's own
+# signal.NotifyContext(os.Interrupt) shutdown path) before SIGKILL.
+voynich_worker_stop_timeout_seconds: 15
+# Bounded wait for the post-start mTLS readiness probe (phase 8).
+voynich_worker_readiness_timeout_seconds: 20
+voynich_worker_readiness_poll_interval_seconds: 1

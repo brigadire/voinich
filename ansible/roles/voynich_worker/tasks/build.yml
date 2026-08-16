@@ -1,0 +1,147 @@
+---
+# Task35 phase 4: obtain the worker binary. Included by present.yml.
+#
+# Default (copy_from_controller_build) builds exactly once per unique
+# GOOS/GOARCH pair actually present among this play's target hosts - never
+# once per host - then copies the matching binary to each host. This
+# assumes the play's target hosts have already run "Resolve this host's
+# GOOS/GOARCH" (below) before any run_once/delegate_to: localhost step
+# reads their hostvars; Ansible's default linear strategy guarantees that
+# ordering within one play.
+
+- name: Assert build mode is known
+  ansible.builtin.assert:
+    that:
+      - voynich_worker_build_mode in ['copy_from_controller_build', 'build_on_target', 'prebuilt']
+    fail_msg: "voynich_worker_build_mode must be one of copy_from_controller_build, build_on_target, prebuilt"
+
+- name: Assert a prebuilt binary was given when required
+  ansible.builtin.assert:
+    that:
+      - voynich_worker_binary_src | length > 0
+    fail_msg: "voynich_worker_build_mode == prebuilt requires voynich_worker_binary_src"
+  when: voynich_worker_build_mode == 'prebuilt'
+
+- name: Resolve this host's GOOS/GOARCH
+  ansible.builtin.set_fact:
+    voynich_worker_resolved_goos: >-
+      {{ voynich_worker_goos if (voynich_worker_goos | length > 0) else (ansible_system | default('Linux') | lower) }}
+    voynich_worker_resolved_goarch: >-
+      {{ voynich_worker_goarch if (voynich_worker_goarch | length > 0) else
+         (goarch_map[ansible_architecture] | default(ansible_architecture)) }}
+  vars:
+    goarch_map:
+      x86_64: amd64
+      amd64: amd64
+      aarch64: arm64
+      arm64: arm64
+      armv7l: arm
+      i386: '386'
+      i686: '386'
+
+# --- Mode: copy_from_controller_build ------------------------------------
+
+- name: (copy_from_controller_build) Ensure controller build scratch directory exists
+  run_once: true
+  delegate_to: localhost
+  become: false
+  ansible.builtin.file:
+    path: "{{ voynich_worker_controller_build_dir }}"
+    state: directory
+    mode: '0755'
+  when: voynich_worker_build_mode == 'copy_from_controller_build'
+
+- name: (copy_from_controller_build) Compute unique GOOS/GOARCH pairs needed by this play
+  run_once: true
+  delegate_to: localhost
+  become: false
+  ansible.builtin.set_fact:
+    voynich_worker_needed_pairs: >-
+      {{ ansible_play_hosts_all
+         | map('extract', hostvars, 'voynich_worker_resolved_goos')
+         | zip(ansible_play_hosts_all | map('extract', hostvars, 'voynich_worker_resolved_goarch'))
+         | map('join', '/') | unique | list }}
+  when: voynich_worker_build_mode == 'copy_from_controller_build'
+
+- name: (copy_from_controller_build) Build one binary per unique GOOS/GOARCH pair, once
+  run_once: true
+  delegate_to: localhost
+  become: false
+  ansible.builtin.command:
+    cmd: >-
+      {{ voynich_worker_go_bin }} build -buildvcs=false
+      -o {{ voynich_worker_controller_build_dir }}/conditional-regime-analyze-{{ item.split('/')[0] }}-{{ item.split('/')[1] }}
+      ./conditional-regime-analyze
+    chdir: "{{ voynich_worker_repo_path }}"
+    creates: "{{ voynich_worker_controller_build_dir }}/conditional-regime-analyze-{{ item.split('/')[0] }}-{{ item.split('/')[1] }}"
+  environment:
+    GOOS: "{{ item.split('/')[0] }}"
+    GOARCH: "{{ item.split('/')[1] }}"
+    CGO_ENABLED: '0'
+  loop: "{{ voynich_worker_needed_pairs }}"
+  when: voynich_worker_build_mode == 'copy_from_controller_build'
+
+- name: (copy_from_controller_build) Copy this host's matching binary
+  ansible.builtin.copy:
+    src: "{{ voynich_worker_controller_build_dir }}/conditional-regime-analyze-{{ voynich_worker_resolved_goos }}-{{ voynich_worker_resolved_goarch }}"
+    dest: "{{ voynich_worker_install_dir }}/bin/conditional-regime-analyze"
+    mode: '0755'
+    remote_src: false
+  notify: restart voynich worker
+  when: voynich_worker_build_mode == 'copy_from_controller_build'
+
+# --- Mode: build_on_target ------------------------------------------------
+
+- name: (build_on_target) Build binary directly on the target host
+  ansible.builtin.command:
+    cmd: >-
+      {{ voynich_worker_go_bin }} build -buildvcs=false
+      -o {{ voynich_worker_install_dir }}/bin/conditional-regime-analyze
+      ./conditional-regime-analyze
+    chdir: "{{ voynich_worker_repo_path }}"
+  environment:
+    CGO_ENABLED: '0'
+  notify: restart voynich worker
+  when: voynich_worker_build_mode == 'build_on_target'
+
+# --- Mode: prebuilt --------------------------------------------------------
+
+- name: (prebuilt) Copy the supplied prebuilt binary
+  ansible.builtin.copy:
+    src: "{{ voynich_worker_binary_src }}"
+    dest: "{{ voynich_worker_install_dir }}/bin/conditional-regime-analyze"
+    mode: '0755'
+  notify: restart voynich worker
+  when: voynich_worker_build_mode == 'prebuilt'
+
+# --- Diagnosable identity (phase 4) ---------------------------------------
+# Skipped in --check mode: check mode never actually copies/builds the
+# binary, so there is nothing real to checksum yet (phase 13's documented
+# --check limitation - see README.md).
+
+- name: Checksum the deployed binary for diagnosability
+  ansible.builtin.stat:
+    path: "{{ voynich_worker_install_dir }}/bin/conditional-regime-analyze"
+    get_checksum: true
+    checksum_algorithm: sha256
+  register: voynich_worker_binary_stat
+  when: not ansible_check_mode
+
+- name: Best-effort controller git commit (diagnosability only, never fails the run)
+  run_once: true
+  delegate_to: localhost
+  become: false
+  ansible.builtin.command:
+    cmd: git rev-parse HEAD
+    chdir: "{{ voynich_worker_repo_path }}"
+  register: voynich_worker_git_commit
+  changed_when: false
+  failed_when: false
+  when: voynich_worker_build_mode != 'prebuilt' and not ansible_check_mode
+
+- name: Write deployed-binary metadata
+  ansible.builtin.template:
+    src: VERSION.json.j2
+    dest: "{{ voynich_worker_install_dir }}/bin/VERSION.json"
+    mode: '0644'
+  when: not ansible_check_mode

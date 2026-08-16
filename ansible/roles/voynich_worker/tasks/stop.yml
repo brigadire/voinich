@@ -1,0 +1,67 @@
+---
+# Task35 phase 9 removal steps 1-4: stop the exact managed process, wait a
+# bounded time, force-terminate only after the graceful timeout, remove
+# PID metadata. Shared by the "restart on change" handler and absent.yml.
+# Repeated calls (no process running) are safe no-ops.
+
+- name: stop - determine current run state
+  ansible.builtin.include_tasks: is_running.yml
+
+- name: stop - send graceful shutdown signal (SIGINT, matching the worker's own signal.NotifyContext(os.Interrupt) path)
+  ansible.builtin.command: "kill -INT {{ voynich_worker_running_pid }}"
+  when: voynich_worker_is_running
+  changed_when: true
+
+# The wait/force-terminate/confirm sequence below has nothing to verify
+# under --check: the SIGINT/SIGKILL above are only simulated there, so a
+# real process (if any) was never actually asked to exit. Skipping it is
+# phase 13's documented --check limitation (see README.md); is_running.yml
+# above still reports the real current state either way.
+- name: stop - wait (bounded) for graceful shutdown
+  ansible.builtin.command: "kill -0 {{ voynich_worker_running_pid }}"
+  register: voynich_worker_wait_stop
+  until: voynich_worker_wait_stop.rc != 0
+  retries: "{{ voynich_worker_stop_timeout_seconds }}"
+  delay: 1
+  changed_when: false
+  failed_when: false
+  when: voynich_worker_is_running and not ansible_check_mode
+
+- name: stop - force-terminate only if still alive after the graceful timeout
+  ansible.builtin.command: "kill -KILL {{ voynich_worker_running_pid }}"
+  when: voynich_worker_is_running and not ansible_check_mode and (voynich_worker_wait_stop.rc | default(1)) == 0
+  changed_when: true
+  failed_when: false
+
+- name: stop - confirm the exact PID we signaled is actually gone
+  ansible.builtin.command: "kill -0 {{ voynich_worker_running_pid }}"
+  register: voynich_worker_stop_confirm
+  until: voynich_worker_stop_confirm.rc != 0
+  retries: 5
+  delay: 1
+  changed_when: false
+  failed_when: false
+  when: voynich_worker_is_running and not ansible_check_mode
+
+# Recorded here (while the PID is still known) rather than re-derived in
+# absent.yml, which by the time it verifies removal has already deleted
+# worker.pid along with the rest of the managed directory (phase 9 step 8).
+# Always true under --check: there is nothing real left to verify there.
+- name: stop - record whether the managed process is confirmed gone
+  ansible.builtin.set_fact:
+    voynich_worker_stop_verified: >-
+      {{ ansible_check_mode or (not voynich_worker_is_running) or (voynich_worker_stop_confirm.rc | default(0)) != 0 }}
+
+- name: stop - fail if the managed process survived SIGINT and SIGKILL
+  ansible.builtin.fail:
+    msg: >-
+      voynich_worker: PID {{ voynich_worker_running_pid }} on
+      {{ inventory_hostname }} did not exit after SIGINT and SIGKILL
+      (phase 9 requires force termination only after a graceful timeout,
+      then confirmation that the exact managed process is gone).
+  when: not voynich_worker_stop_verified
+
+- name: stop - remove PID metadata
+  ansible.builtin.file:
+    path: "{{ voynich_worker_install_dir }}/worker.pid"
+    state: absent

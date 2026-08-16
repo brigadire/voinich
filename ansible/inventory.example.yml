@@ -1,0 +1,30 @@
+# Task35 example inventory - no real hosts, keys, passwords or production
+# certificates. Copy this file, replace the hosts and per-host credential
+# paths with real ones (issued by conditional-regime-pki, see
+# DISTRIBUTED_EXECUTION_OPERATIONS.md), and never commit the copy if it
+# names real infrastructure.
+#
+# Per Task34, every worker gets its own certificate/key: that mapping is
+# expressed here as per-host variables, never a single shared value.
+all:
+  children:
+    voynich_workers:
+      hosts:
+        worker1.example.internal:
+          ansible_host: 10.20.0.21
+          voynich_worker_id: worker-1
+          voynich_worker_cert_src: files/certs/worker-1/worker.crt
+          voynich_worker_key_src: files/certs/worker-1/worker.key
+        worker2.example.internal:
+          ansible_host: 10.20.0.22
+          voynich_worker_id: worker-2
+          voynich_worker_cert_src: files/certs/worker-2/worker.crt
+          voynich_worker_key_src: files/certs/worker-2/worker.key
+      vars:
+        ansible_user: deploy
+        # Shared across the group: the CA certificate (never ca.key) and
+        # the coordinator's own HTTPS address. Both are safe to share -
+        # only the per-host cert/key above must stay unique.
+        voynich_worker_ca_src: files/certs/ca.crt
+        voynich_worker_coordinator_url: "https://coordinator.example.internal:8443"
+        voynich_worker_concurrency: 4

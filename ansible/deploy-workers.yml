@@ -1,0 +1,18 @@
+---
+# Task35 example playbook. Usage:
+#
+#   ansible-playbook -i inventory.example.yml deploy-workers.yml
+#   ansible-playbook -i inventory.example.yml deploy-workers.yml --limit worker1.example.internal
+#   ansible-playbook -i inventory.example.yml deploy-workers.yml --limit voynich_workers -e voynich_worker_state=absent
+#   ansible-playbook -i inventory.example.yml deploy-workers.yml -e serial_size=1   # rolling, one host at a time
+#
+# All targeting is ordinary Ansible: --limit for one host or a subset,
+# `serial` below (or -e serial_size=N) for rolling deployment, and the
+# `voynich_workers` group for "all workers". There is no custom scheduler
+# here - see README.md and DISTRIBUTED_EXECUTION_OPERATIONS.md.
+- name: Deploy/remove Task33/34 ephemeral remote workers
+  hosts: voynich_workers
+  serial: "{{ serial_size | default('100%') }}"
+  gather_facts: true
+  roles:
+    - role: voynich_worker

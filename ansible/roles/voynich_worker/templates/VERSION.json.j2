@@ -1,0 +1,11 @@
+{
+  "deployed_at": "{{ ansible_date_time.iso8601 }}",
+  "build_mode": "{{ voynich_worker_build_mode }}",
+  "goos": "{{ voynich_worker_resolved_goos }}",
+  "goarch": "{{ voynich_worker_resolved_goarch }}",
+  "binary_sha256": "{{ voynich_worker_binary_stat.stat.checksum }}",
+  "repo_commit": "{{ (voynich_worker_git_commit.stdout | default('unknown')) if (voynich_worker_git_commit is defined and voynich_worker_git_commit.rc | default(1) == 0) else 'unknown' }}",
+  "worker_id_label": "{{ voynich_worker_id }}",
+  "install_dir": "{{ voynich_worker_install_dir }}",
+  "coordinator_url": "{{ voynich_worker_coordinator_url }}"
+}

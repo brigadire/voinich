@@ -1,0 +1,35 @@
+---
+# Task35 phase 6 "safe PID validation": determines whether the managed
+# worker.pid names a process whose own /proc cmdline still references our
+# exact managed binary path - never a bare PID-exists check, and never a
+# broad process-name match. Sets voynich_worker_is_running and
+# voynich_worker_running_pid (empty string when not running).
+
+- name: is_running - check for an existing PID file
+  ansible.builtin.stat:
+    path: "{{ voynich_worker_install_dir }}/worker.pid"
+  register: voynich_worker_pidfile_stat
+
+- name: is_running - read PID file contents
+  ansible.builtin.slurp:
+    src: "{{ voynich_worker_install_dir }}/worker.pid"
+  register: voynich_worker_pidfile_contents
+  when: voynich_worker_pidfile_stat.stat.exists
+
+- name: is_running - verify the PID's own cmdline still names our managed binary
+  ansible.builtin.command:
+    cmd: >-
+      grep -zq {{ (voynich_worker_install_dir ~ '/bin/conditional-regime-analyze') | quote }}
+      /proc/{{ (voynich_worker_pidfile_contents.content | b64decode | trim) }}/cmdline
+  register: voynich_worker_pid_check
+  changed_when: false
+  failed_when: false
+  check_mode: false
+  when: voynich_worker_pidfile_stat.stat.exists
+
+- name: is_running - set running-state facts
+  ansible.builtin.set_fact:
+    voynich_worker_is_running: >-
+      {{ voynich_worker_pidfile_stat.stat.exists and (voynich_worker_pid_check.rc | default(1)) == 0 }}
+    voynich_worker_running_pid: >-
+      {{ (voynich_worker_pidfile_contents.content | b64decode | trim) if voynich_worker_pidfile_stat.stat.exists else '' }}

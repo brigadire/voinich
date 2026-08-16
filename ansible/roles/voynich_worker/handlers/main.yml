@@ -1,0 +1,12 @@
+---
+# Task35 phases 6/13: a changed binary, certificate, key, or start script
+# triggers exactly one controlled stop-then-start, never a partial state.
+# Both entries listen for the same notification and run in this order.
+
+- name: restart voynich worker (stop)
+  ansible.builtin.include_tasks: stop.yml
+  listen: "restart voynich worker"
+
+- name: restart voynich worker (start)
+  ansible.builtin.include_tasks: start.yml
+  listen: "restart voynich worker"

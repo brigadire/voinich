@@ -1,0 +1,31 @@
+---
+# Task35 phase 7: refuse to deploy an identical worker private key to more
+# than one host in the same play run, unless explicitly allowed for a
+# scratch/test environment. A checksum is not sensitive (it does not
+# reveal the key), so this can be safely compared across hostvars.
+
+- name: guard_shared_key - checksum this host's worker private key (controller-side)
+  delegate_to: localhost
+  become: false
+  ansible.builtin.stat:
+    path: "{{ voynich_worker_key_src }}"
+    checksum_algorithm: sha256
+  register: voynich_worker_key_src_stat
+
+- name: guard_shared_key - record checksum as a fact visible to other hosts in this play
+  ansible.builtin.set_fact:
+    voynich_worker_key_checksum: "{{ voynich_worker_key_src_stat.stat.checksum | default('') }}"
+
+- name: guard_shared_key - refuse a shared private key across hosts unless explicitly allowed
+  run_once: true
+  ansible.builtin.assert:
+    that:
+      - (voynich_worker_allow_shared_key | bool) or (voynich_worker_all_checksums | unique | length) == (voynich_worker_all_checksums | length)
+    fail_msg: >-
+      Two or more hosts in this play resolve voynich_worker_key_src to an
+      identical private key. Task34 requires one unique certificate/key
+      per worker (WorkerID is derived from it). If this is a deliberate
+      scratch/test environment, set voynich_worker_allow_shared_key: true
+      to proceed anyway.
+  vars:
+    voynich_worker_all_checksums: "{{ ansible_play_hosts_all | map('extract', hostvars, 'voynich_worker_key_checksum') | list }}"
