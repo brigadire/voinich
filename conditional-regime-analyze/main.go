@@ -45,7 +45,7 @@ func run() (code int) {
 	c := conditionalregime.Config{}
 	var windowSizes, residualWindowSizes intList
 	var internalWorker bool
-	var remoteWorkerList, remoteListen, remoteCache string
+	var workerCA, workerCoordinator, remoteCache string
 	var remoteConcurrency int
 	flag.StringVar(&c.CorpusPath, "corpus", "data_work/ZL3b-x7.txt", "canonical IVTT -x7 corpus, unchanged")
 	flag.StringVar(&c.TokenMetadataMap, "token-metadata-map", "workdir/metadata-validation/token_metadata_map.tsv", "frozen token_metadata_map.tsv from metadata-validate")
@@ -61,13 +61,17 @@ func run() (code int) {
 	flag.Int64Var(&c.Seed, "seed", 1, "deterministic random seed")
 	flag.IntVar(&c.Workers, "workers", 1, "bounded local permutation workers")
 	flag.StringVar(&c.Executor, "executor", "goroutine", "permutation job backend: goroutine|process|remote")
-	flag.StringVar(&remoteWorkerList, "remote-workers", "", "comma-separated trusted remote worker base URLs")
-	flag.StringVar(&c.RemoteToken, "remote-token", os.Getenv("CONDITIONAL_REGIME_REMOTE_TOKEN"), "shared bearer token (or CONDITIONAL_REGIME_REMOTE_TOKEN)")
-	flag.DurationVar(&c.RemoteTimeout, "remote-timeout", 10*time.Minute, "timeout for one remote request/job")
-	flag.IntVar(&c.RemoteRetries, "remote-retries", 2, "transport retries per remote job")
-	flag.StringVar(&remoteListen, "remote-worker-listen", "", "serve as a remote worker on this address (for example 127.0.0.1:8091)")
-	flag.StringVar(&remoteCache, "remote-cache-dir", "", "content-addressed remote worker input cache")
-	flag.IntVar(&remoteConcurrency, "remote-concurrency", 1, "maximum concurrent jobs accepted by a remote worker")
+	flag.StringVar(&c.RemoteListen, "remote-listen", "", "coordinator mTLS bind address for -executor remote (for example 0.0.0.0:8443)")
+	flag.StringVar(&c.TLSCert, "tls-cert", "", "this node's certificate: coordinator.crt (serverAuth) in coordinator mode, worker-N.crt (clientAuth) with -coordinator; see conditional-regime-pki")
+	flag.StringVar(&c.TLSKey, "tls-key", "", "this node's private key, matching -tls-cert")
+	flag.StringVar(&c.ClientCA, "client-ca", "", "project CA bundle used to verify connecting workers' client certificates (coordinator mode)")
+	flag.StringVar(&c.RemoteDenyList, "remote-deny-list", "", "optional JSON deny-list revoking worker certificate serials/identities (coordinator mode)")
+	flag.DurationVar(&c.RemoteTimeout, "remote-timeout", 10*time.Minute, "per-lease deadline before the coordinator reassigns a job to another worker")
+	flag.IntVar(&c.RemoteRetries, "remote-retries", 2, "reassignments per job after a lease expires unanswered")
+	flag.StringVar(&workerCoordinator, "coordinator", "", "run as an mTLS worker dialing this coordinator HTTPS URL instead of running the pipeline")
+	flag.StringVar(&workerCA, "ca", "", "project CA bundle used to verify the coordinator's certificate (worker mode)")
+	flag.StringVar(&remoteCache, "remote-cache-dir", "", "content-addressed remote worker input cache (worker mode)")
+	flag.IntVar(&remoteConcurrency, "remote-concurrency", 1, "concurrent lease loops run by this worker process")
 	flag.StringVar(&c.CheckpointPath, "checkpoint-path", "", "progress checkpoint file (default <output-dir>/checkpoint.json; \"-\" disables checkpointing)")
 	flag.BoolVar(&c.Quiet, "quiet", false, "disable status bar")
 	flag.BoolVar(&internalWorker, "internal-worker", false, "internal: speak the Task32 subprocess worker protocol on stdin/stdout instead of running the pipeline (do not use directly)")
@@ -84,12 +88,16 @@ func run() (code int) {
 		}
 		return 0
 	}
-	if remoteListen != "" {
-		if remoteCache == "" {
-			fmt.Fprintln(os.Stderr, "Error: -remote-cache-dir is required in remote worker mode")
+	if workerCoordinator != "" {
+		if workerCA == "" || c.TLSCert == "" || c.TLSKey == "" {
+			fmt.Fprintln(os.Stderr, "Error: -ca, -tls-cert and -tls-key are required in worker mode")
 			return 2
 		}
-		if err := conditionalregime.RunRemoteWorker(ctx, remoteListen, remoteCache, c.RemoteToken, remoteConcurrency); err != nil {
+		if remoteCache == "" {
+			fmt.Fprintln(os.Stderr, "Error: -remote-cache-dir is required in worker mode")
+			return 2
+		}
+		if err := conditionalregime.RunRemoteWorker(ctx, workerCoordinator, workerCA, c.TLSCert, c.TLSKey, remoteCache, remoteConcurrency); err != nil {
 			fmt.Fprintln(os.Stderr, "Error:", err)
 			return 1
 		}
@@ -110,12 +118,9 @@ func run() (code int) {
 		fmt.Fprintln(os.Stderr, `Error: executor must be "goroutine", "process" or "remote"`)
 		return 2
 	}
-	if remoteWorkerList != "" {
-		for _, endpoint := range strings.Split(remoteWorkerList, ",") {
-			if endpoint = strings.TrimSpace(endpoint); endpoint != "" {
-				c.RemoteWorkers = append(c.RemoteWorkers, endpoint)
-			}
-		}
+	if c.Executor == "remote" && (c.RemoteListen == "" || c.TLSCert == "" || c.TLSKey == "" || c.ClientCA == "") {
+		fmt.Fprintln(os.Stderr, "Error: -executor remote requires -remote-listen, -tls-cert, -tls-key and -client-ca")
+		return 2
 	}
 	c.Context = ctx
 

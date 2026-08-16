@@ -19,6 +19,22 @@
 > directions of cross-backend interrupt/resume. Full protocol, measurements,
 > and the discovered/fixed pre-existing `report.go` map-iteration
 > nondeterminism bug are in `DISTRIBUTED_EXECUTION_IMPLEMENTATION.md`.
+>
+> **Task34 implementation update (2026-08-16):** Task33's shared-bearer-token,
+> unauthenticated-loopback-exception trust model (Section "Task33
+> implementation update" below) is replaced with mutual TLS backed by a
+> small project CA (`internal/pki`, `conditional-regime-pki`): every worker
+> has its own certificate, the coordinator derives `WorkerID` only from a
+> verified peer certificate, and there is no insecure-skip-verify path. This
+> required the coordinator to become the TLS/HTTPS listener and every worker
+> to become the dialing TLS client - the inverse of Task33's push transport
+> - because Go's TLS stack ties serverAuth/SAN verification to the dialed
+> side and clientAuth verification to the listener; the JobID/RNG/scheduling/
+> checkpoint semantics below and in `DISTRIBUTED_EXECUTION_IMPLEMENTATION.md`
+> are otherwise unchanged. Full rationale, PKI details, and security/
+> reproducibility test coverage are in `DISTRIBUTED_EXECUTION_IMPLEMENTATION.md`'s
+> Task34 section; operational procedures are in
+> `DISTRIBUTED_EXECUTION_OPERATIONS.md`.
 
 Scope: `tasks/task30.txt`. This is an **audit and design document only** — no
 scientific/statistical algorithm, RNG algorithm/seed derivation, or output
@@ -615,3 +631,33 @@ checks remain enforced rather than weakening byte identity to tolerance.
 Implementation evidence and limits are in
 `DISTRIBUTED_EXECUTION_IMPLEMENTATION.md`; commands are in
 `DISTRIBUTED_EXECUTION_OPERATIONS.md`.
+
+## Task34 implementation update (2026-08-16)
+
+Task33's trust boundary above ("private/VPN/SSH-tunnel plus bearer token")
+is replaced with mutual TLS: an offline project CA
+(`conditional-regime-pki`, `internal/pki`), one serverAuth certificate for
+the coordinator with mandatory DNS/IP SANs, and one clientAuth certificate
+per worker carrying its identity in a `voinich-worker://` URI SAN. There is
+no bearer token, no unauthenticated exception, and no insecure-skip-verify
+path in any configuration. Because Go's TLS verification ties serverAuth/SAN
+checking to the dialing side and clientAuth checking to the listening side,
+satisfying "coordinator has a server identity workers verify; every worker
+has an individual identity the coordinator verifies" required inverting
+Task33's transport direction: the coordinator is now the mTLS/HTTPS
+listener holding a lease queue, and workers are TLS clients that dial in,
+lease a `JobID` (tagged with a new, transport-only `LeaseID`), compute it
+with the unchanged `workerState.compute`, and post the result back. `JobID`,
+`replicateSeed`/RNG, `executePermutationJobs`'s bounded-concurrency/dedup/
+reduction semantics, and the checkpoint format are byte-for-byte unchanged;
+`remotePool` still implements the same `jobExecutor` interface every
+executor backend has used since Task31. Reassignment after an unanswered
+lease is the direct analogue of Task33's per-endpoint retry. Full protocol,
+PKI details, and security/reproducibility test coverage (valid worker
+accepted; missing/foreign-CA/wrong-EKU/expired/revoked/wrong-SAN rejected;
+identity always from the certificate; one worker cannot impersonate
+another's lease; certificate renewal and a different authenticated worker
+both reproduce the exact oracle) are in
+`DISTRIBUTED_EXECUTION_IMPLEMENTATION.md`'s Task34 section; operational
+procedures (CA generation, issuance, placement, renewal, compromise,
+CA rotation) are in `DISTRIBUTED_EXECUTION_OPERATIONS.md`.

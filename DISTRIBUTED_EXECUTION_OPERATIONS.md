@@ -1,70 +1,81 @@
 # Remote Distributed Execution Operations
 
-Task33 adds a deliberately small trusted-machine HTTP coordinator/worker
-mode to `conditional-regime-analyze`. It is not a cluster manager: operators
-start workers, protect the network, and give the coordinator a fixed endpoint
-list. The existing local `goroutine` and `process` modes remain defaults and
-need no remote service.
+Task33 added a trusted-machine HTTP coordinator/worker mode to
+`conditional-regime-analyze`. Task34 adds mutual-TLS authentication backed by
+a small project-controlled CA and, to make that authentication meaningful,
+inverts which side of the connection listens: **the coordinator is now the
+mTLS/HTTPS server** (a fixed, addressable identity with DNS/IP SANs), and
+**every worker is a TLS client** with its own individual certificate that
+dials in, leases a job, computes it, and posts the result back. This is a
+transport change only: JobID, RNG, scheduling, checkpoints and every
+scientific output are exactly as Task33 left them (see
+`DISTRIBUTED_EXECUTION_IMPLEMENTATION.md`'s Task34 section for why the
+connection direction had to invert and why nothing scientific did).
 
-## Trust and compatibility requirements
+There is no bearer token anymore and no unauthenticated loopback exception:
+every connection is mutually authenticated by certificate, always.
 
-The protocol is intended only for loopback, a private/VPN network, or an
-SSH tunnel. It does not provide TLS, authorization policy, tenant isolation,
-or sandboxing. Always set the same strong bearer token on coordinator and
-workers, restrict the listening socket with a firewall, and never expose a
-worker directly to an untrusted network. A worker executes CPU- and
-memory-intensive scientific jobs selected by the caller and stores uploaded
-input, so treating an unauthenticated public listener as safe is incorrect.
-
-For initial deployment the worker enforces the same protocol version,
-scientific compatibility ID, GOOS, GOARCH, and exact `runtime.Version()` as
-the coordinator. This conservative restriction bounds the validated
-compatibility envelope; do not bypass it. Task33 has passed the
-frozen SHA256 oracle on Intel i7-8850H and AMD Ryzen 7 5700X workers. Any new
-OS, architecture, Go runtime, or CPU family should be checked the same way
-before production use.
-
-## Build and start two workers
-
-Build the same source revision with the same Go toolchain on every machine:
+## 1. Generate the project CA (once, offline)
 
 ```bash
-go build -buildvcs=false -o conditional-regime-analyze ./conditional-regime-analyze
-export CONDITIONAL_REGIME_REMOTE_TOKEN='replace-with-a-long-random-secret'
+go build -buildvcs=false -o conditional-regime-pki ./conditional-regime-pki
+./conditional-regime-pki ca -out-dir pki
 ```
 
-On worker 1:
+This writes `pki/ca.crt` and `pki/ca.key`. **`ca.key` must never be copied to
+a coordinator or worker machine.** Move it to offline/cold storage (an
+encrypted volume, a hardware token, or an access-controlled secrets vault)
+immediately after issuing the credentials below, and keep at least one
+offline backup of it - losing it means you cannot issue or renew any
+credential without rotating the whole CA (Section 6). `ca.crt` is not
+sensitive: it is the CA's public certificate and is copied to every
+coordinator and worker.
+
+## 2. Issue the coordinator's certificate
+
+The coordinator certificate needs every DNS name and/or IP address workers
+will actually dial:
 
 ```bash
-./conditional-regime-analyze \
-  -remote-worker-listen 10.20.0.11:8091 \
-  -remote-cache-dir /var/lib/conditional-regime-worker/cache \
-  -remote-concurrency 4
+./conditional-regime-pki issue-coordinator \
+  -ca-cert pki/ca.crt -ca-key pki/ca.key \
+  -dns coordinator.internal -ip 10.20.0.10 \
+  -out-dir pki
 ```
 
-On worker 2:
+This writes `pki/coordinator.crt` and `pki/coordinator.key`. Identity is
+carried only in the SANs, never in Common Name - point every worker's
+`-coordinator` URL at a name or address that appears in `-dns`/`-ip` above.
+
+## 3. Issue one certificate per worker
+
+Every worker gets its own certificate and key - never share one across
+machines:
 
 ```bash
-./conditional-regime-analyze \
-  -remote-worker-listen 10.20.0.12:8091 \
-  -remote-cache-dir /var/lib/conditional-regime-worker/cache \
-  -remote-concurrency 4
+./conditional-regime-pki issue-worker -ca-cert pki/ca.crt -ca-key pki/ca.key -worker-id worker-1 -out-dir pki
+./conditional-regime-pki issue-worker -ca-cert pki/ca.crt -ca-key pki/ca.key -worker-id worker-2 -out-dir pki
 ```
 
-SIGINT initiates graceful HTTP shutdown and allows in-flight requests up to
-ten seconds to finish. A worker keeps only immutable SHA256-named input files
-and in-memory caches of pure derived state; restarting it cannot change a job.
+This writes `pki/worker-worker-1.crt`/`.key` and `pki/worker-worker-2.crt`/`.key`.
+The worker's identity (`worker-1`, `worker-2`, ...) is carried in a
+`voinich-worker://` URI SAN and is what the coordinator will report as
+`WorkerID` - it is never taken from any request field. Worker IDs must match
+`^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$`.
 
-## Start or resume the coordinator
+Copy each worker's own `.crt`/`.key` (never another worker's) and `ca.crt`
+(never `ca.key`) to that worker's machine.
 
-The normal scientific flags are unchanged. `-workers` is the coordinator's
-global in-flight-job bound, not a per-host value:
+## 4. Start the coordinator
+
+The normal scientific flags are unchanged. `-workers` is still the bound on
+concurrently in-flight jobs, not a per-host value:
 
 ```bash
-export CONDITIONAL_REGIME_REMOTE_TOKEN='replace-with-a-long-random-secret'
 ./conditional-regime-analyze \
   -executor remote \
-  -remote-workers http://10.20.0.11:8091,http://10.20.0.12:8091 \
+  -remote-listen 0.0.0.0:8443 \
+  -tls-cert pki/coordinator.crt -tls-key pki/coordinator.key -client-ca pki/ca.crt \
   -workers 8 -remote-timeout 20m -remote-retries 3 \
   -corpus data_work/ZL3b-x7.txt \
   -token-metadata-map workdir/metadata-validation/token_metadata_map.tsv \
@@ -73,70 +84,131 @@ export CONDITIONAL_REGIME_REMOTE_TOKEN='replace-with-a-long-random-secret'
   -permutations 1000 -seed 1
 ```
 
-Run the identical command after interruption to resume. The coordinator
-loads only a checkpoint with the exact experiment fingerprint, skips every
+`-remote-listen` is the coordinator's own mTLS bind address. It never dials
+out to a worker; workers dial in. `ca.key` is never given to the coordinator
+- only `ca.crt` (as `-client-ca`), to verify connecting workers.
+
+Run the identical command after interruption to resume: the coordinator
+loads a checkpoint only with the exact experiment fingerprint, skips every
 completed `JobID`, retries missing jobs, and deletes the checkpoint only
-after final outputs are written. Worker order/count may change between
-runs. A late response from another experiment is rejected, and duplicate
-delivery cannot contribute twice.
+after final outputs are written - unaffected by which workers were
+connected, or under which certificates, in the run that was interrupted.
 
-Progress uses the existing stderr status display. There is no web UI. The
-worker's `GET /v1/info` endpoint is a small authenticated operational probe;
-for example:
+## 5. Start workers
 
 ```bash
-curl -H "Authorization: Bearer $CONDITIONAL_REGIME_REMOTE_TOKEN" \
-  http://10.20.0.11:8091/v1/info
+./conditional-regime-analyze \
+  -coordinator https://coordinator.internal:8443 \
+  -ca pki/ca.crt -tls-cert pki/worker-worker-1.crt -tls-key pki/worker-worker-1.key \
+  -remote-cache-dir /var/lib/conditional-regime-worker/cache \
+  -remote-concurrency 4
 ```
 
-Machine-readable counters and resource readings are available without a UI:
+A worker verifies the coordinator's certificate chain and that its SAN
+matches the dialed name (`coordinator.internal` above must be one of the
+`-dns`/`-ip` values from Section 2), then presents its own certificate.
+There is no insecure-skip-verify path in any build configuration. A worker
+that cannot yet reach the coordinator (not started, restarting) backs off
+and keeps retrying rather than exiting - a worker's lifecycle is controlled
+by the operator (SIGINT), not by any one coordinator run. Start any number
+of workers, in any order relative to the coordinator, each with its own
+certificate.
+
+SIGINT initiates graceful shutdown on both sides: the coordinator's HTTP
+server drains in-flight requests for up to ten seconds, and a worker's lease
+loops exit once their current job (if any) is posted back.
+
+## Compatibility envelope
+
+Every worker still checks the coordinator's declared protocol version,
+scientific compatibility ID, GOOS, GOARCH and exact `runtime.Version()` at
+handshake, and the coordinator checks the same fields (declared by the
+worker) before issuing a lease - both directions of the check Task33 had,
+just carried over the new handshake/lease messages instead of one `info`
+probe. Build the identical source revision with the identical Go toolchain
+on every machine. Any new OS, architecture, Go runtime or CPU family should
+be verified against the frozen SHA256 oracle before production use.
+
+## Input staging
+
+At coordinator startup both input files are SHA256-hashed by the existing
+loader, exactly as in Task33. A worker fetches each input once, by hash,
+from `GET /v1/input/<sha256>` on the coordinator (the direction is reversed
+from Task33's coordinator-pushes-to-worker `PUT`, since the worker is now
+the one dialing in) and caches it locally under `-remote-cache-dir`,
+skipping any hash it already has on disk. Each lease's job is scoped to one
+experiment fingerprint; a worker recomputes that fingerprint from its own
+staged corpus/metadata bytes and parameters before ever computing a job, so
+a stale cache object or mismatched configuration cannot execute as the
+requested experiment.
+
+## Lease/retry model
+
+The coordinator holds the same "one goroutine per in-flight job" bound
+Task33 had (`-workers`), realized now as a lease queue: each in-flight job
+is queued once, handed out as a lease (with a unique `LeaseID` - phase 8's
+"execution attempt identity", distinct from both `JobID` and `WorkerID`) to
+whichever authenticated worker asks next, and reclaimed for another worker
+if `-remote-timeout` passes without a result. A job fails outright only
+after `-remote-retries` reassignments are all unanswered. Duplicate or late
+result delivery for a job already resolved is accepted and ignored, never
+double-applied - the same idempotency guarantee Task33 had.
+
+## Revocation
+
+The coordinator supports an explicit deny-list keyed by certificate serial
+and/or authenticated `WorkerID`:
 
 ```bash
-curl -H "Authorization: Bearer $CONDITIONAL_REGIME_REMOTE_TOKEN" \
-  http://10.20.0.11:8091/v1/metrics
+./conditional-regime-pki revoke -deny-list pki/deny.json -worker-id worker-3
+./conditional-regime-analyze -executor remote ... -remote-deny-list pki/deny.json
 ```
 
-The counters include cold input and staging time, cache hits/misses, job and
-result payload bytes, failures, process CPU ticks, current/peak RSS, and Go
-heap. On Linux divide CPU ticks by `getconf CLK_TCK` (100 on both measured
-Task33 hosts). Counter deltas before/after a run isolate that run.
+The list is read once at coordinator startup; restart the coordinator to
+pick up a change. This is the whole revocation mechanism - a full CRL/OCSP
+stack is disproportionate for a PKI this small.
 
-## Input staging and cache verification
+## Lifecycle procedures
 
-At coordinator startup, both input files are SHA256-hashed by the existing
-loader. For each worker the coordinator performs `HEAD /v1/input/<sha256>`
-and uploads a missing object once with a bounded `PUT`. The worker hashes the
-bytes before atomically installing the file as `<cache>/<sha256>`. Each job
-names both hashes and the experiment fingerprint; the worker reloads and
-recomputes the fingerprint before creating cached experiment state. Thus a
-stale path or mutated cache object cannot execute as the requested
-experiment. Local filesystem path text never enters scientific computation.
-
-Cold staging traffic for the frozen corpus is measured as 2,440,409 bytes
-per worker (234,466-byte corpus + 2,205,943-byte metadata map), plus small
-HTTP headers. A warm run uploads zero input bytes. Each job request
-and result is bounded to 1 MiB; input objects are currently bounded to 64 MiB.
-Use `/v1/metrics` deltas for exact application-payload accounting; HTTP/TCP
-header bytes remain transport overhead and require interface-level tooling.
+- **Add a worker**: issue a new `worker-<id>` certificate (Section 3), copy
+  it and `ca.crt` to the new machine, start it with `-coordinator` pointed
+  at the running coordinator. Nothing else changes.
+- **Renew a worker**: re-run `issue-worker` for the same `-worker-id` with
+  `-force` (a fresh key and serial, same identity); replace the two files on
+  that worker and restart it. In-flight/queued jobs are unaffected - a
+  worker's certificate never participates in scientific computation
+  (phase 8), only in authenticating the connection.
+- **Renew the coordinator**: re-run `issue-coordinator` with `-force`
+  before the current certificate expires; replace `coordinator.crt`/`.key`
+  and restart the coordinator. Workers reconnect and re-verify normally.
+- **Replace a compromised worker**: revoke its identity and/or certificate
+  serial (above), issue it (or a new identity) a fresh certificate, and
+  decommission the old key. The deny-list keeps the compromised credential
+  rejected even though it was never expired.
+- **CA rotation**: generate a new CA, issue new coordinator/worker
+  certificates from it, and during the transition set `-client-ca`/`-ca` to
+  a bundle containing *both* the old and new CA certificates
+  (`cat old-ca.crt new-ca.crt > bundle.crt`) so nodes holding either
+  certificate remain trusted until every node has rotated. Then drop the old
+  CA from the bundle.
 
 ## Failure behavior
 
-- HTTP 5xx, 429, disconnects, and timeouts are transport failures and are
-  retried against the configured endpoints. Diagnostics include endpoint,
-  worker hostname when available, and exact `JobID`.
-- Protocol, runtime, input, experiment, malformed-job, and scientific errors
-  are explicit non-retryable failures.
-- Removing a worker merely causes retry on another endpoint. Re-add it at the
-  same endpoint; its immutable disk cache survives restart.
-- If all attempts fail, the coordinator exits with its atomic checkpoint
-  intact. Re-run the command after workers recover.
+- A lease that expires unanswered (worker crash, network partition) is
+  reassigned to another connected worker, up to `-remote-retries` times,
+  exactly like Task33's per-endpoint retry.
+- Protocol, runtime, experiment-identity, malformed-request and scientific
+  errors are explicit, non-retryable failures surfaced with the JobID.
+  Certificate/authentication failures (missing cert, foreign CA, wrong EKU,
+  expired, revoked, wrong coordinator SAN) fail the connection at the TLS
+  layer before any job-level logic runs.
+- If every worker disconnects, the coordinator simply waits (with its
+  checkpoint intact) for one to reconnect; re-run a worker at the same
+  `-coordinator` URL to resume progress.
 
-## Future multi-corpus scheduling
+## Never log secrets
 
-The present fingerprint is the `ExperimentID`; input hashes provide the
-future `CorpusID`; and `JobID` remains `(stage, combination, replicate)`.
-A future scheduler can queue `(ExperimentID, CorpusID, JobID)`, use
-round-robin/deficit scheduling across experiments so small corpora are not
-starved, and retain a separate canonical replicate-index reducer and
-checkpoint per experiment. No network arrival order should ever cross an
-experiment's reduction boundary.
+No code path in the coordinator or worker ever logs a private key, or any
+field of `ca.key`. The coordinator's default TLS error log records rejected
+connection attempts (missing/foreign/expired/revoked certificates) for
+audit purposes - this is a security signal, not a secret.

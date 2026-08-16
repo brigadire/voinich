@@ -3,8 +3,9 @@ package conditionalregime
 import (
 	"bytes"
 	"context"
+	"crypto/rand"
 	"crypto/sha256"
-	"crypto/subtle"
+	"crypto/tls"
 	"encoding/hex"
 	"encoding/json"
 	"errors"
@@ -12,21 +13,45 @@ import (
 	"io"
 	"net"
 	"net/http"
+	"net/url"
 	"os"
 	"path/filepath"
 	"runtime"
-	"strconv"
 	"strings"
 	"sync"
 	"sync/atomic"
 	"time"
+
+	"zcore.dev/voinich/internal/pki"
 )
 
+// Task34 mTLS transport.
+//
+// Task33's push transport had the coordinator dial a fixed list of worker
+// HTTP endpoints. Task34 authenticates every peer with an individual
+// project-issued certificate (internal/pki), and Go's TLS stack ties a
+// certificate's role (serverAuth vs clientAuth, DNS/IP SAN vs URI-identity
+// SAN) to which side of a connection dials and which side listens. Making
+// "the coordinator presents a server certificate with DNS/IP SANs and
+// verifies each worker's individual client certificate" true - the actual
+// Task34 requirement - means the coordinator is now the TLS/HTTP listener
+// and every worker is the one that dials in, leases a job, computes it with
+// the exact unchanged scientific implementation (workerState.compute), and
+// posts the result back. This inverts *who initiates the TCP connection*;
+// it does not change JobID, RNG, scheduling, checkpoints or any scientific
+// output - the coordinator still owns the same pending-job set and the same
+// bounded-concurrency/retry semantics as Task33, just realized as a lease
+// queue instead of direct per-endpoint dispatch.
 const (
-	remoteProtocolVersion          = 1
+	remoteProtocolVersion          = 2 // bumped for Task34's pull transport; scientific compatibility below is unchanged
 	scientificCompatibilityVersion = "conditionalregime-task33-v1"
 	maxRemoteInputBytes            = 64 << 20
 	maxRemoteMessageBytes          = 1 << 20
+	// remoteLeaseBackoff bounds how long a worker idles between "no work
+	// available yet" polls, and the starting backoff after a transport
+	// error. It is purely a polling cadence, not a scientific parameter.
+	remoteLeaseBackoff = 200 * time.Millisecond
+	remoteMaxBackoff    = 5 * time.Second
 )
 
 type remoteInfo struct {
@@ -35,270 +60,681 @@ type remoteInfo struct {
 	GOOS          string `json:"goos"`
 	GOARCH        string `json:"goarch"`
 	GoVersion     string `json:"go_version"`
-	CPUModel      string `json:"cpu_model"`
 	Host          string `json:"host"`
 }
 
-type remoteJobRequest struct {
-	Protocol      int             `json:"protocol"`
-	Compatibility string          `json:"compatibility"`
-	GOOS          string          `json:"goos"`
-	GOARCH        string          `json:"goarch"`
-	GoVersion     string          `json:"go_version"`
-	ExperimentID  string          `json:"experiment_id"`
-	CorpusHash    string          `json:"corpus_hash"`
-	MetadataHash  string          `json:"metadata_hash"`
-	Config        protocolMessage `json:"config"`
-	JobID         JobID           `json:"job_id"`
+func localRemoteInfo(host string) remoteInfo {
+	return remoteInfo{Protocol: remoteProtocolVersion, Compatibility: scientificCompatibilityVersion, GOOS: runtime.GOOS, GOARCH: runtime.GOARCH, GoVersion: runtime.Version(), Host: host}
 }
 
-type remoteJobResponse struct {
-	OK           bool    `json:"ok"`
-	Error        string  `json:"error,omitempty"`
+func (a remoteInfo) compatibleWith(b remoteInfo) bool {
+	return a.Protocol == b.Protocol && a.Compatibility == b.Compatibility && a.GOOS == b.GOOS && a.GOARCH == b.GOARCH && a.GoVersion == b.GoVersion
+}
+
+// remoteHandshakeResponse is fetched once by a worker at startup: it is the
+// coordinator's compatibility identity plus everything workerState needs to
+// build the exact same scientific state the coordinator itself would build
+// (the same fields protocolMessage already carries for the Task32
+// subprocess handshake).
+type remoteHandshakeResponse struct {
+	Info         remoteInfo      `json:"info"`
+	ExperimentID string          `json:"experiment_id"`
+	CorpusHash   string          `json:"corpus_hash"`
+	MetadataHash string          `json:"metadata_hash"`
+	Config       protocolMessage `json:"config"`
+}
+
+type remoteLeaseRequest struct {
+	Protocol      int    `json:"protocol"`
+	Compatibility string `json:"compatibility"`
+	GOOS          string `json:"goos"`
+	GOARCH        string `json:"goarch"`
+	GoVersion     string `json:"go_version"`
+	ExperimentID  string `json:"experiment_id"`
+}
+
+type remoteLeaseResponse struct {
+	NoWork  bool  `json:"no_work,omitempty"`
+	LeaseID string `json:"lease_id,omitempty"`
+	JobID   JobID  `json:"job_id,omitempty"`
+}
+
+// remoteResultRequest reports one leased job's outcome. WorkerID is
+// deliberately absent: the coordinator only ever trusts the WorkerID it
+// derived from this connection's verified client certificate (phase 5/8),
+// never a value the request body could claim.
+type remoteResultRequest struct {
 	ExperimentID string  `json:"experiment_id"`
+	LeaseID      string  `json:"lease_id"`
 	JobID        JobID   `json:"job_id"`
 	Value        float64 `json:"value"`
-	Host         string  `json:"host"`
+	Error        string  `json:"error,omitempty"`
 }
 
-type remoteWorkerServer struct {
-	cacheDir, token, host string
-	sem                   chan struct{}
-	mu                    sync.Mutex
-	states                map[string]*workerState
-	inputBytes            atomic.Int64
-	stagingNanos          atomic.Int64
-	cacheHits             atomic.Int64
-	cacheMisses           atomic.Int64
-	jobRequests           atomic.Int64
-	jobRequestBytes       atomic.Int64
-	jobResponseBytes      atomic.Int64
-	jobFailures           atomic.Int64
+type remoteResultResponse struct {
+	Accepted bool   `json:"accepted"`
+	Error    string `json:"error,omitempty"`
 }
 
 type remoteMetrics struct {
-	InputBytes       int64  `json:"input_bytes"`
-	StagingNanos     int64  `json:"staging_nanos"`
-	CacheHits        int64  `json:"cache_hits"`
-	CacheMisses      int64  `json:"cache_misses"`
-	JobRequests      int64  `json:"job_requests"`
-	JobRequestBytes  int64  `json:"job_request_bytes"`
-	JobResponseBytes int64  `json:"job_response_bytes"`
-	JobFailures      int64  `json:"job_failures"`
-	ProcessCPUTicks  uint64 `json:"process_cpu_ticks"`
-	RSSBytes         uint64 `json:"rss_bytes"`
-	PeakRSSBytes     uint64 `json:"peak_rss_bytes"`
-	HeapAllocBytes   uint64 `json:"heap_alloc_bytes"`
-	HeapSysBytes     uint64 `json:"heap_sys_bytes"`
-}
-
-// RunRemoteWorker serves the trusted-machine Task33 protocol until ctx is
-// cancelled. Authentication is optional to support loopback tests, but
-// operators must use a token and a protected network for non-loopback use.
-func RunRemoteWorker(ctx context.Context, listen, cacheDir, token string, concurrency int) error {
-	if concurrency < 1 {
-		return fmt.Errorf("remote worker concurrency must be positive")
-	}
-	if cacheDir == "" {
-		return fmt.Errorf("remote worker cache directory is required")
-	}
-	if token == "" && !loopbackListenAddress(listen) {
-		return fmt.Errorf("refusing unauthenticated non-loopback listener %q", listen)
-	}
-	if err := os.MkdirAll(cacheDir, 0700); err != nil {
-		return err
-	}
-	host, _ := os.Hostname()
-	w := &remoteWorkerServer{cacheDir: cacheDir, token: token, host: host, sem: make(chan struct{}, concurrency), states: map[string]*workerState{}}
-	srv := &http.Server{Addr: listen, Handler: w.routes(), ReadHeaderTimeout: 5 * time.Second}
-	done := make(chan error, 1)
-	go func() { done <- srv.ListenAndServe() }()
-	select {
-	case err := <-done:
-		if errors.Is(err, http.ErrServerClosed) {
-			return nil
-		}
-		return err
-	case <-ctx.Done():
-		shutdownCtx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-		defer cancel()
-		_ = srv.Shutdown(shutdownCtx)
-		return nil
-	}
-}
-
-func loopbackListenAddress(listen string) bool {
-	host, _, err := net.SplitHostPort(listen)
-	if err != nil {
-		return false
-	}
-	if host == "localhost" {
-		return true
-	}
-	ip := net.ParseIP(strings.Trim(host, "[]"))
-	return ip != nil && ip.IsLoopback()
-}
-
-func (w *remoteWorkerServer) routes() http.Handler {
-	mux := http.NewServeMux()
-	mux.HandleFunc("GET /v1/info", w.auth(w.info))
-	mux.HandleFunc("GET /v1/metrics", w.auth(w.metrics))
-	mux.HandleFunc("HEAD /v1/input/{hash}", w.auth(w.inputHead))
-	mux.HandleFunc("PUT /v1/input/{hash}", w.auth(w.inputPut))
-	mux.HandleFunc("POST /v1/job", w.auth(w.job))
-	return mux
-}
-
-func (w *remoteWorkerServer) auth(next http.HandlerFunc) http.HandlerFunc {
-	return func(rw http.ResponseWriter, r *http.Request) {
-		if w.token != "" {
-			got := strings.TrimPrefix(r.Header.Get("Authorization"), "Bearer ")
-			if len(got) != len(w.token) || subtle.ConstantTimeCompare([]byte(got), []byte(w.token)) != 1 {
-				http.Error(rw, "unauthorized", http.StatusUnauthorized)
-				return
-			}
-		}
-		next(rw, r)
-	}
-}
-
-func writeRemoteJSON(w http.ResponseWriter, status int, v any) {
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(status)
-	_ = json.NewEncoder(w).Encode(v)
-}
-
-func (w *remoteWorkerServer) writeJobJSON(rw http.ResponseWriter, status int, v remoteJobResponse) {
-	b, err := json.Marshal(v)
-	if err != nil {
-		http.Error(rw, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	b = append(b, '\n')
-	rw.Header().Set("Content-Type", "application/json")
-	rw.WriteHeader(status)
-	n, _ := rw.Write(b)
-	w.jobResponseBytes.Add(int64(n))
-}
-
-func localRemoteInfo(host string) remoteInfo {
-	return remoteInfo{Protocol: remoteProtocolVersion, Compatibility: scientificCompatibilityVersion, GOOS: runtime.GOOS, GOARCH: runtime.GOARCH, GoVersion: runtime.Version(), CPUModel: cpuModel(), Host: host}
-}
-
-func cpuModel() string {
-	b, err := os.ReadFile("/proc/cpuinfo")
-	if err != nil {
-		return "unknown"
-	}
-	for _, line := range strings.Split(string(b), "\n") {
-		if key, value, ok := strings.Cut(line, ":"); ok && strings.TrimSpace(key) == "model name" {
-			return strings.TrimSpace(value)
-		}
-	}
-	return "unknown"
-}
-
-func (w *remoteWorkerServer) info(rw http.ResponseWriter, _ *http.Request) {
-	writeRemoteJSON(rw, 200, localRemoteInfo(w.host))
-}
-
-func (w *remoteWorkerServer) metrics(rw http.ResponseWriter, _ *http.Request) {
-	var mem runtime.MemStats
-	runtime.ReadMemStats(&mem)
-	rss, peak := processRSS()
-	writeRemoteJSON(rw, 200, remoteMetrics{
-		InputBytes: w.inputBytes.Load(), StagingNanos: w.stagingNanos.Load(), CacheHits: w.cacheHits.Load(), CacheMisses: w.cacheMisses.Load(),
-		JobRequests: w.jobRequests.Load(), JobRequestBytes: w.jobRequestBytes.Load(), JobResponseBytes: w.jobResponseBytes.Load(), JobFailures: w.jobFailures.Load(),
-		ProcessCPUTicks: processCPUTicks(), RSSBytes: rss, PeakRSSBytes: peak, HeapAllocBytes: mem.HeapAlloc, HeapSysBytes: mem.HeapSys,
-	})
-}
-
-func processCPUTicks() uint64 {
-	b, err := os.ReadFile("/proc/self/stat")
-	if err != nil {
-		return 0
-	}
-	end := strings.LastIndex(string(b), ") ")
-	if end < 0 {
-		return 0
-	}
-	fields := strings.Fields(string(b)[end+2:])
-	if len(fields) < 13 {
-		return 0
-	}
-	user, _ := strconv.ParseUint(fields[11], 10, 64)
-	system, _ := strconv.ParseUint(fields[12], 10, 64)
-	return user + system
-}
-
-func processRSS() (rss, peak uint64) {
-	b, err := os.ReadFile("/proc/self/status")
-	if err != nil {
-		return 0, 0
-	}
-	for _, line := range strings.Split(string(b), "\n") {
-		fields := strings.Fields(line)
-		if len(fields) < 2 {
-			continue
-		}
-		value, _ := strconv.ParseUint(fields[1], 10, 64)
-		switch strings.TrimSuffix(fields[0], ":") {
-		case "VmRSS":
-			rss = value * 1024
-		case "VmHWM":
-			peak = value * 1024
-		}
-	}
-	return rss, peak
+	Handshakes        int64 `json:"handshakes"`
+	LeasesIssued      int64 `json:"leases_issued"`
+	LeasesReclaimed   int64 `json:"leases_reclaimed"`
+	ResultsAccepted   int64 `json:"results_accepted"`
+	ResultsRejected   int64 `json:"results_rejected"`
+	PendingJobs       int   `json:"pending_jobs"`
+	OutstandingLeases int   `json:"outstanding_leases"`
 }
 
 func validSHA256(s string) bool {
 	b, err := hex.DecodeString(s)
 	return err == nil && len(b) == sha256.Size && s == strings.ToLower(s)
 }
-func (w *remoteWorkerServer) inputPath(hash string) string { return filepath.Join(w.cacheDir, hash) }
 
-func (w *remoteWorkerServer) inputHead(rw http.ResponseWriter, r *http.Request) {
-	h := r.PathValue("hash")
-	if !validSHA256(h) {
-		http.Error(rw, "invalid sha256", 400)
+func writeRemoteJSON(w http.ResponseWriter, status int, v any) {
+	b, err := json.Marshal(v)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	if _, err := os.Stat(w.inputPath(h)); err != nil {
-		w.cacheMisses.Add(1)
-		http.Error(rw, "not found", 404)
-		return
-	}
-	w.cacheHits.Add(1)
-	rw.WriteHeader(204)
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(status)
+	_, _ = w.Write(b)
 }
 
-func (w *remoteWorkerServer) inputPut(rw http.ResponseWriter, r *http.Request) {
-	started := time.Now()
-	h := r.PathValue("hash")
-	if !validSHA256(h) {
-		http.Error(rw, "invalid sha256", 400)
-		return
-	}
-	b, err := io.ReadAll(io.LimitReader(r.Body, maxRemoteInputBytes+1))
-	if err != nil || len(b) > maxRemoteInputBytes {
-		http.Error(rw, "input exceeds limit", 413)
-		return
-	}
-	actual := fmt.Sprintf("%x", sha256.Sum256(b))
-	if actual != h {
-		http.Error(rw, "input sha256 mismatch", 409)
-		return
-	}
-	path := w.inputPath(h)
-	if _, err := os.Stat(path); err == nil {
-		rw.WriteHeader(204)
-		return
-	}
-	tmp, err := os.CreateTemp(w.cacheDir, ".stage-")
+func decodeJSONBody(r *http.Request, v any) error {
+	b, err := io.ReadAll(io.LimitReader(r.Body, maxRemoteMessageBytes+1))
 	if err != nil {
-		http.Error(rw, err.Error(), 500)
+		return err
+	}
+	if len(b) > maxRemoteMessageBytes {
+		return fmt.Errorf("request exceeds size limit")
+	}
+	dec := json.NewDecoder(bytes.NewReader(b))
+	dec.DisallowUnknownFields()
+	if err := dec.Decode(v); err != nil {
+		return fmt.Errorf("malformed request: %w", err)
+	}
+	if err := dec.Decode(&struct{}{}); err != io.EOF {
+		return fmt.Errorf("malformed request: trailing JSON value")
+	}
+	return nil
+}
+
+// pendingJob is one JobID the coordinator currently wants computed: some
+// goroutine inside executePermutationJobs is blocked in remotePool.Run
+// waiting on result.
+type pendingJob struct {
+	id       JobID
+	result   chan jobOutcome
+	attempts int
+}
+
+type jobOutcome struct {
+	value float64
+	err   error
+}
+
+// activeLease is one JobID currently assigned to one authenticated worker,
+// with a deadline after which the coordinator reclaims it for another
+// worker (phase 8's LeaseID: "execution attempt identity", distinct from
+// both JobID and WorkerID).
+type activeLease struct {
+	jobID    JobID
+	workerID string
+	deadline time.Time
+	job      *pendingJob
+}
+
+// remotePool is the Task34 coordinator: it is the TLS/HTTP listener
+// (jobExecutor for Config.Executor == "remote"), holding the same pending
+// job set and bounded-concurrency semantics Task33's remotePool held, now
+// realized as a lease queue that authenticated workers dial in and drain.
+type remotePool struct {
+	fingerprint, corpusHash, metaHash string
+	corpus, metadata                  []byte
+	cfgMsg                            protocolMessage
+	host                              string
+
+	timeout time.Duration
+	retries int
+
+	listener  net.Listener
+	srv       *http.Server
+	serveDone chan error
+	stopSweep chan struct{}
+
+	mu      sync.Mutex
+	queue   []JobID
+	pending map[JobID]*pendingJob
+	leases  map[string]*activeLease
+
+	handshakes      atomic.Int64
+	leasesIssued    atomic.Int64
+	leasesReclaimed atomic.Int64
+	resultsAccepted atomic.Int64
+	resultsRejected atomic.Int64
+}
+
+func newRemotePool(c Config, fingerprint, corpusHash, metaHash string) (*remotePool, error) {
+	if c.RemoteListen == "" {
+		return nil, fmt.Errorf("remote executor requires -remote-listen (coordinator mTLS bind address)")
+	}
+	if c.TLSCert == "" || c.TLSKey == "" || c.ClientCA == "" {
+		return nil, fmt.Errorf("remote executor requires -tls-cert, -tls-key and -client-ca")
+	}
+	corpus, err := os.ReadFile(c.CorpusPath)
+	if err != nil {
+		return nil, err
+	}
+	metadata, err := os.ReadFile(c.TokenMetadataMap)
+	if err != nil {
+		return nil, err
+	}
+	deny, err := pki.LoadDenyList(c.RemoteDenyList)
+	if err != nil {
+		return nil, fmt.Errorf("load deny list: %w", err)
+	}
+	tlsCfg, err := pki.CoordinatorServerTLSConfig(c.TLSCert, c.TLSKey, c.ClientCA, deny)
+	if err != nil {
+		return nil, fmt.Errorf("coordinator TLS config: %w", err)
+	}
+	listener, err := tls.Listen("tcp", c.RemoteListen, tlsCfg)
+	if err != nil {
+		return nil, fmt.Errorf("listen %s: %w", c.RemoteListen, err)
+	}
+	host, _ := os.Hostname()
+	p := &remotePool{
+		fingerprint: fingerprint, corpusHash: corpusHash, metaHash: metaHash,
+		corpus: corpus, metadata: metadata, host: host,
+		timeout: c.RemoteTimeout, retries: c.RemoteRetries,
+		pending: map[JobID]*pendingJob{}, leases: map[string]*activeLease{},
+		serveDone: make(chan error, 1), stopSweep: make(chan struct{}),
+		cfgMsg: protocolMessage{
+			Fingerprint: fingerprint, WindowSizes: c.WindowSizes, ResidualWindowSizes: c.ResidualWindowSizes,
+			MinClassTokens: c.MinClassTokens, MinBlockTokens: c.MinBlockTokens, KMin: c.KMin, KMaxWithin: c.KMaxWithin,
+			KMaxResidual: c.KMaxResidual, Permutations: c.Permutations, Seed: c.Seed,
+		},
+	}
+	p.listener = listener
+	p.srv = &http.Server{Handler: p.routes(), ReadHeaderTimeout: 5 * time.Second}
+	go func() { p.serveDone <- p.srv.Serve(listener) }()
+	go p.sweepLoop()
+	return p, nil
+}
+
+// Addr returns the coordinator's actual bound listen address (useful when
+// Config.RemoteListen used port 0, e.g. in tests).
+func (p *remotePool) Addr() string { return p.listener.Addr().String() }
+
+func (p *remotePool) leaseTimeout() time.Duration {
+	if p.timeout <= 0 {
+		return 10 * time.Minute
+	}
+	return p.timeout
+}
+
+func (p *remotePool) sweepLoop() {
+	interval := p.leaseTimeout() / 4
+	if interval < 250*time.Millisecond {
+		interval = 250 * time.Millisecond
+	}
+	if interval > 5*time.Second {
+		interval = 5 * time.Second
+	}
+	ticker := time.NewTicker(interval)
+	defer ticker.Stop()
+	for {
+		select {
+		case <-ticker.C:
+			p.mu.Lock()
+			p.reclaimExpiredLocked()
+			p.mu.Unlock()
+		case <-p.stopSweep:
+			return
+		}
+	}
+}
+
+// reclaimExpiredLocked returns any job whose lease deadline has passed to
+// the queue for another worker, up to Config.RemoteRetries reassignments;
+// beyond that it fails the job outright. Called with p.mu held.
+func (p *remotePool) reclaimExpiredLocked() {
+	now := time.Now()
+	for id, lease := range p.leases {
+		if now.Before(lease.deadline) {
+			continue
+		}
+		delete(p.leases, id)
+		p.leasesReclaimed.Add(1)
+		job := lease.job
+		job.attempts++
+		if job.attempts > p.retries {
+			job.result <- jobOutcome{err: fmt.Errorf("job %+v: no worker returned a result after %d attempt(s) (last leased to worker %q)", lease.jobID, job.attempts, lease.workerID)}
+			delete(p.pending, lease.jobID)
+			continue
+		}
+		p.queue = append(p.queue, lease.jobID)
+	}
+}
+
+func (p *remotePool) removeFromQueueLocked(id JobID) {
+	for i, qid := range p.queue {
+		if qid == id {
+			p.queue = append(p.queue[:i], p.queue[i+1:]...)
+			return
+		}
+	}
+}
+
+func newLeaseID() string {
+	var b [16]byte
+	_, _ = rand.Read(b[:])
+	return hex.EncodeToString(b[:])
+}
+
+// Run enqueues id and blocks until some authenticated worker leases and
+// completes it (or ctx is cancelled). Duplicate/late deliveries for a job
+// already removed from p.pending are harmlessly ignored by the /v1/result
+// handler, matching Task33's "duplicate delivery cannot contribute twice".
+func (p *remotePool) Run(ctx context.Context, id JobID) (float64, error) {
+	job := &pendingJob{id: id, result: make(chan jobOutcome, 1)}
+	p.mu.Lock()
+	if _, exists := p.pending[id]; exists {
+		p.mu.Unlock()
+		return 0, fmt.Errorf("job %+v is already in flight", id)
+	}
+	p.pending[id] = job
+	p.queue = append(p.queue, id)
+	p.mu.Unlock()
+
+	select {
+	case outcome := <-job.result:
+		return outcome.value, outcome.err
+	case <-ctx.Done():
+		p.mu.Lock()
+		delete(p.pending, id)
+		p.removeFromQueueLocked(id)
+		p.mu.Unlock()
+		return 0, ctx.Err()
+	}
+}
+
+func (p *remotePool) Close() error {
+	close(p.stopSweep)
+	shutdownCtx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	err := p.srv.Shutdown(shutdownCtx)
+	if serveErr := <-p.serveDone; err == nil && !errors.Is(serveErr, http.ErrServerClosed) {
+		err = serveErr
+	}
+	return err
+}
+
+func (p *remotePool) routes() http.Handler {
+	mux := http.NewServeMux()
+	mux.HandleFunc("GET /v1/handshake", p.withWorkerID(p.handshake))
+	mux.HandleFunc("GET /v1/input/{hash}", p.withWorkerID(p.input))
+	mux.HandleFunc("POST /v1/lease", p.withWorkerID(p.lease))
+	mux.HandleFunc("POST /v1/result", p.withWorkerID(p.result))
+	mux.HandleFunc("GET /v1/metrics", p.withWorkerID(p.metrics))
+	return mux
+}
+
+// withWorkerID derives the caller's WorkerID from its verified TLS client
+// certificate (phase 5: "derive WorkerID from the verified peer
+// certificate") before any handler runs. tls.Config.ClientAuth is always
+// RequireAndVerifyClientCert (internal/pki.CoordinatorServerTLSConfig), so
+// r.TLS.VerifiedChains is already non-empty by the time net/http calls this
+// handler; the error path below is an unreachable-in-practice backstop, not
+// the primary enforcement point.
+func (p *remotePool) withWorkerID(next func(http.ResponseWriter, *http.Request, string)) http.HandlerFunc {
+	return func(rw http.ResponseWriter, r *http.Request) {
+		if r.TLS == nil {
+			http.Error(rw, "TLS client certificate required", http.StatusUpgradeRequired)
+			return
+		}
+		workerID, err := pki.RequestWorkerID(r.TLS.VerifiedChains)
+		if err != nil {
+			http.Error(rw, "unauthorized: "+err.Error(), http.StatusUnauthorized)
+			return
+		}
+		next(rw, r, workerID)
+	}
+}
+
+func (p *remotePool) handshake(rw http.ResponseWriter, _ *http.Request, _ string) {
+	p.handshakes.Add(1)
+	writeRemoteJSON(rw, http.StatusOK, remoteHandshakeResponse{
+		Info: localRemoteInfo(p.host), ExperimentID: p.fingerprint,
+		CorpusHash: p.corpusHash, MetadataHash: p.metaHash, Config: p.cfgMsg,
+	})
+}
+
+func (p *remotePool) input(rw http.ResponseWriter, r *http.Request, _ string) {
+	hash := r.PathValue("hash")
+	var data []byte
+	switch hash {
+	case p.corpusHash:
+		data = p.corpus
+	case p.metaHash:
+		data = p.metadata
+	default:
+		http.Error(rw, "unknown input hash", http.StatusNotFound)
 		return
+	}
+	rw.Header().Set("Content-Type", "application/octet-stream")
+	rw.WriteHeader(http.StatusOK)
+	_, _ = rw.Write(data)
+}
+
+func (p *remotePool) lease(rw http.ResponseWriter, r *http.Request, workerID string) {
+	var req remoteLeaseRequest
+	if err := decodeJSONBody(r, &req); err != nil {
+		http.Error(rw, err.Error(), http.StatusBadRequest)
+		return
+	}
+	peer := remoteInfo{Protocol: req.Protocol, Compatibility: req.Compatibility, GOOS: req.GOOS, GOARCH: req.GOARCH, GoVersion: req.GoVersion}
+	if !peer.compatibleWith(localRemoteInfo("")) {
+		http.Error(rw, fmt.Sprintf("protocol/code/runtime compatibility mismatch: worker=%+v coordinator=%+v", peer, localRemoteInfo("")), http.StatusConflict)
+		return
+	}
+	if req.ExperimentID != p.fingerprint {
+		http.Error(rw, "stale or inconsistent experiment identity", http.StatusConflict)
+		return
+	}
+	writeRemoteJSON(rw, http.StatusOK, p.nextLease(workerID))
+}
+
+func (p *remotePool) nextLease(workerID string) remoteLeaseResponse {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+	p.reclaimExpiredLocked()
+	if len(p.queue) == 0 {
+		return remoteLeaseResponse{NoWork: true}
+	}
+	id := p.queue[0]
+	p.queue = p.queue[1:]
+	job, ok := p.pending[id]
+	if !ok { // raced with a ctx-cancelled Run() removing it; try the rest later
+		return remoteLeaseResponse{NoWork: true}
+	}
+	leaseID := newLeaseID()
+	p.leases[leaseID] = &activeLease{jobID: id, workerID: workerID, deadline: time.Now().Add(p.leaseTimeout()), job: job}
+	p.leasesIssued.Add(1)
+	return remoteLeaseResponse{LeaseID: leaseID, JobID: id}
+}
+
+func (p *remotePool) result(rw http.ResponseWriter, r *http.Request, workerID string) {
+	var req remoteResultRequest
+	if err := decodeJSONBody(r, &req); err != nil {
+		http.Error(rw, err.Error(), http.StatusBadRequest)
+		return
+	}
+	if req.ExperimentID != p.fingerprint {
+		p.resultsRejected.Add(1)
+		writeRemoteJSON(rw, http.StatusConflict, remoteResultResponse{Error: "stale or inconsistent experiment identity"})
+		return
+	}
+	p.mu.Lock()
+	lease, ok := p.leases[req.LeaseID]
+	if !ok || lease.jobID != req.JobID {
+		p.mu.Unlock()
+		p.resultsRejected.Add(1)
+		// Unknown, expired (already reassigned) or mismatched lease: ignored
+		// rather than fatal. Run() either already has its answer from
+		// whichever lease is now active, or is still waiting/retrying.
+		writeRemoteJSON(rw, http.StatusConflict, remoteResultResponse{Error: "unknown or expired lease"})
+		return
+	}
+	if lease.workerID != workerID {
+		p.mu.Unlock()
+		p.resultsRejected.Add(1)
+		// A request cannot complete another worker's lease: WorkerID comes
+		// only from this connection's verified certificate, never from the
+		// request body (phase 5/9: "request cannot impersonate another
+		// WorkerID").
+		writeRemoteJSON(rw, http.StatusForbidden, remoteResultResponse{Error: "lease belongs to a different authenticated worker"})
+		return
+	}
+	delete(p.leases, req.LeaseID)
+	job := p.pending[req.JobID]
+	delete(p.pending, req.JobID)
+	p.mu.Unlock()
+	if job == nil {
+		writeRemoteJSON(rw, http.StatusOK, remoteResultResponse{Accepted: true})
+		return
+	}
+	p.resultsAccepted.Add(1)
+	outcome := jobOutcome{value: req.Value}
+	if req.Error != "" {
+		outcome.err = fmt.Errorf("worker %s: %s", workerID, req.Error)
+	}
+	job.result <- outcome
+	writeRemoteJSON(rw, http.StatusOK, remoteResultResponse{Accepted: true})
+}
+
+func (p *remotePool) metrics(rw http.ResponseWriter, _ *http.Request, _ string) {
+	p.mu.Lock()
+	pending, leases := len(p.pending), len(p.leases)
+	p.mu.Unlock()
+	writeRemoteJSON(rw, http.StatusOK, remoteMetrics{
+		Handshakes: p.handshakes.Load(), LeasesIssued: p.leasesIssued.Load(), LeasesReclaimed: p.leasesReclaimed.Load(),
+		ResultsAccepted: p.resultsAccepted.Load(), ResultsRejected: p.resultsRejected.Load(),
+		PendingJobs: pending, OutstandingLeases: leases,
+	})
+}
+
+// ---- worker (TLS client) side ----
+
+// RunRemoteWorker runs the Task34 worker client loop against a single
+// coordinator until ctx is cancelled: it verifies the coordinator's TLS
+// chain and server name, presents its own client certificate, fetches the
+// two frozen inputs once by content hash into cacheDir, then repeatedly
+// leases and computes jobs with concurrency independent lease loops. A
+// worker that cannot reach the coordinator (not yet started, restarting,
+// or finished) backs off and keeps retrying rather than exiting: its
+// lifecycle is controlled by ctx/SIGINT, not by any one coordinator run.
+func RunRemoteWorker(ctx context.Context, coordinatorURL, caFile, certFile, keyFile, cacheDir string, concurrency int) error {
+	if concurrency < 1 {
+		return fmt.Errorf("remote worker concurrency must be positive")
+	}
+	if cacheDir == "" {
+		return fmt.Errorf("remote worker cache directory is required")
+	}
+	tlsCfg, err := pki.WorkerClientTLSConfig(certFile, keyFile, caFile)
+	if err != nil {
+		return err
+	}
+	if err := os.MkdirAll(cacheDir, 0700); err != nil {
+		return err
+	}
+	client := &http.Client{Transport: &http.Transport{TLSClientConfig: tlsCfg}}
+	base := strings.TrimRight(strings.TrimSpace(coordinatorURL), "/")
+	if base == "" {
+		return fmt.Errorf("remote worker requires a coordinator URL")
+	}
+	u, err := url.Parse(base)
+	if err != nil {
+		return fmt.Errorf("invalid coordinator URL %q: %w", base, err)
+	}
+	// A worker may be started before, alongside, or after its coordinator
+	// process; wait for the coordinator's TCP listener to accept
+	// connections before attempting the authenticated handshake. This is
+	// pure connectivity, decoupled from TLS/certificate validity: once
+	// reachable, any handshake/auth failure below is real and fatal, never
+	// silently retried.
+	if err := awaitTCPReachable(ctx, u.Host); err != nil {
+		return fmt.Errorf("coordinator %s unreachable: %w", u.Host, err)
+	}
+
+	hs, err := fetchHandshake(ctx, client, base)
+	if err != nil {
+		return fmt.Errorf("handshake with coordinator %s: %w", base, err)
+	}
+	if err := stageInputs(ctx, client, base, cacheDir, hs); err != nil {
+		return fmt.Errorf("stage inputs from coordinator %s: %w", base, err)
+	}
+	init := hs.Config
+	init.CorpusPath = filepath.Join(cacheDir, hs.CorpusHash)
+	init.TokenMetadataMap = filepath.Join(cacheDir, hs.MetadataHash)
+	if computed := computeFingerprint(init.scientificConfig(), hs.CorpusHash, hs.MetadataHash); computed != hs.ExperimentID {
+		return fmt.Errorf("input/config fingerprint does not match coordinator's declared experiment identity")
+	}
+	state, err := newWorkerState(init)
+	if err != nil {
+		return fmt.Errorf("build worker state: %w", err)
+	}
+
+	var wg sync.WaitGroup
+	errCh := make(chan error, concurrency)
+	for i := 0; i < concurrency; i++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			if err := workerLeaseLoop(ctx, client, base, hs.ExperimentID, state); err != nil && ctx.Err() == nil {
+				errCh <- err
+			}
+		}()
+	}
+	wg.Wait()
+	close(errCh)
+	return <-errCh
+}
+
+func workerLeaseLoop(ctx context.Context, client *http.Client, base, experimentID string, state *workerState) error {
+	backoff := remoteLeaseBackoff
+	sleep := func() bool {
+		select {
+		case <-time.After(backoff):
+			return true
+		case <-ctx.Done():
+			return false
+		}
+	}
+	for {
+		if ctx.Err() != nil {
+			return nil
+		}
+		lease, err := requestLease(ctx, client, base, experimentID)
+		if err != nil {
+			if ctx.Err() != nil {
+				return nil
+			}
+			if !sleep() {
+				return nil
+			}
+			if backoff *= 2; backoff > remoteMaxBackoff {
+				backoff = remoteMaxBackoff
+			}
+			continue
+		}
+		backoff = remoteLeaseBackoff
+		if lease.NoWork {
+			if !sleep() {
+				return nil
+			}
+			continue
+		}
+		value, computeErr := state.compute(lease.JobID)
+		resultReq := remoteResultRequest{ExperimentID: experimentID, LeaseID: lease.LeaseID, JobID: lease.JobID, Value: value}
+		if computeErr != nil {
+			resultReq.Error = computeErr.Error()
+		}
+		// A rejected/expired-lease response means the coordinator already
+		// reassigned this job elsewhere; this worker simply asks for its
+		// next lease rather than treating that as fatal.
+		_ = submitResult(ctx, client, base, resultReq)
+	}
+}
+
+func awaitTCPReachable(ctx context.Context, addr string) error {
+	backoff := remoteLeaseBackoff
+	dialer := &net.Dialer{}
+	for {
+		conn, err := dialer.DialContext(ctx, "tcp", addr)
+		if err == nil {
+			return conn.Close()
+		}
+		if ctx.Err() != nil {
+			return ctx.Err()
+		}
+		select {
+		case <-time.After(backoff):
+		case <-ctx.Done():
+			return ctx.Err()
+		}
+		if backoff *= 2; backoff > remoteMaxBackoff {
+			backoff = remoteMaxBackoff
+		}
+	}
+}
+
+func fetchHandshake(ctx context.Context, client *http.Client, base string) (remoteHandshakeResponse, error) {
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, base+"/v1/handshake", nil)
+	if err != nil {
+		return remoteHandshakeResponse{}, err
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return remoteHandshakeResponse{}, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		return remoteHandshakeResponse{}, fmt.Errorf("GET /v1/handshake: HTTP %s", resp.Status)
+	}
+	var hs remoteHandshakeResponse
+	if err := json.NewDecoder(io.LimitReader(resp.Body, maxRemoteMessageBytes)).Decode(&hs); err != nil {
+		return remoteHandshakeResponse{}, err
+	}
+	if !hs.Info.compatibleWith(localRemoteInfo("")) {
+		return remoteHandshakeResponse{}, fmt.Errorf("coordinator (%s) incompatible: protocol/code/runtime %+v", hs.Info.Host, hs.Info)
+	}
+	if !validSHA256(hs.CorpusHash) || !validSHA256(hs.MetadataHash) {
+		return remoteHandshakeResponse{}, fmt.Errorf("invalid input hash from coordinator")
+	}
+	return hs, nil
+}
+
+func stageInputs(ctx context.Context, client *http.Client, base, cacheDir string, hs remoteHandshakeResponse) error {
+	for _, hash := range []string{hs.CorpusHash, hs.MetadataHash} {
+		path := filepath.Join(cacheDir, hash)
+		if _, err := os.Stat(path); err == nil {
+			continue
+		}
+		if err := fetchInput(ctx, client, base, hash, path); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func fetchInput(ctx context.Context, client *http.Client, base, hash, path string) error {
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, base+"/v1/input/"+hash, nil)
+	if err != nil {
+		return err
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("GET input %s: HTTP %s", hash, resp.Status)
+	}
+	b, err := io.ReadAll(io.LimitReader(resp.Body, maxRemoteInputBytes+1))
+	if err != nil {
+		return err
+	}
+	if len(b) > maxRemoteInputBytes {
+		return fmt.Errorf("input %s exceeds limit", hash)
+	}
+	if actual := fmt.Sprintf("%x", sha256.Sum256(b)); actual != hash {
+		return fmt.Errorf("input sha256 mismatch: coordinator served %s for requested %s", actual, hash)
+	}
+	tmp, err := os.CreateTemp(filepath.Dir(path), ".stage-")
+	if err != nil {
+		return err
 	}
 	tmpName := tmp.Name()
 	defer os.Remove(tmpName)
@@ -311,272 +747,56 @@ func (w *remoteWorkerServer) inputPut(rw http.ResponseWriter, r *http.Request) {
 	if err == nil {
 		err = os.Rename(tmpName, path)
 	}
-	if err != nil {
-		http.Error(rw, err.Error(), 500)
-		return
-	}
-	w.inputBytes.Add(int64(len(b)))
-	w.stagingNanos.Add(time.Since(started).Nanoseconds())
-	rw.WriteHeader(201)
+	return err
 }
 
-func (w *remoteWorkerServer) job(rw http.ResponseWriter, r *http.Request) {
-	select {
-	case w.sem <- struct{}{}:
-		defer func() { <-w.sem }()
-	case <-r.Context().Done():
-		return
-	}
-	b, readErr := io.ReadAll(io.LimitReader(r.Body, maxRemoteMessageBytes+1))
-	if readErr != nil || len(b) > maxRemoteMessageBytes {
-		http.Error(rw, "job message exceeds limit", http.StatusRequestEntityTooLarge)
-		return
-	}
-	w.jobRequests.Add(1)
-	w.jobRequestBytes.Add(int64(len(b)))
-	var req remoteJobRequest
-	dec := json.NewDecoder(bytes.NewReader(b))
-	dec.DisallowUnknownFields()
-	if err := dec.Decode(&req); err != nil {
-		http.Error(rw, "malformed job: "+err.Error(), 400)
-		return
-	}
-	if err := dec.Decode(&struct{}{}); err != io.EOF {
-		http.Error(rw, "malformed job: trailing JSON value", 400)
-		return
-	}
-	resp := remoteJobResponse{ExperimentID: req.ExperimentID, JobID: req.JobID, Host: w.host}
-	fail := func(status int, err error) {
-		w.jobFailures.Add(1)
-		resp.Error = err.Error()
-		w.writeJobJSON(rw, status, resp)
-	}
-	if req.Protocol != remoteProtocolVersion || req.Compatibility != scientificCompatibilityVersion {
-		fail(409, fmt.Errorf("protocol/code compatibility mismatch"))
-		return
-	}
-	if req.GOOS != runtime.GOOS || req.GOARCH != runtime.GOARCH || req.GoVersion != runtime.Version() {
-		fail(409, fmt.Errorf("runtime compatibility mismatch: worker=%s/%s/%s coordinator=%s/%s/%s", runtime.GOOS, runtime.GOARCH, runtime.Version(), req.GOOS, req.GOARCH, req.GoVersion))
-		return
-	}
-	if req.ExperimentID == "" || req.ExperimentID != req.Config.Fingerprint {
-		fail(409, fmt.Errorf("stale or inconsistent experiment identity"))
-		return
-	}
-	if !validSHA256(req.CorpusHash) || !validSHA256(req.MetadataHash) {
-		fail(400, fmt.Errorf("invalid input hash"))
-		return
-	}
-	if computed := computeFingerprint(req.Config.scientificConfig(), req.CorpusHash, req.MetadataHash); computed != req.ExperimentID {
-		fail(409, fmt.Errorf("input/config fingerprint does not match experiment identity"))
-		return
-	}
-	if req.JobID.Stage == "" || len(req.JobID.Combination) > 4096 || req.JobID.ReplicateIndex < 0 {
-		fail(400, fmt.Errorf("invalid JobID"))
-		return
-	}
-	limit := req.Config.Permutations
-	if req.JobID.Stage == "part_a_refinement" {
-		limit = refinementPermutations
-	}
-	if limit < 1 || req.JobID.ReplicateIndex >= limit {
-		fail(400, fmt.Errorf("replicate index outside configured range"))
-		return
-	}
-	w.mu.Lock()
-	state := w.states[req.ExperimentID]
-	if state == nil {
-		init := req.Config
-		init.CorpusPath, init.TokenMetadataMap = w.inputPath(req.CorpusHash), w.inputPath(req.MetadataHash)
-		var err error
-		state, err = newWorkerState(init)
-		if err != nil {
-			w.mu.Unlock()
-			fail(409, err)
-			return
-		}
-		w.states[req.ExperimentID] = state
-	}
-	w.mu.Unlock()
-	value, err := state.compute(req.JobID)
+func requestLease(ctx context.Context, client *http.Client, base, experimentID string) (remoteLeaseResponse, error) {
+	body, err := json.Marshal(remoteLeaseRequest{
+		Protocol: remoteProtocolVersion, Compatibility: scientificCompatibilityVersion,
+		GOOS: runtime.GOOS, GOARCH: runtime.GOARCH, GoVersion: runtime.Version(), ExperimentID: experimentID,
+	})
 	if err != nil {
-		fail(422, err)
-		return
+		return remoteLeaseResponse{}, err
 	}
-	resp.OK, resp.Value = true, value
-	w.writeJobJSON(rw, 200, resp)
-}
-
-type remotePool struct {
-	client    *http.Client
-	endpoints []string
-	token     string
-	retries   int
-	req       remoteJobRequest
-	next      atomic.Uint64
-	stageMu   sync.Mutex
-	staged    map[string]bool
-	corpus    []byte
-	metadata  []byte
-}
-
-func newRemotePool(c Config, fingerprint, corpusHash, metaHash string) (*remotePool, error) {
-	if len(c.RemoteWorkers) == 0 {
-		return nil, fmt.Errorf("remote executor requires at least one worker endpoint")
-	}
-	corpus, err := os.ReadFile(c.CorpusPath)
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, base+"/v1/lease", bytes.NewReader(body))
 	if err != nil {
-		return nil, err
+		return remoteLeaseResponse{}, err
 	}
-	metadata, err := os.ReadFile(c.TokenMetadataMap)
+	req.Header.Set("Content-Type", "application/json")
+	resp, err := client.Do(req)
 	if err != nil {
-		return nil, err
-	}
-	p := &remotePool{client: &http.Client{Timeout: c.RemoteTimeout}, token: c.RemoteToken, retries: c.RemoteRetries, staged: map[string]bool{}, corpus: corpus, metadata: metadata}
-	init := protocolMessage{Fingerprint: fingerprint, WindowSizes: c.WindowSizes, ResidualWindowSizes: c.ResidualWindowSizes, MinClassTokens: c.MinClassTokens, MinBlockTokens: c.MinBlockTokens, KMin: c.KMin, KMaxWithin: c.KMaxWithin, KMaxResidual: c.KMaxResidual, Permutations: c.Permutations, Seed: c.Seed}
-	p.req = remoteJobRequest{Protocol: remoteProtocolVersion, Compatibility: scientificCompatibilityVersion, GOOS: runtime.GOOS, GOARCH: runtime.GOARCH, GoVersion: runtime.Version(), ExperimentID: fingerprint, CorpusHash: corpusHash, MetadataHash: metaHash, Config: init}
-	ctx := c.Context
-	if ctx == nil {
-		ctx = context.Background()
-	}
-	available := 0
-	var lastErr error
-	for _, raw := range c.RemoteWorkers {
-		ep := strings.TrimRight(strings.TrimSpace(raw), "/")
-		if ep == "" {
-			continue
-		}
-		p.endpoints = append(p.endpoints, ep)
-		if err := p.ensureEndpoint(ctx, ep); err != nil {
-			lastErr = err
-			continue
-		}
-		available++
-	}
-	if len(p.endpoints) == 0 {
-		return nil, fmt.Errorf("remote executor has no valid endpoints")
-	}
-	if available == 0 {
-		return nil, fmt.Errorf("no remote worker available: %w", lastErr)
-	}
-	return p, nil
-}
-
-func (p *remotePool) ensureEndpoint(ctx context.Context, ep string) error {
-	p.stageMu.Lock()
-	if p.staged[ep] {
-		p.stageMu.Unlock()
-		return nil
-	}
-	p.stageMu.Unlock()
-	if err := p.checkAndStage(ctx, ep, p.req.CorpusHash, p.corpus, p.req.MetadataHash, p.metadata); err != nil {
-		return err
-	}
-	p.stageMu.Lock()
-	p.staged[ep] = true
-	p.stageMu.Unlock()
-	return nil
-}
-
-func (p *remotePool) request(ctx context.Context, method, url string, body []byte) (*http.Response, error) {
-	req, err := http.NewRequestWithContext(ctx, method, url, bytes.NewReader(body))
-	if err != nil {
-		return nil, err
-	}
-	if p.token != "" {
-		req.Header.Set("Authorization", "Bearer "+p.token)
-	}
-	if body != nil {
-		req.Header.Set("Content-Type", "application/json")
-	}
-	return p.client.Do(req)
-}
-
-func (p *remotePool) checkAndStage(ctx context.Context, ep string, corpusHash string, corpus []byte, metaHash string, metadata []byte) error {
-	resp, err := p.request(ctx, "GET", ep+"/v1/info", nil)
-	if err != nil {
-		return fmt.Errorf("remote worker %s compatibility check: %w", ep, err)
+		return remoteLeaseResponse{}, err
 	}
 	defer resp.Body.Close()
-	if resp.StatusCode != 200 {
-		return fmt.Errorf("remote worker %s compatibility check: HTTP %s", ep, resp.Status)
+	if resp.StatusCode != http.StatusOK {
+		b, _ := io.ReadAll(io.LimitReader(resp.Body, 4096))
+		return remoteLeaseResponse{}, fmt.Errorf("POST /v1/lease: HTTP %s: %s", resp.Status, string(b))
 	}
-	var info remoteInfo
-	if err := json.NewDecoder(io.LimitReader(resp.Body, maxRemoteMessageBytes)).Decode(&info); err != nil {
+	var out remoteLeaseResponse
+	if err := json.NewDecoder(io.LimitReader(resp.Body, maxRemoteMessageBytes)).Decode(&out); err != nil {
+		return remoteLeaseResponse{}, err
+	}
+	return out, nil
+}
+
+func submitResult(ctx context.Context, client *http.Client, base string, resultReq remoteResultRequest) error {
+	body, err := json.Marshal(resultReq)
+	if err != nil {
 		return err
 	}
-	local := localRemoteInfo("")
-	if info.Protocol != local.Protocol || info.Compatibility != local.Compatibility || info.GOOS != local.GOOS || info.GOARCH != local.GOARCH || info.GoVersion != local.GoVersion {
-		return fmt.Errorf("remote worker %s (%s) incompatible: protocol/code/runtime %d/%s/%s/%s/%s", ep, info.Host, info.Protocol, info.Compatibility, info.GOOS, info.GOARCH, info.GoVersion)
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, base+"/v1/result", bytes.NewReader(body))
+	if err != nil {
+		return err
 	}
-	for _, input := range []struct {
-		hash string
-		data []byte
-	}{{corpusHash, corpus}, {metaHash, metadata}} {
-		head, e := p.request(ctx, "HEAD", ep+"/v1/input/"+input.hash, nil)
-		if e == nil {
-			head.Body.Close()
-		}
-		if e == nil && head.StatusCode == 204 {
-			continue
-		}
-		put, e := p.request(ctx, "PUT", ep+"/v1/input/"+input.hash, input.data)
-		if e != nil {
-			return fmt.Errorf("stage input on %s: %w", ep, e)
-		}
-		io.Copy(io.Discard, io.LimitReader(put.Body, 4096))
-		put.Body.Close()
-		if put.StatusCode != 201 && put.StatusCode != 204 {
-			return fmt.Errorf("stage input on %s: HTTP %s", ep, put.Status)
-		}
+	req.Header.Set("Content-Type", "application/json")
+	resp, err := client.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	_, _ = io.Copy(io.Discard, io.LimitReader(resp.Body, maxRemoteMessageBytes))
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("POST /v1/result: HTTP %s", resp.Status)
 	}
 	return nil
 }
-
-func (p *remotePool) Run(ctx context.Context, id JobID) (float64, error) {
-	start := int(p.next.Add(1)-1) % len(p.endpoints)
-	var last error
-	attempts := p.retries + 1
-	if attempts < len(p.endpoints) {
-		attempts = len(p.endpoints)
-	}
-	for attempt := 0; attempt < attempts; attempt++ {
-		ep := p.endpoints[(start+attempt)%len(p.endpoints)]
-		if err := p.ensureEndpoint(ctx, ep); err != nil {
-			last = fmt.Errorf("remote worker %s job %+v: prepare endpoint: %w", ep, id, err)
-			continue
-		}
-		req := p.req
-		req.JobID = id
-		b, _ := json.Marshal(req)
-		resp, err := p.request(ctx, "POST", ep+"/v1/job", b)
-		if err != nil {
-			last = fmt.Errorf("remote worker %s job %+v: %w", ep, id, err)
-			continue
-		}
-		var out remoteJobResponse
-		decodeErr := json.NewDecoder(io.LimitReader(resp.Body, maxRemoteMessageBytes)).Decode(&out)
-		resp.Body.Close()
-		if decodeErr != nil {
-			last = fmt.Errorf("remote worker %s job %+v: decode response: %w", ep, id, decodeErr)
-			if resp.StatusCode >= 500 || resp.StatusCode == 200 {
-				continue
-			}
-			return 0, last
-		}
-		if resp.StatusCode >= 500 || resp.StatusCode == 429 {
-			last = fmt.Errorf("remote worker %s (%s) job %+v: HTTP %s: %s", ep, out.Host, id, resp.Status, out.Error)
-			continue
-		}
-		if resp.StatusCode != 200 || !out.OK {
-			return 0, fmt.Errorf("remote worker %s (%s) job %+v rejected: %s", ep, out.Host, id, out.Error)
-		}
-		if out.ExperimentID != p.req.ExperimentID || out.JobID != id {
-			return 0, fmt.Errorf("remote worker %s returned stale/mismatched result for job %+v", ep, id)
-		}
-		return out.Value, nil
-	}
-	return 0, fmt.Errorf("job %+v failed after %d attempt(s): %w", id, attempts, last)
-}
-
-func (p *remotePool) Close() error { return nil }

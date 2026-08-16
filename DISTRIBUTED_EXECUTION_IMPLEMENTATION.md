@@ -631,3 +631,173 @@ round-robin between experiment queues, prioritizing a bounded share of each
 small corpus while filling remaining slots from long queues. Each experiment
 must keep its own completion map, checkpoint, canonical reducer, and final
 writer, so inter-experiment scheduling cannot alter results.
+
+# Mutual-TLS Authentication for the Remote Distributed Executor (Task34)
+
+## Phase 1 audit: what Task33 actually had
+
+Task33's coordinator (the process running `RunAndWrite`) dialed out over
+plain HTTP to a fixed list of worker endpoints (`-remote-workers`); each
+worker (`-remote-worker-listen`) was the TCP/HTTP listener. Authentication
+was a single shared bearer token compared with `subtle.ConstantTimeCompare`,
+with an explicit unauthenticated exception for loopback listeners
+(`loopbackListenAddress`). There was no per-node identity: every worker
+trusted the same token, and the coordinator had no way to know *which*
+physical worker handled a job beyond the free-text `Host` field a worker
+chose to report in its own response - never an authenticated fact, and never
+consulted for anything but log messages. Endpoints requiring
+"authentication" were all four routes (`GET /v1/info`, `GET /v1/metrics`,
+`HEAD`/`PUT /v1/input/{hash}`, `POST /v1/job`); none required anything
+beyond the shared token.
+
+## Why the connection direction had to invert
+
+Task34's invariants require the coordinator to verify an individual client
+certificate per worker and derive `WorkerID` from it, and require every
+worker to verify the coordinator's certificate chain and server name. In
+TLS, the side that presents a certificate validated by SAN/hostname
+(serverAuth, checked with `DNSName`) is inherently the side being *dialed
+to*, and the side authenticated purely by client-certificate identity
+(clientAuth) is inherently the side *dialing out* - Go's `crypto/tls`
+enforces this: it verifies a listener's own certificate against
+`ExtKeyUsageServerAuth` and `DNSName` only when acting as the dialing client
+elsewhere, and verifies a connecting peer's certificate against
+`ExtKeyUsageClientAuth` only when acting as the listener requiring client
+certs. Task33's worker was the listener and the coordinator was the dialer -
+the opposite of what "coordinator has a server certificate with mandatory
+DNS/IP SANs" and "worker has an individual client certificate" require.
+Making the literal Task34 requirement true - not just plausible - therefore
+required the coordinator to become the mTLS/HTTPS listener and every worker
+to become the TLS client that dials in. This is why phase 8 names a third
+identity, `LeaseID` ("execution attempt identity"), that did not exist in
+Task33: workers now pull work by leasing a `JobID` from the coordinator's
+queue instead of receiving it pushed to a fixed endpoint, and a lease is
+what lets the coordinator reclaim and reassign a job whose worker never
+answers - the direct analogue of Task33's per-endpoint HTTP retry, realized
+as a queue instead of a dispatch loop.
+
+This inversion changed only *which side of the TCP connection dials and
+which listens, and how a job's identity is communicated* (push per-endpoint
+dispatch to pull-by-lease). It did not change: `JobID`'s shape or meaning,
+`replicateSeed`/RNG, `workerState.compute`, `executePermutationJobs`'s
+bounded-concurrency/dedup/reduction semantics, or the checkpoint format.
+`remotePool` (the coordinator side) still implements the identical
+`jobExecutor` interface (`Run(context.Context, JobID) (float64, error)`,
+`Close`) that `executePermutationJobs` already called for every backend
+since Task31/32; nothing upstream of the executor boundary changed at all.
+
+## PKI (phases 2-4)
+
+`internal/pki` is a small offline CA: ECDSA P-256/SHA-256 throughout (a
+modern, universally-supported Go default; no RSA key-size bookkeeping, no
+Ed25519 CA-tooling gaps), 128-bit random serials, `MaxPathLen: 0` (no
+intermediates), private keys written `0600` and refusing to overwrite an
+existing file unless `-force` is passed. `conditional-regime-pki` is the new
+administrative command (`ca`, `issue-coordinator`, `issue-worker`,
+`revoke`); it is never invoked by the coordinator or worker at runtime, and
+`ca.key` is read only by this offline tool, never by
+`conditional-regime-analyze`.
+
+- **Coordinator certificate**: EKU `serverAuth`, mandatory explicit
+  `-dns`/`-ip` SANs (issuance refuses to proceed with neither), Common Name
+  is a non-authoritative label only.
+- **Worker certificate**: EKU `clientAuth`, identity carried in exactly one
+  `voinich-worker://<id>` URI SAN, validated against
+  `^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$` both at issuance and at every
+  extraction (`pki.WorkerIdentity`) so a certificate with zero, more than
+  one, or a malformed URI SAN is rejected explicitly rather than picking an
+  identity. Every `issue-worker` call generates its own key and serial;
+  nothing issues or accepts a shared worker certificate.
+
+## Coordinator/worker enforcement (phases 5-6)
+
+`pki.CoordinatorServerTLSConfig` sets `ClientAuth: RequireAndVerifyClientCert`
+and a `VerifyPeerCertificate` hook that extracts `WorkerID` from the
+verified chain and checks it (and the certificate's serial) against the
+deny-list; there is no optional-client-cert mode. `pki.WorkerClientTLSConfig`
+sets only `RootCAs`/`Certificates`/`MinVersion` - it never sets
+`InsecureSkipVerify` and never overrides the default chain/hostname
+verification, so an invalid chain or wrong server name fails the handshake
+using Go's own default behavior, not bespoke logic that could be
+misconfigured away. Every HTTP route on the coordinator
+(`GET /v1/handshake`, `GET /v1/input/{hash}`, `POST /v1/lease`,
+`POST /v1/result`, `GET /v1/metrics`) runs behind a `withWorkerID` middleware
+that derives `WorkerID` from `r.TLS.VerifiedChains` before the handler ever
+sees the request - the protocol's `remoteResultRequest` carries no worker
+identity field at all, so there is nothing for a request body to lie about,
+and `POST /v1/result` additionally checks that the caller's own `WorkerID`
+matches the `WorkerID` the lease was actually handed to, rejecting an
+attempt by one authenticated worker to complete another's lease with
+`403 Forbidden`.
+
+## Lifecycle/revocation (phase 7)
+
+Adding, renewing, and replacing a worker; renewing the coordinator; and CA
+rotation via a multi-certificate trust bundle are all in
+`DISTRIBUTED_EXECUTION_OPERATIONS.md`. Revocation is
+`internal/pki.DenyList`, an explicit JSON file keyed by certificate serial
+and/or `WorkerID`, loaded once at coordinator startup and consulted inside
+`VerifyPeerCertificate` - the minimum mechanism phase 7 allows in place of
+CRL/OCSP, proportionate to a PKI this small.
+
+## Identity separation (phase 8)
+
+`JobID` (`internal/conditionalregime/parallel.go`) is untouched: still
+`{Stage, Combination, ReplicateIndex}`, still built and consumed only by
+`run.go`/`worker.go`/`parallel.go`. `WorkerID` exists only inside
+`remote.go`'s transport layer (`pki.WorkerIdentity`, the lease/result
+handlers) and is never passed into `workerState`, `compute`,
+`replicateSeed`, or any checkpoint key. `LeaseID` (`newLeaseID`, random
+128-bit hex) exists only in `activeLease`/`pendingJob` bookkeeping inside
+`remotePool` and is discarded once a job's outcome is delivered. None of the
+three types can be confused for another at compile time or at the protocol
+level (`remoteResultRequest` has `LeaseID`, `JobID`, and no worker-identity
+field at all).
+
+## Tests (phases 9-10)
+
+`internal/pki/pki_test.go` covers, at the TLS-handshake layer: CA overwrite
+refusal and key permissions/BasicConstraints, mandatory coordinator
+SAN/EKU, unique worker serials/identity/EKU, deny-list serial/WorkerID
+matching, a full successful mTLS handshake recovering the exact `WorkerID`,
+and rejection of: no client certificate, a foreign CA's certificate, wrong
+EKU, an expired certificate, a revoked worker, and a coordinator SAN that
+does not match the dialed name. (TLS 1.3's handshake ordering means a
+rejected client can still see `Dial` succeed before the server's alert
+arrives; these tests perform a post-handshake read/write to observe the
+rejection reliably - see `dialExpectRejected`.)
+
+`internal/conditionalregime/remote_test.go` covers, at the coordinator/worker
+transport layer: the full pipeline over mTLS with two independently
+authenticated workers matching the sequential oracle byte-for-byte, both
+cold and warm-cache; the same oracle match after **renewing** a worker's
+certificate in place and after the job is resolved entirely by a
+**different** authenticated worker (phase 10's full matrix); a job whose
+lease expires (simulated worker crash/silence) being reassigned to a second
+worker and producing the exact value `workerState.compute` would produce
+locally; one worker attempting to submit another worker's lease result
+being rejected with `403` while the legitimate worker's own result still
+completes the job correctly; stale-experiment and incompatible-runtime
+lease rejection; a revoked worker being rejected; the metrics endpoint
+requiring authentication; and checkpoint-resume skipping an already-
+completed job through the new pool. All of the above ran under
+`go test ./... && go test -race ./internal/conditionalregime/...`
+alongside every pre-existing Task28-33 test, with no changes required
+anywhere outside `internal/pki`, `conditional-regime-pki`,
+`internal/conditionalregime/remote.go`, `internal/conditionalregime/types.go`,
+and `conditional-regime-analyze/main.go`.
+
+## CLI (phase 11)
+
+```
+Coordinator: -remote-listen, -tls-cert, -tls-key, -client-ca, -remote-deny-list
+Worker:      -coordinator, -ca, -tls-cert, -tls-key, -remote-cache-dir, -remote-concurrency
+```
+
+`-tls-cert`/`-tls-key` are shared flag names for both roles (only one role's
+code path ever reads them in a given invocation), matching the task's own
+"conceptually" listed flag names exactly for the fields that differ
+(`-client-ca` vs `-ca`, `-remote-listen` vs `-coordinator`). `-remote-token`
+and `-remote-workers` are gone entirely: mTLS is the only authentication
+path, not an addition alongside a bearer token. No code path logs a
+certificate's private key or `ca.key`'s contents.

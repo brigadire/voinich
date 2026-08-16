@@ -43,12 +43,27 @@ type Config struct {
 	// scientific: it is intentionally excluded from the checkpoint
 	// fingerprint so a resumed run may switch backends.
 	Executor string
-	// RemoteWorkers is the fixed set of trusted HTTP worker base URLs used
-	// when Executor is "remote". Inputs are staged once by SHA-256; individual
-	// jobs carry only their identity and the experiment fingerprint.
-	RemoteWorkers []string
-	RemoteToken   string
-	RemoteTimeout time.Duration
+	// RemoteListen is the coordinator's own mTLS listen address when
+	// Executor is "remote" (e.g. "0.0.0.0:8443"). Workers dial in and lease
+	// jobs from it; the coordinator never dials out (Task34: the
+	// coordinator is the TLS server with the fixed, addressable identity,
+	// every worker is a TLS client with its own individual identity).
+	RemoteListen string
+	// TLSCert/TLSKey are the coordinator's own certificate/key (EKU
+	// serverAuth, signed by the project CA; internal/pki issues them).
+	// ClientCA is the project CA bundle used to verify every connecting
+	// worker's client certificate. All three are required when Executor is
+	// "remote".
+	TLSCert  string
+	TLSKey   string
+	ClientCA string
+	// RemoteDenyList optionally names a JSON deny-list file
+	// (internal/pki.DenyList) revoking specific certificate serials or
+	// authenticated worker identities. Empty means nothing is revoked.
+	RemoteDenyList string
+	RemoteTimeout  time.Duration
+	// RemoteRetries bounds how many times the coordinator reassigns a job
+	// to another worker after a lease expires unanswered before failing it.
 	RemoteRetries int
 	Context       context.Context
 	// CheckpointPath, if non-empty, is where progress is saved after every
