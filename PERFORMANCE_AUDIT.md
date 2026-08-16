@@ -380,3 +380,20 @@ not yet justified because the vectors are modest and transfers/launches
 would consume much of the remaining kernel budget. The single next target is
 therefore vectorization of the dense distance loop (benchmark first; do not
 alter its accumulation semantics). No such follow-up was implemented here.
+
+## Task30: distributed execution feasibility audit
+
+Task30 is a design/audit task, not a performance-optimization task — see
+`DISTRIBUTED_EXECUTION_AUDIT.md` for the full result. It re-profiled current
+HEAD (`7f70fb5`, this file's own Task29 dense rewrite) and found a
+measurement-driven correction worth recording here: Part A's
+`withinClassSignificance` (`nullmodels.go:107-124`) also scales with
+`-permutations` via the same independently-seeded-per-replicate pattern as
+Part B's `residualGlobalCorrection`, and was not separately counted in this
+file's `~7.3h` production estimate above. The corrected estimate is
+**~8.4-9.1h** — no code changed, this is purely a more complete measurement.
+`globalregime.jsDistanceSorted`/`stabilityForClass`'s map-based cost, already
+flagged above as the predicted next dominant consumer once the residual path
+was fixed, is now confirmed as such by fresh profiling (35.07% cumulative CPU
+at reduced scale) — still not fixed, still an open, explicitly-deferred
+target, exactly as this file already documents.

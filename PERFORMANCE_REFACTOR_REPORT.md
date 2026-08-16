@@ -3055,3 +3055,26 @@ diff -qr /tmp/task29-output-before /tmp/task29-output-dense
 
 The final race run passed in 5.828s. No code outside the conditional-regime
 dense representation and its tests was refactored.
+
+## Task30 — distributed execution feasibility audit
+
+Task30 is an audit/design task (no code, RNG, or output-format change) —
+full detail in `DISTRIBUTED_EXECUTION_AUDIT.md`. It re-profiled the current
+`conditional-regime-analyze` binary (HEAD `7f70fb5`, this report's own
+Task29 dense rewrite) at `-permutations 3` (`profiles/conditionalregime.task30.{cpu,mem}.pprof`),
+cross-checked per-replicate cost against Task29's `-permutations 1`
+measurement above, and traced `conditionalregime`'s complete RNG lifecycle
+(`seeding.go`'s `replicateSeed`) and reduction (`stats.go`'s
+`meanFloat`/`sdFloat` vs. `percentileOf`/`maxFloat`/`exceedances`) end to
+end. Conclusion: distributed execution can reproduce the current
+single-process output bit-for-bit, with no RNG or algorithm change, provided
+per-job results are reassembled into original replicate-index order before
+any order-sensitive floating-point summation (a solved architectural
+requirement, not a numerical-tolerance concession). One measurement-driven
+correction surfaced along the way: Part A's `withinClassSignificance` also
+scales with `-permutations` via the same independent-seed pattern and was
+not previously counted, revising the production estimate from ~7.3h to
+~8.4-9.1h. See `DISTRIBUTED_EXECUTION_AUDIT.md` for the full RNG/reduction
+audit, natural-parallelism-unit analysis across every permutation-based
+package, the Amdahl's-law scaling table (1/2/4/8/16/32 workers), and the
+recommended Task31 architecture.
