@@ -185,7 +185,7 @@ func residualGlobalCorrectionParallel(ctx context.Context, workers int, pool *pr
 	return residualGlobalCorrectionParallelState(ctx, workers, pool, tokens, classes, blocksByClass, scales, kMin, kMax, method, standardized, observed, permutations, seed, resume, nil, onSave, nil)
 }
 
-func residualGlobalCorrectionParallelState(ctx context.Context, workers int, pool *processPool, tokens []string, classes []ClassID, blocksByClass map[ClassID][]Block, scales []int, kMin, kMax int, method string, standardized bool, observed float64, permutations int, seed int64, resume []float64, completed map[int]float64, onSave func(null []float64), onComplete func(JobResult)) (EmpiricalStats, error) {
+func residualGlobalCorrectionParallelState(ctx context.Context, workers int, pool jobExecutor, tokens []string, classes []ClassID, blocksByClass map[ClassID][]Block, scales []int, kMin, kMax int, method string, standardized bool, observed float64, permutations int, seed int64, resume []float64, completed map[int]float64, onSave func(null []float64), onComplete func(JobResult)) (EmpiricalStats, error) {
 	salt := methodSalt(method)
 	null, err := runIndexedReplicatesState(ctx, workers, pool, "part_b_global_correction", method+"|"+representationName(standardized), permutations, resume, completed, func(ctx context.Context, i int) (float64, error) {
 		if err := ctx.Err(); err != nil {

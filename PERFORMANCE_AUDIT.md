@@ -432,3 +432,21 @@ first, so the two-line summary could reorder across separate process runs
 regardless of executor or worker count (reproduced on unmodified
 pre-Task32 code). See `DISTRIBUTED_EXECUTION_IMPLEMENTATION.md` for the
 full protocol, benchmark, memory, and failure-mode detail.
+
+## Task33: remote executor
+
+Task33 adds a thin HTTP transport around the same measured job boundary.
+Cold traffic is exactly the two hashed input files per worker and warm
+traffic stages no input; replicate requests/results are small bounded JSON.
+Two physical hosts (Intel i7-8850H and AMD Ryzen 7 5700X, identical
+linux/amd64 Go runtime) were subsequently measured. Frozen-oracle remote
+wall times for 1/2/4/8/16/32 slots were
+26.038/21.854/19.839/19.819/20.695/19.952s, with all 19 outputs exactly
+SHA256-identical. Coordinator peak RSS stayed 157.2-159.9 MiB; combined
+worker CPU stayed 8.73-9.02s per run; maximum worker peak RSS over the series
+was 153.3 MiB (Intel) and 137.7 MiB (AMD). Each warm run transferred 53,924
+bytes of job payload and 17,491 bytes of result payload, zero input bytes,
+and had zero retries. The measured 0.810s cold stage transferred 2,440,409
+bytes. Fixed coordinator work dominates this four-permutation workload, so
+four to eight slots plateau and these speedups are not production-scale
+extrapolations. Full tables are in `DISTRIBUTED_EXECUTION_IMPLEMENTATION.md`.

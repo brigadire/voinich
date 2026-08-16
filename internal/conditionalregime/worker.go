@@ -9,6 +9,7 @@ import (
 	"math/rand"
 	"strconv"
 	"strings"
+	"sync"
 )
 
 func writeMessage(w *bufio.Writer, m protocolMessage) error {
@@ -66,6 +67,7 @@ type workerState struct {
 	jointEligible  []ClassID
 	jointBlocks    map[ClassID][]Block
 	sweepCache     map[string]workerSweep
+	sweepMu        sync.Mutex
 }
 
 func classIDFromLabel(scheme Scheme, label string) ClassID {
@@ -99,6 +101,7 @@ func (w *workerState) computePartA(id JobID) (float64, error) {
 	method := parts[3]
 
 	sweepKey := parts[0] + "|" + parts[1] + "|" + parts[2]
+	w.sweepMu.Lock()
 	sweep, ok := w.sweepCache[sweepKey]
 	if !ok {
 		blocks := w.blocksByScheme[scheme][class]
@@ -106,6 +109,7 @@ func (w *workerState) computePartA(id JobID) (float64, error) {
 		sweep = workerSweep{best: bestByMethod(rows), blocks: blocks}
 		w.sweepCache[sweepKey] = sweep
 	}
+	w.sweepMu.Unlock()
 	row, ok := sweep.best[method]
 	if !ok {
 		return 0, fmt.Errorf("no observed row for method %q at combination %q", method, id.Combination)
@@ -164,6 +168,38 @@ func (w *workerState) compute(id JobID) (float64, error) {
 	}
 }
 
+func newWorkerState(initMsg protocolMessage) (*workerState, error) {
+	tokens, corpusHash, err := readCorpus(initMsg.CorpusPath)
+	if err != nil {
+		return nil, fmt.Errorf("read corpus: %w", err)
+	}
+	currier, hand, metaHash, err := loadTokenLabels(initMsg.TokenMetadataMap)
+	if err != nil {
+		return nil, fmt.Errorf("load token metadata map: %w", err)
+	}
+	if len(currier) != len(tokens) {
+		return nil, fmt.Errorf("token metadata map has %d tokens but corpus has %d", len(currier), len(tokens))
+	}
+	if fp := computeFingerprint(initMsg.scientificConfig(), corpusHash, metaHash); fp != initMsg.Fingerprint {
+		return nil, fmt.Errorf("input/config fingerprint mismatch: worker loaded different input or parameters")
+	}
+	allBlocks := buildAllBlocks(currier, hand)
+	w := &workerState{
+		tokens: tokens, init: initMsg,
+		blocksByScheme: map[Scheme]map[ClassID][]Block{
+			SchemeJoint: blocksByClass(allBlocks[SchemeJoint]), SchemeCurrierOnly: blocksByClass(allBlocks[SchemeCurrierOnly]), SchemeHandOnly: blocksByClass(allBlocks[SchemeHandOnly]),
+		},
+		sweepCache: map[string]workerSweep{},
+	}
+	inventory := classInventory(allBlocks, initMsg.MinClassTokens, initMsg.MinBlockTokens)
+	w.jointEligible = eligibleSorted(inventory, SchemeJoint)
+	w.jointBlocks = map[ClassID][]Block{}
+	for _, cid := range w.jointEligible {
+		w.jointBlocks[cid] = w.blocksByScheme[SchemeJoint][cid]
+	}
+	return w, nil
+}
+
 // RunWorker runs the Task32 subprocess worker protocol loop on in/out: an
 // Init handshake with an explicit protocol version and scientific
 // fingerprint (the same computeFingerprint that guards checkpoint resume),
@@ -197,37 +233,9 @@ func RunWorker(ctx context.Context, in io.Reader, out io.Writer) error {
 		return fail("protocol version mismatch: worker speaks %d, coordinator sent %d", workerProtocolVersion, initMsg.Version)
 	}
 
-	tokens, corpusHash, err := readCorpus(initMsg.CorpusPath)
+	w, err := newWorkerState(initMsg)
 	if err != nil {
-		return fail("read corpus: %v", err)
-	}
-	currier, hand, metaHash, err := loadTokenLabels(initMsg.TokenMetadataMap)
-	if err != nil {
-		return fail("load token metadata map: %v", err)
-	}
-	if len(currier) != len(tokens) {
-		return fail("token metadata map has %d tokens but corpus has %d", len(currier), len(tokens))
-	}
-	if fp := computeFingerprint(initMsg.scientificConfig(), corpusHash, metaHash); fp != initMsg.Fingerprint {
-		return fail("input/config fingerprint mismatch: this worker loaded a different corpus, metadata map, or parameter set than the coordinator")
-	}
-
-	allBlocks := buildAllBlocks(currier, hand)
-	w := &workerState{
-		tokens: tokens,
-		init:   initMsg,
-		blocksByScheme: map[Scheme]map[ClassID][]Block{
-			SchemeJoint:       blocksByClass(allBlocks[SchemeJoint]),
-			SchemeCurrierOnly: blocksByClass(allBlocks[SchemeCurrierOnly]),
-			SchemeHandOnly:    blocksByClass(allBlocks[SchemeHandOnly]),
-		},
-		sweepCache: map[string]workerSweep{},
-	}
-	inventory := classInventory(allBlocks, initMsg.MinClassTokens, initMsg.MinBlockTokens)
-	w.jointEligible = eligibleSorted(inventory, SchemeJoint)
-	w.jointBlocks = map[ClassID][]Block{}
-	for _, cid := range w.jointEligible {
-		w.jointBlocks[cid] = w.blocksByScheme[SchemeJoint][cid]
+		return fail("%v", err)
 	}
 
 	if err := writeMessage(writer, protocolMessage{Kind: "ready", OK: true}); err != nil {

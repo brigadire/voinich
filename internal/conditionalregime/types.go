@@ -14,6 +14,7 @@ package conditionalregime
 import (
 	"context"
 	"io"
+	"time"
 )
 
 // Config describes one conditional-regime-analyze run.
@@ -42,7 +43,14 @@ type Config struct {
 	// scientific: it is intentionally excluded from the checkpoint
 	// fingerprint so a resumed run may switch backends.
 	Executor string
-	Context  context.Context
+	// RemoteWorkers is the fixed set of trusted HTTP worker base URLs used
+	// when Executor is "remote". Inputs are staged once by SHA-256; individual
+	// jobs carry only their identity and the experiment fingerprint.
+	RemoteWorkers []string
+	RemoteToken   string
+	RemoteTimeout time.Duration
+	RemoteRetries int
+	Context       context.Context
 	// CheckpointPath, if non-empty, is where progress is saved after every
 	// completed unit of work (a class x window_size combo, or - for the
 	// slowest loop, Part B's global permutation correction - every single

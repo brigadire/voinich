@@ -495,3 +495,139 @@ subprocess workers, using the test binary re-exec'd as a worker), and a
 comparing full `RunAndWrite` output trees across goroutine/process at
 multiple worker counts on a small synthetic fixture — in addition to the
 real-corpus manual validation recorded above.
+
+# Deterministic Remote Distributed Execution (Task33)
+
+## Frozen oracle and invariant
+
+Task33 freezes Task32's representative real-corpus workload exactly as
+recorded above: corpus `data_work/ZL3b-x7.txt`, metadata map
+`workdir/metadata-validation/token_metadata_map.tsv`, window size `500`,
+residual window size `500`, minima `1000/500`, both K ranges fixed at `2`,
+four permutations, seed 1. The input hashes and all 19 artifact hashes are
+the tables in Task32's “Correctness matrix”; they are copied by reference
+rather than silently creating a new oracle. The automated small-fixture
+oracle independently compares every output file from local workers with
+one and two HTTP workers and a second warm-cache run.
+
+The executor boundary is now the small `jobExecutor` interface:
+`Run(context.Context, JobID) (float64, error)` plus `Close`. Goroutine,
+persistent subprocess, and HTTP executors all enter the existing
+`executePermutationJobs` path. Results are placed in the preassigned slot
+for their `JobID`, duplicates are ignored, checkpoint keys are deterministic,
+and all statistics consume replicate-index order. No scientific, RNG, or
+reduction routine was forked for Task33.
+
+## Protocol and coordinator
+
+The standard-library HTTP/JSON protocol is version 1:
+
+- authenticated `GET /v1/info` returns protocol, scientific compatibility,
+  GOOS, GOARCH, exact Go runtime, CPU model, and hostname;
+- authenticated `GET /v1/metrics` returns application traffic/cache counters
+  plus worker CPU ticks, RSS, peak RSS, and Go heap measurements;
+- `HEAD/PUT /v1/input/{sha256}` provides bounded immutable staging;
+- `POST /v1/job` carries protocol/runtime identity, `ExperimentID`, two
+  input hashes, scientific config, and the unchanged `JobID`; its explicit
+  response echoes `ExperimentID` and `JobID`, success/failure, value, and
+  hostname.
+
+Messages are capped at 1 MiB and input objects at 64 MiB. `http.Client`
+and request contexts bound time/cancellation. Disconnect, timeout, 429, and
+5xx responses are retried; contract/input/scientific 4xx failures are not.
+Configured endpoints are selected round-robin, then rotated on retries.
+Endpoint and `JobID` appear in every client-side failure; hostname appears
+whenever the worker returned a structured response.
+
+Coordinator persistence remains the atomic Task31 checkpoint. It records
+out-of-order completions by deterministic `JobID`; restart loads only the
+matching experiment fingerprint and redispatches only missing IDs. This is
+at-least-once network execution with exactly-once contribution, not a claim
+of exactly-once delivery.
+
+## Worker and input identity
+
+The worker has a semaphore-enforced concurrency limit and graceful HTTP
+shutdown. It constructs the same `workerState` used by Task32, calling the
+same `withinClassSweep`, `nullSilhouetteAtK`, `residualNullMax`, seed, and
+salt functions. Its only mutable optimization is a mutex-protected cache of
+pure discovery sweeps; it never reduces across replicates.
+
+Cold startup uploads corpus and metadata once per worker. For the frozen
+real workload these were measured at 234,466 and 2,205,943 bytes
+(2,440,409 bytes total per cold worker; 4,880,818 for two), with SHA256
+`360d99583145ec549b80edfafdc3f93534f3a11b85a0d52997ba8425e92b87c2`
+and `148745adbc889150ad1b59715bbfa75fa17e24b566694d94a0445d06393a7e68`.
+The worker checks
+the URL hash against received bytes, installs via temporary-file rename,
+and later recomputes the full experiment fingerprint from cached contents
+and config. Warm startup uses two HEAD hits and transfers zero input bytes.
+Job traffic contains no corpus and filesystem path names do not affect
+scientific values. The integration test verifies two cache objects after
+both cold and warm runs; the warm run sends zero input-body bytes.
+
+## Validation and scaling status
+
+Integration tests cover a full two-worker HTTP run against the local oracle,
+different worker concurrency, cold/warm cache, injected 503 and retry,
+stale experiment/runtime rejection, and coordinator checkpoint reload with
+a previously completed out-of-order job. Existing tests cover shuffled
+completion, duplicate suppression, process kill/error, cancellation, and
+canonical reduction. The test servers are independent worker instances.
+
+Two physical workers were measured:
+
+| host | OS/architecture | Go runtime | CPU | logical CPUs |
+|---|---|---|---|---:|
+| `adelie` | Linux 6.6.35-gentoo-dist / amd64 | go1.26.4-X:nodwarf5 | Intel Core i7-8850H | 12 |
+| `cognition` (`10.10.24.105`) | Linux 6.18.41-gentoo-x86_64 / amd64 | go1.26.4-X:nodwarf5 | AMD Ryzen 7 5700X | 16 |
+
+The exact same binary was used on both. A two-worker run dispatched 36 jobs
+to Intel and 36 to AMD; every one of the 19 output hashes matched the frozen
+Task32 oracle exactly. This is measured heterogeneous-CPU byte identity, not
+tolerance equivalence. The runtime/OS/architecture checks remain enforced
+because combinations outside this measured compatibility envelope have not
+been validated.
+
+### Measured two-host scaling
+
+Workload: the frozen real-corpus oracle above, warm content cache, two HTTP
+workers, 72 remote jobs per run. CPU ticks were sampled from `/proc` with
+`CLK_TCK=100` on both hosts; coordinator RSS was sampled every 100 ms. Worker
+RSS below is the combined post-run RSS (Intel + AMD); cumulative peak RSS
+over the full series was 153.3 MiB Intel and 137.7 MiB AMD.
+
+| slots | wall | speedup | efficiency | coordinator CPU | coordinator peak RSS | worker CPU (Intel+AMD) | worker RSS after run | exact oracle |
+|---:|---:|---:|---:|---:|---:|---:|---:|---|
+| 1 | 26.038s | 1.00x | 100.0% | 20.42s | 158.2 MiB | 5.49s + 3.53s | 133.3 MiB | yes |
+| 2 | 21.854s | 1.19x | 59.6% | 20.33s | 158.6 MiB | 5.24s + 3.49s | 139.4 MiB | yes |
+| 4 | 19.839s | 1.31x | 32.8% | 19.71s | 158.8 MiB | 5.33s + 3.68s | 200.9 MiB | yes |
+| 8 | 19.819s | 1.31x | 16.4% | 19.81s | 158.2 MiB | 5.23s + 3.68s | 209.6 MiB | yes |
+| 16 | 20.695s | 1.26x | 7.9% | 20.63s | 159.9 MiB | 5.35s + 3.64s | 205.1 MiB | yes |
+| 32 | 19.952s | 1.31x | 4.1% | 19.86s | 157.2 MiB | 5.34s + 3.68s | 197.8 MiB | yes |
+
+Every warm run transferred exactly 53,924 bytes of job JSON and 17,491
+bytes of result JSON at application level, plus HTTP headers; input-body
+traffic was zero, all four cache probes hit, and failures/retries were zero.
+A separate empty-cache run transferred exactly 2,440,409 input bytes,
+measured 0.810s staging time, completed in 26.853s, and was also oracle-
+identical. Its result traffic was 17,599 bytes because all hostname-bearing
+responses came from `cognition` rather than being split between hostnames.
+
+The reduced workload has about 20s of fixed coordinator science and only 72
+small remote jobs, so its plateau at four to eight slots is expected; these
+numbers must not be extrapolated to the production 1,000-permutation workload.
+Eight slots is the best measured setting here by a statistically negligible
+20 ms over four; four is the conservative operational choice for this small
+workload. Operational commands and trust model are in
+`DISTRIBUTED_EXECUTION_OPERATIONS.md`.
+
+## Multi-corpus readiness
+
+`ExperimentID` is the complete scientific fingerprint, the content hashes
+are natural `CorpusID` components, and `JobID` remains scoped within an
+experiment. A later scheduler can use weighted round-robin or deficit
+round-robin between experiment queues, prioritizing a bounded share of each
+small corpus while filling remaining slots from long queues. Each experiment
+must keep its own completion map, checkpoint, canonical reducer, and final
+writer, so inter-experiment scheduling cannot alter results.

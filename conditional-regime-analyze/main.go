@@ -45,6 +45,8 @@ func run() (code int) {
 	c := conditionalregime.Config{}
 	var windowSizes, residualWindowSizes intList
 	var internalWorker bool
+	var remoteWorkerList, remoteListen, remoteCache string
+	var remoteConcurrency int
 	flag.StringVar(&c.CorpusPath, "corpus", "data_work/ZL3b-x7.txt", "canonical IVTT -x7 corpus, unchanged")
 	flag.StringVar(&c.TokenMetadataMap, "token-metadata-map", "workdir/metadata-validation/token_metadata_map.tsv", "frozen token_metadata_map.tsv from metadata-validate")
 	flag.StringVar(&c.OutputDir, "output-dir", workdir.Path("conditional-regimes"), "result directory")
@@ -58,7 +60,14 @@ func run() (code int) {
 	flag.IntVar(&c.Permutations, "permutations", 1000, "primary block-aware null permutations")
 	flag.Int64Var(&c.Seed, "seed", 1, "deterministic random seed")
 	flag.IntVar(&c.Workers, "workers", 1, "bounded local permutation workers")
-	flag.StringVar(&c.Executor, "executor", "goroutine", "permutation job backend: goroutine|process")
+	flag.StringVar(&c.Executor, "executor", "goroutine", "permutation job backend: goroutine|process|remote")
+	flag.StringVar(&remoteWorkerList, "remote-workers", "", "comma-separated trusted remote worker base URLs")
+	flag.StringVar(&c.RemoteToken, "remote-token", os.Getenv("CONDITIONAL_REGIME_REMOTE_TOKEN"), "shared bearer token (or CONDITIONAL_REGIME_REMOTE_TOKEN)")
+	flag.DurationVar(&c.RemoteTimeout, "remote-timeout", 10*time.Minute, "timeout for one remote request/job")
+	flag.IntVar(&c.RemoteRetries, "remote-retries", 2, "transport retries per remote job")
+	flag.StringVar(&remoteListen, "remote-worker-listen", "", "serve as a remote worker on this address (for example 127.0.0.1:8091)")
+	flag.StringVar(&remoteCache, "remote-cache-dir", "", "content-addressed remote worker input cache")
+	flag.IntVar(&remoteConcurrency, "remote-concurrency", 1, "maximum concurrent jobs accepted by a remote worker")
 	flag.StringVar(&c.CheckpointPath, "checkpoint-path", "", "progress checkpoint file (default <output-dir>/checkpoint.json; \"-\" disables checkpointing)")
 	flag.BoolVar(&c.Quiet, "quiet", false, "disable status bar")
 	flag.BoolVar(&internalWorker, "internal-worker", false, "internal: speak the Task32 subprocess worker protocol on stdin/stdout instead of running the pipeline (do not use directly)")
@@ -75,6 +84,17 @@ func run() (code int) {
 		}
 		return 0
 	}
+	if remoteListen != "" {
+		if remoteCache == "" {
+			fmt.Fprintln(os.Stderr, "Error: -remote-cache-dir is required in remote worker mode")
+			return 2
+		}
+		if err := conditionalregime.RunRemoteWorker(ctx, remoteListen, remoteCache, c.RemoteToken, remoteConcurrency); err != nil {
+			fmt.Fprintln(os.Stderr, "Error:", err)
+			return 1
+		}
+		return 0
+	}
 
 	c.WindowSizes = []int(windowSizes)
 	c.ResidualWindowSizes = []int(residualWindowSizes)
@@ -86,9 +106,16 @@ func run() (code int) {
 		fmt.Fprintln(os.Stderr, "Error: workers must be positive")
 		return 2
 	}
-	if c.Executor != "goroutine" && c.Executor != "process" {
-		fmt.Fprintln(os.Stderr, `Error: executor must be "goroutine" or "process"`)
+	if c.Executor != "goroutine" && c.Executor != "process" && c.Executor != "remote" {
+		fmt.Fprintln(os.Stderr, `Error: executor must be "goroutine", "process" or "remote"`)
 		return 2
+	}
+	if remoteWorkerList != "" {
+		for _, endpoint := range strings.Split(remoteWorkerList, ",") {
+			if endpoint = strings.TrimSpace(endpoint); endpoint != "" {
+				c.RemoteWorkers = append(c.RemoteWorkers, endpoint)
+			}
+		}
 	}
 	c.Context = ctx
 

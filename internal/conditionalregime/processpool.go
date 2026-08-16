@@ -20,7 +20,12 @@ import (
 // computeFingerprint produced for the coordinator's own corpus/metadata/
 // parameters; every worker independently recomputes it from the paths it is
 // given and refuses to run on a mismatch.
-func newExecutorPool(c Config, fingerprint string) (*processPool, error) {
+type jobExecutor interface {
+	Run(context.Context, JobID) (float64, error)
+	Close() error
+}
+
+func newExecutorPool(c Config, fingerprint, corpusHash, metaHash string) (jobExecutor, error) {
 	switch c.Executor {
 	case "", "goroutine":
 		return nil, nil
@@ -53,8 +58,10 @@ func newExecutorPool(c Config, fingerprint string) (*processPool, error) {
 			return cmd
 		}
 		return newProcessPool(c.Workers, newCmd, init)
+	case "remote":
+		return newRemotePool(c, fingerprint, corpusHash, metaHash)
 	default:
-		return nil, fmt.Errorf("unknown executor %q (want \"goroutine\" or \"process\")", c.Executor)
+		return nil, fmt.Errorf("unknown executor %q (want \"goroutine\", \"process\" or \"remote\")", c.Executor)
 	}
 }
 

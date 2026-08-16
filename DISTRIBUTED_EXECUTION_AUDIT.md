@@ -599,3 +599,19 @@ reassemble-by-index before any ordered sum, no tree-reduction). No
 fundamental floating-point or RNG obstacle was found for this pipeline's
 actual bottleneck stage or for any other package surveyed at its own
 natural unit.
+
+## Task33 implementation update (2026-08-16)
+
+The proposed remote step is now implemented for `conditional-regime-analyze`
+with standard-library HTTP, the unchanged Task31/32 `JobID`/`JobResult`,
+content-addressed input staging, compatibility checks, bounded concurrency,
+transport retry, and the existing atomic checkpoint/canonical reducer.
+Duplicate and stale results cannot contribute. The trust boundary is
+explicitly private/VPN/SSH-tunnel plus bearer token; the service is not safe
+for unauthenticated public exposure. Subsequent two-machine validation used
+Intel i7-8850H and AMD Ryzen 7 5700X workers with identical linux/amd64 Go
+runtime: all 19 files matched exactly at 1/2/4/8/16/32 slots. Compatibility
+checks remain enforced rather than weakening byte identity to tolerance.
+Implementation evidence and limits are in
+`DISTRIBUTED_EXECUTION_IMPLEMENTATION.md`; commands are in
+`DISTRIBUTED_EXECUTION_OPERATIONS.md`.

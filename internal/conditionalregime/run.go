@@ -8,6 +8,7 @@ import (
 	"os"
 	"sort"
 	"strings"
+	"time"
 
 	"zcore.dev/voinich/internal/workdir"
 )
@@ -54,6 +55,12 @@ func defaults(c Config) Config {
 	}
 	if c.Executor == "" {
 		c.Executor = "goroutine"
+	}
+	if c.RemoteTimeout <= 0 {
+		c.RemoteTimeout = 10 * time.Minute
+	}
+	if c.RemoteRetries < 0 {
+		c.RemoteRetries = 0
 	}
 	if c.Context == nil {
 		c.Context = context.Background()
@@ -219,7 +226,7 @@ func RunAndWrite(c Config) error {
 	}
 	checkpoint := func() error { return saveCheckpoint(c.CheckpointPath, cp) }
 
-	pool, err := newExecutorPool(c, fingerprint)
+	pool, err := newExecutorPool(c, fingerprint, corpusHash, metaHash)
 	if err != nil {
 		return fmt.Errorf("start executor: %w", err)
 	}
@@ -303,12 +310,22 @@ func RunAndWrite(c Config) error {
 				// skipped here, both because it is not part of the primary
 				// within-class test and because it is by far the most
 				// expensive scale to refit thousands of times.
-				cands, err := withinClassSignificanceParallel(c.Context, c.Workers, pool, tokens, class, byClassBlocks[class], ws, best, c.Permutations, c.Seed)
+				onJob := func(result JobResult) {
+					cp.PermutationJobs[checkpointJobKey(result.JobID)] = result.Value
+					_ = checkpoint()
+				}
+				cands, err := withinClassSignificanceParallel(c.Context, c.Workers, pool, tokens, class, byClassBlocks[class], ws, best, c.Permutations, c.Seed, cp.PermutationJobs, onJob)
 				if err != nil {
 					return fmt.Errorf("within-class permutation jobs: %w", err)
 				}
 				r.Candidates = append(r.Candidates, cands...)
 				cp.Candidates = r.Candidates
+				jobPrefix := "part_a_significance\x1f" + string(class.Scheme) + "|" + class.Label() + "|" + fmt.Sprint(ws) + "|"
+				for jobKey := range cp.PermutationJobs {
+					if strings.HasPrefix(jobKey, jobPrefix) {
+						delete(cp.PermutationJobs, jobKey)
+					}
+				}
 			}
 			cp.SignificanceCombosDone[key] = true
 			if err := checkpoint(); err != nil {
@@ -320,11 +337,20 @@ func RunAndWrite(c Config) error {
 	}
 	if !cp.RefinementDone {
 		var err error
-		r.Candidates, err = refineTopCandidatesParallel(c.Context, c.Workers, pool, tokens, byClassBlocks, r.Candidates, c.Seed)
+		onJob := func(result JobResult) {
+			cp.PermutationJobs[checkpointJobKey(result.JobID)] = result.Value
+			_ = checkpoint()
+		}
+		r.Candidates, err = refineTopCandidatesParallel(c.Context, c.Workers, pool, tokens, byClassBlocks, r.Candidates, c.Seed, cp.PermutationJobs, onJob)
 		if err != nil {
 			return fmt.Errorf("candidate refinement jobs: %w", err)
 		}
 		cp.Candidates, cp.RefinementDone = r.Candidates, true
+		for jobKey := range cp.PermutationJobs {
+			if strings.HasPrefix(jobKey, "part_a_refinement\x1f") {
+				delete(cp.PermutationJobs, jobKey)
+			}
+		}
 		if err := checkpoint(); err != nil {
 			return fmt.Errorf("save checkpoint: %w", err)
 		}

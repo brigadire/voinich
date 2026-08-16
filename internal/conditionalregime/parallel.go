@@ -3,6 +3,7 @@ package conditionalregime
 import (
 	"context"
 	"fmt"
+	"reflect"
 	"strconv"
 	"strings"
 	"sync"
@@ -48,6 +49,14 @@ func checkpointJobsFor(ids map[string]float64, stage, combination string, permut
 }
 
 type permutationJob struct{ JobID JobID }
+
+func hasJobExecutor(pool jobExecutor) bool {
+	if pool == nil {
+		return false
+	}
+	v := reflect.ValueOf(pool)
+	return v.Kind() != reflect.Pointer || !v.IsNil()
+}
 
 // executePermutationJobs runs a bounded worker pool. Results may reach
 // onComplete in any order, but the returned slice is always in jobs order.
@@ -187,15 +196,14 @@ func runIndexedReplicates(
 }
 
 // runIndexedReplicatesState is runIndexedReplicates with checkpoint resume
-// state and an optional process-backend pool. When pool is non-nil, every
-// job in this batch is dispatched to a subprocess worker instead of calling
-// work locally - work is still required (the goroutine backend needs it),
-// but pool takes priority when set, since dispatching to a subprocess is the
-// entire point of the process executor (Task32 phase 3/4).
+// state and an optional process/remote executor. When pool is non-nil, every
+// job in this batch is dispatched through that executor instead of calling
+// work locally. work remains required by the goroutine backend; every backend
+// rejoins the same canonical result-placement and reduction path.
 func runIndexedReplicatesState(
 	ctx context.Context,
 	workers int,
-	pool *processPool,
+	pool jobExecutor,
 	stage, combination string,
 	permutations int,
 	resume []float64,
@@ -230,7 +238,7 @@ func runIndexedReplicatesState(
 		}
 	}
 	_, err := executePermutationJobs(ctx, workers, jobs, func(ctx context.Context, id JobID) (float64, error) {
-		if pool != nil {
+		if hasJobExecutor(pool) {
 			return pool.Run(ctx, id)
 		}
 		return work(ctx, id.ReplicateIndex)

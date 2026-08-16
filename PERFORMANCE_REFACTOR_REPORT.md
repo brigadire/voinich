@@ -3118,3 +3118,19 @@ project's existing map-iteration-determinism convention. Full protocol,
 per-scenario failure tests, memory/startup measurements, and the Task33
 executor boundary (`pool.Run(ctx, JobID) (float64, error)`) are recorded in
 `DISTRIBUTED_EXECUTION_IMPLEMENTATION.md`.
+
+## Task33 — deterministic remote executor
+
+The predicted `pool.Run` seam is now a shared `jobExecutor` implemented by
+both local processes and trusted HTTP workers. The remote implementation
+adds version/runtime/fingerprint checks, SHA256-addressed one-time input
+staging, bounded messages/concurrency, retry, and explicit echoed identities;
+it does not duplicate scientific or reduction code. Integration coverage
+compares complete output trees to the local oracle and exercises two workers,
+cold/warm cache, retry, stale-result rejection, and checkpoint resume. Remote
+multi-host scaling was then measured on Intel i7-8850H plus AMD Ryzen 7
+5700X workers. All 19 artifacts matched at 1/2/4/8/16/32 slots; wall times
+were 26.038/21.854/19.839/19.819/20.695/19.952s. Exact coordinator/worker
+CPU/RSS, cold/warm bytes and retry counts are recorded in
+`DISTRIBUTED_EXECUTION_IMPLEMENTATION.md`; the four-permutation oracle's
+fixed coordinator phase explains the plateau after four slots.
