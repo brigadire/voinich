@@ -14,9 +14,9 @@ import (
 // sampleVecs, and the O(fitCap^2) sampleD distance matrix on every call,
 // even across K values that share the same (rw, standardized, fitCap).
 func referenceFitResidualClustering(rw []ResidualWindow, standardized bool, method string, k int, seed int64, fitCap int) (fitLabels, fullLabels []int, sampleD [][]float64) {
-	vecs := residualVectors(rw, standardized)
+	vecs := denseResidualVectors(rw, standardized)
 	sampleIdx := cappedSampleIndices(len(vecs), fitCap)
-	sampleVecs := make([]sortedVector, len(sampleIdx))
+	sampleVecs := make([]denseVector, len(sampleIdx))
 	for i, si := range sampleIdx {
 		sampleVecs[i] = vecs[si]
 	}

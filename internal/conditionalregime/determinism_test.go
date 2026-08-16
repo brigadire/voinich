@@ -28,10 +28,10 @@ func TestEuclideanDistanceDeterministicAcrossCalls(t *testing.T) {
 			b[fmt.Sprintf("u%03d", i)] = 2.0 / float64(3+i)
 		}
 	}
-	sa, sb := sortVector(a), sortVector(b)
+	da, db := densePair(a, b)
 	seen := map[uint64]bool{}
 	for i := 0; i < 500; i++ {
-		seen[math.Float64bits(euclideanDistance(sa, sb))] = true
+		seen[math.Float64bits(euclideanDistance(da, db))] = true
 	}
 	if len(seen) != 1 {
 		t.Fatalf("euclideanDistance produced %d distinct float64 bit patterns across 500 calls on identical input", len(seen))

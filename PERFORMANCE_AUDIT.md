@@ -315,3 +315,68 @@ peak RSS. See `PERFORMANCE_REFACTOR_REPORT.md`'s Phase 2 STEP 10 for the
 full reasoning and the explicit decision to stop the production run early
 (cost of ~2 more hours vs. evidence already in hand) rather than complete
 it.
+
+## Task29: dense conditional-regime distance hot path
+
+Task29 tested the specific follow-up identified above. The Task28 sparse
+implementation represented every residual as a `map[string]float64` plus a
+sorted key slice. `euclideanDistance` merge-walked the two sorted key slices,
+but every visited dimension still required a string comparison and one or two
+map lookups. The feature keys are stable for the complete lifetime of one
+`residualFitPrep`: the same vectors are used for its one capped pairwise
+matrix and for every K in the `2..15` sweep. Distance evaluations are
+`S*(S-1)/2` for the matrix (`S <= 200`) plus up to `n*K` in each label
+expansion; with all K non-empty, the expansion total is `119*n` distances per
+prep. The old distance loop itself allocated nothing, but preparing sorted
+keys and rebuilding sparse centroids accounted for 1.29 GiB alloc-space and
+about 95,000 allocations in the representative run.
+
+The implementation now constructs one lexicographically sorted
+feature-to-index map per prep and converts each selected residual map once to
+a `[]float64`. All vectors and centroids share that index. Conversion occurs
+before matrix construction and the K loop; the distance loop is now a single
+numeric slice pass with zero allocations. Lexicographic indexing preserves
+the old summation order; dimensions absent on both sides merely add exact
+zero. Fully dense storage was accepted because the observed live-heap result
+remained safe: sampled peak `HeapAlloc` fell from 1,458 MiB to 1,019 MiB in
+the paired run. Total allocation volume rose 3.0%, from 27.08 to 27.89 GiB,
+which is the explicit space-for-time tradeoff.
+
+The paired real-corpus workload (`39,026` tokens, four eligible classes,
+production K range, one permutation) was deliberately 10 minutes before the
+change and used identical inputs and flags after it. The existing Task28
+five-permutation profile remains the larger corroborating baseline. Profiles
+are stored as `profiles/conditionalregime.task29.{cpu,mem}.{before,dense}.pprof`.
+
+| Metric | Task28 baseline (Task29 reproduction) | Task29 dense |
+|---|---:|---:|
+| benchmark wall time | 10m09.727s | 3m48.149s (2.67x) |
+| total CPU samples | 632.57s | 250.70s (2.52x) |
+| `expandResidualLabels` CPU | 387.79s / 61.30% | 30.73s / 12.26% (12.62x) |
+| `euclideanDistance` CPU | 405.65s / 64.13% | 31.95s / 12.74% (12.70x) |
+| allocations / allocated bytes | 18.295M / 27.08 GiB | 18.569M / 27.89 GiB |
+| sampled peak `HeapAlloc` / `HeapInuse` | 1,458 / 1,465 MiB | 1,019 / 1,025 MiB |
+| dense conversion CPU | n/a | 4.22s / 1.68% |
+| estimated 1000-permutation runtime | ~41.9h | ~7.3h conservative |
+| output equivalence | baseline | byte-identical, all 19 files |
+
+The removed lookup/string machinery represented about 92% of the old
+`euclideanDistance` cumulative time (`405.65s -> 31.95s`), so the Task28
+map/hash hypothesis was correct. Applying the measured 5.82x speedup of the
+permutation-scaling `residualGlobalCorrection` to Task28's 75.2 seconds per
+method-replicate gives about 12.9 seconds; 2,000 method-replicates plus the
+fixed allowance yields a conservative **~7.3 hours**, saving approximately
+**34.6 hours** from the previous 41.9-hour estimate.
+
+The post-change reduced run is dominated overall by
+`globalregime.jsDistanceSorted` (108.08 CPU-s cumulative, 43.11%), mostly in
+fixed Part A `stabilityForClass`; it does not scale with permutation count.
+Inside the production-scaling `residualGlobalCorrection`, the dense
+`euclideanDistance` remains the largest flat consumer (10.05 of 26.86 CPU-s,
+37.4%), followed by map-based residual construction/
+`meanAndVarianceProfiles` (7.58s cumulative, 28.2%). The kernel is now dense
+and SIMD-friendly, so SIMD is worth a bounded investigation; GPU offload is
+not yet justified because the vectors are modest and transfers/launches
+would consume much of the remaining kernel budget. The single next target is
+therefore vectorization of the dense distance loop (benchmark first; do not
+alter its accumulation semantics). No such follow-up was implemented here.

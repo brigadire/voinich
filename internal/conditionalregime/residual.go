@@ -117,68 +117,27 @@ func buildResidualWindows(tokens []string, classes []ClassID, blocksByClass map[
 	return out
 }
 
-// sortedVector pairs a residual feature vector with its own keys sorted
-// once. euclideanDistance must visit the union of two vectors' keys in a
-// fixed order (summing in Go's randomized map iteration order was the
-// same-seed nondeterminism bug fixed in determinism_test.go), and
-// merge-walking two already-sorted key lists visits exactly that sorted
-// union without re-sorting it on every pairwise call - each vector's own
-// keys are sorted exactly once however many times it's compared against
-// others (profiling showed the former sort-the-union-per-call approach was
-// >70% of this CLI's total CPU time; see euclideandistance_test.go for the
-// equivalence proof against that reference implementation).
-type sortedVector struct {
-	v    vector
-	keys []string
-}
+// denseVector stores residual features in one deterministic, lexicographically
+// ordered feature space shared by every vector in a residualFitPrep. Residual
+// maps are converted once per (scale, replicate), before either the pairwise
+// distance matrix or the K sweep. The ordering is deliberately the same as
+// the former sorted-key union traversal, preserving floating-point summation
+// order while removing string comparisons and map lookups from the hot loop.
+type denseVector []float64
 
-func sortVector(v vector) sortedVector {
-	keys := make([]string, 0, len(v))
-	for tok := range v {
-		keys = append(keys, tok)
-	}
-	sort.Strings(keys)
-	return sortedVector{v: v, keys: keys}
-}
-
-// euclideanDistance sums (a[tok]-b[tok])^2 over the union of a and b's keys
-// (a Go map defaults an absent key to its zero value, so this is exactly
-// equivalent to treating a missing entry as 0 on either side), visiting the
-// union in sorted key order by merge-walking a's and b's already-sorted key
-// lists.
-func euclideanDistance(a, b sortedVector) float64 {
-	ak, bk := a.keys, b.keys
-	i, j := 0, 0
+// euclideanDistance sums (a[i]-b[i])^2 in deterministic feature-index order.
+// All callers pass vectors from the same denseResidualVectors conversion, so
+// their lengths and feature meanings are identical. It performs no allocation.
+func euclideanDistance(a, b denseVector) float64 {
 	sum := 0.0
-	for i < len(ak) && j < len(bk) {
-		switch {
-		case ak[i] < bk[j]:
-			d := a.v[ak[i]]
-			sum += d * d
-			i++
-		case ak[i] > bk[j]:
-			d := b.v[bk[j]]
-			sum += d * d
-			j++
-		default:
-			d := a.v[ak[i]] - b.v[bk[j]]
-			sum += d * d
-			i++
-			j++
-		}
-	}
-	for ; i < len(ak); i++ {
-		d := a.v[ak[i]]
-		sum += d * d
-	}
-	for ; j < len(bk); j++ {
-		d := b.v[bk[j]]
+	for i, av := range a {
+		d := av - b[i]
 		sum += d * d
 	}
 	return math.Sqrt(sum)
 }
 
-func residualDistanceMatrix(vecs []sortedVector) [][]float64 {
+func residualDistanceMatrix(vecs []denseVector) [][]float64 {
 	n := len(vecs)
 	d := make([][]float64, n)
 	for i := range d {
@@ -197,36 +156,36 @@ func residualDistanceMatrix(vecs []sortedVector) [][]float64 {
 // global-regime-analyze's sampling strategy for long sequences.
 const maxResidualFitWindows = 200
 
-func residualCentroids(vecs []sortedVector, sampleIdx, sampleLabels []int, k int) []vector {
-	centroids := make([]vector, k)
+func residualCentroids(vecs []denseVector, sampleIdx, sampleLabels []int, k int) []denseVector {
+	centroids := make([]denseVector, k)
 	counts := make([]int, k)
+	dimensions := 0
+	if len(vecs) > 0 {
+		dimensions = len(vecs[0])
+	}
 	for c := range centroids {
-		centroids[c] = vector{}
+		centroids[c] = make(denseVector, dimensions)
 	}
 	for i, si := range sampleIdx {
 		c := sampleLabels[i]
 		counts[c]++
-		for tok, v := range vecs[si].v {
-			centroids[c][tok] += v
+		for feature, v := range vecs[si] {
+			centroids[c][feature] += v
 		}
 	}
 	for c := range centroids {
 		if counts[c] == 0 {
 			continue
 		}
-		for tok := range centroids[c] {
-			centroids[c][tok] /= float64(counts[c])
+		for feature := range centroids[c] {
+			centroids[c][feature] /= float64(counts[c])
 		}
 	}
 	return centroids
 }
 
-func expandResidualLabels(vecs []sortedVector, sampleIdx, sampleLabels []int, k int) []int {
+func expandResidualLabels(vecs []denseVector, sampleIdx, sampleLabels []int, k int) []int {
 	centroids := residualCentroids(vecs, sampleIdx, sampleLabels, k)
-	sortedCentroids := make([]sortedVector, k)
-	for c := range centroids {
-		sortedCentroids[c] = sortVector(centroids[c])
-	}
 	haveCount := make([]bool, k)
 	for _, c := range sampleLabels {
 		haveCount[c] = true
@@ -238,7 +197,7 @@ func expandResidualLabels(vecs []sortedVector, sampleIdx, sampleLabels []int, k 
 			if !haveCount[c] {
 				continue
 			}
-			d := euclideanDistance(v, sortedCentroids[c])
+			d := euclideanDistance(v, centroids[c])
 			if d < bd {
 				best, bd = c, d
 			}
@@ -248,16 +207,40 @@ func expandResidualLabels(vecs []sortedVector, sampleIdx, sampleLabels []int, k 
 	return labels
 }
 
-// residualVectors selects the raw or standardized representation for a set
-// of residual windows, pre-sorting each vector's keys once (see
-// sortedVector).
-func residualVectors(rw []ResidualWindow, standardized bool) []sortedVector {
-	out := make([]sortedVector, len(rw))
-	for i, w := range rw {
+// denseResidualVectors establishes one deterministic feature index for a set
+// of residual windows, then converts every selected sparse map exactly once.
+// The returned vectors all share the same feature ordering and can be reused
+// throughout distance-matrix construction and the complete K sweep.
+func denseResidualVectors(rw []ResidualWindow, standardized bool) []denseVector {
+	features := make(map[string]struct{})
+	for _, w := range rw {
+		v := w.Residual
 		if standardized {
-			out[i] = sortVector(w.Standard)
-		} else {
-			out[i] = sortVector(w.Residual)
+			v = w.Standard
+		}
+		for tok := range v {
+			features[tok] = struct{}{}
+		}
+	}
+	keys := make([]string, 0, len(features))
+	for tok := range features {
+		keys = append(keys, tok)
+	}
+	sort.Strings(keys)
+	featureIndex := make(map[string]int, len(keys))
+	for i, tok := range keys {
+		featureIndex[tok] = i
+	}
+
+	out := make([]denseVector, len(rw))
+	for i, w := range rw {
+		out[i] = make(denseVector, len(keys))
+		v := w.Residual
+		if standardized {
+			v = w.Standard
+		}
+		for tok, value := range v {
+			out[i][featureIndex[tok]] = value
 		}
 	}
 	return out
@@ -267,7 +250,7 @@ func residualVectors(rw []ResidualWindow, standardized bool) []sortedVector {
 // its distance matrix: everything fitResidualClustering used to recompute
 // on every call, even though none of it depends on k or the clustering
 // method. cappedSampleIndices is a deterministic (non-random) even-spacing
-// selection and residualDistanceMatrix/residualVectors do no RNG draws, so
+// selection and residualDistanceMatrix/denseResidualVectors do no RNG draws, so
 // prepareResidualFit's result is exactly invariant across every K value in
 // a kMin..kMax sweep for a fixed (scale, replicate) — see
 // determinism_test.go for the equivalence proof. globalregime's
@@ -276,9 +259,9 @@ func residualVectors(rw []ResidualWindow, standardized bool) []sortedVector {
 // across every K's clustering call without one K's fit corrupting
 // another's.
 type residualFitPrep struct {
-	vecs       []sortedVector
+	vecs       []denseVector
 	sampleIdx  []int
-	sampleVecs []sortedVector
+	sampleVecs []denseVector
 	sampleD    [][]float64
 }
 
@@ -286,9 +269,9 @@ type residualFitPrep struct {
 // not depend on k: call this once per (scale, replicate) before the K
 // loop, not once per K.
 func prepareResidualFit(rw []ResidualWindow, standardized bool, fitCap int) residualFitPrep {
-	vecs := residualVectors(rw, standardized)
+	vecs := denseResidualVectors(rw, standardized)
 	sampleIdx := cappedSampleIndices(len(vecs), fitCap)
-	sampleVecs := make([]sortedVector, len(sampleIdx))
+	sampleVecs := make([]denseVector, len(sampleIdx))
 	for i, si := range sampleIdx {
 		sampleVecs[i] = vecs[si]
 	}

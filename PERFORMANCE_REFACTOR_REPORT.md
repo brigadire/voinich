@@ -2882,3 +2882,176 @@ low-leverage candidate. **Neither further optimization was performed in
 this task**, per its own instruction to report rather than automatically
 rewrite; both are documented above as explicit, scoped candidates for a
 future task should the team choose to pursue them.
+
+---
+
+## Task29 — dense rewrite of the conditional-regime hot path
+
+### Audit and representation
+
+Before Task29, `vector` was `map[string]float64`; `sortedVector` paired that
+map with its sorted keys. This avoided Task27's sort-per-distance problem but
+left the innermost merge walk performing string comparisons and map lookups.
+The feature set is invariant for a prepared `(scale, replicate,
+representation)` dataset. `prepareResidualFit` is outside the K loop, so it
+is the correct lifetime for one mapping and one conversion.
+
+For a prep containing `n` vectors and capped sample size `S`, distance calls
+are:
+
+- `S*(S-1)/2` once for `residualDistanceMatrix` (`S <= 200`);
+- up to `n*K` in `expandResidualLabels` for each K;
+- `n*(2+3+...+15) = 119*n` expansion distances across a complete sweep when
+  every cluster is populated.
+
+The implementation replaces `sortedVector` with `denseVector` (`[]float64`).
+`denseResidualVectors` collects the stable union of features, sorts it
+lexicographically, builds one `map[string]int`, then converts all residuals
+once. Both the sample distance matrix and all K-specific centroid assignments
+reuse those slices. Dense centroids are constructed in the same index and
+`euclideanDistance` contains only indexed subtraction, multiplication and
+addition; it has no per-call allocation. No clustering, expansion,
+permutation, statistical, threshold, RNG, or output logic changed.
+
+The old calculation visited the sorted union only. The dense calculation
+also visits dimensions absent from both operands, but adds exact zero there;
+all non-zero terms remain in the identical lexicographic order. Unit tests
+compare `math.Float64bits` against the old sorted sparse-map oracle across
+edge cases and randomized fixtures.
+
+### Reproducible paired workload
+
+Machine: Linux 6.6.35, Go 1.26.4, Intel i7-8850H (12 logical CPUs). Baseline
+source: commit `af79f79111a2bd3be0a3ceb30bf811c0dc7b58bf`. Inputs:
+
+```
+360d99583145ec549b80edfafdc3f93534f3a11b85a0d52997ba8425e92b87c2  data_work/ZL3b-x7.txt
+148745adbc889150ad1b59715bbfa75fa17e24b566694d94a0445d06393a7e68  workdir/metadata-validation/token_metadata_map.tsv
+```
+
+The baseline binary was built from an isolated `git archive HEAD` snapshot
+before editing. The dense binary was built from the Task29 working tree. The
+exact measurement commands were:
+
+```bash
+time /tmp/conditional-regime-analyze-task29-baseline \
+  -corpus /home/brigadire/devops/workdir/go/voinich/data_work/ZL3b-x7.txt \
+  -token-metadata-map /home/brigadire/devops/workdir/go/voinich/workdir/metadata-validation/token_metadata_map.tsv \
+  -output-dir /tmp/task29-output-before \
+  -permutations 1 -k-max-residual 15 -checkpoint-path=- -quiet \
+  -cpuprofile /tmp/task29.cpu.before.pprof \
+  -memprofile /tmp/task29.mem.before.pprof \
+  -memstats-interval 10s
+
+time /tmp/conditional-regime-analyze-task29-dense \
+  -corpus /home/brigadire/devops/workdir/go/voinich/data_work/ZL3b-x7.txt \
+  -token-metadata-map /home/brigadire/devops/workdir/go/voinich/workdir/metadata-validation/token_metadata_map.tsv \
+  -output-dir /tmp/task29-output-dense \
+  -permutations 1 -k-max-residual 15 -checkpoint-path=- -quiet \
+  -cpuprofile /tmp/task29.cpu.dense.pprof \
+  -memprofile /tmp/task29.mem.dense.pprof \
+  -memstats-interval 10s
+```
+
+This paired workload took 10 minutes before optimization, meeting Task29's
+10–30 minute target. Task28's independent, larger `-permutations 5` run took
+20m08.545s and measured `expandResidualLabels` at 73.12% and
+`euclideanDistance` at 74.37%, corroborating that the paired workload reaches
+the same hot path even though its larger fixed-work fraction lowers those
+percentages.
+
+### Before/after results
+
+| Metric | Task28 baseline (Task29 reproduction) | Task29 dense |
+|---|---:|---:|
+| benchmark wall time | 10m09.727s | 3m48.149s |
+| total CPU profile | 632.57s | 250.70s |
+| `expandResidualLabels` CPU | 387.79s (61.30%) | 30.73s (12.26%) |
+| `euclideanDistance` CPU | 405.65s (64.13%) | 31.95s (12.74%) |
+| allocations / allocated bytes | 18.295M / 27.08 GiB | 18.569M / 27.89 GiB |
+| hot-path prep + expansion alloc-space | 1.29 GiB | 1.78 GiB |
+| sampled peak `HeapAlloc` / `HeapInuse` | 1,458 / 1,465 MiB | 1,019 / 1,025 MiB |
+| post-GC live heap | 3.00 MiB | 3.50 MiB |
+| dense conversion CPU | n/a | 4.22s (1.68%) |
+| estimated 1000-permutation runtime | ~41.9h | ~7.3h conservative |
+| output equivalence | baseline | byte-identical, all 19 files |
+
+Calculated speedups:
+
+- `euclideanDistance`: **12.70x** cumulative in the paired CPU profiles;
+- `expandResidualLabels`: **12.62x** cumulative;
+- total CPU: **2.52x**;
+- CLI wall time: **2.67x**.
+
+The pre-existing sorted sparse kernel microbenchmark was 229.3ms per
+200-vector matrix (median of the recorded three-run baseline); dense was
+8.159ms (median of five), a **28.10x** kernel speedup, with 0 B/op and 0
+allocations/op in both distance-only loops. End-to-end speedup is smaller
+because residual construction and Parts A/C are unchanged.
+
+```bash
+GOCACHE=/tmp/voinich-go-cache go test ./internal/conditionalregime \
+  -run '^$' -bench BenchmarkEuclideanDistanceSortedMatrix -benchmem -count=3
+GOCACHE=/tmp/voinich-go-cache go test ./internal/conditionalregime \
+  -run '^$' -bench BenchmarkEuclideanDistanceDenseMatrix -benchmem -count=5
+```
+
+Dense preparation itself costs 4.22 CPU-s across the complete run and 1.687
+GiB alloc-space. Total alloc-space therefore rises 3.0% and total allocated
+objects 1.5%. This is acceptable for the measured 2.67x wall improvement:
+sampled peak live heap actually fell 30%, although the 10-second sampler is
+an observation rather than an exact RSS maximum. The large dense slices die
+with each prep and do not remain in the post-GC heap.
+
+### Correctness and interpretation
+
+`diff -qr /tmp/task29-output-before /tmp/task29-output-dense` returned no
+differences across all 19 generated files. The reference-oracle distance
+tests are bit-exact. Build, vet, normal tests, and race tests are recorded
+below in the validation section.
+
+Map/hash/string work did account for most of the former hot path: removing
+it reduced `euclideanDistance` cumulative CPU from 405.65s to 31.95s, so
+about **92%** of its old cost disappeared. In the paired baseline,
+`runtime.mapaccess1_faststr` was 375.73s cumulative (59.40% of total), while
+`maps.ctrlGroup.matchH2`, `cmpbody`, and `aeshashbody` were respectively
+14.36%, 10.36%, and 8.66% flat. None remains below the new dense distance
+loop; their residual post-change presence comes from unchanged map-based
+pipeline stages. Applying the measured 5.82x
+`residualGlobalCorrection` CPU speedup (`156.39s -> 26.86s`) to Task28's
+75.2 seconds per method-replicate gives 12.9 seconds. For 2,000
+method-replicates and a conservative fixed allowance, the new production
+estimate is **~7.3 hours**, approximately **34.6 hours saved** versus 41.9
+hours.
+
+The reduced post-change profile's largest cumulative consumer is
+`globalregime.jsDistanceSorted` (108.08s, 43.11%), reached mainly through
+fixed-cost Part A `stabilityForClass` (73.98s, 29.51%); this does not scale
+with `-permutations`. Within the production-scaling
+`residualGlobalCorrection`, dense `euclideanDistance` is still the largest
+flat consumer (10.05 of 26.86s, 37.4%), followed by map-heavy residual
+construction/`meanAndVarianceProfiles` (7.58s cumulative, 28.2%).
+
+The distance kernel is now dense and could benefit from SIMD, but its reduced
+share caps the gain; a bounded SIMD experiment is justified, while GPU
+offload is not yet justified for these modest vectors because transfer and
+launch overhead would compete with only 31.95 CPU-s in the whole reduced
+run. The single highest-leverage next target is SIMD/vectorized evaluation
+of this dense loop, provided a benchmark first proves a gain without changing
+the accumulation order. Task29 deliberately implements no such follow-up.
+
+### Validation commands
+
+All completed successfully:
+
+```bash
+test -z "$(gofmt -l internal/conditionalregime)"
+GOCACHE=/tmp/voinich-go-cache go build -buildvcs=false ./...
+GOCACHE=/tmp/voinich-go-cache go vet ./...
+GOCACHE=/tmp/voinich-go-cache go test ./... -count=1
+GOCACHE=/tmp/voinich-go-cache go test -race ./internal/conditionalregime -count=1
+diff -qr /tmp/task29-output-before /tmp/task29-output-dense
+```
+
+The final race run passed in 5.828s. No code outside the conditional-regime
+dense representation and its tests was refactored.

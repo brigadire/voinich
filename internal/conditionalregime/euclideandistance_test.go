@@ -8,14 +8,8 @@ import (
 	"testing"
 )
 
-// referenceEuclideanDistance is euclideanDistance exactly as it stood before
-// the sortedVector merge-walk optimization (task27): it re-sorts the union
-// of a and b's keys on every call. Profiling conditional-regime-analyze at
-// production scale showed this sort was over 70% of the CLI's total CPU
-// time, since it re-sorted the same vectors' keys on every one of the
-// O(fitCap^2) distance-matrix pairs and every one of the O(n*k)
-// centroid-assignment calls, across every K in the sweep and every
-// permutation replicate.
+// referenceEuclideanDistance is the original deterministic sparse-map
+// calculation. It is retained as a bit-exact oracle for the dense rewrite.
 func referenceEuclideanDistance(a, b vector) float64 {
 	seen := make(map[string]bool, len(a)+len(b))
 	keys := make([]string, 0, len(a)+len(b))
@@ -37,6 +31,28 @@ func referenceEuclideanDistance(a, b vector) float64 {
 	return math.Sqrt(sum)
 }
 
+// densePair converts two vectors using the same lexicographically ordered
+// feature mapping denseResidualVectors establishes for a whole prep.
+func densePair(a, b vector) (denseVector, denseVector) {
+	seen := make(map[string]bool, len(a)+len(b))
+	keys := make([]string, 0, len(a)+len(b))
+	for tok := range a {
+		seen[tok] = true
+		keys = append(keys, tok)
+	}
+	for tok := range b {
+		if !seen[tok] {
+			keys = append(keys, tok)
+		}
+	}
+	sort.Strings(keys)
+	da, db := make(denseVector, len(keys)), make(denseVector, len(keys))
+	for i, tok := range keys {
+		da[i], db[i] = a[tok], b[tok]
+	}
+	return da, db
+}
+
 // randomSparseVector builds a synthetic sparse vector over tokens named
 // "t000".."t{n-1}", each included independently with probability keep, with
 // values (including negatives, since residuals are signed) drawn from r.
@@ -50,11 +66,10 @@ func randomSparseVector(r *rand.Rand, n int, keep float64) vector {
 	return v
 }
 
-// TestEuclideanDistanceMatchesReference proves the sortedVector merge-walk
-// implementation is byte-identical to the pre-optimization
-// sort-the-union-every-call reference, across disjoint, fully overlapping,
-// partially overlapping, and empty-vector fixtures, plus randomized fixtures
-// spanning small and large key sets.
+// TestEuclideanDistanceMatchesReference proves the dense implementation is
+// byte-identical to the sorted sparse-map reference, across disjoint, fully
+// overlapping, partially overlapping, and empty-vector fixtures, plus
+// randomized fixtures spanning small and large key sets.
 func TestEuclideanDistanceMatchesReference(t *testing.T) {
 	cases := []struct {
 		name string
@@ -70,7 +85,8 @@ func TestEuclideanDistanceMatchesReference(t *testing.T) {
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
 			want := referenceEuclideanDistance(c.a, c.b)
-			got := euclideanDistance(sortVector(c.a), sortVector(c.b))
+			da, db := densePair(c.a, c.b)
+			got := euclideanDistance(da, db)
 			if math.Float64bits(got) != math.Float64bits(want) {
 				t.Fatalf("got %v, want %v (bits %x vs %x)", got, want, math.Float64bits(got), math.Float64bits(want))
 			}
@@ -86,7 +102,8 @@ func TestEuclideanDistanceMatchesReference(t *testing.T) {
 				a := randomSparseVector(r, n, keep)
 				b := randomSparseVector(r, n, keep)
 				want := referenceEuclideanDistance(a, b)
-				got := euclideanDistance(sortVector(a), sortVector(b))
+				da, db := densePair(a, b)
+				got := euclideanDistance(da, db)
 				if math.Float64bits(got) != math.Float64bits(want) {
 					t.Fatalf("n=%d keep=%v seed=%d: got %v, want %v", n, keep, seed, got, want)
 				}
@@ -95,18 +112,20 @@ func TestEuclideanDistanceMatchesReference(t *testing.T) {
 	}
 }
 
-// benchmarkVectors returns pairsN sortedVectors and their raw-vector
-// counterparts, sized and sparsified to mirror a realistic residual window
-// (a few hundred distinct tokens out of a larger vocabulary).
-func benchmarkVectors(pairsN, vocab int, keep float64) ([]vector, []sortedVector) {
+// benchmarkVectors returns sparse reference vectors and equivalent dense
+// vectors, sized to mirror residual windows.
+func benchmarkVectors(pairsN, vocab int, keep float64) ([]vector, []denseVector) {
 	r := rand.New(rand.NewSource(7))
 	raw := make([]vector, pairsN)
-	sorted := make([]sortedVector, pairsN)
+	dense := make([]denseVector, pairsN)
 	for i := range raw {
 		raw[i] = randomSparseVector(r, vocab, keep)
-		sorted[i] = sortVector(raw[i])
+		dense[i] = make(denseVector, vocab)
+		for feature := 0; feature < vocab; feature++ {
+			dense[i][feature] = raw[i][fmt.Sprintf("t%03d", feature)]
+		}
 	}
-	return raw, sorted
+	return raw, dense
 }
 
 func BenchmarkEuclideanDistanceReferenceMatrix(b *testing.B) {
@@ -121,13 +140,13 @@ func BenchmarkEuclideanDistanceReferenceMatrix(b *testing.B) {
 	}
 }
 
-func BenchmarkEuclideanDistanceSortedMatrix(b *testing.B) {
-	_, sorted := benchmarkVectors(200, 800, 0.3)
+func BenchmarkEuclideanDistanceDenseMatrix(b *testing.B) {
+	_, dense := benchmarkVectors(200, 800, 0.3)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		for x := 0; x < len(sorted); x++ {
+		for x := 0; x < len(dense); x++ {
 			for y := 0; y < x; y++ {
-				euclideanDistance(sorted[x], sorted[y])
+				euclideanDistance(dense[x], dense[y])
 			}
 		}
 	}
