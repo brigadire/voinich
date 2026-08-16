@@ -27,11 +27,15 @@ func isFrozen(experimentDir string) (bool, error) {
 	return err == nil, nil
 }
 
-// snapshotOutputs copies every file under workdir/ (excluding workdir/bin,
-// the build scratch area - never a scientific output) into
-// experimentDir/outputs, preserving relative paths, and returns the
-// (sorted) list of relative paths copied.
-func snapshotOutputs(experimentDir string) ([]string, error) {
+// snapshotOutputs copies every file under workdir/ modified at or after
+// runStartedAt (excluding workdir/bin, the build scratch area - never a
+// scientific output) into experimentDir/outputs, preserving relative
+// paths, and returns the (sorted) list of relative paths copied. The
+// mtime cutoff is deliberate: workdir/ is a long-lived, shared scratch
+// area other tasks/experiments have also written to, and a frozen
+// baseline must contain only what *this* run actually produced - never
+// unrelated stale content left over from earlier work.
+func snapshotOutputs(experimentDir string, runStartedAt time.Time) ([]string, error) {
 	src := workdir.Dir
 	dst := filepath.Join(experimentDir, "outputs")
 	if err := os.MkdirAll(dst, 0755); err != nil {
@@ -56,9 +60,20 @@ func snapshotOutputs(experimentDir string) ([]string, error) {
 			return nil
 		}
 		if d.IsDir() {
-			return os.MkdirAll(filepath.Join(dst, rel), 0755)
+			return nil // created lazily below, only for files actually copied
 		}
-		if err := copyFile(path, filepath.Join(dst, rel)); err != nil {
+		info, err := d.Info()
+		if err != nil {
+			return err
+		}
+		if info.ModTime().Before(runStartedAt) {
+			return nil // predates this run: stale content from earlier work, never this baseline's
+		}
+		dstPath := filepath.Join(dst, rel)
+		if err := os.MkdirAll(filepath.Dir(dstPath), 0755); err != nil {
+			return err
+		}
+		if err := copyFile(path, dstPath); err != nil {
 			return fmt.Errorf("copy %s: %w", rel, err)
 		}
 		relPaths = append(relPaths, rel)
@@ -177,7 +192,7 @@ func freezeExperiment(experimentDir string, force bool) error {
 		return fmt.Errorf("not all stages completed; refusing to freeze an incomplete run")
 	}
 
-	relPaths, err := snapshotOutputs(experimentDir)
+	relPaths, err := snapshotOutputs(experimentDir, rs.StartedAt)
 	if err != nil {
 		return fmt.Errorf("snapshot outputs: %w", err)
 	}
