@@ -82,7 +82,12 @@ func gitCommit(repoPath string) (commit string, dirty bool, err error) {
 		return "", false, fmt.Errorf("git rev-parse HEAD: %w", err)
 	}
 	commit = strings.TrimSpace(string(out))
-	statusOut, err := exec.Command("git", "-C", repoPath, "status", "--porcelain").Output()
+	// --untracked-files=no deliberately excludes untracked files: this
+	// experiment directory itself (created moments before this check) and
+	// scratch/profiling output are untracked by design and never affect
+	// what the pinned commit's compiled binaries do. Only modifications to
+	// already-tracked files threaten reproducibility.
+	statusOut, err := exec.Command("git", "-C", repoPath, "status", "--porcelain", "--untracked-files=no").Output()
 	if err != nil {
 		return commit, false, fmt.Errorf("git status --porcelain: %w", err)
 	}
