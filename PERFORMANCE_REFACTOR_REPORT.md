@@ -3092,3 +3092,29 @@ workers 1/2/4/8/12 produced all 19 artifacts byte-identically; measured
 wall times were 25.43s/21.96s/20.51s/20.48s/20.25s. Full implementation,
 hashes, allocation profiles, limitations, and conservative production
 estimates are recorded in `DISTRIBUTED_EXECUTION_IMPLEMENTATION.md`.
+
+## Task32 — deterministic local process executor
+
+Task31's job contract is extended across a process boundary: `-executor
+process` dispatches the identical `JobID`/`JobResult` jobs to a bounded pool
+of persistent subprocess workers (the same binary, re-exec'd with
+`-internal-worker`) that call the identical unexported scientific functions.
+No formula, RNG derivation, or reduction changed. A newline-delimited-JSON
+protocol carries a protocol version and a `computeFingerprint`-based
+input/config identity check, so a mismatched worker fails the handshake
+explicitly rather than silently computing something different. Measured on
+the same frozen real-corpus workload: process workers 1/2/4/8/12 took
+26.72s/23.25s/22.07s/24.71s/25.59s wall, all 19 artifacts byte-identical to
+the goroutine oracle, including SIGINT-interrupt-then-resume verified in
+both cross-backend directions (process→goroutine and goroutine→process,
+each with a changed worker count). Confirming this bit-for-bit also
+surfaced one small, pre-existing bug unrelated to Task32's own change:
+`report.go` printed its Part B summary by iterating a
+`map[string]EmpiricalStats` without sorting keys, letting Go's randomized
+map order occasionally reorder two output lines across separate process
+runs (reproduced on unmodified pre-Task32 code with plain goroutine
+workers=1 vs. workers=4) — fixed by sorting the keys first, matching the
+project's existing map-iteration-determinism convention. Full protocol,
+per-scenario failure tests, memory/startup measurements, and the Task33
+executor boundary (`pool.Run(ctx, JobID) (float64, error)`) are recorded in
+`DISTRIBUTED_EXECUTION_IMPLEMENTATION.md`.

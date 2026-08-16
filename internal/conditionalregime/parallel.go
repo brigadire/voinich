@@ -183,12 +183,19 @@ func runIndexedReplicates(
 	work func(context.Context, int) (float64, error),
 	onPrefix func([]float64),
 ) ([]float64, error) {
-	return runIndexedReplicatesState(ctx, workers, stage, combination, permutations, resume, nil, work, onPrefix, nil)
+	return runIndexedReplicatesState(ctx, workers, nil, stage, combination, permutations, resume, nil, work, onPrefix, nil)
 }
 
+// runIndexedReplicatesState is runIndexedReplicates with checkpoint resume
+// state and an optional process-backend pool. When pool is non-nil, every
+// job in this batch is dispatched to a subprocess worker instead of calling
+// work locally - work is still required (the goroutine backend needs it),
+// but pool takes priority when set, since dispatching to a subprocess is the
+// entire point of the process executor (Task32 phase 3/4).
 func runIndexedReplicatesState(
 	ctx context.Context,
 	workers int,
+	pool *processPool,
 	stage, combination string,
 	permutations int,
 	resume []float64,
@@ -223,6 +230,9 @@ func runIndexedReplicatesState(
 		}
 	}
 	_, err := executePermutationJobs(ctx, workers, jobs, func(ctx context.Context, id JobID) (float64, error) {
+		if pool != nil {
+			return pool.Run(ctx, id)
+		}
 		return work(ctx, id.ReplicateIndex)
 	}, func(result JobResult) error {
 		i := result.JobID.ReplicateIndex

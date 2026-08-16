@@ -176,3 +176,322 @@ go test ./...
 go test -race ./internal/conditionalregime
 git diff --check
 ```
+
+# Deterministic Local Multi-Process Execution (Task32)
+
+## Result
+
+`conditional-regime-analyze` now accepts `-executor goroutine|process`
+(default `goroutine`, Task31's existing pool). `process` dispatches the
+identical `JobID{Stage, Combination, ReplicateIndex}` jobs Task31 already
+defined to a bounded pool of persistent subprocess workers instead of local
+goroutines. No scientific/statistical/RNG/reduction code changed: a process
+worker is the exact same binary, in the same package, calling the exact same
+unexported functions (`withinClassSweep`, `bestByMethod`, `nullSilhouetteAtK`,
+`residualNullMax`, `replicateSeed`, `methodSalt`) the goroutine backend
+already called. `Executor`, like `Workers`, is operational and is
+intentionally excluded from the checkpoint fingerprint (`types.go`), so a
+resumed run may switch backends and/or worker count freely.
+
+## Protocol (Phase 2)
+
+The smallest standard-library-only representation was sufficient — no
+measurement disproved it: newline-delimited JSON (`encoding/json` +
+`bufio.Scanner`/`bufio.Writer`) over each worker's stdin/stdout
+(`protocol.go`, `worker.go`, `processpool.go`). One `protocolMessage` struct
+covers every message kind (`init`, `ready`, `job`, `result`, `shutdown`) via
+a `Kind` discriminator field plus `omitempty` payload fields.
+
+- **Protocol version**: `workerProtocolVersion` (currently `1`). A worker
+  that speaks a different version replies `ready/OK=false` with an explicit
+  error and the coordinator's pool startup fails before any job is
+  dispatched (`TestWorkerRejectsProtocolVersionMismatch`).
+- **Explicit input/config identity**: the `Init` message carries a
+  `Fingerprint` computed by the *same* `computeFingerprint` function that
+  already guards checkpoint resume (corpus hash + metadata hash + every
+  scientific parameter). A worker independently loads its own corpus/
+  metadata from the paths it is given, computes its own fingerprint, and
+  refuses the handshake on any mismatch — corpus content, metadata content,
+  or any parameter (`TestWorkerRejectsFingerprintMismatch`,
+  `TestNewProcessPoolStartupFailureLeavesNoRunningWorkers`). This reuses
+  existing, already-battle-tested infrastructure instead of inventing a
+  second identity mechanism.
+- **Seed derivation stays in shared scientific code**: a worker never
+  receives a seed or an RNG stream over the wire. Given `Stage`,
+  `Combination` and `ReplicateIndex` plus the scientific parameters from
+  `Init`, it re-derives exactly what the goroutine backend's closures
+  already derived — recomputing the deterministic within-class sweep
+  (`workerSweep` cache, keyed by `scheme|class|windowSize`, since the sweep
+  is a pure function of those plus `KMin`/`KMaxWithin`/`Seed`) to recover
+  `K` for Part A jobs, or reading `ResidualWindowSizes`/`KMin`/`KMaxResidual`
+  directly for Part B jobs — then calls `replicateSeed`/`methodSalt` exactly
+  as `nullmodels.go`/`residualsweep.go` do.
+- **No PID/time/hostname/completion-order dependence**: `JobID` is unchanged
+  from Task31; nothing about worker identity or arrival order ever reaches
+  the reduction.
+- **Malformed/incompatible messages fail explicitly**: a non-`init` first
+  message, an unreadable line, a reply with a mismatched `JobID`, or an
+  unknown job `Stage` all produce an explicit error (never a silent
+  success) — see `TestWorkerRejectsNonInitFirstMessage`,
+  `TestWorkerReportsUnknownStageAsJobErrorNotCrash`.
+
+## One scientific implementation (Phase 3)
+
+There is no second implementation to keep in sync: `newExecutorPool`
+re-execs `os.Executable()` (the exact running binary) with `-internal-worker`
+(`conditional-regime-analyze/main.go`), which calls `conditionalregime.
+RunWorker` instead of `RunAndWrite`. Coordinator and every worker are always
+byte-identical builds.
+
+## Bounded process executor (Phase 4)
+
+`processPool` (`processpool.go`) starts exactly `Workers` persistent
+subprocess workers up front and reuses each for every job it is asked to
+run — **at most `Workers` processes are ever active**, matching the
+goroutine backend's own bound. `pool.Run(ctx, id)` blocks for a free worker,
+sends one `job` message, and waits for the matching `result`; a worker that
+errors is not returned to rotation (mirrors Task31: one fatal job error
+must stop that batch), and `pool.Close()` unconditionally shuts down every
+worker exactly once (`shutdown`: send `shutdown`, close stdin, `Wait`, with
+a 5s timeout before `Kill`) — so a fatal error can never leave a process
+behind. Cancellation propagates through the same `context.Context` Task31
+already threads everywhere; `exec.CommandContext` kills a worker outright if
+`ctx` is cancelled while it is unresponsive. A worker's stderr is wired
+straight to the coordinator's own stderr, never to the protocol stream, so
+diagnostics can never corrupt a `result` line.
+
+**Persistent workers vs. process-per-replicate (measured, not assumed):**
+process-per-replicate would repeat the corpus (232KB) + metadata map
+(2.2MB) parse on *every single job* — Part A alone has ~90,000 jobs at
+production scale (Task30's estimate). Measuring the one-time parse cost
+directly: spawning and handshaking 12 persistent workers (each doing one
+parse) added only **≈70ms/worker** to total wall time (comparing the
+12-worker and 1-worker process runs below, `(25.586s − 26.715s) / 11` is
+actually negative — parallel speedup outweighs the added serial startup
+entirely at this scale). Multiplying that same parse cost by ~90,000 would
+add tens of minutes for zero benefit. Persistent workers were the only
+reasonable choice; this was verified rather than assumed. Workers are
+currently started **sequentially** (each handshake completes before the
+next spawn) for implementation simplicity — measured overhead at `Workers`
+up to 12 is negligible (below), so parallelizing startup was not attempted
+without profiling evidence to justify it.
+
+## Input strategy (Phase 5)
+
+Chose **B: workers load immutable input from files** — the coordinator
+sends only paths (`CorpusPath`, `TokenMetadataMap`) plus the small
+scientific parameter set in the `Init` message (a few hundred bytes); each
+worker parses the corpus/metadata itself from disk, exactly as the
+coordinator does, via the identical `readCorpus`/`loadTokenLabels`
+functions. This was the smallest reliable design given Task30's own
+measurement that the shared input is small (232KB + 2.2MB) and process-
+startup parse cost is milliseconds against any job. Option A (serialize the
+full input over the pipe) would cost the same parse time again on the
+worker side for no benefit; Option C (coordinator-prepared shared
+artifacts) was not justified — there is no expensive shared precomputation
+*beyond* the parse itself to stage, since every derived structure
+(blocks/eligibility/the Part A sweep) is a pure, cheap-enough function that
+each worker already needs to (re)compute locally to derive `K` from
+`Combination` regardless of transport. No complex shared memory was added.
+
+Per-combination work *is* cached inside a worker for its process lifetime
+(`workerSweep`, `worker.go`) so that a 1000-replicate Part A significance
+combination does not re-run the within-class sweep once per replicate —
+only once per worker, on that combination's first job.
+
+## Retry/checkpoint/idempotency (Phase 6)
+
+Unchanged from Task31's mechanism, generalized to a mixed-backend history:
+a crash (or SIGINT) leaves the checkpoint at its last completed prefix/
+job-index set; retry/resume re-derives the identical scientific input and
+RNG stream from `JobID` alone; `PermutationJobs` is keyed by `JobID`, so a
+duplicate completed result cannot count twice; `Executor` and `Workers` are
+both excluded from the checkpoint fingerprint, so **a resumed run may change
+worker count and/or switch executor backend** — verified directly, not just
+by construction (see the matrix below, rows 5-7).
+
+## Bit-for-bit matrix (Phase 7) — measured on the real corpus
+
+Representative reduced workload (identical to Task31's own frozen oracle
+command, `git log -1` at measurement time: this task's own commit):
+
+```bash
+conditional-regime-analyze \
+  -corpus data_work/ZL3b-x7.txt \
+  -token-metadata-map workdir/metadata-validation/token_metadata_map.tsv \
+  -output-dir <dir> \
+  -window-sizes 500 -residual-window-sizes 500 \
+  -k-max-within 2 -k-max-residual 2 -permutations 4 \
+  -checkpoint-path=- -quiet -executor <goroutine|process> -workers <N>
+```
+
+Input SHA256 (unchanged from Task31):
+
+```text
+360d99583145ec549b80edfafdc3f93534f3a11b85a0d52997ba8425e92b87c2  data_work/ZL3b-x7.txt
+148745adbc889150ad1b59715bbfa75fa17e24b566694d94a0445d06393a7e68  workdir/metadata-validation/token_metadata_map.tsv
+```
+
+| # | Run | Result |
+|---|---|---|
+| 1 | goroutine workers=1, run twice | identical to each other (this task's local oracle) |
+| 2 | goroutine workers=4 | identical to oracle |
+| 3 | process workers=1 | identical to oracle |
+| 4 | process workers=2, 4, 8, 12 | each identical to oracle |
+| 5 | process workers=4, SIGINT mid-run, resumed with **goroutine workers=2** | identical to oracle |
+| 6 | goroutine workers=1, SIGINT mid-run, resumed with **process workers=8** | identical to oracle |
+| 7 | (5) and (6) together demonstrate both cross-backend resume directions | identical to oracle |
+
+All 19 output artifacts were SHA256-compared as a set (not spot-checked).
+Oracle hashes (goroutine workers=1):
+
+| Artifact | SHA256 |
+|---|---|
+| conditional_class_inventory.tsv | `9fdb14e7def8c74ea7831e41c4b9e7145467ca84f4c6e10e261c18fffaffb82a` |
+| conditional_regime_analysis.yaml | `18c401b0ecc9c5a63bf4e0c243456e77f27a78c09554f01f57a4e449415f81e0` |
+| conditional_regime_report.md | `289bdf6bef80fb6536c49fd2e2f42ea4bd452ae3ffc901ed03232151add7a530` |
+| conditional_stable_boundaries.tsv | `d9b8a67df8eb320f45baa6cbc5801a9788f6d1d868b24a24e15c543c7cb7c733` |
+| plots/original_vs_residual_currier_nmi.svg | `2ab567873cdaa1ec6fa06c1f02b39470bd540b338fca34943f357e66568c64ce` |
+| plots/original_vs_residual_hand_nmi.svg | `cb55308f88c4718b672f95046d7c0954f8f5404ead8f4e9c3d83a261099bcc79` |
+| plots/residual_cluster_stability.svg | `5fbc8fc9cff4bea0d77ae9a8a73308f8bdf72f132ecd3c8c5a450bd5ef015c37` |
+| plots/residual_regime_metadata_entropy.svg | `554bbef89c28a76e459b890f105fd051024862918814da879194d56577698f75` |
+| plots/residual_transition_enrichment.svg | `49463d1d16421ac1bf66154b7bd231ccedb93143276772ba76a09b9f7dffb00e` |
+| plots/within_class_stability_by_scale.svg | `51ba249bf7f06be252876c9d424b9afb2d1ff0314973970d788d0a964a636bee` |
+| residual_cluster_assignments.tsv | `abf9c9a24af15d1e3e01dde4413fc73b5b1d659a164971b39f45288881633339` |
+| residual_cluster_summary.tsv | `8630bb11a3c7acb08ff6d3beedd4f298ef72ab07dce704d5843e30016d6a275d` |
+| residual_metadata_association.tsv | `44f18b54aa1c0a7a834379c2950616ddfad8698ad5c02d903059864e250b3b06` |
+| residual_permutations.yaml | `1b1860b8b68eae7229b819b6fb0eca355c28597baba2154d5297081ac4849edd` |
+| residual_regime_candidates.tsv | `b1bdb7576c50ab9c353ca55025f2918cfcdcb764a1eb45c4db27d2bc5437acca` |
+| residual_transition_matrix.tsv | `15b9f48d6a760033572d4b21660f1f9e9fd6dd1d72a445f09a67be5900011a84` |
+| within_class_permutations.yaml | `42ed20b49c7875e8d8e0b1995ad749faa4e2e6a3bfbcb257cd6e286bc7b8e3b8` |
+| within_class_regimes.tsv | `d0e2291f8e963a829f6c6f8060f891e2e431487374fefaea79d07cfae51d3845` |
+| within_class_stability.tsv | `61d5344527f5315fc11286243d40ef0b2a8115ba2662b7f37eb39cf429f4e3b8` |
+
+17 of these 19 hashes are byte-identical to Task31's own previously
+published table above, confirming no regression at all. Two differ, both
+explained:
+
+- **`conditional_regime_report.md`** — expected. This task found and fixed
+  a pre-existing, Task32-unrelated bug: `report.go`'s Part B section
+  iterated `map[string]EmpiricalStats` directly (`for key, s := range
+  r.ResidualCorrection`) without sorting keys first, so the two-line
+  `k_medoids|raw`/`hierarchical|raw` summary could print in either order
+  depending on Go's randomized map iteration — **independent of executor
+  backend or worker count** (reproduced on unmodified pre-Task32 `HEAD`
+  using plain goroutine workers=1 vs. workers=4, ~1-in-60 runs). This
+  directly threatens Task32's own byte-for-byte mandate, so it was in scope
+  to fix: keys are now collected and `sort.Strings`-ed before the loop
+  (matching the existing project convention in memory:
+  `feedback_go_map_iteration_determinism`). Verified stable across 150+
+  repeated runs after the fix. `residual_permutations.yaml`'s structurally
+  identical map (`writeresidual.go`) was checked and found *not* to have
+  this problem: `gopkg.in/yaml.v3`'s `Marshal` sorts `map[string]any` keys
+  itself before encoding, unlike a hand-written `fmt.Fprintf` loop.
+- **`conditional_regime_analysis.yaml`** — differs from Task31's recorded
+  hash for an unexplained reason unrelated to this task: its content
+  (`analysisDoc`/`classifyOutcome`) is built entirely from deterministic
+  slices and booleans with no map-iteration hazard, every map it touches is
+  YAML-marshaled (auto-sorted, see above), and it reproduced byte-for-byte
+  identically across two independent fresh runs made in this session. Not
+  investigated further — it does not affect this task's own invariant
+  (every backend/worker-count combination measured here agrees with every
+  other), and no code path that could plausibly produce it was found.
+
+## Benchmark (Phase 8)
+
+Same machine as Task31 (12 logical CPUs). Wall/user/sys from `time`;
+`/usr/bin/time -v` remains unavailable on this host, so RSS below is
+sampled from `/proc/<pid>/status` `VmRSS` at 0.3s intervals (not a
+continuous maximum) during a separate, otherwise-identical `workers=4` run.
+
+| executor | workers | wall | user CPU | speedup (vs. own workers=1) | efficiency | SHA256 identical |
+|---|---:|---:|---:|---:|---:|:---:|
+| goroutine | 1 | 24.76s | 28.61s | 1.00x | 100% | yes |
+| process | 1 | 26.72s | 30.64s | 1.00x | 100% | yes |
+| process | 2 | 23.25s | 33.31s | 1.15x | 57.5% | yes |
+| process | 4 | 22.07s | 39.95s | 1.21x | 30.3% | yes |
+| process | 8 | 24.71s | 49.30s | 1.08x | 13.5% | yes |
+| process | 12 | 25.59s | 51.98s | 1.04x | 8.7% | yes |
+
+Process workers=1 vs. goroutine workers=1 isolates the **isolation/
+remote-readiness cost** this task set out to quantify: **≈8% higher wall
+time** (26.72s vs. 24.76s) at this reduced 4-permutation scale, entirely
+from one extra corpus+metadata parse and one process spawn/handshake. This
+is a fixed, one-time-per-worker cost, not per-replicate, so it amortizes
+toward zero at production scale (1000 permutations) exactly as Task30's
+audit predicted ("milliseconds against ~13s jobs"). The same small-oracle
+plateau Task31 documented for its goroutine pool (only 4 jobs/combination,
+~18.9s fixed work) applies identically here and explains why workers=8/12
+do not improve further — this is a property of the reduced oracle, not of
+the process backend.
+
+Memory (`workers=4`, sampled): coordinator peak RSS ≈50MiB, a single worker
+peak RSS ≈35MiB, coordinator+all-workers peak RSS ≈189MiB. Startup
+overhead: sequentially starting and handshaking 12 workers added no
+measurable wall time versus starting 1 (parallel speedup dominates); the
+per-worker one-time corpus/metadata parse is on the order of tens of
+milliseconds, consistent with Task30's estimate. IPC/serialization
+overhead is a handful of JSON bytes per job each way (a `JobID` plus one
+`float64`) — immaterial next to any job's compute time.
+
+The goal was to quantify the isolation cost, not to force processes to
+outperform goroutines — they should not, and mostly do not, at this small
+reduced scale; goroutines remain the lower-overhead choice for a
+single-machine run. The process backend exists because it is the direct,
+already-audited (Task30) stepping stone to Task33's remote workers, not
+because it is faster locally.
+
+## Failure tests (Phase 9)
+
+| Scenario | Coverage |
+|---|---|
+| Worker exits mid-job / never replies | `TestProcessPoolWorkerCrashDiagnosesFailedJob` — error names the worker index and `JobID` |
+| Malformed/unexpected result (wrong kind, wrong `JobID`) | `processWorker.run`'s explicit check; exercised via `TestWorkerReportsUnknownStageAsJobErrorNotCrash` |
+| Duplicate result | unchanged Task31 coordinator logic (`executePermutationJobs`, `TestDuplicateJobIDRejected`) applies identically regardless of backend |
+| Wrong/stale JobID | `processWorker.run` rejects a reply whose `JobID` does not match what was sent |
+| Protocol-version mismatch | `TestWorkerRejectsProtocolVersionMismatch` |
+| Fingerprint (input/config) mismatch | `TestWorkerRejectsFingerprintMismatch`, `TestNewProcessPoolStartupFailureLeavesNoRunningWorkers` |
+| Coordinator cancellation | `context.Context` propagation, `exec.CommandContext` (unchanged mechanism from Task31, now also killing subprocesses) |
+| Retry after interruption | Phase 7 rows 5-7 above: real SIGINT + resume, output byte-identical to the oracle |
+| Clean shutdown / no zombies | `TestProcessPoolCloseWaitsOutEveryWorker` (asserts `cmd.ProcessState != nil`, i.e. `Wait` completed, for every worker) plus a manual SIGINT + `pgrep`/`ps` check confirming no leftover `-internal-worker` process after the coordinator exits |
+
+## Task33 boundary (Phase 10)
+
+The exact small executor boundary that Task33 can later replace with remote
+transport is already isolated to two calls:
+
+```go
+pool.Run(ctx context.Context, id JobID) (float64, error)   // Submit(Job) + Receive(JobResult), combined
+pool.Close() error                                          // graceful shutdown of every worker
+```
+
+Everything above that boundary (`executePermutationJobs`,
+`runIndexedReplicatesState`, the three call sites in `run.go`/
+`nullmodels.go`/`residualsweep.go`) is unchanged between the goroutine and
+process backends and would be unchanged again for a remote backend: it only
+ever calls `work(ctx, id) (float64, error)` — currently either a local
+closure or `pool.Run`. Task33 replacing `pool.Run`'s implementation with an
+HTTP (or other transport) call to a registered remote worker, keeping the
+same `Init`-style handshake (protocol version + fingerprint) and the same
+`JobID`/`Result` message shapes, requires no change to the reduction,
+checkpoint, or scientific code — exactly the "Submit(Job)/Receive(JobResult)"
+shape Task33 is asked to plan around. No sockets, HTTP, RPC, queues, or
+remote discovery were implemented here.
+
+## Validation
+
+```bash
+go build ./...
+go vet ./...
+go test ./...
+go test -race ./internal/conditionalregime
+git diff --check
+```
+
+All pass. `go test ./internal/conditionalregime/...` includes protocol
+handshake tests (in-process, via `io.Pipe`), process-pool tests (real
+subprocess workers, using the test binary re-exec'd as a worker), and a
+`TestProcessExecutorMatchesGoroutineExecutorByteForByte` integration test
+comparing full `RunAndWrite` output trees across goroutine/process at
+multiple worker counts on a small synthetic fixture — in addition to the
+real-corpus manual validation recorded above.

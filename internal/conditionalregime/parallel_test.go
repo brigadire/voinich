@@ -79,7 +79,7 @@ func TestIndexedResumeWithChangedWorkerCount(t *testing.T) {
 func TestOutOfOrderCheckpointJobsResumeWithoutDuplicateExecution(t *testing.T) {
 	completed := map[int]float64{1: 4, 3: 8}
 	var executed atomic.Int64
-	values, err := runIndexedReplicatesState(context.Background(), 3, "stage", "combo", 5, []float64{2}, completed, func(_ context.Context, i int) (float64, error) {
+	values, err := runIndexedReplicatesState(context.Background(), 3, nil, "stage", "combo", 5, []float64{2}, completed, func(_ context.Context, i int) (float64, error) {
 		executed.Add(1)
 		return float64(2 * (i + 1)), nil
 	}, nil, nil)

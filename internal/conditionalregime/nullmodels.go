@@ -107,11 +107,11 @@ func nullSilhouetteAtK(tokens []string, blocks []Block, windowSize int, method s
 // reproducible regardless of whether it runs in one pass or is checkpointed
 // combo-by-combo.
 func withinClassSignificance(tokens []string, class ClassID, blocks []Block, windowSize int, best map[string]WithinClassRegime, permutations int, seed int64) []WithinClassCandidate {
-	out, _ := withinClassSignificanceParallel(context.Background(), 1, tokens, class, blocks, windowSize, best, permutations, seed)
+	out, _ := withinClassSignificanceParallel(context.Background(), 1, nil, tokens, class, blocks, windowSize, best, permutations, seed)
 	return out
 }
 
-func withinClassSignificanceParallel(ctx context.Context, workers int, tokens []string, class ClassID, blocks []Block, windowSize int, best map[string]WithinClassRegime, permutations int, seed int64) ([]WithinClassCandidate, error) {
+func withinClassSignificanceParallel(ctx context.Context, workers int, pool *processPool, tokens []string, class ClassID, blocks []Block, windowSize int, best map[string]WithinClassRegime, permutations int, seed int64) ([]WithinClassCandidate, error) {
 	var out []WithinClassCandidate
 	for _, method := range []string{"k_medoids", "hierarchical"} {
 		row, ok := best[method]
@@ -120,13 +120,13 @@ func withinClassSignificanceParallel(ctx context.Context, workers int, tokens []
 		}
 		salt := methodSalt(method)
 		combination := string(class.Scheme) + "|" + class.Label() + "|" + fmt.Sprint(windowSize) + "|" + method
-		null, err := runIndexedReplicates(ctx, workers, "part_a_significance", combination, permutations, nil, func(ctx context.Context, i int) (float64, error) {
+		null, err := runIndexedReplicatesState(ctx, workers, pool, "part_a_significance", combination, permutations, nil, nil, func(ctx context.Context, i int) (float64, error) {
 			if err := ctx.Err(); err != nil {
 				return 0, err
 			}
 			rng := rand.New(rand.NewSource(replicateSeed(seed, salt, i)))
 			return nullSilhouetteAtK(tokens, blocks, windowSize, method, row.K, rng), nil
-		}, nil)
+		}, nil, nil)
 		if err != nil {
 			return nil, err
 		}
@@ -144,11 +144,11 @@ func withinClassSignificanceParallel(ctx context.Context, workers int, tokens []
 // primary pass's draws. blocksByClass must map every candidate's ClassID to
 // its physical blocks.
 func refineTopCandidates(tokens []string, blocksByClass map[ClassID][]Block, candidates []WithinClassCandidate, seed int64) []WithinClassCandidate {
-	out, _ := refineTopCandidatesParallel(context.Background(), 1, tokens, blocksByClass, candidates, seed)
+	out, _ := refineTopCandidatesParallel(context.Background(), 1, nil, tokens, blocksByClass, candidates, seed)
 	return out
 }
 
-func refineTopCandidatesParallel(ctx context.Context, workers int, tokens []string, blocksByClass map[ClassID][]Block, candidates []WithinClassCandidate, seed int64) ([]WithinClassCandidate, error) {
+func refineTopCandidatesParallel(ctx context.Context, workers int, pool *processPool, tokens []string, blocksByClass map[ClassID][]Block, candidates []WithinClassCandidate, seed int64) ([]WithinClassCandidate, error) {
 	type qualifying struct {
 		idx int
 		eff float64
@@ -168,13 +168,13 @@ func refineTopCandidatesParallel(ctx context.Context, workers int, tokens []stri
 		blocks := blocksByClass[c.Class]
 		salt := methodSalt(c.Method) + 100 // distinct stream from the primary pass
 		combination := string(c.Class.Scheme) + "|" + c.Class.Label() + "|" + fmt.Sprint(c.WindowSize) + "|" + c.Method
-		null, err := runIndexedReplicates(ctx, workers, "part_a_refinement", combination, refinementPermutations, nil, func(ctx context.Context, i int) (float64, error) {
+		null, err := runIndexedReplicatesState(ctx, workers, pool, "part_a_refinement", combination, refinementPermutations, nil, nil, func(ctx context.Context, i int) (float64, error) {
 			if err := ctx.Err(); err != nil {
 				return 0, err
 			}
 			rng := rand.New(rand.NewSource(replicateSeed(seed+999983, salt, i)))
 			return nullSilhouetteAtK(tokens, blocks, c.WindowSize, c.Method, c.K, rng), nil
-		}, nil)
+		}, nil, nil)
 		if err != nil {
 			return nil, err
 		}

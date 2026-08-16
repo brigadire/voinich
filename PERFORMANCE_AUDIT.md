@@ -410,3 +410,25 @@ flagged above as the predicted next dominant consumer once the residual path
 was fixed, is now confirmed as such by fresh profiling (35.07% cumulative CPU
 at reduced scale) — still not fixed, still an open, explicitly-deferred
 target, exactly as this file already documents.
+
+## Task32: deterministic local process executor
+
+`conditional-regime-analyze` now also has a bounded `-executor process`
+backend: the same Task31 `JobID`/`JobResult` jobs, dispatched to persistent
+subprocess workers instead of goroutines, with no scientific/RNG/reduction
+change. Measured on the same reduced real-corpus oracle: process workers
+1/2/4/8/12 took 26.72s/23.25s/22.07s/24.71s/25.59s wall, all 19 artifacts
+SHA256-identical to the goroutine oracle, including both directions of a
+real SIGINT-interrupt-then-resume across executor backends and worker
+counts. Isolating the pure process-vs-goroutine cost at workers=1 (26.72s
+vs. 24.76s) shows an ≈8% fixed overhead from one extra corpus/metadata
+parse and process spawn — a one-time cost that amortizes toward zero at
+production scale, exactly as this audit's Task30 section predicted
+("process-startup cost... milliseconds against a ~13s job"). Validating
+this task's own byte-for-byte requirement also surfaced and fixed one
+small, pre-existing, Task32-unrelated bug: `report.go` printed its Part B
+summary by iterating a `map[string]EmpiricalStats` without sorting keys
+first, so the two-line summary could reorder across separate process runs
+regardless of executor or worker count (reproduced on unmodified
+pre-Task32 code). See `DISTRIBUTED_EXECUTION_IMPLEMENTATION.md` for the
+full protocol, benchmark, memory, and failure-mode detail.

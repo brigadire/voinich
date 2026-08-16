@@ -8,6 +8,17 @@
 > `DISTRIBUTED_EXECUTION_IMPLEMENTATION.md`. The Task30 projections below
 > remain the pre-implementation model; where they differ, Task31's measured
 > local-host results supersede them.
+>
+> **Task32 implementation update (2026-08-16):** this audit's own recommended
+> "Option B (local multi-process) as the first step" (Section 10) is now
+> implemented: `-executor process` runs the identical `JobID`/`JobResult`
+> jobs through a bounded pool of persistent subprocess workers instead of
+> goroutines, reusing the same scientific implementation and the same
+> checkpoint/resume mechanism. All 19 artifacts were measured byte-identical
+> to the goroutine oracle at every tested worker count, including both
+> directions of cross-backend interrupt/resume. Full protocol, measurements,
+> and the discovered/fixed pre-existing `report.go` map-iteration
+> nondeterminism bug are in `DISTRIBUTED_EXECUTION_IMPLEMENTATION.md`.
 
 Scope: `tasks/task30.txt`. This is an **audit and design document only** — no
 scientific/statistical algorithm, RNG algorithm/seed derivation, or output

@@ -96,7 +96,13 @@ func buildReport(c Config, r *runResult) string {
 	}
 
 	b.WriteString("\n## Part B — metadata-residualized feature space\n\nPooled k_medoids clustering over the raw residual R_w = X_w - mu_(C,H) (training-fold-only centering; no held-out leakage), across the frozen scale x K residual search space:\n\n")
-	for key, s := range r.ResidualCorrection {
+	correctionKeys := make([]string, 0, len(r.ResidualCorrection))
+	for key := range r.ResidualCorrection {
+		correctionKeys = append(correctionKeys, key)
+	}
+	sort.Strings(correctionKeys)
+	for _, key := range correctionKeys {
+		s := r.ResidualCorrection[key]
 		fmt.Fprintf(&b, "- %s: global max silhouette observed %.3f, null mean %.3f, P95 %.3f, P99 %.3f, effect size %.2f, empirical p %s\n", key, s.Observed, s.NullMean, s.NullP95, s.NullP99, s.EffectSize, formatP(s.EmpiricalP))
 	}
 	fmt.Fprintf(&b, "\nWinning combination (k_medoids, raw): window_size=%d, K=%d.\n\n", r.ResidualScale, r.ResidualK)

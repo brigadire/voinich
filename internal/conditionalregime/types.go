@@ -34,7 +34,15 @@ type Config struct {
 	// It is operational, not scientific, and is therefore intentionally not
 	// part of the checkpoint fingerprint. Defaults to 1.
 	Workers int
-	Context context.Context
+	// Executor selects the backend that runs permutation jobs: "goroutine"
+	// (default) uses the bounded in-process pool from Task31; "process"
+	// dispatches every job to one of Workers persistent subprocess workers
+	// (Task32), which call the identical scientific implementation in a
+	// separate OS process. Like Workers, this is operational, not
+	// scientific: it is intentionally excluded from the checkpoint
+	// fingerprint so a resumed run may switch backends.
+	Executor string
+	Context  context.Context
 	// CheckpointPath, if non-empty, is where progress is saved after every
 	// completed unit of work (a class x window_size combo, or - for the
 	// slowest loop, Part B's global permutation correction - every single

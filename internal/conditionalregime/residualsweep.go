@@ -177,17 +177,17 @@ func residualNullMax(tokens []string, classes []ClassID, blocksByClass map[Class
 // invoked after every new replicate with the null slice accumulated so far,
 // so a caller can checkpoint after each one.
 func residualGlobalCorrection(tokens []string, classes []ClassID, blocksByClass map[ClassID][]Block, scales []int, kMin, kMax int, method string, standardized bool, observed float64, permutations int, seed int64, resume []float64, onSave func(null []float64)) EmpiricalStats {
-	stats, _ := residualGlobalCorrectionParallel(context.Background(), 1, tokens, classes, blocksByClass, scales, kMin, kMax, method, standardized, observed, permutations, seed, resume, onSave)
+	stats, _ := residualGlobalCorrectionParallel(context.Background(), 1, nil, tokens, classes, blocksByClass, scales, kMin, kMax, method, standardized, observed, permutations, seed, resume, onSave)
 	return stats
 }
 
-func residualGlobalCorrectionParallel(ctx context.Context, workers int, tokens []string, classes []ClassID, blocksByClass map[ClassID][]Block, scales []int, kMin, kMax int, method string, standardized bool, observed float64, permutations int, seed int64, resume []float64, onSave func(null []float64)) (EmpiricalStats, error) {
-	return residualGlobalCorrectionParallelState(ctx, workers, tokens, classes, blocksByClass, scales, kMin, kMax, method, standardized, observed, permutations, seed, resume, nil, onSave, nil)
+func residualGlobalCorrectionParallel(ctx context.Context, workers int, pool *processPool, tokens []string, classes []ClassID, blocksByClass map[ClassID][]Block, scales []int, kMin, kMax int, method string, standardized bool, observed float64, permutations int, seed int64, resume []float64, onSave func(null []float64)) (EmpiricalStats, error) {
+	return residualGlobalCorrectionParallelState(ctx, workers, pool, tokens, classes, blocksByClass, scales, kMin, kMax, method, standardized, observed, permutations, seed, resume, nil, onSave, nil)
 }
 
-func residualGlobalCorrectionParallelState(ctx context.Context, workers int, tokens []string, classes []ClassID, blocksByClass map[ClassID][]Block, scales []int, kMin, kMax int, method string, standardized bool, observed float64, permutations int, seed int64, resume []float64, completed map[int]float64, onSave func(null []float64), onComplete func(JobResult)) (EmpiricalStats, error) {
+func residualGlobalCorrectionParallelState(ctx context.Context, workers int, pool *processPool, tokens []string, classes []ClassID, blocksByClass map[ClassID][]Block, scales []int, kMin, kMax int, method string, standardized bool, observed float64, permutations int, seed int64, resume []float64, completed map[int]float64, onSave func(null []float64), onComplete func(JobResult)) (EmpiricalStats, error) {
 	salt := methodSalt(method)
-	null, err := runIndexedReplicatesState(ctx, workers, "part_b_global_correction", method+"|"+representationName(standardized), permutations, resume, completed, func(ctx context.Context, i int) (float64, error) {
+	null, err := runIndexedReplicatesState(ctx, workers, pool, "part_b_global_correction", method+"|"+representationName(standardized), permutations, resume, completed, func(ctx context.Context, i int) (float64, error) {
 		if err := ctx.Err(); err != nil {
 			return 0, err
 		}

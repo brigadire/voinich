@@ -137,11 +137,11 @@ func TestResidualCorrectionResumeSkipsWhenAlreadyComplete(t *testing.T) {
 func TestResidualCorrectionWorkerCountIndependence(t *testing.T) {
 	tokens, classes, blocks := syntheticResidualScenario()
 	scales := []int{20, 40}
-	one, err := residualGlobalCorrectionParallel(context.Background(), 1, tokens, classes, blocks, scales, 2, 3, "k_medoids", false, 0.5, 8, 55, nil, nil)
+	one, err := residualGlobalCorrectionParallel(context.Background(), 1, nil, tokens, classes, blocks, scales, 2, 3, "k_medoids", false, 0.5, 8, 55, nil, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-	four, err := residualGlobalCorrectionParallel(context.Background(), 4, tokens, classes, blocks, scales, 2, 3, "k_medoids", false, 0.5, 8, 55, nil, nil)
+	four, err := residualGlobalCorrectionParallel(context.Background(), 4, nil, tokens, classes, blocks, scales, 2, 3, "k_medoids", false, 0.5, 8, 55, nil, nil)
 	if err != nil {
 		t.Fatal(err)
 	}

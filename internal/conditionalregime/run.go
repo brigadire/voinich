@@ -52,6 +52,9 @@ func defaults(c Config) Config {
 	if c.Workers <= 0 {
 		c.Workers = 1
 	}
+	if c.Executor == "" {
+		c.Executor = "goroutine"
+	}
 	if c.Context == nil {
 		c.Context = context.Background()
 	}
@@ -216,6 +219,14 @@ func RunAndWrite(c Config) error {
 	}
 	checkpoint := func() error { return saveCheckpoint(c.CheckpointPath, cp) }
 
+	pool, err := newExecutorPool(c, fingerprint)
+	if err != nil {
+		return fmt.Errorf("start executor: %w", err)
+	}
+	if pool != nil {
+		defer pool.Close()
+	}
+
 	blocksByScheme := map[Scheme]map[ClassID][]Block{
 		SchemeJoint:       blocksByClass(allBlocks[SchemeJoint]),
 		SchemeCurrierOnly: blocksByClass(allBlocks[SchemeCurrierOnly]),
@@ -292,7 +303,7 @@ func RunAndWrite(c Config) error {
 				// skipped here, both because it is not part of the primary
 				// within-class test and because it is by far the most
 				// expensive scale to refit thousands of times.
-				cands, err := withinClassSignificanceParallel(c.Context, c.Workers, tokens, class, byClassBlocks[class], ws, best, c.Permutations, c.Seed)
+				cands, err := withinClassSignificanceParallel(c.Context, c.Workers, pool, tokens, class, byClassBlocks[class], ws, best, c.Permutations, c.Seed)
 				if err != nil {
 					return fmt.Errorf("within-class permutation jobs: %w", err)
 				}
@@ -309,7 +320,7 @@ func RunAndWrite(c Config) error {
 	}
 	if !cp.RefinementDone {
 		var err error
-		r.Candidates, err = refineTopCandidatesParallel(c.Context, c.Workers, tokens, byClassBlocks, r.Candidates, c.Seed)
+		r.Candidates, err = refineTopCandidatesParallel(c.Context, c.Workers, pool, tokens, byClassBlocks, r.Candidates, c.Seed)
 		if err != nil {
 			return fmt.Errorf("candidate refinement jobs: %w", err)
 		}
@@ -396,7 +407,7 @@ func RunAndWrite(c Config) error {
 		resumeNull := cp.ResidualCorrectionNull[key]
 		stage, combination := "part_b_global_correction", target.method+"|raw"
 		completed := checkpointJobsFor(cp.PermutationJobs, stage, combination, c.Permutations)
-		stats, err := residualGlobalCorrectionParallelState(c.Context, c.Workers, tokens, jointEligible, jointBlocks, c.ResidualWindowSizes, c.KMin, c.KMaxResidual, target.method, false, target.observed, c.Permutations, c.Seed+int64(i), resumeNull, completed, nil, func(result JobResult) {
+		stats, err := residualGlobalCorrectionParallelState(c.Context, c.Workers, pool, tokens, jointEligible, jointBlocks, c.ResidualWindowSizes, c.KMin, c.KMaxResidual, target.method, false, target.observed, c.Permutations, c.Seed+int64(i), resumeNull, completed, nil, func(result JobResult) {
 			cp.PermutationJobs[checkpointJobKey(result.JobID)] = result.Value
 			_ = checkpoint() // best-effort per-job save; the final save remains fatal
 		})
