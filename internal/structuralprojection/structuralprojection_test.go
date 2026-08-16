@@ -68,8 +68,9 @@ func TestProjectionGain(t *testing.T) {
 func TestRandomSpaceControlDeterministicAndPreservesRowMass(t *testing.T) {
 	p := Projection{"a": {"a": .5, "b": .5}, "b": {"b": .5, "a": .5}, "c": {"c": 1}}
 	counts := map[string]int{"a": 10, "b": 11, "c": 12}
-	x := RandomizeProjection(p, counts, 7)
-	y := RandomizeProjection(p, counts, 7)
+	fb := buildFrequencyBins([]string{"a", "b", "c"}, counts)
+	x := RandomizeProjection(p, fb, 7)
+	y := RandomizeProjection(p, fb, 7)
 	if !reflect.DeepEqual(x, y) {
 		t.Fatal("same seed produced different random spaces")
 	}
@@ -90,8 +91,9 @@ func TestGenericSmoothingControlDeterministic(t *testing.T) {
 	tokens := []string{"a", "b", "c"}
 	counts := map[string]int{"a": 10, "b": 11, "c": 12}
 	p := Projection{"a": {"a": .5, "b": .5}, "b": {"b": 1}, "c": {"c": 1}}
-	x := GenericSmoothing(tokens, counts, p, 9)
-	y := GenericSmoothing(tokens, counts, p, 9)
+	fb := buildFrequencyBins(tokens, counts)
+	x := GenericSmoothing(fb, p, 9)
+	y := GenericSmoothing(fb, p, 9)
 	if !reflect.DeepEqual(x, y) {
 		t.Fatal("generic smoothing is not deterministic")
 	}

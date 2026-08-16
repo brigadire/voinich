@@ -32,13 +32,82 @@ func BuildProfiles(corpus validation.Corpus) map[string]Profile {
 }
 
 func Compare(left, right Profile) Components {
+	return CompareSorted(Precompute(left), Precompute(right))
+}
+
+// SortedProfile is a Profile plus each context map's keys pre-sorted once.
+// Compare/positionJSD/cosine all accumulate over keys in sorted order (for
+// deterministic map-independent output), so a profile compared repeatedly -
+// an O(E^2) nearest-neighbor sweep, a bootstrap replicate's candidate pairs,
+// or an O(V^2) all-pairs ranking, all of which reuse the same profile across
+// many Compare calls - re-sorted the same keys on every single call. Caching
+// the sort once per profile and reusing it via CompareSorted/PrecomputeAll
+// is the shared fix referenced by PERFORMANCE_AUDIT.md's cross-cutting
+// `profilestability.Compare` finding (task27 item 10); it changes nothing
+// about Compare's arithmetic or accumulation order (see
+// sorted_hoist_test.go's reference-equivalence tests).
+type SortedProfile struct {
+	profile   Profile
+	positions []int
+	leftKeys  []string
+	rightKeys []string
+}
+
+// Precompute builds a SortedProfile for a single profile.
+func Precompute(p Profile) SortedProfile {
+	return SortedProfile{
+		profile:   p,
+		positions: sortedIntKeys(p.Positions),
+		leftKeys:  sortedStringKeys(p.Left),
+		rightKeys: sortedStringKeys(p.Right),
+	}
+}
+
+// PrecomputeAll builds a SortedProfile for every entry of profiles, so every
+// downstream Compare against any of these profiles reuses the same sorted
+// key slices instead of re-sorting.
+func PrecomputeAll(profiles map[string]Profile) map[string]SortedProfile {
+	result := make(map[string]SortedProfile, len(profiles))
+	for token, p := range profiles {
+		result[token] = Precompute(p)
+	}
+	return result
+}
+
+// CompareSorted is Compare's exact algorithm, driven by pre-sorted key
+// slices instead of sorting left/right's context maps on every call.
+func CompareSorted(left, right SortedProfile) Components {
 	result := Components{
-		PositionSimilarity: 1 - positionJSD(left.Positions, right.Positions),
-		LeftSimilarity:     cosine(left.Left, right.Left),
-		RightSimilarity:    cosine(left.Right, right.Right),
+		PositionSimilarity: 1 - positionJSDSorted(left, right),
+		LeftSimilarity:     cosineSorted(left.profile.Left, left.leftKeys, right.profile.Left, right.leftKeys),
+		RightSimilarity:    cosineSorted(left.profile.Right, left.rightKeys, right.profile.Right, right.rightKeys),
 	}
 	result.Similarity = (result.PositionSimilarity + result.LeftSimilarity + result.RightSimilarity) / 3
 	return result
+}
+
+func sortedIntKeys(m map[int]int) []int {
+	if len(m) == 0 {
+		return nil
+	}
+	keys := make([]int, 0, len(m))
+	for k := range m {
+		keys = append(keys, k)
+	}
+	sort.Ints(keys)
+	return keys
+}
+
+func sortedStringKeys(m map[string]int) []string {
+	if len(m) == 0 {
+		return nil
+	}
+	keys := make([]string, 0, len(m))
+	for k := range m {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	return keys
 }
 
 func Eligible(profiles map[string]Profile, minCount int) []string {
@@ -52,13 +121,20 @@ func Eligible(profiles map[string]Profile, minCount int) []string {
 	return result
 }
 
-func NearestNeighbors(profiles map[string]Profile, token string, eligible []string, limit int) []Neighbor {
+// NearestNeighborsIn is NearestNeighbors driven by a precomputed
+// map[string]SortedProfile (see PrecomputeAll) instead of raw Profiles, so
+// neither the fixed token's profile nor eligible's other profiles are
+// re-sorted across the O(len(eligible)) Compare calls this makes - or across
+// the repeated calls a caller like buildTokenMetrics/buildAllNeighbors makes
+// for every token in eligible.
+func NearestNeighborsIn(ws map[string]SortedProfile, token string, eligible []string, limit int) []Neighbor {
+	left := ws[token]
 	neighbors := make([]Neighbor, 0, len(eligible)-1)
 	for _, other := range eligible {
 		if other == token {
 			continue
 		}
-		neighbors = append(neighbors, Neighbor{Token: other, Components: Compare(profiles[token], profiles[other])})
+		neighbors = append(neighbors, Neighbor{Token: other, Components: CompareSorted(left, ws[other])})
 	}
 	sort.Slice(neighbors, func(i, j int) bool {
 		if neighbors[i].Similarity != neighbors[j].Similarity {
@@ -75,27 +151,35 @@ func NearestNeighbors(profiles map[string]Profile, token string, eligible []stri
 	return neighbors
 }
 
-func positionJSD(left, right map[int]int) float64 {
-	leftTotal, rightTotal := sumCounts(left), sumCounts(right)
+// NearestNeighbors is NearestNeighborsIn for callers that only need one
+// token's neighbors and have no workspace to share across calls.
+func NearestNeighbors(profiles map[string]Profile, token string, eligible []string, limit int) []Neighbor {
+	return NearestNeighborsIn(PrecomputeAll(profiles), token, eligible, limit)
+}
+
+func positionJSDSorted(left, right SortedProfile) float64 {
+	leftPositions, rightPositions := left.profile.Positions, right.profile.Positions
+	leftTotal, rightTotal := sumCounts(leftPositions), sumCounts(rightPositions)
 	if leftTotal == 0 || rightTotal == 0 {
 		return 1
 	}
-	positions := make(map[int]bool, len(left)+len(right))
-	for position := range left {
-		positions[position] = true
-	}
-	for position := range right {
-		positions[position] = true
-	}
-	ordered := make([]int, 0, len(positions))
-	for position := range positions {
-		ordered = append(ordered, position)
-	}
-	sort.Ints(ordered)
 	value := 0.0
-	for _, position := range ordered {
-		p := float64(left[position]) / float64(leftTotal)
-		q := float64(right[position]) / float64(rightTotal)
+	lp, rp := left.positions, right.positions
+	i, j := 0, 0
+	for i < len(lp) || j < len(rp) {
+		var position int
+		switch {
+		case i >= len(lp):
+			position = rp[j]
+		case j >= len(rp):
+			position = lp[i]
+		case lp[i] <= rp[j]:
+			position = lp[i]
+		default:
+			position = rp[j]
+		}
+		p := float64(leftPositions[position]) / float64(leftTotal)
+		q := float64(rightPositions[position]) / float64(rightTotal)
 		middle := (p + q) / 2
 		if p > 0 {
 			value += .5 * p * math.Log2(p/middle)
@@ -103,32 +187,28 @@ func positionJSD(left, right map[int]int) float64 {
 		if q > 0 {
 			value += .5 * q * math.Log2(q/middle)
 		}
+		if i < len(lp) && lp[i] == position {
+			i++
+		}
+		if j < len(rp) && rp[j] == position {
+			j++
+		}
 	}
 	return clamp(value)
 }
 
-func cosine(left, right map[string]int) float64 {
+func cosineSorted(left map[string]int, leftKeys []string, right map[string]int, rightKeys []string) float64 {
 	if len(left) == 0 || len(right) == 0 {
 		return 0
 	}
-	keys := make([]string, 0, len(left))
-	for key := range left {
-		keys = append(keys, key)
-	}
-	sort.Strings(keys)
 	dot, leftNorm := 0.0, 0.0
-	for _, key := range keys {
+	for _, key := range leftKeys {
 		count := left[key]
 		dot += float64(count * right[key])
 		leftNorm += float64(count * count)
 	}
-	keys = keys[:0]
-	for key := range right {
-		keys = append(keys, key)
-	}
-	sort.Strings(keys)
 	rightNorm := 0.0
-	for _, key := range keys {
+	for _, key := range rightKeys {
 		rightNorm += float64(right[key] * right[key])
 	}
 	if leftNorm == 0 || rightNorm == 0 {

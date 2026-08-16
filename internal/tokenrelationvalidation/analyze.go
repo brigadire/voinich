@@ -604,7 +604,18 @@ type directedRef struct {
 	maxD    int
 }
 
-func directionScoresAll(blocks []Block, candidates map[string]Candidate, defaultMax int) map[string]float64 {
+// directionEdges is directionScoresAll's per-replicate-invariant index: for
+// every (from,to) token pair, which candidate IDs it references and in
+// which direction, plus the widest maxD in play. candidates and defaultMax
+// never change across a permutation replicate loop, so buildDirectionEdges
+// computes this once for the caller to reuse across every replicate,
+// instead of directionScoresAll rebuilding it from scratch on every call.
+type directionEdges struct {
+	edges     map[Pair][]directedRef
+	globalMax int
+}
+
+func buildDirectionEdges(candidates map[string]Candidate, defaultMax int) directionEdges {
 	edges := map[Pair][]directedRef{}
 	globalMax := defaultMax
 	for id, c := range candidates {
@@ -618,6 +629,10 @@ func directionScoresAll(blocks []Block, candidates map[string]Candidate, default
 		edges[Pair{c.A, c.B}] = append(edges[Pair{c.A, c.B}], directedRef{id, true, d})
 		edges[Pair{c.B, c.A}] = append(edges[Pair{c.B, c.A}], directedRef{id, false, d})
 	}
+	return directionEdges{edges: edges, globalMax: globalMax}
+}
+
+func directionScoresAll(blocks []Block, candidates map[string]Candidate, de directionEdges) map[string]float64 {
 	pos, neg, eligible := map[string]int{}, map[string]int{}, map[string]int{}
 	for _, block := range blocks {
 		freq := map[string]int{}
@@ -627,8 +642,8 @@ func directionScoresAll(blocks []Block, candidates map[string]Candidate, default
 		ab, ba := map[string]int{}, map[string]int{}
 		for _, line := range splitLines(block) {
 			for i, t := range line {
-				for d := 1; d <= globalMax && i+d < len(line); d++ {
-					refs := edges[Pair{t.Text, line[i+d].Text}]
+				for d := 1; d <= de.globalMax && i+d < len(line); d++ {
+					refs := de.edges[Pair{t.Text, line[i+d].Text}]
 					for _, ref := range refs {
 						if d > ref.maxD {
 							continue
@@ -693,9 +708,10 @@ func directionPermutations(a *Analysis, maxD int, c Config, pgr *progressReporte
 			lookup[x.ID] = x
 		}
 	}
+	de := buildDirectionEdges(lookup, maxD)
 	for run := cp.Completed; run < c.Permutations; run++ {
 		blocks := PermuteWithinBlocks(a.Blocks, c.Seed+int64(run)*1000003)
-		scores := directionScoresAll(blocks, lookup, maxD)
+		scores := directionScoresAll(blocks, lookup, de)
 		for id := range lookup {
 			score := scores[id]
 			cp.DirectionSum[id] += score
@@ -759,9 +775,10 @@ func refineDirectionalPermutations(a *Analysis, maxD int, c Config, pgr *progres
 			lookup[x.ID] = x
 		}
 	}
+	de := buildDirectionEdges(lookup, maxD)
 	for run := cp.RefineCompleted; run < c.RefinePermutations; run++ {
 		blocks := PermuteWithinBlocks(a.Blocks, c.Seed+int64(run)*1000003)
-		scores := directionScoresAll(blocks, lookup, maxD)
+		scores := directionScoresAll(blocks, lookup, de)
 		for id := range lookup {
 			score := scores[id]
 			cp.RefineSum[id] += score
@@ -965,10 +982,10 @@ func sequenceConcentration(x []SequenceResult, id string) float64 {
 	return 1
 }
 
-func profilePermutationScores(blocks []Block, candidates map[string]Candidate, maxD int) map[string]float64 {
+func profilePermutationScores(blocks []Block, candidates map[string]Candidate, maxD int, ws *profileWorkspace) map[string]float64 {
 	profiles := map[string]localProfiles{}
 	for _, b := range blocks {
-		profiles[b.ID] = buildLocalProfiles(b, maxD)
+		profiles[b.ID] = ws.buildLocalProfiles(b, maxD)
 	}
 	values := map[string][]float64{}
 	for id, c := range candidates {
@@ -1032,8 +1049,9 @@ func profilePermutations(a *Analysis, maxD int, c Config, pgr *progressReporter)
 	if cp.ProfileSum == nil {
 		cp.ProfileSum = map[string]float64{}
 	}
+	ws := newProfileWorkspace()
 	for run := cp.ProfileCompleted; run < c.Permutations; run++ {
-		scores := profilePermutationScores(PermuteWithinBlocks(a.Blocks, c.Seed+int64(run)*1000003), lookup, maxD)
+		scores := profilePermutationScores(PermuteWithinBlocks(a.Blocks, c.Seed+int64(run)*1000003), lookup, maxD, ws)
 		for id, v := range obs {
 			cp.ProfileSum[id] += scores[id]
 			if scores[id] >= v {
@@ -1093,8 +1111,9 @@ func refineProfilePermutations(a *Analysis, maxD int, c Config, pgr *progressRep
 	if cp.ProfileRefineSum == nil {
 		cp.ProfileRefineSum = map[string]float64{}
 	}
+	ws := newProfileWorkspace()
 	for run := cp.ProfileRefineCompleted; run < c.RefinePermutations; run++ {
-		scores := profilePermutationScores(PermuteWithinBlocks(a.Blocks, c.Seed+int64(run)*1000003), lookup, maxD)
+		scores := profilePermutationScores(PermuteWithinBlocks(a.Blocks, c.Seed+int64(run)*1000003), lookup, maxD, ws)
 		for id, v := range obs {
 			cp.ProfileRefineSum[id] += scores[id]
 			if scores[id] >= v {

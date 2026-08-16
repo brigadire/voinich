@@ -6,13 +6,20 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"gopkg.in/yaml.v3"
 	"zcore.dev/voinich/internal/normalization"
+	"zcore.dev/voinich/internal/profiling"
 	"zcore.dev/voinich/internal/workdir"
 )
 
 func main() {
+	os.Exit(run())
+}
+
+func run() (code int) {
+	start := time.Now()
 	inputPath := flag.String("input", "data_work/ZL3b-x7.txt", "IVTT -x7 derived corpus")
 	structuralPath := flag.String("structural", workdir.Path("dataset", "structural_analysis.yaml"), "structural analysis YAML")
 	outputPattern := flag.String("output", workdir.Path("normalized.txt"), "normalized corpus base name")
@@ -25,21 +32,36 @@ func main() {
 	singletonMode := flag.String("singleton-mode", "preserve", "preserve or class")
 	randomBaselines := flag.Int("random-baselines", 100, "matched random runs recorded in experiment metadata")
 	randomSeed := flag.Int64("random-seed", 1, "base seed for matched random models")
+	prof := profiling.RegisterFlags(flag.CommandLine)
 	flag.Parse()
 
+	defer profiling.PrintElapsed(os.Stderr, start)
+
+	sess, err := profiling.Start(prof)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "Error:", err)
+		return 1
+	}
+	defer func() {
+		if err := sess.Stop(); err != nil {
+			fmt.Fprintln(os.Stderr, "Error:", err)
+			code = 1
+		}
+	}()
+
 	if *singletonMode != "preserve" && *singletonMode != "class" {
-		fatal("singleton-mode must be preserve or class")
+		return fail("singleton-mode must be preserve or class")
 	}
 	if *randomBaselines < 0 {
-		fatal("random-baselines cannot be negative")
+		return fail("random-baselines cannot be negative")
 	}
 	thresholds, err := normalization.ParseThresholds(*thresholdText)
 	if err != nil {
-		fatal(err.Error())
+		return fail(err.Error())
 	}
 	structural, err := normalization.LoadStructural(*structuralPath)
 	if err != nil {
-		fatal(fmt.Sprintf("read structural analysis: %v", err))
+		return fail(fmt.Sprintf("read structural analysis: %v", err))
 	}
 	effectiveMinCount := *minCount
 	if effectiveMinCount == 0 {
@@ -50,7 +72,7 @@ func main() {
 	}
 	corpus, err := normalization.LoadCorpus(*inputPath)
 	if err != nil {
-		fatal(fmt.Sprintf("read corpus: %v", err))
+		return fail(fmt.Sprintf("read corpus: %v", err))
 	}
 	config := normalization.Config{
 		Thresholds: thresholds, MinPositionSimilarity: *minPosition, MinLeftContextSimilarity: *minLeft,
@@ -59,18 +81,18 @@ func main() {
 	}
 	models, _, err := normalization.BuildModels(corpus, structural, config)
 	if err != nil {
-		fatal(fmt.Sprintf("build classes: %v", err))
+		return fail(fmt.Sprintf("build classes: %v", err))
 	}
 	if err := workdir.EnsureParent(*outputPattern); err != nil {
-		fatal(fmt.Sprintf("create output directory: %v", err))
+		return fail(fmt.Sprintf("create output directory: %v", err))
 	}
 	if err := workdir.EnsureParent(*classesPath); err != nil {
-		fatal(fmt.Sprintf("create classes directory: %v", err))
+		return fail(fmt.Sprintf("create classes directory: %v", err))
 	}
 	for _, model := range models {
 		path := thresholdPath(*outputPattern, model.Label, len(models))
 		if err := normalization.WriteNormalized(path, corpus, normalization.Mapping(model, *singletonMode)); err != nil {
-			fatal(fmt.Sprintf("write %s: %v", path, err))
+			return fail(fmt.Sprintf("write %s: %v", path, err))
 		}
 		fmt.Printf("Normalized corpus written to %s\n", path)
 	}
@@ -88,12 +110,13 @@ func main() {
 	}
 	data, err := yaml.Marshal(result)
 	if err != nil {
-		fatal(fmt.Sprintf("encode classes: %v", err))
+		return fail(fmt.Sprintf("encode classes: %v", err))
 	}
 	if err := os.WriteFile(*classesPath, data, 0o644); err != nil {
-		fatal(fmt.Sprintf("write classes: %v", err))
+		return fail(fmt.Sprintf("write classes: %v", err))
 	}
 	fmt.Printf("Class map written to %s\n", *classesPath)
+	return 0
 }
 
 func thresholdPath(pattern, label string, modelCount int) string {
@@ -108,7 +131,7 @@ func thresholdPath(pattern, label string, modelCount int) string {
 	return base + "_" + label + extension
 }
 
-func fatal(message string) {
+func fail(message string) int {
 	fmt.Fprintln(os.Stderr, "Error:", message)
-	os.Exit(1)
+	return 1
 }

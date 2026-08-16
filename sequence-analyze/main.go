@@ -6,27 +6,29 @@ import (
 	"os"
 
 	"gopkg.in/yaml.v3"
+	"zcore.dev/voinich/internal/sequenceanalyze"
 	"zcore.dev/voinich/internal/workdir"
 )
 
 func main() {
+	defaults := sequenceanalyze.DefaultParameters()
 	input := flag.String("input", "data_work/ZL3b-x7.txt", "IVTT -x7 derived corpus")
 	output := flag.String("output", workdir.Path("sequence_analysis.yaml"), "output YAML")
-	minN := flag.Int("min-n", 2, "minimum n-gram length")
-	maxN := flag.Int("max-n", 8, "maximum n-gram length")
-	minCount := flag.Int("min-count", 2, "minimum count for repeated sequence sections")
-	maxItems := flag.Int("max-items", 200, "maximum records per n; 0 means unlimited")
-	contextLimit := flag.Int("context-limit", 10, "maximum displayed context tokens")
-	maxContextLength := flag.Int("max-context-length", 7, "maximum left-context length for next-token analysis")
-	contextMinObservations := flag.Int("context-min-observations", 10, "minimum long-context observations for context extensions")
-	contextMaxItems := flag.Int("context-max-items", 200, "maximum context-extension records; 0 means unlimited")
+	minN := flag.Int("min-n", defaults.MinN, "minimum n-gram length")
+	maxN := flag.Int("max-n", defaults.MaxN, "maximum n-gram length")
+	minCount := flag.Int("min-count", defaults.MinCount, "minimum count for repeated sequence sections")
+	maxItems := flag.Int("max-items", defaults.MaxItems, "maximum records per n; 0 means unlimited")
+	contextLimit := flag.Int("context-limit", defaults.ContextLimit, "maximum displayed context tokens")
+	maxContextLength := flag.Int("max-context-length", defaults.MaxContextLength, "maximum left-context length for next-token analysis")
+	contextMinObservations := flag.Int("context-min-observations", defaults.ContextMinObservations, "minimum long-context observations for context extensions")
+	contextMaxItems := flag.Int("context-max-items", defaults.ContextMaxItems, "maximum context-extension records; 0 means unlimited")
 	flag.Parse()
 
-	parameters := Parameters{
+	parameters := sequenceanalyze.Parameters{
 		MinN: *minN, MaxN: *maxN, MinCount: *minCount, MaxItems: *maxItems, ContextLimit: *contextLimit,
 		MaxContextLength: *maxContextLength, ContextMinObservations: *contextMinObservations, ContextMaxItems: *contextMaxItems,
 	}
-	result, err := analyzeFile(*input, parameters)
+	result, err := sequenceanalyze.AnalyzeFile(*input, parameters)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error analyzing corpus: %v\n", err)
 		os.Exit(1)

@@ -1,4 +1,4 @@
-package main
+package sequenceanalyze
 
 type Parameters struct {
 	MinN                   int `yaml:"min_n"`
@@ -9,6 +9,18 @@ type Parameters struct {
 	MaxContextLength       int `yaml:"max_context_length"`
 	ContextMinObservations int `yaml:"context_min_observations"`
 	ContextMaxItems        int `yaml:"context_max_items"`
+}
+
+// DefaultParameters returns the same defaults sequence-analyze's CLI flags
+// fall back to. Callers that invoke AnalyzeFile/AnalyzeLines in-process
+// (rather than shelling out to the compiled sequence-analyze binary) should
+// use this instead of duplicating the literal values, so the two paths
+// cannot silently drift apart.
+func DefaultParameters() Parameters {
+	return Parameters{
+		MinN: 2, MaxN: 8, MinCount: 2, MaxItems: 200, ContextLimit: 10,
+		MaxContextLength: 7, ContextMinObservations: 10, ContextMaxItems: 200,
+	}
 }
 
 type Meta struct {

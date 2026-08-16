@@ -89,14 +89,34 @@ func distances(blind, bounds []int) []int {
 	return r
 }
 
-func UniformBoundaries(n, count int, rng *rand.Rand) []int {
+// UniformBoundaries draws `count` uniformly-random distinct positions in
+// [1, n-1] by computing the same Fisher-Yates permutation
+// *rand.Rand.Perm(n-1) does internally (same algorithm, same sequence of
+// rng.Intn calls, same resulting values) and taking its first `count`
+// entries, but into scratch instead of a freshly allocated slice.
+// scratch's contents before the call are never read: rand.Perm's loop
+// writes to position i (via `m[i] = m[j]`) before any later step can read
+// it back (j is always <= i), so every element scratch[:n-1] touches gets
+// overwritten before it is used, regardless of what it held on entry — see
+// determinism_test.go for the proof this is called out and verified by.
+// Callers own scratch and must reuse the same slice (with capacity >=
+// n-1) across every call in a replicate loop instead of allocating fresh
+// each time; UniformBoundaries never retains it.
+func UniformBoundaries(n, count int, rng *rand.Rand, scratch []int) []int {
 	if n <= 1 || count <= 0 {
 		return nil
 	}
 	if count > n-1 {
 		count = n - 1
 	}
-	p := rng.Perm(n - 1)[:count]
+	m := scratch[:n-1]
+	for i := 0; i < len(m); i++ {
+		j := rng.Intn(i + 1)
+		m[i] = m[j]
+		m[j] = i
+	}
+	p := make([]int, count)
+	copy(p, m[:count])
 	for i := range p {
 		p[i]++
 	}
@@ -120,6 +140,10 @@ func ValidateBoundaries(stable []StableBoundary, refs map[string][]MetadataBound
 	rng := rand.New(rand.NewSource(seed))
 	rows := []BoundaryValidation{}
 	rawNull := map[string][][]float64{}
+	// Reused across every UniformBoundaries call in the loops below instead
+	// of a fresh n-1-length slice per call (900,000+ calls at default
+	// settings) — see UniformBoundaries' doc comment for why this is safe.
+	permScratch := make([]int, max(0, n-1))
 	for _, support := range []int{3, 4, 5} {
 		blind := []int{}
 		for _, b := range stable {
@@ -139,7 +163,7 @@ func ValidateBoundaries(stable []StableBoundary, refs map[string][]MetadataBound
 				un := make([]float64, permutations)
 				cir := make([]float64, permutations)
 				for p := 0; p < permutations; p++ {
-					un[p] = float64(MatchWithin(UniformBoundaries(n, len(blind), rng), ref, tol))
+					un[p] = float64(MatchWithin(UniformBoundaries(n, len(blind), rng, permScratch), ref, tol))
 					shift := 1 + rng.Intn(max(1, n-1))
 					cir[p] = float64(MatchWithin(CircularShiftBoundaries(blind, n, shift), ref, tol))
 				}
@@ -277,11 +301,30 @@ func AssociationMetrics(a, b []string) Metrics {
 	if valid == 0 {
 		return Metrics{}
 	}
-	mi := 0.
-	for x, row := range tab {
-		for y, v := range row {
+	comb := func(x int) float64 { return float64(x*(x-1)) / 2 }
+	// mi and sumCell are single running sums fed by every cell of tab, so
+	// summing in map iteration order made them nondeterministic across
+	// otherwise byte-identical calls (see determinism_test.go). Both loops
+	// visit the same cells, so they're merged into one pass over the rows
+	// (sorted) x columns (sorted per row) instead of two separate passes.
+	rows := make([]string, 0, len(tab))
+	for x := range tab {
+		rows = append(rows, x)
+	}
+	sort.Strings(rows)
+	mi, sumCell := 0., 0.
+	for _, x := range rows {
+		row := tab[x]
+		cols := make([]string, 0, len(row))
+		for y := range row {
+			cols = append(cols, y)
+		}
+		sort.Strings(cols)
+		for _, y := range cols {
+			v := row[y]
 			p := float64(v) / float64(valid)
 			mi += p * math.Log(p/(float64(ra[x]*cb[y])/float64(valid*valid)))
+			sumCell += comb(v)
 		}
 	}
 	ha, hb := entropyCounts(ra, valid), entropyCounts(cb, valid)
@@ -296,19 +339,9 @@ func AssociationMetrics(a, b []string) Metrics {
 	if hb > 0 {
 		comp = mi / hb
 	}
-	comb := func(x int) float64 { return float64(x*(x-1)) / 2 }
-	sumCell, sumA, sumB := 0., 0., 0.
-	for _, row := range tab {
-		for _, v := range row {
-			sumCell += comb(v)
-		}
-	}
-	for _, v := range ra {
-		sumA += comb(v)
-	}
-	for _, v := range cb {
-		sumB += comb(v)
-	}
+	// sumA/sumB have the same single-running-sum-over-a-map hazard as
+	// mi/sumCell above.
+	sumA, sumB := sortedIntMapSum(ra, comb), sortedIntMapSum(cb, comb)
 	den := comb(valid)
 	ari := 0.
 	if den > 0 {
@@ -339,13 +372,28 @@ func formatContingency(t map[string]map[string]int) string {
 	}
 	return strings.Join(parts, ",")
 }
-func entropyCounts(c map[string]int, n int) float64 {
-	h := 0.
-	for _, v := range c {
-		p := float64(v) / float64(n)
-		h -= p * math.Log(p)
+
+// sortedIntMapSum sums f(v) over m's values in sorted-key order, so the
+// result does not depend on Go's randomized map iteration order — needed
+// anywhere a single running sum is fed by every entry of a map (see
+// determinism_test.go).
+func sortedIntMapSum(m map[string]int, f func(int) float64) float64 {
+	keys := make([]string, 0, len(m))
+	for k := range m {
+		keys = append(keys, k)
 	}
-	return h
+	sort.Strings(keys)
+	s := 0.
+	for _, k := range keys {
+		s += f(m[k])
+	}
+	return s
+}
+func entropyCounts(c map[string]int, n int) float64 {
+	return sortedIntMapSum(c, func(v int) float64 {
+		p := float64(v) / float64(n)
+		return -p * math.Log(p)
+	})
 }
 
 func AnalyzeAssignments(x []Assignment, records []TokenMetadata) []Association {
@@ -427,9 +475,17 @@ func conditionalEntropy(labels, clusters []string) float64 {
 		by[clusters[i]][labels[i]]++
 		sizes[clusters[i]]++
 	}
+	// h is a single running sum fed by every cluster key in by, so summing
+	// in map iteration order made it nondeterministic across otherwise
+	// byte-identical calls (see determinism_test.go).
+	keys := make([]string, 0, len(by))
+	for k := range by {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
 	h := 0.
-	for k, c := range by {
-		h += float64(sizes[k]) / float64(n) * entropyCounts(c, sizes[k])
+	for _, k := range keys {
+		h += float64(sizes[k]) / float64(n) * entropyCounts(by[k], sizes[k])
 	}
 	return h
 }

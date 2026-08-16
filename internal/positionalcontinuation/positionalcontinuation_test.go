@@ -223,10 +223,16 @@ func TestMutualInformationHighWhenDeterministic(t *testing.T) {
 // --- 13/14/15. within-block position permutation preserves marginals, continuation counts, block membership ---
 
 func TestPermuteLabelsWithinBlocksPreservesEverything(t *testing.T) {
+	xs := []string{"t0", "t1", "t2", "t3"}
 	blockIDs := []string{"A", "A", "B", "B"}
 	labels := []string{"x", "y", "x", "z"}
+	ws := newPositionalWorkspace(xs, blockIDs, labels)
 	r := rand.New(rand.NewSource(1))
-	perm := permuteLabelsWithinBlocks(blockIDs, labels, r)
+	permIdx := ws.permute(r)
+	perm := make([]string, len(permIdx))
+	for i, ci := range permIdx {
+		perm[i] = ws.catNames[ci]
+	}
 
 	byBlockOriginal := map[string]map[string]int{}
 	byBlockPerm := map[string]map[string]int{}
@@ -312,8 +318,10 @@ func TestPermuteIsSWithinStrataPreservesStrataComposition(t *testing.T) {
 		{stratum: "B2|LINE_END", isS: false, isChey: true},
 		{stratum: "B2|LINE_END", isS: false, isChey: false},
 	}
+	ws := newStratifiedWorkspace(obs)
 	r := rand.New(rand.NewSource(7))
-	perm := permuteIsSWithinStrata(obs, r)
+	ws.permuteAndStatistic(r)
+	perm := ws.permIsS
 
 	byStratumOriginal := map[string]int{}
 	byStratumPerm := map[string]int{}

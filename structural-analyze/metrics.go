@@ -276,15 +276,22 @@ func equivalenceRanking(dataset *Dataset, parameters Parameters) []EquivalenceCa
 			eligible = append(eligible, token)
 		}
 	}
+	// ws precomputes each eligible token's context-map keys in sorted order
+	// once, since equivalenceRanking's O(len(eligible)^2) all-pairs sweep
+	// otherwise re-sorts the same token's keys once per pair it appears in
+	// (up to len(eligible)-1 times) - the shared profilestability.Compare
+	// cost flagged by PERFORMANCE_AUDIT.md's cross-cutting finding (task27
+	// item 10).
+	ws := make(map[string]profilestability.SortedProfile, len(eligible))
+	for _, token := range eligible {
+		ws[token.Token] = profilestability.Precompute(profilestability.Profile{Count: token.Count, Positions: dataset.Positions[token.Token], Left: dataset.Left[token.Token], Right: dataset.Right[token.Token]})
+	}
 	results := make([]EquivalenceCandidate, 0)
 	for i := 0; i < len(eligible); i++ {
 		for j := i + 1; j < len(eligible); j++ {
 			left := eligible[i]
 			right := eligible[j]
-			components := profilestability.Compare(
-				profilestability.Profile{Count: left.Count, Positions: dataset.Positions[left.Token], Left: dataset.Left[left.Token], Right: dataset.Right[left.Token]},
-				profilestability.Profile{Count: right.Count, Positions: dataset.Positions[right.Token], Left: dataset.Left[right.Token], Right: dataset.Right[right.Token]},
-			)
+			components := profilestability.CompareSorted(ws[left.Token], ws[right.Token])
 			positionSimilarity := components.PositionSimilarity
 			leftSimilarity := components.LeftSimilarity
 			rightSimilarity := components.RightSimilarity

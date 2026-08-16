@@ -42,7 +42,7 @@ var specialReferencePairs = [][2]string{{"chedy", "shedy"}, {"qokedy", "qokeedy"
 // reference-class member pairs) using only exported profilestability
 // primitives - no similarity formula is duplicated, only the orchestration
 // of which pairs to examine.
-func buildMasterPairs(full map[string]profilestability.Profile, fullEligible []string, fullNeighbors map[string][]profilestability.Neighbor, referenceModel normalization.Model, threshold float64) map[pairKey]bool {
+func buildMasterPairs(fullWs map[string]profilestability.SortedProfile, fullEligible []string, fullNeighbors map[string][]profilestability.Neighbor, referenceModel normalization.Model, threshold float64) map[pairKey]bool {
 	candidates := make(map[pairKey]bool)
 	for token, neighbors := range fullNeighbors {
 		for _, neighbor := range neighbors {
@@ -51,7 +51,7 @@ func buildMasterPairs(full map[string]profilestability.Profile, fullEligible []s
 	}
 	for i, tokenA := range fullEligible {
 		for _, tokenB := range fullEligible[i+1:] {
-			if profilestability.Compare(full[tokenA], full[tokenB]).Similarity >= threshold {
+			if profilestability.CompareSorted(fullWs[tokenA], fullWs[tokenB]).Similarity >= threshold {
 				candidates[makePair(tokenA, tokenB)] = true
 			}
 		}
@@ -85,7 +85,7 @@ func pairFoldSimilarities(pairs []pairKey, folds []foldProfiles, minCount int) m
 			if a.Count < minCount || b.Count < minCount {
 				continue
 			}
-			values = append(values, profilestability.Compare(a, b).Similarity)
+			values = append(values, profilestability.CompareSorted(fold.trainWs[pair.a], fold.trainWs[pair.b]).Similarity)
 		}
 		result[pair] = values
 	}
@@ -121,12 +121,13 @@ func runBootstrap(corpus validation.Corpus, pairs []pairKey, runs int, seed int6
 			sample.Lines = append(sample.Lines, validation.Line{ID: index + 1, Tokens: tokens})
 		}
 		profiles := profilestability.BuildProfiles(sample)
+		ws := profilestability.PrecomputeAll(profiles)
 		for _, pair := range pairs {
 			a, b := profiles[pair.a], profiles[pair.b]
 			if a.Count < minCount || b.Count < minCount {
 				continue
 			}
-			values[pair] = append(values[pair], profilestability.Compare(a, b).Similarity)
+			values[pair] = append(values[pair], profilestability.CompareSorted(ws[pair.a], ws[pair.b]).Similarity)
 		}
 		if progress != nil && ((run+1)%25 == 0 || run+1 == runs) {
 			progress("structural-reliability bootstrap " + itoa(run+1) + "/" + itoa(runs))

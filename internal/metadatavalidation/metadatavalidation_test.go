@@ -102,8 +102,8 @@ func TestMetadataTransitionsAndNearest(t *testing.T) {
 }
 
 func TestPermutationControlsDeterministic(t *testing.T) {
-	a := UniformBoundaries(20, 4, rand.New(rand.NewSource(7)))
-	b := UniformBoundaries(20, 4, rand.New(rand.NewSource(7)))
+	a := UniformBoundaries(20, 4, rand.New(rand.NewSource(7)), make([]int, 19))
+	b := UniformBoundaries(20, 4, rand.New(rand.NewSource(7)), make([]int, 19))
 	if !reflect.DeepEqual(a, b) {
 		t.Fatal("uniform non-deterministic")
 	}

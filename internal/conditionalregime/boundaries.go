@@ -2,6 +2,7 @@ package conditionalregime
 
 import (
 	"math"
+	"sort"
 	"strconv"
 
 	"zcore.dev/voinich/internal/globalregime"
@@ -90,20 +91,26 @@ func boundarySignature(windows []globalregime.Window, center int) (token, direct
 	if before == nil || after == nil {
 		return "", "", 0
 	}
-	bestTok, bestDelta := "", 0.0
-	seen := map[string]bool{}
-	for tok, av := range after {
-		d := av - before[tok]
+	// bestTok is picked by the largest |d|, with ties broken by visiting the
+	// union of before/after's keys in sorted order (first-seen-wins under
+	// the strict > below): visiting in map iteration order made a tied
+	// winner nondeterministic across otherwise byte-identical calls (see
+	// determinism_test.go).
+	keys := make([]string, 0, len(before)+len(after))
+	seen := make(map[string]bool, len(before)+len(after))
+	for tok := range after {
 		seen[tok] = true
-		if math.Abs(d) > math.Abs(bestDelta) {
-			bestTok, bestDelta = tok, d
+		keys = append(keys, tok)
+	}
+	for tok := range before {
+		if !seen[tok] {
+			keys = append(keys, tok)
 		}
 	}
-	for tok, bv := range before {
-		if seen[tok] {
-			continue
-		}
-		d := -bv
+	sort.Strings(keys)
+	bestTok, bestDelta := "", 0.0
+	for _, tok := range keys {
+		d := after[tok] - before[tok]
 		if math.Abs(d) > math.Abs(bestDelta) {
 			bestTok, bestDelta = tok, d
 		}

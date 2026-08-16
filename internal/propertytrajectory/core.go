@@ -25,6 +25,11 @@ func allPropertyNames() []string {
 	}
 	return x
 }
+
+// entropy's h is a single running sum fed by every key of m, so it is
+// accumulated in sorted key order: summing in map iteration order made it
+// nondeterministic across otherwise byte-identical calls (see
+// determinism_test.go). n (an integer sum) is unaffected by order.
 func entropy(m map[string]int) float64 {
 	n := 0
 	for _, v := range m {
@@ -33,9 +38,14 @@ func entropy(m map[string]int) float64 {
 	if n == 0 {
 		return 0
 	}
+	keys := make([]string, 0, len(m))
+	for k := range m {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
 	h := 0.
-	for _, v := range m {
-		p := float64(v) / float64(n)
+	for _, k := range keys {
+		p := float64(m[k]) / float64(n)
 		h -= p * math.Log2(p)
 	}
 	return h

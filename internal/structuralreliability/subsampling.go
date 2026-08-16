@@ -32,7 +32,7 @@ type subsampleObservation struct {
 // a random subset of that token's real occurrences (never a synthetic text)
 // and compares it, via the unmodified profilestability.Compare, against the
 // token's full-corpus reference profile.
-func runSubsampling(occurrences map[string][]Occurrence, fullProfiles map[string]profilestability.Profile, config Config) Subsampling {
+func runSubsampling(occurrences map[string][]Occurrence, fullProfiles map[string]profilestability.Profile, fullWs map[string]profilestability.SortedProfile, config Config) Subsampling {
 	var tokens []string
 	for token, profile := range fullProfiles {
 		if profile.Count >= config.SubsampleMinFullCount {
@@ -46,7 +46,7 @@ func runSubsampling(occurrences map[string][]Occurrence, fullProfiles map[string
 	perSize := make(map[int][]subsampleObservation, len(sizes))
 	perTokenSize := make(map[string]map[int][]subsampleObservation, len(tokens))
 	for _, token := range tokens {
-		reference := fullProfiles[token]
+		referenceSorted := fullWs[token]
 		occurrencesForToken := occurrences[token]
 		perTokenSize[token] = make(map[int][]subsampleObservation, len(sizes))
 		for _, size := range sizes {
@@ -57,7 +57,7 @@ func runSubsampling(occurrences map[string][]Occurrence, fullProfiles map[string
 			for run := 0; run < config.SubsampleRuns; run++ {
 				sample := SampleOccurrences(occurrencesForToken, size, rng)
 				profile := ProfileFromOccurrences(sample)
-				components := profilestability.Compare(profile, reference)
+				components := profilestability.CompareSorted(profilestability.Precompute(profile), referenceSorted)
 				observations = append(observations, subsampleObservation{position: components.PositionSimilarity, left: components.LeftSimilarity, right: components.RightSimilarity})
 			}
 			perTokenSize[token][size] = observations

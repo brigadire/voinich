@@ -218,10 +218,10 @@ func RunAndWrite(c Config) error {
 	if cp.MarkovCompleted >= c.Permutations {
 		p.update(cp.MarkovCompleted, c.Permutations, "Markov replicates")
 	}
-	markovAvailable := 0
+	markovTraining := buildMarkovTraining(blocks)
+	markovAvailable := len(markovTraining)
 	for run := cp.MarkovCompleted; run < c.Permutations; run++ {
-		sim, av := markovBlocks(blocks, c.Seed+int64(run)*104729+37)
-		markovAvailable = av
+		sim, _ := markovBlocks(markovTraining, c.Seed+int64(run)*104729+37)
 		tot, bc := sequenceStats(sc, sim)
 		for _, s := range sc {
 			observedAvailable := sequenceStatsOne(s, blocks, sim)
@@ -239,9 +239,6 @@ func RunAndWrite(c Config) error {
 			return fmt.Errorf("save checkpoint: %w", e)
 		}
 		p.update(cp.MarkovCompleted, c.Permutations, "Markov replicates")
-	}
-	if markovAvailable == 0 {
-		_, markovAvailable = markovBlocks(blocks, c.Seed+37)
 	}
 
 	p.begin(6, "Computing replication diagnostics")

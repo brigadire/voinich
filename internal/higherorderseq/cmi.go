@@ -129,25 +129,15 @@ func permuteWithinBlocks(obs []bNeighbor, r *rand.Rand) []bNeighbor {
 // specific frozen (A,C) cell's pointwise contribution to that CMI.
 func runCMI(cand Candidate, blocks []Block, permutations int, seed int64) CMIResult {
 	obs := collectBNeighbors(cand.B(), blocks)
-	observed := cmiBits(obs)
+	ws := newCMIWorkspace(obs)
+	observed := ws.cmiFor(ws.rightIdx)
 	r := rand.New(rand.NewSource(seed))
 	null := make([]float64, permutations)
 	for i := 0; i < permutations; i++ {
-		null[i] = cmiBits(permuteWithinBlocks(obs, r))
+		null[i] = ws.cmiFor(ws.permute(r))
 	}
 	mean, sd := meanSD(null)
-	joint, left, right := jointTable(obs)
-	n := float64(len(obs))
-	contribution := 0.0
-	if n > 0 {
-		jn := float64(joint[[2]string{cand.A(), cand.C()}])
-		pxy := jn / n
-		px := float64(left[cand.A()]) / n
-		py := float64(right[cand.C()]) / n
-		if pxy > 0 && px > 0 && py > 0 {
-			contribution = pxy * log2Ratio(pxy, px*py)
-		}
-	}
+	contribution := ws.observedContribution(cand.A(), cand.C())
 	return CMIResult{
 		Sequence: cand.Sequence, CenterToken: cand.B(), Occurrences: len(obs),
 		ObservedCMIBits: observed, NullMeanCMIBits: mean, NullSDCMIBits: sd,

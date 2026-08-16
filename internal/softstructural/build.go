@@ -39,12 +39,19 @@ func DiagnosticWeightedMean(similarities, reliabilities [3]float64) *float64 {
 }
 
 func MakePair(a, b string, countA, countB int, left, right profilestability.Profile, curves structuralreliability.ReliabilityCurves) Pair {
+	return makePairSorted(a, b, countA, countB, profilestability.Precompute(left), profilestability.Precompute(right), curves)
+}
+
+// makePairSorted is MakePair driven by precomputed SortedProfiles, so
+// BuildAll's O(V^2) all-pairs sweep doesn't re-sort the same token's
+// context-map keys on every one of the up to V-1 pairs it appears in.
+func makePairSorted(a, b string, countA, countB int, left, right profilestability.SortedProfile, curves structuralreliability.ReliabilityCurves) Pair {
 	if b < a {
 		a, b = b, a
 		countA, countB = countB, countA
 		left, right = right, left
 	}
-	c := profilestability.Compare(left, right)
+	c := profilestability.CompareSorted(left, right)
 	rp, rl, rr := PairReliabilities(curves, countA, countB)
 	return Pair{TokenA: a, TokenB: b, CountA: countA, CountB: countB, PositionSimilarity: c.PositionSimilarity, LeftSimilarity: c.LeftSimilarity, RightSimilarity: c.RightSimilarity, RawSimilarity: c.Similarity, PositionReliability: rp, LeftReliability: rl, RightReliability: rr, TotalEvidenceWeight: rp + rl + rr, EvidenceStrength: EvidenceStrength(rp, rl, rr), DiagnosticWeightedSimilarity: DiagnosticWeightedMean([3]float64{c.PositionSimilarity, c.LeftSimilarity, c.RightSimilarity}, [3]float64{rp, rl, rr})}
 }
@@ -81,21 +88,22 @@ func BuildAll(config Config) (Output, []Pair, error) {
 		}
 		return refs[i][0] < refs[j][0]
 	})
+	profilesWs := profilestability.PrecomputeAll(d.profiles)
 	pairs := make([]Pair, 0, len(eligible)*(len(eligible)-1)/2)
 	by := map[string][]Pair{}
 	for i, a := range eligible {
 		for _, b := range eligible[i+1:] {
-			p := MakePair(a, b, d.counts[a], d.counts[b], d.profiles[a], d.profiles[b], r.Curves)
+			p := makePairSorted(a, b, d.counts[a], d.counts[b], profilesWs[a], profilesWs[b], r.Curves)
 			p.BootstrapProbabilityAbove070 = bootstrap[[2]string{a, b}]
 			pairs = append(pairs, p)
 			by[a] = append(by[a], p)
 			by[b] = append(by[b], p)
 		}
 	}
-	return assembleOutput(config, d, r, eligible, pairs, by, refs), pairs, nil
+	return assembleOutput(config, d, r, eligible, pairs, by, refs, profilesWs), pairs, nil
 }
 
-func assembleOutput(c Config, d dataset, r reliabilityInput, eligible []string, pairs []Pair, by map[string][]Pair, refs [][2]string) Output {
+func assembleOutput(c Config, d dataset, r reliabilityInput, eligible []string, pairs []Pair, by map[string][]Pair, refs [][2]string, profilesWs map[string]profilestability.SortedProfile) Output {
 	var out Output
 	out.Parameters.MinTokenCount = c.MinTokenCount
 	out.Parameters.Neighbors = c.Neighbors
@@ -149,12 +157,12 @@ func assembleOutput(c Config, d dataset, r reliabilityInput, eligible []string, 
 	out.MutualSupported = mutual(pairs, supportedTop)
 	for _, key := range refs {
 		a, b := key[0], key[1]
-		pa, oka := d.profiles[a]
-		pb, okb := d.profiles[b]
+		pa, oka := profilesWs[a]
+		pb, okb := profilesWs[b]
 		if !oka || !okb {
 			continue
 		}
-		p := MakePair(a, b, d.counts[a], d.counts[b], pa, pb, r.Curves)
+		p := makePairSorted(a, b, d.counts[a], d.counts[b], pa, pb, r.Curves)
 		p.BootstrapProbabilityAbove070 = findBootstrap(r, key)
 		out.ReferencePairs = append(out.ReferencePairs, reference(p))
 	}

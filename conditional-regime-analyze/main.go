@@ -6,8 +6,10 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"time"
 
 	"zcore.dev/voinich/internal/conditionalregime"
+	"zcore.dev/voinich/internal/profiling"
 	"zcore.dev/voinich/internal/workdir"
 )
 
@@ -33,6 +35,11 @@ func (l *intList) Set(s string) error {
 }
 
 func main() {
+	os.Exit(run())
+}
+
+func run() (code int) {
+	start := time.Now()
 	c := conditionalregime.Config{}
 	var windowSizes, residualWindowSizes intList
 	flag.StringVar(&c.CorpusPath, "corpus", "data_work/ZL3b-x7.txt", "canonical IVTT -x7 corpus, unchanged")
@@ -49,15 +56,32 @@ func main() {
 	flag.Int64Var(&c.Seed, "seed", 1, "deterministic random seed")
 	flag.StringVar(&c.CheckpointPath, "checkpoint-path", "", "progress checkpoint file (default <output-dir>/checkpoint.json; \"-\" disables checkpointing)")
 	flag.BoolVar(&c.Quiet, "quiet", false, "disable status bar")
+	prof := profiling.RegisterFlags(flag.CommandLine)
 	flag.Parse()
 	c.WindowSizes = []int(windowSizes)
 	c.ResidualWindowSizes = []int(residualWindowSizes)
 	if c.Permutations < 1 {
 		fmt.Fprintln(os.Stderr, "Error: permutations must be positive")
-		os.Exit(2)
+		return 2
 	}
+
+	defer profiling.PrintElapsed(os.Stderr, start)
+
+	sess, err := profiling.Start(prof)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "Error:", err)
+		return 1
+	}
+	defer func() {
+		if err := sess.Stop(); err != nil {
+			fmt.Fprintln(os.Stderr, "Error:", err)
+			code = 1
+		}
+	}()
+
 	if err := conditionalregime.RunAndWrite(c); err != nil {
 		fmt.Fprintln(os.Stderr, "Error:", err)
-		os.Exit(1)
+		return 1
 	}
+	return 0
 }

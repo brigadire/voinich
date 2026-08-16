@@ -92,16 +92,40 @@ func aggregate(ps []profile) profile {
 	}
 	return m
 }
-func jsSimilarity(a, b profile) float64 {
-	keys := map[string]bool{}
+
+// sortedProfileKeys returns p's keys in sorted order, so callers that
+// accumulate a single running sum fed by every key of a profile do so
+// deterministically (Go's map iteration order is randomized per range
+// execution - see determinism_test.go).
+func sortedProfileKeys(p profile) []string {
+	keys := make([]string, 0, len(p))
+	for k := range p {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	return keys
+}
+
+// sortedUnionKeys returns the sorted union of a's and b's keys.
+func sortedUnionKeys(a, b profile) []string {
+	keys := make([]string, 0, len(a)+len(b))
+	seen := make(map[string]bool, len(a)+len(b))
 	for k := range a {
-		keys[k] = true
+		seen[k] = true
+		keys = append(keys, k)
 	}
 	for k := range b {
-		keys[k] = true
+		if !seen[k] {
+			keys = append(keys, k)
+		}
 	}
+	sort.Strings(keys)
+	return keys
+}
+
+func jsSimilarity(a, b profile) float64 {
 	d := 0.
-	for k := range keys {
+	for _, k := range sortedUnionKeys(a, b) {
 		x, y := a[k], b[k]
 		m := (x + y) / 2
 		if x > 0 {
@@ -119,7 +143,8 @@ func jsSimilarity(a, b profile) float64 {
 }
 func weightedOverlap(a, b profile) float64 {
 	s := 0.
-	for k, x := range a {
+	for _, k := range sortedProfileKeys(a) {
+		x := a[k]
 		if b[k] < x {
 			x = b[k]
 		}
@@ -147,27 +172,153 @@ func jaccard(a, b profile) float64 {
 	}
 	return float64(i) / float64(u)
 }
+
+// dotProduct is sum_k a[k]*b[k] over a's own keys (matching cosine's
+// original loop exactly: b's keys not present in a never contribute, since
+// the numerator only ever ranges over a).
+func dotProduct(a, b profile) float64 {
+	n := 0.
+	for _, k := range sortedProfileKeys(a) {
+		n += a[k] * b[k]
+	}
+	return n
+}
 func cosine(a, b profile) float64 {
-	n, aa, bb := 0., 0., 0.
-	for k, x := range a {
-		n += x * b[k]
+	aa, bb := 0., 0.
+	for _, k := range sortedProfileKeys(a) {
+		x := a[k]
 		aa += x * x
 	}
-	for _, x := range b {
+	for _, k := range sortedProfileKeys(b) {
+		x := b[k]
 		bb += x * x
 	}
 	if aa == 0 || bb == 0 {
 		return 0
 	}
-	return n / math.Sqrt(aa*bb)
+	return dotProduct(a, b) / math.Sqrt(aa*bb)
 }
+
+// sortedProfile pairs a profile with its own keys sorted once, so
+// jsSimilaritySorted can merge-walk two already-sorted key lists instead of
+// re-sorting their union on every pairwise call. dispersion/
+// pairwiseDispersion each compare the same profiles against many others
+// (O(n) and O(n^2) respectively), so sorting each profile's keys exactly
+// once here - instead of on every one of those repeated comparisons -
+// matters: profiling conditionalregime's equivalent hot path (task27)
+// showed the sort-per-call approach alone was over 70% of that CLI's total
+// CPU time.
+type sortedProfile struct {
+	p    profile
+	keys []string
+}
+
+func sortProfile(p profile) sortedProfile {
+	return sortedProfile{p: p, keys: sortedProfileKeys(p)}
+}
+
+// jsSimilaritySorted is jsSimilarity, but merge-walking a's and b's
+// already-sorted key lists instead of re-sorting their union - the merge
+// visits the sorted union in the same order sorting it directly would, so
+// this is bit-identical to jsSimilarity(a.p, b.p).
+func jsSimilaritySorted(a, b sortedProfile) float64 {
+	ak, bk := a.keys, b.keys
+	i, j := 0, 0
+	d := 0.0
+	for i < len(ak) && j < len(bk) {
+		switch {
+		case ak[i] < bk[j]:
+			x := a.p[ak[i]]
+			if x > 0 {
+				d += .5 * x * math.Log2(2)
+			}
+			i++
+		case ak[i] > bk[j]:
+			y := b.p[bk[j]]
+			if y > 0 {
+				d += .5 * y * math.Log2(2)
+			}
+			j++
+		default:
+			x, y := a.p[ak[i]], b.p[bk[j]]
+			m := (x + y) / 2
+			if x > 0 {
+				d += .5 * x * math.Log2(x/m)
+			}
+			if y > 0 {
+				d += .5 * y * math.Log2(y/m)
+			}
+			i++
+			j++
+		}
+	}
+	for ; i < len(ak); i++ {
+		x := a.p[ak[i]]
+		if x > 0 {
+			d += .5 * x * math.Log2(2)
+		}
+	}
+	for ; j < len(bk); j++ {
+		y := b.p[bk[j]]
+		if y > 0 {
+			d += .5 * y * math.Log2(2)
+		}
+	}
+	v := 1 - d
+	if v < 0 {
+		return 0
+	}
+	return v
+}
+
+// weightedOverlapSorted, dotProductSorted and cosineSorted mirror
+// weightedOverlap/dotProduct/cosine, but read a's/b's keys off an
+// already-sorted sortedProfile instead of sorting them fresh - useful when
+// the same (a,b) pair already had its keys sorted once for a
+// jsSimilaritySorted call and would otherwise pay for sorting the same
+// keys again for these related metrics.
+func weightedOverlapSorted(a, b sortedProfile) float64 {
+	s := 0.
+	for _, k := range a.keys {
+		x := a.p[k]
+		if b.p[k] < x {
+			x = b.p[k]
+		}
+		s += x
+	}
+	return s
+}
+func dotProductSorted(a, b sortedProfile) float64 {
+	n := 0.
+	for _, k := range a.keys {
+		n += a.p[k] * b.p[k]
+	}
+	return n
+}
+func cosineSorted(a, b sortedProfile) float64 {
+	aa, bb := 0., 0.
+	for _, k := range a.keys {
+		x := a.p[k]
+		aa += x * x
+	}
+	for _, k := range b.keys {
+		x := b.p[k]
+		bb += x * x
+	}
+	if aa == 0 || bb == 0 {
+		return 0
+	}
+	return dotProductSorted(a, b) / math.Sqrt(aa*bb)
+}
+
 func dispersion(ps []profile, c profile) float64 {
 	if len(ps) == 0 {
 		return 0
 	}
+	sc := sortProfile(c)
 	s := 0.
 	for _, p := range ps {
-		s += 1 - jsSimilarity(p, c)
+		s += 1 - jsSimilaritySorted(sortProfile(p), sc)
 	}
 	return s / float64(len(ps))
 }
@@ -181,10 +332,21 @@ func pairwiseDispersion(ps []profile) float64 {
 	if len(ps) > 200 {
 		step = (len(ps) + 199) / 200
 	}
-	s, n := 0., 0
+	var touched []int
 	for i := 0; i < len(ps); i += step {
-		for j := i + step; j < len(ps); j += step {
-			s += 1 - jsSimilarity(ps[i], ps[j])
+		touched = append(touched, i)
+	}
+	sorted := make(map[int]sortedProfile, len(touched))
+	for _, i := range touched {
+		sorted[i] = sortProfile(ps[i])
+	}
+	s, n := 0., 0
+	for _, i := range touched {
+		for _, j := range touched {
+			if j <= i {
+				continue
+			}
+			s += 1 - jsSimilaritySorted(sorted[i], sorted[j])
 			n++
 		}
 	}
@@ -206,8 +368,16 @@ func distanceDistribution(c corpus, t string, d int) profile {
 	return distanceDistributionMode(c, t, d, false)
 }
 func distanceDistributionMode(c corpus, t string, d int, respect bool) profile {
+	return distanceDistributionAt(c, positions(c, t), d, respect)
+}
+
+// distanceDistributionAt is distanceDistributionMode with pos precomputed:
+// positions(c,t) doesn't depend on d, so a caller sweeping d=1..MaxDistance
+// for a fixed (corpus variant, token) should compute it once and pass it in
+// here, instead of distanceDistributionMode recomputing it on every d.
+func distanceDistributionAt(c corpus, pos []int, d int, respect bool) profile {
 	m := map[string]int{}
-	for _, i := range positions(c, t) {
+	for _, i := range pos {
 		j := i + d
 		if j < len(c.Tokens) && (!respect || c.LineAt[j] == c.LineAt[i]) {
 			m[c.Tokens[j]]++
@@ -263,7 +433,16 @@ func slidingProfiles(c corpus, size, step int) ([]profile, []WindowRow) {
 }
 func concentration(p profile) float64 {
 	s := 0.
-	for _, v := range p {
+	for _, k := range sortedProfileKeys(p) {
+		v := p[k]
+		s += v * v
+	}
+	return s
+}
+func concentrationSorted(sp sortedProfile) float64 {
+	s := 0.
+	for _, k := range sp.keys {
+		v := sp.p[k]
 		s += v * v
 	}
 	return s

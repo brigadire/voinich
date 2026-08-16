@@ -69,10 +69,24 @@ func weightedChoice(r *rand.Rand, x []string, w []int) string {
 	}
 	return x[len(x)-1]
 }
-func markovBlocks(blocks []block, seed int64) ([]block, int) {
-	r := rand.New(rand.NewSource(seed))
-	out := make([]block, 0, len(blocks))
-	available := 0
+
+// markovHeldOut pairs a held-out block with the leave-one-block-out
+// training model built from every other block sharing its Joint metadata.
+type markovHeldOut struct {
+	held  block
+	model *transitionModel
+}
+
+// buildMarkovTraining precomputes the leave-one-block-out Markov training
+// model for every held-out block that has a non-empty training partition.
+// The training partition for a given held-out block (every other block with
+// the same Joint) and the model built from it do not depend on any
+// permutation replicate's seed, only on the fixed block set — so this needs
+// to run once per RunAndWrite call rather than once per replicate. Held-out
+// blocks with no training data (m == nil) are omitted, exactly as the
+// former inline per-replicate loop skipped them via `continue`.
+func buildMarkovTraining(blocks []block) []markovHeldOut {
+	out := make([]markovHeldOut, 0, len(blocks))
 	for _, held := range blocks {
 		var train []block
 		for _, b := range blocks {
@@ -84,7 +98,20 @@ func markovBlocks(blocks []block, seed int64) ([]block, int) {
 		if m == nil {
 			continue
 		}
-		available++
+		out = append(out, markovHeldOut{held: held, model: m})
+	}
+	return out
+}
+
+// markovBlocks draws one leakage-free first-order Markov replicate from the
+// precomputed training models, in the same held-out-block order used to
+// build them, so the sequence of rand draws (and thus the output) is
+// identical to the former implementation that rebuilt each model inline.
+func markovBlocks(training []markovHeldOut, seed int64) ([]block, int) {
+	r := rand.New(rand.NewSource(seed))
+	out := make([]block, 0, len(training))
+	for _, ho := range training {
+		held, m := ho.held, ho.model
 		z := held
 		z.Tokens = append([]token(nil), held.Tokens...)
 		for i := 0; i < len(z.Tokens); {
@@ -107,5 +134,5 @@ func markovBlocks(blocks []block, seed int64) ([]block, int) {
 		}
 		out = append(out, z)
 	}
-	return out, available
+	return out, len(training)
 }

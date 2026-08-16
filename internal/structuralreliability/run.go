@@ -37,6 +37,7 @@ func Run(config Config) (Output, error) {
 	}
 
 	fullProfiles := profilestability.BuildProfiles(corpus)
+	fullWs := profilestability.PrecomputeAll(fullProfiles)
 	folds, err := BuildFolds(corpus, config.Folds, config.FoldSeed)
 	if err != nil {
 		return Output{}, err
@@ -47,7 +48,7 @@ func Run(config Config) (Output, error) {
 	thresholds := uniqueSortedInts(append([]int{config.MinTokenCount}, config.CountThresholds...))
 	cache := make(map[int]thresholdComputation, len(thresholds))
 	for _, t := range thresholds {
-		items, fullEligible, fullNeighbors := buildTokenMetrics(fullProfiles, folds, t, config.Neighbors)
+		items, fullEligible, fullNeighbors := buildTokenMetrics(fullProfiles, fullWs, folds, t, config.Neighbors)
 		cache[t] = thresholdComputation{items: items, fullEligible: fullEligible, fullNeighbors: fullNeighbors}
 		progress(config, fmt.Sprintf("token stability min_count=%d eligible=%d", t, len(fullEligible)))
 	}
@@ -57,13 +58,13 @@ func Run(config Config) (Output, error) {
 		baseByToken[item.Token] = item
 	}
 
-	masterPairSet := buildMasterPairs(fullProfiles, base.fullEligible, base.fullNeighbors, referenceModel, config.Threshold)
+	masterPairSet := buildMasterPairs(fullWs, base.fullEligible, base.fullNeighbors, referenceModel, config.Threshold)
 	masterPairs := sortedPairs(masterPairSet)
 	baseFoldValues := pairFoldSimilarities(masterPairs, folds, config.MinTokenCount)
 	bootstrap := runBootstrap(corpus, masterPairs, config.BootstrapRuns, config.BootstrapSeed, config.MinTokenCount, config.Threshold, config.Progress)
 	progress(config, fmt.Sprintf("master candidate pairs=%d bootstrap runs=%d", len(masterPairs), config.BootstrapRuns))
 
-	subsampling := runSubsampling(occurrences, fullProfiles, config)
+	subsampling := runSubsampling(occurrences, fullProfiles, fullWs, config)
 	reliabilityCurves := extractReliabilityCurves(subsampling)
 	positionTable := NewReliabilityTable(reliabilityCurves.Position)
 	leftTable := NewReliabilityTable(reliabilityCurves.LeftContext)
@@ -73,7 +74,7 @@ func Run(config Config) (Output, error) {
 	byPair := make(map[pairKey]ContinuousPairMetric, len(masterPairs))
 	for _, pair := range masterPairs {
 		countA, countB := fullProfiles[pair.a].Count, fullProfiles[pair.b].Count
-		full := profilestability.Compare(fullProfiles[pair.a], fullProfiles[pair.b])
+		full := profilestability.CompareSorted(fullWs[pair.a], fullWs[pair.b])
 		metric := ContinuousPairMetric{
 			TokenA: pair.a, TokenB: pair.b, CountA: countA, CountB: countB,
 			MinCount: min(countA, countB), GeometricMeanCount: GeometricMean(float64(countA), float64(countB)),

@@ -235,15 +235,24 @@ func jsOverlap(a, b map[string]int) (float64, float64) {
 	if ta == 0 || tb == 0 {
 		return 0, 0
 	}
-	keys := map[string]bool{}
+	// div/o are single running sums fed by every key of the union of a and
+	// b, so they are accumulated in sorted key order: summing in map
+	// iteration order made this nondeterministic across otherwise
+	// byte-identical calls (see determinism_test.go).
+	keys := make([]string, 0, len(a)+len(b))
+	seen := make(map[string]bool, len(a)+len(b))
 	for k := range a {
-		keys[k] = true
+		seen[k] = true
+		keys = append(keys, k)
 	}
 	for k := range b {
-		keys[k] = true
+		if !seen[k] {
+			keys = append(keys, k)
+		}
 	}
+	sort.Strings(keys)
 	div, o := 0., 0.
-	for k := range keys {
+	for _, k := range keys {
 		pa, pb := float64(a[k])/float64(ta), float64(b[k])/float64(tb)
 		m := (pa + pb) / 2
 		if pa > 0 {

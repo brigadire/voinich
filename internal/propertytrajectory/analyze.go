@@ -95,31 +95,68 @@ func buildPairResult(cache trajectoryCache, p pair, c corpus, maxD int) PairResu
 	r.Summary.StrongestDiffering = append([]PropertyRanking(nil), ranks[:min(5, len(ranks))]...)
 	return r
 }
-func fallbackMatched(target pair, c corpus, eligible []string, n int, r *rand.Rand) []pair {
-	score := func(p pair) float64 {
-		return math.Abs(math.Log1p(float64(c.Counts[p.A]))-math.Log1p(float64(c.Counts[target.A]))) + math.Abs(math.Log1p(float64(c.Counts[p.B]))-math.Log1p(float64(c.Counts[target.B])))
+
+// matchWorkspace holds the parts of fallbackMatched's candidate search that
+// don't depend on which target pair is being matched: the O(eligible^2)
+// pool of every eligible-token pair, and each eligible token's log1p count
+// (fallbackMatched's score is a function of log1p(count), and math.Log1p
+// is a pure function of an invariant input, so caching it instead of
+// recomputing it on every one of an O(pool log pool) sort's comparisons
+// changes nothing about the result). Built once per analyze() call and
+// reused across every one of the ~40-80 fallbackMatched calls that
+// otherwise each rebuilt and re-sorted this same pool from scratch - the
+// audit's own "dominant pipeline cost" finding.
+type matchWorkspace struct {
+	allPairs []pair
+	logCount map[string]float64
+}
+
+func prepareMatchWorkspace(c corpus, eligible []string) matchWorkspace {
+	logCount := make(map[string]float64, len(eligible))
+	for _, t := range eligible {
+		logCount[t] = math.Log1p(float64(c.Counts[t]))
 	}
-	pool := make([]pair, 0)
+	allPairs := make([]pair, 0, len(eligible)*(len(eligible)-1)/2)
 	for i := 0; i < len(eligible); i++ {
 		for j := i + 1; j < len(eligible); j++ {
-			p := pair{eligible[i], eligible[j]}
-			if p.A == target.A || p.A == target.B || p.B == target.A || p.B == target.B {
-				continue
-			}
-			pool = append(pool, p)
+			allPairs = append(allPairs, pair{eligible[i], eligible[j]})
 		}
 	}
-	sort.Slice(pool, func(i, j int) bool {
-		a, b := score(pool[i]), score(pool[j])
-		if a == b {
-			return pool[i].A+pool[i].B < pool[j].A+pool[j].B
+	return matchWorkspace{allPairs: allPairs, logCount: logCount}
+}
+
+func fallbackMatched(target pair, c corpus, ws matchWorkspace, n int, r *rand.Rand) []pair {
+	// target may be below the eligibility threshold (ws.logCount only
+	// covers eligible tokens), so its own log1p is computed directly here
+	// rather than risking a missing-key zero-value default from the cache.
+	targetLogA := math.Log1p(float64(c.Counts[target.A]))
+	targetLogB := math.Log1p(float64(c.Counts[target.B]))
+	type scored struct {
+		p pair
+		s float64
+	}
+	pool := make([]scored, 0, len(ws.allPairs))
+	for _, p := range ws.allPairs {
+		if p.A == target.A || p.A == target.B || p.B == target.A || p.B == target.B {
+			continue
 		}
-		return a < b
+		s := math.Abs(ws.logCount[p.A]-targetLogA) + math.Abs(ws.logCount[p.B]-targetLogB)
+		pool = append(pool, scored{p, s})
+	}
+	sort.Slice(pool, func(i, j int) bool {
+		if pool[i].s == pool[j].s {
+			return pool[i].p.A+pool[i].p.B < pool[j].p.A+pool[j].p.B
+		}
+		return pool[i].s < pool[j].s
 	})
 	limit := min(len(pool), max(n*10, n))
 	pool = pool[:limit]
-	r.Shuffle(len(pool), func(i, j int) { pool[i], pool[j] = pool[j], pool[i] })
-	return pool[:min(n, len(pool))]
+	out := make([]pair, len(pool))
+	for i, x := range pool {
+		out[i] = x.p
+	}
+	r.Shuffle(len(out), func(i, j int) { out[i], out[j] = out[j], out[i] })
+	return out[:min(n, len(out))]
 }
 func analyze(cfg Config, pgr *progressReporter) (analysis, error) {
 	c := defaults(cfg)
@@ -172,6 +209,7 @@ func analyze(cfg Config, pgr *progressReporter) (analysis, error) {
 		pgr.update(i+1, len(selected), "Analyzing target property trajectories")
 	}
 	rng := rand.New(rand.NewSource(c.Seed))
+	matchWs := prepareMatchWorkspace(corp, eligible)
 	matchedScores := map[pair][]float64{}
 	randomScores := map[pair][]float64{}
 	score := func(q pair, maxD int) float64 {
@@ -181,7 +219,7 @@ func analyze(cfg Config, pgr *progressReporter) (analysis, error) {
 	for i, p := range selected {
 		x := controls[p]
 		if len(x) == 0 {
-			x = fallbackMatched(p, corp, eligible, 20, rng)
+			x = fallbackMatched(p, corp, matchWs, 20, rng)
 		}
 		for _, q := range x {
 			matchedScores[p] = append(matchedScores[p], score(q, min(5, c.MaxDistance)))
@@ -197,7 +235,7 @@ func analyze(cfg Config, pgr *progressReporter) (analysis, error) {
 	total := len(selected) * c.RandomPairs
 	done := 0
 	for i, p := range selected {
-		qs := fallbackMatched(p, corp, eligible, c.RandomPairs, rng)
+		qs := fallbackMatched(p, corp, matchWs, c.RandomPairs, rng)
 		for _, q := range qs {
 			cv := cosinesCached(cache, q, c.MaxDistance, allPropertyNames())
 			s := mean(cv[:min(5, len(cv))])

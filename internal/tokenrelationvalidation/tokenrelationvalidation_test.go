@@ -125,7 +125,8 @@ func TestBatchedDirectionalPermutationScore(t *testing.T) {
 		}
 		want = float64(max(p, n))
 	}
-	got := directionScoresAll([]Block{b}, map[string]Candidate{"d": c}, 1)["d"]
+	candidates := map[string]Candidate{"d": c}
+	got := directionScoresAll([]Block{b}, candidates, buildDirectionEdges(candidates, 1))["d"]
 	if got != want {
 		t.Fatalf("batched=%v direct=%v", got, want)
 	}

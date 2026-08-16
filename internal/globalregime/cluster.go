@@ -7,11 +7,15 @@ import (
 )
 
 func distanceMatrix(w []Window) [][]float64 {
+	sorted := make([]sortedProfile, len(w))
+	for i := range w {
+		sorted[i] = sortProfile(w[i].distribution)
+	}
 	d := make([][]float64, len(w))
 	for i := range d {
 		d[i] = make([]float64, len(w))
 		for j := 0; j < i; j++ {
-			v := jsDistance(w[i].distribution, w[j].distribution)
+			v := jsDistanceSorted(sorted[i], sorted[j])
 			d[i][j], d[j][i] = v, v
 		}
 	}
@@ -59,15 +63,23 @@ func expandLabels(w, sample []Window, sampleLabels []int, k int) []int {
 			centroids[c][token] /= float64(counts[c])
 		}
 	}
+	sortedCentroids := make([]sortedProfile, k)
+	for c := range centroids {
+		if counts[c] == 0 {
+			continue
+		}
+		sortedCentroids[c] = sortProfile(centroids[c])
+	}
 	labels := make([]int, len(w))
 	for i := range w {
+		sw := sortProfile(w[i].distribution)
 		labels[i] = 0
-		bestDistance := jsDistance(w[i].distribution, centroids[0])
+		bestDistance := jsDistanceSorted(sw, sortedCentroids[0])
 		for c := 1; c < k; c++ {
 			if counts[c] == 0 {
 				continue
 			}
-			distance := jsDistance(w[i].distribution, centroids[c])
+			distance := jsDistanceSorted(sw, sortedCentroids[c])
 			if distance < bestDistance {
 				labels[i] = c
 				bestDistance = distance

@@ -87,15 +87,24 @@ func jsSimilarity(a, b map[string]int) float64 {
 	if ta == 0 || tb == 0 {
 		return 0
 	}
-	keys := map[string]bool{}
+	keySet := map[string]bool{}
 	for k := range a {
-		keys[k] = true
+		keySet[k] = true
 	}
 	for k := range b {
-		keys[k] = true
+		keySet[k] = true
 	}
+	// Accumulate in sorted key order: map iteration order is randomized
+	// independently per range statement execution, so summing in `range
+	// keySet` order made this float64 accumulation nondeterministic across
+	// otherwise byte-identical calls (see determinism_test.go).
+	keys := make([]string, 0, len(keySet))
+	for k := range keySet {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
 	div := 0.
-	for k := range keys {
+	for _, k := range keys {
 		pa, pb := float64(a[k])/float64(ta), float64(b[k])/float64(tb)
 		m := (pa + pb) / 2
 		if pa > 0 {
@@ -249,8 +258,19 @@ func sequenceObserved(c sequenceCandidate, tokens []token, blocks []block) seqOb
 	if o.Eligible > 0 {
 		o.MaxFraction = float64(maxN) / float64(o.Eligible)
 	}
-	for _, n := range counts {
-		p := float64(n) / float64(max(1, sumCounts(counts)))
+	// Accumulate in sorted block-ID order: map iteration order is
+	// randomized independently per range statement execution, so summing
+	// in `range counts` order made this float64 accumulation
+	// nondeterministic across otherwise byte-identical calls (see
+	// determinism_test.go).
+	blockIDs := make([]string, 0, len(counts))
+	for id := range counts {
+		blockIDs = append(blockIDs, id)
+	}
+	sort.Strings(blockIDs)
+	total := float64(max(1, sumCounts(counts)))
+	for _, id := range blockIDs {
+		p := float64(counts[id]) / total
 		o.Entropy -= p * math.Log2(p)
 	}
 	return o

@@ -56,11 +56,12 @@ func residualSweep(tokens []string, classes []ClassID, blocksByClass map[ClassID
 		if len(rw) < 2*kMin {
 			continue
 		}
+		prep := prepareResidualFit(rw, standardized, maxResidualFitWindows)
 		for k := kMin; k <= kMax; k++ {
 			if 2*k > len(rw) {
 				continue
 			}
-			fitLabels, fullLabels, d := fitResidualClustering(rw, standardized, method, k, seed+int64(scale), maxResidualFitWindows)
+			fitLabels, fullLabels, d := fitResidualClustering(prep, method, k, seed+int64(scale))
 			row := residualDiagnosticRow(scale, method, k, representationName(standardized), len(rw), fitLabels, d, fullLabels)
 			res.Rows = append(res.Rows, row)
 			if row.Silhouette > res.BestSilhouette {
@@ -84,6 +85,7 @@ func residualSweepProgress(tokens []string, classes []ClassID, blocksByClass map
 			}
 			continue
 		}
+		prep := prepareResidualFit(rw, standardized, maxResidualFitWindows)
 		for k := kMin; k <= kMax; k++ {
 			if 2*k > len(rw) {
 				if onStep != nil {
@@ -91,7 +93,7 @@ func residualSweepProgress(tokens []string, classes []ClassID, blocksByClass map
 				}
 				continue
 			}
-			fitLabels, fullLabels, d := fitResidualClustering(rw, standardized, method, k, seed+int64(scale), maxResidualFitWindows)
+			fitLabels, fullLabels, d := fitResidualClustering(prep, method, k, seed+int64(scale))
 			row := residualDiagnosticRow(scale, method, k, representationName(standardized), len(rw), fitLabels, d, fullLabels)
 			res.Rows = append(res.Rows, row)
 			if row.Silhouette > res.BestSilhouette {
@@ -146,11 +148,12 @@ func residualNullMax(tokens []string, classes []ClassID, blocksByClass map[Class
 		if len(rw) < 2*kMin {
 			continue
 		}
+		prep := prepareResidualFit(rw, standardized, nullFitCap)
 		for k := kMin; k <= kMax; k++ {
 			if 2*k > len(rw) {
 				continue
 			}
-			fitLabels, _, d := fitResidualClustering(rw, standardized, method, k, rng.Int63(), nullFitCap)
+			fitLabels, _, d := fitResidualClustering(prep, method, k, rng.Int63())
 			sil := globalregime.Diagnostics(scale, method, k, fitLabels, d).Silhouette
 			if sil > best {
 				best = sil

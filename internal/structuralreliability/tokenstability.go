@@ -26,11 +26,11 @@ func toContinuousMetrics(items []tokenMetric) []ContinuousTokenMetric {
 // invoked with -min-token-count=minCount. Every similarity number comes from
 // profilestability.Compare/BuildProfiles/NearestNeighbors; nothing here
 // reimplements a similarity formula.
-func buildTokenMetrics(full map[string]profilestability.Profile, folds []foldProfiles, minCount, neighborsK int) ([]tokenMetric, []string, map[string][]profilestability.Neighbor) {
+func buildTokenMetrics(full map[string]profilestability.Profile, fullWs map[string]profilestability.SortedProfile, folds []foldProfiles, minCount, neighborsK int) ([]tokenMetric, []string, map[string][]profilestability.Neighbor) {
 	fullEligible := profilestability.Eligible(full, minCount)
 	fullNeighbors := make(map[string][]profilestability.Neighbor, len(fullEligible))
 	for _, token := range fullEligible {
-		fullNeighbors[token] = profilestability.NearestNeighbors(full, token, fullEligible, neighborsK)
+		fullNeighbors[token] = profilestability.NearestNeighborsIn(fullWs, token, fullEligible, neighborsK)
 	}
 
 	trainEligible := make([]map[string]bool, len(folds))
@@ -42,7 +42,7 @@ func buildTokenMetrics(full map[string]profilestability.Profile, folds []foldPro
 		testEligible[f] = toSet(profilestability.Eligible(fold.testProfiles, minCount))
 		neighbors := make(map[string][]profilestability.Neighbor, len(trainList))
 		for _, token := range trainList {
-			neighbors[token] = profilestability.NearestNeighbors(fold.trainProfiles, token, trainList, neighborsK)
+			neighbors[token] = profilestability.NearestNeighborsIn(fold.trainWs, token, trainList, neighborsK)
 		}
 		trainNeighbors[f] = neighbors
 	}
@@ -52,7 +52,7 @@ func buildTokenMetrics(full map[string]profilestability.Profile, folds []foldPro
 		var position, left, right, ttPosition, ttLeft, ttRight []float64
 		for f := range folds {
 			if trainEligible[f][token] && testEligible[f][token] {
-				value := profilestability.Compare(folds[f].trainProfiles[token], folds[f].testProfiles[token])
+				value := profilestability.CompareSorted(folds[f].trainWs[token], folds[f].testWs[token])
 				ttPosition = append(ttPosition, value.PositionSimilarity)
 				ttLeft = append(ttLeft, value.LeftSimilarity)
 				ttRight = append(ttRight, value.RightSimilarity)
@@ -61,7 +61,7 @@ func buildTokenMetrics(full map[string]profilestability.Profile, folds []foldPro
 				if !trainEligible[f][token] || !trainEligible[g][token] {
 					continue
 				}
-				value := profilestability.Compare(folds[f].trainProfiles[token], folds[g].trainProfiles[token])
+				value := profilestability.CompareSorted(folds[f].trainWs[token], folds[g].trainWs[token])
 				position = append(position, value.PositionSimilarity)
 				left = append(left, value.LeftSimilarity)
 				right = append(right, value.RightSimilarity)

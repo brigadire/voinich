@@ -140,9 +140,25 @@ func entropyOfPairs(pairs []ClassID) float64 {
 	if n == 0 {
 		return 0
 	}
+	// h is a single running sum fed by every distinct ClassID, so summing
+	// in map iteration order made it nondeterministic across otherwise
+	// byte-identical calls (see determinism_test.go).
+	keys := make([]ClassID, 0, len(counts))
+	for k := range counts {
+		keys = append(keys, k)
+	}
+	sort.Slice(keys, func(i, j int) bool {
+		if keys[i].Scheme != keys[j].Scheme {
+			return keys[i].Scheme < keys[j].Scheme
+		}
+		if keys[i].Currier != keys[j].Currier {
+			return keys[i].Currier < keys[j].Currier
+		}
+		return keys[i].Hand < keys[j].Hand
+	})
 	h := 0.0
-	for _, c := range counts {
-		p := float64(c) / float64(n)
+	for _, k := range keys {
+		p := float64(counts[k]) / float64(n)
 		h -= p * math.Log(p)
 	}
 	return h

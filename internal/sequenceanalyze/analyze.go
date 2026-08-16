@@ -1,4 +1,4 @@
-package main
+package sequenceanalyze
 
 import (
 	"bufio"
@@ -34,7 +34,7 @@ type contextStats struct {
 	Next   map[string]int
 }
 
-func analyzeFile(path string, parameters Parameters) (Output, error) {
+func AnalyzeFile(path string, parameters Parameters) (Output, error) {
 	file, err := os.Open(path)
 	if err != nil {
 		return Output{}, err
@@ -53,10 +53,10 @@ func analyzeFile(path string, parameters Parameters) (Output, error) {
 	if err := scanner.Err(); err != nil {
 		return Output{}, err
 	}
-	return analyzeLines(lines, parameters)
+	return AnalyzeLines(lines, parameters)
 }
 
-func analyzeLines(lines [][]string, parameters Parameters) (Output, error) {
+func AnalyzeLines(lines [][]string, parameters Parameters) (Output, error) {
 	if err := validateParameters(parameters); err != nil {
 		return Output{}, err
 	}

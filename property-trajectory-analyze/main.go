@@ -4,11 +4,19 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"time"
+
+	"zcore.dev/voinich/internal/profiling"
 	"zcore.dev/voinich/internal/propertytrajectory"
 	"zcore.dev/voinich/internal/workdir"
 )
 
 func main() {
+	os.Exit(run())
+}
+
+func run() (code int) {
+	start := time.Now()
 	c := propertytrajectory.Config{}
 	flag.StringVar(&c.CorpusPath, "corpus", "data_work/ZL3b-x7.txt", "IVTT -x7 linear corpus")
 	flag.StringVar(&c.StructuralPairsPath, "structural-pairs", workdir.Path("soft_structural_pairs.tsv"), "soft structural pair TSV (centrality properties only)")
@@ -22,9 +30,26 @@ func main() {
 	flag.IntVar(&c.RandomPairs, "random-pairs", 1000, "frequency-matched random pairs per target")
 	flag.Int64Var(&c.Seed, "seed", 140014, "deterministic random seed")
 	flag.BoolVar(&c.Quiet, "quiet", false, "disable status bar")
+	prof := profiling.RegisterFlags(flag.CommandLine)
 	flag.Parse()
+
+	defer profiling.PrintElapsed(os.Stderr, start)
+
+	sess, err := profiling.Start(prof)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "Error:", err)
+		return 1
+	}
+	defer func() {
+		if err := sess.Stop(); err != nil {
+			fmt.Fprintln(os.Stderr, "Error:", err)
+			code = 1
+		}
+	}()
+
 	if e := propertytrajectory.RunAndWrite(c); e != nil {
 		fmt.Fprintln(os.Stderr, "Error:", e)
-		os.Exit(1)
+		return 1
 	}
+	return 0
 }

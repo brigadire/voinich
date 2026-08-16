@@ -160,16 +160,24 @@ func clusterPermutationSummary(a []Assignment, records []TokenMetadata, n int, s
 			for i, x := range base {
 				labels[i] = MetadataComposition(records, x.Start, x.End, kind).Label
 			}
+			// clusters[k] (the Cluster-id-to-string conversion of byK[k])
+			// does not depend on the permutation replicate z, only on k —
+			// precompute it once per k instead of on every one of the
+			// n*len(ks) inner-loop iterations below.
+			clustersByK := make(map[int][]string, len(ks))
+			for _, k := range ks {
+				clusters := make([]string, len(byK[k]))
+				for i, x := range byK[k] {
+					clusters[i] = strconv.Itoa(x.Cluster)
+				}
+				clustersByK[k] = clusters
+			}
 			vals := make([]float64, n)
 			for z := 0; z < n; z++ {
 				permuted := PermuteBlockLabels(labels, rng)
 				best := 0.
 				for _, k := range ks {
-					clusters := make([]string, len(byK[k]))
-					for i, x := range byK[k] {
-						clusters[i] = strconv.Itoa(x.Cluster)
-					}
-					v := AssociationMetrics(permuted, clusters).NMI
+					v := AssociationMetrics(permuted, clustersByK[k]).NMI
 					if v > best {
 						best = v
 					}

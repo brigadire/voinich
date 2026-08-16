@@ -41,21 +41,32 @@ func normalize(counts map[string]int, total int) profile {
 	return p
 }
 
+// jsDistance's d is a single running sum fed by every key of the union of
+// a and b, so it is accumulated in sorted key order: summing in map
+// iteration order made it nondeterministic across otherwise
+// byte-identical calls (see determinism_test.go).
 func jsDistance(a, b profile) float64 {
+	keys := make([]string, 0, len(a)+len(b))
+	seen := make(map[string]bool, len(a)+len(b))
+	for k := range a {
+		seen[k] = true
+		keys = append(keys, k)
+	}
+	for k := range b {
+		if !seen[k] {
+			keys = append(keys, k)
+		}
+	}
+	sort.Strings(keys)
 	d := 0.0
-	for k, x := range a {
-		y := b[k]
+	for _, k := range keys {
+		x, y := a[k], b[k]
 		m := (x + y) / 2
 		if x > 0 {
 			d += .5 * x * math.Log2(x/m)
 		}
 		if y > 0 {
 			d += .5 * y * math.Log2(y/m)
-		}
-	}
-	for k, y := range b {
-		if _, ok := a[k]; !ok && y > 0 {
-			d += .5 * y
 		}
 	}
 	if d < 0 {
@@ -67,9 +78,101 @@ func jsDistance(a, b profile) float64 {
 	return d
 }
 
+// sortedProfile pairs a profile with its own keys sorted once, so
+// jsDistanceSorted can merge-walk two already-sorted key lists instead of
+// re-sorting their union on every pairwise call - each profile's own keys
+// are sorted exactly once however many times it's compared against
+// others. This matters for distanceMatrix/expandLabels, which compare the
+// same window/centroid profiles against many others (O(n^2) and O(n*k)
+// respectively): profiling conditionalregime's own equivalent hot path
+// (task27) showed the sort-per-call approach was over 70% of that CLI's
+// total CPU time.
+type sortedProfile struct {
+	p    profile
+	keys []string
+}
+
+func sortProfile(p profile) sortedProfile {
+	keys := make([]string, 0, len(p))
+	for k := range p {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	return sortedProfile{p: p, keys: keys}
+}
+
+// jsDistanceSorted is jsDistance, but merge-walking a's and b's
+// already-sorted key lists instead of re-sorting their union - the merge
+// visits the sorted union in the same order sorting it directly would, so
+// this is bit-identical to jsDistance(a.p, b.p).
+func jsDistanceSorted(a, b sortedProfile) float64 {
+	ak, bk := a.keys, b.keys
+	i, j := 0, 0
+	d := 0.0
+	for i < len(ak) && j < len(bk) {
+		switch {
+		case ak[i] < bk[j]:
+			x := a.p[ak[i]]
+			if x > 0 {
+				d += .5 * x * math.Log2(2)
+			}
+			i++
+		case ak[i] > bk[j]:
+			y := b.p[bk[j]]
+			if y > 0 {
+				d += .5 * y * math.Log2(2)
+			}
+			j++
+		default:
+			x, y := a.p[ak[i]], b.p[bk[j]]
+			m := (x + y) / 2
+			if x > 0 {
+				d += .5 * x * math.Log2(x/m)
+			}
+			if y > 0 {
+				d += .5 * y * math.Log2(y/m)
+			}
+			i++
+			j++
+		}
+	}
+	for ; i < len(ak); i++ {
+		x := a.p[ak[i]]
+		if x > 0 {
+			d += .5 * x * math.Log2(2)
+		}
+	}
+	for ; j < len(bk); j++ {
+		y := b.p[bk[j]]
+		if y > 0 {
+			d += .5 * y * math.Log2(2)
+		}
+	}
+	if d < 0 {
+		return 0
+	}
+	if d > 1 {
+		return 1
+	}
+	return d
+}
+
+// sortedProfileKeys returns p's keys in sorted order, for accumulating a
+// single running sum fed by every key of a map deterministically (map
+// iteration order is randomized per range execution — see
+// determinism_test.go).
+func sortedProfileKeys(p profile) []string {
+	keys := make([]string, 0, len(p))
+	for k := range p {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	return keys
+}
 func overlap(a, b profile) float64 {
 	s := 0.0
-	for k, x := range a {
+	for _, k := range sortedProfileKeys(a) {
+		x := a[k]
 		if b[k] < x {
 			x = b[k]
 		}
@@ -79,11 +182,13 @@ func overlap(a, b profile) float64 {
 }
 func cosine(a, b profile) float64 {
 	dot, aa, bb := 0., 0., 0.
-	for k, x := range a {
+	for _, k := range sortedProfileKeys(a) {
+		x := a[k]
 		dot += x * b[k]
 		aa += x * x
 	}
-	for _, y := range b {
+	for _, k := range sortedProfileKeys(b) {
+		y := b[k]
 		bb += y * y
 	}
 	if aa == 0 || bb == 0 {

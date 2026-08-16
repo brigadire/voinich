@@ -143,8 +143,9 @@ func TestClassStability(t *testing.T) {
 func TestNewSequenceSurfaceReconstruction(t *testing.T) {
 	raw := testCorpus([][]string{{"x", "A", "z", "w"}, {"x", "B", "z", "w"}})
 	normalized := applyMapping(raw, map[string]string{"A": "C0001", "B": "C0001"})
-	rawMetrics := AnalyzeSequences(raw, 2, 4, 3)
-	normalizedMetrics := AnalyzeSequences(normalized, 2, 4, 3)
+	vocab := newVocabIndex(raw)
+	rawMetrics := AnalyzeSequences(raw, 2, 4, 3, vocab)
+	normalizedMetrics := AnalyzeSequences(normalized, 2, 4, 3, vocab)
 	items := NewCrossLineSequences(raw, rawMetrics, normalizedMetrics, 4, 4)
 	if len(items) != 1 || items[0].Count != 2 || len(items[0].Occurrences) != 2 {
 		t.Fatalf("unexpected reconstructed sequences: %+v", items)
@@ -179,7 +180,7 @@ func TestLeaveOneClassOutAndMemberAblation(t *testing.T) {
 		{"p", "C", "q", "r"}, {"p", "D", "q", "r"},
 	})
 	model := modelWithClasses([][]string{{"A", "B", "E"}, {"C", "D"}})
-	result, members := runAblations(corpus, model, Config{MinN: 2, MaxN: 4, MaxContext: 3})
+	result, members := runAblations(corpus, model, Config{MinN: 2, MaxN: 4, MaxContext: 3}, newVocabIndex(corpus))
 	if len(result.Variants) != 2 {
 		t.Fatalf("got %d leave-one-class variants", len(result.Variants))
 	}

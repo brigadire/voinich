@@ -11,6 +11,8 @@ import (
 type foldProfiles struct {
 	trainProfiles map[string]profilestability.Profile
 	testProfiles  map[string]profilestability.Profile
+	trainWs       map[string]profilestability.SortedProfile
+	testWs        map[string]profilestability.SortedProfile
 }
 
 // BuildFolds reuses the exact same deterministic line split and per-sample
@@ -26,7 +28,11 @@ func BuildFolds(corpus validation.Corpus, folds int, seed int64) ([]foldProfiles
 		if err != nil {
 			return nil, err
 		}
-		result = append(result, foldProfiles{trainProfiles: profilestability.BuildProfiles(train), testProfiles: profilestability.BuildProfiles(test)})
+		trainProfiles, testProfiles := profilestability.BuildProfiles(train), profilestability.BuildProfiles(test)
+		result = append(result, foldProfiles{
+			trainProfiles: trainProfiles, testProfiles: testProfiles,
+			trainWs: profilestability.PrecomputeAll(trainProfiles), testWs: profilestability.PrecomputeAll(testProfiles),
+		})
 	}
 	return result, nil
 }

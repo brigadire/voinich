@@ -140,11 +140,17 @@ func analyze(c Config, progress *progressReporter) (analysis, error) {
 		randomByDistance[i] = make([][]float64, min(5, c.MaxDistance))
 	}
 	progress.begin(4, "Random and smoothing controls")
+	// The corpus vocabulary and its counts are fixed for the whole trial
+	// loop, so the log2-frequency-bin grouping RandomizeProjection and
+	// GenericSmoothing both derive from them is invariant across all 200
+	// trials and both full/future projections; build it once instead of on
+	// every one of the ~800 calls below.
+	fb := buildFrequencyBins(tokens, corp.Counts)
 	for trial := 0; trial < c.RandomProjections; trial++ {
-		rp := RandomizeProjection(full, corp.Counts, c.Seed+int64(trial)*7919)
-		sp := GenericSmoothing(tokens, corp.Counts, full, c.Seed+int64(trial)*104729)
-		rap := RandomizeProjection(future, corp.Counts, c.Seed+int64(trial)*15485863)
-		sap := GenericSmoothing(tokens, corp.Counts, future, c.Seed+int64(trial)*32452843)
+		rp := RandomizeProjection(full, fb, c.Seed+int64(trial)*7919)
+		sp := GenericSmoothing(fb, full, c.Seed+int64(trial)*104729)
+		rap := RandomizeProjection(future, fb, c.Seed+int64(trial)*15485863)
+		sap := GenericSmoothing(fb, future, c.Seed+int64(trial)*32452843)
 		rcache, scache, racache, sacache := map[string][]map[string]float64{}, map[string][]map[string]float64{}, map[string][]map[string]float64{}, map[string][]map[string]float64{}
 		projected := func(t string, proj Projection, cache map[string][]map[string]float64) []map[string]float64 {
 			if x := cache[t]; x != nil {

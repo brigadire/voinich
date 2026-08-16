@@ -5,12 +5,14 @@ import (
 	"fmt"
 	"math"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"sort"
+	"time"
 
 	"gopkg.in/yaml.v3"
 	"zcore.dev/voinich/internal/normalization"
+	"zcore.dev/voinich/internal/profiling"
+	"zcore.dev/voinich/internal/sequenceanalyze"
 	"zcore.dev/voinich/internal/workdir"
 )
 
@@ -97,6 +99,18 @@ type metrics struct {
 }
 
 func main() {
+	os.Exit(run())
+}
+
+// fatalError is panicked by fatal() and recovered in run(), so a deferred
+// profiling session can still be stopped (and its CPU/heap profile written)
+// on an error path, exactly as the other profiled CLIs do via an explicit
+// `return 1`. fatal's call sites are unchanged; only its own body and the
+// top-level control flow around it move to support this.
+type fatalError struct{ message string }
+
+func run() (code int) {
+	start := time.Now()
 	classesPath := flag.String("classes", workdir.Path("structural_classes.yaml"), "structural class-map YAML")
 	inputPath := flag.String("input", "data_work/ZL3b-x7.txt", "IVTT -x7 corpus for random baselines")
 	rawAnalysisPath := flag.String("raw-analysis", workdir.Path("sequence_analysis.yaml"), "immutable raw sequence analysis")
@@ -106,7 +120,34 @@ func main() {
 	outputPath := flag.String("output", workdir.Path("normalization_comparison.yaml"), "comparison YAML")
 	randomRuns := flag.Int("random-baselines", 100, "matched random runs per threshold")
 	randomSeed := flag.Int64("random-seed", 1, "base random seed")
+	prof := profiling.RegisterFlags(flag.CommandLine)
 	flag.Parse()
+
+	defer profiling.PrintElapsed(os.Stderr, start)
+
+	sess, err := profiling.Start(prof)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "Error:", err)
+		return 1
+	}
+	defer func() {
+		if err := sess.Stop(); err != nil {
+			fmt.Fprintln(os.Stderr, "Error:", err)
+			code = 1
+		}
+	}()
+
+	defer func() {
+		if r := recover(); r != nil {
+			fe, ok := r.(fatalError)
+			if !ok {
+				panic(r)
+			}
+			fmt.Fprintln(os.Stderr, "Error:", fe.message)
+			code = 1
+		}
+	}()
+
 	if *randomRuns < 1 {
 		fatal("random-baselines must be at least 1")
 	}
@@ -130,16 +171,18 @@ func main() {
 	output.Meta.RandomMatching = classes.Meta.RandomMatching
 	output.Meta.EmpiricalTests = "upper tail for repeat counts, maximum length, and coverage; lower tail for both entropy metrics; +1 correction"
 
+	analyzerParameters := sequenceanalyze.DefaultParameters()
 	for _, model := range classes.Models {
 		normalizedPath := fmt.Sprintf(*normalizedPattern, model.Label)
 		analysisPath := fmt.Sprintf(*analysisPattern, model.Label)
-		if err := runSequenceAnalyzer(*sequenceAnalyzer, normalizedPath, analysisPath); err != nil {
+		structuralOutput, err := sequenceanalyze.AnalyzeFile(normalizedPath, analyzerParameters)
+		if err != nil {
+			fatal(fmt.Sprintf("analyze %s: %v", normalizedPath, err))
+		}
+		if err := writeAnalysisYAML(analysisPath, structuralOutput); err != nil {
 			fatal(err.Error())
 		}
-		structural, err := loadSequence(analysisPath)
-		if err != nil {
-			fatal(fmt.Sprintf("read %s: %v", analysisPath, err))
-		}
+		structural := fromAnalyzerOutput(structuralOutput)
 		if structural.Meta != raw.Meta {
 			fatal(fmt.Sprintf("corpus invariants changed for threshold %s", model.Label))
 		}
@@ -163,20 +206,16 @@ func main() {
 				fatal(err.Error())
 			}
 			randomCorpus := filepath.Join(tempDir, "corpus.txt")
-			randomAnalysis := filepath.Join(tempDir, "analysis.yaml")
 			if err := normalization.WriteNormalized(randomCorpus, corpus, normalization.Mapping(randomModel, classes.Meta.SingletonMode)); err != nil {
 				os.RemoveAll(tempDir)
 				fatal(err.Error())
 			}
-			if err := runSequenceAnalyzer(*sequenceAnalyzer, randomCorpus, randomAnalysis); err != nil {
-				os.RemoveAll(tempDir)
-				fatal(err.Error())
-			}
-			analysis, err := loadSequence(randomAnalysis)
+			randomOutput, err := sequenceanalyze.AnalyzeFile(randomCorpus, analyzerParameters)
 			os.RemoveAll(tempDir)
 			if err != nil {
 				fatal(err.Error())
 			}
+			analysis := fromAnalyzerOutput(randomOutput)
 			if analysis.Meta != raw.Meta {
 				fatal(fmt.Sprintf("random corpus invariants changed for threshold %s run %d", model.Label, run))
 			}
@@ -196,6 +235,7 @@ func main() {
 		fatal(err.Error())
 	}
 	fmt.Printf("Comparison written to %s\n", *outputPath)
+	return 0
 }
 
 func loadClasses(path string) (normalization.ClassesOutput, error) {
@@ -218,12 +258,47 @@ func loadSequence(path string) (SequenceAnalysis, error) {
 	return result, err
 }
 
-func runSequenceAnalyzer(binary, input, output string) error {
-	command := exec.Command(binary, "-input", input, "-output", output)
-	if data, err := command.CombinedOutput(); err != nil {
-		return fmt.Errorf("sequence-analyze %s: %w: %s", input, err, data)
+// fromAnalyzerOutput extracts the subset of an in-process sequenceanalyze.Output
+// this tool consumes, matching field-for-field the YAML tags SequenceAnalysis
+// used to read back from a sequence-analyze subprocess's output file (see
+// PERFORMANCE_REFACTOR_REPORT.md for the equivalence argument and test).
+func fromAnalyzerOutput(o sequenceanalyze.Output) SequenceAnalysis {
+	result := SequenceAnalysis{}
+	result.Meta.TokenOccurrences = o.Meta.TokenOccurrences
+	result.Meta.Lines = o.Meta.Lines
+	result.Meta.Transitions = o.Meta.Transitions
+	result.NGramSummary = make([]SequenceSummary, len(o.NGramSummary))
+	for i, s := range o.NGramSummary {
+		result.NGramSummary[i] = SequenceSummary{N: s.N, MultiLineRepeated: s.MultiLineRepeated}
 	}
-	return nil
+	result.ContextOrderAnalysis = make([]ContextOrder, len(o.ContextOrderAnalysis))
+	for i, c := range o.ContextOrderAnalysis {
+		result.ContextOrderAnalysis[i] = ContextOrder{
+			ContextLength:                     c.ContextLength,
+			ConditionalEntropy:                c.ConditionalEntropy,
+			RepeatedContextConditionalEntropy: c.RepeatedContextConditionalEntropy,
+			RepeatedContextCoverage:           c.RepeatedContextCoverage,
+		}
+	}
+	return result
+}
+
+// writeAnalysisYAML persists the full sequence-analyze output for a
+// structural (non-random) model at analysisPath, exactly as the
+// sequence-analyze binary itself would have when previously invoked as a
+// subprocess — this file is a documented pipeline artifact (see
+// run-normalization-analysis.sh's -analysis-pattern), not a transient
+// temp file, so it is still written even though the analysis is now
+// computed in-process.
+func writeAnalysisYAML(path string, output sequenceanalyze.Output) error {
+	data, err := yaml.Marshal(output)
+	if err != nil {
+		return err
+	}
+	if err := workdir.EnsureParent(path); err != nil {
+		return err
+	}
+	return os.WriteFile(path, data, 0o644)
 }
 
 func extractMetrics(analysis SequenceAnalysis) metrics {
@@ -351,6 +426,5 @@ func percentile(sorted []float64, probability float64) float64 {
 }
 
 func fatal(message string) {
-	fmt.Fprintln(os.Stderr, "Error:", message)
-	os.Exit(1)
+	panic(fatalError{message})
 }

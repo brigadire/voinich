@@ -18,6 +18,8 @@ type pairKey struct{ a, b string }
 type foldData struct {
 	trainProfiles map[string]Profile
 	testProfiles  map[string]Profile
+	trainWs       map[string]SortedProfile
+	testWs        map[string]SortedProfile
 	trainEligible map[string]bool
 	testEligible  map[string]bool
 	neighbors     map[string][]Neighbor
@@ -43,13 +45,14 @@ func Run(config Config) (Output, error) {
 		return Output{}, err
 	}
 	fullProfiles := BuildProfiles(corpus)
+	fullWs := PrecomputeAll(fullProfiles)
 	fullEligible := Eligible(fullProfiles, config.MinTokenCount)
-	fullNeighbors := buildAllNeighbors(fullProfiles, fullEligible, config.Neighbors)
+	fullNeighbors := buildAllNeighbors(fullWs, fullEligible, config.Neighbors)
 	candidates := make(map[pairKey]bool)
 	addNeighborPairs(candidates, fullNeighbors)
 	for i, tokenA := range fullEligible {
 		for _, tokenB := range fullEligible[i+1:] {
-			if Compare(fullProfiles[tokenA], fullProfiles[tokenB]).Similarity >= config.Threshold {
+			if CompareSorted(fullWs[tokenA], fullWs[tokenB]).Similarity >= config.Threshold {
 				candidates[makePair(tokenA, tokenB)] = true
 			}
 		}
@@ -67,12 +70,13 @@ func Run(config Config) (Output, error) {
 			return Output{}, err
 		}
 		trainProfiles, testProfiles := BuildProfiles(train), BuildProfiles(test)
+		trainWs, testWs := PrecomputeAll(trainProfiles), PrecomputeAll(testProfiles)
 		trainTokens, testTokens := Eligible(trainProfiles, config.MinTokenCount), Eligible(testProfiles, config.MinTokenCount)
-		neighbors := buildAllNeighbors(trainProfiles, trainTokens, config.Neighbors)
+		neighbors := buildAllNeighbors(trainWs, trainTokens, config.Neighbors)
 		addNeighborPairs(candidates, neighbors)
 		for i, tokenA := range trainTokens {
 			for _, tokenB := range trainTokens[i+1:] {
-				if Compare(trainProfiles[tokenA], trainProfiles[tokenB]).Similarity >= config.Threshold {
+				if CompareSorted(trainWs[tokenA], trainWs[tokenB]).Similarity >= config.Threshold {
 					candidates[makePair(tokenA, tokenB)] = true
 				}
 			}
@@ -82,7 +86,7 @@ func Run(config Config) (Output, error) {
 			return Output{}, fmt.Errorf("fold %d classes: %w", foldIndex+1, err)
 		}
 		addClassPairs(candidates, model)
-		folds = append(folds, foldData{trainProfiles: trainProfiles, testProfiles: testProfiles, trainEligible: boolSet(trainTokens), testEligible: boolSet(testTokens), neighbors: neighbors, model: model})
+		folds = append(folds, foldData{trainProfiles: trainProfiles, testProfiles: testProfiles, trainWs: trainWs, testWs: testWs, trainEligible: boolSet(trainTokens), testEligible: boolSet(testTokens), neighbors: neighbors, model: model})
 		progress(config, fmt.Sprintf("profiles fold %d/%d: TRAIN eligible=%d TEST eligible=%d", foldIndex+1, config.Folds, len(trainTokens), len(testTokens)))
 	}
 
@@ -91,7 +95,7 @@ func Run(config Config) (Output, error) {
 	for _, item := range neighborResults {
 		neighborByToken[item.Token] = item
 	}
-	pairResults := buildPairResults(candidates, fullProfiles, folds, neighborByToken, config)
+	pairResults := buildPairResults(candidates, fullWs, folds, neighborByToken, config)
 	pairByKey := make(map[pairKey]PairStability, len(pairResults))
 	for _, item := range pairResults {
 		pairByKey[makePair(item.TokenA, item.TokenB)] = item
@@ -175,10 +179,10 @@ func selectModel(models []normalization.Model, threshold float64) (normalization
 	return normalization.Model{}, fmt.Errorf("class model threshold %.2f is absent", threshold)
 }
 
-func buildAllNeighbors(profiles map[string]Profile, eligible []string, k int) map[string][]Neighbor {
+func buildAllNeighbors(ws map[string]SortedProfile, eligible []string, k int) map[string][]Neighbor {
 	result := make(map[string][]Neighbor, len(eligible))
 	for _, token := range eligible {
-		result[token] = NearestNeighbors(profiles, token, eligible, k)
+		result[token] = NearestNeighborsIn(ws, token, eligible, k)
 	}
 	return result
 }

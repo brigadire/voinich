@@ -2,6 +2,7 @@ package conditionalregime
 
 import (
 	"math"
+	"sort"
 
 	"zcore.dev/voinich/internal/globalregime"
 )
@@ -116,24 +117,68 @@ func buildResidualWindows(tokens []string, classes []ClassID, blocksByClass map[
 	return out
 }
 
-func euclideanDistance(a, b vector) float64 {
-	sum := 0.0
-	seen := make(map[string]bool, len(a))
-	for tok, v := range a {
-		d := v - b[tok]
-		sum += d * d
-		seen[tok] = true
+// sortedVector pairs a residual feature vector with its own keys sorted
+// once. euclideanDistance must visit the union of two vectors' keys in a
+// fixed order (summing in Go's randomized map iteration order was the
+// same-seed nondeterminism bug fixed in determinism_test.go), and
+// merge-walking two already-sorted key lists visits exactly that sorted
+// union without re-sorting it on every pairwise call - each vector's own
+// keys are sorted exactly once however many times it's compared against
+// others (profiling showed the former sort-the-union-per-call approach was
+// >70% of this CLI's total CPU time; see euclideandistance_test.go for the
+// equivalence proof against that reference implementation).
+type sortedVector struct {
+	v    vector
+	keys []string
+}
+
+func sortVector(v vector) sortedVector {
+	keys := make([]string, 0, len(v))
+	for tok := range v {
+		keys = append(keys, tok)
 	}
-	for tok, v := range b {
-		if seen[tok] {
-			continue
+	sort.Strings(keys)
+	return sortedVector{v: v, keys: keys}
+}
+
+// euclideanDistance sums (a[tok]-b[tok])^2 over the union of a and b's keys
+// (a Go map defaults an absent key to its zero value, so this is exactly
+// equivalent to treating a missing entry as 0 on either side), visiting the
+// union in sorted key order by merge-walking a's and b's already-sorted key
+// lists.
+func euclideanDistance(a, b sortedVector) float64 {
+	ak, bk := a.keys, b.keys
+	i, j := 0, 0
+	sum := 0.0
+	for i < len(ak) && j < len(bk) {
+		switch {
+		case ak[i] < bk[j]:
+			d := a.v[ak[i]]
+			sum += d * d
+			i++
+		case ak[i] > bk[j]:
+			d := b.v[bk[j]]
+			sum += d * d
+			j++
+		default:
+			d := a.v[ak[i]] - b.v[bk[j]]
+			sum += d * d
+			i++
+			j++
 		}
-		sum += v * v
+	}
+	for ; i < len(ak); i++ {
+		d := a.v[ak[i]]
+		sum += d * d
+	}
+	for ; j < len(bk); j++ {
+		d := b.v[bk[j]]
+		sum += d * d
 	}
 	return math.Sqrt(sum)
 }
 
-func residualDistanceMatrix(vecs []vector) [][]float64 {
+func residualDistanceMatrix(vecs []sortedVector) [][]float64 {
 	n := len(vecs)
 	d := make([][]float64, n)
 	for i := range d {
@@ -152,7 +197,7 @@ func residualDistanceMatrix(vecs []vector) [][]float64 {
 // global-regime-analyze's sampling strategy for long sequences.
 const maxResidualFitWindows = 200
 
-func residualCentroids(vecs []vector, sampleIdx, sampleLabels []int, k int) []vector {
+func residualCentroids(vecs []sortedVector, sampleIdx, sampleLabels []int, k int) []vector {
 	centroids := make([]vector, k)
 	counts := make([]int, k)
 	for c := range centroids {
@@ -161,7 +206,7 @@ func residualCentroids(vecs []vector, sampleIdx, sampleLabels []int, k int) []ve
 	for i, si := range sampleIdx {
 		c := sampleLabels[i]
 		counts[c]++
-		for tok, v := range vecs[si] {
+		for tok, v := range vecs[si].v {
 			centroids[c][tok] += v
 		}
 	}
@@ -176,8 +221,12 @@ func residualCentroids(vecs []vector, sampleIdx, sampleLabels []int, k int) []ve
 	return centroids
 }
 
-func expandResidualLabels(vecs []vector, sampleIdx, sampleLabels []int, k int) []int {
+func expandResidualLabels(vecs []sortedVector, sampleIdx, sampleLabels []int, k int) []int {
 	centroids := residualCentroids(vecs, sampleIdx, sampleLabels, k)
+	sortedCentroids := make([]sortedVector, k)
+	for c := range centroids {
+		sortedCentroids[c] = sortVector(centroids[c])
+	}
 	haveCount := make([]bool, k)
 	for _, c := range sampleLabels {
 		haveCount[c] = true
@@ -189,7 +238,7 @@ func expandResidualLabels(vecs []vector, sampleIdx, sampleLabels []int, k int) [
 			if !haveCount[c] {
 				continue
 			}
-			d := euclideanDistance(v, centroids[c])
+			d := euclideanDistance(v, sortedCentroids[c])
 			if d < bd {
 				best, bd = c, d
 			}
@@ -200,38 +249,60 @@ func expandResidualLabels(vecs []vector, sampleIdx, sampleLabels []int, k int) [
 }
 
 // residualVectors selects the raw or standardized representation for a set
-// of residual windows.
-func residualVectors(rw []ResidualWindow, standardized bool) []vector {
-	out := make([]vector, len(rw))
+// of residual windows, pre-sorting each vector's keys once (see
+// sortedVector).
+func residualVectors(rw []ResidualWindow, standardized bool) []sortedVector {
+	out := make([]sortedVector, len(rw))
 	for i, w := range rw {
 		if standardized {
-			out[i] = w.Standard
+			out[i] = sortVector(w.Standard)
 		} else {
-			out[i] = w.Residual
+			out[i] = sortVector(w.Residual)
 		}
 	}
 	return out
 }
 
-// fitResidualClustering fits one (method, K) clustering on a deterministic
-// sample of the pooled residual windows (at most fitCap of them) and expands
-// it to every window. The observed sweep uses maxResidualFitWindows; the
-// permutation loop uses a smaller cap to stay tractable across thousands of
-// replicates (task19 section 41's own null distribution does not need the
-// same fitting-sample resolution as the single observed statistic).
-func fitResidualClustering(rw []ResidualWindow, standardized bool, method string, k int, seed int64, fitCap int) (fitLabels, fullLabels []int, sampleD [][]float64) {
+// residualFitPrep holds the (rw, standardized, fitCap)-derived sample and
+// its distance matrix: everything fitResidualClustering used to recompute
+// on every call, even though none of it depends on k or the clustering
+// method. cappedSampleIndices is a deterministic (non-random) even-spacing
+// selection and residualDistanceMatrix/residualVectors do no RNG draws, so
+// prepareResidualFit's result is exactly invariant across every K value in
+// a kMin..kMax sweep for a fixed (scale, replicate) — see
+// determinism_test.go for the equivalence proof. globalregime's
+// HierarchicalLabels/KMedoids/Diagnostics only ever read their d
+// parameter, never write it, so the same sampleD can be safely shared
+// across every K's clustering call without one K's fit corrupting
+// another's.
+type residualFitPrep struct {
+	vecs       []sortedVector
+	sampleIdx  []int
+	sampleVecs []sortedVector
+	sampleD    [][]float64
+}
+
+// prepareResidualFit computes the part of fitResidualClustering that does
+// not depend on k: call this once per (scale, replicate) before the K
+// loop, not once per K.
+func prepareResidualFit(rw []ResidualWindow, standardized bool, fitCap int) residualFitPrep {
 	vecs := residualVectors(rw, standardized)
 	sampleIdx := cappedSampleIndices(len(vecs), fitCap)
-	sampleVecs := make([]vector, len(sampleIdx))
+	sampleVecs := make([]sortedVector, len(sampleIdx))
 	for i, si := range sampleIdx {
 		sampleVecs[i] = vecs[si]
 	}
-	sampleD = residualDistanceMatrix(sampleVecs)
+	return residualFitPrep{vecs: vecs, sampleIdx: sampleIdx, sampleVecs: sampleVecs, sampleD: residualDistanceMatrix(sampleVecs)}
+}
+
+// fitResidualClustering fits one (method, K) clustering on prep's
+// precomputed sample and distance matrix, and expands it to every window.
+func fitResidualClustering(prep residualFitPrep, method string, k int, seed int64) (fitLabels, fullLabels []int, sampleD [][]float64) {
 	if method == "hierarchical" {
-		fitLabels = globalregime.HierarchicalLabels(len(sampleVecs), k, sampleD)
+		fitLabels = globalregime.HierarchicalLabels(len(prep.sampleVecs), k, prep.sampleD)
 	} else {
-		fitLabels = globalregime.KMedoids(sampleD, k, seed)
+		fitLabels = globalregime.KMedoids(prep.sampleD, k, seed)
 	}
-	fullLabels = expandResidualLabels(vecs, sampleIdx, fitLabels, k)
-	return fitLabels, fullLabels, sampleD
+	fullLabels = expandResidualLabels(prep.vecs, prep.sampleIdx, fitLabels, k)
+	return fitLabels, fullLabels, prep.sampleD
 }

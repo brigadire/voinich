@@ -132,21 +132,45 @@ func medoidSeparation(labels []int, d [][]float64, k int) float64 {
 	return sum / float64(n)
 }
 
-// fitClustering fits one (method, K) clustering on a deterministically
-// sampled subset (mirroring global-regime-analyze's fitting strategy for
-// long sequences), then expands the assignment to every window.
-func fitClustering(all []classWindow, method string, k int, seed int64) (fitLabels []int, fullLabels []int, sampleD [][]float64) {
+// withinFitPrep holds the (class window set)-derived full/sample windows
+// and their distance matrix: everything fitClustering used to recompute on
+// every call, even though none of it depends on k or the clustering method.
+// clusteringSample is a deterministic (non-random) even-spacing selection
+// and distanceMatrix does no RNG draws, so prepareWithinFit's result is
+// exactly invariant across every K value and method in a kMin..kmax sweep
+// for a fixed class window set (see withinclass_hoist_test.go for the
+// equivalence proof) - the same hoist already applied to
+// conditionalregime's residual-clustering path (residual.go's
+// residualFitPrep), and safe for the identical reason: globalregime's
+// HierarchicalLabels/KMedoids/Diagnostics only ever read their d parameter,
+// never write it, so the same sampleD can be shared across every K's
+// clustering call without one K's fit corrupting another's.
+type withinFitPrep struct {
+	full    []globalregime.Window
+	sample  []globalregime.Window
+	sampleD [][]float64
+}
+
+// prepareWithinFit computes the part of fitClustering that does not depend
+// on k or method: call this once per class window set, not once per
+// (method, K) pair.
+func prepareWithinFit(all []classWindow) withinFitPrep {
 	full := plainWindows(all)
 	sample, _ := globalregime.ClusteringSample(full)
-	sampleD = globalregime.DistanceMatrix(sample)
+	return withinFitPrep{full: full, sample: sample, sampleD: globalregime.DistanceMatrix(sample)}
+}
+
+// fitClustering fits one (method, K) clustering on prep's precomputed
+// sample and distance matrix, then expands the assignment to every window.
+func fitClustering(prep withinFitPrep, method string, k int, seed int64) (fitLabels []int, fullLabels []int, sampleD [][]float64) {
 	switch method {
 	case "hierarchical":
-		fitLabels = globalregime.HierarchicalLabels(len(sample), k, sampleD)
+		fitLabels = globalregime.HierarchicalLabels(len(prep.sample), k, prep.sampleD)
 	default:
-		fitLabels = globalregime.KMedoids(sampleD, k, seed)
+		fitLabels = globalregime.KMedoids(prep.sampleD, k, seed)
 	}
-	fullLabels = globalregime.ExpandLabels(full, sample, fitLabels, k)
-	return fitLabels, fullLabels, sampleD
+	fullLabels = globalregime.ExpandLabels(prep.full, prep.sample, fitLabels, k)
+	return fitLabels, fullLabels, prep.sampleD
 }
 
 // WithinClassRegime is one row of within_class_regimes.tsv: one
@@ -185,9 +209,10 @@ func withinClassSweep(tokens []string, class ClassID, blocks []Block, windowSize
 	if kmax == 0 {
 		return out, cw
 	}
+	prep := prepareWithinFit(cw)
 	for _, method := range []string{"k_medoids", "hierarchical"} {
 		for k := kMin; k <= kmax; k++ {
-			fitLabels, fullLabels, sampleD := fitClustering(cw, method, k, seed)
+			fitLabels, fullLabels, sampleD := fitClustering(prep, method, k, seed)
 			d := globalregime.Diagnostics(windowSize, method, k, fitLabels, sampleD)
 			sep := medoidSeparation(fitLabels, sampleD, k)
 			d = globalregime.WithFullAssignments(d, fullLabels)

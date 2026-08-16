@@ -4,12 +4,19 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"time"
 
 	"zcore.dev/voinich/internal/localregime"
+	"zcore.dev/voinich/internal/profiling"
 	"zcore.dev/voinich/internal/workdir"
 )
 
 func main() {
+	os.Exit(run())
+}
+
+func run() (code int) {
+	start := time.Now()
 	c := localregime.Config{}
 	flag.StringVar(&c.CorpusPath, "corpus", "data_work/ZL3b-x7.txt", "IVTT -x7 linear corpus")
 	flag.StringVar(&c.DistancePairsPath, "distance-pairs", workdir.Path("distance_context_pairs.yaml"), "previous distance-context pair YAML")
@@ -25,9 +32,26 @@ func main() {
 	flag.Int64Var(&c.Seed, "seed", 150015, "deterministic shuffle seed")
 	flag.BoolVar(&c.RespectLineBoundaries, "respect-line-boundaries", false, "use line-bounded profiles as the primary diagnostic")
 	flag.BoolVar(&c.Quiet, "quiet", false, "disable status bar")
+	prof := profiling.RegisterFlags(flag.CommandLine)
 	flag.Parse()
+
+	defer profiling.PrintElapsed(os.Stderr, start)
+
+	sess, err := profiling.Start(prof)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "Error:", err)
+		return 1
+	}
+	defer func() {
+		if err := sess.Stop(); err != nil {
+			fmt.Fprintln(os.Stderr, "Error:", err)
+			code = 1
+		}
+	}()
+
 	if err := localregime.RunAndWrite(c); err != nil {
 		fmt.Fprintln(os.Stderr, "Error:", err)
-		os.Exit(1)
+		return 1
 	}
+	return 0
 }

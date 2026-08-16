@@ -76,7 +76,8 @@ func TestNeighborsRecomputedWithinThreshold(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	items, fullEligible, fullNeighbors := buildTokenMetrics(full, folds, 10, 3)
+	fullWs := profilestability.PrecomputeAll(full)
+	items, fullEligible, fullNeighbors := buildTokenMetrics(full, fullWs, folds, 10, 3)
 	for _, token := range fullEligible {
 		if token == "D" {
 			t.Fatalf("D (count=8) must not be eligible at min-count=10")
@@ -93,7 +94,7 @@ func TestNeighborsRecomputedWithinThreshold(t *testing.T) {
 		}
 	}
 
-	lowItems, lowEligible, lowNeighbors := buildTokenMetrics(full, folds, 5, 3)
+	lowItems, lowEligible, lowNeighbors := buildTokenMetrics(full, fullWs, folds, 5, 3)
 	foundD := false
 	for _, token := range lowEligible {
 		if token == "D" {
@@ -118,8 +119,9 @@ func TestCumulativeThresholdsShrinkAsMinCountGrows(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	_, eligible10, _ := buildTokenMetrics(full, folds, 10, 3)
-	_, eligible60, _ := buildTokenMetrics(full, folds, 60, 3)
+	fullWs := profilestability.PrecomputeAll(full)
+	_, eligible10, _ := buildTokenMetrics(full, fullWs, folds, 10, 3)
+	_, eligible60, _ := buildTokenMetrics(full, fullWs, folds, 60, 3)
 	if len(eligible10) <= len(eligible60) {
 		t.Fatalf("higher cumulative threshold must not increase eligible tokens: %d vs %d", len(eligible10), len(eligible60))
 	}
@@ -239,9 +241,10 @@ func TestDeterministicSubsampling(t *testing.T) {
 		occurrences["A"] = append(occurrences["A"], Occurrence{Position: i % 3, HasLeft: true, Left: []string{"P0", "P1", "P2"}[i%3], HasRight: true, Right: []string{"S0", "S1", "S2"}[(i+1)%3]})
 	}
 	full := map[string]profilestability.Profile{"A": ProfileFromOccurrences(occurrences["A"])}
+	fullWs := profilestability.PrecomputeAll(full)
 	config := Config{SubsampleMinFullCount: 160, SubsampleRuns: 20, SubsampleSeed: 7}
-	first := runSubsampling(occurrences, full, config)
-	second := runSubsampling(occurrences, full, config)
+	first := runSubsampling(occurrences, full, fullWs, config)
+	second := runSubsampling(occurrences, full, fullWs, config)
 	if !reflect.DeepEqual(first, second) {
 		t.Fatal("subsampling is not deterministic for a fixed seed")
 	}
@@ -430,8 +433,9 @@ func TestSubsamplingConvergesWithSampleSize(t *testing.T) {
 	}
 	occurrenceMap := map[string][]Occurrence{"token": occurrences}
 	full := map[string]profilestability.Profile{"token": ProfileFromOccurrences(occurrences)}
+	fullWs := profilestability.PrecomputeAll(full)
 	config := Config{SubsampleMinFullCount: 160, SubsampleRuns: 200, SubsampleSeed: 1}
-	result := runSubsampling(occurrenceMap, full, config)
+	result := runSubsampling(occurrenceMap, full, fullWs, config)
 	if len(result.Results) == 0 {
 		t.Fatal("no subsampling results produced")
 	}

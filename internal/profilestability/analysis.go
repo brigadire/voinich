@@ -21,7 +21,7 @@ func buildTokenResults(full map[string]Profile, eligible []string, fullNeighbors
 				item.EligibleTestFolds = append(item.EligibleTestFolds, fold+1)
 			}
 			if folds[fold].trainEligible[token] && folds[fold].testEligible[token] {
-				value := Compare(folds[fold].trainProfiles[token], folds[fold].testProfiles[token])
+				value := CompareSorted(folds[fold].trainWs[token], folds[fold].testWs[token])
 				item.TrainTest = append(item.TrainTest, TrainTestFold{Fold: fold + 1, PositionSimilarity: value.PositionSimilarity, LeftSimilarity: value.LeftSimilarity, RightSimilarity: value.RightSimilarity})
 				ttPosition = append(ttPosition, value.PositionSimilarity)
 				ttLeft = append(ttLeft, value.LeftSimilarity)
@@ -31,7 +31,7 @@ func buildTokenResults(full map[string]Profile, eligible []string, fullNeighbors
 				if !folds[fold].trainEligible[token] || !folds[other].trainEligible[token] {
 					continue
 				}
-				value := Compare(folds[fold].trainProfiles[token], folds[other].trainProfiles[token])
+				value := CompareSorted(folds[fold].trainWs[token], folds[other].trainWs[token])
 				position = append(position, value.PositionSimilarity)
 				left = append(left, value.LeftSimilarity)
 				right = append(right, value.RightSimilarity)
@@ -106,16 +106,16 @@ func buildNeighborStability(token string, full []Neighbor, folds []foldData, k i
 	return result
 }
 
-func buildPairResults(candidates map[pairKey]bool, full map[string]Profile, folds []foldData, neighbors map[string]NeighborStability, config Config) []PairStability {
+func buildPairResults(candidates map[pairKey]bool, full map[string]SortedProfile, folds []foldData, neighbors map[string]NeighborStability, config Config) []PairStability {
 	thresholds := []float64{.70, .75, .80, .85, .90}
 	result := make([]PairStability, 0, len(candidates))
 	for _, pair := range sortedPairs(candidates) {
-		countA, countB := full[pair.a].Count, full[pair.b].Count
-		item := PairStability{TokenA: pair.a, TokenB: pair.b, TokenACount: countA, TokenBCount: countB, MinCount: min(countA, countB), GeometricMeanCount: math.Sqrt(float64(countA) * float64(countB)), Full: Compare(full[pair.a], full[pair.b])}
+		countA, countB := full[pair.a].profile.Count, full[pair.b].profile.Count
+		item := PairStability{TokenA: pair.a, TokenB: pair.b, TokenACount: countA, TokenBCount: countB, MinCount: min(countA, countB), GeometricMeanCount: math.Sqrt(float64(countA) * float64(countB)), Full: CompareSorted(full[pair.a], full[pair.b])}
 		var values, margins []float64
 		for foldIndex, fold := range folds {
 			if fold.trainEligible[pair.a] && fold.trainEligible[pair.b] {
-				value := Compare(fold.trainProfiles[pair.a], fold.trainProfiles[pair.b])
+				value := CompareSorted(fold.trainWs[pair.a], fold.trainWs[pair.b])
 				item.Folds = append(item.Folds, FoldSimilarity{Fold: foldIndex + 1, Components: value})
 				values = append(values, value.Similarity)
 				margins = append(margins, value.Similarity-config.Threshold)
@@ -177,11 +177,12 @@ func runBootstrap(corpus validation.Corpus, candidates map[pairKey]bool, config 
 			sample.Lines = append(sample.Lines, validation.Line{ID: index + 1, Tokens: tokens})
 		}
 		profiles := BuildProfiles(sample)
+		ws := PrecomputeAll(profiles)
 		for _, pair := range pairs {
 			if profiles[pair.a].Count < config.MinTokenCount || profiles[pair.b].Count < config.MinTokenCount {
 				continue
 			}
-			component := Compare(profiles[pair.a], profiles[pair.b])
+			component := CompareSorted(ws[pair.a], ws[pair.b])
 			item := values[pair]
 			item.combined = append(item.combined, component.Similarity)
 			item.position = append(item.position, component.PositionSimilarity)

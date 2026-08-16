@@ -76,6 +76,15 @@ func familyAnalysis(f family, p profiles, full, abl Projection, counts map[strin
 		}
 	}
 	sort.Strings(candidates)
+	// matchedGroup(f.Tokens, candidates, counts, trial) depends only on the
+	// family's own tokens, the (fixed, already-sorted) candidate pool, and
+	// the trial index — never on distance d — so precompute all 200 trial
+	// groups once instead of recomputing them on every one of the
+	// c.MaxDistance distances (a c.MaxDistance-fold redundant recompute).
+	matchedGroups := make([][]string, 200)
+	for trial := range matchedGroups {
+		matchedGroups[trial] = matchedGroup(f.Tokens, candidates, counts, trial)
+	}
 	for d := 0; d < c.MaxDistance; d++ {
 		// A matched token is reused across many trials. Cache its projected
 		// distribution for this distance, while discarding the cache before the
@@ -133,7 +142,7 @@ func familyAnalysis(f family, p profiles, full, abl Projection, counts map[strin
 		ac, ad, am := coh(f.Tokens, "ablated")
 		tv, fv, av := []float64{}, []float64{}, []float64{}
 		for trial := 0; trial < 200; trial++ {
-			g := matchedGroup(f.Tokens, candidates, counts, trial)
+			g := matchedGroups[trial]
 			if len(g) != len(f.Tokens) {
 				continue
 			}
@@ -245,11 +254,25 @@ func transitions(c corpus, p Projection, limit int) []Transition {
 			out = append(out, Transition{x[0], x[1], obs, base, lift})
 		}
 	}
+	// out is built by ranging over the joint map (extended.go above), so its
+	// initial order is randomized independently of the seed/input; when two
+	// transitions have exactly equal Lift and Observed, the unstable sort
+	// below previously had no further tie-breaker, so which one sorted
+	// first (and thus which survived a boundary at limit) depended on that
+	// randomized initial order rather than being deterministic (see
+	// determinism_test.go). Source/Destination lexicographic order gives a
+	// fully-specified, deterministic resolution for genuine ties.
 	sort.Slice(out, func(i, j int) bool {
-		if out[i].Lift == out[j].Lift {
+		if out[i].Lift != out[j].Lift {
+			return out[i].Lift > out[j].Lift
+		}
+		if out[i].Observed != out[j].Observed {
 			return out[i].Observed > out[j].Observed
 		}
-		return out[i].Lift > out[j].Lift
+		if out[i].Source != out[j].Source {
+			return out[i].Source < out[j].Source
+		}
+		return out[i].Destination < out[j].Destination
 	})
 	if len(out) > limit {
 		out = out[:limit]

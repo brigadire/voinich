@@ -1,4 +1,4 @@
-package main
+package sequenceanalyze
 
 import (
 	"math"
@@ -16,7 +16,7 @@ func testParameters(minN, maxN int) Parameters {
 }
 
 func TestBigramAndTrigramCountsWithoutCrossingLines(t *testing.T) {
-	output, err := analyzeLines([][]string{{"a", "b", "c"}, {"b", "c", "d"}}, testParameters(2, 3))
+	output, err := AnalyzeLines([][]string{{"a", "b", "c"}, {"b", "c", "d"}}, testParameters(2, 3))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -35,7 +35,7 @@ func TestBigramAndTrigramCountsWithoutCrossingLines(t *testing.T) {
 }
 
 func TestCountLineCountAndBoundaries(t *testing.T) {
-	output, err := analyzeLines([][]string{{"a", "a", "a"}}, testParameters(2, 2))
+	output, err := AnalyzeLines([][]string{{"a", "a", "a"}}, testParameters(2, 2))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -54,7 +54,7 @@ func TestContinuationAndPredecessorContexts(t *testing.T) {
 		{"L", "A", "B", "X"},
 		{"A", "B"},
 	}
-	output, err := analyzeLines(lines, testParameters(2, 2))
+	output, err := AnalyzeLines(lines, testParameters(2, 2))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -75,7 +75,7 @@ func TestContinuationAndPredecessorContexts(t *testing.T) {
 }
 
 func TestSingleContextPredictability(t *testing.T) {
-	output, err := analyzeLines([][]string{{"A", "B", "X"}, {"A", "B", "X"}}, testParameters(2, 2))
+	output, err := AnalyzeLines([][]string{{"A", "B", "X"}, {"A", "B", "X"}}, testParameters(2, 2))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -87,7 +87,7 @@ func TestSingleContextPredictability(t *testing.T) {
 
 func TestMaximalRepeatedSequenceAndCoordinates(t *testing.T) {
 	parameters := testParameters(2, 5)
-	output, err := analyzeLines([][]string{{"X", "A", "B", "C", "Y"}, {}, {"X", "A", "B", "C", "Y"}}, parameters)
+	output, err := AnalyzeLines([][]string{{"X", "A", "B", "C", "Y"}, {}, {"X", "A", "B", "C", "Y"}}, parameters)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -109,7 +109,7 @@ func TestMinCountMaxItemsAndDeterministicSorting(t *testing.T) {
 	parameters.MinCount = 2
 	parameters.MaxItems = 2
 	lines := [][]string{{"b", "x"}, {"a", "z"}, {"c", "q"}, {"b", "x"}, {"a", "z"}, {"c", "q"}, {"single", "only"}}
-	first, err := analyzeLines(lines, parameters)
+	first, err := AnalyzeLines(lines, parameters)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -122,14 +122,14 @@ func TestMinCountMaxItemsAndDeterministicSorting(t *testing.T) {
 	}
 	unlimitedParameters := parameters
 	unlimitedParameters.MaxItems = 0
-	unlimited, err := analyzeLines(lines, unlimitedParameters)
+	unlimited, err := AnalyzeLines(lines, unlimitedParameters)
 	if err != nil {
 		t.Fatal(err)
 	}
 	if len(unlimited.RepeatedNGrams[2]) != 3 {
 		t.Fatalf("max-items=0 returned %d records, want all 3", len(unlimited.RepeatedNGrams[2]))
 	}
-	second, _ := analyzeLines(lines, parameters)
+	second, _ := AnalyzeLines(lines, parameters)
 	firstYAML, _ := yaml.Marshal(first)
 	secondYAML, _ := yaml.Marshal(second)
 	if !reflect.DeepEqual(firstYAML, secondYAML) {
@@ -138,7 +138,7 @@ func TestMinCountMaxItemsAndDeterministicSorting(t *testing.T) {
 }
 
 func TestCorpusInvariant(t *testing.T) {
-	output, err := analyzeLines([][]string{{"a"}, {}, {"b", "c", "d"}}, testParameters(2, 3))
+	output, err := AnalyzeLines([][]string{{"a"}, {}, {"b", "c", "d"}}, testParameters(2, 3))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -154,7 +154,7 @@ func TestCorpusInvariant(t *testing.T) {
 }
 
 func TestSingleLineAndCrossLineRepeatedNGrams(t *testing.T) {
-	output, err := analyzeLines([][]string{
+	output, err := AnalyzeLines([][]string{
 		{"A", "B", "A", "B"},
 		{"C", "D"},
 		{"C", "D"},
@@ -180,7 +180,7 @@ func TestSingleLineAndCrossLineRepeatedNGrams(t *testing.T) {
 }
 
 func TestMaximalCrossLineSequence(t *testing.T) {
-	output, err := analyzeLines([][]string{
+	output, err := AnalyzeLines([][]string{
 		{"X", "A", "B", "C", "Y"},
 		{"X", "A", "B", "C", "Y"},
 		{"L", "M", "L", "M"},
@@ -204,7 +204,7 @@ func TestContextOrderConditionalEntropyAndCoverage(t *testing.T) {
 		{"Q", "A", "Y"},
 		{"R", "B", "Z"},
 	}
-	output, err := analyzeLines(lines, testParameters(2, 3))
+	output, err := AnalyzeLines(lines, testParameters(2, 3))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -244,7 +244,7 @@ func TestContextExtensionsAndObservationThreshold(t *testing.T) {
 	}
 	parameters := testParameters(2, 3)
 	parameters.ContextMinObservations = 2
-	output, err := analyzeLines(lines, parameters)
+	output, err := AnalyzeLines(lines, parameters)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -261,7 +261,7 @@ func TestContextExtensionsAndObservationThreshold(t *testing.T) {
 	assertClose(t, "context entropy reduction", first.EntropyReduction, 1)
 
 	parameters.ContextMinObservations = 3
-	filtered, err := analyzeLines(lines, parameters)
+	filtered, err := AnalyzeLines(lines, parameters)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -277,7 +277,7 @@ func TestContextExtensionsIncludeEntropyIncrease(t *testing.T) {
 	}
 	parameters := testParameters(2, 3)
 	parameters.ContextMinObservations = 2
-	output, err := analyzeLines(lines, parameters)
+	output, err := AnalyzeLines(lines, parameters)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -295,7 +295,7 @@ func TestContextExtensionsIncludeEntropyIncrease(t *testing.T) {
 func TestContextLengthMayExceedNGramRange(t *testing.T) {
 	parameters := testParameters(2, 2)
 	parameters.MaxContextLength = 3
-	output, err := analyzeLines([][]string{{"A", "B", "C", "D"}}, parameters)
+	output, err := AnalyzeLines([][]string{{"A", "B", "C", "D"}}, parameters)
 	if err != nil {
 		t.Fatal(err)
 	}

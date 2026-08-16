@@ -22,7 +22,7 @@ func TestMarkovNeverTrainsOnHeldoutBlock(t *testing.T) {
 		{ID: "A#0", Joint: "A/1", Tokens: []token{{Text: "held", Line: "1"}, {Text: "held", Line: "1"}}},
 		{ID: "A#1", Joint: "A/1", Tokens: []token{{Text: "train", Line: "2"}, {Text: "train", Line: "2"}}},
 	}
-	got, available := markovBlocks(blocks, 1)
+	got, available := markovBlocks(buildMarkovTraining(blocks), 1)
 	if available != 2 || len(got) != 2 {
 		t.Fatalf("availability = %d/%d", available, len(got))
 	}

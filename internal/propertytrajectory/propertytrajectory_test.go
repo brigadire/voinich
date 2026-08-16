@@ -79,8 +79,9 @@ func TestSimilarityAndTrajectoryCorrelation(t *testing.T) {
 func TestMatchedBaselineDeterministic(t *testing.T) {
 	c := fixtureCorpus()
 	eligible := []string{"a", "b", "x", "y", "z"}
-	a := fallbackMatched(pair{"a", "b"}, c, eligible, 3, rand.New(rand.NewSource(9)))
-	b := fallbackMatched(pair{"a", "b"}, c, eligible, 3, rand.New(rand.NewSource(9)))
+	ws := prepareMatchWorkspace(c, eligible)
+	a := fallbackMatched(pair{"a", "b"}, c, ws, 3, rand.New(rand.NewSource(9)))
+	b := fallbackMatched(pair{"a", "b"}, c, ws, 3, rand.New(rand.NewSource(9)))
 	if !reflect.DeepEqual(a, b) {
 		t.Fatalf("matching is not deterministic: %v %v", a, b)
 	}

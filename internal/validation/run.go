@@ -63,6 +63,8 @@ func Run(config Config) (Output, error) {
 		},
 	}
 
+	vocab := newVocabIndex(corpus)
+
 	foldIndexes, err := SplitFolds(corpus.Lines, config.Folds, config.FoldSeed)
 	if err != nil {
 		return Output{}, err
@@ -82,14 +84,14 @@ func Run(config Config) (Output, error) {
 		eligibility = append(eligibility, eligible)
 		mapping := normalization.Mapping(model, "preserve")
 		normalizedTest := applyMapping(test, mapping)
-		rawMetrics := AnalyzeSequences(test, config.MinN, config.MaxN, config.MaxContext)
-		structuralMetrics := AnalyzeSequences(normalizedTest, config.MinN, config.MaxN, config.MaxContext)
+		rawMetrics := AnalyzeSequences(test, config.MinN, config.MaxN, config.MaxContext, vocab)
+		structuralMetrics := AnalyzeSequences(normalizedTest, config.MinN, config.MaxN, config.MaxContext, vocab)
 		randomMetrics := make([]sequenceMetrics, 0, config.RandomBaselines)
 		foldSeed := config.RandomSeed + int64(foldIndex+1)*10_000_000_000
 		for run := 0; run < config.RandomBaselines; run++ {
 			randomModel := normalization.RandomModel(model, normalizationCorpus(train), config.MinTokenCount, foldSeed, run)
 			randomTest := applyMapping(test, normalization.Mapping(randomModel, "preserve"))
-			randomMetrics = append(randomMetrics, AnalyzeSequences(randomTest, config.MinN, config.MaxN, config.MaxContext))
+			randomMetrics = append(randomMetrics, AnalyzeSequences(randomTest, config.MinN, config.MaxN, config.MaxContext, vocab))
 		}
 		multi := multiMemberClasses(model)
 		covered := coveredOccurrences(test, model)
@@ -111,7 +113,7 @@ func Run(config Config) (Output, error) {
 	}
 	output.ClassStability = BuildClassStability(models, eligibility)
 	output.CrossValidationAggregate = AggregateFolds(output.Folds, config.MinN, config.MaxN)
-	output.LeaveOneClassOut, output.MemberAblation = runAblations(corpus, fullModel, config)
+	output.LeaveOneClassOut, output.MemberAblation = runAblations(corpus, fullModel, config, vocab)
 	return output, nil
 }
 
@@ -196,9 +198,9 @@ func coveredOccurrences(corpus Corpus, model normalization.Model) int {
 	return total
 }
 
-func runAblations(corpus Corpus, model normalization.Model, config Config) (LeaveOneClassOut, []MemberAblation) {
-	raw := AnalyzeSequences(corpus, config.MinN, config.MaxN, config.MaxContext)
-	all := AnalyzeSequences(applyMapping(corpus, normalization.Mapping(model, "preserve")), config.MinN, config.MaxN, config.MaxContext)
+func runAblations(corpus Corpus, model normalization.Model, config Config, vocab *vocabIndex) (LeaveOneClassOut, []MemberAblation) {
+	raw := AnalyzeSequences(corpus, config.MinN, config.MaxN, config.MaxContext, vocab)
+	all := AnalyzeSequences(applyMapping(corpus, normalization.Mapping(model, "preserve")), config.MinN, config.MaxN, config.MaxContext, vocab)
 	result := LeaveOneClassOut{
 		Raw: simpleNGrams(raw, config.MinN, config.MaxN), AllClasses: simpleNGrams(all, config.MinN, config.MaxN),
 		AllClassesMaxLength: all.MaxLength,
@@ -207,7 +209,7 @@ func runAblations(corpus Corpus, model normalization.Model, config Config) (Leav
 	var memberAblations []MemberAblation
 	for _, removed := range classes {
 		mapping := mappingExcept(model, removed.ID, "")
-		metrics := AnalyzeSequences(applyMapping(corpus, mapping), config.MinN, config.MaxN, config.MaxContext)
+		metrics := AnalyzeSequences(applyMapping(corpus, mapping), config.MinN, config.MaxN, config.MaxContext, vocab)
 		members := memberNames(removed)
 		variant := LeaveOneOutVariant{
 			ClassRemoved: removed.ID, ClassMembers: members,
@@ -227,7 +229,7 @@ func runAblations(corpus Corpus, model normalization.Model, config Config) (Leav
 		if removed.Size > 2 {
 			for _, restored := range removed.Members {
 				mapping := mappingExcept(model, "", restored.Token)
-				ablationMetrics := AnalyzeSequences(applyMapping(corpus, mapping), 3, 4, min(config.MaxContext, 3))
+				ablationMetrics := AnalyzeSequences(applyMapping(corpus, mapping), 3, 4, min(config.MaxContext, 3), vocab)
 				remaining := make([]string, 0, removed.Size-1)
 				for _, member := range removed.Members {
 					if member.Token != restored.Token {

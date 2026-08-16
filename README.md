@@ -971,8 +971,9 @@ go run ./begin-end-analyze \
 ├── dict-analyze/              # анализ каждого токена и перехода
 ├── structural-analyze/        # корпусные рейтинги и группы сходства
 ├── sequence-analyze/          # точные n-граммы исходного текста
+├── internal/sequenceanalyze/  # n-грамм/контекст расчёты, общие с normalization-compare
 ├── structural-normalize/      # complete-link нормализация
-├── normalization-compare/     # raw/structural/random сравнение
+├── normalization-compare/     # raw/structural/random сравнение (in-process sequence-анализ)
 ├── internal/normalization/    # общее ядро классов и random matching
 ├── structural-validate/       # out-of-sample validation и ablation
 ├── internal/validation/       # TRAIN-only статистики, split и метрики
@@ -1010,7 +1011,7 @@ go vet ./...
 
 ## Профилирование
 
-`internal/profiling` даёт opt-in CPU/heap/trace профилирование через стандартные флаги `-cpuprofile`, `-memprofile` и `-trace`; без них профилирование полностью выключено, и ни алгоритмы, ни статистика, ни output не меняются. Сейчас флаги подключены в `transition-network-validate` и `structural-projection-analyze` через общий helper; остальные CLI можно подключить тем же способом. Родительские директории создаются автоматически, ошибки открытия/записи profile файла завершают программу ненулевым кодом с диагностикой в stderr. Heap profile снимается после `runtime.GC()` по завершении вычислений. Elapsed runtime всего процесса всегда печатается в stderr, независимо от профилирования.
+`internal/profiling` даёт opt-in CPU/heap/trace профилирование через стандартные флаги `-cpuprofile`, `-memprofile` и `-trace`; без них профилирование полностью выключено, и ни алгоритмы, ни статистика, ни output не меняются. Сейчас флаги подключены в `transition-network-validate`, `structural-projection-analyze`, `replicated-local-structure-audit`, `normalization-compare` и `metadata-validate` через общий helper; остальные CLI можно подключить тем же способом. Родительские директории создаются автоматически, ошибки открытия/записи profile файла завершают программу ненулевым кодом с диагностикой в stderr. Heap profile снимается после `runtime.GC()` по завершении вычислений. Elapsed runtime всего процесса всегда печатается в stderr, независимо от профилирования.
 
 ```bash
 go run ./transition-network-validate \

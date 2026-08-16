@@ -99,7 +99,8 @@ func analyze(cfg Config, pgr *progressReporter) (analysis, error) {
 				}
 				for _, side := range []string{"symmetric", "left", "right"} {
 					ac, bc := offsetProfile(offsets[q.A], radius, gap, side), offsetProfile(offsets[q.B], radius, gap, side)
-					m := RegimeMetric{Radius: radius, Gap: gap, Side: side, JSSimilarity: jsSimilarity(ac, bc), WeightedOverlap: weightedOverlap(ac, bc), Jaccard: jaccard(ac, bc), Cosine: cosine(ac, bc)}
+					sac, sbc := sortProfile(ac), sortProfile(bc)
+					m := RegimeMetric{Radius: radius, Gap: gap, Side: side, JSSimilarity: jsSimilaritySorted(sac, sbc), WeightedOverlap: weightedOverlapSorted(sac, sbc), Jaccard: jaccard(ac, bc), Cosine: cosineSorted(sac, sbc)}
 					r.Regimes = append(r.Regimes, m)
 					if radius == cfg.RegimeRadius && gap == cfg.RegimeGap && side == "symmetric" {
 						r.Regimes[len(r.Regimes)-1].DispersionA = dispersion(occ[q.A], aggregate(occ[q.A]))
@@ -108,8 +109,8 @@ func analyze(cfg Config, pgr *progressReporter) (analysis, error) {
 						r.Regimes[len(r.Regimes)-1].PairwiseJSB = pairwiseDispersion(occ[q.B])
 						regByPair[q] = m.JSSimilarity
 						r.PrimaryRegime = m.JSSimilarity
-						r.ConcentrationA = concentration(ac)
-						r.ConcentrationB = concentration(bc)
+						r.ConcentrationA = concentrationSorted(sac)
+						r.ConcentrationB = concentrationSorted(sbc)
 					}
 				}
 			}
@@ -129,7 +130,7 @@ func analyze(cfg Config, pgr *progressReporter) (analysis, error) {
 		}
 		expectedA, expectedB := expectedCache[q.A], expectedCache[q.B]
 		for d := 1; d <= cfg.MaxDistance; d++ {
-			obs := jsSimilarity(distanceDistributionMode(c, q.A, d, cfg.RespectLineBoundaries), distanceDistributionMode(c, q.B, d, cfg.RespectLineBoundaries))
+			obs := jsSimilarity(distanceDistributionAt(c, posByToken[q.A], d, cfg.RespectLineBoundaries), distanceDistributionAt(c, posByToken[q.B], d, cfg.RespectLineBoundaries))
 			exp := jsSimilarity(expectedAt(expectedA, d), expectedAt(expectedB, d))
 			results[pi].Distance = append(results[pi].Distance, DistanceMetric{Distance: d, Observed: obs, RegimeExpected: exp, ResidualExcess: residualDependency(obs, exp)})
 		}
@@ -145,12 +146,19 @@ func analyze(cfg Config, pgr *progressReporter) (analysis, error) {
 	}
 	shuffles := []ShuffleResult{}
 	for pi, q := range pairs {
+		posGlobalA, posGlobalB := positions(global, q.A), positions(global, q.B)
+		posLineA, posLineB := positions(line, q.A), positions(line, q.B)
+		posBlockA, posBlockB := map[int][]int{}, map[int][]int{}
+		for _, b := range blockSizes {
+			posBlockA[b] = positions(blocks[b], q.A)
+			posBlockB[b] = positions(blocks[b], q.B)
+		}
 		for d := 1; d <= cfg.MaxDistance; d++ {
-			g := jsSimilarity(distanceDistributionMode(global, q.A, d, cfg.RespectLineBoundaries), distanceDistributionMode(global, q.B, d, cfg.RespectLineBoundaries))
-			l := jsSimilarity(distanceDistributionMode(line, q.A, d, cfg.RespectLineBoundaries), distanceDistributionMode(line, q.B, d, cfg.RespectLineBoundaries))
+			g := jsSimilarity(distanceDistributionAt(global, posGlobalA, d, cfg.RespectLineBoundaries), distanceDistributionAt(global, posGlobalB, d, cfg.RespectLineBoundaries))
+			l := jsSimilarity(distanceDistributionAt(line, posLineA, d, cfg.RespectLineBoundaries), distanceDistributionAt(line, posLineB, d, cfg.RespectLineBoundaries))
 			vals := []float64{}
 			for _, b := range blockSizes {
-				s := jsSimilarity(distanceDistributionMode(blocks[b], q.A, d, cfg.RespectLineBoundaries), distanceDistributionMode(blocks[b], q.B, d, cfg.RespectLineBoundaries))
+				s := jsSimilarity(distanceDistributionAt(blocks[b], posBlockA[b], d, cfg.RespectLineBoundaries), distanceDistributionAt(blocks[b], posBlockB[b], d, cfg.RespectLineBoundaries))
 				vals = append(vals, s)
 				shuffles = append(shuffles, ShuffleResult{q.A, q.B, "local-block", b, d, s})
 			}
@@ -179,10 +187,14 @@ func analyze(cfg Config, pgr *progressReporter) (analysis, error) {
 		windowProfiles[size] = ps
 		windows = append(windows, rows...)
 		changes = append(changes, changePoints(rows)...)
+		sortedPs := make([]sortedProfile, len(ps))
+		for i, p := range ps {
+			sortedPs[i] = sortProfile(p)
+		}
 		for _, sep := range []int{1, 2, 5, 10, 20} {
 			var ds []float64
 			for i := 0; i+sep < len(ps); i++ {
-				ds = append(ds, 1-jsSimilarity(ps[i], ps[i+sep]))
+				ds = append(ds, 1-jsSimilaritySorted(sortedPs[i], sortedPs[i+sep]))
 			}
 			separations = append(separations, SeparationRow{size, sep, len(ds), mean(ds), 1 - mean(ds)})
 		}
@@ -222,6 +234,7 @@ type matchCandidate struct {
 	token   string
 	count   int
 	profile profile
+	sorted  sortedProfile
 	norm    float64
 }
 
@@ -233,11 +246,8 @@ func buildControlPool(c corpus, cfg Config) []matchCandidate {
 	out := make([]matchCandidate, 0)
 	for i := 0; i < len(c.Tokens); i += stride {
 		p := localProfile(c, i, cfg.RegimeRadius, cfg.RegimeGap, "symmetric", cfg.RespectLineBoundaries)
-		n := 0.0
-		for _, v := range p {
-			n += v * v
-		}
-		out = append(out, matchCandidate{i, c.Tokens[i], c.Counts[c.Tokens[i]], p, math.Sqrt(n)})
+		sp := sortProfile(p)
+		out = append(out, matchCandidate{i, c.Tokens[i], c.Counts[c.Tokens[i]], p, sp, math.Sqrt(concentrationSorted(sp))})
 	}
 	return out
 }
@@ -256,23 +266,16 @@ func matchedExpected(c corpus, token string, pos []int, ps []profile, pool []mat
 		}
 		var best []scored
 		targetCount := float64(max(1, c.Counts[token]))
-		pn := 0.0
-		for _, v := range p {
-			pn += v * v
-		}
-		pn = math.Sqrt(pn)
+		sp := sortProfile(p)
+		pn := math.Sqrt(concentrationSorted(sp))
 		for i, x := range pool {
 			if x.token == token {
 				continue
 			}
 			ratio := math.Abs(math.Log(float64(max(1, x.count)) / targetCount))
-			dot := 0.0
-			for k, v := range p {
-				dot += v * x.profile[k]
-			}
 			sim := 0.0
 			if pn > 0 && x.norm > 0 {
-				sim = dot / (pn * x.norm)
+				sim = dotProductSorted(sp, x.sorted) / (pn * x.norm)
 			}
 			score := sim - .05*ratio
 			if len(best) < cfg.RegimeControlsK {
@@ -346,7 +349,8 @@ func tokenProfiles(c corpus, occ map[string][]profile, windows []profile, step i
 		}
 		h, maxv := 0., 0.
 		if n > 0 {
-			for _, q := range membership {
+			for _, k := range sortedProfileKeys(membership) {
+				q := membership[k]
 				if q > 0 {
 					h -= q * math.Log2(q)
 				}
@@ -398,6 +402,7 @@ func evaluateControls(rows []controlRow, targets []pair, c corpus, cfg Config) [
 		wanted[q] = true
 	}
 	profileCache := map[string]profile{}
+	positionsCache := map[string][]int{}
 	for i := range rows {
 		if !wanted[rows[i].Target] {
 			continue
@@ -405,6 +410,7 @@ func evaluateControls(rows []controlRow, targets []pair, c corpus, cfg Config) [
 		for _, t := range []string{rows[i].Control.A, rows[i].Control.B} {
 			if profileCache[t] == nil {
 				ps := positions(c, t)
+				positionsCache[t] = ps
 				x := buildOffsetCounts(c, ps, cfg.RegimeRadius, cfg.RespectLineBoundaries)
 				profileCache[t] = offsetProfile(x, cfg.RegimeRadius, cfg.RegimeGap, "symmetric")
 			}
@@ -412,9 +418,10 @@ func evaluateControls(rows []controlRow, targets []pair, c corpus, cfg Config) [
 		a, b := profileCache[rows[i].Control.A], profileCache[rows[i].Control.B]
 		rows[i].RegimeSimilarity = jsSimilarity(a, b)
 		rows[i].ConcentrationA, rows[i].ConcentrationB = concentration(a), concentration(b)
+		posA, posB := positionsCache[rows[i].Control.A], positionsCache[rows[i].Control.B]
 		var ds []float64
 		for d := 1; d <= min(5, cfg.MaxDistance); d++ {
-			ds = append(ds, jsSimilarity(distanceDistributionMode(c, rows[i].Control.A, d, cfg.RespectLineBoundaries), distanceDistributionMode(c, rows[i].Control.B, d, cfg.RespectLineBoundaries)))
+			ds = append(ds, jsSimilarity(distanceDistributionAt(c, posA, d, cfg.RespectLineBoundaries), distanceDistributionAt(c, posB, d, cfg.RespectLineBoundaries)))
 		}
 		rows[i].DistanceSimilarity = mean(ds)
 	}
