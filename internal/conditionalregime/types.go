@@ -11,7 +11,10 @@
 // examined and is not tuned afterward.
 package conditionalregime
 
-import "io"
+import (
+	"context"
+	"io"
+)
 
 // Config describes one conditional-regime-analyze run.
 type Config struct {
@@ -27,6 +30,11 @@ type Config struct {
 	KMaxResidual        int
 	Permutations        int
 	Seed                int64
+	// Workers bounds the number of concurrently executing permutation jobs.
+	// It is operational, not scientific, and is therefore intentionally not
+	// part of the checkpoint fingerprint. Defaults to 1.
+	Workers int
+	Context context.Context
 	// CheckpointPath, if non-empty, is where progress is saved after every
 	// completed unit of work (a class x window_size combo, or - for the
 	// slowest loop, Part B's global permutation correction - every single

@@ -31,12 +31,14 @@ type Checkpoint struct {
 	BestRaw                 residualSweepResult      `json:"best_raw"`
 	BestRawHier             residualSweepResult      `json:"best_raw_hier"`
 
-	// ResidualCorrectionNull holds the partial null distribution accumulated
-	// so far for each method's global max-over-scale-x-K permutation
-	// correction (task19 section 41) - the single most expensive loop in the
-	// whole pipeline. It is saved after every replicate specifically so an
-	// interruption here loses at most one replicate's work.
-	ResidualCorrectionNull map[string][]float64      `json:"residual_correction_null"`
+	// ResidualCorrectionNull holds the canonical partial null prefix used by
+	// pre-Task31 checkpoints. New checkpoints store every completion in
+	// PermutationJobs, including results beyond a temporarily missing index.
+	ResidualCorrectionNull map[string][]float64 `json:"residual_correction_null"`
+	// PermutationJobs stores completed out-of-order results by deterministic
+	// JobID. ResidualCorrectionNull remains the canonical contiguous prefix
+	// for backward compatibility with pre-Task31 checkpoints.
+	PermutationJobs        map[string]float64        `json:"permutation_jobs,omitempty"`
 	ResidualCorrectionDone map[string]bool           `json:"residual_correction_done"`
 	ResidualCorrection     map[string]EmpiricalStats `json:"residual_correction"`
 
@@ -53,6 +55,7 @@ func newCheckpoint(fingerprint string) *Checkpoint {
 		SignificanceCombosDone:  map[string]bool{},
 		ResidualSweepCombosDone: map[string]bool{},
 		ResidualCorrectionNull:  map[string][]float64{},
+		PermutationJobs:         map[string]float64{},
 		ResidualCorrectionDone:  map[string]bool{},
 		ResidualCorrection:      map[string]EmpiricalStats{},
 	}
@@ -123,6 +126,9 @@ func loadCheckpoint(path, fingerprint string) (*Checkpoint, bool) {
 	}
 	if cp.ResidualCorrectionDone == nil {
 		cp.ResidualCorrectionDone = map[string]bool{}
+	}
+	if cp.PermutationJobs == nil {
+		cp.PermutationJobs = map[string]float64{}
 	}
 	if cp.ResidualCorrection == nil {
 		cp.ResidualCorrection = map[string]EmpiricalStats{}

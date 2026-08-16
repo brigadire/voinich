@@ -1,6 +1,7 @@
 package conditionalregime
 
 import (
+	"context"
 	"path/filepath"
 	"testing"
 )
@@ -14,6 +15,8 @@ func TestCheckpointSaveLoadRoundTrip(t *testing.T) {
 		Stats: EmpiricalStats{Observed: 0.5, Permutations: 10},
 	}}
 	cp.ResidualCorrectionNull["k_medoids|raw"] = []float64{0.1, 0.2, 0.3}
+	jobID := JobID{Stage: "part_b_global_correction", Combination: "k_medoids|raw", ReplicateIndex: 4}
+	cp.PermutationJobs[checkpointJobKey(jobID)] = 0.4
 
 	if err := saveCheckpoint(path, cp); err != nil {
 		t.Fatalf("saveCheckpoint: %v", err)
@@ -30,6 +33,9 @@ func TestCheckpointSaveLoadRoundTrip(t *testing.T) {
 	}
 	if got := loaded.ResidualCorrectionNull["k_medoids|raw"]; len(got) != 3 || got[2] != 0.3 {
 		t.Fatalf("partial null array did not survive round trip: %v", got)
+	}
+	if got := loaded.PermutationJobs[checkpointJobKey(jobID)]; got != 0.4 {
+		t.Fatalf("JobID-keyed result did not survive checkpoint round trip: %v", got)
 	}
 }
 
@@ -72,6 +78,11 @@ func TestFingerprintChangesWithAnyParameter(t *testing.T) {
 	permChanged.Permutations = 500
 	if computeFingerprint(permChanged, "corpus-hash", "meta-hash") == fp {
 		t.Fatal("a different permutation count must change the fingerprint")
+	}
+	workersChanged := base
+	workersChanged.Workers = 12
+	if computeFingerprint(workersChanged, "corpus-hash", "meta-hash") != fp {
+		t.Fatal("worker count is operational and must not invalidate a scientific checkpoint")
 	}
 }
 
@@ -120,5 +131,21 @@ func TestResidualCorrectionResumeSkipsWhenAlreadyComplete(t *testing.T) {
 	}
 	if stats.Permutations != 4 || stats.Observed != 0.9 {
 		t.Fatalf("unexpected stats from an already-complete resume: %+v", stats)
+	}
+}
+
+func TestResidualCorrectionWorkerCountIndependence(t *testing.T) {
+	tokens, classes, blocks := syntheticResidualScenario()
+	scales := []int{20, 40}
+	one, err := residualGlobalCorrectionParallel(context.Background(), 1, tokens, classes, blocks, scales, 2, 3, "k_medoids", false, 0.5, 8, 55, nil, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	four, err := residualGlobalCorrectionParallel(context.Background(), 4, tokens, classes, blocks, scales, 2, 3, "k_medoids", false, 0.5, 8, 55, nil, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if one != four {
+		t.Fatalf("scientific reduction changed with worker count:\nworkers=1 %+v\nworkers=4 %+v", one, four)
 	}
 }

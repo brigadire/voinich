@@ -233,6 +233,19 @@ fix is:**
 
 With item 10 done, every backlog item from this audit (1-10) is now closed.
 
+## Task31: deterministic local parallel execution
+
+`conditional-regime-analyze` now has a bounded `-workers N` goroutine pool
+for its independently seeded replicate-index work. Results are restored to
+canonical index order before existing floating-point reductions; RNG and
+scientific outputs are unchanged. A real-corpus benchmark measured
+25.43s/21.96s/20.51s/20.48s/20.25s at workers 1/2/4/8/12 respectively,
+with all 19 artifacts SHA256-identical to the frozen pre-change oracle.
+The reduced oracle has only four jobs per combination and ~18.9s fixed work,
+so its plateau above four workers is expected and is not a production-scale
+speedup forecast. See `DISTRIBUTED_EXECUTION_IMPLEMENTATION.md` for profiles,
+memory/allocation measurements, resume evidence, and production estimates.
+
 **Medium:** `residualdiagnostic` (cache one grouping map), `clustermetadataglobal`
 (flat combo slice instead of struct-keyed map — already close to optimal),
 `distancecontext`, `softstructural`, `begin-end-analyze`.

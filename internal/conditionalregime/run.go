@@ -2,6 +2,7 @@ package conditionalregime
 
 import (
 	"bufio"
+	"context"
 	"crypto/sha256"
 	"fmt"
 	"os"
@@ -47,6 +48,12 @@ func defaults(c Config) Config {
 	}
 	if c.Seed == 0 {
 		c.Seed = 1
+	}
+	if c.Workers <= 0 {
+		c.Workers = 1
+	}
+	if c.Context == nil {
+		c.Context = context.Background()
 	}
 	if c.CheckpointPath == "" {
 		c.CheckpointPath = c.OutputDir + "/checkpoint.json"
@@ -285,7 +292,10 @@ func RunAndWrite(c Config) error {
 				// skipped here, both because it is not part of the primary
 				// within-class test and because it is by far the most
 				// expensive scale to refit thousands of times.
-				cands := withinClassSignificance(tokens, class, byClassBlocks[class], ws, best, c.Permutations, c.Seed)
+				cands, err := withinClassSignificanceParallel(c.Context, c.Workers, tokens, class, byClassBlocks[class], ws, best, c.Permutations, c.Seed)
+				if err != nil {
+					return fmt.Errorf("within-class permutation jobs: %w", err)
+				}
 				r.Candidates = append(r.Candidates, cands...)
 				cp.Candidates = r.Candidates
 			}
@@ -298,7 +308,11 @@ func RunAndWrite(c Config) error {
 		}
 	}
 	if !cp.RefinementDone {
-		r.Candidates = refineTopCandidates(tokens, byClassBlocks, r.Candidates, c.Seed)
+		var err error
+		r.Candidates, err = refineTopCandidatesParallel(c.Context, c.Workers, tokens, byClassBlocks, r.Candidates, c.Seed)
+		if err != nil {
+			return fmt.Errorf("candidate refinement jobs: %w", err)
+		}
 		cp.Candidates, cp.RefinementDone = r.Candidates, true
 		if err := checkpoint(); err != nil {
 			return fmt.Errorf("save checkpoint: %w", err)
@@ -380,14 +394,25 @@ func RunAndWrite(c Config) error {
 			continue
 		}
 		resumeNull := cp.ResidualCorrectionNull[key]
-		stats := residualGlobalCorrection(tokens, jointEligible, jointBlocks, c.ResidualWindowSizes, c.KMin, c.KMaxResidual, target.method, false, target.observed, c.Permutations, c.Seed+int64(i), resumeNull, func(null []float64) {
-			cp.ResidualCorrectionNull[key] = null
-			_ = checkpoint() // best-effort per-replicate save; a failure here does not abort the run
+		stage, combination := "part_b_global_correction", target.method+"|raw"
+		completed := checkpointJobsFor(cp.PermutationJobs, stage, combination, c.Permutations)
+		stats, err := residualGlobalCorrectionParallelState(c.Context, c.Workers, tokens, jointEligible, jointBlocks, c.ResidualWindowSizes, c.KMin, c.KMaxResidual, target.method, false, target.observed, c.Permutations, c.Seed+int64(i), resumeNull, completed, nil, func(result JobResult) {
+			cp.PermutationJobs[checkpointJobKey(result.JobID)] = result.Value
+			_ = checkpoint() // best-effort per-job save; the final save remains fatal
 		})
+		if err != nil {
+			return fmt.Errorf("residual correction jobs: %w", err)
+		}
 		r.ResidualCorrection[key] = stats
 		cp.ResidualCorrection[key] = stats
 		cp.ResidualCorrectionDone[key] = true
 		delete(cp.ResidualCorrectionNull, key)
+		prefix := checkpointJobPrefix(stage, combination)
+		for jobKey := range cp.PermutationJobs {
+			if strings.HasPrefix(jobKey, prefix) {
+				delete(cp.PermutationJobs, jobKey)
+			}
+		}
 		if err := checkpoint(); err != nil {
 			return fmt.Errorf("save checkpoint: %w", err)
 		}

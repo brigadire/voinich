@@ -1,5 +1,14 @@
 # Distributed Execution Feasibility Audit (Task30)
 
+> **Task31 implementation update (2026-08-16):** the recommended
+> replicate-index architecture is now implemented as a bounded in-process
+> goroutine pool for `conditional-regime-analyze`. Measured results,
+> byte-identical hashes, checkpoint/resume evidence, and the revised
+> conservative production estimate are in
+> `DISTRIBUTED_EXECUTION_IMPLEMENTATION.md`. The Task30 projections below
+> remain the pre-implementation model; where they differ, Task31's measured
+> local-host results supersede them.
+
 Scope: `tasks/task30.txt`. This is an **audit and design document only** — no
 scientific/statistical algorithm, RNG algorithm/seed derivation, or output
 format was changed to produce it, and no worker pool or distributed

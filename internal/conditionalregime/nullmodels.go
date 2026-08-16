@@ -1,6 +1,8 @@
 package conditionalregime
 
 import (
+	"context"
+	"fmt"
 	"math/rand"
 	"sort"
 
@@ -105,6 +107,11 @@ func nullSilhouetteAtK(tokens []string, blocks []Block, windowSize int, method s
 // reproducible regardless of whether it runs in one pass or is checkpointed
 // combo-by-combo.
 func withinClassSignificance(tokens []string, class ClassID, blocks []Block, windowSize int, best map[string]WithinClassRegime, permutations int, seed int64) []WithinClassCandidate {
+	out, _ := withinClassSignificanceParallel(context.Background(), 1, tokens, class, blocks, windowSize, best, permutations, seed)
+	return out
+}
+
+func withinClassSignificanceParallel(ctx context.Context, workers int, tokens []string, class ClassID, blocks []Block, windowSize int, best map[string]WithinClassRegime, permutations int, seed int64) ([]WithinClassCandidate, error) {
 	var out []WithinClassCandidate
 	for _, method := range []string{"k_medoids", "hierarchical"} {
 		row, ok := best[method]
@@ -112,17 +119,23 @@ func withinClassSignificance(tokens []string, class ClassID, blocks []Block, win
 			continue
 		}
 		salt := methodSalt(method)
-		null := make([]float64, permutations)
-		for i := 0; i < permutations; i++ {
+		combination := string(class.Scheme) + "|" + class.Label() + "|" + fmt.Sprint(windowSize) + "|" + method
+		null, err := runIndexedReplicates(ctx, workers, "part_a_significance", combination, permutations, nil, func(ctx context.Context, i int) (float64, error) {
+			if err := ctx.Err(); err != nil {
+				return 0, err
+			}
 			rng := rand.New(rand.NewSource(replicateSeed(seed, salt, i)))
-			null[i] = nullSilhouetteAtK(tokens, blocks, windowSize, method, row.K, rng)
+			return nullSilhouetteAtK(tokens, blocks, windowSize, method, row.K, rng), nil
+		}, nil)
+		if err != nil {
+			return nil, err
 		}
 		out = append(out, WithinClassCandidate{
 			Class: class, WindowSize: windowSize, Method: method, K: row.K,
 			Stats: buildEmpiricalStats(row.Silhouette, null),
 		})
 	}
-	return out
+	return out, nil
 }
 
 // refineTopCandidates re-runs the top refinementCandidateLimit qualifying
@@ -131,6 +144,11 @@ func withinClassSignificance(tokens []string, class ClassID, blocks []Block, win
 // primary pass's draws. blocksByClass must map every candidate's ClassID to
 // its physical blocks.
 func refineTopCandidates(tokens []string, blocksByClass map[ClassID][]Block, candidates []WithinClassCandidate, seed int64) []WithinClassCandidate {
+	out, _ := refineTopCandidatesParallel(context.Background(), 1, tokens, blocksByClass, candidates, seed)
+	return out
+}
+
+func refineTopCandidatesParallel(ctx context.Context, workers int, tokens []string, blocksByClass map[ClassID][]Block, candidates []WithinClassCandidate, seed int64) ([]WithinClassCandidate, error) {
 	type qualifying struct {
 		idx int
 		eff float64
@@ -149,13 +167,19 @@ func refineTopCandidates(tokens []string, blocksByClass map[ClassID][]Block, can
 		c := candidates[entry.idx]
 		blocks := blocksByClass[c.Class]
 		salt := methodSalt(c.Method) + 100 // distinct stream from the primary pass
-		null := make([]float64, refinementPermutations)
-		for i := 0; i < refinementPermutations; i++ {
+		combination := string(c.Class.Scheme) + "|" + c.Class.Label() + "|" + fmt.Sprint(c.WindowSize) + "|" + c.Method
+		null, err := runIndexedReplicates(ctx, workers, "part_a_refinement", combination, refinementPermutations, nil, func(ctx context.Context, i int) (float64, error) {
+			if err := ctx.Err(); err != nil {
+				return 0, err
+			}
 			rng := rand.New(rand.NewSource(replicateSeed(seed+999983, salt, i)))
-			null[i] = nullSilhouetteAtK(tokens, blocks, c.WindowSize, c.Method, c.K, rng)
+			return nullSilhouetteAtK(tokens, blocks, c.WindowSize, c.Method, c.K, rng), nil
+		}, nil)
+		if err != nil {
+			return nil, err
 		}
 		candidates[entry.idx].Stats = buildEmpiricalStats(c.Stats.Observed, null)
 		candidates[entry.idx].Refined = true
 	}
-	return candidates
+	return candidates, nil
 }

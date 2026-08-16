@@ -3078,3 +3078,17 @@ not previously counted, revising the production estimate from ~7.3h to
 audit, natural-parallelism-unit analysis across every permutation-based
 package, the Amdahl's-law scaling table (1/2/4/8/16/32 workers), and the
 recommended Task31 architecture.
+
+## Task31 — deterministic bounded goroutine execution
+
+The Task30 job contract is implemented for `conditional-regime-analyze`
+only. `JobID(stage, combination, replicate_index)` drives a bounded worker
+pool; each job retains the existing index-derived RNG, and a coordinator
+performs indexed placement followed by the original serial reduction.
+`workers=1` and larger counts share the same code path. SIGINT cancellation,
+fatal job errors, deterministic checkpoint prefixes, and resume with a
+changed worker count are covered. Across a frozen real-corpus workload,
+workers 1/2/4/8/12 produced all 19 artifacts byte-identically; measured
+wall times were 25.43s/21.96s/20.51s/20.48s/20.25s. Full implementation,
+hashes, allocation profiles, limitations, and conservative production
+estimates are recorded in `DISTRIBUTED_EXECUTION_IMPLEMENTATION.md`.

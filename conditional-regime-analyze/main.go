@@ -1,9 +1,11 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
 	"os"
+	"os/signal"
 	"strconv"
 	"strings"
 	"time"
@@ -54,6 +56,7 @@ func run() (code int) {
 	flag.IntVar(&c.KMaxResidual, "k-max-residual", 15, "maximum K for pooled residual clustering (Part B)")
 	flag.IntVar(&c.Permutations, "permutations", 1000, "primary block-aware null permutations")
 	flag.Int64Var(&c.Seed, "seed", 1, "deterministic random seed")
+	flag.IntVar(&c.Workers, "workers", 1, "bounded local permutation workers")
 	flag.StringVar(&c.CheckpointPath, "checkpoint-path", "", "progress checkpoint file (default <output-dir>/checkpoint.json; \"-\" disables checkpointing)")
 	flag.BoolVar(&c.Quiet, "quiet", false, "disable status bar")
 	prof := profiling.RegisterFlags(flag.CommandLine)
@@ -64,6 +67,13 @@ func run() (code int) {
 		fmt.Fprintln(os.Stderr, "Error: permutations must be positive")
 		return 2
 	}
+	if c.Workers < 1 {
+		fmt.Fprintln(os.Stderr, "Error: workers must be positive")
+		return 2
+	}
+	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
+	defer stop()
+	c.Context = ctx
 
 	defer profiling.PrintElapsed(os.Stderr, start)
 
