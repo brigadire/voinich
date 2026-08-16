@@ -111,8 +111,18 @@ func runManifestCmd(args []string) int {
 		return 1
 	}
 
+	opt := orchestratorOptions{
+		Executor:      *executor,
+		LocalWorkers:  *workers,
+		RemoteListen:  *remoteListen,
+		TLSCert:       *tlsCert,
+		TLSKey:        *tlsKey,
+		ClientCA:      *clientCA,
+		RemoteTimeout: *remoteTimeout,
+		RemoteRetries: *remoteRetries,
+	}
 	repo := repoRoot()
-	m, err := buildManifest(repo, *ivtff, *corpus, *executor, *workers, remoteWorkers)
+	m, err := buildManifest(repo, *ivtff, *corpus, opt, remoteWorkers)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "Error:", err)
 		return 1
@@ -126,12 +136,6 @@ func runManifestCmd(args []string) int {
 		return 1
 	}
 	fmt.Printf("Wrote %s\nExperimentID: %s\nGit commit: %s (dirty=%v)\nExecutor: %s\n", manifestPath(*experimentDir), m.ExperimentID, m.GitCommit, m.GitDirty, m.Executor)
-	_ = remoteTimeout
-	_ = remoteRetries
-	_ = tlsCert
-	_ = tlsKey
-	_ = clientCA
-	_ = remoteListen
 	return 0
 }
 

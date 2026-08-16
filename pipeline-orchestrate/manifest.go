@@ -44,23 +44,23 @@ type WorkerManifest struct {
 // experiments/<name>/FROZEN (see freeze.go) is what makes that immutability
 // enforceable rather than just a convention.
 type Manifest struct {
-	ExperimentID  string    `json:"experiment_id"`
-	CreatedAt     time.Time `json:"created_at"`
-	GitCommit     string    `json:"git_commit"`
-	GitDirty      bool      `json:"git_dirty"`
-	IVTFFPath     string    `json:"ivtff_path"`
-	IVTFFSHA256   string    `json:"ivtff_sha256"`
-	CorpusPath    string    `json:"corpus_path"`
-	CorpusSHA256  string    `json:"corpus_sha256"`
-	GoVersion     string    `json:"go_version"`
-	GOOS          string    `json:"goos"`
-	GOARCH        string    `json:"goarch"`
-	Hostname      string    `json:"hostname"`
-	NumCPU        int       `json:"num_cpu"`
-	Executor      string    `json:"executor"`       // conditional-regime-analyze's -executor
-	ExecutorNote  string    `json:"executor_note"`  // honest description of what "distributed" meant for this run
-	Workers       []WorkerManifest `json:"workers"`
-	Stages        []StageManifest  `json:"stages"`
+	ExperimentID string           `json:"experiment_id"`
+	CreatedAt    time.Time        `json:"created_at"`
+	GitCommit    string           `json:"git_commit"`
+	GitDirty     bool             `json:"git_dirty"`
+	IVTFFPath    string           `json:"ivtff_path"`
+	IVTFFSHA256  string           `json:"ivtff_sha256"`
+	CorpusPath   string           `json:"corpus_path"`
+	CorpusSHA256 string           `json:"corpus_sha256"`
+	GoVersion    string           `json:"go_version"`
+	GOOS         string           `json:"goos"`
+	GOARCH       string           `json:"goarch"`
+	Hostname     string           `json:"hostname"`
+	NumCPU       int              `json:"num_cpu"`
+	Executor     string           `json:"executor"`      // conditional-regime-analyze's -executor
+	ExecutorNote string           `json:"executor_note"` // honest description of what "distributed" meant for this run
+	Workers      []WorkerManifest `json:"workers"`
+	Stages       []StageManifest  `json:"stages"`
 }
 
 func sha256File(path string) (string, error) {
@@ -99,8 +99,10 @@ func gitCommit(repoPath string) (commit string, dirty bool, err error) {
 // executor/workerConcurrency describe the conditional-regime-analyze
 // configuration (Task31-34's only distributed-executor stage); remoteWorkers
 // is the honest list of remote worker identities actually configured for
-// this run's -executor remote coordinator (empty for local execution).
-func buildManifest(repoPath, ivtffPath, corpusPath string, executor string, localWorkers int, remoteWorkers []string) (*Manifest, error) {
+// this run's -executor remote coordinator (empty for local execution). opt
+// is passed straight through to stageArgs for every stage, so the manifest
+// records the exact command line each stage will actually be run with.
+func buildManifest(repoPath, ivtffPath, corpusPath string, opt orchestratorOptions, remoteWorkers []string) (*Manifest, error) {
 	commit, dirty, err := gitCommit(repoPath)
 	if err != nil {
 		return nil, err
@@ -117,7 +119,7 @@ func buildManifest(repoPath, ivtffPath, corpusPath string, executor string, loca
 
 	var workers []WorkerManifest
 	executorNote := ""
-	switch executor {
+	switch opt.Executor {
 	case "remote":
 		for _, w := range remoteWorkers {
 			workers = append(workers, WorkerManifest{Kind: "remote", Name: w})
@@ -125,7 +127,7 @@ func buildManifest(repoPath, ivtffPath, corpusPath string, executor string, loca
 		executorNote = fmt.Sprintf("conditional-regime-analyze used -executor remote with %d authenticated remote worker(s) over Task34 mTLS", len(remoteWorkers))
 	case "process", "goroutine":
 		workers = append(workers, WorkerManifest{Kind: "local", Name: hostname})
-		executorNote = fmt.Sprintf("conditional-regime-analyze used -executor %s with %d local worker slot(s) on %s; no remote machines were part of this run", executor, localWorkers, hostname)
+		executorNote = fmt.Sprintf("conditional-regime-analyze used -executor %s with %d local worker slot(s) on %s; no remote machines were part of this run", opt.Executor, opt.LocalWorkers, hostname)
 	default:
 		workers = append(workers, WorkerManifest{Kind: "local", Name: hostname})
 		executorNote = "conditional-regime-analyze used the default in-process goroutine executor"
@@ -144,12 +146,12 @@ func buildManifest(repoPath, ivtffPath, corpusPath string, executor string, loca
 		GOARCH:       runtime.GOARCH,
 		Hostname:     hostname,
 		NumCPU:       runtime.NumCPU(),
-		Executor:     executor,
+		Executor:     opt.Executor,
 		ExecutorNote: executorNote,
 		Workers:      workers,
 	}
 	for i, st := range stages {
-		args := stageArgs(st, orchestratorOptions{Executor: executor, LocalWorkers: localWorkers})
+		args := stageArgs(st, opt)
 		m.Stages = append(m.Stages, StageManifest{Index: i + 1, Name: st.Name, Dir: st.SourceDir, Args: args})
 	}
 	m.ExperimentID = computeExperimentID(m)
