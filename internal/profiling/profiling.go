@@ -19,9 +19,10 @@ import (
 // Config holds the profiling flag values. The zero value disables profiling
 // entirely.
 type Config struct {
-	CPUProfile string
-	MemProfile string
-	Trace      string
+	CPUProfile       string
+	MemProfile       string
+	Trace            string
+	MemStatsInterval time.Duration
 }
 
 // RegisterFlags registers the standard profiling flags on fs and returns the
@@ -31,14 +32,17 @@ func RegisterFlags(fs *flag.FlagSet) *Config {
 	fs.StringVar(&c.CPUProfile, "cpuprofile", "", "write CPU profile to file (disabled if empty)")
 	fs.StringVar(&c.MemProfile, "memprofile", "", "write heap profile to file after completion (disabled if empty)")
 	fs.StringVar(&c.Trace, "trace", "", "write execution trace to file (disabled if empty)")
+	fs.DurationVar(&c.MemStatsInterval, "memstats-interval", 0, "periodically log runtime.MemStats (HeapAlloc/HeapInuse/HeapIdle/HeapReleased/NumGC) to stderr at this interval while running (disabled if 0) - a live-heap diagnostic, distinct from the end-of-run -memprofile snapshot")
 	return c
 }
 
 // Session is an active profiling session started by Start.
 type Session struct {
-	cfg       *Config
-	cpuFile   *os.File
-	traceFile *os.File
+	cfg          *Config
+	cpuFile      *os.File
+	traceFile    *os.File
+	memStatsStop chan struct{}
+	memStatsDone chan struct{}
 }
 
 // Start begins CPU profiling and/or execution tracing as configured in cfg,
@@ -73,7 +77,34 @@ func Start(cfg *Config) (*Session, error) {
 		}
 		s.traceFile = f
 	}
+	if cfg.MemStatsInterval > 0 {
+		s.memStatsStop = make(chan struct{})
+		s.memStatsDone = make(chan struct{})
+		go logMemStatsPeriodically(cfg.MemStatsInterval, s.memStatsStop, s.memStatsDone)
+	}
 	return s, nil
+}
+
+// logMemStatsPeriodically writes one runtime.MemStats snapshot to stderr
+// every interval until stop is closed, then closes done. It is a pure
+// read-only diagnostic (runtime.ReadMemStats does not allocate on the
+// analyzed program's behalf beyond its own bookkeeping) - it never touches
+// program state, RNG, or output.
+func logMemStatsPeriodically(interval time.Duration, stop <-chan struct{}, done chan<- struct{}) {
+	defer close(done)
+	ticker := time.NewTicker(interval)
+	defer ticker.Stop()
+	var m runtime.MemStats
+	for {
+		select {
+		case <-stop:
+			return
+		case <-ticker.C:
+			runtime.ReadMemStats(&m)
+			fmt.Fprintf(os.Stderr, "memstats: HeapAlloc=%dMB HeapInuse=%dMB HeapIdle=%dMB HeapReleased=%dMB HeapObjects=%d NumGC=%d\n",
+				m.HeapAlloc>>20, m.HeapInuse>>20, m.HeapIdle>>20, m.HeapReleased>>20, m.HeapObjects, m.NumGC)
+		}
+	}
 }
 
 // Stop finalizes profiling: it stops any active CPU profile and trace, then
@@ -82,6 +113,10 @@ func Start(cfg *Config) (*Session, error) {
 func (s *Session) Stop() error {
 	if s == nil {
 		return nil
+	}
+	if s.memStatsStop != nil {
+		close(s.memStatsStop)
+		<-s.memStatsDone
 	}
 	if s.cpuFile != nil {
 		pprof.StopCPUProfile()

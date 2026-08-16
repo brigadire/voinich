@@ -6,16 +6,32 @@ import (
 	"sort"
 )
 
+// normalizeKeysScratch is a reusable backing array for normalize's sorted-key
+// scratch slice (task28 Phase 2): normalize is called once per token per
+// trial (RandomizeProjection, GenericSmoothing) or once per token
+// (BuildProjection) - millions of times over a production run - and every
+// call previously allocated a fresh []string just to hold m's keys long
+// enough to sort them for deterministic accumulation order. The slice is
+// purely transient scratch (read only within this call, never retained
+// afterward: the returned out map is a brand-new map built from m's values,
+// not from keys), and normalize is never called re-entrantly (it does not
+// call itself or anything that calls it back, and this analyzer introduces
+// no concurrency - see the package-level note in analyze.go), so reusing one
+// growable backing array across every call is safe: it changes nothing
+// about which keys are visited, in what order, or what ends up in out.
+var normalizeKeysScratch []string
+
 func normalize(m map[string]float64) map[string]float64 {
 	// Sum in sorted key order: map iteration order is randomized
 	// independently per range statement execution, so summing in `range m`
 	// order made this float64 accumulation nondeterministic across
 	// otherwise byte-identical calls (see determinism_test.go).
-	keys := make([]string, 0, len(m))
+	keys := normalizeKeysScratch[:0]
 	for k := range m {
 		keys = append(keys, k)
 	}
 	sort.Strings(keys)
+	normalizeKeysScratch = keys
 	s := 0.0
 	for _, k := range keys {
 		if v := m[k]; v > 0 {
@@ -125,11 +141,23 @@ func ProjectDistribution(counts map[string]int, p Projection) map[string]float64
 	return out
 }
 
+// metricsFloatSeenScratch/metricsFloatKeysScratch are reusable scratch for
+// metricsFloat's key-union step (task28 Phase 2), on the same reasoning as
+// normalizeKeysScratch above: metricsFloat is called an enormous number of
+// times (every pairwise cohesion comparison, every trial, every distance),
+// and both keySet and keys are purely transient - read only within this
+// call to determine the union's sorted visitation order, never retained -
+// so reusing them across calls (map cleared via clear(), slice reset via
+// [:0]) changes nothing about the result, only where the scratch bytes live.
+var metricsFloatSeenScratch = map[string]bool{}
+var metricsFloatKeysScratch []string
+
 func metricsFloat(a, b map[string]float64) (js, overlap, jaccard float64) {
 	if len(a) == 0 || len(b) == 0 {
 		return
 	}
-	keySet := map[string]bool{}
+	clear(metricsFloatSeenScratch)
+	keySet := metricsFloatSeenScratch
 	for k := range a {
 		keySet[k] = true
 	}
@@ -141,11 +169,12 @@ func metricsFloat(a, b map[string]float64) (js, overlap, jaccard float64) {
 	// made them nondeterministic across otherwise byte-identical calls (see
 	// determinism_test.go). inter is an exact integer count and needs no
 	// such fix.
-	keys := make([]string, 0, len(keySet))
+	keys := metricsFloatKeysScratch[:0]
 	for k := range keySet {
 		keys = append(keys, k)
 	}
 	sort.Strings(keys)
+	metricsFloatKeysScratch = keys
 	inter, div := 0, 0.0
 	for _, k := range keys {
 		pa, pb := a[k], b[k]

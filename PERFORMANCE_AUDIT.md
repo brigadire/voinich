@@ -252,3 +252,66 @@ Wiring the same 3-line pattern (`profiling.RegisterFlags` before
 the remaining CLIs, starting with the High-priority list above, is required
 before Phase 4/5 work on each one and carries no correctness risk — it is
 purely additive and a no-op when the flags are unset.
+
+## task28: pre-production dominant-stage optimization
+
+With this audit's own backlog (items 1-10) fully closed, task28 asked for
+one more pre-production pass on the two stages known to dominate end-to-end
+runtime. See `PERFORMANCE_REFACTOR_REPORT.md`'s "Pre-production
+dominant-stage optimization" section for full detail.
+
+**Phase 1 (`conditional-regime-analyze`) — verified already fixed, no
+change made.** task28 restated this audit's own claim that
+`fitResidualClustering` rebuilds its distance matrix per K; that was
+already fixed by item 5 above (`prepareResidualFit`). Fresh profiling
+(`-permutations 5`, real corpus) confirmed the fix holds
+(`prepareResidualFit`/`residualDistanceMatrix` = 2.82% of CPU, not the ~14x
+higher cost a per-K rebuild would cause) and surfaced two further,
+explicitly-not-fixed bottlenecks: `expandResidualLabels`'s map-based
+`euclideanDistance` is now the dominant cost (73% of CPU) — genuinely
+K-dependent required work, not redundant, but map-lookup-bound; and
+`stability.go`'s `heldOutSeparation` calls the unhoisted exported
+`globalregime.JSDistance` in an O(heldOut×k) loop (real, but Part A-only,
+so it doesn't scale with `-permutations` and stays low-impact at
+production scale). Extrapolated production wall time
+(`-permutations 1000`): **~41.9 hours**, which is the necessary cost of the
+frozen search space, not implementation waste — hence the existing
+per-replicate checkpoint/resume mechanism.
+
+**Phase 2 (`structural-projection-analyze`) — fixed the smallest justified
+piece; a larger dense-representation rewrite remains deferred.** Fresh
+profiling of the current, already-item-3-optimized binary confirmed
+`normalize`/`metricsFloat`/`countsFloat` (98%+ of allocation, ~85%+ of CPU
+cumulative) as the dominant cost, exactly the functions item 3 flagged as a
+deferred follow-up — but a full dense-TokenID rewrite of `Projection` was
+rejected as unjustified by the dependency analysis (their hot-path inputs
+are degree-bounded, not vocabulary-sized, so a dense whole-vocabulary array
+per call would reintroduce an O(V²) cost, the same trap `GenericSmoothing`
+already escaped). Instead, `normalize`/`metricsFloat`'s transient per-call
+sort scratch was converted to a reused package-level buffer (the same
+`clear()`-and-reuse pattern already validated for `GenericSmoothing` in
+item 3) — safe because that scratch is never retained in the returned
+value. Result: total allocation for a representative run dropped ~47%
+(103.4GB to 54.6GB), `metricsFloat` became fully allocation-free (0 B/op at
+every benchmarked size) and 17-35% faster in isolation; full-CLI output
+confirmed byte-for-byte identical (`diff -rq`) before vs after. A genuinely
+new diagnostic was added to make this possible: `internal/profiling` gained
+an opt-in `-memstats-interval` live-heap sampler, because the existing
+end-of-run `-memprofile` snapshot is empty by the time it's taken (all
+trial-loop memory is long collected) and cannot show what a multi-hour
+run's memory actually does mid-flight. At reduced scale that sampler showed
+the heap spikes once early then plateaus at a small 170-270MB live set for
+the rest of the run — most of the previously-reported 14-15GB is Go's
+runtime holding onto address space from that one transient peak, not
+genuinely live data. A partial (39m40s) run at the real production
+configuration refined this picture further before being deliberately
+stopped short of completion (see below): at production scale the heap
+instead oscillates continuously between ~1-11.5GB rather than settling low,
+consistent with the true peak driver being `familyAnalysis`'s *retained*
+per-distance candidate cache (untouched by this fix) rather than the
+transient scratch this fix removed — so the fix is expected to meaningfully
+cut total allocation and modestly help wall time, but not to sharply lower
+peak RSS. See `PERFORMANCE_REFACTOR_REPORT.md`'s Phase 2 STEP 10 for the
+full reasoning and the explicit decision to stop the production run early
+(cost of ~2 more hours vs. evidence already in hand) rather than complete
+it.

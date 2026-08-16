@@ -2341,3 +2341,544 @@ see "Correctness fix (out-of-band)" above — and should not recur if any
 future optimization of these two hot paths keeps accumulation order
 independent of map iteration, e.g. by continuing to sort keys or by moving
 to dense integer-indexed accumulation.)
+
+---
+
+# Pre-production dominant-stage optimization (task28)
+
+With the task27 backlog fully closed, task28 asks for one more pass over the
+two stages known to dominate end-to-end pipeline runtime —
+`conditional-regime-analyze` and `structural-projection-analyze` — before
+the first complete production run, gated phase-by-phase (Phase 2 only
+starts once Phase 1 is validated).
+
+## Phase 1 — `conditional-regime-analyze`
+
+### Hypothesis tested
+
+task28's brief restates the audit's original claim: `fitResidualClustering`
+rebuilds the (scale, replicate)'s residual distance matrix from scratch on
+every one of the 14 K values (`k-max-residual=15`) in the residual K-sweep,
+even though the underlying data is K-invariant. Per task28's own STEP 1
+instruction ("do not optimize based only on the audit statement"), this was
+verified against the *current* code before assuming it still holds.
+
+**It does not.** `internal/conditionalregime/residual.go`'s
+`prepareResidualFit` (added by task27 item 5, still present and tested)
+already computes everything K-invariant — `residualVectors`,
+`cappedSampleIndices`, and the `residualDistanceMatrix` itself — exactly
+once per (scale, replicate), and all three call sites (`residualSweep`,
+`residualSweepProgress`, `residualNullMax` in `residualsweep.go`) call it
+*before* their `for k := kMin; k <= kMax` loop, passing the read-only
+`residualFitPrep` into `fitResidualClustering` for each K. The analogous
+Part A hoist (`withinclass.go`'s `prepareWithinFit`, called once before the
+method×K double loop in `withinClassSweep`) is likewise already in place.
+Both are covered by task27's own reference-oracle tests
+(`TestFitResidualClusteringHoistMatchesReference`,
+`TestPrepareResidualFitIsInvariantAcrossK`,
+`TestFitClusteringHoistMatchesReference`,
+`TestPrepareWithinFitIsInvariantAcrossCalls`), all of which still pass
+(`go test ./internal/conditionalregime/... -race -count=1`, 5.9s, all
+green). **No code change was made for Phase 1** — the specific issue named
+in the audit and in task28 was already fixed by task27 item 5, and
+re-implementing an already-complete hoist would violate task28's own "do
+not reopen completed backlog items" instruction.
+
+### Fresh verification profile (STEP 1 evidence)
+
+To confirm this holds under real production-shaped load rather than trusting
+the earlier task27 record alone, a fresh `-cpuprofile`/`-memprofile` run was
+taken against the *current* binary: real corpus (`data_work/ZL3b-x7.txt`,
+`workdir/metadata-validation/token_metadata_map.tsv`, 39,026 tokens, 4
+eligible classes), `-permutations 5` (checkpointing disabled via
+`-checkpoint-path=-` for a clean single-process measurement), production
+`-k-max-residual 15`. Wall time: **20m8.545s**.
+
+```
+      flat  flat%   sum%        cum   cum%
+   149.26s 11.98% 11.98%    926.91s 74.37%  conditionalregime.euclideanDistance
+         0     0% 11.98%    911.30s 73.12%  conditionalregime.fitResidualClustering
+      .18s 0.014% 11.99%    911.28s 73.12%  conditionalregime.expandResidualLabels
+   358.45s 28.76% 40.75%    778.84s 62.49%  runtime.mapaccess1_faststr
+         0     0% 40.75%    752.05s 60.34%  conditionalregime.residualGlobalCorrection
+         0     0% 40.75%    752.05s 60.34%  conditionalregime.residualNullMax
+         0     0% 40.75%    297.36s 23.86%  conditionalregime.residualSweepProgress
+  186.13s 14.93% 55.69%    186.13s 14.93%  internal/runtime/maps.ctrlGroup.matchH2
+  126.42s 10.14% 65.83%    126.42s 10.14%  cmpbody
+  106.01s  8.51% 75.91%    106.01s  8.51%  aeshashbody
+```
+
+Filtered to `prepareResidualFit` (the function that actually builds the
+distance matrix): **35.15s cumulative — 2.82% of total CPU**, with
+`residualDistanceMatrix` itself at 21.10s (1.69%). If the audited per-K
+rebuild still existed, this would be roughly 14x higher (one build per K
+instead of one per scale/replicate) and would dominate the profile the way
+`euclideanDistance` did before task27 item 5's fix (72% of CPU, per that
+item's own before-profile). It does not: **distance-matrix construction is
+now a rounding error next to the rest of the pipeline**, which is exactly
+the intended post-hoist shape.
+
+`allocation (alloc_space, 48.62GB total for this run)` confirms the same
+story from the allocation side: `prepareResidualFit`/`residualDistanceMatrix`
+do not even appear in the allocation top-15; the large allocators are
+`buildClassWindows`/`BuildWindows`/`slidingWindows` (61.6%, 29.9GB —
+genuinely proportional to work: windows must be rebuilt from the shuffled
+corpus on every permutation replicate) and `globalregime.jsDistance`/
+`normalize`/`sortedProfileKeys` (32.9%/20.5%/11.8% — see the `stabilityForClass`
+finding below).
+
+### What's dominant now, and why it's not a bug
+
+`expandResidualLabels` (73.12% of CPU) assigns every window — not just the
+capped fitting sample — to its nearest of K centroids, once per K, so that
+`residual_cluster_summary.tsv`'s full-corpus diagnostics are computed at
+every K in the sweep. This is genuinely K-dependent, required work (task28
+explicitly reserves this kind of dependency-driven cost for the "necessary
+computation of the current scientific algorithm" STOP condition), **not**
+a redundant recomputation of something K-invariant. Its cost is now almost
+entirely inside `euclideanDistance`'s `vector` (`map[string]float64`)
+lookups (`mapaccess1_faststr` 62.5%, `ctrlGroup.matchH2` 14.9%, `cmpbody`
+10.1%, `aeshashbody` 8.5% — Go's swiss-table map-access internals) rather
+than sorting, which task27 item 5 already eliminated.
+
+### Further bottleneck exposed (reported, not fixed, per task28 Phase 1's explicit instruction)
+
+Two implementation-level costs were exposed by this profiling that are
+**not** the audited issue and were **not** touched, per task28's "report it
+but DO NOT automatically rewrite it":
+
+1. **`euclideanDistance`'s map-based `vector` representation is now the
+   dominant CPU cost** (see above). A dense `[]float64`/TokenID
+   representation for residual feature vectors (mirroring the pattern this
+   whole task27/task28 effort has applied elsewhere) would likely cut a
+   large fraction of the ~62%+15%+10%+8.5% map-access share, but this is a
+   real algorithmic representation change to a scientific-computation hot
+   path, explicitly out of Phase 1's scope ("distance matrix" hoist only).
+2. **`internal/conditionalregime/stability.go`'s `heldOutSeparation`** (Part
+   A, `stabilityForClass`) calls the exported `globalregime.JSDistance(a,
+   b)` — a thin wrapper around the *unhoisted* `jsDistance`, which rebuilds
+   a fresh key-union map and re-sorts it on **every call** — inside an
+   O(heldOut × k) loop where each of the k medoid profiles is compared
+   against every held-out window. This is the same "same profile reused
+   across many calls, re-sorted every time" pattern task27 items 7/10 fixed
+   elsewhere, just not for this specific exported single-pair API. It shows
+   up clearly on the allocation side (`jsDistance`+`normalize`+
+   `sortedProfileKeys` ≈ 65% of this run's 48.62GB total alloc_space) but
+   **not** materially on the CPU side (`stabilityForClass` cum: 71.66s,
+   5.75%) because — critically — `stabilityForClass` is Part A
+   (within-class) work: it runs once per (class, window_size, best-method)
+   combination and **does not scale with `-permutations`**. At production
+   scale (`-permutations 1000`) its fixed ~72s cost becomes proportionally
+   negligible next to Part B's cost (below), so this is real but low-impact
+   at production scale — flagged for awareness, not treated as urgent.
+
+### Extrapolated production wall time
+
+`residualGlobalCorrection` (`-permutations 5`, 2 methods × 5 permutations =
+10 replicates) took 752.05s → **~75.2s/replicate**. The rest of the pipeline
+(Part A, the non-permutation-scaled residual sweep, Part C) took the
+remaining ~456.5s and does not scale with `-permutations`. At the production
+default (`-permutations 1000`, 2 methods × 1000 = 2000 replicates):
+
+    2000 replicates × 75.2s/replicate  ≈ 150,400s ≈ 41.8 hours
+    + ~456.5s fixed overhead           ≈  0.13 hours
+    ────────────────────────────────────────────────
+    estimated production wall time     ≈ 41.9 hours (~1.75 days)
+
+This is **not** a regression or leftover implementation waste — it is the
+necessary cost of the frozen scale × K × method × permutation search space
+at production settings, which is exactly why `conditional-regime-analyze`
+already has a per-replicate checkpoint/resume mechanism
+(`internal/conditionalregime/checkpoint.go`, `onSave` called after every
+replicate). If the map-based `euclideanDistance` representation named above
+were converted to a dense TokenID array in a future task, it could plausibly
+cut a multi-hour fraction of this — a legitimate hours-scale candidate for
+follow-up, per the global STOP CONDITION's framing, but explicitly deferred
+here.
+
+### Correctness
+
+- `gofmt -l`, `go vet ./internal/conditionalregime/...`, `go build ./...`:
+  clean.
+- `go test ./internal/conditionalregime/... -race -count=1`: all 17 tests
+  pass, including every task27 item 5 reference-oracle test listed above —
+  unchanged since no code in this package was modified for Phase 1.
+- No new determinism risk introduced (no code touched); the map-iteration
+  audit task28 asks for was performed as part of understanding
+  `stabilityForClass`'s allocation pattern above and found already safe
+  (`jsDistance`'s `d` accumulates over a pre-sorted `keys` slice, not raw
+  map range — see the comment already in `core.go`).
+
+### Phase 1 conclusion
+
+The specific optimization task28 Phase 1 asks for is already complete
+(task27 item 5). Phase 1 is validated by fresh, real-corpus profiling
+evidence rather than re-asserting the historical record, and two further
+implementation-level bottlenecks were identified and documented — not
+fixed, per explicit instruction. Proceeding to Phase 2.
+
+## Phase 2 — `structural-projection-analyze`
+
+### STEP 5: profiling the current (already-hoisted, already-buffer-reused) implementation
+
+task27 item 3 already fixed `GenericSmoothing`'s O(V²)-per-call allocation
+via buffer reuse and confirmed `normalize`/`metricsFloat`/`countsFloat`/
+`ProjectDistribution` as a deferred, broader "dense representation" follow-up
+candidate. task28 explicitly forbids assuming that follow-up is
+automatically correct — the current, already-optimized binary was profiled
+fresh instead of reusing item 3's historical numbers.
+
+**Live-heap diagnostic infrastructure added first.** `internal/profiling`
+gained a `-memstats-interval` flag (`Config.MemStatsInterval`, a background
+goroutine logging `runtime.MemStats` to stderr) because the *existing*
+`-memprofile` mechanism (`profiling.Session.Stop`) calls `runtime.GC()` then
+`pprof.WriteHeapProfile` only at program exit, *after* `analyze()` has
+already returned and all trial-loop working memory has long been collected —
+confirmed empirically: the end-of-run `inuse_space` profile for this run
+shows **2.50MB total**, entirely runtime scheduler bookkeeping, none of the
+analyzer's own data. This end-of-run snapshot cannot answer "why does peak
+RSS reach 14-15GB" (task28's explicit ask); a live, in-flight sampler is
+required, hence the new flag. It is purely additive (opt-in, no-op when
+unset, read-only `runtime.ReadMemStats`, no program-state/RNG/output
+interaction) and reusable by any CLI already wired to `internal/profiling`.
+
+**Representative run**: `-random-projections 3` (the same reduced,
+non-scientific configuration item 3 established — `familyAnalysis`'s
+internal 200-trial loop is hardcoded regardless of this flag, so it already
+exercises the real per-trial hot paths), real corpus/inputs, fresh
+`-cpuprofile`/`-memprofile`/`-memstats-interval=10s`. Wall time: 5m10.6s.
+
+```
+$ go tool pprof -top -cum profiles/spa.cpu.current.pprof
+      flat  flat%   sum%        cum   cum%
+   135.76s 34.13%           structuralprojection.GenericSmoothing
+    25.52s  6.41%   128.24s 32.23%  runtime.mapassign_faststr
+   120.37s 30.26%           structuralprojection.normalize
+   112.87s 28.37%           structuralprojection.metricsFloat
+    98.41s 24.74%           sort.Strings
+    83.49s 20.99%           runtime.gcDrain (GC)
+```
+
+Top allocators (`alloc_space`, 103.39GB total for this 3-trial run):
+`normalize` 45.04% (46.7GB), `metricsFloat` 41.02% (42.4GB), `countsFloat`
+11.72% (12.1GB), `ProjectDistribution` 1.41%. `GenericSmoothing`'s **own**
+flat allocation is 7.70MB (0.0073%) — confirming its own buffer-reuse fix
+still holds; its 44.99% cumulative share is entirely attributable to calling
+`normalize`. This exactly matches item 3's own after-profile shape — no
+regression, no surprise, consistent baseline.
+
+**Live-heap breakdown (the actual task28 ask), from `-memstats-interval=10s`**:
+
+```
+t=10s  HeapAlloc=1418MB  HeapIdle=418MB    HeapReleased=5MB      NumGC=22
+t=50s  HeapAlloc=9683MB  HeapIdle=211MB    HeapReleased=4MB      NumGC=26
+t=60s  HeapAlloc=1737MB  HeapIdle=8986MB   HeapReleased=8656MB   NumGC=29
+t=190s HeapAlloc=11120MB HeapIdle=27MB     HeapReleased=25MB     NumGC=41
+t=200s HeapAlloc=220MB   HeapIdle=12693MB  HeapReleased=12614MB  NumGC=60
+t=210s..310s: HeapAlloc oscillates 167-265MB, HeapIdle/HeapReleased pinned
+              at ~12.6-12.7GB / 12616MB, NumGC climbing 93→421
+```
+
+**This directly answers task28's "distinguish allocation churn from
+genuinely live retained data" question: the observed ~11-15GB is
+overwhelmingly *not* live data.** `HeapAlloc` (the genuinely live heap) spikes
+to ~11GB once (around the point every family's per-distance caches are all
+simultaneously populated), then — from t≈200s onward, for the rest of the
+run — plateaus at **170-270MB**, a small fraction of the peak. What stays
+large is `HeapIdle`/`HeapReleased`, both pinned at ~12.6-12.7GB from that one
+peak onward: Go's runtime reserved that much address space during the
+transient spike and has released most-but-not-all of it back to the OS,
+then stops proactively returning the remainder within the observation
+window. `NumGC` accelerates sharply late in the run (33 GC cycles per 10s
+interval), consistent with many small, well-managed collections of modest
+per-trial garbage — evidence *against* a leak, and consistent with the CPU
+profile's `gcDrain`/`gcBgMarkWorker` share.
+
+**Practical consequence**: the true live working set for this analyzer is
+small; the 14-15GB peak RSS item 3 measured at full production scale is a
+one-time allocation-burst artifact of the peak, not "the algorithm needs
+14GB of live data." A fix that reduces the *size of the peak burst* (less
+allocation churn during the family-analysis loop) should directly lower the
+peak RSS plateau, not just total CPU/GC time — this shaped the fix chosen
+below.
+
+### STEP 6: dependency/representation analysis
+
+For `normalize(m map[string]float64)`, `metricsFloat(a, b map[string]float64)`,
+and `countsFloat(a map[string]int)` — the three functions STEP 5 confirmed
+dominant:
+
+- **Token identity**: only ever used as a map key; no function reads any
+  property of the string itself beyond identity and lexicographic order
+  (needed only for the determinism-mandated sort).
+- **Projection / random projection / trial**: `normalize`'s input `m` is
+  built fresh per (token, trial) inside `RandomizeProjection`/
+  `GenericSmoothing` — small, bounded by `degree` (a token's own neighbor
+  count, typically single-to-double digits), *not* by vocabulary size.
+  `metricsFloat`'s inputs are *projected distributions*
+  (`ProjectDistribution`'s output) or raw frequency distributions
+  (`countsFloat`'s output) — these can be considerably larger than a single
+  row, since a distribution pools weight from every observed context token's
+  own row.
+- **Distance**: `metricsFloat`'s calls inside `familyAnalysis`'s `coh`
+  closure are per-distance (`p[t].Right[d]`), but `ProjectDistribution`'s
+  results are already cached per (token, distance) across all 200 trials
+  (`fullCache`/`ablCache` in `familyAnalysis`) — confirmed no redundant
+  `ProjectDistribution` recomputation exists; the redundancy is entirely in
+  `normalize`/`metricsFloat`'s *own* per-call scratch construction, not in
+  what they're called on.
+- **Frequency**: only reaches these functions through the values already
+  attached to each key; not itself a dependency of the sort/accumulation
+  order.
+
+**Is dense TokenID indexing necessary?** For `normalize`'s hot call sites
+(`RandomizeProjection`, `GenericSmoothing`): **no** — each call's live key
+set is small (degree-bounded), so a dense whole-vocabulary array per call
+would replace an O(degree) touch with an O(V) scan, reintroducing an O(V²)
+cost across the token loop — the same trap `GenericSmoothing`'s own O(V²)
+bug came from, just via a different route. A dense representation is only
+profitable if it can be indexed *without* an O(V) per-call scan, which
+would mean changing `Projection`'s row type from `map[string]float64` to a
+parallel sparse `(TokenID, weight)` list — a change that cascades into
+every downstream consumer (`metricsFloat`, `ProjectDistribution`,
+`familyAnalysis`, `compare`, `sequenceResults`, `gain`, `meanGain` — the
+same broad list item 3 already flagged), a genuinely large rewrite with the
+RNG-order and floating-point-order risk task28 explicitly warns about.
+**What is not required** is that scale of rewrite to capture most of the
+available win: the `keys []string` slice (`normalize`) and `keySet
+map[string]bool` + `keys []string` (`metricsFloat`) are pure, single-call
+*scratch* — read only within the call to fix accumulation order, never
+retained in the returned value — so reusing them across calls (matching the
+already-validated `GenericSmoothing`/`clear()` pattern from item 3) is safe
+and requires no representation change anywhere else in the package.
+
+### STEP 7: the smallest justified fix — scratch-buffer reuse for `normalize`/`metricsFloat`
+
+Per task28's explicit "implement the smallest dense representation
+necessary" and "reducing the constant factor... without pretending the
+asymptotic complexity changed": `normalize` and `metricsFloat` now reuse a
+package-level scratch buffer (`normalizeKeysScratch []string`;
+`metricsFloatSeenScratch map[string]bool` + `metricsFloatKeysScratch
+[]string`) instead of allocating fresh on every call, on the exact reasoning
+above. Safety: neither function is reentrant (does not call itself or
+anything that calls back into it) and this analyzer introduces no
+concurrency (confirmed: no `go func`/`sync.` anywhere in the package) — see
+the inline comments in `core.go`. `countsFloat` and `ProjectDistribution`
+were considered and **not** touched: every `countsFloat` call site passes
+its result directly and immediately into `metricsFloat` in the same
+expression or statement pair (confirmed by inspecting all 8 call sites), so
+a naive shared-scratch reuse risks two arguments of one `metricsFloat(a, b)`
+call silently aliasing the same buffer when `a` and `b` are both built from
+`countsFloat` in one statement — a real aliasing hazard for a modest (11.7%
+of allocation, no-sort-needed) win, so it was left as an explicitly
+rejected optimization rather than risk a silent correctness bug for a small
+gain. `RandomizeProjection`'s own per-token `m := map[string]float64{}`
+(unlike `GenericSmoothing`'s, never buffer-reuse-fixed in item 3) was also
+considered, but the profile shows `RandomizeProjection` at 0.005% of CPU and
+0.029% of allocation for this workload — negligible, not worth the change.
+
+### Correctness validation
+
+- **Reference-vs-optimized unit oracle** (`core_scratch_hoist_test.go`): the
+  pre-scratch-reuse implementations are preserved verbatim as
+  `referenceNormalizeAllocating`/`referenceMetricsFloatAllocating`.
+  `TestNormalizeScratchReuseMatchesReference`/
+  `TestMetricsFloatScratchReuseMatchesReference` compare against them across
+  map-size pairs {0,1,2,5,20,60}×{0,1,2,5,20,60}×several trials
+  (`reflect.DeepEqual`/exact float equality). `TestNormalizeScratchReuseInterleavedCalls`/
+  `TestMetricsFloatScratchReuseInterleavedCalls` alternate wildly different
+  map sizes across consecutive calls (forcing the shared scratch to grow,
+  shrink via `[:0]`, and grow again) to prove no state leaks between calls.
+- **Determinism regression**: the pre-existing
+  `TestNormalizeDeterministicAcrossCalls`/`TestMetricsFloatDeterministicAcrossCalls`
+  (item 3, `determinism_test.go`) exercise `normalize`/`metricsFloat`
+  directly and equally cover the scratch-reuse change without duplication —
+  both still pass.
+- **Full-CLI old-vs-new, real corpus** (`-random-projections 3`): built
+  `structural-projection-analyze-before`/`-after` via `git stash` isolating
+  only `core.go` + the new test file. `diff -rq` between the two complete
+  output directories (10 files including `plots/`) reports **zero
+  differences** — byte-for-byte identical. (An initial `sha256sum`-of-
+  file-list-with-paths check appeared to differ; diagnosed immediately per
+  task28's explicit "stop and diagnose" instruction — the mismatch was
+  solely the two runs' different `-output-dir` *path strings* being hashed
+  along with content, not a real content difference. `diff -rq`, which
+  compares content only, confirmed identity. Lesson carried over from this
+  same false-alarm shape earlier in `soft-structural-space`'s validation.)
+- `go test ./internal/structuralprojection/... -race -count=1`: all 27
+  tests pass (existing suite plus 4 new reference/interleaving tests).
+  `go vet ./...`, `gofmt -l`: clean.
+
+### STEP 4-equivalent benchmark: before/after at reduced scale
+
+| | before | after |
+|---|---|---|
+| wall time (`-random-projections 3`) | 307.6s | 310.6s (noise — see below) |
+| CPU profile total samples | 397.83s (128.11%) | 355.43s (113.31%), **~10.7% less** |
+| alloc_space (heap profile) | 103.39GB | 54.64GB, **~47.2% less (essentially halved)** |
+
+Wall time is flat (within run-to-run noise for a 5-minute single-shot
+measurement) even though total CPU-seconds and allocation both dropped
+meaningfully — consistent with `sort.Strings`/`slices.pdqsortOrdered`'s
+*comparison* cost (not allocation) remaining the critical-path cost at this
+reduced trial scale: buffer reuse removes the allocation/GC overhead around
+the sort, not the sort itself. The allocation reduction is expected to
+matter more at production scale, where it directly caps how large the
+transient peak (and therefore the `HeapIdle`-driven RSS plateau identified
+in STEP 5) can grow.
+
+### STEP 9: empirical scaling (`-benchtime=20x`)
+
+| map size | normalize before ns/op | after ns/op | Δns | before B/op | after B/op | ΔB |
+|---|---|---|---|---|---|---|
+| 10 | 2,696 | 2,601 | ~3.5% faster | 872 | 712 | ~18.3% less |
+| 100 | 11,324 | 6,429 | ~43.2% faster | 4,168 | 3,464 | ~16.9% less |
+| 500 | 117,949 | 109,397 | ~7.2% faster | 62,600 | 54,408 | ~13.1% less |
+| 1,000 | 255,223 | 222,988 | ~12.6% faster | 125,400 | 109,016 | ~13.1% less |
+| 8,363 (real vocab) | 2,227,423 | 2,331,757 | ~4.7% slower (noise) | 1,012,798 | 873,528 | ~13.8% less |
+
+| map size | metricsFloat before ns/op | after ns/op | Δns | before B/op | after B/op |
+|---|---|---|---|---|---|
+| 10 | 5,829 | 4,222 | ~27.6% faster | 1,704 | **0** |
+| 100 | 16,808 | 13,144 | ~21.8% faster | 8,104 | **0** |
+| 500 | 268,599 | 222,229 | ~17.3% faster | 125,144 | **0** |
+| 1,000 | 552,978 | 457,416 | ~17.3% faster | 250,744 | **0** |
+| 8,363 (real vocab) | 6,723,031 | 4,407,188 | ~34.5% faster | 2,017,602 | **0** |
+
+`metricsFloat` is now fully allocation-free (its output is three scalars,
+not a retained map) and consistently 17-35% faster. `normalize`'s win is
+real but smaller and noisier, because its **output** map (`out`, returned
+and retained as part of `Projection`) still allocates fresh every call —
+only the transient `keys` scratch was eliminated, which is a smaller share
+of `normalize`'s own per-call cost than the scratch was of `metricsFloat`'s.
+**The algorithm remains exactly what it was**: still one sort per call for
+`normalize`/`metricsFloat` (needed for deterministic accumulation order,
+never removed), still O(V²) overall for the family-analysis/smoothing
+sweep this doesn't touch — only the allocation constant factor dropped.
+
+### STEP 10: production-scale validation (`-random-projections 200`) — partial run, stopped by explicit decision
+
+A background run was started against the actual scientific configuration
+(`-min-structural-similarity 0.65 -min-reliability 0.70
+-random-projections 200`, real corpus/inputs, `-memstats-interval=60s`,
+`-cpuprofile`). After 39m40s (2,380s CPU-time, no sign of a problem — just
+genuinely long, as expected for this configuration), the user weighed the
+cost of waiting a further ~2-2.5 hours against the evidence already in hand
+(reduced-scale byte-identical correctness, real-vocabulary-scale scaling
+benchmarks) and chose to stop the run rather than let it complete. This is
+the right call given task28's own stop-condition framing ("whether any
+remaining optimization is likely to save hours rather than
+seconds/minutes") — spending 2+ more hours to *measure* a change whose
+isolated effect is already benchmarked is a different question from
+whether the change itself is justified, and this section reports the
+partial run's evidence plus a reasoned estimate rather than a completed
+number.
+
+**What the partial run's live-heap trace shows.** Unlike the reduced-scale
+(`-random-projections 3`) trace — one early spike, then a low 170-270MB
+plateau for the rest of the run — the production-scale trace (40 samples,
+60s apart) shows `HeapAlloc` **continuously oscillating** between ~700MB and
+~11.5GB throughout all 40 minutes observed, with `HeapIdle`/`HeapReleased`
+correspondingly oscillating in a rough inverse relationship. This is
+consistent with real behavior, not a leak (`NumGC` climbs steadily,
+25→227 over the window, evidence of ongoing, working collection) — but it
+reveals a more precise picture than the reduced-scale trace could: at
+production scale, with 200 real random/smoothing controls cycling across
+every family and pair (not just `familyAnalysis`'s fixed internal 200-trial
+loop, which is all the reduced-scale run exercises), the heap keeps
+revisiting a similar peak repeatedly rather than settling low once. The
+highest `HeapAlloc` observed in this partial window (11,475MB) is already in
+the same order of magnitude as item 3's previously-documented ~14.8-14.9GB
+peak *RSS* (RSS is always somewhat above live Go heap, for non-heap
+process memory) — meaning the scratch-reuse fix, while it did materially
+cut *total* allocation volume (STEP 4-equivalent benchmark above), was not
+expected to, and does not appear to, sharply cut the *peak*: the likely
+true driver of the peak is `familyAnalysis`'s `fullCache`/`ablCache` (a
+*retained*, not transient, per-distance cache of every candidate's
+projected distribution, spanning every family and pair simultaneously in
+flight) — this fix never touched that cache, only the transient per-call
+sort scratch around it, which is exactly the "reduces churn, not the live
+retained set" distinction STEP 5's live-heap analysis was built to surface.
+
+**Reasoned expectations, not measured production numbers:**
+
+- **Correctness**: expected identical to the reduced-scale, byte-for-byte
+  result already confirmed. Every one of the 200 production trials executes
+  the identical, unmodified per-trial code path already proven equivalent
+  at 3 trials — there is no trial-count-dependent branch, cache
+  invalidation, or accumulation this change could plausibly affect only at
+  higher counts. This is a reasoned expectation from the code, not an
+  independently re-confirmed fact at N=200 — flagged explicitly as such
+  rather than asserted.
+- **Peak RSS**: likely comparable to, at most modestly below, the
+  previously-documented 14.8-14.9GB — per the live-heap trace discussion
+  above, the true peak driver (`fullCache`/`ablCache`) is unmodified by
+  this fix.
+- **Wall time**: likely a modest improvement, well short of a
+  proportional-to-allocation (~47%) reduction. The reduced-scale CPU
+  profile's critical path is dominated by `sort.Strings`/
+  `slices.pdqsortOrdered`'s *comparison* cost (~24-28% of CPU, unaffected by
+  buffer reuse) rather than allocation/GC (~21-36% of CPU, which *is*
+  reduced) — so the honest estimate is a low-double-digit-percent wall-time
+  improvement (plausibly 10-20%, i.e. tens of minutes off a ~3h run), not a
+  multi-fold speedup, and not the "hours" this task's stop condition asks
+  whether further work would save.
+
+**If an exact number is later needed**: re-run to completion is the only
+way to get one; the partial run and reduced-scale evidence here are
+sufficient to conclude the fix is safe and net-positive, but a completed
+before/after production pair (~6-7 hours of machine time total) was judged
+not worth spending against a return already reasoned to be "tens of minutes
+on a several-hour job," consistent with this task's own stop condition.
+
+---
+
+## task28 stop-condition recommendation
+
+**Runtime composition of the pipeline, as currently understood:**
+
+| Stage | Estimated production wall time |
+|---|---|
+| `conditional-regime-analyze` (`-permutations 1000`) | **~41.9 hours** (extrapolated, Phase 1) |
+| `structural-projection-analyze` (`-random-projections 200`) | **~3 hours** (item 3's measured baseline; this task's fix expected to shave tens of minutes, not a large fraction) |
+| Every other pipeline stage (task27 items 1-10, ~20 CLIs) | seconds to ~20 minutes each; `token-relation-validate` (~20m) is the largest of these, everything else is well under a few minutes |
+
+The pipeline's total runtime is **overwhelmingly dominated by
+`conditional-regime-analyze` alone** — it is roughly 14x larger than
+`structural-projection-analyze`, and both together dwarf the combined
+total of every other stage in the pipeline (task27's ten items) by a wide
+margin.
+
+**1. Ready for the first complete production end-to-end run?** Yes. Both
+phases of this task are complete: Phase 1 confirmed the audited
+optimization was already done and found no further *safe, justified* fix
+available within its scope; Phase 2 implemented and validated a real,
+safe, correctness-proven allocation reduction. No known implementation bug
+or correctness gap blocks a full run. The one caveat: budget for
+`conditional-regime-analyze` taking on the order of **two days**, which is
+exactly why it already has per-replicate checkpoint/resume support — plan
+the first production run around that, not around an assumption that "hours"
+covers it.
+
+**2. Expected dominant stages:** `conditional-regime-analyze` first, by a
+wide margin (~42h), then `structural-projection-analyze` (~3h). Everything
+else in the pipeline is small by comparison and does not need separate
+scheduling consideration.
+
+**3. Would further optimization save hours rather than seconds/minutes?**
+**Yes, specifically for `conditional-regime-analyze`** — `expandResidualLabels`'s
+map-based `euclideanDistance` is now 73% of its CPU, genuinely required
+per-K work but implemented on `map[string]float64` vectors; a dense
+TokenID/array rewrite of this one hot path (not a repository-wide
+migration) is a plausible multi-hour win on a ~42-hour stage even at a
+modest constant-factor improvement, making it the single highest-leverage
+remaining target if a shorter production timeline is wanted. For
+`structural-projection-analyze`, the remaining `normalize`/`metricsFloat`/
+`countsFloat` cost is now allocation-optimized as far as safely justified;
+the deeper dense-representation rewrite that would additionally cut its
+CPU-bound sort cost is real but, per the reasoning above, would plausibly
+save tens of minutes on a ~3h stage, not hours — a real but comparatively
+low-leverage candidate. **Neither further optimization was performed in
+this task**, per its own instruction to report rather than automatically
+rewrite; both are documented above as explicit, scoped candidates for a
+future task should the team choose to pursue them.
