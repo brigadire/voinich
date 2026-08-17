@@ -10,18 +10,20 @@ import (
 // StageRun is one stage's execution record - the unit run.yml phase 13's
 // resume logic checks before deciding to skip or (re)run a stage.
 type StageRun struct {
-	Name            string    `json:"name"`
-	Status          string    `json:"status"` // pending|running|completed|failed|NOT_APPLICABLE
-	Reason          string    `json:"reason,omitempty"`
-	StartedAt       time.Time `json:"started_at,omitempty"`
-	FinishedAt      time.Time `json:"finished_at,omitempty"`
-	DurationSeconds float64   `json:"duration_seconds,omitempty"`
-	ExitCode        int       `json:"exit_code"`
-	UserCPUSeconds  float64   `json:"user_cpu_seconds"`
-	SysCPUSeconds   float64   `json:"sys_cpu_seconds"`
-	MaxRSSKB        int64     `json:"max_rss_kb"`
-	LogPath         string    `json:"log_path"`
-	Error           string    `json:"error,omitempty"`
+	Name             string    `json:"name"`
+	Status           string    `json:"status"` // pending|running|completed|failed|NOT_APPLICABLE
+	Reason           string    `json:"reason,omitempty"`
+	StartedAt        time.Time `json:"started_at,omitempty"`
+	FinishedAt       time.Time `json:"finished_at,omitempty"`
+	DurationSeconds  float64   `json:"duration_seconds,omitempty"`
+	ExitCode         int       `json:"exit_code"`
+	UserCPUSeconds   float64   `json:"user_cpu_seconds"`
+	SysCPUSeconds    float64   `json:"sys_cpu_seconds"`
+	MaxRSSKB         int64     `json:"max_rss_kb"`
+	LogPath          string    `json:"log_path"`
+	Error            string    `json:"error,omitempty"`
+	InvocationSHA256 string    `json:"invocation_sha256,omitempty"`
+	Outputs          []string  `json:"outputs,omitempty"`
 }
 
 // RunState is Task36's checkpoint/resume record for the orchestrator

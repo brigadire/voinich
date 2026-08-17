@@ -21,12 +21,15 @@ import (
 // defaults byte-for-byte). Reproducing a run therefore means "checkout
 // GitCommit, run these Args" - not "read numeric values out of this JSON".
 type StageManifest struct {
-	Index  int      `json:"index"`
-	Name   string   `json:"name"`
-	Dir    string   `json:"source_dir"`
-	Args   []string `json:"args"`
-	Status string   `json:"status,omitempty"`
-	Reason string   `json:"reason,omitempty"`
+	Index              int      `json:"index"`
+	Name               string   `json:"name"`
+	Dir                string   `json:"source_dir"`
+	Args               []string `json:"args"`
+	Status             string   `json:"status,omitempty"`
+	Reason             string   `json:"reason,omitempty"`
+	WorkingDirectory   string   `json:"working_directory,omitempty"`
+	ArtifactInputRoot  string   `json:"artifact_input_root,omitempty"`
+	ArtifactOutputRoot string   `json:"artifact_output_root,omitempty"`
 }
 
 type InputFileManifest struct {
@@ -51,26 +54,28 @@ type WorkerManifest struct {
 // experiments/<name>/FROZEN (see freeze.go) is what makes that immutability
 // enforceable rather than just a convention.
 type Manifest struct {
-	ExperimentID string             `json:"experiment_id"`
-	CreatedAt    time.Time          `json:"created_at"`
-	GitCommit    string             `json:"git_commit"`
-	GitDirty     bool               `json:"git_dirty"`
-	IVTFFPath    string             `json:"ivtff_path,omitempty"`
-	IVTFFSHA256  string             `json:"ivtff_sha256,omitempty"`
-	CorpusPath   string             `json:"corpus_path"`
-	CorpusSHA256 string             `json:"corpus_sha256"`
-	InputMode    string             `json:"input_mode,omitempty"`
-	Corpus       *InputFileManifest `json:"corpus,omitempty"`
-	IVTFF        *InputFileManifest `json:"ivtff"`
-	GoVersion    string             `json:"go_version"`
-	GOOS         string             `json:"goos"`
-	GOARCH       string             `json:"goarch"`
-	Hostname     string             `json:"hostname"`
-	NumCPU       int                `json:"num_cpu"`
-	Executor     string             `json:"executor"`      // executor for every distributed-capable stage
-	ExecutorNote string             `json:"executor_note"` // honest description of what "distributed" meant for this run
-	Workers      []WorkerManifest   `json:"workers"`
-	Stages       []StageManifest    `json:"stages"`
+	ExperimentID     string             `json:"experiment_id"`
+	CreatedAt        time.Time          `json:"created_at"`
+	GitCommit        string             `json:"git_commit"`
+	GitDirty         bool               `json:"git_dirty"`
+	IVTFFPath        string             `json:"ivtff_path,omitempty"`
+	IVTFFSHA256      string             `json:"ivtff_sha256,omitempty"`
+	CorpusPath       string             `json:"corpus_path"`
+	CorpusSHA256     string             `json:"corpus_sha256"`
+	InputMode        string             `json:"input_mode,omitempty"`
+	Corpus           *InputFileManifest `json:"corpus,omitempty"`
+	IVTFF            *InputFileManifest `json:"ivtff"`
+	GoVersion        string             `json:"go_version"`
+	GOOS             string             `json:"goos"`
+	GOARCH           string             `json:"goarch"`
+	Hostname         string             `json:"hostname"`
+	NumCPU           int                `json:"num_cpu"`
+	Executor         string             `json:"executor"`      // executor for every distributed-capable stage
+	ExecutorNote     string             `json:"executor_note"` // honest description of what "distributed" meant for this run
+	Workers          []WorkerManifest   `json:"workers"`
+	Stages           []StageManifest    `json:"stages"`
+	IsolationVersion int                `json:"isolation_version,omitempty"`
+	Workspace        string             `json:"workspace,omitempty"`
 }
 
 func sha256File(path string) (string, error) {
@@ -113,18 +118,33 @@ func gitCommit(repoPath string) (commit string, dirty bool, err error) {
 // is passed straight through to stageArgs for every stage, so the manifest
 // records the exact command line each stage will actually be run with.
 func buildManifest(repoPath, inputMode, ivtffPath, corpusPath string, opt orchestratorOptions, remoteWorkers []string) (*Manifest, error) {
+	absCorpusPath, err := filepath.Abs(filepath.Join(repoPath, corpusPath))
+	if filepath.IsAbs(corpusPath) {
+		absCorpusPath = filepath.Clean(corpusPath)
+	}
+	if err != nil {
+		return nil, fmt.Errorf("resolve corpus path: %w", err)
+	}
 	commit, dirty, err := gitCommit(repoPath)
 	if err != nil {
 		return nil, err
 	}
 	var ivtffHash string
+	absIVTFFPath := ""
 	if inputMode != "generic" {
-		ivtffHash, err = sha256File(filepath.Join(repoPath, ivtffPath))
+		absIVTFFPath, err = filepath.Abs(filepath.Join(repoPath, ivtffPath))
+		if filepath.IsAbs(ivtffPath) {
+			absIVTFFPath = filepath.Clean(ivtffPath)
+		}
+		if err != nil {
+			return nil, fmt.Errorf("resolve IVTFF source: %w", err)
+		}
+		ivtffHash, err = sha256File(absIVTFFPath)
 		if err != nil {
 			return nil, fmt.Errorf("hash IVTFF source: %w", err)
 		}
 	}
-	corpusHash, err := sha256File(filepath.Join(repoPath, corpusPath))
+	corpusHash, err := sha256File(absCorpusPath)
 	if err != nil {
 		return nil, fmt.Errorf("hash frozen corpus: %w", err)
 	}
@@ -150,29 +170,34 @@ func buildManifest(repoPath, inputMode, ivtffPath, corpusPath string, opt orches
 	}
 
 	m := &Manifest{
-		CreatedAt:    time.Now().UTC(),
-		GitCommit:    commit,
-		GitDirty:     dirty,
-		CorpusPath:   corpusPath,
-		CorpusSHA256: corpusHash,
-		InputMode:    inputMode,
-		Corpus:       &InputFileManifest{Path: corpusPath, SHA256: corpusHash},
-		GoVersion:    runtime.Version(),
-		GOOS:         runtime.GOOS,
-		GOARCH:       runtime.GOARCH,
-		Hostname:     hostname,
-		NumCPU:       runtime.NumCPU(),
-		Executor:     opt.Executor,
-		ExecutorNote: executorNote,
-		Workers:      workers,
+		CreatedAt:        time.Now().UTC(),
+		GitCommit:        commit,
+		GitDirty:         dirty,
+		CorpusPath:       absCorpusPath,
+		CorpusSHA256:     corpusHash,
+		InputMode:        inputMode,
+		Corpus:           &InputFileManifest{Path: absCorpusPath, SHA256: corpusHash},
+		GoVersion:        runtime.Version(),
+		GOOS:             runtime.GOOS,
+		GOARCH:           runtime.GOARCH,
+		Hostname:         hostname,
+		NumCPU:           runtime.NumCPU(),
+		Executor:         opt.Executor,
+		ExecutorNote:     executorNote,
+		Workers:          workers,
+		IsolationVersion: 1,
+		Workspace:        "workspace",
 	}
 	if inputMode != "generic" {
-		m.IVTFFPath, m.IVTFFSHA256 = ivtffPath, ivtffHash
-		m.IVTFF = &InputFileManifest{Path: ivtffPath, SHA256: ivtffHash}
+		m.IVTFFPath, m.IVTFFSHA256 = absIVTFFPath, ivtffHash
+		m.IVTFF = &InputFileManifest{Path: absIVTFFPath, SHA256: ivtffHash}
 	}
 	for i, st := range stages {
-		args := stageArgsForInput(st, opt, inputMode, corpusPath)
-		sm := StageManifest{Index: i + 1, Name: st.Name, Dir: st.SourceDir, Args: args, Status: "PLANNED"}
+		args := stageArgsForIsolatedInput(st, opt, absCorpusPath)
+		if st.Name == "metadata-validate" && inputMode != "generic" {
+			args = append(args, "-ivtff", absIVTFFPath)
+		}
+		sm := StageManifest{Index: i + 1, Name: st.Name, Dir: st.SourceDir, Args: args, Status: "PLANNED", WorkingDirectory: "workspace", ArtifactInputRoot: "workspace/workdir", ArtifactOutputRoot: "workspace/workdir"}
 		if inputMode == "generic" && st.RequiresMetadata {
 			sm.Status, sm.Reason = "NOT_APPLICABLE", "requires IVTFF metadata"
 		}
@@ -188,14 +213,14 @@ func buildManifest(repoPath, inputMode, ivtffPath, corpusPath string, opt orches
 // byte-identical instructions.
 func computeExperimentID(m *Manifest) string {
 	h := sha256.New()
-	if m.effectiveInputMode() == "ivtff" {
+	if m.effectiveInputMode() == "ivtff" && m.IsolationVersion == 0 {
 		// Preserve Task36's ID calculation byte-for-byte for old invocations.
 		fmt.Fprintf(h, "commit=%s\nivtff=%s\ncorpus=%s\ngo=%s\ngoos=%s\ngoarch=%s\n", m.GitCommit, m.IVTFFSHA256, m.CorpusSHA256, m.GoVersion, m.GOOS, m.GOARCH)
 	} else {
-		fmt.Fprintf(h, "commit=%s\nmode=generic\ncorpus=%s\ngo=%s\ngoos=%s\ngoarch=%s\n", m.GitCommit, m.CorpusSHA256, m.GoVersion, m.GOOS, m.GOARCH)
+		fmt.Fprintf(h, "commit=%s\nmode=%s\nivtff=%s\ncorpus=%s\ngo=%s\ngoos=%s\ngoarch=%s\nisolation=%d\nworkspace=%s\n", m.GitCommit, m.effectiveInputMode(), m.IVTFFSHA256, m.CorpusSHA256, m.GoVersion, m.GOOS, m.GOARCH, m.IsolationVersion, m.Workspace)
 	}
 	for _, st := range m.Stages {
-		fmt.Fprintf(h, "stage=%s args=%v\n", st.Name, st.Args)
+		fmt.Fprintf(h, "stage=%s cwd=%s inputs=%s outputs=%s args=%v\n", st.Name, st.WorkingDirectory, st.ArtifactInputRoot, st.ArtifactOutputRoot, st.Args)
 	}
 	return hex.EncodeToString(h.Sum(nil))
 }

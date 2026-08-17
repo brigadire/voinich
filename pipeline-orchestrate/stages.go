@@ -66,15 +66,15 @@ var stages = []Stage{
 	{Name: "property-trajectory-analyze", SourceDir: "property-trajectory-analyze", Quiet: true, CorpusFlag: "-corpus"},
 	{Name: "structural-projection-analyze", SourceDir: "structural-projection-analyze", Quiet: true, Checkpoint: true, Executor: true, CorpusFlag: "-corpus"},
 	{Name: "global-regime-analyze", SourceDir: "global-regime-analyze", Quiet: true, CorpusFlag: "-corpus"},
-	{Name: "metadata-validate", SourceDir: "metadata-validate", Quiet: true, RequiresMetadata: true},
+	{Name: "metadata-validate", SourceDir: "metadata-validate", Quiet: true, CorpusFlag: "-frozen-corpus", RequiresMetadata: true},
 	{Name: "cluster-metadata-global", SourceDir: "cluster-metadata-global", Quiet: true, RequiresMetadata: true},
-	{Name: "conditional-regime-analyze", SourceDir: "conditional-regime-analyze", Quiet: true, Checkpoint: true, Executor: true, RequiresMetadata: true},
-	{Name: "residual-diagnostic-analyze", SourceDir: "residual-diagnostic-analyze", Quiet: true, RequiresMetadata: true},
-	{Name: "token-relation-validate", SourceDir: "token-relation-validate", Quiet: true, Checkpoint: true, RequiresMetadata: true},
-	{Name: "replicated-local-structure-audit", SourceDir: "replicated-local-structure-audit", Quiet: true, Checkpoint: true, RequiresMetadata: true},
-	{Name: "higher-order-sequence-validate", SourceDir: "higher-order-sequence-validate", Quiet: true, Checkpoint: true, RequiresMetadata: true},
-	{Name: "positional-continuation-validate", SourceDir: "positional-continuation-validate", Quiet: true, Checkpoint: true, RequiresMetadata: true},
-	{Name: "transition-network-validate", SourceDir: "transition-network-validate", Quiet: true, Checkpoint: true, RequiresMetadata: true},
+	{Name: "conditional-regime-analyze", SourceDir: "conditional-regime-analyze", Quiet: true, Checkpoint: true, Executor: true, CorpusFlag: "-corpus", RequiresMetadata: true},
+	{Name: "residual-diagnostic-analyze", SourceDir: "residual-diagnostic-analyze", Quiet: true, CorpusFlag: "-corpus", RequiresMetadata: true},
+	{Name: "token-relation-validate", SourceDir: "token-relation-validate", Quiet: true, Checkpoint: true, CorpusFlag: "-corpus", RequiresMetadata: true},
+	{Name: "replicated-local-structure-audit", SourceDir: "replicated-local-structure-audit", Quiet: true, Checkpoint: true, CorpusFlag: "-corpus", RequiresMetadata: true},
+	{Name: "higher-order-sequence-validate", SourceDir: "higher-order-sequence-validate", Quiet: true, Checkpoint: true, CorpusFlag: "-corpus", RequiresMetadata: true},
+	{Name: "positional-continuation-validate", SourceDir: "positional-continuation-validate", Quiet: true, Checkpoint: true, CorpusFlag: "-corpus", RequiresMetadata: true},
+	{Name: "transition-network-validate", SourceDir: "transition-network-validate", Quiet: true, Checkpoint: true, CorpusFlag: "-corpus", RequiresMetadata: true},
 }
 
 // stageByName looks up a stage by its orchestrator Name, used by -only/
@@ -148,6 +148,71 @@ func stageArgsForInput(s Stage, opt orchestratorOptions, inputMode, corpusPath s
 	if inputMode != "generic" {
 		return args
 	}
+	return appendExplicitCorpus(args, s, corpusPath)
+}
+
+func stageArgsForIsolatedInput(s Stage, opt orchestratorOptions, corpusPath string) []string {
+	args := appendExplicitCorpus(stageArgs(s, opt), s, corpusPath)
+	switch s.Name {
+	case "structural-analyze":
+		args = append(args, "-dictionary", "workdir/dataset/dictionary.yaml", "-analysis", "workdir/dataset/tokens_analysis.yaml", "-output", "workdir/dataset/structural_analysis.yaml")
+	case "sequence-analyze":
+		args = append(args, "-output", "workdir/sequence_analysis.yaml")
+	case "begin-end-analyze":
+		args = append(args, "-dictionary", "workdir/dataset/dictionary.yaml", "-output-dir", "workdir")
+	case "structural-normalize":
+		args = append(args, "-structural", "workdir/dataset/structural_analysis.yaml", "-output", "workdir/normalized.txt", "-classes", "workdir/structural_classes.yaml")
+	case "normalization-compare":
+		args = append(args, "-classes", "workdir/structural_classes.yaml", "-raw-analysis", "workdir/sequence_analysis.yaml", "-normalized-pattern", "workdir/normalized_%s.txt", "-analysis-pattern", "workdir/sequence_analysis_%s.yaml", "-sequence-analyzer", "workdir/bin/sequence-analyze", "-output", "workdir/normalization_comparison.yaml")
+	case "structural-validate":
+		args = append(args, "-classes", "workdir/structural_classes.yaml", "-output", "workdir/structural_validation.yaml")
+	case "structural-profile-stability":
+		args = append(args, "-classes", "workdir/structural_classes.yaml", "-output", "workdir/structural_profile_stability.yaml")
+	case "structural-reliability":
+		args = append(args, "-classes", "workdir/structural_classes.yaml", "-output", "workdir/structural_reliability.yaml")
+	case "soft-structural-space":
+		args = append(args, "-dictionary", "workdir/dataset/dictionary.yaml", "-analysis", "workdir/dataset/tokens_analysis.yaml", "-reliability", "workdir/structural_reliability.yaml", "-output", "workdir/soft_structural_space.yaml", "-pairs-output", "workdir/soft_structural_pairs.tsv")
+	case "structural-graphemic":
+		args = append(args, "-input", "workdir/soft_structural_pairs.tsv", "-output-dir", "workdir")
+	case "structural-pair-decompose":
+		args = append(args, "-dictionary", "workdir/dataset/dictionary.yaml", "-pairs", "workdir/structural_graphemic_pairs.tsv", "-distant", "workdir/structural_distant_top.tsv", "-families", "workdir/structural_distant_families.yaml")
+	case "distance-context-analyze":
+		args = append(args, "-distant-pairs", "workdir/structural_distant_top.tsv", "-families", "workdir/structural_distant_families.yaml", "-controls", "workdir/pair_controls.tsv", "-output-dir", "workdir")
+	case "local-regime-analyze":
+		args = append(args, "-distance-pairs", "workdir/distance_context_pairs.yaml", "-controls", "workdir/distance_context_controls.tsv", "-output-dir", "workdir")
+	case "property-trajectory-analyze":
+		args = append(args, "-structural-pairs", "workdir/soft_structural_pairs.tsv", "-distance-pairs", "workdir/distance_context_pairs.yaml", "-controls", "workdir/distance_context_controls.tsv", "-output-dir", "workdir")
+	case "structural-projection-analyze":
+		args = append(args, "-structural-pairs", "workdir/soft_structural_pairs.tsv", "-distance-pairs", "workdir/distance_context_pairs.yaml", "-families", "workdir/structural_distant_families.yaml", "-output-dir", "workdir")
+	case "global-regime-analyze":
+		args = append(args, "-output-dir", "workdir")
+	case "metadata-validate":
+		args = append(args, "-discovery-dir", "workdir", "-output-dir", "workdir/metadata-validation")
+	case "cluster-metadata-global":
+		args = append(args,
+			"-discovery-dir", "workdir",
+			"-token-metadata-map", "workdir/metadata-validation/token_metadata_map.tsv",
+			"-metadata-report", "workdir/metadata-validation/metadata_validation_report.md",
+			"-output-dir", "workdir/metadata-validation")
+	case "conditional-regime-analyze":
+		args = append(args, "-token-metadata-map", "workdir/metadata-validation/token_metadata_map.tsv", "-output-dir", "workdir/conditional-regimes")
+	case "residual-diagnostic-analyze":
+		args = append(args, "-conditional-dir", "workdir/conditional-regimes", "-token-metadata-map", "workdir/metadata-validation/token_metadata_map.tsv", "-output-dir", "workdir/residual-diagnostics")
+	case "token-relation-validate":
+		args = append(args, "-token-metadata-map", "workdir/metadata-validation/token_metadata_map.tsv", "-discovery-dir", "workdir", "-output-dir", "workdir/token-relation-validation")
+	case "replicated-local-structure-audit":
+		args = append(args, "-token-metadata-map", "workdir/metadata-validation/token_metadata_map.tsv", "-relation-dir", "workdir/token-relation-validation", "-discovery-dir", "workdir", "-output-dir", "workdir/replicated-local-structure")
+	case "higher-order-sequence-validate":
+		args = append(args, "-token-metadata-map", "workdir/metadata-validation/token_metadata_map.tsv", "-audit-dir", "workdir/replicated-local-structure", "-discovery-dir", "workdir", "-output-dir", "workdir/higher-order-sequences")
+	case "positional-continuation-validate":
+		args = append(args, "-token-metadata-map", "workdir/metadata-validation/token_metadata_map.tsv", "-higher-order-dir", "workdir/higher-order-sequences", "-output-dir", "workdir/positional-continuation")
+	case "transition-network-validate":
+		args = append(args, "-token-metadata-map", "workdir/metadata-validation/token_metadata_map.tsv", "-output-dir", "workdir/transition-network")
+	}
+	return args
+}
+
+func appendExplicitCorpus(args []string, s Stage, corpusPath string) []string {
 	if s.Name == "dict-gen" {
 		args[0] = corpusPath
 	} else if s.CorpusFlag != "" {

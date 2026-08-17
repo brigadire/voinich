@@ -4,9 +4,8 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
-
-	"zcore.dev/voinich/internal/workdir"
 )
 
 // runPipeline builds every stage's binary (once) and executes stages in
@@ -33,12 +32,30 @@ func runPipeline(repoPath, experimentDir string, opt orchestratorOptions, only s
 	if rs.ExperimentID != m.ExperimentID {
 		return fmt.Errorf("run-state.json belongs to experiment %s, manifest is %s - refusing to mix runs", rs.ExperimentID, m.ExperimentID)
 	}
+	if m.IsolationVersion > 0 && computeExperimentID(m) != m.ExperimentID {
+		return fmt.Errorf("manifest ExperimentID does not match its isolated execution plan")
+	}
+	currentCorpusHash, err := sha256File(m.CorpusPath)
+	if err != nil || currentCorpusHash != m.CorpusSHA256 {
+		return fmt.Errorf("corpus identity changed since manifest creation (want %s, got %s): %v", m.CorpusSHA256, currentCorpusHash, err)
+	}
+	if m.IsolationVersion == 0 {
+		return runPipelineLegacy(repoPath, experimentDir, opt, only, m, rs)
+	}
+	r, err := loadArtifactRegistry(experimentDir)
+	if err != nil {
+		return fmt.Errorf("load artifacts.json: %w", err)
+	}
+	if err := validateRegistry(experimentDir, m, rs, r); err != nil {
+		return err
+	}
 
 	logDir := filepath.Join(experimentDir, "logs")
 	if err := os.MkdirAll(logDir, 0755); err != nil {
 		return err
 	}
-	binDir := workdir.Path("bin")
+	binDir := filepath.Join(workspaceWorkdir(experimentDir), "bin")
+	runDir := workspaceDir(experimentDir)
 
 	fmt.Printf("Task36 pipeline run: experiment %s\n", m.ExperimentID)
 	for i, sm := range m.Stages {
@@ -54,7 +71,10 @@ func runPipeline(repoPath, experimentDir string, opt orchestratorOptions, only s
 			rs.Stages = append(rs.Stages, StageRun{Name: st.Name, Status: "pending"})
 			sr = rs.stage(st.Name)
 		}
-		if sr.Status == "completed" || sr.Status == "NOT_APPLICABLE" {
+		if sr.Status == "NOT_APPLICABLE" || (sr.Status == "completed" && only == "") {
+			if sr.Status == "completed" && sr.InvocationSHA256 != invocationHash(m, sm) {
+				return fmt.Errorf("stage %s resume provenance mismatch", st.Name)
+			}
 			fmt.Printf("[%d/%d] %-35s SKIP (%s", i+1, len(m.Stages), st.Name, sr.Status)
 			if sr.Reason != "" {
 				fmt.Printf(": %s", sr.Reason)
@@ -72,6 +92,12 @@ func runPipeline(repoPath, experimentDir string, opt orchestratorOptions, only s
 		}
 
 		args := append([]string(nil), sm.Args...)
+		if err := validateRegistry(experimentDir, m, rs, r); err != nil {
+			return err
+		}
+		if err := validateStageDependencies(m, sm, r, rs); err != nil {
+			return err
+		}
 		logPath := filepath.Join(logDir, fmt.Sprintf("%02d-%s.log", i+1, st.Name))
 		sr.Status = "running"
 		sr.StartedAt = time.Now().UTC()
@@ -83,7 +109,31 @@ func runPipeline(repoPath, experimentDir string, opt orchestratorOptions, only s
 		if err != nil {
 			return err
 		}
-		result := runLogged(repoPath, absBinPath, args, logPath)
+		before, err := scanScientificArtifacts(experimentDir)
+		if err != nil {
+			return err
+		}
+		var inputs []string
+		for _, a := range r.Artifacts {
+			inputs = append(inputs, a.Path)
+		}
+		header := orchestrationHeader(m, sm, runDir, inputs)
+		result := runLogged(runDir, absBinPath, args, logPath, header)
+		after, scanErr := scanScientificArtifacts(experimentDir)
+		if scanErr != nil {
+			return scanErr
+		}
+		produced := registerStageChanges(r, before, after, m, sm)
+		if len(produced) > 0 {
+			sr.Outputs = sr.Outputs[:0]
+			for _, a := range produced {
+				sr.Outputs = append(sr.Outputs, a.Path)
+			}
+		}
+		sr.InvocationSHA256 = invocationHash(m, sm)
+		if err := saveArtifactRegistry(experimentDir, r); err != nil {
+			return err
+		}
 
 		sr.FinishedAt = time.Now().UTC()
 		sr.DurationSeconds = result.Duration.Seconds()
@@ -108,4 +158,23 @@ func runPipeline(repoPath, experimentDir string, opt orchestratorOptions, only s
 		fmt.Println("All stages completed.")
 	}
 	return nil
+}
+
+func orchestrationHeader(m *Manifest, sm StageManifest, dir string, inputs []string) string {
+	var b strings.Builder
+	fmt.Fprintf(&b, "ExperimentID: %s\nInput mode: %s\nCorpus: %s\nCorpus SHA256: %s\nStage: %s\nWorking directory: %s\nInputs:\n", m.ExperimentID, m.effectiveInputMode(), m.CorpusPath, m.CorpusSHA256, sm.Name, dir)
+	if len(inputs) == 0 {
+		b.WriteString("  (corpus only)\n")
+	}
+	for _, in := range inputs {
+		fmt.Fprintf(&b, "  workdir/%s\n", in)
+	}
+	b.WriteString("Outputs:\n  registered in artifacts.json after completion\n\n")
+	return b.String()
+}
+
+// Unsafe legacy shared-workdir manifests remain readable/verifiable but may
+// not be resumed. New manifests never enter this path.
+func runPipelineLegacy(repoPath, experimentDir string, opt orchestratorOptions, only string, m *Manifest, rs *RunState) error {
+	return fmt.Errorf("legacy non-isolated experiments are read-only; create a new experiment manifest")
 }

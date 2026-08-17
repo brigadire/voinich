@@ -228,6 +228,9 @@ func freezeExperiment(experimentDir string, force bool) error {
 	if !rs.allCompleted() {
 		return fmt.Errorf("not all stages completed; refusing to freeze an incomplete run")
 	}
+	if m.IsolationVersion > 0 {
+		return freezeIsolatedExperiment(experimentDir, force, m, rs)
+	}
 
 	relPaths, err := snapshotOutputs(experimentDir, rs.StartedAt)
 	if err != nil {
@@ -258,6 +261,15 @@ func freezeExperiment(experimentDir string, force bool) error {
 // reports any mismatch or missing file - the drift-detection mechanism
 // backing "no change may silently overwrite the baseline".
 func verifyExperiment(experimentDir string) error {
+	m, err := loadManifest(experimentDir)
+	if err != nil {
+		return fmt.Errorf("load manifest: %w", err)
+	}
+	if m.IsolationVersion > 0 {
+		if err := verifyIsolatedProvenance(experimentDir, m); err != nil {
+			return err
+		}
+	}
 	outputsDir := filepath.Join(experimentDir, "outputs")
 	b, err := os.ReadFile(filepath.Join(experimentDir, "checksums.sha256"))
 	if err != nil {
@@ -286,5 +298,140 @@ func verifyExperiment(experimentDir string) error {
 		return fmt.Errorf("%d file(s) failed verification", mismatches)
 	}
 	fmt.Printf("Verified %d files: all match checksums.sha256\n", len(lines))
+	return nil
+}
+
+func freezeIsolatedExperiment(experimentDir string, force bool, m *Manifest, rs *RunState) error {
+	r, err := loadArtifactRegistry(experimentDir)
+	if err != nil {
+		return fmt.Errorf("load artifacts.json: %w", err)
+	}
+	if err := validateRegistry(experimentDir, m, rs, r); err != nil {
+		return fmt.Errorf("artifact provenance: %w", err)
+	}
+	for _, a := range r.Artifacts {
+		if sr := rs.stage(a.Stage); sr == nil || sr.Status != "completed" {
+			return fmt.Errorf("artifact %s producer %s is not completed", a.Path, a.Stage)
+		}
+		for _, sm := range m.Stages {
+			if sm.Name == a.Stage && sm.Status == "NOT_APPLICABLE" {
+				return fmt.Errorf("NOT_APPLICABLE stage %s owns artifact %s", a.Stage, a.Path)
+			}
+		}
+	}
+	outputsDir := filepath.Join(experimentDir, "outputs")
+	if entries, err := os.ReadDir(outputsDir); err == nil && len(entries) > 0 {
+		return fmt.Errorf("outputs directory is not empty; refusing to mix snapshots")
+	}
+	if err := os.MkdirAll(outputsDir, 0755); err != nil {
+		return err
+	}
+	var relPaths []string
+	for _, a := range r.Artifacts {
+		if err := copyFile(filepath.Join(workspaceWorkdir(experimentDir), filepath.FromSlash(a.Path)), filepath.Join(outputsDir, filepath.FromSlash(a.Path))); err != nil {
+			return fmt.Errorf("copy registered artifact %s: %w", a.Path, err)
+		}
+		relPaths = append(relPaths, a.Path)
+	}
+	sort.Strings(relPaths)
+	checksumsDigest, err := writeChecksums(experimentDir, relPaths)
+	if err != nil {
+		return err
+	}
+	if err := writeReport(experimentDir, m, rs); err != nil {
+		return err
+	}
+	marker := fmt.Sprintf("Isolated experiment frozen at %s\nExperimentID: %s\nCorpus SHA256: %s\nchecksums.sha256 sha256: %s\nFiles: %d\n", time.Now().UTC().Format(time.RFC3339), m.ExperimentID, m.CorpusSHA256, checksumsDigest, len(relPaths))
+	if err := os.WriteFile(frozenMarkerPath(experimentDir), []byte(marker), 0444); err != nil {
+		return err
+	}
+	fmt.Printf("Frozen %s: %d registered output files\n", experimentDir, len(relPaths))
+	return nil
+}
+
+func verifyIsolatedProvenance(experimentDir string, m *Manifest) error {
+	if computeExperimentID(m) != m.ExperimentID {
+		return fmt.Errorf("manifest ExperimentID does not match its isolated execution plan")
+	}
+	rs, err := loadRunState(experimentDir)
+	if err != nil {
+		return fmt.Errorf("load run-state: %w", err)
+	}
+	r, err := loadArtifactRegistry(experimentDir)
+	if err != nil {
+		return fmt.Errorf("load artifacts.json: %w", err)
+	}
+	if rs.ExperimentID != m.ExperimentID || r.ExperimentID != m.ExperimentID || r.CorpusSHA256 != m.CorpusSHA256 {
+		return fmt.Errorf("manifest/run-state/artifact registry provenance mismatch")
+	}
+	if !rs.allCompleted() {
+		return fmt.Errorf("frozen experiment has incomplete stages")
+	}
+	stagePlan := make(map[string]StageManifest, len(m.Stages))
+	for _, sm := range m.Stages {
+		stagePlan[sm.Name] = sm
+		sr := rs.stage(sm.Name)
+		if sr == nil {
+			return fmt.Errorf("run-state missing stage %s", sm.Name)
+		}
+		if sm.Status == "NOT_APPLICABLE" && sr.Status != "NOT_APPLICABLE" {
+			return fmt.Errorf("stage %s applicability mismatch", sm.Name)
+		}
+		if sm.Status != "NOT_APPLICABLE" && sr.Status != "completed" {
+			return fmt.Errorf("stage %s is not completed", sm.Name)
+		}
+	}
+	seen := make(map[string]bool)
+	for _, a := range r.Artifacts {
+		if seen[a.Path] {
+			return fmt.Errorf("duplicate artifact registry path %s", a.Path)
+		}
+		seen[a.Path] = true
+		if a.ExperimentID != m.ExperimentID || a.CorpusSHA256 != m.CorpusSHA256 {
+			return fmt.Errorf("foreign provenance for artifact %s", a.Path)
+		}
+		sr := rs.stage(a.Stage)
+		if sr == nil || sr.Status != "completed" {
+			return fmt.Errorf("invalid producing stage for artifact %s", a.Path)
+		}
+		sm, ok := stagePlan[a.Stage]
+		if !ok || a.ParametersSHA256 != invocationHash(m, sm) || sr.InvocationSHA256 != invocationHash(m, sm) {
+			return fmt.Errorf("stage invocation provenance mismatch for artifact %s", a.Path)
+		}
+		got, err := sha256File(filepath.Join(experimentDir, "outputs", filepath.FromSlash(a.Path)))
+		if err != nil || got != a.SHA256 {
+			return fmt.Errorf("artifact registry checksum mismatch for %s", a.Path)
+		}
+	}
+	outputsRoot := filepath.Join(experimentDir, "outputs")
+	if err := filepath.WalkDir(outputsRoot, func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if d.IsDir() {
+			return nil
+		}
+		rel, err := filepath.Rel(outputsRoot, path)
+		if err != nil {
+			return err
+		}
+		rel = filepath.ToSlash(rel)
+		if !seen[rel] {
+			return fmt.Errorf("unregistered file in frozen outputs: %s", rel)
+		}
+		return nil
+	}); err != nil {
+		return err
+	}
+	for _, sm := range m.Stages {
+		if sm.Status != "NOT_APPLICABLE" {
+			continue
+		}
+		for _, a := range r.Artifacts {
+			if a.Stage == sm.Name {
+				return fmt.Errorf("NOT_APPLICABLE stage %s has artifact %s", sm.Name, a.Path)
+			}
+		}
+	}
 	return nil
 }

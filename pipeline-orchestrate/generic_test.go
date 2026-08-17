@@ -170,3 +170,120 @@ func TestGenericFreezeReportAndVerify(t *testing.T) {
 		t.Fatalf("generic report mentions Voynich input/baseline:\n%s", text)
 	}
 }
+
+func TestIsolatedWorkspaceRejectsStaleAndFreezeUsesRegistryOnly(t *testing.T) {
+	tmp := t.TempDir()
+	experiment := filepath.Join(tmp, "experiment-b")
+	corpus := filepath.Join(tmp, "corpus-b.txt")
+	if err := os.WriteFile(corpus, []byte("beta corpus\n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	sum, err := sha256File(corpus)
+	if err != nil {
+		t.Fatal(err)
+	}
+	m := &Manifest{InputMode: "generic", CorpusPath: corpus, CorpusSHA256: sum, IsolationVersion: 1, Workspace: "workspace", CreatedAt: time.Now()}
+	m.Stages = []StageManifest{{Index: 1, Name: stages[0].Name, Status: "PLANNED", Args: []string{corpus}, WorkingDirectory: "workspace"}}
+	m.ExperimentID = computeExperimentID(m)
+	if err := saveManifest(experiment, m); err != nil {
+		t.Fatal(err)
+	}
+	rs := newRunStateForManifest(m)
+	if err := os.MkdirAll(workspaceWorkdir(experiment), 0755); err != nil {
+		t.Fatal(err)
+	}
+	r := newArtifactRegistry(m)
+	if err := saveArtifactRegistry(experiment, r); err != nil {
+		t.Fatal(err)
+	}
+
+	// A foreign experiment may physically coexist elsewhere; it is never
+	// scanned because B's workspace is its complete mutable namespace.
+	foreign := filepath.Join(tmp, "experiment-a", "workspace", "workdir")
+	if err := os.MkdirAll(foreign, 0755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(foreign, "SENTINEL_READ_IS_FAILURE"), []byte("corpus-a"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	if err := validateRegistry(experiment, m, rs, r); err != nil {
+		t.Fatalf("foreign workspace contaminated B: %v", err)
+	}
+
+	// The same sentinel inside B is a hard error unless a completed stage
+	// registered it with matching experiment/corpus provenance.
+	stale := filepath.Join(workspaceWorkdir(experiment), "stale-a.yaml")
+	if err := os.WriteFile(stale, []byte("corpus-a"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	if err := validateRegistry(experiment, m, rs, r); err == nil || !strings.Contains(err.Error(), "unregistered/stale") {
+		t.Fatalf("stale artifact was accepted: %v", err)
+	}
+	if err := os.Remove(stale); err != nil {
+		t.Fatal(err)
+	}
+
+	valid := filepath.Join(workspaceWorkdir(experiment), "result.yaml")
+	if err := os.WriteFile(valid, []byte("corpus: beta\n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	after, err := scanScientificArtifacts(experiment)
+	if err != nil {
+		t.Fatal(err)
+	}
+	produced := registerStageChanges(r, map[string]string{}, after, m, m.Stages[0])
+	if len(produced) != 1 {
+		t.Fatalf("produced %d artifacts", len(produced))
+	}
+	rs.Stages[0].Status = "completed"
+	rs.Stages[0].InvocationSHA256 = invocationHash(m, m.Stages[0])
+	if err := saveRunState(experiment, rs); err != nil {
+		t.Fatal(err)
+	}
+	if err := saveArtifactRegistry(experiment, r); err != nil {
+		t.Fatal(err)
+	}
+	if err := freezeExperiment(experiment, false); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := os.Stat(filepath.Join(experiment, "outputs", "result.yaml")); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := os.Stat(filepath.Join(experiment, "outputs", "SENTINEL_READ_IS_FAILURE")); !os.IsNotExist(err) {
+		t.Fatal("foreign sentinel entered freeze")
+	}
+	if err := verifyExperiment(experiment); err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestResumeRejectsChangedCorpus(t *testing.T) {
+	tmp := t.TempDir()
+	corpus := filepath.Join(tmp, "corpus.txt")
+	if err := os.WriteFile(corpus, []byte("corpus A\n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	sum, _ := sha256File(corpus)
+	experiment := filepath.Join(tmp, "experiment")
+	m := &Manifest{InputMode: "generic", CorpusPath: corpus, CorpusSHA256: sum, IsolationVersion: 1, Workspace: "workspace"}
+	m.ExperimentID = computeExperimentID(m)
+	if err := saveManifest(experiment, m); err != nil {
+		t.Fatal(err)
+	}
+	if err := saveRunState(experiment, newRunStateForManifest(m)); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.MkdirAll(workspaceWorkdir(experiment), 0755); err != nil {
+		t.Fatal(err)
+	}
+	if err := saveArtifactRegistry(experiment, newArtifactRegistry(m)); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(corpus, []byte("corpus B\n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	err := runPipeline("..", experiment, orchestratorOptions{}, "")
+	if err == nil || !strings.Contains(err.Error(), "corpus identity changed") {
+		t.Fatalf("changed corpus resume result: %v", err)
+	}
+}

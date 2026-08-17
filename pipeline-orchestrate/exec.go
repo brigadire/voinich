@@ -25,13 +25,16 @@ type runResult struct {
 // fresh file at logPath, and reports timing/exit/resource usage. It never
 // uses a shell: args are passed directly to the binary, so nothing here is
 // vulnerable to shell-metacharacter injection from any manifest value.
-func runLogged(dir, name string, args []string, logPath string) runResult {
+func runLogged(dir, name string, args []string, logPath, header string) runResult {
 	start := time.Now()
 	logFile, err := os.Create(logPath)
 	if err != nil {
 		return runResult{Err: fmt.Errorf("create log %s: %w", logPath, err)}
 	}
 	defer logFile.Close()
+	if _, err := logFile.WriteString(header); err != nil {
+		return runResult{Err: fmt.Errorf("write log header %s: %w", logPath, err)}
+	}
 
 	cmd := exec.Command(name, args...)
 	cmd.Dir = dir

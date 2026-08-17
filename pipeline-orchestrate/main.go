@@ -121,6 +121,12 @@ func runManifestCmd(args []string) int {
 		fmt.Fprintf(os.Stderr, "Error: %s already exists (use -force to overwrite; never do this after run has started)\n", manifestPath(*experimentDir))
 		return 1
 	}
+	if entries, err := os.ReadDir(*experimentDir); err == nil && len(entries) != 0 {
+		if !*force || !manifestOnlyNamespace(*experimentDir, entries) {
+			fmt.Fprintf(os.Stderr, "Error: %s is not a clean manifest-only namespace; refusing to reuse potentially stale files\n", *experimentDir)
+			return 1
+		}
+	}
 
 	opt := orchestratorOptions{
 		Executor:      *executor,
@@ -150,8 +156,45 @@ func runManifestCmd(args []string) int {
 		fmt.Fprintln(os.Stderr, "Error:", err)
 		return 1
 	}
+	if err := os.MkdirAll(workspaceWorkdir(*experimentDir), 0755); err != nil {
+		fmt.Fprintln(os.Stderr, "Error:", err)
+		return 1
+	}
+	if err := saveArtifactRegistry(*experimentDir, newArtifactRegistry(m)); err != nil {
+		fmt.Fprintln(os.Stderr, "Error:", err)
+		return 1
+	}
 	fmt.Printf("Wrote %s\nExperimentID: %s\nGit commit: %s (dirty=%v)\nExecutor: %s\n", manifestPath(*experimentDir), m.ExperimentID, m.GitCommit, m.GitDirty, m.Executor)
 	return 0
+}
+
+func manifestOnlyNamespace(experimentDir string, entries []os.DirEntry) bool {
+	for _, entry := range entries {
+		switch entry.Name() {
+		case "manifest.json", "run-state.json", "artifacts.json":
+			if entry.IsDir() {
+				return false
+			}
+		case "workspace":
+			workspaceEntries, err := os.ReadDir(filepath.Join(experimentDir, "workspace"))
+			if err != nil {
+				return false
+			}
+			if len(workspaceEntries) != 1 || workspaceEntries[0].Name() != "workdir" || !workspaceEntries[0].IsDir() {
+				return false
+			}
+			files, err := os.ReadDir(filepath.Join(experimentDir, "workspace", "workdir"))
+			if err != nil && !os.IsNotExist(err) {
+				return false
+			}
+			if len(files) != 0 {
+				return false
+			}
+		default:
+			return false
+		}
+	}
+	return true
 }
 
 func runRunCmd(args []string) int {

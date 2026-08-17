@@ -73,21 +73,20 @@ default input path assumes the earlier one actually succeeded.
 
 ### freeze
 
-Requires every stage to already be `completed`. Copies every file under
-`workdir/` (excluding `workdir/bin/`, the build scratch area) into
-`experiments/<name>/outputs/`, computes SHA256 for each into
+Requires every applicable stage to already be `completed`. For isolation-v1
+experiments, copies only files registered in `artifacts.json` from the private
+workspace into `experiments/<name>/outputs/`, computes SHA256 for each into
 `checksums.sha256`, writes `REPORT.md` (per-stage wall-time/status/CPU/RSS,
 total wall-time, manifest/checksum pointers), and writes a read-only
-`FROZEN` marker. Every subsequent `run`/`freeze`/`manifest` against that
-directory refuses outright unless `-force` is passed - Task36's "no
-subsequent pipeline change may silently overwrite this baseline."
+`FROZEN` marker. The legacy broad snapshot behavior exists only for old
+isolation-version-zero manifests, preserving frozen-baseline compatibility.
 
 ### verify
 
 Recomputes every file's SHA256 against `checksums.sha256` and reports any
-mismatch or missing file - the drift-detection half of "no silent
-overwrite": run this at any point in the future to confirm the frozen
-baseline is still exactly what it was when frozen.
+mismatch or missing file. Isolation-v1 verification additionally checks
+ExperimentID, corpus identity, artifact ownership, producing-stage state, and
+`NOT_APPLICABLE` consistency.
 
 ### status
 
@@ -107,3 +106,21 @@ use only local CPU cores and record `local, N slots on <hostname>` instead
 - there is no requirement to have any remote machine at all; Task28-29's
 executor choice applies to both `structural-projection-analyze` (stage 17)
 and `conditional-regime-analyze` (stage 21).
+
+## Experiment isolation (Task41)
+
+Every newly created manifest owns `workspace/`, including its mutable
+`workspace/workdir/` and stage binaries. Stages run with `workspace/` as their
+current directory, so analyzer-relative paths cannot resolve to the repository
+workdir or another experiment. Corpus paths (and IVTFF in metadata mode) are
+resolved and passed explicitly.
+
+`artifacts.json` is the authoritative allow-list. It records each scientific
+artifact's SHA256, producer, ExperimentID, corpus SHA256, and invocation hash.
+Unknown workspace files are errors. Resume revalidates corpus identity,
+registry hashes, dependency completion, and invocation identity.
+
+Freeze copies only registered files into `outputs/`; `NOT_APPLICABLE` stages
+have no outputs. Verify checks registry/manifest/run-state consistency as well
+as frozen checksums. Legacy frozen manifests without `isolation_version` remain
+readable and use their historical checksum verification.
