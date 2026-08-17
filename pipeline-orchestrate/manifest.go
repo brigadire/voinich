@@ -21,10 +21,17 @@ import (
 // defaults byte-for-byte). Reproducing a run therefore means "checkout
 // GitCommit, run these Args" - not "read numeric values out of this JSON".
 type StageManifest struct {
-	Index int      `json:"index"`
-	Name  string   `json:"name"`
-	Dir   string   `json:"source_dir"`
-	Args  []string `json:"args"`
+	Index  int      `json:"index"`
+	Name   string   `json:"name"`
+	Dir    string   `json:"source_dir"`
+	Args   []string `json:"args"`
+	Status string   `json:"status,omitempty"`
+	Reason string   `json:"reason,omitempty"`
+}
+
+type InputFileManifest struct {
+	Path   string `json:"path"`
+	SHA256 string `json:"sha256"`
 }
 
 // WorkerManifest documents one execution resource actually used by the
@@ -44,23 +51,26 @@ type WorkerManifest struct {
 // experiments/<name>/FROZEN (see freeze.go) is what makes that immutability
 // enforceable rather than just a convention.
 type Manifest struct {
-	ExperimentID string           `json:"experiment_id"`
-	CreatedAt    time.Time        `json:"created_at"`
-	GitCommit    string           `json:"git_commit"`
-	GitDirty     bool             `json:"git_dirty"`
-	IVTFFPath    string           `json:"ivtff_path"`
-	IVTFFSHA256  string           `json:"ivtff_sha256"`
-	CorpusPath   string           `json:"corpus_path"`
-	CorpusSHA256 string           `json:"corpus_sha256"`
-	GoVersion    string           `json:"go_version"`
-	GOOS         string           `json:"goos"`
-	GOARCH       string           `json:"goarch"`
-	Hostname     string           `json:"hostname"`
-	NumCPU       int              `json:"num_cpu"`
-	Executor     string           `json:"executor"`      // conditional-regime-analyze's -executor
-	ExecutorNote string           `json:"executor_note"` // honest description of what "distributed" meant for this run
-	Workers      []WorkerManifest `json:"workers"`
-	Stages       []StageManifest  `json:"stages"`
+	ExperimentID string             `json:"experiment_id"`
+	CreatedAt    time.Time          `json:"created_at"`
+	GitCommit    string             `json:"git_commit"`
+	GitDirty     bool               `json:"git_dirty"`
+	IVTFFPath    string             `json:"ivtff_path,omitempty"`
+	IVTFFSHA256  string             `json:"ivtff_sha256,omitempty"`
+	CorpusPath   string             `json:"corpus_path"`
+	CorpusSHA256 string             `json:"corpus_sha256"`
+	InputMode    string             `json:"input_mode,omitempty"`
+	Corpus       *InputFileManifest `json:"corpus,omitempty"`
+	IVTFF        *InputFileManifest `json:"ivtff"`
+	GoVersion    string             `json:"go_version"`
+	GOOS         string             `json:"goos"`
+	GOARCH       string             `json:"goarch"`
+	Hostname     string             `json:"hostname"`
+	NumCPU       int                `json:"num_cpu"`
+	Executor     string             `json:"executor"`      // conditional-regime-analyze's -executor
+	ExecutorNote string             `json:"executor_note"` // honest description of what "distributed" meant for this run
+	Workers      []WorkerManifest   `json:"workers"`
+	Stages       []StageManifest    `json:"stages"`
 }
 
 func sha256File(path string) (string, error) {
@@ -102,14 +112,17 @@ func gitCommit(repoPath string) (commit string, dirty bool, err error) {
 // this run's -executor remote coordinator (empty for local execution). opt
 // is passed straight through to stageArgs for every stage, so the manifest
 // records the exact command line each stage will actually be run with.
-func buildManifest(repoPath, ivtffPath, corpusPath string, opt orchestratorOptions, remoteWorkers []string) (*Manifest, error) {
+func buildManifest(repoPath, inputMode, ivtffPath, corpusPath string, opt orchestratorOptions, remoteWorkers []string) (*Manifest, error) {
 	commit, dirty, err := gitCommit(repoPath)
 	if err != nil {
 		return nil, err
 	}
-	ivtffHash, err := sha256File(filepath.Join(repoPath, ivtffPath))
-	if err != nil {
-		return nil, fmt.Errorf("hash IVTFF source: %w", err)
+	var ivtffHash string
+	if inputMode != "generic" {
+		ivtffHash, err = sha256File(filepath.Join(repoPath, ivtffPath))
+		if err != nil {
+			return nil, fmt.Errorf("hash IVTFF source: %w", err)
+		}
 	}
 	corpusHash, err := sha256File(filepath.Join(repoPath, corpusPath))
 	if err != nil {
@@ -132,15 +145,18 @@ func buildManifest(repoPath, ivtffPath, corpusPath string, opt orchestratorOptio
 		workers = append(workers, WorkerManifest{Kind: "local", Name: hostname})
 		executorNote = "conditional-regime-analyze used the default in-process goroutine executor"
 	}
+	if inputMode == "generic" {
+		executorNote = "executor configuration retained for reproducibility; conditional-regime-analyze is NOT_APPLICABLE because it requires IVTFF metadata, so no distributed executor is invoked"
+	}
 
 	m := &Manifest{
 		CreatedAt:    time.Now().UTC(),
 		GitCommit:    commit,
 		GitDirty:     dirty,
-		IVTFFPath:    ivtffPath,
-		IVTFFSHA256:  ivtffHash,
 		CorpusPath:   corpusPath,
 		CorpusSHA256: corpusHash,
+		InputMode:    inputMode,
+		Corpus:       &InputFileManifest{Path: corpusPath, SHA256: corpusHash},
 		GoVersion:    runtime.Version(),
 		GOOS:         runtime.GOOS,
 		GOARCH:       runtime.GOARCH,
@@ -150,9 +166,17 @@ func buildManifest(repoPath, ivtffPath, corpusPath string, opt orchestratorOptio
 		ExecutorNote: executorNote,
 		Workers:      workers,
 	}
+	if inputMode != "generic" {
+		m.IVTFFPath, m.IVTFFSHA256 = ivtffPath, ivtffHash
+		m.IVTFF = &InputFileManifest{Path: ivtffPath, SHA256: ivtffHash}
+	}
 	for i, st := range stages {
-		args := stageArgs(st, opt)
-		m.Stages = append(m.Stages, StageManifest{Index: i + 1, Name: st.Name, Dir: st.SourceDir, Args: args})
+		args := stageArgsForInput(st, opt, inputMode, corpusPath)
+		sm := StageManifest{Index: i + 1, Name: st.Name, Dir: st.SourceDir, Args: args, Status: "PLANNED"}
+		if inputMode == "generic" && st.RequiresMetadata {
+			sm.Status, sm.Reason = "NOT_APPLICABLE", "requires IVTFF metadata"
+		}
+		m.Stages = append(m.Stages, sm)
 	}
 	m.ExperimentID = computeExperimentID(m)
 	return m, nil
@@ -164,11 +188,23 @@ func buildManifest(repoPath, ivtffPath, corpusPath string, opt orchestratorOptio
 // byte-identical instructions.
 func computeExperimentID(m *Manifest) string {
 	h := sha256.New()
-	fmt.Fprintf(h, "commit=%s\nivtff=%s\ncorpus=%s\ngo=%s\ngoos=%s\ngoarch=%s\n", m.GitCommit, m.IVTFFSHA256, m.CorpusSHA256, m.GoVersion, m.GOOS, m.GOARCH)
+	if m.effectiveInputMode() == "ivtff" {
+		// Preserve Task36's ID calculation byte-for-byte for old invocations.
+		fmt.Fprintf(h, "commit=%s\nivtff=%s\ncorpus=%s\ngo=%s\ngoos=%s\ngoarch=%s\n", m.GitCommit, m.IVTFFSHA256, m.CorpusSHA256, m.GoVersion, m.GOOS, m.GOARCH)
+	} else {
+		fmt.Fprintf(h, "commit=%s\nmode=generic\ncorpus=%s\ngo=%s\ngoos=%s\ngoarch=%s\n", m.GitCommit, m.CorpusSHA256, m.GoVersion, m.GOOS, m.GOARCH)
+	}
 	for _, st := range m.Stages {
 		fmt.Fprintf(h, "stage=%s args=%v\n", st.Name, st.Args)
 	}
 	return hex.EncodeToString(h.Sum(nil))
+}
+
+func (m *Manifest) effectiveInputMode() string {
+	if m.InputMode == "" {
+		return "ivtff"
+	}
+	return m.InputMode
 }
 
 func manifestPath(experimentDir string) string { return filepath.Join(experimentDir, "manifest.json") }

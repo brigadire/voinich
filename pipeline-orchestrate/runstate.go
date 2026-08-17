@@ -11,7 +11,8 @@ import (
 // resume logic checks before deciding to skip or (re)run a stage.
 type StageRun struct {
 	Name            string    `json:"name"`
-	Status          string    `json:"status"` // pending|running|completed|failed
+	Status          string    `json:"status"` // pending|running|completed|failed|NOT_APPLICABLE
+	Reason          string    `json:"reason,omitempty"`
 	StartedAt       time.Time `json:"started_at,omitempty"`
 	FinishedAt      time.Time `json:"finished_at,omitempty"`
 	DurationSeconds float64   `json:"duration_seconds,omitempty"`
@@ -36,12 +37,26 @@ type RunState struct {
 
 func runStatePath(experimentDir string) string { return filepath.Join(experimentDir, "run-state.json") }
 
-func newRunState(experimentID string) *RunState {
+func newRunStateForManifest(m *Manifest) *RunState {
+	experimentID := m.ExperimentID
 	rs := &RunState{ExperimentID: experimentID, StartedAt: time.Now().UTC()}
-	for _, s := range stages {
-		rs.Stages = append(rs.Stages, StageRun{Name: s.Name, Status: "pending"})
+	for _, s := range m.Stages {
+		status := "pending"
+		if s.Status == "NOT_APPLICABLE" {
+			status = "NOT_APPLICABLE"
+		}
+		rs.Stages = append(rs.Stages, StageRun{Name: s.Name, Status: status, Reason: s.Reason})
 	}
 	return rs
+}
+
+// newRunState retains compatibility for old callers/tests.
+func newRunState(experimentID string) *RunState {
+	m := &Manifest{ExperimentID: experimentID}
+	for i, s := range stages {
+		m.Stages = append(m.Stages, StageManifest{Index: i + 1, Name: s.Name})
+	}
+	return newRunStateForManifest(m)
 }
 
 func loadRunState(experimentDir string) (*RunState, error) {
@@ -82,7 +97,7 @@ func (rs *RunState) stage(name string) *StageRun {
 
 func (rs *RunState) allCompleted() bool {
 	for _, s := range rs.Stages {
-		if s.Status != "completed" {
+		if s.Status != "completed" && s.Status != "NOT_APPLICABLE" {
 			return false
 		}
 	}

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
@@ -136,13 +137,26 @@ func writeChecksums(experimentDir string, relPaths []string) (string, error) {
 // checksums.
 func writeReport(experimentDir string, m *Manifest, rs *RunState) error {
 	var b strings.Builder
-	fmt.Fprintf(&b, "# Voynich Baseline - Experiment Report\n\n")
+	title := "Voynich Baseline"
+	if m.effectiveInputMode() == "generic" {
+		title = "Generic Corpus Pipeline"
+	}
+	fmt.Fprintf(&b, "# %s - Experiment Report\n\n", title)
 	fmt.Fprintf(&b, "ExperimentID: `%s`\n\n", m.ExperimentID)
 	fmt.Fprintf(&b, "Git commit: `%s`%s\n\n", m.GitCommit, dirtyNote(m.GitDirty))
 	fmt.Fprintf(&b, "Created: %s\n\n", m.CreatedAt.Format(time.RFC3339))
 	fmt.Fprintf(&b, "Platform: %s/%s, Go %s, host `%s`, %d CPUs\n\n", m.GOOS, m.GOARCH, m.GoVersion, m.Hostname, m.NumCPU)
-	fmt.Fprintf(&b, "IVTFF source: `%s` (sha256 `%s`)\n\n", m.IVTFFPath, m.IVTFFSHA256)
-	fmt.Fprintf(&b, "Frozen corpus: `%s` (sha256 `%s`)\n\n", m.CorpusPath, m.CorpusSHA256)
+	if m.effectiveInputMode() == "generic" {
+		fmt.Fprintf(&b, "Input mode: generic corpus\n\nCorpus: `%s`\n\nCorpus SHA256: `%s`\n\n", m.CorpusPath, m.CorpusSHA256)
+		n, err := tokenCount(m.CorpusPath)
+		if err != nil {
+			return fmt.Errorf("count generic corpus tokens: %w", err)
+		}
+		fmt.Fprintf(&b, "Token count: %d\n\n", n)
+	} else {
+		fmt.Fprintf(&b, "Input mode: IVTFF\n\nIVTFF source: `%s` (sha256 `%s`)\n\n", m.IVTFFPath, m.IVTFFSHA256)
+		fmt.Fprintf(&b, "Frozen corpus: `%s` (sha256 `%s`)\n\n", m.CorpusPath, m.CorpusSHA256)
+	}
 	fmt.Fprintf(&b, "Executor: `%s` - %s\n\n", m.Executor, m.ExecutorNote)
 	fmt.Fprintf(&b, "Workers:\n\n")
 	for _, w := range m.Workers {
@@ -157,9 +171,32 @@ func writeReport(experimentDir string, m *Manifest, rs *RunState) error {
 		fmt.Fprintf(&b, "| %d | %s | %s | %.1fs | %.1fs | %.1fs | %d KB |\n",
 			i+1, sr.Name, sr.Status, sr.DurationSeconds, sr.UserCPUSeconds, sr.SysCPUSeconds, sr.MaxRSSKB)
 	}
+	if m.effectiveInputMode() == "generic" {
+		fmt.Fprintf(&b, "\n## Not applicable stages\n\n")
+		for _, sr := range rs.Stages {
+			if sr.Status == "NOT_APPLICABLE" {
+				fmt.Fprintf(&b, "- %s — reason: %s\n", sr.Name, sr.Reason)
+			}
+		}
+	}
 	fmt.Fprintf(&b, "\n**Total wall time (sum of stages): %s**\n\n", total.Round(time.Second))
 	fmt.Fprintf(&b, "Full manifest: `manifest.json`. Per-file checksums: `checksums.sha256`. Per-stage logs: `logs/`.\n")
 	return os.WriteFile(filepath.Join(experimentDir, "REPORT.md"), []byte(b.String()), 0644)
+}
+
+func tokenCount(path string) (int, error) {
+	f, err := os.Open(path)
+	if err != nil {
+		return 0, err
+	}
+	defer f.Close()
+	s := bufio.NewScanner(f)
+	s.Split(bufio.ScanWords)
+	n := 0
+	for s.Scan() {
+		n++
+	}
+	return n, s.Err()
 }
 
 func dirtyNote(dirty bool) string {
@@ -204,7 +241,11 @@ func freezeExperiment(experimentDir string, force bool) error {
 		return fmt.Errorf("write report: %w", err)
 	}
 
-	marker := fmt.Sprintf("Voynich Baseline frozen at %s\nExperimentID: %s\nchecksums.sha256 sha256: %s\nFiles: %d\n",
+	label := "Voynich Baseline"
+	if m.effectiveInputMode() == "generic" {
+		label = "Generic Corpus Pipeline"
+	}
+	marker := fmt.Sprintf("%s frozen at %s\nExperimentID: %s\nchecksums.sha256 sha256: %s\nFiles: %d\n", label,
 		time.Now().UTC().Format(time.RFC3339), m.ExperimentID, checksumsDigest, len(relPaths))
 	if err := os.WriteFile(frozenMarkerPath(experimentDir), []byte(marker), 0444); err != nil {
 		return fmt.Errorf("write FROZEN marker: %w", err)

@@ -65,7 +65,7 @@ func usage() {
 	fmt.Fprint(os.Stderr, `pipeline-orchestrate: Task36 single orchestration CLI
 
 Usage:
-  pipeline-orchestrate manifest -experiment-dir experiments/voynich-v1 [-executor process|goroutine|remote] [-workers N] [-remote-listen ADDR -tls-cert C -tls-key K -client-ca CA] [-force]
+  pipeline-orchestrate manifest -experiment-dir experiments/voynich-v1 [-ivtff FILE] [-corpus FILE] [-generic-corpus] [-executor process|goroutine|remote] [-workers N] [-remote-listen ADDR -tls-cert C -tls-key K -client-ca CA] [-force]
   pipeline-orchestrate run      -experiment-dir experiments/voynich-v1 [-only STAGE]
   pipeline-orchestrate freeze   -experiment-dir experiments/voynich-v1 [-force]
   pipeline-orchestrate verify   -experiment-dir experiments/voynich-v1
@@ -84,6 +84,7 @@ func runManifestCmd(args []string) int {
 	experimentDir := fs.String("experiment-dir", "experiments/voynich-v1", "experiment directory to create")
 	ivtff := fs.String("ivtff", "data/ZL3b-n.txt", "frozen IVTFF source")
 	corpus := fs.String("corpus", "data_work/ZL3b-x7.txt", "frozen IVTT -x7 corpus derivative")
+	genericCorpus := fs.Bool("generic-corpus", false, "treat -corpus as an authoritative generic token corpus; do not read IVTFF metadata")
 	executor := fs.String("executor", "process", "conditional-regime-analyze executor: goroutine|process|remote")
 	workers := fs.Int("workers", 8, "conditional-regime-analyze -workers (goroutine/process executor)")
 	remoteListen := fs.String("remote-listen", "", "coordinator mTLS listen address (executor=remote)")
@@ -96,6 +97,16 @@ func runManifestCmd(args []string) int {
 	fs.Var(&remoteWorkers, "remote-worker", "authenticated remote worker identity, for the manifest's worker list (repeatable, executor=remote)")
 	force := fs.Bool("force", false, "overwrite an existing (non-frozen) manifest")
 	if err := fs.Parse(args); err != nil {
+		return 2
+	}
+	corpusExplicit := false
+	fs.Visit(func(f *flag.Flag) {
+		if f.Name == "corpus" {
+			corpusExplicit = true
+		}
+	})
+	if *genericCorpus && !corpusExplicit {
+		fmt.Fprintln(os.Stderr, "Error: -generic-corpus requires an explicit -corpus (the Voynich default is never used as fallback)")
 		return 2
 	}
 	if *executor == "remote" && (*remoteListen == "" || *tlsCert == "" || *tlsKey == "" || *clientCA == "") {
@@ -122,7 +133,11 @@ func runManifestCmd(args []string) int {
 		RemoteRetries: *remoteRetries,
 	}
 	repo := repoRoot()
-	m, err := buildManifest(repo, *ivtff, *corpus, opt, remoteWorkers)
+	inputMode := "ivtff"
+	if *genericCorpus {
+		inputMode = "generic"
+	}
+	m, err := buildManifest(repo, inputMode, *ivtff, *corpus, opt, remoteWorkers)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "Error:", err)
 		return 1
@@ -131,7 +146,7 @@ func runManifestCmd(args []string) int {
 		fmt.Fprintln(os.Stderr, "Error:", err)
 		return 1
 	}
-	if err := saveRunState(*experimentDir, newRunState(m.ExperimentID)); err != nil {
+	if err := saveRunState(*experimentDir, newRunStateForManifest(m)); err != nil {
 		fmt.Fprintln(os.Stderr, "Error:", err)
 		return 1
 	}

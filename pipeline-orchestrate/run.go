@@ -28,7 +28,7 @@ func runPipeline(repoPath, experimentDir string, opt orchestratorOptions, only s
 
 	rs, err := loadRunState(experimentDir)
 	if err != nil {
-		rs = newRunState(m.ExperimentID)
+		rs = newRunStateForManifest(m)
 	}
 	if rs.ExperimentID != m.ExperimentID {
 		return fmt.Errorf("run-state.json belongs to experiment %s, manifest is %s - refusing to mix runs", rs.ExperimentID, m.ExperimentID)
@@ -41,7 +41,11 @@ func runPipeline(repoPath, experimentDir string, opt orchestratorOptions, only s
 	binDir := workdir.Path("bin")
 
 	fmt.Printf("Task36 pipeline run: experiment %s\n", m.ExperimentID)
-	for i, st := range stages {
+	for i, sm := range m.Stages {
+		st, ok := stageByName(sm.Name)
+		if !ok {
+			return fmt.Errorf("manifest contains unknown stage %q", sm.Name)
+		}
 		if only != "" && st.Name != only {
 			continue
 		}
@@ -50,27 +54,31 @@ func runPipeline(repoPath, experimentDir string, opt orchestratorOptions, only s
 			rs.Stages = append(rs.Stages, StageRun{Name: st.Name, Status: "pending"})
 			sr = rs.stage(st.Name)
 		}
-		if sr.Status == "completed" {
-			fmt.Printf("[%d/%d] %-35s SKIP (already completed)\n", i+1, len(stages), st.Name)
+		if sr.Status == "completed" || sr.Status == "NOT_APPLICABLE" {
+			fmt.Printf("[%d/%d] %-35s SKIP (%s", i+1, len(m.Stages), st.Name, sr.Status)
+			if sr.Reason != "" {
+				fmt.Printf(": %s", sr.Reason)
+			}
+			fmt.Println(")")
 			continue
 		}
 
 		binPath := filepath.Join(binDir, st.Name)
-		fmt.Printf("[%d/%d] %-35s building...\n", i+1, len(stages), st.Name)
+		fmt.Printf("[%d/%d] %-35s building...\n", i+1, len(m.Stages), st.Name)
 		if err := buildBinary(repoPath, st.SourceDir, binPath); err != nil {
 			sr.Status, sr.Error = "failed", err.Error()
 			_ = saveRunState(experimentDir, rs)
 			return fmt.Errorf("stage %s: %w", st.Name, err)
 		}
 
-		args := stageArgs(st, opt)
+		args := append([]string(nil), sm.Args...)
 		logPath := filepath.Join(logDir, fmt.Sprintf("%02d-%s.log", i+1, st.Name))
 		sr.Status = "running"
 		sr.StartedAt = time.Now().UTC()
 		sr.LogPath = logPath
 		_ = saveRunState(experimentDir, rs)
 
-		fmt.Printf("[%d/%d] %-35s running (log: %s)\n", i+1, len(stages), st.Name, logPath)
+		fmt.Printf("[%d/%d] %-35s running (log: %s)\n", i+1, len(m.Stages), st.Name, logPath)
 		absBinPath, err := filepath.Abs(binPath)
 		if err != nil {
 			return err
@@ -91,7 +99,7 @@ func runPipeline(repoPath, experimentDir string, opt orchestratorOptions, only s
 		}
 		sr.Status = "completed"
 		_ = saveRunState(experimentDir, rs)
-		fmt.Printf("[%d/%d] %-35s completed in %s\n", i+1, len(stages), st.Name, result.Duration.Round(time.Second))
+		fmt.Printf("[%d/%d] %-35s completed in %s\n", i+1, len(m.Stages), st.Name, result.Duration.Round(time.Second))
 	}
 
 	if rs.allCompleted() {

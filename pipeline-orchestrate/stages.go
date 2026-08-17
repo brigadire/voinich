@@ -36,6 +36,13 @@ type Stage struct {
 	// the sole stage with a distributed/local executor choice
 	// (-executor, -workers).
 	Executor bool
+	// CorpusFlag is the flag used to override the historical Voynich corpus
+	// default.  An empty value means that the stage consumes only upstream
+	// artifacts (dict-gen is handled through its positional argument).
+	CorpusFlag string
+	// RequiresMetadata marks stages whose actual inputs include IVTFF-derived
+	// folio/hand/Currier metadata, directly or through token_metadata_map.tsv.
+	RequiresMetadata bool
 }
 
 // stages is the complete, ordered (topologically sorted by dependency)
@@ -47,30 +54,30 @@ var stages = []Stage{
 	{Name: "dict-gen", SourceDir: ".", Positional: []string{"data_work/ZL3b-x7.txt", "workdir/dataset/dictionary.yaml"}},
 	{Name: "dict-analyze", SourceDir: "dict-analyze", Positional: []string{"workdir/dataset/dictionary.yaml", "workdir/dataset/tokens_analysis.yaml"}},
 	{Name: "structural-analyze", SourceDir: "structural-analyze"},
-	{Name: "sequence-analyze", SourceDir: "sequence-analyze"},
-	{Name: "begin-end-analyze", SourceDir: "begin-end-analyze"},
-	{Name: "structural-normalize", SourceDir: "structural-normalize"},
-	{Name: "normalization-compare", SourceDir: "normalization-compare"},
-	{Name: "structural-validate", SourceDir: "structural-validate"},
-	{Name: "structural-profile-stability", SourceDir: "structural-profile-stability"},
-	{Name: "structural-reliability", SourceDir: "structural-reliability"},
+	{Name: "sequence-analyze", SourceDir: "sequence-analyze", CorpusFlag: "-input"},
+	{Name: "begin-end-analyze", SourceDir: "begin-end-analyze", CorpusFlag: "-corpus"},
+	{Name: "structural-normalize", SourceDir: "structural-normalize", CorpusFlag: "-input"},
+	{Name: "normalization-compare", SourceDir: "normalization-compare", CorpusFlag: "-input"},
+	{Name: "structural-validate", SourceDir: "structural-validate", CorpusFlag: "-input"},
+	{Name: "structural-profile-stability", SourceDir: "structural-profile-stability", CorpusFlag: "-input"},
+	{Name: "structural-reliability", SourceDir: "structural-reliability", CorpusFlag: "-input"},
 	{Name: "soft-structural-space", SourceDir: "soft-structural-space"},
 	{Name: "structural-graphemic", SourceDir: "structural-graphemic"},
 	{Name: "structural-pair-decompose", SourceDir: "structural-pair-decompose"},
-	{Name: "distance-context-analyze", SourceDir: "distance-context-analyze"},
-	{Name: "local-regime-analyze", SourceDir: "local-regime-analyze", Quiet: true},
-	{Name: "property-trajectory-analyze", SourceDir: "property-trajectory-analyze", Quiet: true},
-	{Name: "structural-projection-analyze", SourceDir: "structural-projection-analyze", Quiet: true},
-	{Name: "global-regime-analyze", SourceDir: "global-regime-analyze", Quiet: true},
-	{Name: "metadata-validate", SourceDir: "metadata-validate", Quiet: true},
-	{Name: "cluster-metadata-global", SourceDir: "cluster-metadata-global", Quiet: true},
-	{Name: "conditional-regime-analyze", SourceDir: "conditional-regime-analyze", Quiet: true, Checkpoint: true, Executor: true},
-	{Name: "residual-diagnostic-analyze", SourceDir: "residual-diagnostic-analyze", Quiet: true},
-	{Name: "token-relation-validate", SourceDir: "token-relation-validate", Quiet: true, Checkpoint: true},
-	{Name: "replicated-local-structure-audit", SourceDir: "replicated-local-structure-audit", Quiet: true, Checkpoint: true},
-	{Name: "higher-order-sequence-validate", SourceDir: "higher-order-sequence-validate", Quiet: true, Checkpoint: true},
-	{Name: "positional-continuation-validate", SourceDir: "positional-continuation-validate", Quiet: true, Checkpoint: true},
-	{Name: "transition-network-validate", SourceDir: "transition-network-validate", Quiet: true, Checkpoint: true},
+	{Name: "distance-context-analyze", SourceDir: "distance-context-analyze", CorpusFlag: "-corpus"},
+	{Name: "local-regime-analyze", SourceDir: "local-regime-analyze", Quiet: true, CorpusFlag: "-corpus"},
+	{Name: "property-trajectory-analyze", SourceDir: "property-trajectory-analyze", Quiet: true, CorpusFlag: "-corpus"},
+	{Name: "structural-projection-analyze", SourceDir: "structural-projection-analyze", Quiet: true, CorpusFlag: "-corpus"},
+	{Name: "global-regime-analyze", SourceDir: "global-regime-analyze", Quiet: true, CorpusFlag: "-corpus"},
+	{Name: "metadata-validate", SourceDir: "metadata-validate", Quiet: true, RequiresMetadata: true},
+	{Name: "cluster-metadata-global", SourceDir: "cluster-metadata-global", Quiet: true, RequiresMetadata: true},
+	{Name: "conditional-regime-analyze", SourceDir: "conditional-regime-analyze", Quiet: true, Checkpoint: true, Executor: true, RequiresMetadata: true},
+	{Name: "residual-diagnostic-analyze", SourceDir: "residual-diagnostic-analyze", Quiet: true, RequiresMetadata: true},
+	{Name: "token-relation-validate", SourceDir: "token-relation-validate", Quiet: true, Checkpoint: true, RequiresMetadata: true},
+	{Name: "replicated-local-structure-audit", SourceDir: "replicated-local-structure-audit", Quiet: true, Checkpoint: true, RequiresMetadata: true},
+	{Name: "higher-order-sequence-validate", SourceDir: "higher-order-sequence-validate", Quiet: true, Checkpoint: true, RequiresMetadata: true},
+	{Name: "positional-continuation-validate", SourceDir: "positional-continuation-validate", Quiet: true, Checkpoint: true, RequiresMetadata: true},
+	{Name: "transition-network-validate", SourceDir: "transition-network-validate", Quiet: true, Checkpoint: true, RequiresMetadata: true},
 }
 
 // stageByName looks up a stage by its orchestrator Name, used by -only/
@@ -131,6 +138,21 @@ func stageArgs(s Stage, opt orchestratorOptions) []string {
 				args = append(args, "-remote-retries", strconv.Itoa(opt.RemoteRetries))
 			}
 		}
+	}
+	return args
+}
+
+// stageArgsForInput preserves the byte-for-byte historical Voynich command
+// lines, while making the authoritative corpus explicit in generic mode.
+func stageArgsForInput(s Stage, opt orchestratorOptions, inputMode, corpusPath string) []string {
+	args := stageArgs(s, opt)
+	if inputMode != "generic" {
+		return args
+	}
+	if s.Name == "dict-gen" {
+		args[0] = corpusPath
+	} else if s.CorpusFlag != "" {
+		args = append(args, s.CorpusFlag, corpusPath)
 	}
 	return args
 }

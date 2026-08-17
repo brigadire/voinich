@@ -21,6 +21,7 @@ allow-list of every flag this tool is permitted to pass.
 
 ```
 pipeline-orchestrate manifest -experiment-dir experiments/voynich-v1 [-executor process|goroutine|remote] [-workers N] [-force]
+pipeline-orchestrate manifest -experiment-dir experiments/doyle-v1 -corpus data_test/pg2097-2.txt -generic-corpus
 pipeline-orchestrate run      -experiment-dir experiments/voynich-v1 [-only STAGE]
 pipeline-orchestrate freeze   -experiment-dir experiments/voynich-v1 [-force]
 pipeline-orchestrate verify   -experiment-dir experiments/voynich-v1
@@ -44,6 +45,13 @@ identities for `-executor remote` - never a fabricated fleet.
 
 Refuses to overwrite an existing manifest without `-force`, and refuses
 entirely once the experiment is `freeze`d.
+
+With `-generic-corpus`, `-corpus` is the sole authoritative input. The
+orchestrator neither hashes nor reads an IVTFF file. The manifest retains all
+27 stages: corpus-only stages are `PLANNED`, while IVTFF-metadata stages are
+`NOT_APPLICABLE` with an explicit reason. Corpus-consuming commands receive
+the selected path explicitly, so their historical Voynich defaults cannot be
+used as fallback. See `STAGE_AUDIT.md` for the input/dependency audit.
 
 ### run
 
