@@ -314,3 +314,199 @@ To protect worker private keys committed alongside Ansible material, use
 (`ansible-vault encrypt files/certs/worker-1/worker.key`) or an
 operator-controlled equivalent - this role requires no new
 secret-management service.
+
+## Running the full pipeline across multiple nodes (Task36)
+
+This is the end-to-end runbook that ties the pieces above together:
+`pipeline-orchestrate` (`pipeline-orchestrate/README.md`) runs all 27
+current pipeline stages in order; `conditional-regime-analyze` (stage 21,
+the only stage with a distributed executor) is the one piece that actually
+spreads work across the nodes this section deploys via the
+`voynich_worker` Ansible role. Every other stage always runs locally on
+the machine that runs `pipeline-orchestrate`, regardless of how many nodes
+are deployed here.
+
+### 0. Prerequisites
+
+- A Go toolchain and this repository checked out on the machine that will
+  run `pipeline-orchestrate` (the "controller/coordinator machine" below -
+  it plays both roles: it is the Ansible controller for the worker fleet
+  *and* the Task34 mTLS coordinator).
+- An Ansible inventory naming the node(s) you intend to use as workers,
+  reachable over SSH, with `ansible_host`/`ansible_user`/credentials
+  already resolvable the normal Ansible way (`ansible -i inventory.yml all
+  -m ping` should succeed before proceeding). **Read every host's
+  `host_vars`/`group_vars` before treating an inventory as disposable test
+  capacity** - a name like "dev" or "test" does not guarantee the hosts
+  aren't running real production services; deploying a CPU-heavy research
+  workload onto a shared production host can degrade it.
+- One address the worker nodes can actually reach for the coordinator:
+  either this machine's LAN IP (workers on the same network) or a
+  public/NAT-forwarded address (workers elsewhere on the internet) -
+  confirmed reachable *before* relying on it (see step 3).
+
+### 1. Generate the project CA and one certificate per node
+
+```bash
+go build -o bin/conditional-regime-pki ./conditional-regime-pki
+go build -o bin/pipeline-orchestrate ./pipeline-orchestrate
+
+PKI=/path/to/pki   # outside the repo; never commit ca.key
+bin/conditional-regime-pki ca -out-dir "$PKI"
+bin/conditional-regime-pki issue-coordinator -ca-cert "$PKI/ca.crt" -ca-key "$PKI/ca.key" \
+  -out-dir "$PKI" -dns coordinator.internal -ip 10.0.0.10 -ip 203.0.113.10
+# one -worker-id per node, unique, matching the inventory hostnames used below:
+bin/conditional-regime-pki issue-worker -ca-cert "$PKI/ca.crt" -ca-key "$PKI/ca.key" -out-dir "$PKI" -worker-id worker1
+bin/conditional-regime-pki issue-worker -ca-cert "$PKI/ca.crt" -ca-key "$PKI/ca.key" -out-dir "$PKI" -worker-id worker2
+```
+
+Pass every address the coordinator will actually be dialed as to
+`issue-coordinator` as `-dns`/`-ip` (repeatable): a node on the same LAN
+and a node reached over the public internet may need to dial in on two
+different addresses, and both must be in the certificate's SAN list (see
+`ansible/inventory.example.yml`'s per-host `voynich_worker_coordinator_url`
+override for exactly this case - one worker used the coordinator's LAN
+address while the rest used its public one, because the LAN host's own
+router could not route its own public IP back to itself).
+
+### 2. Prepare the Ansible inventory
+
+Combine your real connection inventory with a small vars file naming the
+per-node certificate/key and the coordinator URL - `ansible/inventory.example.yml`
+is a template for this. Keep it outside the repo (or gitignored) if it
+names real infrastructure:
+
+```yaml
+all:
+  children:
+    voynich_workers:
+      hosts:
+        worker1: { voynich_worker_cert_src: "{{ pki }}/worker-worker1.crt", voynich_worker_key_src: "{{ pki }}/worker-worker1.key" }
+        worker2: { voynich_worker_cert_src: "{{ pki }}/worker-worker2.crt", voynich_worker_key_src: "{{ pki }}/worker-worker2.key" }
+      vars:
+        voynich_worker_ca_src: "{{ pki }}/ca.crt"
+        voynich_worker_coordinator_url: "https://203.0.113.10:8443"
+        voynich_worker_concurrency: 3     # keep modest on shared/production hosts
+        voynich_worker_repo_path: /path/to/this/repo/checkout
+```
+
+If your real hosts already live in a separate ops inventory with its own
+`ansible.cfg` (vault password, SSH key, `remote_user`), pass both:
+
+```bash
+ANSIBLE_CONFIG=/path/to/ops/ansible.cfg \
+ANSIBLE_ROLES_PATH=/path/to/this/repo/ansible/roles \
+ansible-playbook -i /path/to/ops/inventory/hosts -i node-vars.yml deploy-workers.yml
+```
+
+### 3. Deploy the workers (before starting the coordinator)
+
+```bash
+ansible-playbook -i inventory.yml deploy-workers.yml
+```
+
+**This is expected to report `readiness` as `failed` right now** - the
+coordinator (step 4) is not running yet, so there is nothing to
+authenticate against. The worker daemon itself starts successfully
+regardless and will keep retrying with backoff until a coordinator
+appears (see `ansible/roles/voynich_worker/tasks/readiness.yml`); nothing
+further to do here. Confirm the daemons are actually up:
+
+```bash
+ansible -i inventory.yml all -m shell -a "pgrep -af conditional-regime-analyze"
+```
+
+To sanity-check the network path before relying on it for the real run,
+probe the coordinator's future address from one worker host once you know
+it (harmless - either times out cleanly or gets a TLS-level rejection,
+never actually authenticates without a real coordinator running):
+
+```bash
+ansible -i inventory.yml worker1 -m shell -a \
+  "curl -sS -k -o /dev/null -w '%{http_code}\n' --connect-timeout 5 https://203.0.113.10:8443/v1/handshake"
+```
+
+### 4. Write the immutable manifest
+
+Do this once, before the real run starts - `manifest` freezes every
+scientific parameter (already each stage's own default, see
+`pipeline-orchestrate/README.md`) and the exact worker list:
+
+```bash
+bin/pipeline-orchestrate manifest -experiment-dir experiments/my-run \
+  -executor remote -workers 64 \
+  -remote-listen 0.0.0.0:8443 \
+  -tls-cert "$PKI/coordinator.crt" -tls-key "$PKI/coordinator.key" -client-ca "$PKI/ca.crt" \
+  -remote-timeout 15m -remote-retries 5 \
+  -remote-worker worker1 -remote-worker worker2
+```
+
+`-workers` bounds the coordinator's total in-flight job slots (independent
+of how many nodes connect); size it to comfortably exceed
+`node_count Ă— voynich_worker_concurrency`. Inspect
+`experiments/my-run/manifest.json` before proceeding - specifically that
+`conditional-regime-analyze`'s recorded `args` actually contain your
+`-remote-listen`/`-tls-*`/`-client-ca` values, not empty strings.
+
+### 5. Run
+
+```bash
+bin/pipeline-orchestrate run -experiment-dir experiments/my-run
+```
+
+Stages run one at a time, in order; only stage 21
+(`conditional-regime-analyze`) starts the mTLS coordinator and waits on
+the deployed nodes. Everything before and after it runs locally - the
+nodes sit idle (near-zero CPU) the entire rest of the pipeline. If the
+orchestrator process dies, re-running the identical command resumes at
+the first incomplete stage (`run-state.json`); a node that drops mid-lease
+is simply reassigned, per Task34's normal retry behavior.
+
+To watch progress without disturbing anything, poll the coordinator's own
+metrics from any machine holding a valid worker certificate (any node's
+own cert works, or the coordinator's own copy in `$PKI`):
+
+```bash
+curl -sS --cacert "$PKI/ca.crt" --cert "$PKI/worker-worker1.crt" --key "$PKI/worker-worker1.key" \
+  https://203.0.113.10:8443/v1/metrics
+# {"handshakes":2,"leases_issued":...,"pending_jobs":...,"outstanding_leases":...}
+```
+
+`outstanding_leases` reaching `node_count Ă— voynich_worker_concurrency`
+confirms every node is actually contributing, not merely connected.
+
+### 6. Remove the workers, then freeze
+
+Once stage 21 has finished (check `pipeline-orchestrate status`; no need
+to wait for the whole pipeline), the nodes are no longer needed:
+
+```bash
+ansible-playbook -i inventory.yml deploy-workers.yml -e voynich_worker_state=absent
+```
+
+After every stage completes:
+
+```bash
+bin/pipeline-orchestrate freeze -experiment-dir experiments/my-run
+bin/pipeline-orchestrate verify -experiment-dir experiments/my-run   # optional, re-checks checksums.sha256
+```
+
+`freeze` refuses to run against an incomplete run, snapshots only the
+files this run actually produced (by modification time - `workdir/` is a
+shared, long-lived scratch area, not exclusive to one experiment),
+checksums them, writes `REPORT.md`, and writes a read-only `FROZEN`
+marker: every later `run`/`freeze`/`manifest` against that directory
+refuses without an explicit `-force`, so no later pipeline change can
+silently overwrite a frozen baseline.
+
+### Scaling note
+
+Only `conditional-regime-analyze` benefits from more nodes at all - and
+only unevenly: its Part B global permutation correction parallelizes well
+(measured ~6x faster going from 1 to 10 real nodes), while Part A
+significance/refinement showed no measurable benefit from extra nodes in
+the same test (too few independent jobs at typical scale to spread
+further). Every other stage, and especially `structural-projection-analyze`
+(no executor at all, several hours fixed at production scale), sets a wall-
+time floor that no number of worker nodes reduces. Budget node count
+against Part B's job count, not against the pipeline's total duration.
