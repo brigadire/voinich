@@ -110,6 +110,28 @@ For stage 17 the coordinator command is:
 The production scientific defaults, including `-random-projections 200`, are
 unchanged. Keep the operational checkpoint outside frozen outputs.
 
+Task42 adds a third distributable job type, `normalization_compare_baseline`
+(one random-baseline trial per threshold), for `normalization-compare`:
+
+```bash
+./normalization-compare \
+  -executor remote -workers 10 \
+  -remote-listen 0.0.0.0:8443 \
+  -tls-cert pki/coordinator.crt -tls-key pki/coordinator.key -client-ca pki/ca.crt \
+  -remote-timeout 15m -remote-retries 3 \
+  -input data_test/pg2097-2.txt \
+  -classes workdir/structural_classes.yaml -raw-analysis workdir/sequence_analysis.yaml \
+  -normalized-pattern workdir/normalized_%s.txt -analysis-pattern workdir/sequence_analysis_%s.yaml \
+  -output workdir/normalization_comparison.yaml
+```
+
+See `NORMALIZATION_COMPARE_DISTRIBUTION_AUDIT.md` for the profiling/audit
+that justified distributing this stage and the resulting scaling study. It
+has no checkpoint flag: unlike conditional-regime-analyze/
+structural-projection-analyze, normalization-compare had no pre-existing
+resume mechanism, and Task42 did not add one (see that document's stop
+condition/scope notes).
+
 ## 5. Start workers
 
 ```bash
@@ -122,23 +144,51 @@ unchanged. Keep the operational checkpoint outside frozen outputs.
 
 A worker verifies the coordinator's certificate chain and that its SAN
 matches the dialed name (`coordinator.internal` above must be one of the
-`-dns`/`-ip` values from Section 2), then presents its own certificate.
-There is no insecure-skip-verify path in any build configuration. A worker
-that cannot yet reach the coordinator (not started, restarting) backs off
-and keeps retrying rather than exiting - a worker's lifecycle is controlled
-by the operator (SIGINT), not by any one coordinator run. Start any number
-of workers, in any order relative to the coordinator, each with its own
-certificate.
+`-dns`/`-ip` values from Section 2), then presents its own certificate -
+on every connection, including every reconnect, never only at first
+startup. There is no insecure-skip-verify path in any build configuration.
+Start any number of workers, in any order relative to the coordinator,
+each with its own certificate.
 
-The same worker command serves both supported stages. Structural projection
-intentionally executes one trial at a time in each worker process even when
-`-remote-concurrency` is larger, because its scientific core reuses
-package-level scratch buffers. Scale it with worker processes/hosts rather
-than concurrent trials inside one address space.
+The same worker command serves every supported stage/job type
+(conditional-regime part A/B, `structural_projection_trial`,
+`normalization_compare_baseline`): the coordinator's handshake declares
+which workload it is running, and the worker builds the matching
+computation from that, not from any command-line flag of its own.
+Structural projection intentionally executes one trial at a time in each
+worker process even when `-remote-concurrency` is larger, because its
+scientific core reuses package-level scratch buffers. Scale it with worker
+processes/hosts rather than concurrent trials inside one address space.
 
-SIGINT initiates graceful shutdown on both sides: the coordinator's HTTP
-server drains in-flight requests for up to ten seconds, and a worker's lease
-loops exit once their current job (if any) is posted back.
+**Task42: workers are persistent by default.** A worker started with
+`-coordinator` (`conditionalregime.RunPersistentRemoteWorker`) is not tied
+to one coordinator process or one experiment: it reconnects with bounded
+exponential backoff and jitter (1s up to 60s, never a tight loop) whenever
+the coordinator is not yet running, has stopped, has restarted, or has
+moved on to a different experiment, logging each lifecycle transition
+(`coordinator unavailable` / `reconnecting` / `connected` / `authenticated`
+/ `registered` / `disconnected`) once per change rather than once per
+attempt. It never rebuilds its computer state (corpus, classes/metadata,
+scientific fingerprint) mid-connection - only across a reconnect, so one
+experiment's data can never leak into another's job. This is what makes
+"deploy once, run many experiments" possible; see
+`REMOTE_WORKER_LIFECYCLE.md` for the full design and
+`ansible/roles/voynich_worker/README.md` for the `present`/`started`/
+`stopped`/`status`/`absent` operations built on top of it.
+
+An mTLS identity failure (untrusted CA, rejected/expired certificate) is
+never retried forever: the worker classifies it as permanent, logs a clear
+diagnostic, and exits non-zero instead of looping - only transport-level
+failures (connection refused/reset, timeout, coordinator not listening
+yet) are treated as transient and retried.
+
+SIGINT and SIGTERM both initiate graceful shutdown on the worker side (a
+persistent worker deployed under Ansible or a process manager is commonly
+stopped with SIGTERM, an interactive one with SIGINT - both take the same
+path). The coordinator's HTTP server drains in-flight requests for up to
+ten seconds on SIGINT, and a worker's lease loops exit once their current
+job (if any) is posted back; the outer reconnect loop then exits instead
+of scheduling another attempt.
 
 ## Compatibility envelope
 
@@ -229,8 +279,17 @@ stack is disproportionate for a PKI this small.
   expired, revoked, wrong coordinator SAN) fail the connection at the TLS
   layer before any job-level logic runs.
 - If every worker disconnects, the coordinator simply waits (with its
-  checkpoint intact) for one to reconnect; re-run a worker at the same
-  `-coordinator` URL to resume progress.
+  checkpoint intact) for one to reconnect; a Task42 persistent worker does
+  this on its own with bounded backoff, so nothing needs to be re-run
+  manually.
+- When a coordinator restarts for the *same* experiment (same
+  corpus/config, same fingerprint), an already-running persistent worker
+  reconnects and resumes leasing without rebuilding anything. When a
+  coordinator starts a *different* experiment on the same address, the
+  worker's next lease request is rejected (409) instead of silently
+  retried forever; it re-handshakes, rebuilds its computer state from the
+  new experiment's inputs, and resumes - the old experiment's state never
+  contaminates the new one's results.
 
 ## Never log secrets
 
@@ -251,8 +310,11 @@ end-to-end path.
 
 ### Prerequisites
 
-- A running coordinator (Sections 1-4 above) reachable from every worker
-  host over HTTPS.
+- The coordinator's address and PKI trust anchor (`ca.crt`) - not
+  necessarily a coordinator that is running yet. Task42's persistent worker
+  connects whenever one first appears, so deploying workers before
+  starting the first experiment (Sections 1-4 above) is normal, not an
+  error; see `REMOTE_WORKER_LIFECYCLE.md`.
 - `ca.crt` and one `worker-<id>.crt`/`worker-<id>.key` pair per worker host,
   already issued via `conditional-regime-pki issue-worker` (Section 3) -
   the role never generates or renews certificates itself.
@@ -290,21 +352,41 @@ provenance is always inspectable without running it.
 ```bash
 cd ansible
 cp inventory.example.yml inventory.yml   # then edit: real hosts, real cert/key paths
-ansible-playbook -i inventory.yml deploy-workers.yml                     # all workers
+ansible-playbook -i inventory.yml deploy-workers.yml                     # all workers, once
 ansible-playbook -i inventory.yml deploy-workers.yml --limit worker1     # one host
 ansible-playbook -i inventory.yml deploy-workers.yml -e serial_size=1    # rolling, one at a time
 ```
 
 A successful run means: the binary and this host's unique credentials are
-installed under `voynich_worker_install_dir` (default `/tmp/voynich-worker`),
-the worker process is started (surviving the SSH session that launched it),
-and - the deployment fails otherwise - a `GET /v1/handshake` probe from the
-worker host, using the exact credentials just installed, returned HTTP 200
-from the coordinator. That is the same mTLS-authenticated path the real
-worker uses at its own startup handshake: a revoked, foreign, expired or
-otherwise rejected certificate fails this check exactly as it would fail
-the real worker, so "deployed" always means "authenticated," not just
-"a process is running."
+installed under `voynich_worker_install_dir` (default `/tmp/voynich-worker`)
+and the worker process is started (surviving the SSH session that launched
+it). Readiness still verifies more than "a process exists": it fails the
+deployment if the process never came up, or if a `GET /v1/handshake` probe
+from the worker host, using the exact credentials just installed, fails
+with a certificate/identity error (revoked, foreign CA, wrong EKU,
+expired) - the same mTLS-authenticated path the real worker uses at its
+own startup handshake. It does **not** fail deployment just because that
+probe timed out with no coordinator to answer it: a Task42 persistent
+worker deployed before the first experiment exists is the normal case, not
+a broken one (see `REMOTE_WORKER_LIFECYCLE.md`). That run instead prints a
+warning and keeps going; confirm connectivity later with `status` below.
+
+### Between experiments
+
+Once deployed, a fleet does not need `present` again for a new experiment
+- only when the binary, config, or a certificate actually changes:
+
+```bash
+ansible-playbook -i inventory.yml deploy-workers.yml -e voynich_worker_state=started  # ensure running, no redeploy
+ansible-playbook -i inventory.yml deploy-workers.yml -e voynich_worker_state=status   # health check, never fails
+ansible-playbook -i inventory.yml deploy-workers.yml -e voynich_worker_state=stopped  # pause, keep deployed
+```
+
+`status` reports each host as not-deployed, deployed-but-stopped, or
+running with its most recent lifecycle log line (`coordinator unavailable`
+/ `connected` / `authenticated` / `registered` / `disconnected`) - useful
+both before starting a coordinator (confirm workers are up and waiting)
+and after (confirm they actually connected).
 
 ### Removal
 

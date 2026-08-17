@@ -1,0 +1,29 @@
+---
+# Task42: state=started. Ensure the already-deployed worker process is
+# running, without redeploying the binary/certificates or requiring a
+# coordinator to be reachable right now. This is the operation a normal
+# "run the next experiment" playbook uses - `present` (full deploy) is only
+# needed once, or again when the binary/config/certificate changes.
+
+- name: started - verify this host has already been deployed
+  ansible.builtin.stat:
+    path: "{{ voynich_worker_install_dir }}/bin/conditional-regime-analyze"
+  register: voynich_worker_binary_stat
+
+- name: started - fail with a clear message if never deployed
+  ansible.builtin.fail:
+    msg: >-
+      voynich_worker: {{ inventory_hostname }} has no managed binary at
+      {{ voynich_worker_install_dir }}/bin/conditional-regime-analyze.
+      Run this role with voynich_worker_state: present at least once
+      before using 'started' - a normal experiment run should not need
+      that, but a fresh host does.
+  when: not voynich_worker_binary_stat.stat.exists
+
+- name: started - ensure the worker is running (idempotent)
+  ansible.builtin.include_tasks: start.yml
+  when: not ansible_check_mode
+
+- name: started - verify readiness (coordinator unreachability is expected here, not fatal)
+  ansible.builtin.include_tasks: readiness.yml
+  when: not ansible_check_mode

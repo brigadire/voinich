@@ -1,8 +1,23 @@
 ---
-# Task35 phase 8: verify more than process existence. At minimum: process
-# alive, mTLS handshake succeeds, and the coordinator recognizes this
-# specific worker credential. Deployment fails (not just warns) if any of
-# these do not hold within the bounded readiness window.
+# Task35 phase 8: verify more than process existence: process alive, mTLS
+# handshake succeeds, and the coordinator recognizes this specific worker
+# credential.
+#
+# Task42 changes what a *failed* coordinator probe means. Task35 assumed a
+# worker's whole lifecycle was one coordinator run, so "the coordinator did
+# not answer" could only mean deployment itself was broken. A Task42
+# persistent worker is deployed once and is *expected* to sit idle, still
+# retrying with bounded backoff, for stretches with no coordinator running
+# at all (before the first experiment, between experiments, or while one is
+# being prepared) - see REMOTE_WORKER_LIFECYCLE.md. Failing deployment for
+# that would defeat the entire point of decoupling deploy from experiment
+# lifecycle. So this task now distinguishes:
+#   - process never started                          -> still fatal
+#   - coordinator merely unreachable/timed out        -> warn, not fatal
+#   - a real mTLS/certificate identity failure        -> still fatal
+#     (curl exit 35/51/58/60: SSL connect/certificate problems - the same
+#     class of failure internal/conditionalregime/remote.go's
+#     isPermanentWorkerError treats as permanent, not retried forever)
 
 - name: readiness - verify the managed process is alive
   ansible.builtin.include_tasks: is_running.yml
@@ -50,13 +65,37 @@
   retries: "{{ ((voynich_worker_readiness_timeout_seconds | float) / (voynich_worker_readiness_poll_interval_seconds | float)) | round(0, 'ceil') | int }}"
   delay: "{{ voynich_worker_readiness_poll_interval_seconds }}"
 
-- name: readiness - fail deployment if the worker cannot authenticate to the coordinator
+- name: readiness - classify a failed probe as a permanent identity failure or a merely-unreachable coordinator
+  ansible.builtin.set_fact:
+    voynich_worker_probe_permanent_failure: "{{ (voynich_worker_handshake_probe.rc | default(0)) in [35, 51, 58, 60] }}"
+  when: (voynich_worker_handshake_probe.stdout | default('')) != '200'
+
+- name: readiness - fail deployment on a permanent mTLS/certificate identity failure
   ansible.builtin.fail:
     msg: >-
-      voynich_worker: mTLS handshake against
+      voynich_worker: mTLS probe against
+      {{ voynich_worker_coordinator_url }}/v1/handshake failed with a
+      certificate/identity error (curl exit {{ voynich_worker_handshake_probe.rc }}),
+      not a mere connectivity gap. This will not resolve itself the way a
+      coordinator that simply is not running yet would - check the CA,
+      this host's certificate, and the coordinator's -client-ca deny list.
+  when: >-
+    (voynich_worker_handshake_probe.stdout | default('')) != '200'
+    and voynich_worker_probe_permanent_failure | default(false)
+
+- name: readiness - warn (do not fail) when the coordinator is merely not reachable yet
+  ansible.builtin.debug:
+    msg: >-
+      voynich_worker: mTLS probe against
       {{ voynich_worker_coordinator_url }}/v1/handshake did not return 200
       within {{ voynich_worker_readiness_timeout_seconds }}s (last status:
-      {{ voynich_worker_handshake_probe.stdout | default('none') }}).
-      The process may be running but unauthenticated/unrecognized - this
-      deployment fails rather than reporting a false success (phase 8).
-  when: (voynich_worker_handshake_probe.stdout | default('')) != '200'
+      {{ voynich_worker_handshake_probe.stdout | default('none') }}, curl
+      exit {{ voynich_worker_handshake_probe.rc | default('?') }}). The
+      worker process is running and will keep retrying with bounded
+      backoff in the background (see {{ voynich_worker_log_dir }}/worker.log)
+      until a coordinator appears - this is expected when deploying workers
+      before starting the first experiment, or between experiments. Use
+      `voynich_worker_state: status` later to confirm it has connected.
+  when: >-
+    (voynich_worker_handshake_probe.stdout | default('')) != '200'
+    and not (voynich_worker_probe_permanent_failure | default(false))

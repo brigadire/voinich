@@ -1,16 +1,25 @@
 ---
-# Task35 example playbook. Usage:
+# Task35/42 example playbook. Usage:
 #
-#   ansible-playbook -i inventory.example.yml deploy-workers.yml
+#   ansible-playbook -i inventory.example.yml deploy-workers.yml                                    # deploy + start once
 #   ansible-playbook -i inventory.example.yml deploy-workers.yml --limit worker1.example.internal
-#   ansible-playbook -i inventory.example.yml deploy-workers.yml --limit voynich_workers -e voynich_worker_state=absent
+#   ansible-playbook -i inventory.example.yml deploy-workers.yml -e voynich_worker_state=started     # before each experiment (no redeploy)
+#   ansible-playbook -i inventory.example.yml deploy-workers.yml -e voynich_worker_state=status      # health check, never fails
+#   ansible-playbook -i inventory.example.yml deploy-workers.yml -e voynich_worker_state=stopped     # pause, keep deployed
+#   ansible-playbook -i inventory.example.yml deploy-workers.yml --limit voynich_workers -e voynich_worker_state=absent  # full cleanup
 #   ansible-playbook -i inventory.example.yml deploy-workers.yml -e serial_size=1   # rolling, one host at a time
+#
+# Task42 normal workflow: `present` once, then `started`/`status` freely
+# across as many experiments as you like, `stopped` only if you want to
+# pause the fleet, `absent` only when actually decommissioning - not
+# deploy/experiment/cleanup per run. See README.md and
+# REMOTE_WORKER_LIFECYCLE.md.
 #
 # All targeting is ordinary Ansible: --limit for one host or a subset,
 # `serial` below (or -e serial_size=N) for rolling deployment, and the
 # `voynich_workers` group for "all workers". There is no custom scheduler
 # here - see README.md and DISTRIBUTED_EXECUTION_OPERATIONS.md.
-- name: Deploy/remove Task33/34 ephemeral remote workers
+- name: Manage the lifecycle of Task33/34/42 persistent remote workers
   hosts: voynich_workers
   serial: "{{ serial_size | default('100%') }}"
   gather_facts: true

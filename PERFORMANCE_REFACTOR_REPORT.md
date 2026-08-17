@@ -409,6 +409,21 @@ ratio suggests.)
   deferred because `fatal(message string)` called `os.Exit(1)` directly
   from many call sites, which would skip a deferred profiling `Stop()`.
 
+**Task42 update:** this in-process `AnalyzeFile` call is exactly the unit
+of work Task42 later distributed across the existing mTLS remote-executor
+infrastructure (a new `normalization_compare_baseline` job type) once a
+fresh profile on the larger real Doyle corpus showed it dominating wall
+time even after this optimization. The scientific logic described here
+(`fromAnalyzerOutput`, `compareModel`, `extractMetrics`, ...) moved
+unchanged into `internal/normalizationcompare` so it could be shared
+between the CLI and the remote worker; `normalization-compare/main.go`
+itself is now a thin flag-parsing wrapper, and its tests moved with the
+code they test (`internal/normalizationcompare/core_test.go` and
+`sequence_bridge_test.go` - the latter is the exact test referenced a few
+lines up, unchanged apart from its package and exported names). See
+`NORMALIZATION_COMPARE_DISTRIBUTION_AUDIT.md` for the profile, RNG audit,
+and scaling study that justified this.
+
 ---
 
 ## 3. `structuralprojection` — verify and hoist the audited bottlenecks; larger rewrite confirmed needed but deferred

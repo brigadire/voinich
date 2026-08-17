@@ -1,4 +1,4 @@
-package main
+package normalizationcompare
 
 import (
 	"os"
@@ -12,18 +12,18 @@ import (
 // referenceLoadViaSubprocessPath reproduces exactly what this tool used to
 // do when it shelled out to a sequence-analyze subprocess: marshal an
 // analyzer Output to YAML, write it to disk, then unmarshal it back into the
-// local SequenceAnalysis type via loadSequence. It is the correctness oracle
-// for fromAnalyzerOutput, which now takes an in-process sequenceanalyze.Output
+// local SequenceAnalysis type via LoadSequence. It is the correctness oracle
+// for FromAnalyzerOutput, which now takes an in-process sequenceanalyze.Output
 // directly instead of round-tripping it through a file.
 func referenceLoadViaSubprocessPath(t *testing.T, o sequenceanalyze.Output) SequenceAnalysis {
 	t.Helper()
 	path := filepath.Join(t.TempDir(), "analysis.yaml")
-	if err := writeAnalysisYAML(path, o); err != nil {
-		t.Fatalf("writeAnalysisYAML: %v", err)
+	if err := WriteAnalysisYAML(path, o); err != nil {
+		t.Fatalf("WriteAnalysisYAML: %v", err)
 	}
-	got, err := loadSequence(path)
+	got, err := LoadSequence(path)
 	if err != nil {
-		t.Fatalf("loadSequence: %v", err)
+		t.Fatalf("LoadSequence: %v", err)
 	}
 	return got
 }
@@ -31,7 +31,7 @@ func referenceLoadViaSubprocessPath(t *testing.T, o sequenceanalyze.Output) Sequ
 // TestFromAnalyzerOutputMatchesSubprocessRoundTrip is the reference-vs-
 // optimized oracle for the normalization-compare subprocess-elimination
 // change: it proves that reading sequenceanalyze.Output fields directly
-// in-process (fromAnalyzerOutput) produces the exact same SequenceAnalysis
+// in-process (FromAnalyzerOutput) produces the exact same SequenceAnalysis
 // value that the old code got by writing the analyzer's output to a YAML
 // file and reading it back (the byte-identical marshal/unmarshal round trip
 // a sequence-analyze subprocess used to perform).
@@ -46,11 +46,11 @@ func TestFromAnalyzerOutputMatchesSubprocessRoundTrip(t *testing.T) {
 		t.Fatalf("AnalyzeFile: %v", err)
 	}
 
-	got := fromAnalyzerOutput(output)
+	got := FromAnalyzerOutput(output)
 	want := referenceLoadViaSubprocessPath(t, output)
 
 	if !reflect.DeepEqual(got, want) {
-		t.Fatalf("fromAnalyzerOutput diverged from subprocess round trip:\n got=%+v\nwant=%+v", got, want)
+		t.Fatalf("FromAnalyzerOutput diverged from subprocess round trip:\n got=%+v\nwant=%+v", got, want)
 	}
 	if len(got.NGramSummary) == 0 || len(got.ContextOrderAnalysis) == 0 {
 		t.Fatal("fixture produced no n-grams/context orders; test would pass vacuously")

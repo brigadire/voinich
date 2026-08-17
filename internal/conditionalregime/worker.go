@@ -11,6 +11,9 @@ import (
 	"strings"
 	"sync"
 
+	"zcore.dev/voinich/internal/normalization"
+	"zcore.dev/voinich/internal/normalizationcompare"
+	"zcore.dev/voinich/internal/sequenceanalyze"
 	"zcore.dev/voinich/internal/structuralprojection"
 )
 
@@ -195,6 +198,59 @@ func (w structuralComputer) compute(id JobID) (float64, json.RawMessage, error) 
 	b, err := json.Marshal(r)
 	return 0, b, err
 }
+// normalizationComputer serves the Task42 normalization_compare_baseline
+// job type: one random-baseline trial per (threshold label, run index),
+// identical to the computation normalization-compare's own default
+// in-process executor runs, just dispatched by JobID instead of a for loop.
+type normalizationComputer struct {
+	classes normalization.ClassesOutput
+	corpus  normalization.Corpus
+	seed    int64
+	params  sequenceanalyze.Parameters
+}
+
+func (w normalizationComputer) compute(id JobID) (float64, json.RawMessage, error) {
+	if id.Stage != "normalization_compare_baseline" {
+		return 0, nil, fmt.Errorf("unknown normalization job stage %q", id.Stage)
+	}
+	var model normalization.Model
+	found := false
+	for _, m := range w.classes.Models {
+		if m.Label == id.Combination {
+			model, found = m, true
+			break
+		}
+	}
+	if !found {
+		return 0, nil, fmt.Errorf("unknown threshold %q", id.Combination)
+	}
+	result, err := normalizationcompare.RunRandomTrial(model, w.corpus, w.classes.Meta.MinTokenCount, w.classes.Meta.SingletonMode, w.seed, id.ReplicateIndex, w.params)
+	if err != nil {
+		return 0, nil, err
+	}
+	b, err := json.Marshal(result)
+	return 0, b, err
+}
+
+func newNormalizationComputer(initMsg protocolMessage) (normalizationComputer, error) {
+	corpus, err := normalization.LoadCorpus(initMsg.CorpusPath)
+	if err != nil {
+		return normalizationComputer{}, fmt.Errorf("read corpus: %w", err)
+	}
+	classes, err := normalizationcompare.LoadClasses(initMsg.ClassesPath)
+	if err != nil {
+		return normalizationComputer{}, fmt.Errorf("read classes: %w", err)
+	}
+	fp, err := normalizationcompare.Fingerprint(initMsg.CorpusPath, initMsg.ClassesPath, initMsg.MinTokenCount, initMsg.SingletonMode, initMsg.Seed, initMsg.RandomRuns)
+	if err != nil || fp != initMsg.Fingerprint {
+		return normalizationComputer{}, fmt.Errorf("input/config fingerprint mismatch: worker loaded different input or parameters")
+	}
+	if classes.Meta.MinTokenCount != initMsg.MinTokenCount || classes.Meta.SingletonMode != initMsg.SingletonMode {
+		return normalizationComputer{}, fmt.Errorf("classes.yaml meta does not match coordinator's declared parameters")
+	}
+	return normalizationComputer{classes: classes, corpus: corpus, seed: initMsg.Seed, params: sequenceanalyze.DefaultParameters()}, nil
+}
+
 func structuralConfigFromMessage(m protocolMessage) structuralprojection.Config {
 	return structuralprojection.Config{CorpusPath: m.CorpusPath, StructuralPairsPath: m.StructuralPairsPath, DistancePairsPath: m.DistancePairsPath, FamiliesPath: m.FamiliesPath,
 		MinStructuralSimilarity: m.MinStructuralSimilarity, MinReliability: m.MinReliability, ProjectionK: m.ProjectionK, RandomProjections: m.RandomProjections,
@@ -267,7 +323,8 @@ func RunWorker(ctx context.Context, in io.Reader, out io.Writer) error {
 	}
 
 	var computer protocolComputer
-	if initMsg.Workload == "structural_projection" {
+	switch initMsg.Workload {
+	case "structural_projection":
 		cfg := structuralConfigFromMessage(initMsg)
 		fp, e := structuralprojection.Fingerprint(cfg)
 		if e != nil || fp != initMsg.Fingerprint {
@@ -278,7 +335,13 @@ func RunWorker(ctx context.Context, in io.Reader, out io.Writer) error {
 			return fail("%v", e)
 		}
 		computer = structuralComputer{w}
-	} else {
+	case "normalization_compare":
+		w, e := newNormalizationComputer(initMsg)
+		if e != nil {
+			return fail("%v", e)
+		}
+		computer = w
+	default:
 		w, e := newWorkerState(initMsg)
 		if e != nil {
 			return fail("%v", e)

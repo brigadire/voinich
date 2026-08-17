@@ -54,7 +54,7 @@ var stages = []Stage{
 	{Name: "sequence-analyze", SourceDir: "sequence-analyze", CorpusFlag: "-input"},
 	{Name: "begin-end-analyze", SourceDir: "begin-end-analyze", CorpusFlag: "-corpus"},
 	{Name: "structural-normalize", SourceDir: "structural-normalize", CorpusFlag: "-input"},
-	{Name: "normalization-compare", SourceDir: "normalization-compare", CorpusFlag: "-input"},
+	{Name: "normalization-compare", SourceDir: "normalization-compare", Executor: true, CorpusFlag: "-input"},
 	{Name: "structural-validate", SourceDir: "structural-validate", CorpusFlag: "-input"},
 	{Name: "structural-profile-stability", SourceDir: "structural-profile-stability", CorpusFlag: "-input"},
 	{Name: "structural-reliability", SourceDir: "structural-reliability", CorpusFlag: "-input"},

@@ -1,7 +1,11 @@
 ---
 # Task35 phase 5/8: state=present. Create the managed directory, install
-# binary+config+credentials, start idempotently, and verify readiness -
-# failing the whole play if the worker cannot authenticate.
+# binary+config+credentials, start idempotently, and verify readiness.
+# Task42: readiness still fails the play on a real identity problem (bad
+# CA, rejected certificate) or if the process never started, but no longer
+# fails just because no coordinator is reachable yet - deploying workers
+# before the first experiment exists is now the normal workflow, not an
+# error (see readiness.yml and REMOTE_WORKER_LIFECYCLE.md).
 
 - name: present - assert credential source variables are set
   ansible.builtin.assert:

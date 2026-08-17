@@ -6,11 +6,13 @@ import (
 	"crypto/rand"
 	"crypto/sha256"
 	"crypto/tls"
+	"crypto/x509"
 	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
+	mathrand "math/rand"
 	"net"
 	"net/http"
 	"net/url"
@@ -22,6 +24,8 @@ import (
 	"sync/atomic"
 	"time"
 
+	"zcore.dev/voinich/internal/normalization"
+	"zcore.dev/voinich/internal/normalizationcompare"
 	"zcore.dev/voinich/internal/pki"
 	"zcore.dev/voinich/internal/structuralprojection"
 )
@@ -53,7 +57,22 @@ const (
 	// error. It is purely a polling cadence, not a scientific parameter.
 	remoteLeaseBackoff = 200 * time.Millisecond
 	remoteMaxBackoff   = 5 * time.Second
+
+	// Task42 persistent-worker reconnect policy: bounded exponential
+	// backoff with jitter between coordinator connection attempts, distinct
+	// from remoteLeaseBackoff/remoteMaxBackoff above (which pace polling
+	// *within* one already-established connection).
+	reconnectMinBackoff = time.Second
+	reconnectMaxBackoff = 60 * time.Second
 )
+
+// errStaleExperiment marks a /v1/lease rejection caused by the coordinator
+// no longer recognizing this worker's experiment identity - either it
+// restarted for a new experiment/run, or this worker is still holding an
+// identity from before a coordinator restart. It is never a transport
+// failure to retry indefinitely; a persistent worker treats it as "time to
+// re-handshake."
+var errStaleExperiment = errors.New("stale or inconsistent experiment identity")
 
 type remoteInfo struct {
 	Protocol      int    `json:"protocol"`
@@ -305,6 +324,53 @@ func newStructuralRemotePool(c structuralprojection.Config, fingerprint string) 
 	host, _ := os.Hostname()
 	p := &remotePool{fingerprint: fingerprint, corpusHash: names["corpus"], inputs: inputs, inputNames: names, host: host, timeout: c.RemoteTimeout, retries: c.RemoteRetries,
 		pending: map[JobID]*pendingJob{}, leases: map[string]*activeLease{}, serveDone: make(chan error, 1), stopSweep: make(chan struct{}), cfgMsg: structuralInit(c, fingerprint)}
+	p.listener = listener
+	p.srv = &http.Server{Handler: p.routes(), ReadHeaderTimeout: 5 * time.Second}
+	go func() { p.serveDone <- p.srv.Serve(listener) }()
+	go p.sweepLoop()
+	return p, nil
+}
+
+// newNormalizationRemotePool is the Task42 coordinator for the
+// normalization_compare_baseline job type: same lease queue/mTLS listener
+// as newRemotePool and newStructuralRemotePool, staging the corpus and the
+// complete structural_classes.yaml (every threshold, not just the one the
+// coordinator happens to be comparing) once by content hash.
+func newNormalizationRemotePool(c normalizationcompare.Config, classes normalization.ClassesOutput, fingerprint string) (*remotePool, error) {
+	if c.RemoteListen == "" {
+		return nil, fmt.Errorf("remote executor requires -remote-listen")
+	}
+	if c.TLSCert == "" || c.TLSKey == "" || c.ClientCA == "" {
+		return nil, fmt.Errorf("remote executor requires -tls-cert, -tls-key and -client-ca")
+	}
+	paths := map[string]string{"corpus": c.InputPath, "classes": c.ClassesPath}
+	inputs := map[string][]byte{}
+	names := map[string]string{}
+	for name, path := range paths {
+		b, err := os.ReadFile(path)
+		if err != nil {
+			return nil, err
+		}
+		sum := fmt.Sprintf("%x", sha256.Sum256(b))
+		inputs[sum] = b
+		names[name] = sum
+	}
+	deny, err := pki.LoadDenyList(c.RemoteDenyList)
+	if err != nil {
+		return nil, err
+	}
+	tlsCfg, err := pki.CoordinatorServerTLSConfig(c.TLSCert, c.TLSKey, c.ClientCA, deny)
+	if err != nil {
+		return nil, err
+	}
+	listener, err := tls.Listen("tcp", c.RemoteListen, tlsCfg)
+	if err != nil {
+		return nil, fmt.Errorf("listen %s: %w", c.RemoteListen, err)
+	}
+	host, _ := os.Hostname()
+	p := &remotePool{fingerprint: fingerprint, corpusHash: names["corpus"], inputs: inputs, inputNames: names, host: host, timeout: c.RemoteTimeout, retries: c.RemoteRetries,
+		pending: map[JobID]*pendingJob{}, leases: map[string]*activeLease{}, serveDone: make(chan error, 1), stopSweep: make(chan struct{}),
+		cfgMsg: normalizationInit(c, classes.Meta.MinTokenCount, classes.Meta.SingletonMode, fingerprint)}
 	p.listener = listener
 	p.srv = &http.Server{Handler: p.routes(), ReadHeaderTimeout: 5 * time.Second}
 	go func() { p.serveDone <- p.srv.Serve(listener) }()
@@ -581,15 +647,187 @@ func (p *remotePool) metrics(rw http.ResponseWriter, _ *http.Request, _ string) 
 
 // ---- worker (TLS client) side ----
 
-// RunRemoteWorker runs the Task34 worker client loop against a single
-// coordinator until ctx is cancelled: it verifies the coordinator's TLS
-// chain and server name, presents its own client certificate, fetches the
-// two frozen inputs once by content hash into cacheDir, then repeatedly
-// leases and computes jobs with concurrency independent lease loops. A
-// worker that cannot reach the coordinator (not yet started, restarting,
-// or finished) backs off and keeps retrying rather than exiting: its
-// lifecycle is controlled by ctx/SIGINT, not by any one coordinator run.
+// RunRemoteWorker runs one Task34 handshake-through-disconnect worker
+// generation against a single coordinator: it verifies the coordinator's
+// TLS chain and server name, presents its own client certificate, fetches
+// this experiment's inputs once by content hash into cacheDir, then
+// repeatedly leases and computes jobs with concurrency independent lease
+// loops until ctx is cancelled or the coordinator stops recognizing this
+// worker's experiment identity (errStaleExperiment). It never rebuilds its
+// computer state mid-call - that only happens across generations, which is
+// what RunPersistentRemoteWorker (Task42) is for. Most callers should use
+// RunPersistentRemoteWorker; this lower-level entry point remains exported
+// for tests and any caller that deliberately wants exactly one experiment's
+// worth of connection.
 func RunRemoteWorker(ctx context.Context, coordinatorURL, caFile, certFile, keyFile, cacheDir string, concurrency int) error {
+	return runWorkerGeneration(ctx, coordinatorURL, caFile, certFile, keyFile, cacheDir, concurrency, noopWorkerNotify)
+}
+
+// RunPersistentRemoteWorker is the Task42 long-lived worker entry point: a
+// worker deployed once keeps calling runWorkerGeneration for as long as ctx
+// is alive, so it survives a coordinator that has not started yet, has
+// stopped, has restarted, or has moved on to a new experiment - none of
+// which require redeploying or restarting this process. Between
+// generations it never carries over the previous generation's computer
+// state (corpus, classes/metadata, fingerprint): every generation starts
+// with a fresh handshake, so no experiment's state can contaminate another
+// (Task42 phase 12/13). Reconnect attempts use bounded exponential backoff
+// with jitter (reconnectMinBackoff..reconnectMaxBackoff), never a tight
+// loop, and lifecycle state transitions are logged once per change, never
+// once per attempt.
+func RunPersistentRemoteWorker(ctx context.Context, coordinatorURL, caFile, certFile, keyFile, cacheDir string, concurrency int) error {
+	logger := newWorkerStateLogger(os.Stderr)
+	backoff := reconnectMinBackoff
+	firstAttempt := true
+	for {
+		if ctx.Err() != nil {
+			return nil
+		}
+		if !firstAttempt {
+			logger.notify(stateReconnecting, "")
+		}
+		firstAttempt = false
+
+		generationStart := time.Now()
+		err := runWorkerGeneration(ctx, coordinatorURL, caFile, certFile, keyFile, cacheDir, concurrency, logger.notify)
+		if ctx.Err() != nil {
+			return nil
+		}
+		if isPermanentWorkerError(err) {
+			logger.notify(stateUnavailable, fmt.Sprintf("permanent failure, not retrying: %v", err))
+			return err
+		}
+		if err == nil {
+			err = fmt.Errorf("coordinator closed the connection")
+		}
+		logger.notify(stateDisconnected, err.Error())
+		// A generation that stayed connected for a while (successfully
+		// leasing/computing, not just failing the handshake) resets the
+		// backoff: a long-lived worker that loses an otherwise-healthy
+		// connection once should reconnect quickly, not inherit whatever
+		// backoff an earlier, unrelated outage had grown to.
+		if time.Since(generationStart) >= reconnectMinBackoff {
+			backoff = reconnectMinBackoff
+		}
+		if !sleepWithJitter(ctx, backoff) {
+			return nil
+		}
+		backoff = nextReconnectBackoff(backoff)
+	}
+}
+
+// workerLifecycleState is the small state machine a worker's connection to
+// its coordinator moves through, logged on every transition (Task42
+// section 10) and never spammed once per second while stable/idle.
+type workerLifecycleState int
+
+const (
+	stateUnavailable workerLifecycleState = iota
+	stateReconnecting
+	stateConnected
+	stateAuthenticated
+	stateRegistered
+	stateDisconnected
+)
+
+func (s workerLifecycleState) String() string {
+	switch s {
+	case stateUnavailable:
+		return "coordinator unavailable"
+	case stateReconnecting:
+		return "reconnecting"
+	case stateConnected:
+		return "connected"
+	case stateAuthenticated:
+		return "authenticated"
+	case stateRegistered:
+		return "registered"
+	case stateDisconnected:
+		return "disconnected"
+	default:
+		return "unknown"
+	}
+}
+
+type workerNotifyFunc func(state workerLifecycleState, detail string)
+
+func noopWorkerNotify(workerLifecycleState, string) {}
+
+// workerStateLogger prints a line only when the lifecycle state actually
+// changes, so a worker idling in one state (e.g. polling a coordinator with
+// no pending work) never repeats the same log line every second.
+type workerStateLogger struct {
+	out  io.Writer
+	mu   sync.Mutex
+	last workerLifecycleState
+	seen bool
+}
+
+func newWorkerStateLogger(out io.Writer) *workerStateLogger { return &workerStateLogger{out: out} }
+
+func (l *workerStateLogger) notify(state workerLifecycleState, detail string) {
+	l.mu.Lock()
+	defer l.mu.Unlock()
+	if l.seen && state == l.last {
+		return
+	}
+	l.seen, l.last = true, state
+	if detail == "" {
+		fmt.Fprintf(l.out, "worker: %s\n", state)
+	} else {
+		fmt.Fprintf(l.out, "worker: %s: %s\n", state, detail)
+	}
+}
+
+// isPermanentWorkerError reports whether err reflects an mTLS identity
+// problem (unknown/untrusted CA, wrong coordinator hostname, invalid
+// certificate) rather than a transient transport failure. Task42 section
+// 17 requires these to fail with clear diagnostics instead of retrying
+// forever: they will not resolve themselves the way a coordinator restart
+// or a brief network blip does.
+func isPermanentWorkerError(err error) bool {
+	if err == nil {
+		return false
+	}
+	var unknownAuthority x509.UnknownAuthorityError
+	var hostnameErr x509.HostnameError
+	var certInvalid x509.CertificateInvalidError
+	var certVerify *tls.CertificateVerificationError
+	return errors.As(err, &unknownAuthority) || errors.As(err, &hostnameErr) || errors.As(err, &certInvalid) || errors.As(err, &certVerify)
+}
+
+// sleepWithJitter waits a random duration in [0, base) (full jitter, per
+// Task42 section 10's "bounded exponential backoff with jitter"), returning
+// false if ctx is cancelled first so a caller can shut down immediately
+// instead of sleeping through the rest of a long backoff.
+func sleepWithJitter(ctx context.Context, base time.Duration) bool {
+	delay := base
+	if base > 0 {
+		delay = time.Duration(mathrand.Int63n(int64(base)))
+	}
+	select {
+	case <-time.After(delay):
+		return true
+	case <-ctx.Done():
+		return false
+	}
+}
+
+func nextReconnectBackoff(cur time.Duration) time.Duration {
+	next := cur * 2
+	if next > reconnectMaxBackoff {
+		next = reconnectMaxBackoff
+	}
+	return next
+}
+
+// runWorkerGeneration is exactly one handshake-through-disconnect
+// connection to a coordinator: RunRemoteWorker calls it once,
+// RunPersistentRemoteWorker calls it repeatedly across generations. Every
+// call starts from zero - a fresh handshake and a freshly built computer
+// state - so nothing from a previous generation (a different experiment's
+// corpus, classes, or fingerprint) can leak into this one.
+func runWorkerGeneration(ctx context.Context, coordinatorURL, caFile, certFile, keyFile, cacheDir string, concurrency int, notify workerNotifyFunc) error {
 	if concurrency < 1 {
 		return fmt.Errorf("remote worker concurrency must be positive")
 	}
@@ -617,15 +855,26 @@ func RunRemoteWorker(ctx context.Context, coordinatorURL, caFile, certFile, keyF
 	// connections before attempting the authenticated handshake. This is
 	// pure connectivity, decoupled from TLS/certificate validity: once
 	// reachable, any handshake/auth failure below is real and fatal, never
-	// silently retried.
-	if err := awaitTCPReachable(ctx, u.Host); err != nil {
+	// silently retried within this generation (RunPersistentRemoteWorker
+	// decides whether a failure here starts a new generation or gives up
+	// for good).
+	unavailableLogged := false
+	onUnreachable := func() {
+		if !unavailableLogged {
+			notify(stateUnavailable, base)
+			unavailableLogged = true
+		}
+	}
+	if err := awaitTCPReachable(ctx, u.Host, onUnreachable); err != nil {
 		return fmt.Errorf("coordinator %s unreachable: %w", u.Host, err)
 	}
+	notify(stateConnected, base)
 
 	hs, err := fetchHandshake(ctx, client, base)
 	if err != nil {
 		return fmt.Errorf("handshake with coordinator %s: %w", base, err)
 	}
+	notify(stateAuthenticated, "")
 	if err := stageInputs(ctx, client, base, cacheDir, hs); err != nil {
 		return fmt.Errorf("stage inputs from coordinator %s: %w", base, err)
 	}
@@ -635,7 +884,8 @@ func RunRemoteWorker(ctx context.Context, coordinatorURL, caFile, certFile, keyF
 	init := hs.Config
 	init.CorpusPath = filepath.Join(cacheDir, hs.Inputs["corpus"])
 	var computer protocolComputer
-	if init.Workload == "structural_projection" {
+	switch init.Workload {
+	case "structural_projection":
 		init.StructuralPairsPath = filepath.Join(cacheDir, hs.Inputs["structural_pairs"])
 		init.DistancePairsPath = filepath.Join(cacheDir, hs.Inputs["distance_pairs"])
 		init.FamiliesPath = filepath.Join(cacheDir, hs.Inputs["families"])
@@ -650,7 +900,14 @@ func RunRemoteWorker(ctx context.Context, coordinatorURL, caFile, certFile, keyF
 		}
 		computer = structuralComputer{state: state}
 		concurrency = 1
-	} else {
+	case "normalization_compare":
+		init.ClassesPath = filepath.Join(cacheDir, hs.Inputs["classes"])
+		state, e := newNormalizationComputer(init)
+		if e != nil {
+			return fmt.Errorf("input/config fingerprint does not match coordinator's declared experiment identity: %w", e)
+		}
+		computer = state
+	default:
 		init.TokenMetadataMap = filepath.Join(cacheDir, hs.Inputs["metadata"])
 		if computed := computeFingerprint(init.scientificConfig(), hs.CorpusHash, hs.MetadataHash); computed != hs.ExperimentID {
 			return fmt.Errorf("input/config fingerprint does not match coordinator's declared experiment identity")
@@ -661,6 +918,7 @@ func RunRemoteWorker(ctx context.Context, coordinatorURL, caFile, certFile, keyF
 		}
 		computer = conditionalComputer{state: state}
 	}
+	notify(stateRegistered, init.Workload)
 
 	var wg sync.WaitGroup
 	errCh := make(chan error, concurrency)
@@ -697,6 +955,12 @@ func workerLeaseLoop(ctx context.Context, client *http.Client, base, experimentI
 			if ctx.Err() != nil {
 				return nil
 			}
+			if errors.Is(err, errStaleExperiment) {
+				// Don't keep polling an experiment identity the coordinator
+				// has already rejected: surface this immediately so the
+				// caller can re-handshake instead of retrying it forever.
+				return err
+			}
 			if !sleep() {
 				return nil
 			}
@@ -724,13 +988,16 @@ func workerLeaseLoop(ctx context.Context, client *http.Client, base, experimentI
 	}
 }
 
-func awaitTCPReachable(ctx context.Context, addr string) error {
+func awaitTCPReachable(ctx context.Context, addr string, onUnreachable func()) error {
 	backoff := remoteLeaseBackoff
 	dialer := &net.Dialer{}
 	for {
 		conn, err := dialer.DialContext(ctx, "tcp", addr)
 		if err == nil {
 			return conn.Close()
+		}
+		if onUnreachable != nil {
+			onUnreachable()
 		}
 		if ctx.Err() != nil {
 			return ctx.Err()
@@ -856,6 +1123,16 @@ func requestLease(ctx context.Context, client *http.Client, base, experimentID s
 		return remoteLeaseResponse{}, err
 	}
 	defer resp.Body.Close()
+	if resp.StatusCode == http.StatusConflict {
+		// The coordinator has moved on to a different experiment/run (or
+		// this worker is stating a stale identity from before a coordinator
+		// restart): this is not a transport error to retry forever against
+		// - it is the signal a persistent worker uses to re-handshake and
+		// rebuild its computer state for whatever the coordinator is
+		// running now (Task42 phase 12: no experiment/job is bound to the
+		// worker process itself).
+		return remoteLeaseResponse{}, fmt.Errorf("%w: lease request rejected by coordinator", errStaleExperiment)
+	}
 	if resp.StatusCode != http.StatusOK {
 		b, _ := io.ReadAll(io.LimitReader(resp.Body, 4096))
 		return remoteLeaseResponse{}, fmt.Errorf("POST /v1/lease: HTTP %s: %s", resp.Status, string(b))

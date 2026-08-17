@@ -53,6 +53,15 @@ type protocolMessage struct {
 	ProjectionMode          string  `json:"projection_mode,omitempty"`
 	Pair                    string  `json:"pair,omitempty"`
 
+	// normalization_compare workload fields (Task42). ClassesPath names the
+	// staged structural_classes.yaml input; MinTokenCount/SingletonMode come
+	// from that file's own Meta (never a worker-local default) and Seed
+	// above is reused as the random-baseline base seed.
+	ClassesPath   string `json:"classes_path,omitempty"`
+	MinTokenCount int    `json:"min_token_count,omitempty"`
+	SingletonMode string `json:"singleton_mode,omitempty"`
+	RandomRuns    int    `json:"random_runs,omitempty"`
+
 	// Ready fields.
 	OK    bool   `json:"ok,omitempty"`
 	Error string `json:"error,omitempty"`

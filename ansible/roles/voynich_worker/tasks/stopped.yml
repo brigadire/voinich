@@ -1,0 +1,11 @@
+---
+# Task42: state=stopped. Gracefully stop the managed process (SIGINT,
+# bounded wait, SIGKILL only after that timeout - identical to what
+# absent.yml does), but deliberately do NOT remove the binary, certs,
+# cache, or logs. Distinct from `absent`: this is "pause between
+# experiments" or "prepare for a binary/cert update," not "tear down the
+# deployment." A subsequent `started` on the same host resumes without
+# rebuilding or re-copying anything.
+
+- name: stopped - stop the managed process, keep everything else deployed
+  ansible.builtin.include_tasks: stop.yml

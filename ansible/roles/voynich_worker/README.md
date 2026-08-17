@@ -36,25 +36,58 @@ starting the coordinator). This README covers the role itself.
 ## Core state model
 
 ```
-voynich_worker_state: present|absent
+voynich_worker_state: present|started|stopped|status|absent
 voynich_worker_install_dir: /tmp/voynich-worker   # default
 ```
 
+The worker binary is a Task42 **persistent** worker: it reconnects to its
+coordinator across restarts, absences, and different experiments entirely
+on its own (see `REMOTE_WORKER_LIFECYCLE.md`). That decouples *deploy*
+from *experiment lifecycle* - the normal workflow is deploy once, then run
+as many experiments as you like:
+
+```
+present (once)  ->  started  ->  run experiment A  ->  run experiment B  ->  ...  ->  absent (once)
+                       ^________________________________________________________|
+                       (started is also how you resume after a deliberate `stopped`)
+```
+
 `present`: build/obtain the worker binary, create the managed directory,
-install the binary/CA/this host's certificate+key, start the worker,
-verify readiness (mTLS handshake + coordinator recognition) - failing the
-whole deployment if the worker cannot authenticate.
+install the binary/CA/this host's certificate+key, start the worker, and
+verify readiness. Readiness still fails the play on a real identity
+problem (rejected certificate, untrusted CA) or if the process itself
+never came up - but **not** merely because no coordinator is reachable
+yet, which is expected and normal before the first experiment exists.
+
+`started`: ensure the already-deployed worker process is running - no
+redeploy, no certificate/binary copy, and (like `present`) does not
+require a coordinator to be reachable right now. This is what a "run the
+next experiment" playbook uses; it fails clearly if the host was never
+`present`-deployed at all.
+
+`stopped`: gracefully stop the managed process (SIGINT, bounded wait,
+SIGKILL only after that timeout) but leave the binary, certificates,
+cache, and logs in place. Use this to pause a fleet, or before rotating a
+certificate/binary out of band. `started` resumes it.
+
+`status`: read-only report of what this host's worker is actually doing
+right now (not deployed / deployed-but-stopped / running plus its most
+recent lifecycle log line - `coordinator unavailable`, `connected`,
+`authenticated`, `registered`, or `disconnected`). Never fails the play,
+so it is safe to run across a whole inventory as a health check.
 
 `absent`: stop the exact managed process (graceful SIGINT, bounded wait,
 SIGKILL only after that timeout), then remove every managed artifact
 (credentials, caches, binary, the complete managed directory) and verify
-no managed process remains. Safe to run repeatedly.
+no managed process remains. Safe to run repeatedly. This is the only state
+that needs redeploying afterward (`present` again) before workers can run
+another job.
 
 ## Variables
 
 | Variable | Default | Meaning |
 |---|---|---|
-| `voynich_worker_state` | `present` | `present` or `absent`. |
+| `voynich_worker_state` | `present` | `present`, `started`, `stopped`, `status`, or `absent`. |
 | `voynich_worker_install_dir` | `/tmp/voynich-worker` | Managed directory root. Must be under `/tmp`. |
 | `voynich_worker_coordinator_url` | `""` (required) | `-coordinator` value; must be `https://`. |
 | `voynich_worker_concurrency` | `1` | `-remote-concurrency` value. |

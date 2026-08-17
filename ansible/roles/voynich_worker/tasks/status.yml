@@ -1,0 +1,38 @@
+---
+# Task42: state=status. Read-only report of what this host's worker is
+# actually doing right now - never fails the play, so it is safe to run
+# against a whole inventory to see which hosts are up, which are still
+# waiting on a coordinator, and which were never deployed at all. Relies on
+# internal/conditionalregime/remote.go's persistent-worker state logging
+# ("worker: <state>[: <detail>]", one line per transition) landing in
+# worker.log via start.sh.j2's stdout/stderr redirection.
+
+- name: status - check whether this host has ever been deployed
+  ansible.builtin.stat:
+    path: "{{ voynich_worker_install_dir }}/bin/conditional-regime-analyze"
+  register: voynich_worker_binary_stat
+
+- name: status - determine current run state
+  ansible.builtin.include_tasks: is_running.yml
+  when: voynich_worker_binary_stat.stat.exists
+
+- name: status - read the most recent lifecycle transition from worker.log
+  ansible.builtin.shell:
+    cmd: >-
+      grep '^worker: ' {{ (voynich_worker_log_dir ~ '/worker.log') | quote }} | tail -n 1
+  register: voynich_worker_last_state_line
+  changed_when: false
+  failed_when: false
+  when: voynich_worker_binary_stat.stat.exists
+
+- name: status - report
+  ansible.builtin.debug:
+    msg: >-
+      voynich_worker on {{ inventory_hostname }}:
+      {{ 'not deployed' if not voynich_worker_binary_stat.stat.exists
+         else ('running (pid ' ~ voynich_worker_running_pid ~ '), last state: ' ~
+               (voynich_worker_last_state_line.stdout | default('') | trim
+                if (voynich_worker_last_state_line.stdout | default('') | trim) | length > 0
+                else 'no lifecycle log line yet')
+               if voynich_worker_is_running | default(false)
+               else 'deployed but not running') }}

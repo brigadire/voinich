@@ -1,16 +1,26 @@
 ---
 # Task35: entry point. Dispatches to present.yml/absent.yml after the
 # preflight checks that apply to both states.
+#
+# Task42 adds three operations that were previously impossible without
+# going through the full present/absent cycle: 'started' (ensure the
+# already-deployed worker process is running - no redeploy, no coordinator
+# required to be reachable yet), 'stopped' (gracefully stop the process,
+# keep everything deployed), and 'status' (report current state, never
+# fails the play). This is what makes "deploy once, run experiment A, run
+# experiment B, ... cleanup once" the normal workflow instead of
+# deploy/experiment/cleanup per run - see REMOTE_WORKER_LIFECYCLE.md and
+# DISTRIBUTED_EXECUTION_OPERATIONS.md.
 
 - name: Assert required variables are set
   ansible.builtin.assert:
     that:
-      - voynich_worker_state in ['present', 'absent']
+      - voynich_worker_state in ['present', 'started', 'stopped', 'status', 'absent']
       - voynich_worker_install_dir | length > 0
       - voynich_worker_install_dir is match('^/tmp/')
     fail_msg: >-
-      voynich_worker_state must be 'present' or 'absent', and
-      voynich_worker_install_dir must be a non-empty path under /tmp
+      voynich_worker_state must be one of present|started|stopped|status|absent,
+      and voynich_worker_install_dir must be a non-empty path under /tmp
       (Task35 constraint: payload under /tmp by default; if you must
       relocate it, keep it out of any path this role's absent-state
       cleanup could confuse with something unmanaged).
@@ -23,12 +33,24 @@
       voynich_worker_coordinator_url must be an https:// URL. The Task34
       worker never supports plaintext HTTP or -insecure-skip-verify, and
       this role will not silently degrade that guarantee.
-  when: voynich_worker_state == 'present'
+  when: voynich_worker_state in ['present', 'started']
 
-- name: Include present-state tasks
+- name: Include present-state tasks (deploy + start)
   ansible.builtin.include_tasks: present.yml
   when: voynich_worker_state == 'present'
 
-- name: Include absent-state tasks
+- name: Include started-state tasks (ensure running, no redeploy)
+  ansible.builtin.include_tasks: started.yml
+  when: voynich_worker_state == 'started'
+
+- name: Include stopped-state tasks (graceful stop, keep deployment)
+  ansible.builtin.include_tasks: stopped.yml
+  when: voynich_worker_state == 'stopped'
+
+- name: Include status-state tasks (report only, never fails)
+  ansible.builtin.include_tasks: status.yml
+  when: voynich_worker_state == 'status'
+
+- name: Include absent-state tasks (stop + full cleanup)
   ansible.builtin.include_tasks: absent.yml
   when: voynich_worker_state == 'absent'

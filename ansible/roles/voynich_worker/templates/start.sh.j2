@@ -4,9 +4,12 @@
 #
 # setsid starts a brand-new session so the worker survives the SSH session
 # that launched it; nohup+redirected stdio and disown complete the
-# detachment. The worker's own graceful shutdown listens for SIGINT
-# (Go's signal.NotifyContext(context.Background(), os.Interrupt)) - see
-# tasks/stop.yml.
+# detachment. The worker's own graceful shutdown listens for SIGINT and
+# SIGTERM (Go's signal.NotifyContext(context.Background(), os.Interrupt,
+# syscall.SIGTERM)) - see tasks/stop.yml. It is a Task42 persistent worker:
+# it reconnects across coordinator restarts/absences and across
+# experiments on its own, so this script only ever needs to run once per
+# deployment, not once per experiment.
 set -euo pipefail
 
 mkdir -p {{ voynich_worker_log_dir | quote }} {{ voynich_worker_cache_dir | quote }}

@@ -450,3 +450,39 @@ and had zero retries. The measured 0.810s cold stage transferred 2,440,409
 bytes. Fixed coordinator work dominates this four-permutation workload, so
 four to eight slots plateau and these speedups are not production-scale
 extrapolations. Full tables are in `DISTRIBUTED_EXECUTION_IMPLEMENTATION.md`.
+
+## Task42: normalization-compare distribution and persistent worker reconnect
+
+A fresh profile of `normalization-compare` on the real Doyle corpus
+(`data_test/pg2097-2.txt`, production `-random-baselines 100`) measured
+358.2s wall time, ~615 MB peak RSS, and confirmed this row's original
+in-process-vs-subprocess fix (above, and `PERFORMANCE_REFACTOR_REPORT.md`
+item 2) left the remaining cost almost entirely inside
+`sequenceanalyze.AnalyzeFile`, called once per threshold's structural pass
+and up to 100 times per threshold for independent random-baseline trials -
+505 calls total on real data, of which 500 (>99%) are order-independent
+and already keyed by a pure function of `(base seed, threshold, run
+index)` with no shared package-level state. That cleared the >=50%
+distribution threshold by a wide margin, so this stage gained a third job
+type (`normalization_compare_baseline`) on the existing Task33-40
+coordinator/worker/mTLS infrastructure, exactly like Task40 did for
+`structural_projection_trial`. Measured with a disposable local mTLS PKI
+(the real Doyle production run and worker fleet were active on this
+machine and deliberately left undisturbed): local/1/2/5/10 workers ran
+358.2s/346.9s/243.3s/161.6s/159.1s, all outputs byte-identical; efficiency
+falls off sharply past this development machine's own 12 cores (5->10
+workers: 161.6s->159.1s), a single-machine ceiling rather than a
+coordinator/protocol limit. Full profile, RNG/dependency audit, and
+scaling table are in `NORMALIZATION_COMPARE_DISTRIBUTION_AUDIT.md`.
+
+Separately, Task42 found that a worker's process lifetime had always been
+implicitly scoped to one coordinator run (one handshake, one computer-
+state build, then leased jobs against that one `ExperimentID` forever) -
+functionally correct for a single production run, but it meant an
+already-deployed worker fleet could not serve a second experiment, or a
+restarted coordinator, without restarting every worker process. This is
+an availability/operability fix, not a throughput one - no scientific
+computation changed - so it is recorded here only briefly; see
+`REMOTE_WORKER_LIFECYCLE.md` for the design (bounded-backoff-with-jitter
+reconnect, per-generation state rebuild, permanent-vs-transient failure
+classification) and the Ansible role changes it enabled.

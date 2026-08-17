@@ -8,6 +8,7 @@ import (
 	"os/signal"
 	"strconv"
 	"strings"
+	"syscall"
 	"time"
 
 	"zcore.dev/voinich/internal/conditionalregime"
@@ -68,7 +69,7 @@ func run() (code int) {
 	flag.StringVar(&c.RemoteDenyList, "remote-deny-list", "", "optional JSON deny-list revoking worker certificate serials/identities (coordinator mode)")
 	flag.DurationVar(&c.RemoteTimeout, "remote-timeout", 10*time.Minute, "per-lease deadline before the coordinator reassigns a job to another worker")
 	flag.IntVar(&c.RemoteRetries, "remote-retries", 2, "reassignments per job after a lease expires unanswered")
-	flag.StringVar(&workerCoordinator, "coordinator", "", "run as an mTLS worker dialing this coordinator HTTPS URL instead of running the pipeline")
+	flag.StringVar(&workerCoordinator, "coordinator", "", "run as a persistent mTLS worker dialing this coordinator HTTPS URL instead of running the pipeline: reconnects automatically (bounded backoff) across coordinator restarts and across experiments until stopped with SIGINT/SIGTERM")
 	flag.StringVar(&workerCA, "ca", "", "project CA bundle used to verify the coordinator's certificate (worker mode)")
 	flag.StringVar(&remoteCache, "remote-cache-dir", "", "content-addressed remote worker input cache (worker mode)")
 	flag.IntVar(&remoteConcurrency, "remote-concurrency", 1, "concurrent lease loops run by this worker process")
@@ -78,7 +79,11 @@ func run() (code int) {
 	prof := profiling.RegisterFlags(flag.CommandLine)
 	flag.Parse()
 
-	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
+	// Task42: a persistent worker deployment is stopped deliberately with
+	// either signal (SIGINT from an interactive session, SIGTERM from
+	// Ansible/systemd/process-manager shutdown) - both must trigger the
+	// same graceful "stop leasing, close, exit" path, never a hang.
+	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()
 
 	if internalWorker {
@@ -97,7 +102,7 @@ func run() (code int) {
 			fmt.Fprintln(os.Stderr, "Error: -remote-cache-dir is required in worker mode")
 			return 2
 		}
-		if err := conditionalregime.RunRemoteWorker(ctx, workerCoordinator, workerCA, c.TLSCert, c.TLSKey, remoteCache, remoteConcurrency); err != nil {
+		if err := conditionalregime.RunPersistentRemoteWorker(ctx, workerCoordinator, workerCA, c.TLSCert, c.TLSKey, remoteCache, remoteConcurrency); err != nil {
 			fmt.Fprintln(os.Stderr, "Error:", err)
 			return 1
 		}
