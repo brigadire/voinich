@@ -1,0 +1,36 @@
+centering:
+    maximum_held_out_residual_mean_l2: 0.09084345856745533
+    maximum_training_residual_mean_l2: 8.029847394782325e-17
+classification:
+    currier_linear_balanced_accuracy: 0.0019083969465648854
+    hand_linear_balanced_accuracy: 0.044444444444444446
+    joint_linear_balanced_accuracy: 0.0019083969465648854
+corpus:
+    canonical_match: true
+    canonical_sha256_expected: 360d99583145ec549b80edfafdc3f93534f3a11b85a0d52997ba8425e92b87c2
+    path: data_work/ZL3b-x7.txt
+    sha256: 360d99583145ec549b80edfafdc3f93534f3a11b85a0d52997ba8425e92b87c2
+    token_count: 39026
+cross_block:
+    held_out_blocks_with_both_regimes: 0
+decision: held-out residual means drift across physical blocks; the apparent residual regime is block-specific and not cross-block recurrent; metadata survives leakage-safe whitening, so the current conditioning model remains insufficient
+frozen_global_baseline:
+    currier_nmi: 0.7132895555068619
+    hand_nmi: 0.6307319893182465
+metadata:
+    path: workdir/metadata-validation/token_metadata_map.tsv
+    sha256: 148745adbc889150ad1b59715bbfa75fa17e24b566694d94a0445d06393a7e68
+norm_only:
+    ari_with_existing: 0.41326980956332904
+    nmi_with_existing: 0.4620189547395673
+parameters:
+    covariance_shrinkage:
+        diagonal: 0.1
+        full_covariance: 0.9
+    eigenvalue_floor_relative: 1e-06
+    k: 2
+    method: k_medoids
+    permutations: 1000
+    seed: 1
+    split: leave-physical-block-out; three contiguous folds only for single-block classes
+    window_size: 500

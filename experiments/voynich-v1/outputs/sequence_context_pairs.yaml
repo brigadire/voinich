@@ -1,0 +1,1234 @@
+methodology: Exact 2-token and 3-token suffix distributions; the anchor token is not part of the suffix.
+pairs:
+    - token_a: or
+      token_b: s
+      continuous_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.06590529255686839
+          weighted_overlap: 0.05304029304029303
+          jaccard_support_overlap: 0.02881844380403458
+          observations_a: 390
+          observations_b: 350
+          effective_support_a: 366.638687898489
+          effective_support_b: 333.25503489464325
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 8.659739592076221e-15
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 390
+          observations_b: 350
+          effective_support_a: 390.0000000000208
+          effective_support_b: 349.99999999999835
+          reliability: 1
+          reliable: true
+      line_bounded_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.07510940484695472
+          weighted_overlap: 0.05849429195732699
+          jaccard_support_overlap: 0.032846715328467155
+          observations_a: 333
+          observations_b: 257
+          effective_support_a: 309.7604912623644
+          effective_support_b: 243.50431669498658
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 0
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 285
+          observations_b: 210
+          effective_support_a: 285.0000000000077
+          effective_support_b: 210.00000000000256
+          reliability: 1
+          reliable: true
+    - token_a: r
+      token_b: s
+      continuous_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.061700012905197665
+          weighted_overlap: 0.04877430262045647
+          jaccard_support_overlap: 0.024691358024691357
+          observations_a: 169
+          observations_b: 350
+          effective_support_a: 153.1570112265178
+          effective_support_b: 333.25503489464415
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 0.003994041201562992
+          weighted_overlap: 0.002857142857142857
+          jaccard_support_overlap: 0.001953125
+          observations_a: 169
+          observations_b: 350
+          effective_support_a: 158.26570743839088
+          effective_support_b: 349.99999999999835
+          reliability: 1
+          reliable: true
+      line_bounded_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.06297678174309118
+          weighted_overlap: 0.05206055269959385
+          jaccard_support_overlap: 0.02452316076294278
+          observations_a: 137
+          observations_b: 257
+          effective_support_a: 122.56881403162706
+          effective_support_b: 243.50431669498658
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 0.006237562933421148
+          weighted_overlap: 0.004761904761904762
+          jaccard_support_overlap: 0.003115264797507788
+          observations_a: 118
+          observations_b: 210
+          effective_support_a: 107.41486347107217
+          effective_support_b: 210.00000000000256
+          reliability: 1
+          reliable: true
+    - token_a: or
+      token_b: r
+      continuous_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.03525304995329759
+          weighted_overlap: 0.02820512820512821
+          jaccard_support_overlap: 0.013282732447817837
+          observations_a: 390
+          observations_b: 169
+          effective_support_a: 366.6386878984897
+          effective_support_b: 153.1570112265178
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 2.9976021664879227e-15
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 390
+          observations_b: 169
+          effective_support_a: 390.0000000000208
+          effective_support_b: 158.2657074383907
+          reliability: 1
+          reliable: true
+      line_bounded_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.0377607725645458
+          weighted_overlap: 0.030030030030030033
+          jaccard_support_overlap: 0.013636363636363636
+          observations_a: 333
+          observations_b: 137
+          effective_support_a: 309.76049126236467
+          effective_support_b: 122.56881403162717
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 0
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 285
+          observations_b: 118
+          effective_support_a: 285.0000000000077
+          effective_support_b: 107.41486347107235
+          reliability: 1
+          reliable: true
+    - token_a: chol
+      token_b: daiin
+      continuous_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.005020559531426438
+          weighted_overlap: 0.003537735849056604
+          jaccard_support_overlap: 0.0024449877750611247
+          observations_a: 395
+          observations_b: 848
+          effective_support_a: 382.7183389151021
+          effective_support_b: 842.4729134036876
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 0.0016735198437984877
+          weighted_overlap: 0.0011792452830188679
+          jaccard_support_overlap: 0.0008051529790660225
+          observations_a: 395
+          observations_b: 848
+          effective_support_a: 395.00000000002217
+          effective_support_b: 848.0000000000016
+          reliability: 1
+          reliable: true
+      line_bounded_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.00664628691248903
+          weighted_overlap: 0.005154639175257732
+          jaccard_support_overlap: 0.003303964757709251
+          observations_a: 339
+          observations_b: 582
+          effective_support_a: 329.43351563740123
+          effective_support_b: 577.8559409570454
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 0.002611905440745854
+          weighted_overlap: 0.001984126984126984
+          jaccard_support_overlap: 0.001277139208173691
+          observations_a: 280
+          observations_b: 504
+          effective_support_a: 279.99999999999915
+          effective_support_b: 504.00000000004036
+          reliability: 1
+          reliable: true
+    - token_a: chor
+      token_b: daiin
+      continuous_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.0021319165397952755
+          weighted_overlap: 0.0011792452830188679
+          jaccard_support_overlap: 0.0009505703422053232
+          observations_a: 211
+          observations_b: 848
+          effective_support_a: 208.24554797872008
+          effective_support_b: 842.4729134036868
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 0
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 211
+          observations_b: 848
+          effective_support_a: 211.00000000000227
+          effective_support_b: 848.0000000000016
+          reliability: 1
+          reliable: true
+      line_bounded_suffix_context:
+        - sequence_length: 2
+          js_similarity: 1.1102230246251565e-16
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 174
+          observations_b: 582
+          effective_support_a: 171.2493842080769
+          effective_support_b: 577.8559409570458
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 0
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 146
+          observations_b: 504
+          effective_support_a: 146.00000000000037
+          effective_support_b: 504.00000000004036
+          reliability: 1
+          reliable: true
+    - token_a: daiin
+      token_b: dol
+      continuous_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.0026482405859951097
+          weighted_overlap: 0.0011792452830188679
+          jaccard_support_overlap: 0.0010504201680672268
+          observations_a: 848
+          observations_b: 109
+          effective_support_a: 842.4729134036868
+          effective_support_b: 108.99999999999997
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 0
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 848
+          observations_b: 109
+          effective_support_a: 848.0000000000016
+          effective_support_b: 108.99999999999997
+          reliability: 1
+          reliable: true
+      line_bounded_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.0036701826496458034
+          weighted_overlap: 0.001718213058419244
+          jaccard_support_overlap: 0.0015015015015015015
+          observations_a: 582
+          observations_b: 88
+          effective_support_a: 577.8559409570464
+          effective_support_b: 88.00000000000004
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 0
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 504
+          observations_b: 72
+          effective_support_a: 504.00000000004036
+          effective_support_b: 71.99999999999987
+          reliability: 1
+          reliable: true
+    - token_a: chol
+      token_b: cthy
+      continuous_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.013700130957287282
+          weighted_overlap: 0.010126582278481013
+          jaccard_support_overlap: 0.004106776180698152
+          observations_a: 395
+          observations_b: 103
+          effective_support_a: 382.71833891510244
+          effective_support_b: 102.99999999999946
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 4.440892098500626e-16
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 395
+          observations_b: 103
+          effective_support_a: 395.00000000002217
+          effective_support_b: 102.99999999999946
+          reliability: 1
+          reliable: true
+      line_bounded_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.009292573730640963
+          weighted_overlap: 0.0058997050147492625
+          jaccard_support_overlap: 0.002551020408163265
+          observations_a: 339
+          observations_b: 61
+          effective_support_a: 329.43351563740123
+          effective_support_b: 60.999999999999844
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 0
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 280
+          observations_b: 46
+          effective_support_a: 279.99999999999915
+          effective_support_b: 45.99999999999988
+          reliability: 1
+          reliable: true
+    - token_a: qokain
+      token_b: qol
+      continuous_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.01622772060166655
+          weighted_overlap: 0.010752688172043012
+          jaccard_support_overlap: 0.0072992700729927005
+          observations_a: 279
+          observations_b: 142
+          effective_support_a: 276.2411421865644
+          effective_support_b: 135.2349824229294
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 0
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 279
+          observations_b: 142
+          effective_support_a: 279.0000000000051
+          effective_support_b: 141.9999999999999
+          reliability: 1
+          reliable: true
+      line_bounded_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.018724743592798854
+          weighted_overlap: 0.012605042016806723
+          jaccard_support_overlap: 0.008450704225352112
+          observations_a: 238
+          observations_b: 126
+          effective_support_a: 235.24349842903908
+          effective_support_b: 120.57507188671417
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 6.661338147750939e-16
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 200
+          observations_b: 112
+          effective_support_a: 199.9999999999969
+          effective_support_b: 111.99999999999986
+          reliability: 1
+          reliable: true
+    - token_a: qokaiin
+      token_b: qol
+      continuous_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.012334411488070463
+          weighted_overlap: 0.010815838426787138
+          jaccard_support_overlap: 0.005012531328320802
+          observations_a: 265
+          observations_b: 142
+          effective_support_a: 263.61732538461825
+          effective_support_b: 135.2349824229294
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 0
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 265
+          observations_b: 142
+          effective_support_a: 264.9999999999976
+          effective_support_b: 141.9999999999999
+          reliability: 1
+          reliable: true
+      line_bounded_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.01406205188008125
+          weighted_overlap: 0.012284334023464457
+          jaccard_support_overlap: 0.0057306590257879654
+          observations_a: 230
+          observations_b: 126
+          effective_support_a: 228.6178751099947
+          effective_support_b: 120.57507188671407
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 2.4424906541753444e-15
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 195
+          observations_b: 112
+          effective_support_a: 195.00000000000068
+          effective_support_b: 111.99999999999986
+          reliability: 1
+          reliable: true
+    - token_a: qokedy
+      token_b: qol
+      continuous_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.0178756274919053
+          weighted_overlap: 0.010869565217391304
+          jaccard_support_overlap: 0.007425742574257425
+          observations_a: 276
+          observations_b: 142
+          effective_support_a: 267.2990863773903
+          effective_support_b: 135.2349824229295
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 0.004930333692709787
+          weighted_overlap: 0.0036231884057971015
+          jaccard_support_overlap: 0.002398081534772182
+          observations_a: 276
+          observations_b: 142
+          effective_support_a: 275.99999999999966
+          effective_support_b: 141.9999999999999
+          reliability: 1
+          reliable: true
+      line_bounded_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.02040000798558328
+          weighted_overlap: 0.0125
+          jaccard_support_overlap: 0.0084985835694051
+          observations_a: 240
+          observations_b: 126
+          effective_support_a: 231.31984511395427
+          effective_support_b: 120.57507188671417
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 0.006450544380853018
+          weighted_overlap: 0.0048543689320388345
+          jaccard_support_overlap: 0.0031545741324921135
+          observations_a: 206
+          observations_b: 112
+          effective_support_a: 206.00000000000077
+          effective_support_b: 111.99999999999986
+          reliability: 1
+          reliable: true
+    - token_a: lchedy
+      token_b: qokain
+      continuous_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.0106599725489811
+          weighted_overlap: 0.007168458781362007
+          jaccard_support_overlap: 0.005115089514066497
+          observations_a: 116
+          observations_b: 279
+          effective_support_a: 115.99999999999967
+          effective_support_b: 276.2411421865644
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 0
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 116
+          observations_b: 279
+          effective_support_a: 115.99999999999967
+          effective_support_b: 279.0000000000051
+          reliability: 1
+          reliable: true
+      line_bounded_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.006763153488175466
+          weighted_overlap: 0.004201680672268907
+          jaccard_support_overlap: 0.0031645569620253164
+          observations_a: 81
+          observations_b: 238
+          effective_support_a: 80.99999999999945
+          effective_support_b: 235.24349842903908
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 2.55351295663786e-15
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 69
+          observations_b: 200
+          effective_support_a: 68.9999999999999
+          effective_support_b: 199.9999999999969
+          reliability: 1
+          reliable: true
+    - token_a: lchedy
+      token_b: qokeey
+      continuous_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.010066282346012922
+          weighted_overlap: 0.006514657980456026
+          jaccard_support_overlap: 0.004784688995215311
+          observations_a: 116
+          observations_b: 307
+          effective_support_a: 115.99999999999967
+          effective_support_b: 302.8691600254277
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 0
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 116
+          observations_b: 307
+          effective_support_a: 115.99999999999967
+          effective_support_b: 306.99999999999443
+          reliability: 1
+          reliable: true
+      line_bounded_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.006225180662473906
+          weighted_overlap: 0.003676470588235294
+          jaccard_support_overlap: 0.0028653295128939827
+          observations_a: 81
+          observations_b: 272
+          effective_support_a: 80.99999999999945
+          effective_support_b: 267.872750171894
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 0
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 69
+          observations_b: 236
+          effective_support_a: 68.9999999999999
+          effective_support_b: 236.0000000000001
+          reliability: 1
+          reliable: true
+    - token_a: ol
+      token_b: "y"
+      continuous_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.01223678198941014
+          weighted_overlap: 0.00863583138173302
+          jaccard_support_overlap: 0.004801920768307323
+          observations_a: 560
+          observations_b: 305
+          effective_support_a: 526.4101258896892
+          effective_support_b: 294.9422625540483
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 0
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 560
+          observations_b: 305
+          effective_support_a: 558.6154201274583
+          effective_support_b: 303.61685138259577
+          reliability: 1
+          reliable: true
+      line_bounded_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.015432973581162357
+          weighted_overlap: 0.010780617232230137
+          jaccard_support_overlap: 0.005988023952095809
+          observations_a: 465
+          observations_b: 231
+          effective_support_a: 432.90800004572833
+          effective_support_b: 225.01059047624452
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 0
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 400
+          observations_b: 209
+          effective_support_a: 398.61610513113476
+          effective_support_b: 207.6182931268527
+          reliability: 1
+          reliable: true
+    - token_a: dar
+      token_b: ol
+      continuous_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.0191448172544475
+          weighted_overlap: 0.013334807607253429
+          jaccard_support_overlap: 0.007042253521126761
+          observations_a: 323
+          observations_b: 560
+          effective_support_a: 317.50215039148634
+          effective_support_b: 526.4101258896892
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 0.005633898064927201
+          weighted_overlap: 0.004881689517912428
+          jaccard_support_overlap: 0.0022727272727272726
+          observations_a: 323
+          observations_b: 560
+          effective_support_a: 322.9999999999925
+          effective_support_b: 558.6154201274583
+          reliability: 1
+          reliable: true
+      line_bounded_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.022106404544365188
+          weighted_overlap: 0.015223542727787209
+          jaccard_support_overlap: 0.007530120481927711
+          observations_a: 228
+          observations_b: 465
+          effective_support_a: 222.52171119505027
+          effective_support_b: 432.90800004572793
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 0.008503604827459488
+          weighted_overlap: 0.0075
+          jaccard_support_overlap: 0.003367003367003367
+          observations_a: 197
+          observations_b: 400
+          effective_support_a: 197.00000000000227
+          effective_support_b: 398.61610513113476
+          reliability: 1
+          reliable: true
+    - token_a: ar
+      token_b: ol
+      continuous_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.0020924620597875254
+          weighted_overlap: 0.0017857142857142857
+          jaccard_support_overlap: 0.0010695187165775401
+          observations_a: 403
+          observations_b: 560
+          effective_support_a: 394.7674840744022
+          effective_support_b: 526.4101258896897
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 0
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 403
+          observations_b: 560
+          effective_support_a: 403.0000000000134
+          effective_support_b: 558.6154201274583
+          reliability: 1
+          reliable: true
+      line_bounded_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.0026024434760870685
+          weighted_overlap: 0.002150537634408602
+          jaccard_support_overlap: 0.0013315579227696406
+          observations_a: 312
+          observations_b: 465
+          effective_support_a: 305.14495683733264
+          effective_support_b: 432.90800004572793
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 0
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 257
+          observations_b: 400
+          effective_support_a: 257.00000000000233
+          effective_support_b: 398.61610513113436
+          reliability: 1
+          reliable: true
+    - token_a: chey
+      token_b: ol
+      continuous_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.008914352414401083
+          weighted_overlap: 0.007142857142857143
+          jaccard_support_overlap: 0.004550625711035267
+          observations_a: 351
+          observations_b: 560
+          effective_support_a: 340.0830222160563
+          effective_support_b: 526.4101258896897
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 0
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 351
+          observations_b: 560
+          effective_support_a: 351.0000000000092
+          effective_support_b: 558.6154201274583
+          reliability: 1
+          reliable: true
+      line_bounded_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.007864960638376828
+          weighted_overlap: 0.0064516129032258064
+          jaccard_support_overlap: 0.004043126684636119
+          observations_a: 307
+          observations_b: 465
+          effective_support_a: 296.10757373908035
+          effective_support_b: 432.90800004572793
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 0
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 270
+          observations_b: 400
+          effective_support_a: 270.00000000000153
+          effective_support_b: 398.61610513113476
+          reliability: 1
+          reliable: true
+    - token_a: lchedy
+      token_b: qokar
+      continuous_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.007322976631653044
+          weighted_overlap: 0.006289308176100629
+          jaccard_support_overlap: 0.0036900369003690036
+          observations_a: 116
+          observations_b: 159
+          effective_support_a: 115.99999999999967
+          effective_support_b: 154.89503668353345
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 2.9976021664879227e-15
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 116
+          observations_b: 159
+          effective_support_a: 115.99999999999967
+          effective_support_b: 158.99999999999886
+          reliability: 1
+          reliable: true
+      line_bounded_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.00942650867086603
+          weighted_overlap: 0.007407407407407408
+          jaccard_support_overlap: 0.0047169811320754715
+          observations_a: 81
+          observations_b: 135
+          effective_support_a: 80.99999999999945
+          effective_support_b: 130.90452452730813
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 7.771561172376096e-16
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 69
+          observations_b: 117
+          effective_support_a: 68.9999999999999
+          effective_support_b: 116.99999999999991
+          reliability: 1
+          reliable: true
+    - token_a: lchedy
+      token_b: qol
+      continuous_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.007774002716572026
+          weighted_overlap: 0.007042253521126761
+          jaccard_support_overlap: 0.003968253968253968
+          observations_a: 116
+          observations_b: 142
+          effective_support_a: 115.99999999999967
+          effective_support_b: 135.2349824229294
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 0
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 116
+          observations_b: 142
+          effective_support_a: 115.99999999999967
+          effective_support_b: 141.9999999999999
+          reliability: 1
+          reliable: true
+      line_bounded_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.009792606290794481
+          weighted_overlap: 0.007936507936507936
+          jaccard_support_overlap: 0.0049504950495049506
+          observations_a: 81
+          observations_b: 126
+          effective_support_a: 80.99999999999945
+          effective_support_b: 120.57507188671417
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 0
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 69
+          observations_b: 112
+          effective_support_a: 68.9999999999999
+          effective_support_b: 111.99999999999986
+          reliability: 1
+          reliable: true
+    - token_a: okaiin
+      token_b: ol
+      continuous_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.030801764142394883
+          weighted_overlap: 0.02248677248677249
+          jaccard_support_overlap: 0.012080536912751677
+          observations_a: 216
+          observations_b: 560
+          effective_support_a: 214.61814477598134
+          effective_support_b: 526.4101258896892
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 0
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 216
+          observations_b: 560
+          effective_support_a: 215.99999999999815
+          effective_support_b: 558.6154201274583
+          reliability: 1
+          reliable: true
+      line_bounded_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.03472607244528114
+          weighted_overlap: 0.02527199847299103
+          jaccard_support_overlap: 0.013223140495867768
+          observations_a: 169
+          observations_b: 465
+          effective_support_a: 167.6193759583697
+          effective_support_b: 432.9080000457276
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 9.992007221626409e-16
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 147
+          observations_b: 400
+          effective_support_a: 146.9999999999984
+          effective_support_b: 398.61610513113476
+          reliability: 1
+          reliable: true
+    - token_a: okain
+      token_b: ol
+      continuous_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.0032147130462484297
+          weighted_overlap: 0.0017857142857142857
+          jaccard_support_overlap: 0.0014727540500736377
+          observations_a: 141
+          observations_b: 560
+          effective_support_a: 141.00000000000028
+          effective_support_b: 526.4101258896892
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 0
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 141
+          observations_b: 560
+          effective_support_a: 141.00000000000028
+          effective_support_b: 558.6154201274583
+          reliability: 1
+          reliable: true
+      line_bounded_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.003933002207471503
+          weighted_overlap: 0.002150537634408602
+          jaccard_support_overlap: 0.0017985611510791368
+          observations_a: 112
+          observations_b: 465
+          effective_support_a: 111.99999999999986
+          effective_support_b: 432.90800004572793
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 0
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 94
+          observations_b: 400
+          effective_support_a: 94.0000000000005
+          effective_support_b: 398.61610513113436
+          reliability: 1
+          reliable: true
+    - token_a: aiin
+      token_b: ar
+      continuous_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.008850980510443085
+          weighted_overlap: 0.007936507936507936
+          jaccard_support_overlap: 0.004489337822671156
+          observations_a: 504
+          observations_b: 403
+          effective_support_a: 495.75049395190933
+          effective_support_b: 394.7674840744032
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 0
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 504
+          observations_b: 403
+          effective_support_a: 504.00000000004036
+          effective_support_b: 403.0000000000134
+          reliability: 1
+          reliable: true
+      line_bounded_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.008693979125436013
+          weighted_overlap: 0.007894736842105263
+          jaccard_support_overlap: 0.004418262150220913
+          observations_a: 380
+          observations_b: 312
+          effective_support_a: 373.1313630652003
+          effective_support_b: 305.1449568373329
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 0
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 325
+          observations_b: 257
+          effective_support_a: 324.9999999999962
+          effective_support_b: 257.00000000000233
+          reliability: 1
+          reliable: true
+    - token_a: chedy
+      token_b: qokeey
+      continuous_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.017517885445278103
+          weighted_overlap: 0.013833992094861657
+          jaccard_support_overlap: 0.008816120906801008
+          observations_a: 506
+          observations_b: 307
+          effective_support_a: 493.16567505229904
+          effective_support_b: 302.86916002542824
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 1.1102230246251565e-16
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 506
+          observations_b: 307
+          effective_support_a: 506.00000000001495
+          effective_support_b: 306.99999999999443
+          reliability: 1
+          reliable: true
+      line_bounded_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.01814002208670995
+          weighted_overlap: 0.015151515151515154
+          jaccard_support_overlap: 0.009216589861751152
+          observations_a: 396
+          observations_b: 272
+          effective_support_a: 384.5550420087624
+          effective_support_b: 267.872750171894
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 0
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 326
+          observations_b: 236
+          effective_support_a: 326.0000000000061
+          effective_support_b: 236.0000000000001
+          reliability: 1
+          reliable: true
+    - token_a: dal
+      token_b: ol
+      continuous_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.013722009096488796
+          weighted_overlap: 0.009489374262101535
+          jaccard_support_overlap: 0.005154639175257732
+          observations_a: 242
+          observations_b: 560
+          effective_support_a: 240.61766875377964
+          effective_support_b: 526.4101258896892
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 0
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 242
+          observations_b: 560
+          effective_support_a: 241.9999999999988
+          effective_support_b: 558.6154201274583
+          reliability: 1
+          reliable: true
+      line_bounded_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.01873387696958051
+          weighted_overlap: 0.012945119396732301
+          jaccard_support_overlap: 0.006734006734006734
+          observations_a: 154
+          observations_b: 465
+          effective_support_a: 152.61992660754484
+          effective_support_b: 432.90800004572793
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 0
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 122
+          observations_b: 400
+          effective_support_a: 122.00000000000122
+          effective_support_b: 398.61610513113476
+          reliability: 1
+          reliable: true
+    - token_a: ain
+      token_b: al
+      continuous_suffix_context:
+        - sequence_length: 2
+          js_similarity: 1.887379141862766e-15
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 113
+          observations_b: 261
+          effective_support_a: 112.99999999999933
+          effective_support_b: 258.2420857987397
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 3.219646771412954e-15
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 113
+          observations_b: 261
+          effective_support_a: 112.99999999999933
+          effective_support_b: 260.999999999995
+          reliability: 1
+          reliable: true
+      line_bounded_suffix_context:
+        - sequence_length: 2
+          js_similarity: 2.220446049250313e-15
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 91
+          observations_b: 201
+          effective_support_a: 90.99999999999964
+          effective_support_b: 199.6184752941658
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 1.1102230246251565e-16
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 76
+          observations_b: 178
+          effective_support_a: 75.99999999999953
+          effective_support_b: 177.999999999999
+          reliability: 1
+          reliable: true
+    - token_a: ain
+      token_b: ar
+      continuous_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.008592518973822516
+          weighted_overlap: 0.004962779156327543
+          jaccard_support_overlap: 0.003937007874015748
+          observations_a: 113
+          observations_b: 403
+          effective_support_a: 112.99999999999933
+          effective_support_b: 394.76748407440255
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 3.3306690738754696e-15
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 113
+          observations_b: 403
+          effective_support_a: 112.99999999999933
+          effective_support_b: 403.0000000000134
+          reliability: 1
+          reliable: true
+      line_bounded_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.01093841627760328
+          weighted_overlap: 0.00641025641025641
+          jaccard_support_overlap: 0.005050505050505051
+          observations_a: 91
+          observations_b: 312
+          effective_support_a: 90.99999999999964
+          effective_support_b: 305.14495683733264
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 0
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 76
+          observations_b: 257
+          effective_support_a: 75.99999999999953
+          effective_support_b: 257.00000000000233
+          reliability: 1
+          reliable: true
+    - token_a: qokar
+      token_b: qol
+      continuous_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.009239272473212323
+          weighted_overlap: 0.007042253521126761
+          jaccard_support_overlap: 0.003424657534246575
+          observations_a: 159
+          observations_b: 142
+          effective_support_a: 154.89503668353345
+          effective_support_b: 135.2349824229294
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 4.440892098500626e-16
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 159
+          observations_b: 142
+          effective_support_a: 158.99999999999886
+          effective_support_b: 141.9999999999999
+          reliability: 1
+          reliable: true
+      line_bounded_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.010613779814932278
+          weighted_overlap: 0.007936507936507936
+          jaccard_support_overlap: 0.003952569169960474
+          observations_a: 135
+          observations_b: 126
+          effective_support_a: 130.90452452730813
+          effective_support_b: 120.57507188671396
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 0
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 117
+          observations_b: 112
+          effective_support_a: 116.99999999999991
+          effective_support_b: 111.99999999999986
+          reliability: 1
+          reliable: true
+    - token_a: qol
+      token_b: qotain
+      continuous_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.02570111835503419
+          weighted_overlap: 0.02112676056338028
+          jaccard_support_overlap: 0.010256410256410256
+          observations_a: 142
+          observations_b: 60
+          effective_support_a: 135.2349824229295
+          effective_support_b: 60.00000000000009
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 0.010403825869111594
+          weighted_overlap: 0.007042253521126761
+          jaccard_support_overlap: 0.004975124378109453
+          observations_a: 142
+          observations_b: 60
+          effective_support_a: 141.9999999999999
+          effective_support_b: 60.00000000000009
+          reliability: 1
+          reliable: true
+      line_bounded_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.03120227264429387
+          weighted_overlap: 0.023809523809523808
+          jaccard_support_overlap: 0.012121212121212121
+          observations_a: 126
+          observations_b: 45
+          effective_support_a: 120.57507188671417
+          effective_support_b: 44.99999999999989
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 0.013584010110796019
+          weighted_overlap: 0.008928571428571428
+          jaccard_support_overlap: 0.0064516129032258064
+          observations_a: 112
+          observations_b: 44
+          effective_support_a: 111.99999999999986
+          effective_support_b: 44.00000000000019
+          reliability: 1
+          reliable: true
+    - token_a: okar
+      token_b: otain
+      continuous_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.01711664711367966
+          weighted_overlap: 0.014285714285714285
+          jaccard_support_overlap: 0.008547008547008548
+          observations_a: 140
+          observations_b: 96
+          effective_support_a: 139.9999999999987
+          effective_support_b: 96.00000000000041
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 0
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 140
+          observations_b: 96
+          effective_support_a: 139.9999999999987
+          effective_support_b: 96.00000000000041
+          reliability: 1
+          reliable: true
+      line_bounded_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0.021644153899038843
+          weighted_overlap: 0.017094017094017096
+          jaccard_support_overlap: 0.010752688172043012
+          observations_a: 117
+          observations_b: 71
+          effective_support_a: 116.99999999999991
+          effective_support_b: 71.00000000000006
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 1.1102230246251565e-16
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 86
+          observations_b: 59
+          effective_support_a: 85.99999999999943
+          effective_support_b: 58.99999999999986
+          reliability: 1
+          reliable: true

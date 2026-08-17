@@ -1,0 +1,730 @@
+methodology: exact suffix JS plus a sequence kernel equal to the mean position-wise JS after soft projection
+pairs:
+    - token_a: chedy
+      token_b: qokeey
+      sequence_length: 2
+      exact_suffix_similarity: 0.0175178854452801
+      projected_suffix_similarity_full: 0.5314265407063141
+      projected_suffix_similarity_ablated: 0.6227947934490805
+      position_similarity_full:
+        - 0.5400090930717201
+        - 0.5228439883409082
+      position_similarity_ablated:
+        - 0.62300464849835
+        - 0.6225849383998109
+    - token_a: chedy
+      token_b: qokeey
+      sequence_length: 3
+      exact_suffix_similarity: 7.771561172376096e-16
+      projected_suffix_similarity_full: 0.5302784836839133
+      projected_suffix_similarity_ablated: 0.6236068928484549
+      position_similarity_full:
+        - 0.5400090930717201
+        - 0.5228439883409082
+        - 0.5279823696391117
+      position_similarity_ablated:
+        - 0.62300464849835
+        - 0.6225849383998109
+        - 0.6252310916472037
+    - token_a: chol
+      token_b: daiin
+      sequence_length: 2
+      exact_suffix_similarity: 0.0050205595314216644
+      projected_suffix_similarity_full: 0.46719791651494036
+      projected_suffix_similarity_ablated: 0.5633855411010613
+      position_similarity_full:
+        - 0.45728439053191483
+        - 0.4771114424979659
+      position_similarity_ablated:
+        - 0.5644354568719779
+        - 0.5623356253301446
+    - token_a: chol
+      token_b: daiin
+      sequence_length: 3
+      exact_suffix_similarity: 0.0016735198437922705
+      projected_suffix_similarity_full: 0.47906439726292493
+      projected_suffix_similarity_ablated: 0.5659892300301347
+      position_similarity_full:
+        - 0.45728439053191483
+        - 0.4771114424979659
+        - 0.5027973587588941
+      position_similarity_ablated:
+        - 0.5644354568719779
+        - 0.5623356253301446
+        - 0.5711966078882815
+    - token_a: ol
+      token_b: "y"
+      sequence_length: 2
+      exact_suffix_similarity: 0.01223678198941025
+      projected_suffix_similarity_full: 0.48142470791051756
+      projected_suffix_similarity_ablated: 0.5772559906705791
+      position_similarity_full:
+        - 0.46297330651323587
+        - 0.49987610930779924
+      position_similarity_ablated:
+        - 0.5705138505303218
+        - 0.5839981308108364
+    - token_a: ol
+      token_b: "y"
+      sequence_length: 3
+      exact_suffix_similarity: 0
+      projected_suffix_similarity_full: 0.4815650848818942
+      projected_suffix_similarity_ablated: 0.5779349266441024
+      position_similarity_full:
+        - 0.46297330651323587
+        - 0.49987610930779924
+        - 0.4818458388246476
+      position_similarity_ablated:
+        - 0.5705138505303218
+        - 0.5839981308108364
+        - 0.579292798591149
+    - token_a: chey
+      token_b: ol
+      sequence_length: 2
+      exact_suffix_similarity: 0.00891435241440186
+      projected_suffix_similarity_full: 0.462756210177254
+      projected_suffix_similarity_ablated: 0.5678587085767753
+      position_similarity_full:
+        - 0.4020144440416523
+        - 0.5234979763128557
+      position_similarity_ablated:
+        - 0.5230779780565618
+        - 0.6126394390969889
+    - token_a: chey
+      token_b: ol
+      sequence_length: 3
+      exact_suffix_similarity: 0
+      projected_suffix_similarity_full: 0.47715624426041464
+      projected_suffix_similarity_ablated: 0.5756777821251893
+      position_similarity_full:
+        - 0.4020144440416523
+        - 0.5234979763128557
+        - 0.5059563124267359
+      position_similarity_ablated:
+        - 0.5230779780565618
+        - 0.6126394390969889
+        - 0.5913159292220173
+    - token_a: dar
+      token_b: ol
+      sequence_length: 2
+      exact_suffix_similarity: 0.0191448172544475
+      projected_suffix_similarity_full: 0.4569277016702284
+      projected_suffix_similarity_ablated: 0.5646511197105242
+      position_similarity_full:
+        - 0.466677128799167
+        - 0.4471782745412898
+      position_similarity_ablated:
+        - 0.5751223750258833
+        - 0.5541798643951652
+    - token_a: dar
+      token_b: ol
+      sequence_length: 3
+      exact_suffix_similarity: 0.005633898064927201
+      projected_suffix_similarity_full: 0.4645446081849631
+      projected_suffix_similarity_ablated: 0.566450059895624
+      position_similarity_full:
+        - 0.466677128799167
+        - 0.4471782745412898
+        - 0.4797784212144326
+      position_similarity_ablated:
+        - 0.5751223750258833
+        - 0.5541798643951652
+        - 0.5700479402658236
+    - token_a: ar
+      token_b: ol
+      sequence_length: 2
+      exact_suffix_similarity: 0.002092462059785083
+      projected_suffix_similarity_full: 0.44780539774694333
+      projected_suffix_similarity_ablated: 0.5508723090560081
+      position_similarity_full:
+        - 0.4452809193931683
+        - 0.4503298761007184
+      position_similarity_ablated:
+        - 0.5556635540259083
+        - 0.546081064086108
+    - token_a: ar
+      token_b: ol
+      sequence_length: 3
+      exact_suffix_similarity: 0
+      projected_suffix_similarity_full: 0.448358434835203
+      projected_suffix_similarity_ablated: 0.5515305724981326
+      position_similarity_full:
+        - 0.4452809193931683
+        - 0.4503298761007184
+        - 0.4494645090117223
+      position_similarity_ablated:
+        - 0.5556635540259083
+        - 0.546081064086108
+        - 0.5528470993823819
+    - token_a: dal
+      token_b: ol
+      sequence_length: 2
+      exact_suffix_similarity: 0.01372200909648802
+      projected_suffix_similarity_full: 0.44509448097485743
+      projected_suffix_similarity_ablated: 0.5462192486656061
+      position_similarity_full:
+        - 0.46203161241814195
+        - 0.4281573495315729
+      position_similarity_ablated:
+        - 0.5690993843338601
+        - 0.523339112997352
+    - token_a: dal
+      token_b: ol
+      sequence_length: 3
+      exact_suffix_similarity: 0
+      projected_suffix_similarity_full: 0.4548805225112784
+      projected_suffix_similarity_ablated: 0.5529467930438025
+      position_similarity_full:
+        - 0.46203161241814195
+        - 0.4281573495315729
+        - 0.4744526055841204
+      position_similarity_ablated:
+        - 0.5690993843338601
+        - 0.523339112997352
+        - 0.5664018818001952
+    - token_a: qokain
+      token_b: qol
+      sequence_length: 2
+      exact_suffix_similarity: 0.01622772060166766
+      projected_suffix_similarity_full: 0.5105656507055293
+      projected_suffix_similarity_ablated: 0.6706309012301492
+      position_similarity_full:
+        - 0.5179102074421587
+        - 0.5032210939688999
+      position_similarity_ablated:
+        - 0.6871088508267975
+        - 0.654152951633501
+    - token_a: qokain
+      token_b: qol
+      sequence_length: 3
+      exact_suffix_similarity: 0
+      projected_suffix_similarity_full: 0.4973943318634067
+      projected_suffix_similarity_ablated: 0.6481788690235118
+      position_similarity_full:
+        - 0.5179102074421587
+        - 0.5032210939688999
+        - 0.4710516941791617
+      position_similarity_ablated:
+        - 0.6871088508267975
+        - 0.654152951633501
+        - 0.6032748046102372
+    - token_a: aiin
+      token_b: ar
+      sequence_length: 2
+      exact_suffix_similarity: 0.008850980510442419
+      projected_suffix_similarity_full: 0.4229035868093357
+      projected_suffix_similarity_ablated: 0.5177429892455402
+      position_similarity_full:
+        - 0.406891100745431
+        - 0.4389160728732404
+      position_similarity_ablated:
+        - 0.5137909807441894
+        - 0.521694997746891
+    - token_a: aiin
+      token_b: ar
+      sequence_length: 3
+      exact_suffix_similarity: 0
+      projected_suffix_similarity_full: 0.4411311849743655
+      projected_suffix_similarity_ablated: 0.5332158819103162
+      position_similarity_full:
+        - 0.406891100745431
+        - 0.4389160728732404
+        - 0.477586381304425
+      position_similarity_ablated:
+        - 0.5137909807441894
+        - 0.521694997746891
+        - 0.5641616672398685
+    - token_a: or
+      token_b: s
+      sequence_length: 2
+      exact_suffix_similarity: 0.06590529255686883
+      projected_suffix_similarity_full: 0.5044953525454359
+      projected_suffix_similarity_ablated: 0.5885990148361955
+      position_similarity_full:
+        - 0.588813542133588
+        - 0.4201771629572837
+      position_similarity_ablated:
+        - 0.6568657431719072
+        - 0.5203322865004838
+    - token_a: or
+      token_b: s
+      sequence_length: 3
+      exact_suffix_similarity: 8.659739592076221e-15
+      projected_suffix_similarity_full: 0.47795252911615727
+      projected_suffix_similarity_ablated: 0.561931466176524
+      position_similarity_full:
+        - 0.588813542133588
+        - 0.4201771629572837
+        - 0.42486688225759994
+      position_similarity_ablated:
+        - 0.6568657431719072
+        - 0.5203322865004838
+        - 0.5085963688571811
+    - token_a: r
+      token_b: s
+      sequence_length: 2
+      exact_suffix_similarity: 0.06170001290519733
+      projected_suffix_similarity_full: 0.4813375445202553
+      projected_suffix_similarity_ablated: 0.5836949903243563
+      position_similarity_full:
+        - 0.5357198697330214
+        - 0.42695521930748914
+      position_similarity_ablated:
+        - 0.6429078020736263
+        - 0.5244821785750864
+    - token_a: r
+      token_b: s
+      sequence_length: 3
+      exact_suffix_similarity: 0.003994041201563436
+      projected_suffix_similarity_full: 0.46615098638321584
+      projected_suffix_similarity_ablated: 0.5683936670200708
+      position_similarity_full:
+        - 0.5357198697330214
+        - 0.42695521930748914
+        - 0.4357778701091368
+      position_similarity_ablated:
+        - 0.6429078020736263
+        - 0.5244821785750864
+        - 0.5377910204114997
+    - token_a: or
+      token_b: r
+      sequence_length: 2
+      exact_suffix_similarity: 0.03525304995329792
+      projected_suffix_similarity_full: 0.4657845461492915
+      projected_suffix_similarity_ablated: 0.5671323946102871
+      position_similarity_full:
+        - 0.5436585035331392
+        - 0.3879105887654438
+      position_similarity_ablated:
+        - 0.6270244248052292
+        - 0.507240364415345
+    - token_a: or
+      token_b: r
+      sequence_length: 3
+      exact_suffix_similarity: 3.219646771412954e-15
+      projected_suffix_similarity_full: 0.43722362432568057
+      projected_suffix_similarity_ablated: 0.5402489765510627
+      position_similarity_full:
+        - 0.5436585035331392
+        - 0.3879105887654438
+        - 0.3801017806784587
+      position_similarity_ablated:
+        - 0.6270244248052292
+        - 0.507240364415345
+        - 0.48648214043261395
+    - token_a: okaiin
+      token_b: ol
+      sequence_length: 2
+      exact_suffix_similarity: 0.03080176414239466
+      projected_suffix_similarity_full: 0.45107749201787256
+      projected_suffix_similarity_ablated: 0.5844366333772284
+      position_similarity_full:
+        - 0.4251799568942418
+        - 0.4769750271415033
+      position_similarity_ablated:
+        - 0.5743261924150108
+        - 0.5945470743394459
+    - token_a: okaiin
+      token_b: ol
+      sequence_length: 3
+      exact_suffix_similarity: 0
+      projected_suffix_similarity_full: 0.45857734077902856
+      projected_suffix_similarity_ablated: 0.5862776734286045
+      position_similarity_full:
+        - 0.4251799568942418
+        - 0.4769750271415033
+        - 0.47357703830134057
+      position_similarity_ablated:
+        - 0.5743261924150108
+        - 0.5945470743394459
+        - 0.5899597535313568
+    - token_a: chor
+      token_b: daiin
+      sequence_length: 2
+      exact_suffix_similarity: 0.0021319165397912787
+      projected_suffix_similarity_full: 0.4029799312830506
+      projected_suffix_similarity_ablated: 0.5169730734148581
+      position_similarity_full:
+        - 0.39518520688853265
+        - 0.41077465567756855
+      position_similarity_ablated:
+        - 0.5252748483165962
+        - 0.5086712985131201
+    - token_a: chor
+      token_b: daiin
+      sequence_length: 3
+      exact_suffix_similarity: 0
+      projected_suffix_similarity_full: 0.4212838761303866
+      projected_suffix_similarity_ablated: 0.5280456089607072
+      position_similarity_full:
+        - 0.39518520688853265
+        - 0.41077465567756855
+        - 0.4578917658250585
+      position_similarity_ablated:
+        - 0.5252748483165962
+        - 0.5086712985131201
+        - 0.5501906800524055
+    - token_a: qokaiin
+      token_b: qol
+      sequence_length: 2
+      exact_suffix_similarity: 0.012334411488070351
+      projected_suffix_similarity_full: 0.4671920416487453
+      projected_suffix_similarity_ablated: 0.6299987680040724
+      position_similarity_full:
+        - 0.4606090481498081
+        - 0.4737750351476825
+      position_similarity_ablated:
+        - 0.6399965018185861
+        - 0.6200010341895585
+    - token_a: qokaiin
+      token_b: qol
+      sequence_length: 3
+      exact_suffix_similarity: 0
+      projected_suffix_similarity_full: 0.46971714967435774
+      projected_suffix_similarity_ablated: 0.6262207436294087
+      position_similarity_full:
+        - 0.4606090481498081
+        - 0.4737750351476825
+        - 0.47476736572558265
+      position_similarity_ablated:
+        - 0.6399965018185861
+        - 0.6200010341895585
+        - 0.6186646948800812
+    - token_a: lchedy
+      token_b: qokeey
+      sequence_length: 2
+      exact_suffix_similarity: 0.010066282346012922
+      projected_suffix_similarity_full: 0.4592083641020782
+      projected_suffix_similarity_ablated: 0.5906625657144836
+      position_similarity_full:
+        - 0.4366477334111455
+        - 0.48176899479301094
+      position_similarity_ablated:
+        - 0.5645031223055594
+        - 0.6168220091234078
+    - token_a: lchedy
+      token_b: qokeey
+      sequence_length: 3
+      exact_suffix_similarity: 0
+      projected_suffix_similarity_full: 0.458261655588704
+      projected_suffix_similarity_ablated: 0.6005989353854335
+      position_similarity_full:
+        - 0.4366477334111455
+        - 0.48176899479301094
+        - 0.45636823856195563
+      position_similarity_ablated:
+        - 0.5645031223055594
+        - 0.6168220091234078
+        - 0.6204716747273333
+    - token_a: qokedy
+      token_b: qol
+      sequence_length: 2
+      exact_suffix_similarity: 0.017875627491902746
+      projected_suffix_similarity_full: 0.4600654779164818
+      projected_suffix_similarity_ablated: 0.5940575644182549
+      position_similarity_full:
+        - 0.49073586991408746
+        - 0.4293950859188761
+      position_similarity_ablated:
+        - 0.605202154989641
+        - 0.5829129738468686
+    - token_a: qokedy
+      token_b: qol
+      sequence_length: 3
+      exact_suffix_similarity: 0.004930333692705791
+      projected_suffix_similarity_full: 0.4745097978467234
+      projected_suffix_similarity_ablated: 0.6037898678719217
+      position_similarity_full:
+        - 0.49073586991408746
+        - 0.4293950859188761
+        - 0.5033984377072067
+      position_similarity_ablated:
+        - 0.605202154989641
+        - 0.5829129738468686
+        - 0.6232544747792552
+    - token_a: lchedy
+      token_b: qokain
+      sequence_length: 2
+      exact_suffix_similarity: 0.010659972548981211
+      projected_suffix_similarity_full: 0.4209948929804928
+      projected_suffix_similarity_ablated: 0.5516482152770921
+      position_similarity_full:
+        - 0.3718179264663011
+        - 0.47017185949468454
+      position_similarity_ablated:
+        - 0.4956626917905955
+        - 0.6076337387635885
+    - token_a: lchedy
+      token_b: qokain
+      sequence_length: 3
+      exact_suffix_similarity: 0
+      projected_suffix_similarity_full: 0.4432781377905702
+      projected_suffix_similarity_ablated: 0.5779809812427373
+      position_similarity_full:
+        - 0.3718179264663011
+        - 0.47017185949468454
+        - 0.487844627410725
+      position_similarity_ablated:
+        - 0.4956626917905955
+        - 0.6076337387635885
+        - 0.6306465131740278
+    - token_a: qokar
+      token_b: qol
+      sequence_length: 2
+      exact_suffix_similarity: 0.009239272473211546
+      projected_suffix_similarity_full: 0.5117025294891357
+      projected_suffix_similarity_ablated: 0.6460807600390044
+      position_similarity_full:
+        - 0.5382805952871319
+        - 0.4851244636911396
+      position_similarity_ablated:
+        - 0.6796937343720924
+        - 0.6124677857059164
+    - token_a: qokar
+      token_b: qol
+      sequence_length: 3
+      exact_suffix_similarity: 0
+      projected_suffix_similarity_full: 0.4849315103917901
+      projected_suffix_similarity_ablated: 0.6305799547485601
+      position_similarity_full:
+        - 0.5382805952871319
+        - 0.4851244636911396
+        - 0.4313894721970988
+      position_similarity_ablated:
+        - 0.6796937343720924
+        - 0.6124677857059164
+        - 0.5995783441676716
+    - token_a: okain
+      token_b: ol
+      sequence_length: 2
+      exact_suffix_similarity: 0.0032147130462483187
+      projected_suffix_similarity_full: 0.4436126142291818
+      projected_suffix_similarity_ablated: 0.5866952965919972
+      position_similarity_full:
+        - 0.441235448944831
+        - 0.4459897795135326
+      position_similarity_ablated:
+        - 0.6067800841326505
+        - 0.5666105090513438
+    - token_a: okain
+      token_b: ol
+      sequence_length: 3
+      exact_suffix_similarity: 0
+      projected_suffix_similarity_full: 0.4331304439339448
+      projected_suffix_similarity_ablated: 0.5742362711114405
+      position_similarity_full:
+        - 0.441235448944831
+        - 0.4459897795135326
+        - 0.4121661033434707
+      position_similarity_ablated:
+        - 0.6067800841326505
+        - 0.5666105090513438
+        - 0.5493182201503273
+    - token_a: lchedy
+      token_b: qol
+      sequence_length: 2
+      exact_suffix_similarity: 0.007774002716571471
+      projected_suffix_similarity_full: 0.4470567571822986
+      projected_suffix_similarity_ablated: 0.5802810656328135
+      position_similarity_full:
+        - 0.4146934456329039
+        - 0.4794200687316933
+      position_similarity_ablated:
+        - 0.5126018390826206
+        - 0.6479602921830063
+    - token_a: lchedy
+      token_b: qol
+      sequence_length: 3
+      exact_suffix_similarity: 0
+      projected_suffix_similarity_full: 0.4515016639160703
+      projected_suffix_similarity_ablated: 0.5914348715563995
+      position_similarity_full:
+        - 0.4146934456329039
+        - 0.4794200687316933
+        - 0.46039147738361363
+      position_similarity_ablated:
+        - 0.5126018390826206
+        - 0.6479602921830063
+        - 0.6137424834035716
+    - token_a: lchedy
+      token_b: qokar
+      sequence_length: 2
+      exact_suffix_similarity: 0.007322976631652489
+      projected_suffix_similarity_full: 0.41150394174237315
+      projected_suffix_similarity_ablated: 0.5420731552501871
+      position_similarity_full:
+        - 0.3975164051745518
+        - 0.4254914783101945
+      position_similarity_ablated:
+        - 0.5072720477717443
+        - 0.5768742627286298
+    - token_a: lchedy
+      token_b: qokar
+      sequence_length: 3
+      exact_suffix_similarity: 2.886579864025407e-15
+      projected_suffix_similarity_full: 0.41257207681975605
+      projected_suffix_similarity_ablated: 0.5543939727176032
+      position_similarity_full:
+        - 0.3975164051745518
+        - 0.4254914783101945
+        - 0.41470834697452186
+      position_similarity_ablated:
+        - 0.5072720477717443
+        - 0.5768742627286298
+        - 0.5790356076524353
+    - token_a: daiin
+      token_b: dol
+      sequence_length: 2
+      exact_suffix_similarity: 0.002648240585995776
+      projected_suffix_similarity_full: 0.3877275034119135
+      projected_suffix_similarity_ablated: 0.5137293040854963
+      position_similarity_full:
+        - 0.37690126717478956
+        - 0.3985537396490374
+      position_similarity_ablated:
+        - 0.5180573013850631
+        - 0.5094013067859295
+    - token_a: daiin
+      token_b: dol
+      sequence_length: 3
+      exact_suffix_similarity: 0
+      projected_suffix_similarity_full: 0.3960348896633978
+      projected_suffix_similarity_ablated: 0.5197175572559122
+      position_similarity_full:
+        - 0.37690126717478956
+        - 0.3985537396490374
+        - 0.41264966216636634
+      position_similarity_ablated:
+        - 0.5180573013850631
+        - 0.5094013067859295
+        - 0.5316940635967441
+    - token_a: chol
+      token_b: cthy
+      sequence_length: 2
+      exact_suffix_similarity: 0.013700130957286505
+      projected_suffix_similarity_full: 0.38527553218251503
+      projected_suffix_similarity_ablated: 0.5085907780139364
+      position_similarity_full:
+        - 0.3795333678085714
+        - 0.3910176965564587
+      position_similarity_ablated:
+        - 0.5015063564462823
+        - 0.5156751995815905
+    - token_a: chol
+      token_b: cthy
+      sequence_length: 3
+      exact_suffix_similarity: 0
+      projected_suffix_similarity_full: 0.3593401612018983
+      projected_suffix_similarity_ablated: 0.48377120967811527
+      position_similarity_full:
+        - 0.3795333678085714
+        - 0.3910176965564587
+        - 0.30746941924066495
+      position_similarity_ablated:
+        - 0.5015063564462823
+        - 0.5156751995815905
+        - 0.43413207300647294
+    - token_a: ain
+      token_b: ar
+      sequence_length: 2
+      exact_suffix_similarity: 0.008592518973821517
+      projected_suffix_similarity_full: 0.41416252560877564
+      projected_suffix_similarity_ablated: 0.5187023121387413
+      position_similarity_full:
+        - 0.47073360727158087
+        - 0.3575914439459704
+      position_similarity_ablated:
+        - 0.5649224865556912
+        - 0.4724821377217914
+    - token_a: ain
+      token_b: ar
+      sequence_length: 3
+      exact_suffix_similarity: 3.219646771412954e-15
+      projected_suffix_similarity_full: 0.3888748138707376
+      projected_suffix_similarity_ablated: 0.5030986515555431
+      position_similarity_full:
+        - 0.47073360727158087
+        - 0.3575914439459704
+        - 0.3382993903946614
+      position_similarity_ablated:
+        - 0.5649224865556912
+        - 0.4724821377217914
+        - 0.47189133038914677
+    - token_a: qol
+      token_b: qotain
+      sequence_length: 2
+      exact_suffix_similarity: 0.02570111835503386
+      projected_suffix_similarity_full: 0.4221376744974856
+      projected_suffix_similarity_ablated: 0.5894645936792993
+      position_similarity_full:
+        - 0.41201612893052564
+        - 0.4322592200644456
+      position_similarity_ablated:
+        - 0.5846202040512156
+        - 0.5943089833073829
+    - token_a: qol
+      token_b: qotain
+      sequence_length: 3
+      exact_suffix_similarity: 0.010403825869110928
+      projected_suffix_similarity_full: 0.40189529522076023
+      projected_suffix_similarity_ablated: 0.595500823708257
+      position_similarity_full:
+        - 0.41201612893052564
+        - 0.4322592200644456
+        - 0.3614105366673095
+      position_similarity_ablated:
+        - 0.5846202040512156
+        - 0.5943089833073829
+        - 0.6075732837661723
+    - token_a: ain
+      token_b: al
+      sequence_length: 2
+      exact_suffix_similarity: 1.887379141862766e-15
+      projected_suffix_similarity_full: 0.35702056310212527
+      projected_suffix_similarity_ablated: 0.4800044347401285
+      position_similarity_full:
+        - 0.35784360197217324
+        - 0.3561975242320773
+      position_similarity_ablated:
+        - 0.4898171918382481
+        - 0.47019167764200887
+    - token_a: ain
+      token_b: al
+      sequence_length: 3
+      exact_suffix_similarity: 1.7763568394002505e-15
+      projected_suffix_similarity_full: 0.34218144231676045
+      projected_suffix_similarity_ablated: 0.4674061631961372
+      position_similarity_full:
+        - 0.35784360197217324
+        - 0.3561975242320773
+        - 0.3125032007460308
+      position_similarity_ablated:
+        - 0.4898171918382481
+        - 0.47019167764200887
+        - 0.44220962010815446
+    - token_a: okar
+      token_b: otain
+      sequence_length: 2
+      exact_suffix_similarity: 0.01711664711367944
+      projected_suffix_similarity_full: 0.40051933673465057
+      projected_suffix_similarity_ablated: 0.5535792352423041
+      position_similarity_full:
+        - 0.4617639424480684
+        - 0.33927473102123273
+      position_similarity_ablated:
+        - 0.5995233932747602
+        - 0.5076350772098479
+    - token_a: okar
+      token_b: otain
+      sequence_length: 3
+      exact_suffix_similarity: 0
+      projected_suffix_similarity_full: 0.38747623175178597
+      projected_suffix_similarity_ablated: 0.5463804172816135
+      position_similarity_full:
+        - 0.4617639424480684
+        - 0.33927473102123273
+        - 0.36139002178605695
+      position_similarity_ablated:
+        - 0.5995233932747602
+        - 0.5076350772098479
+        - 0.5319827813602321

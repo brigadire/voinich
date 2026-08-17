@@ -1,0 +1,37 @@
+meta:
+    alpha: 0.5
+    confirmatory: true
+    permutations: 10000
+    seed: 1
+reproducibility:
+    corpus_sha256: 360d99583145ec549b80edfafdc3f93534f3a11b85a0d52997ba8425e92b87c2
+    higher_order_sha256: 0a2d6f4f11eaa74cfbf0e658d37f85c1a64eda18ed2bac31b7d5f87f65cc3e2f
+    metadata_sha256: 148745adbc889150ad1b59715bbfa75fa17e24b566694d94a0445d06393a7e68
+    permutations: 10000
+    seed: 1
+frozen:
+    context: s aiin
+    target_continuation: chey
+positional_bins:
+    block_coarse_categories:
+        - BLOCK_START
+        - BLOCK_MIDDLE
+        - BLOCK_END
+    block_fixed_categories:
+        - B0
+        - B1
+        - B2
+        - B3
+        - B4
+        - B5
+        - B6
+        - B7
+        - B8
+        - B9
+    line_categories:
+        - LINE_START
+        - LINE_EARLY
+        - LINE_MIDDLE
+        - LINE_LATE
+        - LINE_END
+final_status: NO_POSITIONAL_STRUCTURE

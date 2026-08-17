@@ -1,0 +1,39 @@
+global_max_correction:
+    hierarchical|raw:
+        effect_size: -12.158281291365089
+        empirical_p: 1
+        exceedances: 1000
+        null_max: 0.4338250028090087
+        null_mean: 0.40779945374158005
+        null_p95: 0.4172247001151369
+        null_p99: 0.4216517660873368
+        null_sd: 0.006133063927577788
+        observed: 0.33323193733216494
+        permutations: 1000
+    k_medoids|raw:
+        effect_size: -12.27093463826568
+        empirical_p: 1
+        exceedances: 1000
+        null_max: 0.4257508403362984
+        null_mean: 0.40725767918917416
+        null_p95: 0.41735096925414344
+        null_p99: 0.4209304433396666
+        null_sd: 0.0062916680898089505
+        observed: 0.33005303129346664
+        permutations: 1000
+null_model: Null A applied to every eligible joint class's physical blocks with one shared shuffled-corpus realization per replicate, reused unchanged across the whole scale x K sweep
+permutations: 1000
+search_space:
+    k:
+        - 2
+        - 15
+    primary_method: k_medoids
+    secondary_method: hierarchical (corrected separately, task19 section 42)
+    window_size:
+        - 50
+        - 100
+        - 200
+        - 500
+        - 1000
+seed: 1
+statistic: max silhouette over the complete scale x K residual search space, raw residual representation

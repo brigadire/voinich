@@ -1,0 +1,181 @@
+term: structural-distant family
+criteria:
+    min_normalized_graphemic_distance: 0.6
+    min_reliability: 0.7
+    min_structural_similarity: 0.65
+families:
+    - id: 1
+      tokens:
+        - aiin
+        - ain
+        - al
+        - ar
+        - chey
+        - dal
+        - dar
+        - okaiin
+        - okain
+        - ol
+        - "y"
+      edges:
+        - token_a: aiin
+          token_b: ar
+          structural_similarity: 0.6714859071189366
+          reliability: 0.9331850161618348
+          normalized_grapheme_distance: 0.75
+        - token_a: ain
+          token_b: al
+          structural_similarity: 0.6587802624263585
+          reliability: 0.9047664520816965
+          normalized_grapheme_distance: 0.6666666666666666
+        - token_a: ain
+          token_b: ar
+          structural_similarity: 0.6572491976211156
+          reliability: 0.9047664520816965
+          normalized_grapheme_distance: 0.6666666666666666
+        - token_a: ar
+          token_b: ol
+          structural_similarity: 0.6638920748133615
+          reliability: 0.9331850161618348
+          normalized_grapheme_distance: 1
+        - token_a: chey
+          token_b: ol
+          structural_similarity: 0.6528833498747931
+          reliability: 0.9331850161618348
+          normalized_grapheme_distance: 1
+        - token_a: dal
+          token_b: ol
+          structural_similarity: 0.6703936886167118
+          reliability: 0.9331850161618348
+          normalized_grapheme_distance: 0.6666666666666666
+        - token_a: dar
+          token_b: ol
+          structural_similarity: 0.674578885789166
+          reliability: 0.9331850161618348
+          normalized_grapheme_distance: 1
+        - token_a: okaiin
+          token_b: ol
+          structural_similarity: 0.6885394779857119
+          reliability: 0.9331850161618348
+          normalized_grapheme_distance: 0.8333333333333334
+        - token_a: okain
+          token_b: ol
+          structural_similarity: 0.6827717829349086
+          reliability: 0.9229909371288142
+          normalized_grapheme_distance: 0.8
+        - token_a: ol
+          token_b: "y"
+          structural_similarity: 0.6788038364455339
+          reliability: 0.9331850161618348
+          normalized_grapheme_distance: 1
+    - id: 2
+      tokens:
+        - chedy
+        - lchedy
+        - qokaiin
+        - qokain
+        - qokar
+        - qokedy
+        - qokeey
+        - qol
+        - qotain
+      edges:
+        - token_a: chedy
+          token_b: qokeey
+          structural_similarity: 0.6742683725902555
+          reliability: 0.9331850161618348
+          normalized_grapheme_distance: 0.6666666666666666
+        - token_a: lchedy
+          token_b: qokar
+          structural_similarity: 0.6585046544057792
+          reliability: 0.9064660692678381
+          normalized_grapheme_distance: 1
+        - token_a: lchedy
+          token_b: qokeey
+          structural_similarity: 0.7030398901740598
+          reliability: 0.9069493663954881
+          normalized_grapheme_distance: 0.6666666666666666
+        - token_a: lchedy
+          token_b: qol
+          structural_similarity: 0.6556496788421006
+          reliability: 0.897689354051992
+          normalized_grapheme_distance: 1
+        - token_a: qokaiin
+          token_b: qol
+          structural_similarity: 0.739840714535427
+          reliability: 0.9235648057431795
+          normalized_grapheme_distance: 0.7142857142857143
+        - token_a: qokain
+          token_b: qol
+          structural_similarity: 0.7613510699163615
+          reliability: 0.9235648057431795
+          normalized_grapheme_distance: 0.6666666666666666
+        - token_a: qokar
+          token_b: qol
+          structural_similarity: 0.7126060176385406
+          reliability: 0.9230696025692001
+          normalized_grapheme_distance: 0.6
+        - token_a: qokedy
+          token_b: qol
+          structural_similarity: 0.6803936255049069
+          reliability: 0.9235648057431795
+          normalized_grapheme_distance: 0.6666666666666666
+        - token_a: qol
+          token_b: qotain
+          structural_similarity: 0.6640280727742115
+          reliability: 0.8392756014178296
+          normalized_grapheme_distance: 0.6666666666666666
+    - id: 3
+      tokens:
+        - chol
+        - chor
+        - cthy
+        - daiin
+        - dol
+      edges:
+        - token_a: chol
+          token_b: cthy
+          structural_similarity: 0.6832446249566512
+          reliability: 0.8969891745201726
+          normalized_grapheme_distance: 0.75
+        - token_a: chol
+          token_b: daiin
+          structural_similarity: 0.720236721735486
+          reliability: 0.9331850161618348
+          normalized_grapheme_distance: 1
+        - token_a: chor
+          token_b: daiin
+          structural_similarity: 0.6626583020013217
+          reliability: 0.9331850161618348
+          normalized_grapheme_distance: 1
+        - token_a: daiin
+          token_b: dol
+          structural_similarity: 0.6671653268340186
+          reliability: 0.9017522705995744
+          normalized_grapheme_distance: 0.8
+    - id: 4
+      tokens:
+        - okar
+        - otain
+      edges:
+        - token_a: okar
+          token_b: otain
+          structural_similarity: 0.6620044257336869
+          reliability: 0.8808961285829753
+          normalized_grapheme_distance: 0.6
+    - id: 5
+      tokens:
+        - or
+        - r
+        - s
+      edges:
+        - token_a: or
+          token_b: s
+          structural_similarity: 0.7587908262449526
+          reliability: 0.9331850161618348
+          normalized_grapheme_distance: 1
+        - token_a: r
+          token_b: s
+          structural_similarity: 0.6988530464477312
+          reliability: 0.9331850161618348
+          normalized_grapheme_distance: 1

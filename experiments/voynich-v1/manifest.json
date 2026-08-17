@@ -1,0 +1,271 @@
+{
+  "experiment_id": "b958a06f6b6404974ea32e54c3ba2b295fc5f57ba87e90caab8fd5dd25313b75",
+  "created_at": "2026-08-16T19:06:26.211120065Z",
+  "git_commit": "61d6c206e6dcfab6b721fc1172125818867e9eed",
+  "git_dirty": false,
+  "ivtff_path": "data/ZL3b-n.txt",
+  "ivtff_sha256": "bf5b6d4ac1e3a51b1847a9c388318d609020441ccd56984c901c32b09beccafc",
+  "corpus_path": "data_work/ZL3b-x7.txt",
+  "corpus_sha256": "360d99583145ec549b80edfafdc3f93534f3a11b85a0d52997ba8425e92b87c2",
+  "go_version": "go1.26.4-X:nodwarf5",
+  "goos": "linux",
+  "goarch": "amd64",
+  "hostname": "adelie",
+  "num_cpu": 12,
+  "executor": "remote",
+  "executor_note": "conditional-regime-analyze used -executor remote with 10 authenticated remote worker(s) over Task34 mTLS",
+  "workers": [
+    {
+      "kind": "remote",
+      "name": "cognition"
+    },
+    {
+      "kind": "remote",
+      "name": "soa-tech-gitlab02"
+    },
+    {
+      "kind": "remote",
+      "name": "soa-tech-gitlab03"
+    },
+    {
+      "kind": "remote",
+      "name": "soa-tech-gitrunner-hw"
+    },
+    {
+      "kind": "remote",
+      "name": "soa-tech-gitrunner-hw2"
+    },
+    {
+      "kind": "remote",
+      "name": "soa-tech-sentry2"
+    },
+    {
+      "kind": "remote",
+      "name": "tech-services-gitlab"
+    },
+    {
+      "kind": "remote",
+      "name": "tech-services-logger"
+    },
+    {
+      "kind": "remote",
+      "name": "tech-services-monitoring"
+    },
+    {
+      "kind": "remote",
+      "name": "tech-services-nexus"
+    }
+  ],
+  "stages": [
+    {
+      "index": 1,
+      "name": "dict-gen",
+      "source_dir": ".",
+      "args": [
+        "data_work/ZL3b-x7.txt",
+        "workdir/dataset/dictionary.yaml"
+      ]
+    },
+    {
+      "index": 2,
+      "name": "dict-analyze",
+      "source_dir": "dict-analyze",
+      "args": [
+        "workdir/dataset/dictionary.yaml",
+        "workdir/dataset/tokens_analysis.yaml"
+      ]
+    },
+    {
+      "index": 3,
+      "name": "structural-analyze",
+      "source_dir": "structural-analyze",
+      "args": null
+    },
+    {
+      "index": 4,
+      "name": "sequence-analyze",
+      "source_dir": "sequence-analyze",
+      "args": null
+    },
+    {
+      "index": 5,
+      "name": "begin-end-analyze",
+      "source_dir": "begin-end-analyze",
+      "args": null
+    },
+    {
+      "index": 6,
+      "name": "structural-normalize",
+      "source_dir": "structural-normalize",
+      "args": null
+    },
+    {
+      "index": 7,
+      "name": "normalization-compare",
+      "source_dir": "normalization-compare",
+      "args": null
+    },
+    {
+      "index": 8,
+      "name": "structural-validate",
+      "source_dir": "structural-validate",
+      "args": null
+    },
+    {
+      "index": 9,
+      "name": "structural-profile-stability",
+      "source_dir": "structural-profile-stability",
+      "args": null
+    },
+    {
+      "index": 10,
+      "name": "structural-reliability",
+      "source_dir": "structural-reliability",
+      "args": null
+    },
+    {
+      "index": 11,
+      "name": "soft-structural-space",
+      "source_dir": "soft-structural-space",
+      "args": null
+    },
+    {
+      "index": 12,
+      "name": "structural-graphemic",
+      "source_dir": "structural-graphemic",
+      "args": null
+    },
+    {
+      "index": 13,
+      "name": "structural-pair-decompose",
+      "source_dir": "structural-pair-decompose",
+      "args": null
+    },
+    {
+      "index": 14,
+      "name": "distance-context-analyze",
+      "source_dir": "distance-context-analyze",
+      "args": null
+    },
+    {
+      "index": 15,
+      "name": "local-regime-analyze",
+      "source_dir": "local-regime-analyze",
+      "args": [
+        "-quiet"
+      ]
+    },
+    {
+      "index": 16,
+      "name": "property-trajectory-analyze",
+      "source_dir": "property-trajectory-analyze",
+      "args": [
+        "-quiet"
+      ]
+    },
+    {
+      "index": 17,
+      "name": "structural-projection-analyze",
+      "source_dir": "structural-projection-analyze",
+      "args": [
+        "-quiet"
+      ]
+    },
+    {
+      "index": 18,
+      "name": "global-regime-analyze",
+      "source_dir": "global-regime-analyze",
+      "args": [
+        "-quiet"
+      ]
+    },
+    {
+      "index": 19,
+      "name": "metadata-validate",
+      "source_dir": "metadata-validate",
+      "args": [
+        "-quiet"
+      ]
+    },
+    {
+      "index": 20,
+      "name": "cluster-metadata-global",
+      "source_dir": "cluster-metadata-global",
+      "args": [
+        "-quiet"
+      ]
+    },
+    {
+      "index": 21,
+      "name": "conditional-regime-analyze",
+      "source_dir": "conditional-regime-analyze",
+      "args": [
+        "-quiet",
+        "-executor",
+        "remote",
+        "-workers",
+        "64",
+        "-remote-listen",
+        "0.0.0.0:8443",
+        "-tls-cert",
+        "/tmp/scale-study/pki/coordinator.crt",
+        "-tls-key",
+        "/tmp/scale-study/pki/coordinator.key",
+        "-client-ca",
+        "/tmp/scale-study/pki/ca.crt",
+        "-remote-timeout",
+        "15m",
+        "-remote-retries",
+        "5"
+      ]
+    },
+    {
+      "index": 22,
+      "name": "residual-diagnostic-analyze",
+      "source_dir": "residual-diagnostic-analyze",
+      "args": [
+        "-quiet"
+      ]
+    },
+    {
+      "index": 23,
+      "name": "token-relation-validate",
+      "source_dir": "token-relation-validate",
+      "args": [
+        "-quiet"
+      ]
+    },
+    {
+      "index": 24,
+      "name": "replicated-local-structure-audit",
+      "source_dir": "replicated-local-structure-audit",
+      "args": [
+        "-quiet"
+      ]
+    },
+    {
+      "index": 25,
+      "name": "higher-order-sequence-validate",
+      "source_dir": "higher-order-sequence-validate",
+      "args": [
+        "-quiet"
+      ]
+    },
+    {
+      "index": 26,
+      "name": "positional-continuation-validate",
+      "source_dir": "positional-continuation-validate",
+      "args": [
+        "-quiet"
+      ]
+    },
+    {
+      "index": 27,
+      "name": "transition-network-validate",
+      "source_dir": "transition-network-validate",
+      "args": [
+        "-quiet"
+      ]
+    }
+  ]
+}
