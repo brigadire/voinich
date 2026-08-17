@@ -23,6 +23,7 @@ import (
 	"time"
 
 	"zcore.dev/voinich/internal/pki"
+	"zcore.dev/voinich/internal/structuralprojection"
 )
 
 // Task34 mTLS transport.
@@ -43,15 +44,15 @@ import (
 // bounded-concurrency/retry semantics as Task33, just realized as a lease
 // queue instead of direct per-endpoint dispatch.
 const (
-	remoteProtocolVersion          = 2 // bumped for Task34's pull transport; scientific compatibility below is unchanged
-	scientificCompatibilityVersion = "conditionalregime-task33-v1"
+	remoteProtocolVersion          = 3 // Task40 adds typed workload descriptors and blob trial results
+	scientificCompatibilityVersion = "distributed-task40-v1"
 	maxRemoteInputBytes            = 64 << 20
 	maxRemoteMessageBytes          = 1 << 20
 	// remoteLeaseBackoff bounds how long a worker idles between "no work
 	// available yet" polls, and the starting backoff after a transport
 	// error. It is purely a polling cadence, not a scientific parameter.
 	remoteLeaseBackoff = 200 * time.Millisecond
-	remoteMaxBackoff    = 5 * time.Second
+	remoteMaxBackoff   = 5 * time.Second
 )
 
 type remoteInfo struct {
@@ -77,11 +78,12 @@ func (a remoteInfo) compatibleWith(b remoteInfo) bool {
 // (the same fields protocolMessage already carries for the Task32
 // subprocess handshake).
 type remoteHandshakeResponse struct {
-	Info         remoteInfo      `json:"info"`
-	ExperimentID string          `json:"experiment_id"`
-	CorpusHash   string          `json:"corpus_hash"`
-	MetadataHash string          `json:"metadata_hash"`
-	Config       protocolMessage `json:"config"`
+	Info         remoteInfo        `json:"info"`
+	ExperimentID string            `json:"experiment_id"`
+	CorpusHash   string            `json:"corpus_hash"`
+	MetadataHash string            `json:"metadata_hash"`
+	Config       protocolMessage   `json:"config"`
+	Inputs       map[string]string `json:"inputs,omitempty"`
 }
 
 type remoteLeaseRequest struct {
@@ -94,7 +96,7 @@ type remoteLeaseRequest struct {
 }
 
 type remoteLeaseResponse struct {
-	NoWork  bool  `json:"no_work,omitempty"`
+	NoWork  bool   `json:"no_work,omitempty"`
 	LeaseID string `json:"lease_id,omitempty"`
 	JobID   JobID  `json:"job_id,omitempty"`
 }
@@ -104,11 +106,12 @@ type remoteLeaseResponse struct {
 // derived from this connection's verified client certificate (phase 5/8),
 // never a value the request body could claim.
 type remoteResultRequest struct {
-	ExperimentID string  `json:"experiment_id"`
-	LeaseID      string  `json:"lease_id"`
-	JobID        JobID   `json:"job_id"`
-	Value        float64 `json:"value"`
-	Error        string  `json:"error,omitempty"`
+	ExperimentID string          `json:"experiment_id"`
+	LeaseID      string          `json:"lease_id"`
+	JobID        JobID           `json:"job_id"`
+	Value        float64         `json:"value"`
+	Blob         json.RawMessage `json:"blob,omitempty"`
+	Error        string          `json:"error,omitempty"`
 }
 
 type remoteResultResponse struct {
@@ -172,6 +175,7 @@ type pendingJob struct {
 
 type jobOutcome struct {
 	value float64
+	blob  []byte
 	err   error
 }
 
@@ -193,6 +197,8 @@ type activeLease struct {
 type remotePool struct {
 	fingerprint, corpusHash, metaHash string
 	corpus, metadata                  []byte
+	inputs                            map[string][]byte
+	inputNames                        map[string]string
 	cfgMsg                            protocolMessage
 	host                              string
 
@@ -247,7 +253,9 @@ func newRemotePool(c Config, fingerprint, corpusHash, metaHash string) (*remoteP
 	p := &remotePool{
 		fingerprint: fingerprint, corpusHash: corpusHash, metaHash: metaHash,
 		corpus: corpus, metadata: metadata, host: host,
-		timeout: c.RemoteTimeout, retries: c.RemoteRetries,
+		inputs:     map[string][]byte{corpusHash: corpus, metaHash: metadata},
+		inputNames: map[string]string{"corpus": corpusHash, "metadata": metaHash},
+		timeout:    c.RemoteTimeout, retries: c.RemoteRetries,
 		pending: map[JobID]*pendingJob{}, leases: map[string]*activeLease{},
 		serveDone: make(chan error, 1), stopSweep: make(chan struct{}),
 		cfgMsg: protocolMessage{
@@ -256,6 +264,47 @@ func newRemotePool(c Config, fingerprint, corpusHash, metaHash string) (*remoteP
 			KMaxResidual: c.KMaxResidual, Permutations: c.Permutations, Seed: c.Seed,
 		},
 	}
+	p.listener = listener
+	p.srv = &http.Server{Handler: p.routes(), ReadHeaderTimeout: 5 * time.Second}
+	go func() { p.serveDone <- p.srv.Serve(listener) }()
+	go p.sweepLoop()
+	return p, nil
+}
+
+func newStructuralRemotePool(c structuralprojection.Config, fingerprint string) (*remotePool, error) {
+	if c.RemoteListen == "" {
+		return nil, fmt.Errorf("remote executor requires -remote-listen")
+	}
+	if c.TLSCert == "" || c.TLSKey == "" || c.ClientCA == "" {
+		return nil, fmt.Errorf("remote executor requires -tls-cert, -tls-key and -client-ca")
+	}
+	paths := map[string]string{"corpus": c.CorpusPath, "structural_pairs": c.StructuralPairsPath, "distance_pairs": c.DistancePairsPath, "families": c.FamiliesPath}
+	inputs := map[string][]byte{}
+	names := map[string]string{}
+	for name, path := range paths {
+		b, err := os.ReadFile(path)
+		if err != nil {
+			return nil, err
+		}
+		sum := fmt.Sprintf("%x", sha256.Sum256(b))
+		inputs[sum] = b
+		names[name] = sum
+	}
+	deny, err := pki.LoadDenyList(c.RemoteDenyList)
+	if err != nil {
+		return nil, err
+	}
+	tlsCfg, err := pki.CoordinatorServerTLSConfig(c.TLSCert, c.TLSKey, c.ClientCA, deny)
+	if err != nil {
+		return nil, err
+	}
+	listener, err := tls.Listen("tcp", c.RemoteListen, tlsCfg)
+	if err != nil {
+		return nil, fmt.Errorf("listen %s: %w", c.RemoteListen, err)
+	}
+	host, _ := os.Hostname()
+	p := &remotePool{fingerprint: fingerprint, corpusHash: names["corpus"], inputs: inputs, inputNames: names, host: host, timeout: c.RemoteTimeout, retries: c.RemoteRetries,
+		pending: map[JobID]*pendingJob{}, leases: map[string]*activeLease{}, serveDone: make(chan error, 1), stopSweep: make(chan struct{}), cfgMsg: structuralInit(c, fingerprint)}
 	p.listener = listener
 	p.srv = &http.Server{Handler: p.routes(), ReadHeaderTimeout: 5 * time.Second}
 	go func() { p.serveDone <- p.srv.Serve(listener) }()
@@ -338,11 +387,21 @@ func newLeaseID() string {
 // already removed from p.pending are harmlessly ignored by the /v1/result
 // handler, matching Task33's "duplicate delivery cannot contribute twice".
 func (p *remotePool) Run(ctx context.Context, id JobID) (float64, error) {
+	outcome, err := p.runOutcome(ctx, id)
+	return outcome.value, err
+}
+
+func (p *remotePool) RunBlob(ctx context.Context, id JobID) ([]byte, error) {
+	outcome, err := p.runOutcome(ctx, id)
+	return outcome.blob, err
+}
+
+func (p *remotePool) runOutcome(ctx context.Context, id JobID) (jobOutcome, error) {
 	job := &pendingJob{id: id, result: make(chan jobOutcome, 1)}
 	p.mu.Lock()
 	if _, exists := p.pending[id]; exists {
 		p.mu.Unlock()
-		return 0, fmt.Errorf("job %+v is already in flight", id)
+		return jobOutcome{}, fmt.Errorf("job %+v is already in flight", id)
 	}
 	p.pending[id] = job
 	p.queue = append(p.queue, id)
@@ -350,13 +409,13 @@ func (p *remotePool) Run(ctx context.Context, id JobID) (float64, error) {
 
 	select {
 	case outcome := <-job.result:
-		return outcome.value, outcome.err
+		return outcome, outcome.err
 	case <-ctx.Done():
 		p.mu.Lock()
 		delete(p.pending, id)
 		p.removeFromQueueLocked(id)
 		p.mu.Unlock()
-		return 0, ctx.Err()
+		return jobOutcome{}, ctx.Err()
 	}
 }
 
@@ -407,19 +466,14 @@ func (p *remotePool) handshake(rw http.ResponseWriter, _ *http.Request, _ string
 	p.handshakes.Add(1)
 	writeRemoteJSON(rw, http.StatusOK, remoteHandshakeResponse{
 		Info: localRemoteInfo(p.host), ExperimentID: p.fingerprint,
-		CorpusHash: p.corpusHash, MetadataHash: p.metaHash, Config: p.cfgMsg,
+		CorpusHash: p.corpusHash, MetadataHash: p.metaHash, Config: p.cfgMsg, Inputs: p.inputNames,
 	})
 }
 
 func (p *remotePool) input(rw http.ResponseWriter, r *http.Request, _ string) {
 	hash := r.PathValue("hash")
-	var data []byte
-	switch hash {
-	case p.corpusHash:
-		data = p.corpus
-	case p.metaHash:
-		data = p.metadata
-	default:
+	data, ok := p.inputs[hash]
+	if !ok {
 		http.Error(rw, "unknown input hash", http.StatusNotFound)
 		return
 	}
@@ -506,7 +560,7 @@ func (p *remotePool) result(rw http.ResponseWriter, r *http.Request, workerID st
 		return
 	}
 	p.resultsAccepted.Add(1)
-	outcome := jobOutcome{value: req.Value}
+	outcome := jobOutcome{value: req.Value, blob: append([]byte(nil), req.Blob...)}
 	if req.Error != "" {
 		outcome.err = fmt.Errorf("worker %s: %s", workerID, req.Error)
 	}
@@ -575,15 +629,37 @@ func RunRemoteWorker(ctx context.Context, coordinatorURL, caFile, certFile, keyF
 	if err := stageInputs(ctx, client, base, cacheDir, hs); err != nil {
 		return fmt.Errorf("stage inputs from coordinator %s: %w", base, err)
 	}
-	init := hs.Config
-	init.CorpusPath = filepath.Join(cacheDir, hs.CorpusHash)
-	init.TokenMetadataMap = filepath.Join(cacheDir, hs.MetadataHash)
-	if computed := computeFingerprint(init.scientificConfig(), hs.CorpusHash, hs.MetadataHash); computed != hs.ExperimentID {
-		return fmt.Errorf("input/config fingerprint does not match coordinator's declared experiment identity")
+	if len(hs.Inputs) == 0 {
+		hs.Inputs = map[string]string{"corpus": hs.CorpusHash, "metadata": hs.MetadataHash}
 	}
-	state, err := newWorkerState(init)
-	if err != nil {
-		return fmt.Errorf("build worker state: %w", err)
+	init := hs.Config
+	init.CorpusPath = filepath.Join(cacheDir, hs.Inputs["corpus"])
+	var computer protocolComputer
+	if init.Workload == "structural_projection" {
+		init.StructuralPairsPath = filepath.Join(cacheDir, hs.Inputs["structural_pairs"])
+		init.DistancePairsPath = filepath.Join(cacheDir, hs.Inputs["distance_pairs"])
+		init.FamiliesPath = filepath.Join(cacheDir, hs.Inputs["families"])
+		cfg := structuralConfigFromMessage(init)
+		computed, e := structuralprojection.Fingerprint(cfg)
+		if e != nil || computed != hs.ExperimentID {
+			return fmt.Errorf("input/config fingerprint does not match coordinator's declared experiment identity")
+		}
+		state, e := structuralprojection.NewTrialWorker(cfg)
+		if e != nil {
+			return fmt.Errorf("build structural worker state: %w", e)
+		}
+		computer = structuralComputer{state: state}
+		concurrency = 1
+	} else {
+		init.TokenMetadataMap = filepath.Join(cacheDir, hs.Inputs["metadata"])
+		if computed := computeFingerprint(init.scientificConfig(), hs.CorpusHash, hs.MetadataHash); computed != hs.ExperimentID {
+			return fmt.Errorf("input/config fingerprint does not match coordinator's declared experiment identity")
+		}
+		state, e := newWorkerState(init)
+		if e != nil {
+			return fmt.Errorf("build worker state: %w", e)
+		}
+		computer = conditionalComputer{state: state}
 	}
 
 	var wg sync.WaitGroup
@@ -592,7 +668,7 @@ func RunRemoteWorker(ctx context.Context, coordinatorURL, caFile, certFile, keyF
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			if err := workerLeaseLoop(ctx, client, base, hs.ExperimentID, state); err != nil && ctx.Err() == nil {
+			if err := workerLeaseLoop(ctx, client, base, hs.ExperimentID, computer); err != nil && ctx.Err() == nil {
 				errCh <- err
 			}
 		}()
@@ -602,7 +678,7 @@ func RunRemoteWorker(ctx context.Context, coordinatorURL, caFile, certFile, keyF
 	return <-errCh
 }
 
-func workerLeaseLoop(ctx context.Context, client *http.Client, base, experimentID string, state *workerState) error {
+func workerLeaseLoop(ctx context.Context, client *http.Client, base, experimentID string, computer protocolComputer) error {
 	backoff := remoteLeaseBackoff
 	sleep := func() bool {
 		select {
@@ -636,8 +712,8 @@ func workerLeaseLoop(ctx context.Context, client *http.Client, base, experimentI
 			}
 			continue
 		}
-		value, computeErr := state.compute(lease.JobID)
-		resultReq := remoteResultRequest{ExperimentID: experimentID, LeaseID: lease.LeaseID, JobID: lease.JobID, Value: value}
+		value, blob, computeErr := computer.compute(lease.JobID)
+		resultReq := remoteResultRequest{ExperimentID: experimentID, LeaseID: lease.LeaseID, JobID: lease.JobID, Value: value, Blob: blob}
 		if computeErr != nil {
 			resultReq.Error = computeErr.Error()
 		}
@@ -690,14 +766,26 @@ func fetchHandshake(ctx context.Context, client *http.Client, base string) (remo
 	if !hs.Info.compatibleWith(localRemoteInfo("")) {
 		return remoteHandshakeResponse{}, fmt.Errorf("coordinator (%s) incompatible: protocol/code/runtime %+v", hs.Info.Host, hs.Info)
 	}
-	if !validSHA256(hs.CorpusHash) || !validSHA256(hs.MetadataHash) {
+	if !validSHA256(hs.CorpusHash) || (hs.MetadataHash != "" && !validSHA256(hs.MetadataHash)) {
 		return remoteHandshakeResponse{}, fmt.Errorf("invalid input hash from coordinator")
+	}
+	for _, hash := range hs.Inputs {
+		if !validSHA256(hash) {
+			return remoteHandshakeResponse{}, fmt.Errorf("invalid input hash from coordinator")
+		}
 	}
 	return hs, nil
 }
 
 func stageInputs(ctx context.Context, client *http.Client, base, cacheDir string, hs remoteHandshakeResponse) error {
-	for _, hash := range []string{hs.CorpusHash, hs.MetadataHash} {
+	hashes := make([]string, 0, len(hs.Inputs))
+	for _, hash := range hs.Inputs {
+		hashes = append(hashes, hash)
+	}
+	if len(hashes) == 0 {
+		hashes = []string{hs.CorpusHash, hs.MetadataHash}
+	}
+	for _, hash := range hashes {
 		path := filepath.Join(cacheDir, hash)
 		if _, err := os.Stat(path); err == nil {
 			continue

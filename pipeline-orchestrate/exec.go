@@ -39,7 +39,24 @@ func runLogged(dir, name string, args []string, logPath string) runResult {
 	cmd.Stderr = logFile
 	cmd.Stdin = nil
 
-	err = cmd.Run()
+	err = cmd.Start()
+	if err == nil {
+		done := make(chan struct{})
+		go func() {
+			ticker := time.NewTicker(time.Minute)
+			defer ticker.Stop()
+			for {
+				select {
+				case <-ticker.C:
+					fmt.Printf("stage %s still running | elapsed %s | log: %s\n", filepath.Base(name), time.Since(start).Round(time.Second), logPath)
+				case <-done:
+					return
+				}
+			}
+		}()
+		err = cmd.Wait()
+		close(done)
+	}
 	res := runResult{Duration: time.Since(start)}
 	if cmd.ProcessState != nil {
 		res.ExitCode = cmd.ProcessState.ExitCode()

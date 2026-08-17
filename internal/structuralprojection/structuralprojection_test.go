@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func close(a, b float64) bool { return math.Abs(a-b) < 1e-12 }
+func closeEnough(a, b float64) bool { return math.Abs(a-b) < 1e-12 }
 func testEdges() []Edge {
 	return []Edge{{A: "a", B: "b", Position: .9, Left: .8, Right: .1, Similarity: .8, PositionReliability: 1, LeftReliability: 1, RightReliability: 1, Reliability: 1}, {A: "a", B: "c", Position: .4, Left: .4, Right: .9, Similarity: .7, PositionReliability: 1, LeftReliability: 1, RightReliability: 1, Reliability: 1}}
 }
@@ -21,14 +21,14 @@ func TestSoftProjectionNormalizationAndSelfWeight(t *testing.T) {
 		for _, v := range row {
 			s += v
 		}
-		if !close(s, 1) {
+		if !closeEnough(s, 1) {
 			t.Fatalf("row %s sums to %g", token, s)
 		}
 		if row[token] <= 0 {
 			t.Fatalf("missing self weight for %s", token)
 		}
 	}
-	if !close(p["b"]["b"], 1/1.8) {
+	if !closeEnough(p["b"]["b"], 1/1.8) {
 		t.Fatalf("self weight was not one before normalization: %#v", p["b"])
 	}
 }
@@ -61,7 +61,7 @@ func TestProjectedExactDistanceDistribution(t *testing.T) {
 func TestProjectionGain(t *testing.T) {
 	p := Projection{"x": {"z": 1}, "y": {"z": 1}}
 	g := gain(map[string]int{"x": 2}, map[string]int{"y": 2}, p)
-	if !close(g, 1) {
+	if !closeEnough(g, 1) {
 		t.Fatalf("gain=%g want 1", g)
 	}
 }
@@ -82,7 +82,7 @@ func TestRandomSpaceControlDeterministicAndPreservesRowMass(t *testing.T) {
 		for _, v := range row {
 			s += v
 		}
-		if !close(s, 1) {
+		if !closeEnough(s, 1) {
 			t.Fatalf("row %s mass=%g", k, s)
 		}
 	}
@@ -105,7 +105,7 @@ func TestProjectedSuffixSimilarity(t *testing.T) {
 	p := profiles{"A": {Suffix: []map[string]int{{"x\x1fy": 2}, {"x\x1fy\x1fz": 2}}}, "B": {Suffix: []map[string]int{{"u\x1fv": 2}, {"u\x1fv\x1fw": 2}}}}
 	proj := Projection{"x": {"q": 1}, "u": {"q": 1}, "y": {"r": 1}, "v": {"r": 1}, "z": {"s": 1}, "w": {"s": 1}}
 	r := sequenceResults(pair{"A", "B"}, p, proj, proj, 1)
-	if len(r) != 2 || !close(r[0].ProjectedSimilarityFull, 1) || !close(r[1].ProjectedSimilarityFull, 1) || r[0].ExactSimilarity != 0 {
+	if len(r) != 2 || !closeEnough(r[0].ProjectedSimilarityFull, 1) || !closeEnough(r[1].ProjectedSimilarityFull, 1) || r[0].ExactSimilarity != 0 {
 		t.Fatalf("unexpected sequence result: %#v", r)
 	}
 }
@@ -122,6 +122,14 @@ func TestShuffledCorpusControlPreservesFrequenciesAndSeed(t *testing.T) {
 	}
 	if !reflect.DeepEqual(got, c.Counts) {
 		t.Fatalf("frequencies changed: %#v", got)
+	}
+}
+
+func TestApplicableMandatorySkipsVoynichOnlyTokens(t *testing.T) {
+	got := applicableMandatory(map[string]int{"or": 2, "s": 3, "r": 0})
+	want := []pair{{"or", "s"}}
+	if !reflect.DeepEqual(got, want) {
+		t.Fatalf("pairs = %v, want %v", got, want)
 	}
 }
 

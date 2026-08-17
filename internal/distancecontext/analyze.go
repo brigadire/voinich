@@ -91,7 +91,14 @@ func analyze(c Config) (analysis, error) {
 		}
 	} else {
 		for _, x := range requiredPairs {
-			add(x)
+			// These are supplemental Voynich reference pairs, not discoveries
+			// produced by an upstream stage. A generic corpus legitimately does
+			// not contain them, so include only references applicable to this
+			// corpus. Explicit -pair selections and ranked/family inputs remain
+			// strict and are validated below.
+			if corp.Counts[x.A] > 0 && corp.Counts[x.B] > 0 {
+				add(x)
+			}
 		}
 		for _, x := range ranked {
 			add(x)

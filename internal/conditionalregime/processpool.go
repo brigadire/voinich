@@ -22,6 +22,7 @@ import (
 // given and refuses to run on a mismatch.
 type jobExecutor interface {
 	Run(context.Context, JobID) (float64, error)
+	RunBlob(context.Context, JobID) ([]byte, error)
 	Close() error
 }
 
@@ -136,23 +137,31 @@ func startProcessWorker(index int, newCmd func() *exec.Cmd, init protocolMessage
 // violation (wrong kind, wrong JobID, worker exit mid-job) is reported with
 // both the worker index and the JobID, per Task32's diagnostics requirement.
 func (w *processWorker) run(id JobID) (float64, error) {
+	msg, err := w.runMessage(id)
+	if err != nil {
+		return 0, err
+	}
+	return msg.Value, nil
+}
+
+func (w *processWorker) runMessage(id JobID) (protocolMessage, error) {
 	if err := writeMessage(w.writer, protocolMessage{Kind: "job", JobID: &id}); err != nil {
-		return 0, fmt.Errorf("worker %d: job %+v: sending job: %w", w.index, id, err)
+		return protocolMessage{}, fmt.Errorf("worker %d: job %+v: sending job: %w", w.index, id, err)
 	}
 	msg, ok, err := readMessage(w.scanner)
 	if err != nil {
-		return 0, fmt.Errorf("worker %d: job %+v: reading result: %w", w.index, id, err)
+		return protocolMessage{}, fmt.Errorf("worker %d: job %+v: reading result: %w", w.index, id, err)
 	}
 	if !ok {
-		return 0, fmt.Errorf("worker %d: job %+v: worker exited without returning a result", w.index, id)
+		return protocolMessage{}, fmt.Errorf("worker %d: job %+v: worker exited without returning a result", w.index, id)
 	}
 	if msg.Kind != "result" || msg.JobID == nil || *msg.JobID != id {
-		return 0, fmt.Errorf("worker %d: job %+v: unexpected reply %+v", w.index, id, msg)
+		return protocolMessage{}, fmt.Errorf("worker %d: job %+v: unexpected reply %+v", w.index, id, msg)
 	}
 	if msg.Error != "" {
-		return 0, fmt.Errorf("worker %d: job %+v: %s", w.index, id, msg.Error)
+		return protocolMessage{}, fmt.Errorf("worker %d: job %+v: %s", w.index, id, msg.Error)
 	}
-	return msg.Value, nil
+	return msg, nil
 }
 
 // shutdown asks the worker to exit cleanly and always waits for it, falling
@@ -240,6 +249,23 @@ func (p *processPool) Run(ctx context.Context, id JobID) (float64, error) {
 		return value, nil
 	case <-ctx.Done():
 		return 0, ctx.Err()
+	}
+}
+
+func (p *processPool) RunBlob(ctx context.Context, id JobID) ([]byte, error) {
+	select {
+	case w, ok := <-p.free:
+		if !ok {
+			return nil, fmt.Errorf("job %+v: process pool is closed", id)
+		}
+		msg, err := w.runMessage(id)
+		if err != nil {
+			return nil, err
+		}
+		p.free <- w
+		return append([]byte(nil), msg.Blob...), nil
+	case <-ctx.Done():
+		return nil, ctx.Err()
 	}
 }
 

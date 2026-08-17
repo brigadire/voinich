@@ -1,7 +1,9 @@
 # Remote Distributed Execution Operations
 
 Task33 added a trusted-machine HTTP coordinator/worker mode to
-`conditional-regime-analyze`. Task34 adds mutual-TLS authentication backed by
+`conditional-regime-analyze`. Task40 extends the same protocol, coordinator,
+worker binary, PKI, leases and deployment to `structural-projection-analyze`;
+no second distributed service is involved. Task34 adds mutual-TLS authentication backed by
 a small project-controlled CA and, to make that authentication meaningful,
 inverts which side of the connection listens: **the coordinator is now the
 mTLS/HTTPS server** (a fixed, addressable identity with DNS/IP SANs), and
@@ -94,6 +96,20 @@ completed `JobID`, retries missing jobs, and deletes the checkpoint only
 after final outputs are written - unaffected by which workers were
 connected, or under which certificates, in the run that was interrupted.
 
+For stage 17 the coordinator command is:
+
+```bash
+./structural-projection-analyze \
+  -executor remote -workers 10 \
+  -remote-listen 0.0.0.0:8443 \
+  -tls-cert pki/coordinator.crt -tls-key pki/coordinator.key -client-ca pki/ca.crt \
+  -remote-timeout 20m -remote-retries 3 \
+  -checkpoint workdir/structural-projection-checkpoint.json
+```
+
+The production scientific defaults, including `-random-projections 200`, are
+unchanged. Keep the operational checkpoint outside frozen outputs.
+
 ## 5. Start workers
 
 ```bash
@@ -114,6 +130,12 @@ by the operator (SIGINT), not by any one coordinator run. Start any number
 of workers, in any order relative to the coordinator, each with its own
 certificate.
 
+The same worker command serves both supported stages. Structural projection
+intentionally executes one trial at a time in each worker process even when
+`-remote-concurrency` is larger, because its scientific core reuses
+package-level scratch buffers. Scale it with worker processes/hosts rather
+than concurrent trials inside one address space.
+
 SIGINT initiates graceful shutdown on both sides: the coordinator's HTTP
 server drains in-flight requests for up to ten seconds, and a worker's lease
 loops exit once their current job (if any) is posted back.
@@ -131,7 +153,7 @@ be verified against the frozen SHA256 oracle before production use.
 
 ## Input staging
 
-At coordinator startup both input files are SHA256-hashed by the existing
+At coordinator startup all stage inputs are SHA256-hashed by the existing
 loader, exactly as in Task33. A worker fetches each input once, by hash,
 from `GET /v1/input/<sha256>` on the coordinator (the direction is reversed
 from Task33's coordinator-pushes-to-worker `PUT`, since the worker is now
@@ -141,6 +163,10 @@ experiment fingerprint; a worker recomputes that fingerprint from its own
 staged corpus/metadata bytes and parameters before ever computing a job, so
 a stale cache object or mismatched configuration cannot execute as the
 requested experiment.
+
+Conditional regime stages the corpus and `token_metadata_map.tsv`;
+structural projection stages the corpus, structural-pair table, distance-pair
+YAML and family YAML. Invariant inputs are fetched once, never per trial.
 
 ## Lease/retry model
 
@@ -319,10 +345,9 @@ secret-management service.
 
 This is the end-to-end runbook that ties the pieces above together:
 `pipeline-orchestrate` (`pipeline-orchestrate/README.md`) runs all 27
-current pipeline stages in order; `conditional-regime-analyze` (stage 21,
-the only stage with a distributed executor) is the one piece that actually
-spreads work across the nodes this section deploys via the
-`voynich_worker` Ansible role. Every other stage always runs locally on
+current pipeline stages in order. `structural-projection-analyze` (stage 17)
+and `conditional-regime-analyze` (stage 21) spread work across the nodes
+deployed via the `voynich_worker` Ansible role. Every other stage runs locally on
 the machine that runs `pipeline-orchestrate`, regardless of how many nodes
 are deployed here.
 
@@ -443,9 +468,9 @@ bin/pipeline-orchestrate manifest -experiment-dir experiments/my-run \
 
 `-workers` bounds the coordinator's total in-flight job slots (independent
 of how many nodes connect); size it to comfortably exceed
-`node_count Ă— voynich_worker_concurrency`. Inspect
+`node_count × voynich_worker_concurrency`. Inspect both distributed stages in
 `experiments/my-run/manifest.json` before proceeding - specifically that
-`conditional-regime-analyze`'s recorded `args` actually contain your
+their recorded `args` actually contain your
 `-remote-listen`/`-tls-*`/`-client-ca` values, not empty strings.
 
 ### 5. Run
@@ -454,10 +479,9 @@ of how many nodes connect); size it to comfortably exceed
 bin/pipeline-orchestrate run -experiment-dir experiments/my-run
 ```
 
-Stages run one at a time, in order; only stage 21
-(`conditional-regime-analyze`) starts the mTLS coordinator and waits on
-the deployed nodes. Everything before and after it runs locally - the
-nodes sit idle (near-zero CPU) the entire rest of the pipeline. If the
+Stages run one at a time, in order; stages 17 and 21 each start the shared
+mTLS coordinator in turn and wait on the deployed nodes. Other stages run
+locally, and the nodes remain idle during them. If the
 orchestrator process dies, re-running the identical command resumes at
 the first incomplete stage (`run-state.json`); a node that drops mid-lease
 is simply reassigned, per Task34's normal retry behavior.

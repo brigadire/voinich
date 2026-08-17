@@ -29,7 +29,7 @@ func defaults(c Config) Config {
 	}
 	return c
 }
-func selectPairs(previous []pair, single string) ([]pair, error) {
+func selectPairs(previous []pair, single string, counts map[string]int) ([]pair, error) {
 	if single != "" {
 		x := strings.Split(single, ",")
 		if len(x) != 2 || strings.TrimSpace(x[0]) == "" || strings.TrimSpace(x[1]) == "" {
@@ -38,7 +38,14 @@ func selectPairs(previous []pair, single string) ([]pair, error) {
 		return []pair{{strings.TrimSpace(x[0]), strings.TrimSpace(x[1])}}, nil
 	}
 	out := append([]pair(nil), previous...)
-	out = append(out, requiredPairs...)
+	for _, p := range requiredPairs {
+		// The fixed list is supplemental evidence for the Voynich corpus.
+		// Generic corpora should retain their upstream-discovered pairs
+		// without failing on inapplicable Voynich-only token names.
+		if counts[p.A] > 0 && counts[p.B] > 0 {
+			out = append(out, p)
+		}
+	}
 	seen := map[pair]bool{}
 	var uniq []pair
 	for _, p := range out {
@@ -177,7 +184,7 @@ func analyze(cfg Config, pgr *progressReporter) (analysis, error) {
 	if e != nil {
 		return analysis{}, e
 	}
-	selected, e := selectPairs(prev, c.Pair)
+	selected, e := selectPairs(prev, c.Pair, corp.Counts)
 	if e != nil {
 		return analysis{}, e
 	}

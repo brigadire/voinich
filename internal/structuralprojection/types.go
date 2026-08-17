@@ -1,6 +1,18 @@
 package structuralprojection
 
-import "io"
+import (
+	"context"
+	"io"
+	"time"
+)
+
+// TrialExecutor changes only where independent random-projection controls
+// execute. Results are always reduced by the coordinator in trial-index order.
+type TrialExecutor interface {
+	Run(context.Context, int) (TrialResult, error)
+	Close() error
+}
+type TrialExecutorStats interface{ TrialStats() (active, retries int) }
 
 type Config struct {
 	CorpusPath, StructuralPairsPath, DistancePairsPath, FamiliesPath, OutputDir  string
@@ -10,6 +22,24 @@ type Config struct {
 	Seed                                                                         int64
 	Quiet                                                                        bool
 	ProgressWriter                                                               io.Writer
+	Executor                                                                     string
+	Workers                                                                      int
+	TrialExecutor                                                                TrialExecutor
+	CheckpointPath                                                               string
+	RemoteListen, TLSCert, TLSKey, ClientCA, RemoteDenyList                      string
+	RemoteTimeout                                                                time.Duration
+	RemoteRetries                                                                int
+	Context                                                                      context.Context
+}
+
+// TrialResult is the complete immutable contribution of one projection trial.
+// Slice positions correspond to the coordinator's frozen selected-pair order.
+type TrialResult struct {
+	Random           []float64   `json:"random"`
+	Smoothing        []float64   `json:"smoothing"`
+	RandomAblated    []float64   `json:"random_ablated"`
+	SmoothingAblated []float64   `json:"smoothing_ablated"`
+	RandomByDistance [][]float64 `json:"random_by_distance"`
 }
 
 type Edge struct {

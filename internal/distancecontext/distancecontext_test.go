@@ -2,6 +2,8 @@ package distancecontext
 
 import (
 	"math"
+	"os"
+	"path/filepath"
 	"testing"
 
 	"gopkg.in/yaml.v3"
@@ -37,5 +39,38 @@ func TestOutputYAMLHasDistinctSummaryAndCountFields(t *testing.T) {
 	v := Output{Pairs: []PairResult{{TokenA: "a", TokenB: "b", CountA: 2, CountB: 3, RightSummary: Summary{Mean1To5: .1, Mean6To10: .2, Mean11To20: .3}}}}
 	if _, err := yaml.Marshal(v); err != nil {
 		t.Fatal(err)
+	}
+}
+
+func TestGenericCorpusSkipsInapplicableVoynichReferencePairs(t *testing.T) {
+	dir := t.TempDir()
+	corpusPath := filepath.Join(dir, "corpus.txt")
+	distantPath := filepath.Join(dir, "pairs.tsv")
+	familiesPath := filepath.Join(dir, "families.yaml")
+	controlsPath := filepath.Join(dir, "controls.tsv")
+
+	if err := os.WriteFile(corpusPath, []byte("alpha beta alpha beta\n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(distantPath, []byte("token_a\ttoken_b\nalpha\tbeta\n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(familiesPath, []byte("families: []\n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(controlsPath, []byte("target_a\ttarget_b\tcontrol_rank\tcontrol_a\tcontrol_b\n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	got, err := analyze(Config{
+		CorpusPath: corpusPath, DistantPath: distantPath,
+		FamiliesPath: familiesPath, ControlsPath: controlsPath,
+		MaxDistance: 2, MinObservations: 1, TopN: 1,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(got.Out.Pairs) != 1 || got.Out.Pairs[0].TokenA != "alpha" || got.Out.Pairs[0].TokenB != "beta" {
+		t.Fatalf("pairs = %+v, want only generic ranked pair alpha/beta", got.Out.Pairs)
 	}
 }

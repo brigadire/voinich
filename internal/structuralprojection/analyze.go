@@ -9,6 +9,16 @@ import (
 
 var mandatory = []pair{{"chedy", "qokeey"}, {"chol", "daiin"}, {"ol", "y"}, {"chey", "ol"}, {"dar", "ol"}, {"ar", "ol"}, {"dal", "ol"}, {"qokain", "qol"}, {"aiin", "ar"}, {"or", "s"}, {"r", "s"}, {"or", "r"}}
 
+func applicableMandatory(counts map[string]int) []pair {
+	out := make([]pair, 0, len(mandatory))
+	for _, p := range mandatory {
+		if counts[p.A] > 0 && counts[p.B] > 0 {
+			out = append(out, p)
+		}
+	}
+	return out
+}
+
 type analysis struct {
 	Out       Output
 	Families  []FamilyResult
@@ -69,57 +79,30 @@ func analyze(c Config, progress *progressReporter) (analysis, error) {
 	prof := buildProfiles(corp, c.MaxDistance, false)
 	progress.update(1, 1, "Building structural and distance profiles")
 	selectedPrev := map[pair]previousPair{}
-	selected := []pair{}
-	seen := map[pair]bool{}
 	canon := func(a, b string) pair {
 		if b < a {
 			a, b = b, a
 		}
 		return pair{a, b}
 	}
-	add := func(x pair) {
-		x = canon(strings.TrimSpace(x.A), strings.TrimSpace(x.B))
-		if !seen[x] {
-			seen[x] = true
-			selected = append(selected, x)
-		}
-	}
 	for _, x := range prev {
 		p := canon(x.TokenA, x.TokenB)
 		selectedPrev[p] = x
 	}
+	selected, e := selectedPairs(c, corp, prev, fams)
+	if e != nil {
+		return analysis{}, e
+	}
 	if c.Pair != "" {
-		x := strings.Split(c.Pair, ",")
-		add(pair{x[0], x[1]})
 		fams = nil
 	} else if c.FamilyID > 0 {
 		var chosen []family
 		for _, f := range fams {
 			if f.ID == c.FamilyID {
 				chosen = append(chosen, f)
-				for i := range f.Tokens {
-					for j := 0; j < i; j++ {
-						add(pair{f.Tokens[i], f.Tokens[j]})
-					}
-				}
 			}
 		}
-		if len(chosen) == 0 {
-			return analysis{}, fmt.Errorf("family %d not found", c.FamilyID)
-		}
 		fams = chosen
-	} else {
-		for _, x := range mandatory {
-			add(x)
-		}
-		for _, x := range prev {
-			add(pair{x.TokenA, x.TokenB})
-		}
-	}
-	for _, x := range selected {
-		if corp.Counts[x.A] == 0 || corp.Counts[x.B] == 0 {
-			return analysis{}, fmt.Errorf("selected token absent from corpus: %s/%s", x.A, x.B)
-		}
 	}
 	a := analysis{Out: Output{Parameters: map[string]any{"corpus": c.CorpusPath, "structural_pairs": c.StructuralPairsPath, "token_level_source": c.DistancePairsPath, "min_structural_similarity": c.MinStructuralSimilarity, "min_reliability": c.MinReliability, "projection_k": c.ProjectionK, "projection_mode": c.ProjectionMode, "random_projections": c.RandomProjections, "seed": c.Seed, "max_distance": c.MaxDistance}, Methodology: map[string]string{"full_weight": "raw_similarity * evidence_strength; edges below either configured threshold are zero", "ablated_future_weight": "reliability-weighted mean(position_similarity, left_similarity), multiplied by mean component reliability; right-context component excluded", "ablated_past_weight": "reliability-weighted mean(position_similarity, right_similarity), multiplied by mean component reliability; left-context component excluded", "normalization": "W(X,X)=1; every retained row is divided by its row sum; projected(Y)=sum_X P(X)*normalized_W(X,Y)", "family_projection": "control only: family ID categories plus singleton categories for every token outside a family", "random_space": "destination permutation within log2 frequency bins preserves row degree and weights approximately frequency-matched", "generic_smoothing": "uniform smoothing to the same number of random tokens in the source token's log2 frequency bin", "sequence_kernel": "arithmetic mean of position-wise projected-distribution JS similarities"}}}
 	progress.begin(3, "Analyzing target pairs")
@@ -140,55 +123,31 @@ func analyze(c Config, progress *progressReporter) (analysis, error) {
 		randomByDistance[i] = make([][]float64, min(5, c.MaxDistance))
 	}
 	progress.begin(4, "Random and smoothing controls")
-	// The corpus vocabulary and its counts are fixed for the whole trial
-	// loop, so the log2-frequency-bin grouping RandomizeProjection and
-	// GenericSmoothing both derive from them is invariant across all 200
-	// trials and both full/future projections; build it once instead of on
-	// every one of the ~800 calls below.
-	fb := buildFrequencyBins(tokens, corp.Counts)
-	for trial := 0; trial < c.RandomProjections; trial++ {
-		rp := RandomizeProjection(full, fb, c.Seed+int64(trial)*7919)
-		sp := GenericSmoothing(fb, full, c.Seed+int64(trial)*104729)
-		rap := RandomizeProjection(future, fb, c.Seed+int64(trial)*15485863)
-		sap := GenericSmoothing(fb, future, c.Seed+int64(trial)*32452843)
-		rcache, scache, racache, sacache := map[string][]map[string]float64{}, map[string][]map[string]float64{}, map[string][]map[string]float64{}, map[string][]map[string]float64{}
-		projected := func(t string, proj Projection, cache map[string][]map[string]float64) []map[string]float64 {
-			if x := cache[t]; x != nil {
-				return x
-			}
-			x := make([]map[string]float64, min(5, c.MaxDistance))
-			for d := range x {
-				x[d] = ProjectDistribution(prof[t].Right[d], proj)
-			}
-			cache[t] = x
-			return x
+	trialExecutor := c.TrialExecutor
+	if trialExecutor == nil {
+		trialExecutor = &TrialWorker{c: c, prof: prof, full: full, future: future,
+			fb: buildFrequencyBins(tokens, corp.Counts), selected: selected}
+	}
+	defer trialExecutor.Close()
+	trialResults, e := runTrials(c, trialExecutor, progress)
+	if e != nil {
+		return analysis{}, e
+	}
+	for trial, r := range trialResults {
+		if e := validateTrialResult(r, len(selected), min(5, c.MaxDistance)); e != nil {
+			return analysis{}, fmt.Errorf("projection trial %d: %w", trial, e)
 		}
-		for i, x := range selected {
-			gs, ss, gas, sas := []float64{}, []float64{}, []float64{}, []float64{}
-			ra, rb := projected(x.A, rp, rcache), projected(x.B, rp, rcache)
-			sa, sb := projected(x.A, sp, scache), projected(x.B, sp, scache)
-			raa, rab := projected(x.A, rap, racache), projected(x.B, rap, racache)
-			saa, sab := projected(x.A, sap, sacache), projected(x.B, sap, sacache)
-			for d := 0; d < min(5, c.MaxDistance); d++ {
-				tj, _, _ := metricsFloat(countsFloat(prof[x.A].Right[d]), countsFloat(prof[x.B].Right[d]))
-				rj, _, _ := metricsFloat(ra[d], rb[d])
-				sj, _, _ := metricsFloat(sa[d], sb[d])
-				raj, _, _ := metricsFloat(raa[d], rab[d])
-				saj, _, _ := metricsFloat(saa[d], sab[d])
-				g, sg := rj-tj, sj-tj
-				ga, sga := raj-tj, saj-tj
-				gs = append(gs, g)
-				ss = append(ss, sg)
-				gas = append(gas, ga)
-				sas = append(sas, sga)
-				randomByDistance[i][d] = append(randomByDistance[i][d], g)
+	}
+	for _, tr := range trialResults { // canonical trial 0..N-1 reduction
+		for i := range selected {
+			randomByPair[i] = append(randomByPair[i], tr.Random[i])
+			smoothByPair[i] = append(smoothByPair[i], tr.Smoothing[i])
+			randomAblatedByPair[i] = append(randomAblatedByPair[i], tr.RandomAblated[i])
+			smoothAblatedByPair[i] = append(smoothAblatedByPair[i], tr.SmoothingAblated[i])
+			for d, v := range tr.RandomByDistance[i] {
+				randomByDistance[i][d] = append(randomByDistance[i][d], v)
 			}
-			randomByPair[i] = append(randomByPair[i], mean(gs))
-			smoothByPair[i] = append(smoothByPair[i], mean(ss))
-			randomAblatedByPair[i] = append(randomAblatedByPair[i], mean(gas))
-			smoothAblatedByPair[i] = append(smoothAblatedByPair[i], mean(sas))
 		}
-		progress.update(trial+1, c.RandomProjections, "Random and smoothing controls")
 	}
 	for i := range a.Out.Pairs {
 		sort.Float64s(randomByPair[i])

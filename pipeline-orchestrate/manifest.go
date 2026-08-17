@@ -35,8 +35,8 @@ type InputFileManifest struct {
 }
 
 // WorkerManifest documents one execution resource actually used by the
-// conditional-regime-analyze stage (the only stage with a distributed
-// executor choice, Task31-34). Task36 requires "a list of workers" in the
+// distributed-capable stages (conditional regime and structural projection).
+// Task36 requires "a list of workers" in the
 // manifest; this is that list, honestly describing whatever was actually
 // used for that run - local process-pool slots, or specific named remote
 // hosts - never a fabricated fleet.
@@ -67,7 +67,7 @@ type Manifest struct {
 	GOARCH       string             `json:"goarch"`
 	Hostname     string             `json:"hostname"`
 	NumCPU       int                `json:"num_cpu"`
-	Executor     string             `json:"executor"`      // conditional-regime-analyze's -executor
+	Executor     string             `json:"executor"`      // executor for every distributed-capable stage
 	ExecutorNote string             `json:"executor_note"` // honest description of what "distributed" meant for this run
 	Workers      []WorkerManifest   `json:"workers"`
 	Stages       []StageManifest    `json:"stages"`
@@ -106,8 +106,8 @@ func gitCommit(repoPath string) (commit string, dirty bool, err error) {
 }
 
 // buildManifest assembles the immutable manifest for one production run.
-// executor/workerConcurrency describe the conditional-regime-analyze
-// configuration (Task31-34's only distributed-executor stage); remoteWorkers
+// executor/workerConcurrency describe every distributed-capable stage;
+// remoteWorkers
 // is the honest list of remote worker identities actually configured for
 // this run's -executor remote coordinator (empty for local execution). opt
 // is passed straight through to stageArgs for every stage, so the manifest
@@ -137,16 +137,16 @@ func buildManifest(repoPath, inputMode, ivtffPath, corpusPath string, opt orches
 		for _, w := range remoteWorkers {
 			workers = append(workers, WorkerManifest{Kind: "remote", Name: w})
 		}
-		executorNote = fmt.Sprintf("conditional-regime-analyze used -executor remote with %d authenticated remote worker(s) over Task34 mTLS", len(remoteWorkers))
+		executorNote = fmt.Sprintf("distributed-capable stages used -executor remote with %d authenticated remote worker(s) over the shared mTLS service", len(remoteWorkers))
 	case "process", "goroutine":
 		workers = append(workers, WorkerManifest{Kind: "local", Name: hostname})
-		executorNote = fmt.Sprintf("conditional-regime-analyze used -executor %s with %d local worker slot(s) on %s; no remote machines were part of this run", opt.Executor, opt.LocalWorkers, hostname)
+		executorNote = fmt.Sprintf("distributed-capable stages used -executor %s with %d local worker slot(s) on %s; no remote machines were part of this run", opt.Executor, opt.LocalWorkers, hostname)
 	default:
 		workers = append(workers, WorkerManifest{Kind: "local", Name: hostname})
-		executorNote = "conditional-regime-analyze used the default in-process goroutine executor"
+		executorNote = "distributed-capable stages used the default in-process goroutine executor"
 	}
 	if inputMode == "generic" {
-		executorNote = "executor configuration retained for reproducibility; conditional-regime-analyze is NOT_APPLICABLE because it requires IVTFF metadata, so no distributed executor is invoked"
+		executorNote = "structural-projection-analyze uses the recorded executor configuration; conditional-regime-analyze is NOT_APPLICABLE because generic corpora lack IVTFF metadata"
 	}
 
 	m := &Manifest{

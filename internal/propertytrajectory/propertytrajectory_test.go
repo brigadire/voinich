@@ -146,3 +146,24 @@ func TestDeterministicYAMLOutput(t *testing.T) {
 		t.Fatal("YAML output differs")
 	}
 }
+
+func TestSelectPairsSkipsInapplicableVoynichReferences(t *testing.T) {
+	previous := []pair{{"alpha", "beta"}}
+	got, err := selectPairs(previous, "", map[string]int{
+		"alpha": 2, "beta": 2, "or": 1, "s": 1,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	want := []pair{{"alpha", "beta"}, {"or", "s"}}
+	if !reflect.DeepEqual(got, want) {
+		t.Fatalf("pairs = %v, want %v", got, want)
+	}
+
+	// An explicit selection remains strict: analyze validates its presence
+	// in the corpus instead of silently dropping it.
+	got, err = selectPairs(nil, "chedy,qokeey", map[string]int{})
+	if err != nil || !reflect.DeepEqual(got, []pair{{"chedy", "qokeey"}}) {
+		t.Fatalf("explicit pair = %v, err = %v", got, err)
+	}
+}

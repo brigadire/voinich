@@ -2,8 +2,8 @@
 
 Task36's single orchestration CLI: runs every current Voynich pipeline
 stage (27 commands, `stages.go`) in dependency order against production
-parameters, using `conditional-regime-analyze`'s distributed executor
-(Task31-34) where that stage supports it, and freezes the result as an
+parameters, using the distributed executor for structural projection and
+conditional regime (Task31-35/40) where that stage supports it, and freezes the result as an
 immutable, checksummed experiment directory under `experiments/<name>/`.
 
 ## Why every stage's defaults are the production parameters
@@ -105,6 +105,5 @@ identities actually configured for the run, so the manifest's worker list
 reflects reality rather than an assumption. `-executor process`/`goroutine`
 use only local CPU cores and record `local, N slots on <hostname>` instead
 - there is no requirement to have any remote machine at all; Task28-29's
-production estimate for `conditional-regime-analyze` (the only stage this
-choice affects) is on the order of an hour with `-executor process` and a
-handful of local worker slots on modern hardware.
+executor choice applies to both `structural-projection-analyze` (stage 17)
+and `conditional-regime-analyze` (stage 21).

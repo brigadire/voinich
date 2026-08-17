@@ -10,6 +10,8 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+
+	"zcore.dev/voinich/internal/structuralprojection"
 )
 
 func writeMessage(w *bufio.Writer, m protocolMessage) error {
@@ -168,6 +170,37 @@ func (w *workerState) compute(id JobID) (float64, error) {
 	}
 }
 
+type protocolComputer interface {
+	compute(JobID) (float64, json.RawMessage, error)
+}
+type conditionalComputer struct{ state *workerState }
+
+func (w conditionalComputer) compute(id JobID) (float64, json.RawMessage, error) {
+	v, e := w.state.compute(id)
+	return v, nil, e
+}
+
+type structuralComputer struct {
+	state *structuralprojection.TrialWorker
+}
+
+func (w structuralComputer) compute(id JobID) (float64, json.RawMessage, error) {
+	if id.Stage != "structural_projection_trial" {
+		return 0, nil, fmt.Errorf("unknown structural job stage %q", id.Stage)
+	}
+	r, err := w.state.Run(context.Background(), id.ReplicateIndex)
+	if err != nil {
+		return 0, nil, err
+	}
+	b, err := json.Marshal(r)
+	return 0, b, err
+}
+func structuralConfigFromMessage(m protocolMessage) structuralprojection.Config {
+	return structuralprojection.Config{CorpusPath: m.CorpusPath, StructuralPairsPath: m.StructuralPairsPath, DistancePairsPath: m.DistancePairsPath, FamiliesPath: m.FamiliesPath,
+		MinStructuralSimilarity: m.MinStructuralSimilarity, MinReliability: m.MinReliability, ProjectionK: m.ProjectionK, RandomProjections: m.RandomProjections,
+		MaxDistance: m.MaxDistance, MinObservations: m.MinObservations, TopN: m.TopN, FamilyID: m.FamilyID, ProjectionMode: m.ProjectionMode, Pair: m.Pair, Seed: m.Seed}
+}
+
 func newWorkerState(initMsg protocolMessage) (*workerState, error) {
 	tokens, corpusHash, err := readCorpus(initMsg.CorpusPath)
 	if err != nil {
@@ -233,9 +266,24 @@ func RunWorker(ctx context.Context, in io.Reader, out io.Writer) error {
 		return fail("protocol version mismatch: worker speaks %d, coordinator sent %d", workerProtocolVersion, initMsg.Version)
 	}
 
-	w, err := newWorkerState(initMsg)
-	if err != nil {
-		return fail("%v", err)
+	var computer protocolComputer
+	if initMsg.Workload == "structural_projection" {
+		cfg := structuralConfigFromMessage(initMsg)
+		fp, e := structuralprojection.Fingerprint(cfg)
+		if e != nil || fp != initMsg.Fingerprint {
+			return fail("input/config fingerprint mismatch: worker loaded different input or parameters")
+		}
+		w, e := structuralprojection.NewTrialWorker(cfg)
+		if e != nil {
+			return fail("%v", e)
+		}
+		computer = structuralComputer{w}
+	} else {
+		w, e := newWorkerState(initMsg)
+		if e != nil {
+			return fail("%v", e)
+		}
+		computer = conditionalComputer{w}
 	}
 
 	if err := writeMessage(writer, protocolMessage{Kind: "ready", OK: true}); err != nil {
@@ -260,8 +308,8 @@ func RunWorker(ctx context.Context, in io.Reader, out io.Writer) error {
 			if msg.JobID == nil {
 				return fmt.Errorf("worker: job message missing job_id")
 			}
-			value, jobErr := w.compute(*msg.JobID)
-			result := protocolMessage{Kind: "result", JobID: msg.JobID, Value: value}
+			value, blob, jobErr := computer.compute(*msg.JobID)
+			result := protocolMessage{Kind: "result", JobID: msg.JobID, Value: value, Blob: blob}
 			if jobErr != nil {
 				result.Error = jobErr.Error()
 			}

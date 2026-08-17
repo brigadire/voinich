@@ -58,6 +58,13 @@ func RunAndWrite(c Config) error {
 		}
 	}
 	progress.update(1, 1, "Writing results")
+	// A checkpoint is operational recovery state, not a scientific output.
+	// Remove it only after every final output has been written successfully.
+	if c.CheckpointPath != "" && c.CheckpointPath != "-" {
+		if e = os.Remove(c.CheckpointPath); e != nil && !os.IsNotExist(e) {
+			return e
+		}
+	}
 	fmt.Printf("Structural projection analyzed %d pairs; results written to %s\n", len(a.Out.Pairs), c.OutputDir)
 	return nil
 }

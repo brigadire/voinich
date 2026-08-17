@@ -64,6 +64,31 @@ func (p *progressReporter) update(done, total int, label string) {
 	p.line(msg, final)
 }
 
+func (p *progressReporter) trials(done, total, active, retries int) {
+	if p == nil || p.w == nil || total <= 0 {
+		return
+	}
+	now := p.clock()
+	final := done >= total
+	if !final && !p.last.IsZero() && now.Sub(p.last) < time.Second {
+		return
+	}
+	p.last = now
+	elapsed := now.Sub(p.started)
+	eta := time.Duration(0)
+	if done > 0 && done < total {
+		eta = time.Duration(float64(elapsed) * float64(total-done) / float64(done))
+	}
+	if active < 0 {
+		active = 0
+	}
+	msg := fmt.Sprintf("structural projections %d/%d | workers active: %d | outstanding: %d | retries: %d | elapsed: %s", done, total, active, total-done, retries, shortDuration(elapsed))
+	if done > 0 && done < total {
+		msg += " | ETA: " + shortDuration(eta)
+	}
+	p.line(msg, final)
+}
+
 func (p *progressReporter) line(message string, final bool) {
 	if p.interactive {
 		end := "\r"

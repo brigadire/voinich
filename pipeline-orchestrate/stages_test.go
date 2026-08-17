@@ -60,7 +60,7 @@ func TestStageArgsNeverSetsAScientificFlag(t *testing.T) {
 	// scientific parameter leaked in - exactly what a frozen baseline must
 	// never allow.
 	allowed := map[string]bool{
-		"-quiet": true, "-executor": true, "-workers": true,
+		"-quiet": true, "-checkpoint": true, "-executor": true, "-workers": true,
 		"-remote-listen": true, "-tls-cert": true, "-tls-key": true, "-client-ca": true,
 		"-remote-deny-list": true, "-remote-timeout": true, "-remote-retries": true,
 	}

@@ -25,15 +25,12 @@ type Stage struct {
 	// interactive progress bar, which would otherwise fill log files with
 	// carriage-return spam).
 	Quiet bool
-	// Checkpoint is true when the binary accepts -checkpoint-path
-	// (Task28-35's within-stage resume mechanism). The orchestrator lets
-	// every checkpointed stage use its own default
-	// <output-dir>/checkpoint.json rather than relocating it, since that
-	// default already lives under the same workdir/ subtree this
-	// orchestrator snapshots at freeze time.
+	// Checkpoint is true when the binary has a within-stage resume mechanism.
+	// Most checkpointed stages use their own default. Structural projection's
+	// explicit path is removed after successful output, so it cannot enter a
+	// frozen experiment.
 	Checkpoint bool
-	// Executor is true only for conditional-regime-analyze (Task31-34):
-	// the sole stage with a distributed/local executor choice
+	// Executor marks stages with a distributed/local executor choice
 	// (-executor, -workers).
 	Executor bool
 	// CorpusFlag is the flag used to override the historical Voynich corpus
@@ -67,7 +64,7 @@ var stages = []Stage{
 	{Name: "distance-context-analyze", SourceDir: "distance-context-analyze", CorpusFlag: "-corpus"},
 	{Name: "local-regime-analyze", SourceDir: "local-regime-analyze", Quiet: true, CorpusFlag: "-corpus"},
 	{Name: "property-trajectory-analyze", SourceDir: "property-trajectory-analyze", Quiet: true, CorpusFlag: "-corpus"},
-	{Name: "structural-projection-analyze", SourceDir: "structural-projection-analyze", Quiet: true, CorpusFlag: "-corpus"},
+	{Name: "structural-projection-analyze", SourceDir: "structural-projection-analyze", Quiet: true, Checkpoint: true, Executor: true, CorpusFlag: "-corpus"},
 	{Name: "global-regime-analyze", SourceDir: "global-regime-analyze", Quiet: true, CorpusFlag: "-corpus"},
 	{Name: "metadata-validate", SourceDir: "metadata-validate", Quiet: true, RequiresMetadata: true},
 	{Name: "cluster-metadata-global", SourceDir: "cluster-metadata-global", Quiet: true, RequiresMetadata: true},
@@ -93,9 +90,8 @@ func stageByName(name string) (Stage, bool) {
 
 // orchestratorOptions carries the small set of purely operational choices
 // that vary between a local production run and a run that spreads
-// conditional-regime-analyze's permutation jobs across real mTLS-
-// authenticated remote workers (Task33/34). None of these affect any
-// scientific parameter.
+// distributed-capable stages' jobs across real mTLS-authenticated remote
+// workers (Task33/34/40). None of these affect any scientific parameter.
 type orchestratorOptions struct {
 	Executor       string // goroutine|process|remote
 	LocalWorkers   int
@@ -116,6 +112,9 @@ func stageArgs(s Stage, opt orchestratorOptions) []string {
 	args := append([]string(nil), s.Positional...)
 	if s.Quiet {
 		args = append(args, "-quiet")
+	}
+	if s.Name == "structural-projection-analyze" {
+		args = append(args, "-checkpoint", "workdir/structural-projection-checkpoint.json")
 	}
 	if s.Executor {
 		executor := opt.Executor
