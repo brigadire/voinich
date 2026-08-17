@@ -2,6 +2,8 @@ package globalregime
 
 import (
 	"bytes"
+	"fmt"
+	"math"
 	"os"
 	"path/filepath"
 	"strings"
@@ -31,6 +33,54 @@ func TestMetricsAndSlidingWindows(t *testing.T) {
 	w = slidingWindows([]string{"a", "a", "x", "x", "b", "b"}, 2, 4)
 	if len(w) != 2 || w[1].distribution["b"] != 1 {
 		t.Fatalf("gapped windows: %#v", w)
+	}
+}
+
+func TestSlidingWindowsUsesActualCorpusSize(t *testing.T) {
+	const (
+		windowSize = 1000
+		step       = 100
+	)
+	for _, n := range []int{1000, 8000, 39026, 60017} {
+		t.Run(fmt.Sprintf("N=%d", n), func(t *testing.T) {
+			tokens := make([]string, n)
+			for i := range tokens {
+				tokens[i] = fmt.Sprintf("token-%d", i%17)
+			}
+
+			windows := slidingWindows(tokens, windowSize, step)
+			want := 1 + (n-windowSize)/step
+			if len(windows) != want {
+				t.Fatalf("windows=%d, want %d for corpus size %d", len(windows), want, n)
+			}
+			for i, w := range windows {
+				if w.Start != i*step || w.End != i*step+windowSize || w.End > n {
+					t.Fatalf("window %d has invalid bounds [%d,%d) for corpus size %d", i, w.Start, w.End, n)
+				}
+				total := 0.0
+				for _, probability := range w.distribution {
+					total += probability
+				}
+				if math.Abs(total-1) > 1e-12 {
+					t.Fatalf("window %d distribution sums to %.17g, want 1", i, total)
+				}
+			}
+		})
+	}
+}
+
+func TestShortCorpusReportsFixedWindowAsNotApplicable(t *testing.T) {
+	d := t.TempDir()
+	corpus := filepath.Join(d, "corpus.txt")
+	if err := os.WriteFile(corpus, []byte(strings.Repeat("token ", 999)), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	err := RunAndWrite(Config{CorpusPath: corpus, OutputDir: d, Quiet: true})
+	if err == nil {
+		t.Fatal("short corpus unexpectedly accepted all fixed window sizes")
+	}
+	if want := "window size 1000 exceeds corpus length 999"; !strings.Contains(err.Error(), want) {
+		t.Fatalf("error=%q, want diagnostic containing %q", err, want)
 	}
 }
 
