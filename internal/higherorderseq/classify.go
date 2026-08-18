@@ -3,13 +3,19 @@ package higherorderseq
 // classificationInput bundles every statistic task22 Part P's outcome rules
 // (section 78) read from.
 type classificationInput struct {
-	Candidate     Candidate
-	Dependence    DependenceRow
-	CrossBlock    CrossBlockRow
-	LOBO          LOBORow
-	Jackknife     JackknifeRow
-	BlockPosTVD   float64
-	LinePosTVD    float64
+	Candidate   Candidate
+	Dependence  DependenceRow
+	CrossBlock  CrossBlockRow
+	LOBO        LOBORow
+	Jackknife   JackknifeRow
+	BlockPosTVD float64
+	LinePosTVD  float64
+	// Generic mirrors Config.Generic (see types.go): DistinctHand is always
+	// 1 in that mode (there is no real hand dimension), so MetadataLimited
+	// must not be gated on it there - doing so would trivially mislabel
+	// every candidate that spans >=2 independent generic resampling groups
+	// as metadata-limited.
+	Generic bool
 }
 
 // positionDependentTVD is the descriptive threshold above which a
@@ -36,7 +42,11 @@ func classify(in classificationInput) ValidationRow {
 		row.LOBOAdvantageFraction = float64(in.LOBO.M2BetterBlocks) / float64(in.LOBO.TestedBlocks)
 	}
 	row.PositionDependent = in.BlockPosTVD > positionDependentTVD || in.LinePosTVD > positionDependentTVD
-	row.MetadataLimited = in.CrossBlock.EligibleBlocks >= 3 && (in.CrossBlock.DistinctCurrier <= 1 || in.CrossBlock.DistinctHand <= 1 || in.CrossBlock.DistinctJoint <= 1)
+	if in.Generic {
+		row.MetadataLimited = in.CrossBlock.EligibleBlocks >= 3 && in.CrossBlock.DistinctJoint <= 1
+	} else {
+		row.MetadataLimited = in.CrossBlock.EligibleBlocks >= 3 && (in.CrossBlock.DistinctCurrier <= 1 || in.CrossBlock.DistinctHand <= 1 || in.CrossBlock.DistinctJoint <= 1)
+	}
 
 	switch {
 	case in.CrossBlock.EligibleBlocks < 3:
@@ -48,7 +58,11 @@ func classify(in classificationInput) ValidationRow {
 		row.LOBOAdvantageFraction >= 2.0/3.0 && in.CrossBlock.DistinctJoint >= 2:
 		row.FinalStatus = "HIGHER_ORDER_REPLICATED"
 	case row.MetadataLimited && in.CrossBlock.SignConsistency >= 0.75:
-		row.FinalStatus = "METADATA_LIMITED"
+		if in.Generic {
+			row.FinalStatus = "GROUP_LIMITED"
+		} else {
+			row.FinalStatus = "METADATA_LIMITED"
+		}
 	case row.PositionDependent && in.CrossBlock.SignConsistency >= 0.5:
 		row.FinalStatus = "POSITION_DEPENDENT"
 	default:

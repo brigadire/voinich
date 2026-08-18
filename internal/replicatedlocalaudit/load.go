@@ -11,6 +11,8 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+
+	"zcore.dev/voinich/internal/genericsegmentation"
 )
 
 func readTSV(path string) ([]map[string]string, error) {
@@ -45,6 +47,36 @@ func readTSV(path string) ([]map[string]string, error) {
 	}
 	return out, nil
 }
+
+// loadGenericTokens is metadata-validate's generic-mode substitute (see
+// GENERIC_STAGE_APPLICABILITY_AUDIT.md): Currier carries the deterministic
+// resampling-fold Group label from internal/genericsegmentation, and Hand
+// is always genericsegmentation.Sentinel, never a fabricated hand identity.
+func loadGenericTokens(corpusPath string, corpus []string) ([]token, error) {
+	_, lineOfToken, _, e := genericsegmentation.ReadCorpus(corpusPath)
+	if e != nil {
+		return nil, e
+	}
+	infos, e := genericsegmentation.Build(lineOfToken)
+	if e != nil {
+		return nil, e
+	}
+	if len(infos) != len(corpus) {
+		return nil, fmt.Errorf("generic segmentation/corpus token count mismatch: %d != %d", len(infos), len(corpus))
+	}
+	tokens := make([]token, len(corpus))
+	for i, info := range infos {
+		tokens[i] = token{
+			Text:    corpus[i],
+			Line:    info.LineID,
+			Currier: info.Group,
+			Hand:    genericsegmentation.Sentinel,
+			Joint:   info.Group + "/" + genericsegmentation.Sentinel,
+		}
+	}
+	return tokens, nil
+}
+
 func atoi(s string) int     { v, _ := strconv.Atoi(s); return v }
 func atof(s string) float64 { v, _ := strconv.ParseFloat(s, 64); return v }
 
@@ -64,24 +96,32 @@ func loadInputs(c Config) ([]token, []block, []distanceCandidate, []sequenceCand
 	if s.Err() != nil {
 		return nil, nil, nil, nil, "", s.Err()
 	}
-	rows, err := readTSV(c.MetadataPath)
-	if err != nil {
-		return nil, nil, nil, nil, "", err
-	}
-	if len(rows) != len(corpus) {
-		return nil, nil, nil, nil, "", fmt.Errorf("metadata/corpus token count mismatch: %d != %d", len(rows), len(corpus))
-	}
-	tokens := make([]token, len(rows))
 	known := func(x string) bool {
 		x = strings.TrimSpace(x)
 		return x != "" && x != "?" && strings.ToLower(x) != "null"
 	}
-	for i, r := range rows {
-		if atoi(r["token_position"]) != i || r["token"] != corpus[i] {
-			return nil, nil, nil, nil, "", fmt.Errorf("metadata mismatch at token %d", i)
+	var tokens []token
+	if c.Generic {
+		tokens, err = loadGenericTokens(c.CorpusPath, corpus)
+		if err != nil {
+			return nil, nil, nil, nil, "", err
 		}
-		tokens[i] = token{Text: r["token"], Line: r["line_id"], Currier: r["currier"], Hand: r["hand"]}
-		tokens[i].Joint = tokens[i].Currier + "/" + tokens[i].Hand
+	} else {
+		rows, err := readTSV(c.MetadataPath)
+		if err != nil {
+			return nil, nil, nil, nil, "", err
+		}
+		if len(rows) != len(corpus) {
+			return nil, nil, nil, nil, "", fmt.Errorf("metadata/corpus token count mismatch: %d != %d", len(rows), len(corpus))
+		}
+		tokens = make([]token, len(rows))
+		for i, r := range rows {
+			if atoi(r["token_position"]) != i || r["token"] != corpus[i] {
+				return nil, nil, nil, nil, "", fmt.Errorf("metadata mismatch at token %d", i)
+			}
+			tokens[i] = token{Text: r["token"], Line: r["line_id"], Currier: r["currier"], Hand: r["hand"]}
+			tokens[i].Joint = tokens[i].Currier + "/" + tokens[i].Hand
+		}
 	}
 	var blocks []block
 	seen := map[string]int{}
@@ -134,26 +174,42 @@ func loadInputs(c Config) ([]token, []block, []distanceCandidate, []sequenceCand
 	for _, r := range recurrenceRows {
 		recurrence[r["candidate_id"]] = true
 	}
+	// wantClass is stage 23's top-tier classification label for a
+	// candidate that transfers/replicates well: "UNIVERSAL" in IVTFF mode
+	// (a Currier/hand-conditioned claim), "GROUP_CONSISTENT" in generic
+	// mode (ClassifyGeneric's equivalent group-only claim - see
+	// GENERIC_STAGE_APPLICABILITY_AUDIT.md). Both name the field
+	// "Classification" the same way internally; only the frozen label this
+	// stage looks for changes.
+	wantClass := "UNIVERSAL"
+	if c.Generic {
+		wantClass = "GROUP_CONSISTENT"
+	}
 	for _, r := range classRows {
-		if r["family"] == "sequence" && r["classification"] == "UNIVERSAL" {
+		if r["family"] == "sequence" && r["classification"] == wantClass {
 			seq := r["sequence"]
 			if !recurrence[r["candidate_id"]] {
-				return nil, nil, nil, nil, "", fmt.Errorf("UNIVERSAL sequence %q missing from sequence_block_recurrence.tsv", r["candidate_id"])
+				return nil, nil, nil, nil, "", fmt.Errorf("%s sequence %q missing from sequence_block_recurrence.tsv", wantClass, r["candidate_id"])
 			}
-			sequences = append(sequences, sequenceCandidate{ID: r["candidate_id"], Sequence: seq, Tokens: strings.Fields(seq), Classification: "UNIVERSAL"})
+			sequences = append(sequences, sequenceCandidate{ID: r["candidate_id"], Sequence: seq, Tokens: strings.Fields(seq), Classification: wantClass})
 		}
 	}
 	if len(sequences) == 0 {
-		return nil, nil, nil, nil, "", fmt.Errorf("no UNIVERSAL sequence candidates in frozen classification")
+		return nil, nil, nil, nil, "", fmt.Errorf("no %s sequence candidates in frozen classification", wantClass)
 	}
 	return tokens, blocks, distances, sequences, corpusSHA, nil
 }
 
+// fingerprint preserves its IVTFF-mode byte layout exactly (task43 must
+// never change the frozen Voynich checkpoint/resume fingerprint); c.Generic
+// is only mixed in for generic-mode runs.
 func fingerprint(c Config, corpusSHA string) (string, error) {
 	h := sha256.New()
 	fmt.Fprintf(h, "v1\n%s\n%d\n%d\n", corpusSHA, c.Permutations, c.Seed)
-	for _, p := range []string{
-		c.MetadataPath,
+	if c.Generic {
+		fmt.Fprintf(h, "generic=true\n")
+	}
+	paths := []string{
 		filepath.Join(c.RelationDir, "frozen_candidate_inventory.tsv"),
 		filepath.Join(c.RelationDir, "distance_profile_block_validation.tsv"),
 		filepath.Join(c.RelationDir, "distance_profile_summary.tsv"),
@@ -165,7 +221,11 @@ func fingerprint(c Config, corpusSHA string) (string, error) {
 		filepath.Join(c.RelationDir, "token_relation_validation.yaml"),
 		filepath.Join(c.DiscoveryDir, "distance_context_pairs.yaml"),
 		filepath.Join(c.DiscoveryDir, "sequence_analysis.yaml"),
-	} {
+	}
+	if !c.Generic {
+		paths = append(paths, c.MetadataPath)
+	}
+	for _, p := range paths {
 		b, e := os.ReadFile(p)
 		if e != nil {
 			return "", e
@@ -186,19 +246,28 @@ func loadFrozenDistanceDiagnostics(c Config) (map[string]float64, map[string]boo
 			similarity[r["candidate_id"]+"\x00"+r["block"]] = atof(r["combined_similarity"])
 		}
 	}
+	// crossCurrier/crossHand: in generic mode there is no real hand
+	// dimension, so only stage 23's single "group" dimension is read, into
+	// crossCurrier; crossHand stays empty (never a fabricated cross-hand
+	// signal) - see run.go's generic Status/FailedConditions branch, which
+	// reads crossCurrier alone in that mode.
 	crossCurrier, crossHand := map[string]bool{}, map[string]bool{}
 	rows, err = readTSV(filepath.Join(c.RelationDir, "metadata_transfer_matrix.tsv"))
 	if err != nil {
 		return nil, nil, nil, nil, err
 	}
+	wantDim := "Currier"
+	if c.Generic {
+		wantDim = "group"
+	}
 	for _, r := range rows {
 		if r["family"] != "distance-profile" || r["training_metadata"] == r["heldout_metadata"] || atof(r["success_fraction"]) < .67 {
 			continue
 		}
-		if r["dimension"] == "Currier" {
+		if r["dimension"] == wantDim {
 			crossCurrier[r["candidate_id"]] = true
 		}
-		if r["dimension"] == "hand" {
+		if !c.Generic && r["dimension"] == "hand" {
 			crossHand[r["candidate_id"]] = true
 		}
 	}

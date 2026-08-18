@@ -14,6 +14,7 @@ import (
 	"strings"
 
 	"gopkg.in/yaml.v3"
+	"zcore.dev/voinich/internal/genericsegmentation"
 )
 
 func fileSHA(path string) (string, error) {
@@ -94,6 +95,40 @@ func loadMetadata(path string, corpus []string) ([]Token, []Block, int, string, 
 	for i := range tokens {
 		if tokens[i].Position != i || tokens[i].Text != corpus[i] {
 			return nil, nil, 0, "", fmt.Errorf("metadata mismatch at token %d: %q != %q", i, tokens[i].Text, corpus[i])
+		}
+	}
+	blocks, unknown := ExtractBlocks(tokens)
+	return tokens, blocks, unknown, sha, nil
+}
+
+// loadGenericMetadata is metadata-validate's generic-mode substitute: it
+// derives the same Token/Block shape genericsegmentation.md documents as
+// Class B/C-safe (see GENERIC_STAGE_APPLICABILITY_AUDIT.md), from the
+// corpus alone rather than a real IVTFF-derived token_metadata_map.tsv.
+// Currier carries the deterministic resampling-fold Group label; Hand is
+// always genericsegmentation.Sentinel, never a fabricated hand identity.
+func loadGenericMetadata(corpusPath string, corpus []string) ([]Token, []Block, int, string, error) {
+	_, lineOfToken, sha, e := genericsegmentation.ReadCorpus(corpusPath)
+	if e != nil {
+		return nil, nil, 0, "", e
+	}
+	infos, e := genericsegmentation.Build(lineOfToken)
+	if e != nil {
+		return nil, nil, 0, "", e
+	}
+	if len(infos) != len(corpus) {
+		return nil, nil, 0, "", fmt.Errorf("generic segmentation/corpus token count mismatch: %d != %d", len(infos), len(corpus))
+	}
+	tokens := make([]Token, len(corpus))
+	for i, info := range infos {
+		tokens[i] = Token{
+			Position:  i,
+			Text:      corpus[i],
+			Line:      info.LineID,
+			LineIndex: info.IndexInLine,
+			Currier:   info.Group,
+			Hand:      genericsegmentation.Sentinel,
+			Joint:     info.Group + "/" + genericsegmentation.Sentinel,
 		}
 	}
 	blocks, unknown := ExtractBlocks(tokens)

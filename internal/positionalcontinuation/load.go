@@ -12,6 +12,8 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+
+	"zcore.dev/voinich/internal/genericsegmentation"
 )
 
 func readTSV(path string) ([]map[string]string, error) {
@@ -59,7 +61,7 @@ func known(x string) bool {
 // map, builds the physical-block segmentation (contiguous joint-metadata
 // runs, exactly as every earlier confirmatory stage defines it), and returns
 // per-line token counts.
-func loadCorpusAndBlocks(corpusPath, metadataPath string) (tokens []Token, blocks []Block, lineLength map[string]int, corpusSHA, metaSHA string, err error) {
+func loadCorpusAndBlocks(corpusPath, metadataPath string, generic bool) (tokens []Token, blocks []Block, lineLength map[string]int, corpusSHA, metaSHA string, err error) {
 	raw, err := os.ReadFile(corpusPath)
 	if err != nil {
 		return nil, nil, nil, "", "", err
@@ -76,30 +78,53 @@ func loadCorpusAndBlocks(corpusPath, metadataPath string) (tokens []Token, block
 		return nil, nil, nil, "", "", err
 	}
 
-	metaRaw, err := os.ReadFile(metadataPath)
-	if err != nil {
-		return nil, nil, nil, "", "", err
-	}
-	msum := sha256.Sum256(metaRaw)
-	metaSHA = hex.EncodeToString(msum[:])
-	rows, err := readTSV(metadataPath)
-	if err != nil {
-		return nil, nil, nil, "", "", err
-	}
-	if len(rows) != len(words) {
-		return nil, nil, nil, "", "", fmt.Errorf("token metadata map has %d tokens but corpus has %d", len(rows), len(words))
-	}
-	tokens = make([]Token, len(rows))
+	tokens = make([]Token, len(words))
 	lineLength = map[string]int{}
-	for i, r := range rows {
-		if atoi(r["token_position"]) != i || r["token"] != words[i] {
-			return nil, nil, nil, "", "", fmt.Errorf("metadata mismatch at token %d", i)
+	if generic {
+		_, lineOfToken, gsha, e := genericsegmentation.ReadCorpus(corpusPath)
+		if e != nil {
+			return nil, nil, nil, "", "", e
 		}
-		t := Token{Position: i, Text: r["token"], Line: r["line_id"], Currier: r["currier"], Hand: r["hand"], TokenIndexLine: atoi(r["token_index_in_line"])}
-		t.Joint = t.Currier + "/" + t.Hand
-		tokens[i] = t
-		if t.TokenIndexLine+1 > lineLength[t.Line] {
-			lineLength[t.Line] = t.TokenIndexLine + 1
+		infos, e := genericsegmentation.Build(lineOfToken)
+		if e != nil {
+			return nil, nil, nil, "", "", e
+		}
+		if len(infos) != len(words) {
+			return nil, nil, nil, "", "", fmt.Errorf("generic segmentation/corpus token count mismatch: %d != %d", len(infos), len(words))
+		}
+		metaSHA = gsha
+		for i, info := range infos {
+			t := Token{Position: i, Text: words[i], Line: info.LineID, Currier: info.Group, Hand: genericsegmentation.Sentinel, TokenIndexLine: info.IndexInLine}
+			t.Joint = t.Currier + "/" + t.Hand
+			tokens[i] = t
+			if t.TokenIndexLine+1 > lineLength[t.Line] {
+				lineLength[t.Line] = t.TokenIndexLine + 1
+			}
+		}
+	} else {
+		metaRaw, e := os.ReadFile(metadataPath)
+		if e != nil {
+			return nil, nil, nil, "", "", e
+		}
+		msum := sha256.Sum256(metaRaw)
+		metaSHA = hex.EncodeToString(msum[:])
+		rows, e := readTSV(metadataPath)
+		if e != nil {
+			return nil, nil, nil, "", "", e
+		}
+		if len(rows) != len(words) {
+			return nil, nil, nil, "", "", fmt.Errorf("token metadata map has %d tokens but corpus has %d", len(rows), len(words))
+		}
+		for i, r := range rows {
+			if atoi(r["token_position"]) != i || r["token"] != words[i] {
+				return nil, nil, nil, "", "", fmt.Errorf("metadata mismatch at token %d", i)
+			}
+			t := Token{Position: i, Text: r["token"], Line: r["line_id"], Currier: r["currier"], Hand: r["hand"], TokenIndexLine: atoi(r["token_index_in_line"])}
+			t.Joint = t.Currier + "/" + t.Hand
+			tokens[i] = t
+			if t.TokenIndexLine+1 > lineLength[t.Line] {
+				lineLength[t.Line] = t.TokenIndexLine + 1
+			}
 		}
 	}
 
@@ -152,6 +177,39 @@ func higherOrderFingerprint(dir string) (string, error) {
 		h.Write(b)
 	}
 	return hex.EncodeToString(h.Sum(nil)), nil
+}
+
+// resolveGenericTarget is task43's generic-mode substitute for the frozen
+// "s aiin -> chey" literal (see types.go's Frozen* vars): it deterministically
+// picks the single best-ranked HIGHER_ORDER_REPLICATED candidate from
+// higher-order-sequence-validate's own generic-mode output (lowest
+// conditional_fdr_q; ties broken by sequence text for reproducibility) and
+// returns its [A, B, C] tokens. This is a ranking lookup already exposed by
+// that stage - no lexical/semantic judgment is added. Returns an explicit
+// error (never a silent fallback) if no such candidate exists.
+func resolveGenericTarget(higherOrderDir string) (a, b, c string, err error) {
+	rows, err := readTSV(filepath.Join(higherOrderDir, "higher_order_validation.tsv"))
+	if err != nil {
+		return "", "", "", err
+	}
+	var best map[string]string
+	for _, r := range rows {
+		if r["final_status"] != "HIGHER_ORDER_REPLICATED" {
+			continue
+		}
+		if best == nil || atof(r["conditional_fdr_q"]) < atof(best["conditional_fdr_q"]) ||
+			(atof(r["conditional_fdr_q"]) == atof(best["conditional_fdr_q"]) && r["sequence"] < best["sequence"]) {
+			best = r
+		}
+	}
+	if best == nil {
+		return "", "", "", fmt.Errorf("resolveGenericTarget: no HIGHER_ORDER_REPLICATED candidate in %s/higher_order_validation.tsv", higherOrderDir)
+	}
+	tokens := strings.Fields(best["sequence"])
+	if len(tokens) != 3 {
+		return "", "", "", fmt.Errorf("resolveGenericTarget: candidate %q is not a 3-token ABC sequence", best["sequence"])
+	}
+	return tokens[0], tokens[1], tokens[2], nil
 }
 
 // priorResult reads the previous experiment's approximate s-aiin-chey

@@ -9,7 +9,13 @@ type Config struct {
 	MinTokenCount, MinBlockTokenCount, Permutations, RefinePermutations int
 	Seed                                                                int64
 	Quiet                                                               bool
-	ProgressWriter                                                      io.Writer
+	// Generic selects task43's corpus-only generic mode: Tokens/Blocks are
+	// derived from internal/genericsegmentation instead of a real
+	// IVTFF-sourced MetadataPath file, and computeGraphDiagnostics never
+	// runs its Currier/hand metadata-transfer comparison in that mode (see
+	// load.go/analyze.go and GENERIC_STAGE_APPLICABILITY_AUDIT.md).
+	Generic        bool
+	ProgressWriter io.Writer
 }
 
 type Token struct {

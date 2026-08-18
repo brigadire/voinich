@@ -16,7 +16,15 @@ func analyze(c Config, pgr *progressReporter) (Analysis, error) {
 	if e != nil {
 		return a, e
 	}
-	tokens, blocks, unknown, msha, e := loadMetadata(c.MetadataPath, corpus)
+	var tokens []Token
+	var blocks []Block
+	var unknown int
+	var msha string
+	if c.Generic {
+		tokens, blocks, unknown, msha, e = loadGenericMetadata(c.CorpusPath, corpus)
+	} else {
+		tokens, blocks, unknown, msha, e = loadMetadata(c.MetadataPath, corpus)
+	}
 	_ = tokens
 	if e != nil {
 		return a, e
@@ -126,7 +134,7 @@ func analyze(c Config, pgr *progressReporter) (Analysis, error) {
 	}
 	pgr.begin(6, "Leave-one-block-out and metadata transfer")
 	a.Summaries, a.Transfers = summarize(a)
-	a.MetadataTransfers = buildMetadataTransfers(a.Summaries, a.DirectionBlocks, a.ProfileBlocks)
+	a.MetadataTransfers = buildMetadataTransfers(a.Summaries, a.DirectionBlocks, a.ProfileBlocks, c.Generic)
 	pgr.update(1, 1, "Leave-one-block-out and metadata transfer")
 	pgr.begin(7, "Matched and within-block permutation controls")
 	a.Controls = buildControls(&a, maxD, c.Seed)
@@ -153,7 +161,7 @@ func analyze(c Config, pgr *progressReporter) (Analysis, error) {
 		}
 	}
 	applyFDR(&a)
-	classifyAll(&a)
+	classifyAll(&a, c.Generic)
 	sort.Slice(a.Controls, func(i, j int) bool {
 		left := a.Controls[i].CandidateID + "\x00" + a.Controls[i].Kind + "\x00" + a.Controls[i].ControlA + "\x00" + a.Controls[i].ControlB
 		right := a.Controls[j].CandidateID + "\x00" + a.Controls[j].Kind + "\x00" + a.Controls[j].ControlA + "\x00" + a.Controls[j].ControlB
@@ -367,8 +375,18 @@ func meanProfile(x []ProfileBlock, f string) float64 {
 	return mean(v)
 }
 
-func buildMetadataTransfers(summaries []RelationSummary, dirs []DirectionBlock, profs []ProfileBlock) []MetadataTransfer {
+// buildMetadataTransfers computes leave-one-block-out transfer success
+// grouped by metadata dimension. In generic mode there is no real hand
+// dimension (see Config.Generic), so only the single Currier-carried
+// dimension (the deterministic resampling Group, in that mode) is
+// computed, and it is labeled "group" rather than "Currier" so a reader
+// never mistakes it for a real manuscript covariate.
+func buildMetadataTransfers(summaries []RelationSummary, dirs []DirectionBlock, profs []ProfileBlock, generic bool) []MetadataTransfer {
 	var out []MetadataTransfer
+	dims := []string{"Currier", "hand"}
+	if generic {
+		dims = []string{"group"}
+	}
 	for _, s := range summaries {
 		type obs struct {
 			block, c, h string
@@ -392,7 +410,7 @@ func buildMetadataTransfers(summaries []RelationSummary, dirs []DirectionBlock, 
 				}
 			}
 		}
-		for _, dim := range []string{"Currier", "hand"} {
+		for _, dim := range dims {
 			type key struct{ a, b string }
 			m := map[key]*MetadataTransfer{}
 			for i, tr := range xs {
@@ -1163,9 +1181,36 @@ func applyFDR(a *Analysis) {
 		}
 	}
 }
-func classifyAll(a *Analysis) {
+
+// classifyAll assigns each summary's Classification. In generic mode this
+// only ever reasons about the single deterministic resampling Group
+// dimension (via ClassifyGeneric), and never emits the Currier/hand-
+// conditioned vocabulary ClassifyDetailed produces - see
+// GENERIC_STAGE_APPLICABILITY_AUDIT.md.
+func classifyAll(a *Analysis, generic bool) {
 	for i := range a.Summaries {
 		s := &a.Summaries[i]
+		if generic {
+			withinG, crossG := false, false
+			for _, m := range a.MetadataTransfers {
+				if m.CandidateID != s.CandidateID || m.Fraction < .67 {
+					continue
+				}
+				if m.Dimension == "group" {
+					if m.Training == m.Heldout {
+						withinG = true
+					} else {
+						crossG = true
+					}
+				}
+			}
+			if s.Family == "sequence" {
+				withinG = s.EligibleBlocks >= 2
+				crossG = s.CurrierClasses >= 2
+			}
+			s.Classification = ClassifyGeneric(*s, withinG, crossG)
+			continue
+		}
 		withinC, crossC, withinH, crossH := false, false, false, false
 		for _, m := range a.MetadataTransfers {
 			if m.CandidateID != s.CandidateID || m.Fraction < .67 {

@@ -94,7 +94,7 @@ func RunAndWrite(c Config) error {
 	p := newProgress(c.ProgressWriter)
 
 	p.begin(1, "Loading corpus, metadata, frozen candidates and structural classes")
-	tokens, blocks, lineLength, corpusSHA, metaSHA, err := loadCorpusAndBlocks(c.CorpusPath, c.TokenMetadataMap)
+	tokens, blocks, lineLength, corpusSHA, metaSHA, err := loadCorpusAndBlocks(c.CorpusPath, c.TokenMetadataMap, c.Generic)
 	if err != nil {
 		return fmt.Errorf("load corpus: %w", err)
 	}
@@ -228,6 +228,7 @@ func RunAndWrite(c Config) error {
 		validation[i] = classify(classificationInput{
 			Candidate: r.Candidate, Dependence: dependence[i], CrossBlock: r.CrossBlock,
 			LOBO: r.LOBO, Jackknife: r.Jackknife, BlockPosTVD: r.BlockPosTVD, LinePosTVD: r.LinePosTVD,
+			Generic: c.Generic,
 		})
 	}
 

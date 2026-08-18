@@ -148,7 +148,7 @@ func TestMetadataGraphAndLeakageFreePredictionDiagnostics(t *testing.T) {
 	for _, r := range a.Summaries {
 		r.FDRQ = .01
 	}
-	computeGraphDiagnostics(a, 1)
+	computeGraphDiagnostics(a, 1, false)
 	if len(a.MetadataTransfer) == 0 || a.MetadataTransfer[0].CommonEdges == 0 {
 		t.Fatal("metadata aggregation missing")
 	}
@@ -168,7 +168,7 @@ func TestMetadataGraphAndLeakageFreePredictionDiagnostics(t *testing.T) {
 
 func TestClassificationAndCheckpoint(t *testing.T) {
 	r := &EdgeSummary{EligibleBlocks: 3, JointClasses: 2, FDRQ: .01, ExpectedSign: "preferred", SignConsistency: .75, TransferFraction: .67, MaxBlockObservationFraction: .5, MaxBlockEffectWeightFraction: .5}
-	classify(r)
+	classify(r, false)
 	if r.Status != "BACKBONE_PREFERRED" {
 		t.Fatal(r.Status)
 	}

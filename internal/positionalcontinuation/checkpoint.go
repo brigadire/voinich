@@ -19,10 +19,10 @@ type RunState struct {
 	ContinuationRows []ContinuationRow
 	DistSummaryRows  []DistributionSummaryRow
 
-	PositionDependence []PositionDependenceRow
-	PositionalEntropy  []PositionalEntropyRow
-	CheyEffect         []CheyEffectRow
-	AiinControl        []AiinControlRow
+	PositionDependence    []PositionDependenceRow
+	PositionalEntropy     []PositionalEntropyRow
+	CheyEffect            []CheyEffectRow
+	AiinControl           []AiinControlRow
 	StratifiedPredecessor []StratifiedPredecessorRow
 
 	ModelLOBO ModelLOBORow
@@ -63,10 +63,19 @@ func newCheckpoint(fingerprint string) *Checkpoint {
 // higher-order-sequences directory contents, or any CLI parameter - must
 // invalidate a prior checkpoint rather than risk silently resuming into a
 // mismatched run.
+// computeFingerprint preserves its IVTFF-mode byte layout exactly (task43
+// must never change the frozen Voynich checkpoint/resume fingerprint); the
+// generic-mode target triple is already covered indirectly, since
+// higherOrderSHA hashes the exact bytes of higher_order_validation.tsv that
+// resolveGenericTarget reads from, so a different resolved target always
+// implies a different higherOrderSHA.
 func computeFingerprint(c Config, corpusSHA, metaSHA, higherOrderSHA string) string {
 	h := sha256.New()
 	fmt.Fprintf(h, "v1\ncorpus=%s\nmeta=%s\nhigherorder=%s\npermutations=%d\nseed=%d\nalpha=%v\n",
 		corpusSHA, metaSHA, higherOrderSHA, c.Permutations, c.Seed, smoothingAlpha)
+	if c.Generic {
+		fmt.Fprintf(h, "generic=true\ntarget=%s/%s/%s\n", FrozenS, FrozenAiin, FrozenChey)
+	}
 	return fmt.Sprintf("%x", h.Sum(nil))
 }
 

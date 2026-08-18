@@ -26,6 +26,7 @@ func run() (code int) {
 	flag.IntVar(&c.Permutations, "permutations", 10000, "permutations for every positional/stratified permutation test")
 	flag.Int64Var(&c.Seed, "seed", 1, "deterministic random seed")
 	flag.BoolVar(&c.Quiet, "quiet", false, "disable progress output")
+	flag.BoolVar(&c.Generic, "generic-corpus", false, "task43 generic mode: derive blocks from -corpus alone (internal/genericsegmentation) instead of -token-metadata-map, and substitute the frozen s/aiin/chey target with the top-ranked candidate from -higher-order-dir's own generic-mode output; -token-metadata-map is ignored, and -higher-order-dir must be higher-order-sequence-validate's own generic-mode output")
 	prof := profiling.RegisterFlags(flag.CommandLine)
 	flag.Parse()
 

@@ -83,10 +83,23 @@ func writeOutputs(c Config, sha string, ds []distanceResult, ss []sequenceResult
 		return e
 	}
 	rows = nil
-	for _, x := range ds {
-		rows = append(rows, []string{x.Candidate.ID, x.Status, i(x.Positive), i(x.Negative), f(float64(x.Positive) / float64(max(1, len(x.Rows)))), f(x.MeanZ), f(x.WeightedZ), bo(x.WithinCurrier), bo(x.CrossCurrier), bo(x.WithinHand), bo(x.CrossHand), bo(x.WithinJoint), bo(x.CrossJoint)})
+	statusHead := []string{"candidate_id", "replication_status", "positive_effect_blocks", "negative_effect_blocks", "effect_sign_consistency", "unweighted_mean_standardized_effect", "weighted_mean_standardized_effect"}
+	if c.Generic {
+		// No real hand dimension exists in generic mode (see Config.Generic);
+		// within/cross-group transfer (WithinJoint/CrossJoint) is reported
+		// instead of the Currier/hand-labeled columns, which would otherwise
+		// show a structurally-constant, misleading "hand" signal.
+		statusHead = append(statusHead, "within_group_transfer", "cross_group_transfer")
+		for _, x := range ds {
+			rows = append(rows, []string{x.Candidate.ID, x.Status, i(x.Positive), i(x.Negative), f(float64(x.Positive) / float64(max(1, len(x.Rows)))), f(x.MeanZ), f(x.WeightedZ), bo(x.WithinJoint), bo(x.CrossJoint)})
+		}
+	} else {
+		statusHead = append(statusHead, "within_currier_transfer", "cross_currier_transfer", "within_hand_transfer", "cross_hand_transfer", "within_joint_transfer", "cross_joint_transfer")
+		for _, x := range ds {
+			rows = append(rows, []string{x.Candidate.ID, x.Status, i(x.Positive), i(x.Negative), f(float64(x.Positive) / float64(max(1, len(x.Rows)))), f(x.MeanZ), f(x.WeightedZ), bo(x.WithinCurrier), bo(x.CrossCurrier), bo(x.WithinHand), bo(x.CrossHand), bo(x.WithinJoint), bo(x.CrossJoint)})
+		}
 	}
-	if e := writeTSV(filepath.Join(c.OutputDir, "distance_profile_replication_status.tsv"), []string{"candidate_id", "replication_status", "positive_effect_blocks", "negative_effect_blocks", "effect_sign_consistency", "unweighted_mean_standardized_effect", "weighted_mean_standardized_effect", "within_currier_transfer", "cross_currier_transfer", "within_hand_transfer", "cross_hand_transfer", "within_joint_transfer", "cross_joint_transfer"}, rows); e != nil {
+	if e := writeTSV(filepath.Join(c.OutputDir, "distance_profile_replication_status.tsv"), statusHead, rows); e != nil {
 		return e
 	}
 	rows = nil
@@ -145,19 +158,23 @@ type familySummary struct {
 	ArtifactOrInvalid int    `yaml:"artifact_or_invalid"`
 }
 
-func summaries(ds []distanceResult, ss []sequenceResult) []familySummary {
+func summaries(ds []distanceResult, ss []sequenceResult, generic bool) []familySummary {
+	topClass, topStatus := "UNIVERSAL", "ROBUST_RELATIVE_REPLICATION"
+	if generic {
+		topClass, topStatus = "GROUP_CONSISTENT", "GROUP_REPLICATED"
+	}
 	d := familySummary{Family: "distance-profile", FrozenCandidates: len(ds)}
 	for _, x := range ds {
 		if len(x.Rows) > 0 {
 			d.Testable++
 		}
-		if x.Candidate.Classification == "UNIVERSAL" {
+		if x.Candidate.Classification == topClass {
 			d.PreviousUniversal++
 		}
 		if x.Candidate.Q <= .05 {
 			d.FDRSignificant++
 		}
-		if x.Status == "ROBUST_RELATIVE_REPLICATION" {
+		if x.Status == topStatus {
 			d.RobustCrossBlock++
 		}
 		if x.CrossCurrier {
@@ -188,7 +205,7 @@ func summaries(ds []distanceResult, ss []sequenceResult) []familySummary {
 	return []familySummary{d, s}
 }
 func writeSummary(c Config, sha string, ds []distanceResult, ss []sequenceResult) error {
-	sum := summaries(ds, ss)
+	sum := summaries(ds, ss, c.Generic)
 	var rows [][]string
 	for _, x := range sum {
 		rows = append(rows, []string{x.Family, i(x.FrozenCandidates), i(x.Testable), i(x.PreviousUniversal), i(x.FDRSignificant), i(x.RobustCrossBlock), i(x.CrossCurrier), i(x.CrossHand), i(x.ArtifactOrInvalid)})
@@ -234,7 +251,7 @@ func mainOutcome(ds []distanceResult, ss []sequenceResult) string {
 	return "NOTHING_REMAINS"
 }
 func writeReport(c Config, sha string, ds []distanceResult, ss []sequenceResult) error {
-	sum := summaries(ds, ss)
+	sum := summaries(ds, ss, c.Generic)
 	ng := map[int]int{}
 	freq := []float64{}
 	statuses := map[string]int{}

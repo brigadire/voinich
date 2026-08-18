@@ -7,7 +7,13 @@ type Config struct {
 	Permutations                                                                   int
 	Seed                                                                           int64
 	Quiet                                                                          bool
-	ProgressWriter                                                                 io.Writer
+	// Generic selects task43's corpus-only generic mode: tokens/blocks are
+	// derived from internal/genericsegmentation instead of a real
+	// IVTFF-sourced MetadataPath file, "replicate" status never claims a
+	// Currier/hand-conditioned finding, and RelationDir is expected to hold
+	// stage 23's own generic-mode output (see load.go/run.go/write.go).
+	Generic        bool
+	ProgressWriter io.Writer
 }
 
 type token struct {

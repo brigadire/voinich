@@ -64,8 +64,16 @@ func RunAndWrite(c Config) error {
 	}
 	p := newProgress(c.ProgressWriter)
 
+	if c.Generic {
+		s, aiin, chey, e := resolveGenericTarget(c.HigherOrderDir)
+		if e != nil {
+			return fmt.Errorf("resolve generic target triple: %w", e)
+		}
+		FrozenS, FrozenAiin, FrozenChey = s, aiin, chey
+		FrozenSAiin = FrozenS + " " + FrozenAiin
+	}
 	p.begin(1, "Loading corpus, metadata and frozen higher-order-sequences inputs")
-	tokens, blocks, lineLength, corpusSHA, metaSHA, err := loadCorpusAndBlocks(c.CorpusPath, c.TokenMetadataMap)
+	tokens, blocks, lineLength, corpusSHA, metaSHA, err := loadCorpusAndBlocks(c.CorpusPath, c.TokenMetadataMap, c.Generic)
 	if err != nil {
 		return fmt.Errorf("load corpus: %w", err)
 	}

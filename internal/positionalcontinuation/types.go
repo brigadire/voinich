@@ -11,8 +11,17 @@ package positionalcontinuation
 import "io"
 
 // Frozen inputs (task23 section 2): never re-derived, never re-chosen after
-// looking at results.
-const (
+// looking at results, in IVTFF/Voynich mode. These are package-level vars
+// rather than consts only so that task43's generic mode (see Config.Generic)
+// can substitute a deterministically-selected target triple - the corpus's
+// own top-ranked HIGHER_ORDER_REPLICATED candidate from
+// higher-order-sequence-validate's generic output (load.go's
+// resolveGenericTarget) - in place of this literal Voynichese finding,
+// which a generic corpus will never contain. Every function below still
+// only ever reads these three tokens by name; none of task23's math changes.
+// Set once, before any other work, by RunAndWrite; never mutated again
+// within a run.
+var (
 	FrozenS     = "s"
 	FrozenAiin  = "aiin"
 	FrozenChey  = "chey"
@@ -33,7 +42,14 @@ type Config struct {
 	Permutations     int
 	Seed             int64
 	Quiet            bool
-	ProgressWriter   io.Writer
+	// Generic selects task43's corpus-only generic mode: Tokens/Blocks come
+	// from internal/genericsegmentation instead of a real IVTFF-sourced
+	// TokenMetadataMap file, and the frozen target triple (FrozenS/
+	// FrozenAiin/FrozenChey, see types.go) is read from HigherOrderDir's own
+	// generic-mode top-ranked candidate instead of the literal Voynich
+	// finding.
+	Generic        bool
+	ProgressWriter io.Writer
 }
 
 // Token is one corpus position together with the metadata it needs for
@@ -66,7 +82,7 @@ type SAiinOccurrence struct {
 	PosS, PosAiin, PosX int // PosX = -1 if X is missing
 	X                   string
 	XMissingBlockEnd    bool
-	XMissingCorpusEnd    bool
+	XMissingCorpusEnd   bool
 
 	Block, Currier, Hand, Joint string
 	NormalizedBlockPosition     float64 // of aiin within its block
@@ -127,13 +143,13 @@ type DistributionSummaryRow struct {
 	Context             string
 	Stratum             string
 	StratumType         string
-	OccurrenceCount      int
-	UniqueContinuations  int
-	EntropyBits          float64
-	NormalizedEntropy    float64
-	TopContinuation      string
-	TopContinuationProb  float64
-	CheyProbability      float64
+	OccurrenceCount     int
+	UniqueContinuations int
+	EntropyBits         float64
+	NormalizedEntropy   float64
+	TopContinuation     string
+	TopContinuationProb float64
+	CheyProbability     float64
 }
 
 // PositionDependenceRow implements task23 Part E's primary test.
@@ -148,29 +164,29 @@ type PositionDependenceRow struct {
 
 // PositionalEntropyRow implements task23 Part F.
 type PositionalEntropyRow struct {
-	PositionVariable    string
-	Stratum             string
-	OccurrenceCount      int
-	EntropyBits          float64
-	EntropyGlobalBits    float64
-	EntropyDifference    float64
+	PositionVariable           string
+	Stratum                    string
+	OccurrenceCount            int
+	EntropyBits                float64
+	EntropyGlobalBits          float64
+	EntropyDifference          float64
 	EffectiveContinuationCount float64
-	UniqueContinuations  int
-	EmpiricalP           float64
-	Permutations         int
+	UniqueContinuations        int
+	EmpiricalP                 float64
+	Permutations               int
 }
 
 // CheyEffectRow implements task23 Part G.
 type CheyEffectRow struct {
-	PositionVariable   string
-	Stratum            string
-	OccurrenceCount     int
-	CheyCount           int
-	PCheyGivenPosition  float64
-	PCheyGlobal         float64
+	PositionVariable     string
+	Stratum              string
+	OccurrenceCount      int
+	CheyCount            int
+	PCheyGivenPosition   float64
+	PCheyGlobal          float64
 	PositionalEnrichment float64
-	EmpiricalP          float64
-	Permutations        int
+	EmpiricalP           float64
+	Permutations         int
 }
 
 // AiinControlRow implements task23 Part H sections 42-47.
@@ -188,7 +204,7 @@ type AiinControlRow struct {
 
 // StratifiedPredecessorRow implements task23 Part I sections 48-53.
 type StratifiedPredecessorRow struct {
-	PositionVariable string
+	PositionVariable  string
 	ObservedStatistic float64 // pooled count of chey among predecessor==s occurrences, stratified
 	NullMeanStatistic float64
 	NullSDStatistic   float64
@@ -211,25 +227,25 @@ type ModelLOBORow struct {
 
 // CrossBlockPositionalRow implements task23 Part K.
 type CrossBlockPositionalRow struct {
-	Block                     string
-	Currier, Hand, Joint      string
-	AiinOccurrences           int
-	SAiinOccurrences          int
-	CheyGivenAiinPosition     float64
-	CheyGivenSAiinPosition    float64
-	Enrichment                float64
-	EffectSign                string // "positive", "negative", "neutral"
+	Block                  string
+	Currier, Hand, Joint   string
+	AiinOccurrences        int
+	SAiinOccurrences       int
+	CheyGivenAiinPosition  float64
+	CheyGivenSAiinPosition float64
+	Enrichment             float64
+	EffectSign             string // "positive", "negative", "neutral"
 }
 
 // PositionalJackknifeRow implements task23 Part L.
 type PositionalJackknifeRow struct {
-	PositionVariable string
-	Realizations     int
-	MIMin, MIMax, MIMedian, MISD                 float64
-	EntropyEffectMin, EntropyEffectMax, EntropyEffectMedian, EntropyEffectSD float64
+	PositionVariable                                                             string
+	Realizations                                                                 int
+	MIMin, MIMax, MIMedian, MISD                                                 float64
+	EntropyEffectMin, EntropyEffectMax, EntropyEffectMedian, EntropyEffectSD     float64
 	CheyEnrichmentMin, CheyEnrichmentMax, CheyEnrichmentMedian, CheyEnrichmentSD float64
-	StratifiedSMin, StratifiedSMax, StratifiedSMedian, StratifiedSSD float64
-	SingleBlockSensitive bool
+	StratifiedSMin, StratifiedSMax, StratifiedSMedian, StratifiedSSD             float64
+	SingleBlockSensitive                                                         bool
 }
 
 // LineVsBlockRow implements task23 Part M.
@@ -237,24 +253,24 @@ type LineVsBlockRow struct {
 	Analysis          string // "association", "line_controlling_block", "block_controlling_line"
 	LineCategory      string
 	BlockCoarseBucket string
-	OccurrenceCount    int
-	CheyProbability    float64
+	OccurrenceCount   int
+	CheyProbability   float64
 }
 
 // BoundaryDistanceRow implements task23 Part N.
 type BoundaryDistanceRow struct {
-	Group                string // "s_aiin_chey" or "s_aiin_all"
-	Metric               string // "tokens_from_line_start", etc.
-	Median, Q25, Q75     float64
-	PermutationP         float64
+	Group            string // "s_aiin_chey" or "s_aiin_all"
+	Metric           string // "tokens_from_line_start", etc.
+	Median, Q25, Q75 float64
+	PermutationP     float64
 }
 
 // SurroundingContextRow implements task23 Part O.
 type SurroundingContextRow struct {
-	Group                   string // "chey" or "not_chey"
-	OccurrenceCount          int
-	PrecedingEntropyBits     float64
-	FollowingEntropyBits     float64
+	Group                     string // "chey" or "not_chey"
+	OccurrenceCount           int
+	PrecedingEntropyBits      float64
+	FollowingEntropyBits      float64
 	UniqueSurroundingContexts int
 }
 
@@ -269,14 +285,14 @@ type ReversePositionRow struct {
 
 // ValidationRow implements task23 Part Q's final diagnostic classification.
 type ValidationRow struct {
-	FinalStatus                string
-	PositionDependenceP        float64
-	PositionDependenceSig      bool
-	CheyEnrichmentSig          bool
-	StratifiedPredecessorSig   bool
-	M3BetterThanM2Fraction     float64
-	CrossBlockSignConsistency  float64
-	SingleBlockSensitive       bool
-	BoundaryFormulaSupported   bool
-	EligibleBlocks             int
+	FinalStatus               string
+	PositionDependenceP       float64
+	PositionDependenceSig     bool
+	CheyEnrichmentSig         bool
+	StratifiedPredecessorSig  bool
+	M3BetterThanM2Fraction    float64
+	CrossBlockSignConsistency float64
+	SingleBlockSensitive      bool
+	BoundaryFormulaSupported  bool
+	EligibleBlocks            int
 }

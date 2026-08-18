@@ -410,6 +410,25 @@ func ClassifyDetailed(s RelationSummary, withinCurrier, crossCurrier, withinHand
 	return "WEAK"
 }
 
+// ClassifyGeneric is generic mode's replacement for ClassifyDetailed: it
+// reasons about the single deterministic resampling Group dimension only,
+// and its vocabulary deliberately never borrows "CURRIER_SPECIFIC"/
+// "HAND_SPECIFIC"/"UNIVERSAL" - those claim a real manuscript covariate,
+// which a generic corpus does not have.
+func ClassifyGeneric(s RelationSummary, withinGroup, crossGroup bool) string {
+	stable := s.SignConsistency >= .75 || s.ProfileMedian >= .7
+	if s.EligibleBlocks >= 3 && s.JointClasses >= 2 && stable && s.TransferSuccess >= .67 && crossGroup {
+		return "GROUP_CONSISTENT"
+	}
+	if s.EligibleBlocks >= 2 && stable && withinGroup && !crossGroup {
+		return "GROUP_LIMITED"
+	}
+	if s.EligibleBlocks > 0 && (s.TransferSuccess < .5 || s.PhysicalBlocks <= 1) {
+		return "BLOCK_SPECIFIC"
+	}
+	return "WEAK"
+}
+
 func RuleLike(s RelationSummary) bool {
 	return s.Family == "directional" && s.EligibleBlocks >= 3 && s.JointClasses >= 2 && s.SignConsistency >= .75 && s.MedianEnrichment > 1 && s.TransferSuccess >= .67 && s.FDRQ <= .05
 }

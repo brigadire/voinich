@@ -71,7 +71,7 @@ func TestLeaveOneOutReferenceNoLeakage(t *testing.T) {
 func TestMetadataTransfersCrossCurrierAndHand(t *testing.T) {
 	s := []RelationSummary{{CandidateID: "d", Family: "directional"}}
 	d := []DirectionBlock{{CandidateID: "d", BlockID: "b1", Currier: "1", Hand: "1", Score: 1, Eligible: true}, {CandidateID: "d", BlockID: "b2", Currier: "2", Hand: "2", Score: 1, Eligible: true}}
-	m := buildMetadataTransfers(s, d, nil)
+	m := buildMetadataTransfers(s, d, nil, false)
 	seenC, seenH := false, false
 	for _, x := range m {
 		if x.Training != x.Heldout && x.Fraction == 1 {

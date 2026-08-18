@@ -12,6 +12,8 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+
+	"zcore.dev/voinich/internal/genericsegmentation"
 )
 
 func readTSV(path string) ([]map[string]string, error) {
@@ -59,7 +61,7 @@ func known(x string) bool {
 // map, builds the physical-block segmentation (contiguous joint-metadata
 // runs, exactly as every earlier confirmatory stage defines it), and returns
 // per-line token counts used by Part K's line-position control.
-func loadCorpusAndBlocks(corpusPath, metadataPath string) (tokens []Token, blocks []Block, lineLength map[string]int, corpusSHA, metaSHA string, err error) {
+func loadCorpusAndBlocks(corpusPath, metadataPath string, generic bool) (tokens []Token, blocks []Block, lineLength map[string]int, corpusSHA, metaSHA string, err error) {
 	raw, err := os.ReadFile(corpusPath)
 	if err != nil {
 		return nil, nil, nil, "", "", err
@@ -76,30 +78,53 @@ func loadCorpusAndBlocks(corpusPath, metadataPath string) (tokens []Token, block
 		return nil, nil, nil, "", "", err
 	}
 
-	metaRaw, err := os.ReadFile(metadataPath)
-	if err != nil {
-		return nil, nil, nil, "", "", err
-	}
-	msum := sha256.Sum256(metaRaw)
-	metaSHA = hex.EncodeToString(msum[:])
-	rows, err := readTSV(metadataPath)
-	if err != nil {
-		return nil, nil, nil, "", "", err
-	}
-	if len(rows) != len(words) {
-		return nil, nil, nil, "", "", fmt.Errorf("token metadata map has %d tokens but corpus has %d", len(rows), len(words))
-	}
-	tokens = make([]Token, len(rows))
+	tokens = make([]Token, len(words))
 	lineLength = map[string]int{}
-	for i, r := range rows {
-		if atoi(r["token_position"]) != i || r["token"] != words[i] {
-			return nil, nil, nil, "", "", fmt.Errorf("metadata mismatch at token %d", i)
+	if generic {
+		_, lineOfToken, corpusSHA2, e := genericsegmentation.ReadCorpus(corpusPath)
+		if e != nil {
+			return nil, nil, nil, "", "", e
 		}
-		t := Token{Position: i, Text: r["token"], Line: r["line_id"], Currier: r["currier"], Hand: r["hand"], TokenIndexLine: atoi(r["token_index_in_line"])}
-		t.Joint = t.Currier + "/" + t.Hand
-		tokens[i] = t
-		if t.TokenIndexLine+1 > lineLength[t.Line] {
-			lineLength[t.Line] = t.TokenIndexLine + 1
+		infos, e := genericsegmentation.Build(lineOfToken)
+		if e != nil {
+			return nil, nil, nil, "", "", e
+		}
+		if len(infos) != len(words) {
+			return nil, nil, nil, "", "", fmt.Errorf("generic segmentation/corpus token count mismatch: %d != %d", len(infos), len(words))
+		}
+		for i, info := range infos {
+			t := Token{Position: i, Text: words[i], Line: info.LineID, Currier: info.Group, Hand: genericsegmentation.Sentinel, TokenIndexLine: info.IndexInLine}
+			t.Joint = t.Currier + "/" + t.Hand
+			tokens[i] = t
+			if t.TokenIndexLine+1 > lineLength[t.Line] {
+				lineLength[t.Line] = t.TokenIndexLine + 1
+			}
+		}
+		metaSHA = corpusSHA2
+	} else {
+		metaRaw, e := os.ReadFile(metadataPath)
+		if e != nil {
+			return nil, nil, nil, "", "", e
+		}
+		msum := sha256.Sum256(metaRaw)
+		metaSHA = hex.EncodeToString(msum[:])
+		rows, e := readTSV(metadataPath)
+		if e != nil {
+			return nil, nil, nil, "", "", e
+		}
+		if len(rows) != len(words) {
+			return nil, nil, nil, "", "", fmt.Errorf("token metadata map has %d tokens but corpus has %d", len(rows), len(words))
+		}
+		for i, r := range rows {
+			if atoi(r["token_position"]) != i || r["token"] != words[i] {
+				return nil, nil, nil, "", "", fmt.Errorf("metadata mismatch at token %d", i)
+			}
+			t := Token{Position: i, Text: r["token"], Line: r["line_id"], Currier: r["currier"], Hand: r["hand"], TokenIndexLine: atoi(r["token_index_in_line"])}
+			t.Joint = t.Currier + "/" + t.Hand
+			tokens[i] = t
+			if t.TokenIndexLine+1 > lineLength[t.Line] {
+				lineLength[t.Line] = t.TokenIndexLine + 1
+			}
 		}
 	}
 

@@ -20,7 +20,7 @@ func RunAndWrite(c Config) error {
 	}
 	p := newProgress(c.ProgressWriter)
 	p.begin(1, "load corpus and freeze transition matrix")
-	tokens, blocks, corpusSHA, metaSHA, err := loadCorpusAndBlocks(c.CorpusPath, c.MetadataPath)
+	tokens, blocks, corpusSHA, metaSHA, err := loadCorpusAndBlocks(c.CorpusPath, c.MetadataPath, c.Generic)
 	if err != nil {
 		return err
 	}
@@ -152,7 +152,7 @@ func RunAndWrite(c Config) error {
 	bh(a.Summaries, true)
 	bh(a.Summaries, false)
 	for _, r := range a.Summaries {
-		classify(r)
+		classify(r, c.Generic)
 	}
 	for i := range a.Stability {
 		r := &a.Stability[i]
@@ -167,7 +167,7 @@ func RunAndWrite(c Config) error {
 		}
 	}
 	p.begin(5, "graph, metadata, and block transfer")
-	computeGraphDiagnostics(a, c.MinBlockTokenCount)
+	computeGraphDiagnostics(a, c.MinBlockTokenCount, c.Generic)
 	p.update(1, 1, "graph transfer")
 	p.begin(6, "held-out prediction and model order")
 	computePredictions(a, c.MinBlockTokenCount)

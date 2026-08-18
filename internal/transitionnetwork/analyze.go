@@ -537,7 +537,13 @@ func profileRowsAndEntropy(a *analysis, d blockData, minBlock int) {
 	}
 }
 
-func classify(r *EdgeSummary) {
+// classify assigns r.Status. In generic mode (see Config.Generic) there is
+// no real Currier/hand covariate, so the JointClasses<2 branch - "this
+// effect appears in only one metadata class" - is relabeled GROUP_SPECIFIC
+// ("...only one generic resampling group") rather than METADATA_SPECIFIC;
+// the JointClasses gate itself is unchanged, since it was already reasoning
+// about the group/joint partition alone.
+func classify(r *EdgeSummary, generic bool) {
 	switch {
 	case r.EligibleBlocks < 3:
 		r.Status = "INSUFFICIENT_SUPPORT"
@@ -546,7 +552,11 @@ func classify(r *EdgeSummary) {
 	case r.MaxBlockObservationFraction > 0.7 || r.MaxBlockEffectWeightFraction > 0.7:
 		r.Status = "BLOCK_CONCENTRATED"
 	case r.JointClasses < 2:
-		r.Status = "METADATA_SPECIFIC"
+		if generic {
+			r.Status = "GROUP_SPECIFIC"
+		} else {
+			r.Status = "METADATA_SPECIFIC"
+		}
 	case r.SignConsistency < .75 || r.TransferFraction < .67:
 		r.Status = "SIGNIFICANT_UNSTABLE"
 	case r.ExpectedSign == "preferred":

@@ -193,13 +193,22 @@ func buildManifest(repoPath, inputMode, ivtffPath, corpusPath string, opt orches
 		m.IVTFF = &InputFileManifest{Path: absIVTFFPath, SHA256: ivtffHash}
 	}
 	for i, st := range stages {
-		args := stageArgsForIsolatedInput(st, opt, absCorpusPath)
-		if st.Name == "metadata-validate" && inputMode != "generic" {
-			args = append(args, "-ivtff", absIVTFFPath)
+		// A Class A stage (st.Generic.Applicable false) never runs in generic
+		// mode, so its args are irrelevant there; skip stageArgsForIsolatedInput
+		// entirely rather than building a command line for a binary that will
+		// never execute (its default -token-metadata-map path would not exist).
+		var args []string
+		if inputMode == "generic" && st.RequiresMetadata && !st.Generic.Applicable {
+			args = nil
+		} else {
+			args = stageArgsForIsolatedInput(st, opt, absCorpusPath, inputMode)
+			if st.Name == "metadata-validate" && inputMode != "generic" {
+				args = append(args, "-ivtff", absIVTFFPath)
+			}
 		}
 		sm := StageManifest{Index: i + 1, Name: st.Name, Dir: st.SourceDir, Args: args, Status: "PLANNED", WorkingDirectory: "workspace", ArtifactInputRoot: "workspace/workdir", ArtifactOutputRoot: "workspace/workdir"}
-		if inputMode == "generic" && st.RequiresMetadata {
-			sm.Status, sm.Reason = "NOT_APPLICABLE", "requires IVTFF metadata"
+		if inputMode == "generic" && st.RequiresMetadata && !st.Generic.Applicable {
+			sm.Status, sm.Reason = "NOT_APPLICABLE", st.Generic.Reason
 		}
 		m.Stages = append(m.Stages, sm)
 	}

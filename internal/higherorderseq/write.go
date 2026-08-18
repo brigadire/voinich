@@ -148,13 +148,28 @@ func writeAll(c Config, meta runMeta, candidates []Candidate, results []*Candida
 	}
 
 	rows = nil
-	for _, r := range results {
-		cb, m := r.CrossBlock, r.Meta
-		rows = append(rows, []string{cb.Sequence, i(cb.EligibleBlocks), i(cb.PositiveEnrichmentBlocks), i(cb.NegativeEnrichmentBlocks), f(cb.SignConsistency), i(cb.DistinctCurrier), i(cb.DistinctHand), i(cb.DistinctJoint), bo(cb.CrossCurrier), bo(cb.CrossHand), bo(cb.CrossJoint),
-			f(m.UnweightedMeanLogEnrichment), f(m.WeightedMeanLogEnrichment), f(m.MedianLogEnrichment), f(m.BetweenBlockVariance), f(m.CochranQ), f(m.I2), f(m.MaxBlockWeightFraction)})
+	crossBlockHead := []string{"sequence", "eligible_blocks", "positive_enrichment_blocks", "negative_enrichment_blocks", "sign_consistency"}
+	if c.Generic {
+		// No real hand dimension exists in generic mode (see Config.Generic):
+		// distinct_hand/cross_hand would otherwise show a structurally-
+		// constant, misleading value. distinct_joint/cross_joint already are
+		// the single meaningful generic resampling-group signal.
+		crossBlockHead = append(crossBlockHead, "distinct_group", "cross_group")
+		for _, r := range results {
+			cb, m := r.CrossBlock, r.Meta
+			rows = append(rows, []string{cb.Sequence, i(cb.EligibleBlocks), i(cb.PositiveEnrichmentBlocks), i(cb.NegativeEnrichmentBlocks), f(cb.SignConsistency), i(cb.DistinctJoint), bo(cb.CrossJoint),
+				f(m.UnweightedMeanLogEnrichment), f(m.WeightedMeanLogEnrichment), f(m.MedianLogEnrichment), f(m.BetweenBlockVariance), f(m.CochranQ), f(m.I2), f(m.MaxBlockWeightFraction)})
+		}
+	} else {
+		crossBlockHead = append(crossBlockHead, "distinct_currier", "distinct_hand", "distinct_joint", "cross_currier", "cross_hand", "cross_joint")
+		for _, r := range results {
+			cb, m := r.CrossBlock, r.Meta
+			rows = append(rows, []string{cb.Sequence, i(cb.EligibleBlocks), i(cb.PositiveEnrichmentBlocks), i(cb.NegativeEnrichmentBlocks), f(cb.SignConsistency), i(cb.DistinctCurrier), i(cb.DistinctHand), i(cb.DistinctJoint), bo(cb.CrossCurrier), bo(cb.CrossHand), bo(cb.CrossJoint),
+				f(m.UnweightedMeanLogEnrichment), f(m.WeightedMeanLogEnrichment), f(m.MedianLogEnrichment), f(m.BetweenBlockVariance), f(m.CochranQ), f(m.I2), f(m.MaxBlockWeightFraction)})
+		}
 	}
-	if err := writeTSV(filepath.Join(c.OutputDir, "higher_order_cross_block.tsv"), []string{"sequence", "eligible_blocks", "positive_enrichment_blocks", "negative_enrichment_blocks", "sign_consistency", "distinct_currier", "distinct_hand", "distinct_joint", "cross_currier", "cross_hand", "cross_joint",
-		"log_enrichment_unweighted_mean", "log_enrichment_weighted_mean", "log_enrichment_median", "log_enrichment_between_block_variance", "cochran_q", "i_squared_pct", "max_block_weight_fraction"}, rows); err != nil {
+	crossBlockHead = append(crossBlockHead, "log_enrichment_unweighted_mean", "log_enrichment_weighted_mean", "log_enrichment_median", "log_enrichment_between_block_variance", "cochran_q", "i_squared_pct", "max_block_weight_fraction")
+	if err := writeTSV(filepath.Join(c.OutputDir, "higher_order_cross_block.tsv"), crossBlockHead, rows); err != nil {
 		return err
 	}
 
@@ -191,7 +206,11 @@ func writeAll(c Config, meta runMeta, candidates []Candidate, results []*Candida
 	for _, v := range validation {
 		rows = append(rows, []string{v.Sequence, v.Family, v.FinalStatus, f(v.ConditionalFDRQ), i(v.EligibleBlocks), f(v.SignConsistency), f(v.LOBOAdvantageFraction), bo(v.SingleBlockSensitive), i(v.DistinctJointClasses), bo(v.PositionDependent), bo(v.MetadataLimited)})
 	}
-	if err := writeTSV(filepath.Join(c.OutputDir, "higher_order_validation.tsv"), []string{"sequence", "family", "final_status", "conditional_fdr_q", "eligible_blocks", "sign_consistency", "lobo_advantage_fraction", "single_block_sensitive", "distinct_joint_classes", "position_dependent", "metadata_limited"}, rows); err != nil {
+	limitedColumn := "metadata_limited"
+	if c.Generic {
+		limitedColumn = "group_limited"
+	}
+	if err := writeTSV(filepath.Join(c.OutputDir, "higher_order_validation.tsv"), []string{"sequence", "family", "final_status", "conditional_fdr_q", "eligible_blocks", "sign_consistency", "lobo_advantage_fraction", "single_block_sensitive", "distinct_joint_classes", "position_dependent", limitedColumn}, rows); err != nil {
 		return err
 	}
 

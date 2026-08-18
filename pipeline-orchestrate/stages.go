@@ -39,7 +39,31 @@ type Stage struct {
 	CorpusFlag string
 	// RequiresMetadata marks stages whose actual inputs include IVTFF-derived
 	// folio/hand/Currier metadata, directly or through token_metadata_map.tsv.
+	// This alone no longer decides generic-mode applicability - see Generic
+	// below, task43's per-stage audit (GENERIC_STAGE_APPLICABILITY_AUDIT.md).
 	RequiresMetadata bool
+	// Generic is task43's per-stage classification of RequiresMetadata
+	// stages for generic (non-IVTFF) corpora. Stages with RequiresMetadata
+	// false are unconditionally generic-applicable and Generic is the zero
+	// value (unused).
+	Generic GenericSupport
+}
+
+// GenericSupport records, for one RequiresMetadata stage, task43's audit
+// verdict on whether it has a scientifically legitimate corpus-only mode.
+// See GENERIC_STAGE_APPLICABILITY_AUDIT.md for the full per-stage evidence.
+type GenericSupport struct {
+	// Applicable is false for Class A stages (the IVTFF metadata identity
+	// is itself the thing being tested, not a segmentation device) - they
+	// stay NOT_APPLICABLE in generic mode, with Reason explaining exactly
+	// why, never the generic "requires IVTFF metadata" phrase. It is true
+	// for Class B/C stages, whose block-based statistics never actually
+	// read metadata identity - only stageArgsForIsolatedInput appends
+	// -generic-corpus for those.
+	Applicable bool
+	// Reason is the precise scientific reason a Class A stage cannot have
+	// a generic mode. Required when Applicable is false; unused otherwise.
+	Reason string
 }
 
 // stages is the complete, ordered (topologically sorted by dependency)
@@ -66,15 +90,15 @@ var stages = []Stage{
 	{Name: "property-trajectory-analyze", SourceDir: "property-trajectory-analyze", Quiet: true, CorpusFlag: "-corpus"},
 	{Name: "structural-projection-analyze", SourceDir: "structural-projection-analyze", Quiet: true, Checkpoint: true, Executor: true, CorpusFlag: "-corpus"},
 	{Name: "global-regime-analyze", SourceDir: "global-regime-analyze", Quiet: true, CorpusFlag: "-corpus"},
-	{Name: "metadata-validate", SourceDir: "metadata-validate", Quiet: true, CorpusFlag: "-frozen-corpus", RequiresMetadata: true},
-	{Name: "cluster-metadata-global", SourceDir: "cluster-metadata-global", Quiet: true, RequiresMetadata: true},
-	{Name: "conditional-regime-analyze", SourceDir: "conditional-regime-analyze", Quiet: true, Checkpoint: true, Executor: true, CorpusFlag: "-corpus", RequiresMetadata: true},
-	{Name: "residual-diagnostic-analyze", SourceDir: "residual-diagnostic-analyze", Quiet: true, CorpusFlag: "-corpus", RequiresMetadata: true},
-	{Name: "token-relation-validate", SourceDir: "token-relation-validate", Quiet: true, Checkpoint: true, CorpusFlag: "-corpus", RequiresMetadata: true},
-	{Name: "replicated-local-structure-audit", SourceDir: "replicated-local-structure-audit", Quiet: true, Checkpoint: true, CorpusFlag: "-corpus", RequiresMetadata: true},
-	{Name: "higher-order-sequence-validate", SourceDir: "higher-order-sequence-validate", Quiet: true, Checkpoint: true, CorpusFlag: "-corpus", RequiresMetadata: true},
-	{Name: "positional-continuation-validate", SourceDir: "positional-continuation-validate", Quiet: true, Checkpoint: true, CorpusFlag: "-corpus", RequiresMetadata: true},
-	{Name: "transition-network-validate", SourceDir: "transition-network-validate", Quiet: true, Checkpoint: true, CorpusFlag: "-corpus", RequiresMetadata: true},
+	{Name: "metadata-validate", SourceDir: "metadata-validate", Quiet: true, CorpusFlag: "-frozen-corpus", RequiresMetadata: true, Generic: GenericSupport{Reason: "validates blind boundary/cluster discovery against real external manuscript ground truth (line, paragraph, folio, Currier-language, scribal-hand, quire boundaries parsed from IVTFF); a generic corpus has no independent external segmentation record to validate against, so the analysis has no referent"}},
+	{Name: "cluster-metadata-global", SourceDir: "cluster-metadata-global", Quiet: true, RequiresMetadata: true, Generic: GenericSupport{Reason: "performs the whole-search-space multiple-comparison-corrected test of association between real Currier-language/scribal-hand identity and blind distributional clustering; Currier and hand are Voynich-manuscript-specific external labels with no generic-corpus analogue"}},
+	{Name: "conditional-regime-analyze", SourceDir: "conditional-regime-analyze", Quiet: true, Checkpoint: true, Executor: true, CorpusFlag: "-corpus", RequiresMetadata: true, Generic: GenericSupport{Reason: "tests whether distributional/regime structure remains after conditioning on real Currier/hand scribal metadata; the class identity is the experimental variable under test, not a partitioning device, so there is no generic corpus-only analogue of the same hypothesis"}},
+	{Name: "residual-diagnostic-analyze", SourceDir: "residual-diagnostic-analyze", Quiet: true, CorpusFlag: "-corpus", RequiresMetadata: true, Generic: GenericSupport{Reason: "diagnoses metadata association (Currier/hand/joint NMI) in conditional-regime-analyze's frozen residual clusters; without real Currier/hand truth labels there is nothing to diagnose"}},
+	{Name: "token-relation-validate", SourceDir: "token-relation-validate", Quiet: true, Checkpoint: true, CorpusFlag: "-corpus", RequiresMetadata: true, Generic: GenericSupport{Applicable: true}},
+	{Name: "replicated-local-structure-audit", SourceDir: "replicated-local-structure-audit", Quiet: true, Checkpoint: true, CorpusFlag: "-corpus", RequiresMetadata: true, Generic: GenericSupport{Applicable: true}},
+	{Name: "higher-order-sequence-validate", SourceDir: "higher-order-sequence-validate", Quiet: true, Checkpoint: true, CorpusFlag: "-corpus", RequiresMetadata: true, Generic: GenericSupport{Applicable: true}},
+	{Name: "positional-continuation-validate", SourceDir: "positional-continuation-validate", Quiet: true, Checkpoint: true, CorpusFlag: "-corpus", RequiresMetadata: true, Generic: GenericSupport{Applicable: true}},
+	{Name: "transition-network-validate", SourceDir: "transition-network-validate", Quiet: true, Checkpoint: true, CorpusFlag: "-corpus", RequiresMetadata: true, Generic: GenericSupport{Applicable: true}},
 }
 
 // stageByName looks up a stage by its orchestrator Name, used by -only/
@@ -151,8 +175,25 @@ func stageArgsForInput(s Stage, opt orchestratorOptions, inputMode, corpusPath s
 	return appendExplicitCorpus(args, s, corpusPath)
 }
 
-func stageArgsForIsolatedInput(s Stage, opt orchestratorOptions, corpusPath string) []string {
+// genericCapableStages are the task43 Class B/C stages whose CLI accepts
+// -generic-corpus in place of -token-metadata-map (see each package's
+// main.go). Kept as a set here rather than re-deriving it from
+// Stage.Generic.Applicable at every call site, since stageArgsForIsolatedInput
+// needs a simple membership check per case below.
+var genericCapableStages = map[string]bool{
+	"token-relation-validate":          true,
+	"replicated-local-structure-audit": true,
+	"higher-order-sequence-validate":   true,
+	"positional-continuation-validate": true,
+	"transition-network-validate":      true,
+}
+
+func stageArgsForIsolatedInput(s Stage, opt orchestratorOptions, corpusPath, inputMode string) []string {
 	args := appendExplicitCorpus(stageArgs(s, opt), s, corpusPath)
+	generic := inputMode == "generic" && genericCapableStages[s.Name]
+	if generic {
+		args = append(args, "-generic-corpus")
+	}
 	switch s.Name {
 	case "structural-analyze":
 		args = append(args, "-dictionary", "workdir/dataset/dictionary.yaml", "-analysis", "workdir/dataset/tokens_analysis.yaml", "-output", "workdir/dataset/structural_analysis.yaml")
@@ -199,15 +240,30 @@ func stageArgsForIsolatedInput(s Stage, opt orchestratorOptions, corpusPath stri
 	case "residual-diagnostic-analyze":
 		args = append(args, "-conditional-dir", "workdir/conditional-regimes", "-token-metadata-map", "workdir/metadata-validation/token_metadata_map.tsv", "-output-dir", "workdir/residual-diagnostics")
 	case "token-relation-validate":
-		args = append(args, "-token-metadata-map", "workdir/metadata-validation/token_metadata_map.tsv", "-discovery-dir", "workdir", "-output-dir", "workdir/token-relation-validation")
+		if !generic {
+			args = append(args, "-token-metadata-map", "workdir/metadata-validation/token_metadata_map.tsv")
+		}
+		args = append(args, "-discovery-dir", "workdir", "-output-dir", "workdir/token-relation-validation")
 	case "replicated-local-structure-audit":
-		args = append(args, "-token-metadata-map", "workdir/metadata-validation/token_metadata_map.tsv", "-relation-dir", "workdir/token-relation-validation", "-discovery-dir", "workdir", "-output-dir", "workdir/replicated-local-structure")
+		if !generic {
+			args = append(args, "-token-metadata-map", "workdir/metadata-validation/token_metadata_map.tsv")
+		}
+		args = append(args, "-relation-dir", "workdir/token-relation-validation", "-discovery-dir", "workdir", "-output-dir", "workdir/replicated-local-structure")
 	case "higher-order-sequence-validate":
-		args = append(args, "-token-metadata-map", "workdir/metadata-validation/token_metadata_map.tsv", "-audit-dir", "workdir/replicated-local-structure", "-discovery-dir", "workdir", "-output-dir", "workdir/higher-order-sequences")
+		if !generic {
+			args = append(args, "-token-metadata-map", "workdir/metadata-validation/token_metadata_map.tsv")
+		}
+		args = append(args, "-audit-dir", "workdir/replicated-local-structure", "-discovery-dir", "workdir", "-output-dir", "workdir/higher-order-sequences")
 	case "positional-continuation-validate":
-		args = append(args, "-token-metadata-map", "workdir/metadata-validation/token_metadata_map.tsv", "-higher-order-dir", "workdir/higher-order-sequences", "-output-dir", "workdir/positional-continuation")
+		if !generic {
+			args = append(args, "-token-metadata-map", "workdir/metadata-validation/token_metadata_map.tsv")
+		}
+		args = append(args, "-higher-order-dir", "workdir/higher-order-sequences", "-output-dir", "workdir/positional-continuation")
 	case "transition-network-validate":
-		args = append(args, "-token-metadata-map", "workdir/metadata-validation/token_metadata_map.tsv", "-output-dir", "workdir/transition-network")
+		if !generic {
+			args = append(args, "-token-metadata-map", "workdir/metadata-validation/token_metadata_map.tsv")
+		}
+		args = append(args, "-output-dir", "workdir/transition-network")
 	}
 	return args
 }

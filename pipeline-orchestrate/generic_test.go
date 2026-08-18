@@ -48,8 +48,10 @@ func TestGenericManifestDoesNotReadIVTFFAndHasCompleteInventory(t *testing.T) {
 
 	for i, sm := range m.Stages {
 		st := stages[i]
-		if st.RequiresMetadata {
-			if sm.Status != "NOT_APPLICABLE" || sm.Reason != "requires IVTFF metadata" {
+		if st.RequiresMetadata && !st.Generic.Applicable {
+			// task43 Class A stages: still NOT_APPLICABLE, but with a
+			// specific scientific reason rather than the old blanket phrase.
+			if sm.Status != "NOT_APPLICABLE" || sm.Reason == "" || sm.Reason == "requires IVTFF metadata" || len(sm.Args) != 0 {
 				t.Fatalf("%s applicability: %+v", sm.Name, sm)
 			}
 			continue
@@ -64,6 +66,17 @@ func TestGenericManifestDoesNotReadIVTFFAndHasCompleteInventory(t *testing.T) {
 		if st.Name == "dict-gen" || st.CorpusFlag != "" {
 			if !strings.Contains(joined, "data_test/pg2097-2.txt") {
 				t.Fatalf("generic stage %s lacks authoritative corpus: %v", sm.Name, sm.Args)
+			}
+		}
+		// task43 Class B/C stages (23-27): must run generically via
+		// -generic-corpus, never against a nonexistent generic
+		// token_metadata_map.tsv.
+		if st.RequiresMetadata && st.Generic.Applicable {
+			if !strings.Contains(joined, "-generic-corpus") {
+				t.Fatalf("generic-capable stage %s missing -generic-corpus: %v", sm.Name, sm.Args)
+			}
+			if strings.Contains(joined, "-token-metadata-map") {
+				t.Fatalf("generic-capable stage %s still passes -token-metadata-map: %v", sm.Name, sm.Args)
 			}
 		}
 	}

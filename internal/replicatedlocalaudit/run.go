@@ -407,7 +407,17 @@ func buildDistanceResults(c Config, cs []distanceCandidate, blocks []block, prof
 		if d.Transfer < .67 {
 			failed = append(failed, "transfer_success<0.67")
 		}
-		if !frozenCrossCurrier[d.ID] && !frozenCrossHand[d.ID] {
+		// In generic mode there is no real hand dimension (loadFrozenDistance
+		// Diagnostics leaves frozenCrossHand always empty in that mode), so the
+		// failure condition and replication tier below are decided on the
+		// single group/joint signal alone - never on a degenerate always-false
+		// cross-hand check, which would otherwise silently mislabel every
+		// finding as metadata-limited rather than honestly untested.
+		if c.Generic {
+			if !frozenCrossCurrier[d.ID] {
+				failed = append(failed, "no_cross_group_transfer")
+			}
+		} else if !frozenCrossCurrier[d.ID] && !frozenCrossHand[d.ID] {
 			failed = append(failed, "no_cross_currier_or_hand_transfer")
 		}
 		r.FailedConditions = strings.Join(failed, ";")
@@ -415,7 +425,13 @@ func buildDistanceResults(c Config, cs []distanceCandidate, blocks []block, prof
 		if r.MaxObservationFraction > .7 || r.MaxEffectContribution > .7 || !r.JackknifeSurvives {
 			r.Status = "SINGLE_BLOCK_DRIVEN"
 		} else if d.Eligible >= 3 && d.Joint >= 2 && d.Transfer >= .67 && positiveFraction >= .75 && r.JackknifeSurvives {
-			if r.CrossCurrier && r.CrossHand && r.CrossJoint {
+			if c.Generic {
+				if r.CrossJoint {
+					r.Status = "GROUP_REPLICATED"
+				} else {
+					r.Status = "GROUP_LIMITED_REPLICATION"
+				}
+			} else if r.CrossCurrier && r.CrossHand && r.CrossJoint {
 				r.Status = "ROBUST_RELATIVE_REPLICATION"
 			} else {
 				r.Status = "METADATA_LIMITED_REPLICATION"

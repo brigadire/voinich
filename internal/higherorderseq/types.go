@@ -22,7 +22,15 @@ type Config struct {
 	Permutations     int // primary-family permutation count (task22 section 67)
 	Seed             int64
 	Quiet            bool
-	ProgressWriter   io.Writer
+	// Generic selects task43's corpus-only generic mode: Tokens/Blocks are
+	// derived from internal/genericsegmentation instead of a real
+	// IVTFF-sourced TokenMetadataMap file. AuditDir must then hold stage 24's
+	// own generic-mode frozen candidates (see load.go/GENERIC_STAGE_
+	// APPLICABILITY_AUDIT.md); DistinctJoint>=2 in that mode means "replicates
+	// across >=2 independent generic resampling folds", not "independent
+	// hands/Currier states".
+	Generic        bool
+	ProgressWriter io.Writer
 }
 
 // secondaryPermutations returns the fixed 1/10th ratio task22 section 68
@@ -77,41 +85,41 @@ func (c Candidate) C() string { return c.Tokens[2] }
 
 // Occurrence is one exact in-block match of a candidate's A B C tokens.
 type Occurrence struct {
-	Sequence               string
-	PosA, PosB, PosC       int
-	Block                  string
-	Currier, Hand, Joint   string
-	NormalizedBlockPos     float64
-	WithinSameLine         bool
-	CrossesLineBoundary    bool
-	LinePosition           string // "start", "middle", "end", or "" if unavailable
+	Sequence             string
+	PosA, PosB, PosC     int
+	Block                string
+	Currier, Hand, Joint string
+	NormalizedBlockPos   float64
+	WithinSameLine       bool
+	CrossesLineBoundary  bool
+	LinePosition         string // "start", "middle", "end", or "" if unavailable
 }
 
 // BlockCounts holds the four raw counts task22 Part B needs for one
 // candidate within one eligible physical block.
 type BlockCounts struct {
-	Sequence                   string
-	Block, Currier, Hand, Joint string
+	Sequence                           string
+	Block, Currier, Hand, Joint        string
 	CountB, CountAB, CountBC, CountABC int
 }
 
 type ConditionalRow struct {
 	BlockCounts
-	PCGivenB, PCGivenAB, Enrichment, DeltaProbability float64
-	EligiblePrimary, EligibleDescriptive              bool
+	PCGivenB, PCGivenAB, Enrichment, DeltaProbability               float64
+	EligiblePrimary, EligibleDescriptive                            bool
 	PAGivenB, PAGivenBC, ReverseEnrichment, ReverseDeltaProbability float64
 }
 
 type CMIResult struct {
-	Sequence          string
-	CenterToken       string
-	Occurrences       int
-	ObservedCMIBits   float64
-	NullMeanCMIBits   float64
-	NullSDCMIBits     float64
-	Permutations      int
-	EmpiricalP        float64
-	ContributionBits  float64 // pointwise contribution of the frozen (A,C) cell
+	Sequence         string
+	CenterToken      string
+	Occurrences      int
+	ObservedCMIBits  float64
+	NullMeanCMIBits  float64
+	NullSDCMIBits    float64
+	Permutations     int
+	EmpiricalP       float64
+	ContributionBits float64 // pointwise contribution of the frozen (A,C) cell
 }
 
 type DependenceRow struct {
@@ -124,50 +132,50 @@ type DependenceRow struct {
 }
 
 type LOBORow struct {
-	Sequence               string
-	TestedBlocks           int
-	M2BetterBlocks         int
-	M1BetterBlocks         int
-	Ties                   int
-	MeanDeltaLogLoss       float64
-	MedianDeltaLogLoss     float64
+	Sequence                  string
+	TestedBlocks              int
+	M2BetterBlocks            int
+	M1BetterBlocks            int
+	Ties                      int
+	MeanDeltaLogLoss          float64
+	MedianDeltaLogLoss        float64
 	HeldoutLogLikelihoodRatio float64
 }
 
 type ContextControlRow struct {
-	Sequence   string
+	Sequence    string
 	ContextType string // "left_alt" or "right_alt"
-	AltToken   string
-	Count      int
+	AltToken    string
+	Count       int
 	Probability float64
-	IsFrozen   bool
+	IsFrozen    bool
 }
 
 type ContextRankRow struct {
-	Sequence           string
-	NumAlternatives    int
-	FrozenP            float64
-	BaselineP          float64
-	Rank               int
-	Percentile         float64
+	Sequence                     string
+	NumAlternatives              int
+	FrozenP                      float64
+	BaselineP                    float64
+	Rank                         int
+	Percentile                   float64
 	MinAltP, MedianAltP, MaxAltP float64
 }
 
 type ContinuationRow struct {
-	Sequence string
-	Context  string // "B" or "AB"
-	Token    string
-	Count    int
+	Sequence    string
+	Context     string // "B" or "AB"
+	Token       string
+	Count       int
 	Probability float64
 }
 
 type ContinuationEntropyRow struct {
-	Sequence        string
-	HGivenB         float64
-	HGivenAB        float64
+	Sequence         string
+	HGivenB          float64
+	HGivenAB         float64
 	EntropyReduction float64
-	JSDivergence    float64
-	TotalVariation  float64
+	JSDivergence     float64
+	TotalVariation   float64
 }
 
 type CrossBlockRow struct {
@@ -185,45 +193,45 @@ type CrossBlockRow struct {
 }
 
 type MetaAnalysisRow struct {
-	Sequence               string
-	Blocks                 int
+	Sequence                    string
+	Blocks                      int
 	UnweightedMeanLogEnrichment float64
 	WeightedMeanLogEnrichment   float64
 	MedianLogEnrichment         float64
-	BetweenBlockVariance         float64
-	CochranQ                     float64
-	I2                            float64
-	MaxBlockWeightFraction        float64
+	BetweenBlockVariance        float64
+	CochranQ                    float64
+	I2                          float64
+	MaxBlockWeightFraction      float64
 }
 
 type JackknifeRow struct {
-	Sequence             string
-	Realizations         int
-	EnrichmentMin, EnrichmentMax, EnrichmentMedian, EnrichmentSD float64
-	CMIMin, CMIMax, CMIMedian, CMISD                             float64
+	Sequence                                                             string
+	Realizations                                                         int
+	EnrichmentMin, EnrichmentMax, EnrichmentMedian, EnrichmentSD         float64
+	CMIMin, CMIMax, CMIMedian, CMISD                                     float64
 	DeltaLogLossMin, DeltaLogLossMax, DeltaLogLossMedian, DeltaLogLossSD float64
-	SingleBlockSensitive bool
+	SingleBlockSensitive                                                 bool
 }
 
 type PositionRow struct {
-	Sequence     string
-	Metric       string // "block_position_bin" or "line_position"
-	Bucket       string
-	ABCCount     int
-	ABCount      int
-	ABCFraction  float64
-	ABFraction   float64
+	Sequence    string
+	Metric      string // "block_position_bin" or "line_position"
+	Bucket      string
+	ABCCount    int
+	ABCount     int
+	ABCFraction float64
+	ABFraction  float64
 }
 
 type StructuralFamilyRow struct {
-	Sequence     string
-	TokenRole    string // "A" or "C"
-	Token        string
-	Relative     string
-	Sufficient   bool
-	FrozenP      float64
-	RelativeP    float64
-	SignHolds    bool
+	Sequence   string
+	TokenRole  string // "A" or "C"
+	Token      string
+	Relative   string
+	Sufficient bool
+	FrozenP    float64
+	RelativeP  float64
+	SignHolds  bool
 }
 
 type ValidationRow struct {
@@ -244,20 +252,20 @@ type ValidationRow struct {
 // candidate. It is the unit both the checkpoint and the final writers work
 // from.
 type CandidateResult struct {
-	Candidate         Candidate
-	Occurrences       []Occurrence
-	ConditionalRows   []ConditionalRow
-	CMI               CMIResult
-	LOBO              LOBORow
-	ContextControls   []ContextControlRow
-	ContextRank       ContextRankRow
-	Continuations     []ContinuationRow
-	ContinuationEnt   ContinuationEntropyRow
-	CrossBlock        CrossBlockRow
-	Meta              MetaAnalysisRow
-	Jackknife         JackknifeRow
-	Position          []PositionRow
-	StructuralFamily  []StructuralFamilyRow
-	BlockPosTVD       float64
-	LinePosTVD        float64
+	Candidate        Candidate
+	Occurrences      []Occurrence
+	ConditionalRows  []ConditionalRow
+	CMI              CMIResult
+	LOBO             LOBORow
+	ContextControls  []ContextControlRow
+	ContextRank      ContextRankRow
+	Continuations    []ContinuationRow
+	ContinuationEnt  ContinuationEntropyRow
+	CrossBlock       CrossBlockRow
+	Meta             MetaAnalysisRow
+	Jackknife        JackknifeRow
+	Position         []PositionRow
+	StructuralFamily []StructuralFamilyRow
+	BlockPosTVD      float64
+	LinePosTVD       float64
 }

@@ -105,10 +105,19 @@ func computePredictions(a *analysis, minBlock int) {
 	}
 }
 
-func computeGraphDiagnostics(a *analysis, minBlock int) {
+func computeGraphDiagnostics(a *analysis, minBlock int, generic bool) {
 	// Metadata transfer compares aggregated normalized edge effects within every
-	// pair of groups of each pre-specified metadata dimension.
-	for _, dim := range []string{"currier", "hand", "joint"} {
+	// pair of groups of each pre-specified metadata dimension. In generic
+	// mode there is no real Currier-language or scribal-hand covariate to
+	// test transfer across (see Config.Generic) - that comparison is a
+	// genuine Class A hypothesis test (GENERIC_STAGE_APPLICABILITY_AUDIT.md)
+	// and stays NOT_APPLICABLE; only the "joint" dimension, which is already
+	// the block-group partition itself, is computed.
+	dims := []string{"currier", "hand", "joint"}
+	if generic {
+		dims = []string{"joint"}
+	}
+	for _, dim := range dims {
 		groups := map[string]map[EdgeKey][]float64{}
 		for e, xs := range a.ByEdge {
 			for _, x := range xs {

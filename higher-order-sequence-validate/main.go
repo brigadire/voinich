@@ -27,6 +27,7 @@ func run() (code int) {
 	flag.IntVar(&c.Permutations, "permutations", 10000, "primary-family conditional-neighbor permutations (secondary descriptive candidate uses 1/10th)")
 	flag.Int64Var(&c.Seed, "seed", 1, "deterministic random seed")
 	flag.BoolVar(&c.Quiet, "quiet", false, "disable progress output")
+	flag.BoolVar(&c.Generic, "generic-corpus", false, "task43 generic mode: derive blocks from -corpus alone (internal/genericsegmentation) instead of -token-metadata-map; -token-metadata-map is ignored, and -audit-dir must be replicated-local-structure-audit's own generic-mode output")
 	prof := profiling.RegisterFlags(flag.CommandLine)
 	flag.Parse()
 

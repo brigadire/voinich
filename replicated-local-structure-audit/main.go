@@ -28,6 +28,7 @@ func run() (code int) {
 	flag.Int64Var(&c.Seed, "seed", 1, "deterministic random seed")
 	flag.StringVar(&c.CheckpointPath, "checkpoint-path", "", "progress checkpoint (default <output-dir>/checkpoint.json; '-' disables)")
 	flag.BoolVar(&c.Quiet, "quiet", false, "disable status bar")
+	flag.BoolVar(&c.Generic, "generic-corpus", false, "task43 generic mode: derive blocks from -corpus alone (internal/genericsegmentation) instead of -token-metadata-map; -token-metadata-map is ignored, and -relation-dir must be token-relation-validate's own generic-mode output")
 	prof := profiling.RegisterFlags(flag.CommandLine)
 	flag.Parse()
 	if c.CheckpointPath == "" {

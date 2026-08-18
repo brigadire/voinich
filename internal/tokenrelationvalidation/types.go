@@ -7,7 +7,13 @@ type Config struct {
 	Permutations, RefinePermutations                                  int
 	Seed                                                              int64
 	Quiet                                                             bool
-	ProgressWriter                                                    io.Writer
+	// Generic selects task43's corpus-only generic mode: Tokens/Blocks are
+	// derived from internal/genericsegmentation instead of a real
+	// IVTFF-sourced MetadataPath file, and Classification never claims a
+	// Currier/hand-conditioned finding (see load.go's loadGenericMetadata
+	// and metrics.go's ClassifyGeneric).
+	Generic        bool
+	ProgressWriter io.Writer
 }
 
 type Token struct {
