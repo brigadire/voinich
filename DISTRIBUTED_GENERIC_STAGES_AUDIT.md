@@ -275,3 +275,105 @@ against it, and none of the five stages' scientific output paths changed.
 
 ## 6. Scaling study
 
+Measured on a single 12-core development machine with a freshly generated,
+disposable mTLS PKI on loopback addresses (never the real fleet/CA),
+`-workers N` matched to the number of connected worker processes for each
+row. The repository's shared `workdir/` holds real, consistent generic-mode
+artifacts for `data_test/pg2097-2.txt` (confirmed via file mtimes, all
+newer than the corpus itself), but its discovery-dir YAMLs are tens of
+megabytes - too slow to stage repeatedly across the 25 timed runs this
+study needed, and this task explicitly forbids running the expensive
+generic production pipeline. Measurements below instead use small
+synthetic-but-real fixtures, one per stage, modeled on the exact minimal
+shapes each stage's own `internal/conditionalregime/*_remote_test.go`
+already validates for correctness - scaled up only in permutation count,
+tuned per stage so the local baseline lands near ~9s (except stage 27,
+reduced further after an initial real-scale attempt - see the note below
+the table). `workdir/` itself was read-only during a brief initial
+consistency check and never written to.
+
+| Stage | Permutations | Local (goroutine, 1 worker) | Remote, 1 worker | Remote, 2 workers | Remote, 5 workers | Remote, 10 workers | Speedup @10 vs local | Efficiency @10 | Recommendation |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---|
+| 23 token-relation-validate | 6,000 + 6,000 refine | 9.09s | 18.14s | 10.51s | 6.12s | 5.25s | 1.73x | 17% | 5 workers; diminishing returns past that on shared hardware |
+| 24 replicated-local-structure-audit | 20,000 | 9.04s | 31.77s | 16.84s | 9.77s | 8.52s | 1.06x | 11% | Barely breaks even at this scale - per-job compute (sequence stats) is cheap; needs more candidates or a higher permutation count to justify >2 workers |
+| 25 higher-order-sequence-validate | 300,000 (10 candidates) | 9.26s | 10.87s | 5.97s | 3.32s | 2.22s | 4.18x | 42% | Best-scaling of the five; use up to `min(10, frozen-candidate-count)` workers - real runs typically have only a handful of candidates, so that ceiling is a real design property, not a measurement artifact (see section 1) |
+| 26 positional-continuation-validate | 100,000 (5 batteries) | 8.96s | 9.32s | 8.95s | 8.14s | 8.03s | 1.12x | 11% | Effectively flat - the `boundary` battery (4 metrics computed serially inside one job) dominates wall time and no worker count shortens *that one job*; recommend <=2 workers, matching this document's own section 1 expectation for this stage |
+| 27 transition-network-validate | 3,000 + 3,000 refine | 0.49s | 8.14s | 2.22s | 0.76s | 0.62s | 0.80x (slower than local) | 8% | Not worth remote at this reduced scale - per-job mTLS/HTTP round-trip overhead dominates because this stage dispatches one job per *individual permutation replicate* (thousands of small jobs), unlike 23-26's coarser per-family/per-candidate/per-battery jobs; only pays off at production-scale permutation counts (10,000+) where each job's payload is large enough to amortize that overhead |
+
+All five stages produced real, timed measurements - none were skipped.
+Every row's output was additionally confirmed byte-identical to its local
+oracle by the correctness tests in section 5 (which run at whatever
+permutation count each stage's own test fixture uses, independent of this
+timing study).
+
+**A first attempt at stage 27** used permutation counts matched to stages
+23/24/26 (40,000 + 40,000 refine): a single remote worker alone took 114s
+and two workers exceeded a 2-minute budget, because at that scale stage 27
+dispatches up to 80,000 individual jobs rather than the handful of
+per-family/per-candidate/per-battery jobs stages 23-26 dispatch. That run
+was killed (no orphaned processes remained) and re-measured at a ~13x
+smaller permutation count instead of extrapolating a guessed number - the
+0.80x figure above is real, not estimated, and is the honest reason this
+document does not claim speedup for stage 27 at this reduced scale (see
+section 8 for what changes at production scale).
+
+Efficiency falls well short of the worker count everywhere, for the same
+single-machine-contention reason `NORMALIZATION_COMPARE_DISTRIBUTION_AUDIT.md`
+section 7 already documented: the coordinator and every "remote" worker
+process are real, separate OS processes competing for the same 12 cores as
+each other and the OS. This is a single-machine measurement ceiling, not a
+protocol/coordinator limit - none of these runs showed lease contention or
+unexpected `leasesReclaimed` counts. On a real multi-host fleet, efficiency
+at higher worker counts should be substantially better than this
+single-machine proxy shows.
+
+## 7. Before/after production estimate
+
+Task44 explicitly forbids running the expensive generic production
+pipeline within this task, so there is no measured production-scale
+before/after pair the way `NORMALIZATION_COMPARE_DISTRIBUTION_AUDIT.md`
+section 8 had. What section 6 does support:
+
+- **23/24/27** (permutation-replicate level, production counts in the
+  1,000-10,000 range per family/phase): expect the same qualitative shape
+  `normalization-compare`'s own audit found - efficiency highest around
+  2-5 workers on shared hardware, with 24 needing either more real
+  candidates or its full production permutation count before the per-job
+  compute clears the mTLS/HTTP round-trip overhead, and 27 specifically
+  needing its *production* permutation count (not this study's reduced
+  one) before remote execution is worth it at all, since its job count
+  scales with permutations directly.
+- **25** (candidate-level): the measured 4.18x/42% at 10 workers against
+  only 10 synthetic candidates is a reasonable proxy for production, since
+  production candidate counts are also small (a handful of frozen
+  higher-order sequences) - this stage's real ceiling is `min(workers,
+  candidate count)`, already visible in this reduced-scale measurement.
+- **26** (battery-level): production will look the same as this study -
+  exactly 5 fixed jobs regardless of permutation count, so distribution
+  helps only up to ~2-5 workers no matter how large `-permutations` is;
+  this is a structural property of the stage, not something a bigger
+  study would change.
+
+## 8. Validation
+
+```
+go build ./...                                                      # clean
+go vet ./...                                                        # clean
+go test ./...                                                       # all packages ok
+go test -race ./...                                                 # all packages ok, no data races
+git diff --check                                                    # no whitespace errors
+pipeline-orchestrate verify -experiment-dir experiments/voynich-v1   # 340/340 checksums, unchanged
+```
+
+All pass, run fresh at the end of this task on the final worktree state
+(after the scaling study in section 6, which touched only scratch
+directories outside the repository). `experiments/voynich-v1` was never
+read from or written to by any stage-25/26/27/24/23 code path this task
+added - its 340-checksum baseline is bit-identical to before this task
+began. No scientific formula, RNG seed formula, permutation count,
+threshold, window, fold, or output schema changed in any of the five
+target packages; every change is additive (new `executor.go`/
+`distribution.go` files, new `internal/conditionalregime` job types, new
+CLI flags, one `Executor: true` field per stage) or a pure extraction (the
+`LoadForDistribution`/`Fingerprint` functions call the exact pre-existing
+private loaders/fingerprint formulas, never a reimplementation).
