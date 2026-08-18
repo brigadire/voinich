@@ -8,7 +8,11 @@
 // n-gram discovery ever happens here.
 package positionalcontinuation
 
-import "io"
+import (
+	"context"
+	"io"
+	"time"
+)
 
 // Frozen inputs (task23 section 2): never re-derived, never re-chosen after
 // looking at results, in IVTFF/Voynich mode. These are package-level vars
@@ -50,6 +54,19 @@ type Config struct {
 	// finding.
 	Generic        bool
 	ProgressWriter io.Writer
+
+	// Task44: where each of the 5 distributable batteries executes. Purely
+	// operational - excluded from every scientific fingerprint/checkpoint
+	// key and never changes a single computed value; see executor.go's
+	// runBatteryDispatch for the one dispatch path every backend
+	// (goroutine/process/remote) goes through.
+	Executor                                                string
+	Workers                                                 int
+	RemoteListen, TLSCert, TLSKey, ClientCA, RemoteDenyList string
+	RemoteTimeout                                           time.Duration
+	RemoteRetries                                           int
+	BatteryExecutor                                         BatteryExecutor
+	Context                                                 context.Context
 }
 
 // Token is one corpus position together with the metadata it needs for

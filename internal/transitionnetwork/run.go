@@ -51,18 +51,18 @@ func RunAndWrite(c Config) error {
 		stab[a.Stability[i].Direction+"\x00"+a.Stability[i].Token] = &a.Stability[i]
 	}
 	ws := newPermWorkspace(a, c.MinBlockTokenCount)
-	for rep := cp.Completed; rep < c.Permutations; rep++ {
-		es, outs, ins := ws.run(c.Seed, rep, true)
-		for e, v := range es {
-			r := summaryByKey[e.String()]
+	executor := permutationExecutorFor(c, ws)
+	err = runBattery(executorContext(c), executor, "primary", cp.Completed, c.Permutations, executorWorkers(c), func(rep int, res ReplicateResult) error {
+		for eKey, v := range res.Edges {
+			r := summaryByKey[eKey]
 			if r == nil {
 				continue
 			}
 			if (r.ExpectedSign == "preferred" && v >= r.MedianLog2) || (r.ExpectedSign == "depleted" && v <= r.MedianLog2) {
-				cp.EdgeExceed[e.String()]++
+				cp.EdgeExceed[eKey]++
 			}
 		}
-		for t, v := range outs {
+		for t, v := range res.Out {
 			if r := stab["outgoing\x00"+t]; r != nil {
 				if v.Correlation >= r.LOBOMedianCorrelation {
 					cp.OutExceed[t]++
@@ -75,7 +75,7 @@ func RunAndWrite(c Config) error {
 				}
 			}
 		}
-		for t, v := range ins {
+		for t, v := range res.In {
 			if r := stab["incoming\x00"+t]; r != nil {
 				if v.Correlation >= r.LOBOMedianCorrelation {
 					cp.InExceed[t]++
@@ -89,10 +89,14 @@ func RunAndWrite(c Config) error {
 			}
 		}
 		cp.Completed = rep + 1
-		if err = saveCheckpoint(c.CheckpointPath, cp); err != nil {
+		if err := saveCheckpoint(c.CheckpointPath, cp); err != nil {
 			return fmt.Errorf("save checkpoint: %w", err)
 		}
 		p.update(rep+1, c.Permutations, "primary null")
+		return nil
+	})
+	if err != nil {
+		return err
 	}
 	for _, r := range a.Summaries {
 		r.EmpiricalP = float64(cp.EdgeExceed[r.String()]+1) / float64(c.Permutations+1)
@@ -128,20 +132,27 @@ func RunAndWrite(c Config) error {
 			set[k] = true
 		}
 		extra := c.RefinePermutations - c.Permutations
-		for n := cp.RefineCompleted; n < extra; n++ {
-			rep := c.Permutations + n
-			es, _, _ := ws.run(c.Seed, rep, false)
-			for e, v := range es {
-				r := summaryByKey[e.String()]
-				if r != nil && set[e.String()] && ((r.ExpectedSign == "preferred" && v >= r.MedianLog2) || (r.ExpectedSign == "depleted" && v <= r.MedianLog2)) {
-					cp.RefineExceed[e.String()]++
+		// rep continues the same global replicate-index range the primary
+		// phase used (c.Permutations..c.RefinePermutations), exactly as the
+		// pre-Task44 loop's `rep := c.Permutations + n` did - ws.run's own
+		// seed-derivation formula depends on this not restarting at 0.
+		err = runBattery(executorContext(c), executor, "refine", c.Permutations+cp.RefineCompleted, c.Permutations+extra, executorWorkers(c), func(rep int, res ReplicateResult) error {
+			n := rep - c.Permutations
+			for eKey, v := range res.Edges {
+				r := summaryByKey[eKey]
+				if r != nil && set[eKey] && ((r.ExpectedSign == "preferred" && v >= r.MedianLog2) || (r.ExpectedSign == "depleted" && v <= r.MedianLog2)) {
+					cp.RefineExceed[eKey]++
 				}
 			}
 			cp.RefineCompleted = n + 1
-			if err = saveCheckpoint(c.CheckpointPath, cp); err != nil {
+			if err := saveCheckpoint(c.CheckpointPath, cp); err != nil {
 				return err
 			}
 			p.update(c.Permutations+n+1, c.RefinePermutations, "refined null")
+			return nil
+		})
+		if err != nil {
+			return err
 		}
 		for _, k := range cp.RefineCandidates {
 			r := summaryByKey[k]

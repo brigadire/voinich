@@ -2,7 +2,11 @@
 // validation specified by task24.
 package transitionnetwork
 
-import "io"
+import (
+	"context"
+	"io"
+	"time"
+)
 
 type Config struct {
 	CorpusPath, MetadataPath, OutputDir, CheckpointPath                 string
@@ -14,7 +18,21 @@ type Config struct {
 	// IVTFF-sourced MetadataPath file, and computeGraphDiagnostics never
 	// runs its Currier/hand metadata-transfer comparison in that mode (see
 	// load.go/analyze.go and GENERIC_STAGE_APPLICABILITY_AUDIT.md).
-	Generic        bool
+	Generic bool
+
+	// Task44: where each of the primary/refine permutation-null batteries'
+	// replicates execute. Purely operational - excluded from every
+	// scientific fingerprint/checkpoint key - and never changes a single
+	// computed value; see executor.go's runBattery for the one reduction
+	// path every backend (goroutine/process/remote) goes through.
+	Executor                                                string
+	Workers                                                 int
+	RemoteListen, TLSCert, TLSKey, ClientCA, RemoteDenyList string
+	RemoteTimeout                                           time.Duration
+	RemoteRetries                                           int
+	PermutationExecutor                                     PermutationExecutor
+	Context                                                 context.Context
+
 	ProgressWriter io.Writer
 }
 

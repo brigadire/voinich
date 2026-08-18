@@ -142,7 +142,7 @@ func analyze(c Config, pgr *progressReporter) (Analysis, error) {
 		if e = directionPermutations(&a, maxD, c, pgr); e != nil {
 			return a, e
 		}
-		if e = sequencePermutations(&a, c, pgr); e != nil {
+		if e = sequencePermutations(&a, maxD, c, pgr); e != nil {
 			return a, e
 		}
 		if e = profilePermutations(&a, maxD, c, pgr); e != nil {
@@ -152,7 +152,7 @@ func analyze(c Config, pgr *progressReporter) (Analysis, error) {
 			if e = refineDirectionalPermutations(&a, maxD, c, pgr); e != nil {
 				return a, e
 			}
-			if e = refineSequencePermutations(&a, c, pgr); e != nil {
+			if e = refineSequencePermutations(&a, maxD, c, pgr); e != nil {
 				return a, e
 			}
 			if e = refineProfilePermutations(&a, maxD, c, pgr); e != nil {
@@ -720,17 +720,9 @@ func directionPermutations(a *Analysis, maxD int, c Config, pgr *progressReporte
 	}
 	cp.Version = 1
 	cp.CorpusSHA, cp.Seed, cp.Candidates = a.CorpusSHA, c.Seed, len(a.Candidates)
-	lookup := map[string]Candidate{}
-	for _, x := range a.Candidates {
-		if _, ok := obs[x.ID]; ok {
-			lookup[x.ID] = x
-		}
-	}
-	de := buildDirectionEdges(lookup, maxD)
-	for run := cp.Completed; run < c.Permutations; run++ {
-		blocks := PermuteWithinBlocks(a.Blocks, c.Seed+int64(run)*1000003)
-		scores := directionScoresAll(blocks, lookup, de)
-		for id := range lookup {
+	executor := permutationExecutorFor(c, a, maxD)
+	err := runBattery(executorContext(c), executor, "direction", cp.Completed, c.Permutations, executorWorkers(c), func(run int, scores map[string]float64) error {
+		for id := range obs {
 			score := scores[id]
 			cp.DirectionSum[id] += score
 			if score >= obs[id] {
@@ -748,6 +740,10 @@ func directionPermutations(a *Analysis, maxD int, c Config, pgr *progressReporte
 			}
 		}
 		pgr.update(cp.Completed, c.Permutations, "Within-block permutation controls")
+		return nil
+	})
+	if err != nil {
+		return err
 	}
 	for i := range a.Summaries {
 		if a.Summaries[i].Family == "directional" {
@@ -787,17 +783,9 @@ func refineDirectionalPermutations(a *Analysis, maxD int, c Config, pgr *progres
 	if cp.RefineSum == nil {
 		cp.RefineSum = map[string]float64{}
 	}
-	lookup := map[string]Candidate{}
-	for _, x := range a.Candidates {
-		if _, ok := obs[x.ID]; ok {
-			lookup[x.ID] = x
-		}
-	}
-	de := buildDirectionEdges(lookup, maxD)
-	for run := cp.RefineCompleted; run < c.RefinePermutations; run++ {
-		blocks := PermuteWithinBlocks(a.Blocks, c.Seed+int64(run)*1000003)
-		scores := directionScoresAll(blocks, lookup, de)
-		for id := range lookup {
+	executor := permutationExecutorFor(c, a, maxD)
+	err := runBattery(executorContext(c), executor, "refine_direction", cp.RefineCompleted, c.RefinePermutations, executorWorkers(c), func(run int, scores map[string]float64) error {
+		for id := range obs {
 			score := scores[id]
 			cp.RefineSum[id] += score
 			if score >= obs[id] {
@@ -812,6 +800,10 @@ func refineDirectionalPermutations(a *Analysis, maxD int, c Config, pgr *progres
 			}
 		}
 		pgr.update(cp.RefineCompleted, c.RefinePermutations, "Refining pre-specified candidates")
+		return nil
+	})
+	if err != nil {
+		return err
 	}
 	for i := range a.Summaries {
 		if _, ok := obs[a.Summaries[i].CandidateID]; ok {
@@ -879,8 +871,7 @@ func sequenceScores(blocks []Block, trie *sequenceTrie) map[string]float64 {
 	}
 	return out
 }
-func sequencePermutations(a *Analysis, c Config, pgr *progressReporter) error {
-	trie := makeSequenceTrie(a.Candidates)
+func sequencePermutations(a *Analysis, maxD int, c Config, pgr *progressReporter) error {
 	observed := map[string]float64{}
 	for _, x := range a.Sequences {
 		observed[x.CandidateID] = float64(x.PhysicalBlocks) * (1 - x.MaxBlockFraction)
@@ -902,8 +893,8 @@ func sequencePermutations(a *Analysis, c Config, pgr *progressReporter) error {
 	if cp.SequenceSum == nil {
 		cp.SequenceSum = map[string]float64{}
 	}
-	for run := cp.SequenceCompleted; run < c.Permutations; run++ {
-		scores := sequenceScores(PermuteWithinBlocks(a.Blocks, c.Seed+int64(run)*1000003), trie)
+	executor := permutationExecutorFor(c, a, maxD)
+	err := runBattery(executorContext(c), executor, "sequence", cp.SequenceCompleted, c.Permutations, executorWorkers(c), func(run int, scores map[string]float64) error {
 		for id, v := range observed {
 			cp.SequenceSum[id] += scores[id]
 			if scores[id] >= v {
@@ -918,6 +909,10 @@ func sequencePermutations(a *Analysis, c Config, pgr *progressReporter) error {
 			}
 		}
 		pgr.update(cp.SequenceCompleted, c.Permutations, "Sequence permutation controls")
+		return nil
+	})
+	if err != nil {
+		return err
 	}
 	for i := range a.Summaries {
 		if a.Summaries[i].Family == "sequence" {
@@ -930,9 +925,8 @@ func sequencePermutations(a *Analysis, c Config, pgr *progressReporter) error {
 	return nil
 }
 
-func refineSequencePermutations(a *Analysis, c Config, pgr *progressReporter) error {
+func refineSequencePermutations(a *Analysis, maxD int, c Config, pgr *progressReporter) error {
 	selected := map[string]float64{}
-	var candidates []Candidate
 	for _, s := range a.Summaries {
 		if s.Family == "sequence" && s.RawP < .01 && s.EligibleBlocks >= 3 && s.JointClasses >= 2 {
 			selected[s.CandidateID] = float64(s.PhysicalBlocks) * (1 - sequenceConcentration(a.Sequences, s.CandidateID))
@@ -941,12 +935,6 @@ func refineSequencePermutations(a *Analysis, c Config, pgr *progressReporter) er
 	if len(selected) == 0 {
 		return nil
 	}
-	for _, x := range a.Candidates {
-		if _, ok := selected[x.ID]; ok {
-			candidates = append(candidates, x)
-		}
-	}
-	trie := makeSequenceTrie(candidates)
 	cp := checkpoint{}
 	if c.CheckpointPath != "" {
 		if data, e := os.ReadFile(c.CheckpointPath); e == nil {
@@ -964,8 +952,8 @@ func refineSequencePermutations(a *Analysis, c Config, pgr *progressReporter) er
 	if cp.SequenceRefineSum == nil {
 		cp.SequenceRefineSum = map[string]float64{}
 	}
-	for run := cp.SequenceRefineCompleted; run < c.RefinePermutations; run++ {
-		scores := sequenceScores(PermuteWithinBlocks(a.Blocks, c.Seed+int64(run)*1000003), trie)
+	executor := permutationExecutorFor(c, a, maxD)
+	err := runBattery(executorContext(c), executor, "refine_sequence", cp.SequenceRefineCompleted, c.RefinePermutations, executorWorkers(c), func(run int, scores map[string]float64) error {
 		for id, v := range selected {
 			cp.SequenceRefineSum[id] += scores[id]
 			if scores[id] >= v {
@@ -980,6 +968,10 @@ func refineSequencePermutations(a *Analysis, c Config, pgr *progressReporter) er
 			}
 		}
 		pgr.update(cp.SequenceRefineCompleted, c.RefinePermutations, "Refining sequence candidates")
+		return nil
+	})
+	if err != nil {
+		return err
 	}
 	for i := range a.Summaries {
 		if _, ok := selected[a.Summaries[i].CandidateID]; ok {
@@ -1067,9 +1059,8 @@ func profilePermutations(a *Analysis, maxD int, c Config, pgr *progressReporter)
 	if cp.ProfileSum == nil {
 		cp.ProfileSum = map[string]float64{}
 	}
-	ws := newProfileWorkspace()
-	for run := cp.ProfileCompleted; run < c.Permutations; run++ {
-		scores := profilePermutationScores(PermuteWithinBlocks(a.Blocks, c.Seed+int64(run)*1000003), lookup, maxD, ws)
+	executor := permutationExecutorFor(c, a, maxD)
+	err := runBattery(executorContext(c), executor, "profile", cp.ProfileCompleted, c.Permutations, executorWorkers(c), func(run int, scores map[string]float64) error {
 		for id, v := range obs {
 			cp.ProfileSum[id] += scores[id]
 			if scores[id] >= v {
@@ -1084,6 +1075,10 @@ func profilePermutations(a *Analysis, maxD int, c Config, pgr *progressReporter)
 			}
 		}
 		pgr.update(cp.ProfileCompleted, c.Permutations, "Profile permutation controls")
+		return nil
+	})
+	if err != nil {
+		return err
 	}
 	for i := range a.Summaries {
 		if _, ok := obs[a.Summaries[i].CandidateID]; ok {
@@ -1129,9 +1124,8 @@ func refineProfilePermutations(a *Analysis, maxD int, c Config, pgr *progressRep
 	if cp.ProfileRefineSum == nil {
 		cp.ProfileRefineSum = map[string]float64{}
 	}
-	ws := newProfileWorkspace()
-	for run := cp.ProfileRefineCompleted; run < c.RefinePermutations; run++ {
-		scores := profilePermutationScores(PermuteWithinBlocks(a.Blocks, c.Seed+int64(run)*1000003), lookup, maxD, ws)
+	executor := permutationExecutorFor(c, a, maxD)
+	err := runBattery(executorContext(c), executor, "refine_profile", cp.ProfileRefineCompleted, c.RefinePermutations, executorWorkers(c), func(run int, scores map[string]float64) error {
 		for id, v := range obs {
 			cp.ProfileRefineSum[id] += scores[id]
 			if scores[id] >= v {
@@ -1146,6 +1140,10 @@ func refineProfilePermutations(a *Analysis, maxD int, c Config, pgr *progressRep
 			}
 		}
 		pgr.update(cp.ProfileRefineCompleted, c.RefinePermutations, "Refining profile candidates")
+		return nil
+	})
+	if err != nil {
+		return err
 	}
 	for i := range a.Summaries {
 		if _, ok := obs[a.Summaries[i].CandidateID]; ok {

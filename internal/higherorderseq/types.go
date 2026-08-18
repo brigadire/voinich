@@ -9,7 +9,11 @@
 // from the frozen outputs of replicated-local-structure-audit.
 package higherorderseq
 
-import "io"
+import (
+	"context"
+	"io"
+	"time"
+)
 
 // Config holds every CLI-controlled input to RunAndWrite.
 type Config struct {
@@ -31,6 +35,19 @@ type Config struct {
 	// hands/Currier states".
 	Generic        bool
 	ProgressWriter io.Writer
+
+	// Task44: where each frozen candidate's whole Part A-L computation
+	// executes. Purely operational - excluded from every scientific
+	// fingerprint/checkpoint key and never changes a single computed value;
+	// see executor.go's runCandidateBattery for the one dispatch path every
+	// backend (goroutine/process/remote) goes through.
+	Executor                                                string
+	Workers                                                 int
+	RemoteListen, TLSCert, TLSKey, ClientCA, RemoteDenyList string
+	RemoteTimeout                                           time.Duration
+	RemoteRetries                                           int
+	CandidateExecutor                                       CandidateExecutor
+	Context                                                 context.Context
 }
 
 // secondaryPermutations returns the fixed 1/10th ratio task22 section 68

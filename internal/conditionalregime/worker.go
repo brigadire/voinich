@@ -11,10 +11,15 @@ import (
 	"strings"
 	"sync"
 
+	"zcore.dev/voinich/internal/higherorderseq"
 	"zcore.dev/voinich/internal/normalization"
 	"zcore.dev/voinich/internal/normalizationcompare"
+	"zcore.dev/voinich/internal/positionalcontinuation"
+	"zcore.dev/voinich/internal/replicatedlocalaudit"
 	"zcore.dev/voinich/internal/sequenceanalyze"
 	"zcore.dev/voinich/internal/structuralprojection"
+	"zcore.dev/voinich/internal/tokenrelationvalidation"
+	"zcore.dev/voinich/internal/transitionnetwork"
 )
 
 func writeMessage(w *bufio.Writer, m protocolMessage) error {
@@ -198,6 +203,7 @@ func (w structuralComputer) compute(id JobID) (float64, json.RawMessage, error) 
 	b, err := json.Marshal(r)
 	return 0, b, err
 }
+
 // normalizationComputer serves the Task42 normalization_compare_baseline
 // job type: one random-baseline trial per (threshold label, run index),
 // identical to the computation normalization-compare's own default
@@ -249,6 +255,235 @@ func newNormalizationComputer(initMsg protocolMessage) (normalizationComputer, e
 		return normalizationComputer{}, fmt.Errorf("classes.yaml meta does not match coordinator's declared parameters")
 	}
 	return normalizationComputer{classes: classes, corpus: corpus, seed: initMsg.Seed, params: sequenceanalyze.DefaultParameters()}, nil
+}
+
+// tokenRelationComputer serves the Task44 token_relation_permutation job
+// type: one permutation replicate per (family, run index), identical to
+// the computation token-relation-validate's own default in-process
+// executor runs, just dispatched by JobID instead of runBattery's pool.
+type tokenRelationComputer struct {
+	blocks     []tokenrelationvalidation.Block
+	candidates []tokenrelationvalidation.Candidate
+	maxD       int
+	seed       int64
+}
+
+func (w tokenRelationComputer) compute(id JobID) (float64, json.RawMessage, error) {
+	if id.Stage != "token_relation_permutation" {
+		return 0, nil, fmt.Errorf("unknown token-relation job stage %q", id.Stage)
+	}
+	scores, err := tokenrelationvalidation.ComputeReplicate(w.blocks, w.candidates, w.maxD, w.seed, id.Combination, id.ReplicateIndex)
+	if err != nil {
+		return 0, nil, err
+	}
+	b, err := json.Marshal(scores)
+	return 0, b, err
+}
+
+// newTokenRelationComputer reconstructs the exact Blocks/Candidates/MaxD a
+// local analyze() run would have from initMsg's (already locally-resolved,
+// for remote mode) CorpusPath/TokenMetadataMap/DiscoveryDir, verifying the
+// coordinator's declared Fingerprint before trusting any of it.
+func newTokenRelationComputer(initMsg protocolMessage) (tokenRelationComputer, error) {
+	cfg := tokenrelationvalidation.Config{
+		CorpusPath: initMsg.CorpusPath, MetadataPath: initMsg.TokenMetadataMap, DiscoveryDir: initMsg.DiscoveryDir,
+		Generic: initMsg.Generic, Permutations: initMsg.Permutations, RefinePermutations: initMsg.RefinePermutations, Seed: initMsg.Seed,
+	}
+	fp, err := tokenrelationvalidation.Fingerprint(cfg)
+	if err != nil || fp != initMsg.Fingerprint {
+		return tokenRelationComputer{}, fmt.Errorf("input/config fingerprint mismatch: worker loaded different input or parameters")
+	}
+	blocks, candidates, maxD, err := tokenrelationvalidation.LoadForDistribution(cfg)
+	if err != nil {
+		return tokenRelationComputer{}, fmt.Errorf("reconstruct blocks/candidates: %w", err)
+	}
+	return tokenRelationComputer{blocks: blocks, candidates: candidates, maxD: maxD, seed: initMsg.Seed}, nil
+}
+
+// transitionNetworkComputer serves the Task44
+// transition_network_permutation job type: one permutation replicate per
+// (phase, rep index), identical to the computation
+// transition-network-validate's own default in-process executor runs.
+// PermWorkspace.run is not safe for concurrent use (it reuses scratch
+// buffers - see permworkspace.go), so compute serializes access to it.
+type transitionNetworkComputer struct {
+	ws   *transitionnetwork.PermWorkspace
+	seed int64
+	mu   *sync.Mutex
+}
+
+func (w transitionNetworkComputer) compute(id JobID) (float64, json.RawMessage, error) {
+	if id.Stage != "transition_network_permutation" {
+		return 0, nil, fmt.Errorf("unknown transition-network job stage %q", id.Stage)
+	}
+	w.mu.Lock()
+	defer w.mu.Unlock()
+	r, err := transitionnetwork.ComputeReplicate(w.ws, w.seed, id.Combination, id.ReplicateIndex)
+	if err != nil {
+		return 0, nil, err
+	}
+	b, err := json.Marshal(r)
+	return 0, b, err
+}
+
+// newTransitionNetworkComputer reconstructs the exact PermWorkspace a
+// local RunAndWrite run would have from initMsg's (already
+// locally-resolved, for remote mode) CorpusPath/TokenMetadataMap,
+// verifying the coordinator's declared Fingerprint before trusting any of
+// it.
+func newTransitionNetworkComputer(initMsg protocolMessage) (transitionNetworkComputer, error) {
+	cfg := transitionnetwork.Config{
+		CorpusPath: initMsg.CorpusPath, MetadataPath: initMsg.TokenMetadataMap, Generic: initMsg.Generic,
+		MinTokenCount: initMsg.MinTokenCount, MinBlockTokenCount: initMsg.MinBlockTokens,
+		Permutations: initMsg.Permutations, RefinePermutations: initMsg.RefinePermutations, Seed: initMsg.Seed,
+	}
+	fp, err := transitionnetwork.Fingerprint(cfg)
+	if err != nil || fp != initMsg.Fingerprint {
+		return transitionNetworkComputer{}, fmt.Errorf("input/config fingerprint mismatch: worker loaded different input or parameters")
+	}
+	ws, _, _, err := transitionnetwork.LoadForDistribution(cfg)
+	if err != nil {
+		return transitionNetworkComputer{}, fmt.Errorf("reconstruct permutation workspace: %w", err)
+	}
+	return transitionNetworkComputer{ws: ws, seed: initMsg.Seed, mu: &sync.Mutex{}}, nil
+}
+
+// replicatedLocalAuditComputer serves the Task44 replicated_local_null job
+// type: one permutation replicate per (phase, run index) across the
+// distance/shuffle/markov null batteries, identical to the computation
+// replicated-local-structure-audit's own default in-process executor runs.
+type replicatedLocalAuditComputer struct {
+	state *replicatedlocalaudit.DistributionState
+	seed  int64
+}
+
+func (w replicatedLocalAuditComputer) compute(id JobID) (float64, json.RawMessage, error) {
+	if id.Stage != "replicated_local_null" {
+		return 0, nil, fmt.Errorf("unknown replicated-local-audit job stage %q", id.Stage)
+	}
+	r, err := replicatedlocalaudit.ComputeReplicate(w.state, w.seed, id.Combination, id.ReplicateIndex)
+	if err != nil {
+		return 0, nil, err
+	}
+	b, err := json.Marshal(r)
+	return 0, b, err
+}
+
+// newReplicatedLocalAuditComputer reconstructs the exact distributionState
+// a local RunAndWrite run would have from initMsg's (already
+// locally-resolved, for remote mode) CorpusPath/TokenMetadataMap/
+// RelationDir/DiscoveryDir, verifying the coordinator's declared
+// Fingerprint before trusting any of it.
+func newReplicatedLocalAuditComputer(initMsg protocolMessage) (replicatedLocalAuditComputer, error) {
+	cfg := replicatedlocalaudit.Config{
+		CorpusPath: initMsg.CorpusPath, MetadataPath: initMsg.TokenMetadataMap,
+		RelationDir: initMsg.RelationDir, DiscoveryDir: initMsg.DiscoveryDir,
+		Generic: initMsg.Generic, Permutations: initMsg.Permutations, Seed: initMsg.Seed,
+	}
+	fp, err := replicatedlocalaudit.Fingerprint(cfg)
+	if err != nil || fp != initMsg.Fingerprint {
+		return replicatedLocalAuditComputer{}, fmt.Errorf("input/config fingerprint mismatch: worker loaded different input or parameters")
+	}
+	state, _, err := replicatedlocalaudit.LoadForDistribution(cfg)
+	if err != nil {
+		return replicatedLocalAuditComputer{}, fmt.Errorf("reconstruct distribution state: %w", err)
+	}
+	return replicatedLocalAuditComputer{state: state, seed: initMsg.Seed}, nil
+}
+
+// higherOrderComputer serves the Task44 higher_order_candidate job type:
+// one job per whole frozen candidate (never one CMI permutation - see
+// higherorderseq.CandidateExecutor's doc comment for why that RNG stream
+// can never be split), identical to the computation
+// higher-order-sequence-validate's own default in-process executor runs.
+type higherOrderComputer struct {
+	candidates   []higherorderseq.Candidate
+	blocks       []higherorderseq.Block
+	lineLength   map[string]int
+	relatives    map[string][]string
+	permutations int
+	seed         int64
+}
+
+func (w higherOrderComputer) compute(id JobID) (float64, json.RawMessage, error) {
+	if id.Stage != "higher_order_candidate" {
+		return 0, nil, fmt.Errorf("unknown higher-order-sequence job stage %q", id.Stage)
+	}
+	r, err := higherorderseq.ComputeCandidate(w.candidates, w.blocks, w.lineLength, w.relatives, w.permutations, w.seed, id.Combination)
+	if err != nil {
+		return 0, nil, err
+	}
+	b, err := json.Marshal(r)
+	return 0, b, err
+}
+
+// newHigherOrderComputer reconstructs the exact candidates/blocks/
+// lineLength/relatives a local RunAndWrite run would have from initMsg's
+// (already locally-resolved, for remote mode) CorpusPath/TokenMetadataMap/
+// AuditDir/DiscoveryDir, verifying the coordinator's declared Fingerprint
+// before trusting any of it.
+func newHigherOrderComputer(initMsg protocolMessage) (higherOrderComputer, error) {
+	cfg := higherorderseq.Config{
+		CorpusPath: initMsg.CorpusPath, TokenMetadataMap: initMsg.TokenMetadataMap,
+		AuditDir: initMsg.AuditDir, DiscoveryDir: initMsg.DiscoveryDir,
+		Generic: initMsg.Generic, Permutations: initMsg.Permutations, Seed: initMsg.Seed,
+	}
+	fp, err := higherorderseq.Fingerprint(cfg)
+	if err != nil || fp != initMsg.Fingerprint {
+		return higherOrderComputer{}, fmt.Errorf("input/config fingerprint mismatch: worker loaded different input or parameters")
+	}
+	candidates, blocks, lineLength, relatives, err := higherorderseq.LoadForDistribution(cfg)
+	if err != nil {
+		return higherOrderComputer{}, fmt.Errorf("reconstruct candidates/blocks: %w", err)
+	}
+	return higherOrderComputer{candidates: candidates, blocks: blocks, lineLength: lineLength, relatives: relatives, permutations: initMsg.Permutations, seed: initMsg.Seed}, nil
+}
+
+// positionalContinuationComputer serves the Task44
+// positional_continuation_battery job type: one job per whole named
+// battery (never one permutation within it - see
+// positionalcontinuation.BatteryExecutor's doc comment for why each
+// battery's RNG stream can never be split), identical to the computation
+// positional-continuation-validate's own default in-process executor runs.
+type positionalContinuationComputer struct {
+	sAiinOccs    []positionalcontinuation.SAiinOccurrence
+	aiinOccs     []positionalcontinuation.AiinOccurrence
+	permutations int
+	seed         int64
+}
+
+func (w positionalContinuationComputer) compute(id JobID) (float64, json.RawMessage, error) {
+	if id.Stage != "positional_continuation_battery" {
+		return 0, nil, fmt.Errorf("unknown positional-continuation job stage %q", id.Stage)
+	}
+	r, err := positionalcontinuation.ComputeBattery(w.sAiinOccs, w.aiinOccs, id.Combination, w.permutations, w.seed)
+	if err != nil {
+		return 0, nil, err
+	}
+	b, err := json.Marshal(r)
+	return 0, b, err
+}
+
+// newPositionalContinuationComputer reconstructs the exact SAiinOccurrences/
+// AiinOccurrences a local RunAndWrite run would have from initMsg's
+// (already locally-resolved, for remote mode) CorpusPath/TokenMetadataMap/
+// HigherOrderDir, verifying the coordinator's declared Fingerprint before
+// trusting any of it.
+func newPositionalContinuationComputer(initMsg protocolMessage) (positionalContinuationComputer, error) {
+	cfg := positionalcontinuation.Config{
+		CorpusPath: initMsg.CorpusPath, TokenMetadataMap: initMsg.TokenMetadataMap,
+		HigherOrderDir: initMsg.HigherOrderDir, Generic: initMsg.Generic,
+		Permutations: initMsg.Permutations, Seed: initMsg.Seed,
+	}
+	fp, err := positionalcontinuation.Fingerprint(cfg)
+	if err != nil || fp != initMsg.Fingerprint {
+		return positionalContinuationComputer{}, fmt.Errorf("input/config fingerprint mismatch: worker loaded different input or parameters")
+	}
+	sAiinOccs, aiinOccs, err := positionalcontinuation.LoadForDistribution(cfg)
+	if err != nil {
+		return positionalContinuationComputer{}, fmt.Errorf("reconstruct occurrences: %w", err)
+	}
+	return positionalContinuationComputer{sAiinOccs: sAiinOccs, aiinOccs: aiinOccs, permutations: initMsg.Permutations, seed: initMsg.Seed}, nil
 }
 
 func structuralConfigFromMessage(m protocolMessage) structuralprojection.Config {
@@ -337,6 +572,36 @@ func RunWorker(ctx context.Context, in io.Reader, out io.Writer) error {
 		computer = structuralComputer{w}
 	case "normalization_compare":
 		w, e := newNormalizationComputer(initMsg)
+		if e != nil {
+			return fail("%v", e)
+		}
+		computer = w
+	case "token_relation_permutation":
+		w, e := newTokenRelationComputer(initMsg)
+		if e != nil {
+			return fail("%v", e)
+		}
+		computer = w
+	case "transition_network_permutation":
+		w, e := newTransitionNetworkComputer(initMsg)
+		if e != nil {
+			return fail("%v", e)
+		}
+		computer = w
+	case "replicated_local_null":
+		w, e := newReplicatedLocalAuditComputer(initMsg)
+		if e != nil {
+			return fail("%v", e)
+		}
+		computer = w
+	case "higher_order_candidate":
+		w, e := newHigherOrderComputer(initMsg)
+		if e != nil {
+			return fail("%v", e)
+		}
+		computer = w
+	case "positional_continuation_battery":
+		w, e := newPositionalContinuationComputer(initMsg)
 		if e != nil {
 			return fail("%v", e)
 		}

@@ -122,23 +122,56 @@ func RunAndWrite(c Config) error {
 		return err
 	}
 
-	var lineResult, blockResult positionalTestResult
-	if err := runPart(4, "Part E-G: line-position permutation test (I(X;position), entropy, chey effect)", "postest_line", func() {
-		lineResult = runPositionalTests(state.SAiinOccurrences, "line_position", lineCategories, c.Permutations, seedFor(c.Seed, "line_position"))
-		state.PositionDependence = append(nonVariable(state.PositionDependence, "line_position"), lineResult.Dependence)
-		state.PositionalEntropy = append(nonVariableEntropy(state.PositionalEntropy, "line_position"), lineResult.Entropy...)
-		state.CheyEffect = append(nonVariableChey(state.CheyEffect, "line_position"), lineResult.CheyEffect...)
-	}); err != nil {
-		return err
+	// Task44: these 5 batteries (Part E-G line/block-position permutation
+	// tests, Part I stratified predecessor tests, Part N boundary distance)
+	// are the ones the audit proved independent - each already builds its
+	// own workspace/*rand.Rand once and loops internally, so the unit of
+	// distributed work is a whole battery. None of the parts between them
+	// in the original sequential order (aiin_control, model_lobo,
+	// cross_block, jackknife, line_vs_block) reads a stratified/boundary
+	// result, and classify_write (the only part that reads everything) runs
+	// last regardless - so running all 5 together, before aiin_control,
+	// changes only wall-clock order, never a scientific value.
+	p.begin(4, "Part E-G, I, N: line/block-position permutation tests, stratified predecessor tests, boundary distance (5 independently distributable batteries)")
+	pendingBatteries := make([]string, 0, len(batteryNames))
+	for _, name := range batteryNames {
+		if !cp.PartsDone[name] {
+			pendingBatteries = append(pendingBatteries, name)
+		}
 	}
-	if err := runPart(5, "Part E-G: block-position permutation test (I(X;position), entropy, chey effect)", "postest_block", func() {
-		blockResult = runPositionalTests(state.SAiinOccurrences, "block_position_coarse", blockCoarseCategories, c.Permutations, seedFor(c.Seed, "block_position"))
-		state.PositionDependence = append(nonVariable(state.PositionDependence, "block_position_coarse"), blockResult.Dependence)
-		state.PositionalEntropy = append(nonVariableEntropy(state.PositionalEntropy, "block_position_coarse"), blockResult.Entropy...)
-		state.CheyEffect = append(nonVariableChey(state.CheyEffect, "block_position_coarse"), blockResult.CheyEffect...)
-	}); err != nil {
-		return err
+	if len(pendingBatteries) > 0 {
+		executor := batteryExecutorFor(c, state.SAiinOccurrences, state.AiinOccurrences)
+		done := len(batteryNames) - len(pendingBatteries)
+		err := runBatteryDispatch(executorContext(c), executor, pendingBatteries, executorWorkers(c), func(_ int, battery string, r BatteryResult) error {
+			switch battery {
+			case "postest_line":
+				state.PositionDependence = append(nonVariable(state.PositionDependence, "line_position"), r.Dependence)
+				state.PositionalEntropy = append(nonVariableEntropy(state.PositionalEntropy, "line_position"), r.Entropy...)
+				state.CheyEffect = append(nonVariableChey(state.CheyEffect, "line_position"), r.CheyEffect...)
+			case "postest_block":
+				state.PositionDependence = append(nonVariable(state.PositionDependence, "block_position_coarse"), r.Dependence)
+				state.PositionalEntropy = append(nonVariableEntropy(state.PositionalEntropy, "block_position_coarse"), r.Entropy...)
+				state.CheyEffect = append(nonVariableChey(state.CheyEffect, "block_position_coarse"), r.CheyEffect...)
+			case "stratified_line":
+				state.StratifiedPredecessor = append(nonVariableStrat(state.StratifiedPredecessor, "line_position"), r.Stratified)
+			case "stratified_block":
+				state.StratifiedPredecessor = append(nonVariableStrat(state.StratifiedPredecessor, "block_position_coarse"), r.Stratified)
+			case "boundary":
+				state.BoundaryDistance = r.Boundary
+			}
+			cp.PartsDone[battery] = true
+			if err := checkpoint(); err != nil {
+				return fmt.Errorf("save checkpoint: %w", err)
+			}
+			done++
+			p.update(done, len(batteryNames), "Part E-G, I, N")
+			return nil
+		})
+		if err != nil {
+			return err
+		}
 	}
+	p.update(len(batteryNames), len(batteryNames), "Part E-G, I, N")
 
 	if err := runPart(6, "Part H: aiin-only positional control", "aiin_control", func() {
 		byVar := map[string][]CheyEffectRow{}
@@ -146,19 +179,6 @@ func RunAndWrite(c Config) error {
 			byVar[ce.PositionVariable] = append(byVar[ce.PositionVariable], ce)
 		}
 		state.AiinControl = buildAiinControlRows(state.AiinOccurrences, byVar)
-	}); err != nil {
-		return err
-	}
-
-	if err := runPart(7, "Part I: stratified predecessor test (line position)", "stratified_line", func() {
-		row := runStratifiedPredecessorTest(state.AiinOccurrences, "line_position", c.Permutations, seedFor(c.Seed, "stratified_line"))
-		state.StratifiedPredecessor = append(nonVariableStrat(state.StratifiedPredecessor, "line_position"), row)
-	}); err != nil {
-		return err
-	}
-	if err := runPart(8, "Part I: stratified predecessor test (block position)", "stratified_block", func() {
-		row := runStratifiedPredecessorTest(state.AiinOccurrences, "block_position_coarse", c.Permutations, seedFor(c.Seed, "stratified_block"))
-		state.StratifiedPredecessor = append(nonVariableStrat(state.StratifiedPredecessor, "block_position_coarse"), row)
 	}); err != nil {
 		return err
 	}
@@ -183,12 +203,6 @@ func RunAndWrite(c Config) error {
 
 	if err := runPart(12, "Part M: line vs block position", "line_vs_block", func() {
 		state.LineVsBlock, state.LineVsBlockCorrelation, state.LineVsBlockSource = buildLineVsBlockRows(state.SAiinOccurrences)
-	}); err != nil {
-		return err
-	}
-
-	if err := runPart(13, "Part N: boundary distance", "boundary", func() {
-		state.BoundaryDistance = buildBoundaryDistanceRows(state.SAiinOccurrences, c.Permutations, seedFor(c.Seed, "boundary"))
 	}); err != nil {
 		return err
 	}

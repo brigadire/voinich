@@ -1,6 +1,10 @@
 package replicatedlocalaudit
 
-import "io"
+import (
+	"context"
+	"io"
+	"time"
+)
 
 type Config struct {
 	CorpusPath, MetadataPath, RelationDir, DiscoveryDir, OutputDir, CheckpointPath string
@@ -12,9 +16,32 @@ type Config struct {
 	// IVTFF-sourced MetadataPath file, "replicate" status never claims a
 	// Currier/hand-conditioned finding, and RelationDir is expected to hold
 	// stage 23's own generic-mode output (see load.go/run.go/write.go).
-	Generic        bool
+	Generic bool
+
+	// Task44: where each of the distance/shuffle/markov null batteries'
+	// replicates execute. Purely operational - excluded from every
+	// scientific fingerprint/checkpoint key - and never changes a single
+	// computed value; see executor.go's runBattery for the one reduction
+	// path every backend (goroutine/process/remote) goes through, which is
+	// also what keeps cp.Distance's per-run slice order correct regardless
+	// of completion order (buildDistanceResults' jackknife reads it
+	// positionally by run index).
+	Executor                                                string
+	Workers                                                 int
+	RemoteListen, TLSCert, TLSKey, ClientCA, RemoteDenyList string
+	RemoteTimeout                                           time.Duration
+	RemoteRetries                                           int
+	PermutationExecutor                                     PermutationExecutor
+	Context                                                 context.Context
+
 	ProgressWriter io.Writer
 }
+
+// matchedVocab is the frequency-matched substitute-token pool for one
+// distance candidate's frozen A/B pair (Task44: moved from a RunAndWrite
+// local type to package scope so DistributionState, built once and shared
+// by every backend, can hold it).
+type matchedVocab struct{ a, b []string }
 
 type token struct {
 	Text, Line, Currier, Hand, Joint, Block string

@@ -144,9 +144,9 @@ func loadCorpusAndBlocks(corpusPath, metadataPath string, generic bool) (tokens 
 	return tokens, blocks, lineLength, corpusSHA, metaSHA, nil
 }
 
-// higherOrderInputFiles are the frozen higher-order-sequence-validate outputs
+// HigherOrderDirFiles are the frozen higher-order-sequence-validate outputs
 // this program reads as read-only context (never recomputed).
-var higherOrderInputFiles = []string{
+var HigherOrderDirFiles = []string{
 	"higher_order_candidate_inventory.tsv",
 	"higher_order_occurrences.tsv",
 	"conditional_probability_by_block.tsv",
@@ -169,7 +169,7 @@ var higherOrderInputFiles = []string{
 // reproducibility record change the moment any upstream frozen input changes.
 func higherOrderFingerprint(dir string) (string, error) {
 	h := sha256.New()
-	for _, name := range higherOrderInputFiles {
+	for _, name := range HigherOrderDirFiles {
 		b, err := os.ReadFile(filepath.Join(dir, name))
 		if err != nil {
 			return "", err

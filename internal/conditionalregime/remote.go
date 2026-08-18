@@ -24,10 +24,15 @@ import (
 	"sync/atomic"
 	"time"
 
+	"zcore.dev/voinich/internal/higherorderseq"
 	"zcore.dev/voinich/internal/normalization"
 	"zcore.dev/voinich/internal/normalizationcompare"
 	"zcore.dev/voinich/internal/pki"
+	"zcore.dev/voinich/internal/positionalcontinuation"
+	"zcore.dev/voinich/internal/replicatedlocalaudit"
 	"zcore.dev/voinich/internal/structuralprojection"
+	"zcore.dev/voinich/internal/tokenrelationvalidation"
+	"zcore.dev/voinich/internal/transitionnetwork"
 )
 
 // Task34 mTLS transport.
@@ -371,6 +376,344 @@ func newNormalizationRemotePool(c normalizationcompare.Config, classes normaliza
 	p := &remotePool{fingerprint: fingerprint, corpusHash: names["corpus"], inputs: inputs, inputNames: names, host: host, timeout: c.RemoteTimeout, retries: c.RemoteRetries,
 		pending: map[JobID]*pendingJob{}, leases: map[string]*activeLease{}, serveDone: make(chan error, 1), stopSweep: make(chan struct{}),
 		cfgMsg: normalizationInit(c, classes.Meta.MinTokenCount, classes.Meta.SingletonMode, fingerprint)}
+	p.listener = listener
+	p.srv = &http.Server{Handler: p.routes(), ReadHeaderTimeout: 5 * time.Second}
+	go func() { p.serveDone <- p.srv.Serve(listener) }()
+	go p.sweepLoop()
+	return p, nil
+}
+
+// newTokenRelationRemotePool is the Task44 coordinator for the
+// token_relation_permutation job type: same lease queue/mTLS listener as
+// every other remote pool, staging the corpus, the token metadata map
+// (skipped in generic mode), and every discovery-dir file
+// tokenrelationvalidation.LoadForDistribution needs, each once by content
+// hash. Discovery files are staged under keys prefixed "discovery:" so a
+// connecting worker can tell them apart from "corpus"/"metadata" and
+// reconstruct a local directory with the original filenames (see
+// runWorkerGeneration's "token_relation_permutation" case) - loadCandidates
+// itself is never touched, it just gets handed a directory that looks
+// identical to the coordinator's own.
+func newTokenRelationRemotePool(c tokenrelationvalidation.Config, fingerprint string) (*remotePool, error) {
+	if c.RemoteListen == "" {
+		return nil, fmt.Errorf("remote executor requires -remote-listen")
+	}
+	if c.TLSCert == "" || c.TLSKey == "" || c.ClientCA == "" {
+		return nil, fmt.Errorf("remote executor requires -tls-cert, -tls-key and -client-ca")
+	}
+	paths := map[string]string{"corpus": c.CorpusPath}
+	if !c.Generic {
+		paths["metadata"] = c.MetadataPath
+	}
+	for _, name := range tokenrelationvalidation.RequiredDiscoveryFiles {
+		paths["discovery:"+name] = filepath.Join(c.DiscoveryDir, name)
+	}
+	for _, name := range tokenrelationvalidation.OptionalDiscoveryFiles {
+		p := filepath.Join(c.DiscoveryDir, name)
+		if _, err := os.Stat(p); err == nil {
+			paths["discovery:"+name] = p
+		}
+	}
+	inputs := map[string][]byte{}
+	names := map[string]string{}
+	for name, path := range paths {
+		b, err := os.ReadFile(path)
+		if err != nil {
+			return nil, err
+		}
+		sum := fmt.Sprintf("%x", sha256.Sum256(b))
+		inputs[sum] = b
+		names[name] = sum
+	}
+	deny, err := pki.LoadDenyList(c.RemoteDenyList)
+	if err != nil {
+		return nil, err
+	}
+	tlsCfg, err := pki.CoordinatorServerTLSConfig(c.TLSCert, c.TLSKey, c.ClientCA, deny)
+	if err != nil {
+		return nil, err
+	}
+	listener, err := tls.Listen("tcp", c.RemoteListen, tlsCfg)
+	if err != nil {
+		return nil, fmt.Errorf("listen %s: %w", c.RemoteListen, err)
+	}
+	host, _ := os.Hostname()
+	p := &remotePool{fingerprint: fingerprint, corpusHash: names["corpus"], inputs: inputs, inputNames: names, host: host, timeout: c.RemoteTimeout, retries: c.RemoteRetries,
+		pending: map[JobID]*pendingJob{}, leases: map[string]*activeLease{}, serveDone: make(chan error, 1), stopSweep: make(chan struct{}),
+		cfgMsg: tokenRelationInit(c, fingerprint)}
+	p.listener = listener
+	p.srv = &http.Server{Handler: p.routes(), ReadHeaderTimeout: 5 * time.Second}
+	go func() { p.serveDone <- p.srv.Serve(listener) }()
+	go p.sweepLoop()
+	return p, nil
+}
+
+// reconstructTokenRelationDiscoveryDir rebuilds a directory holding every
+// staged discovery file under its *original* filename (loadCandidates
+// hardcodes those names, so a worker's cache - which stores every staged
+// blob under its content hash - cannot be handed to it directly). It
+// hardlinks rather than copies where possible, falling back to a copy
+// across filesystems; every file is already staged under cacheDir before
+// this runs (stageInputs), so this never itself fetches anything.
+func reconstructTokenRelationDiscoveryDir(cacheDir string, inputs map[string]string) (string, error) {
+	return reconstructNamedDir(cacheDir, inputs, "discovery:", "token-relation-discovery")
+}
+
+// reconstructNamedDir rebuilds a directory holding every staged input file
+// whose key carries the given prefix, restored under its *original*
+// filename (the part of the key after the prefix). Some loaders
+// (loadCandidates, replicatedlocalaudit's loadInputs/
+// loadFrozenDistanceDiagnostics) hardcode specific filenames within a
+// directory, so a worker's cache - which stores every staged blob under
+// its content hash - cannot be handed to them directly. Hardlinks where
+// possible, falling back to a copy across filesystems; every file is
+// already staged under cacheDir before this runs (stageInputs), so this
+// never itself fetches anything.
+func reconstructNamedDir(cacheDir string, inputs map[string]string, prefix, dirName string) (string, error) {
+	dir := filepath.Join(cacheDir, dirName)
+	if err := os.MkdirAll(dir, 0755); err != nil {
+		return "", err
+	}
+	for key, hash := range inputs {
+		name, ok := strings.CutPrefix(key, prefix)
+		if !ok {
+			continue
+		}
+		src := filepath.Join(cacheDir, hash)
+		dst := filepath.Join(dir, name)
+		_ = os.Remove(dst)
+		if err := os.Link(src, dst); err != nil {
+			b, err := os.ReadFile(src)
+			if err != nil {
+				return "", err
+			}
+			if err := os.WriteFile(dst, b, 0644); err != nil {
+				return "", err
+			}
+		}
+	}
+	return dir, nil
+}
+
+// newTransitionNetworkRemotePool is the Task44 coordinator for the
+// transition_network_permutation job type: same lease queue/mTLS listener
+// as every other remote pool, staging the corpus and (unless Generic) the
+// token metadata map once by content hash.
+func newTransitionNetworkRemotePool(c transitionnetwork.Config, fingerprint string) (*remotePool, error) {
+	if c.RemoteListen == "" {
+		return nil, fmt.Errorf("remote executor requires -remote-listen")
+	}
+	if c.TLSCert == "" || c.TLSKey == "" || c.ClientCA == "" {
+		return nil, fmt.Errorf("remote executor requires -tls-cert, -tls-key and -client-ca")
+	}
+	paths := map[string]string{"corpus": c.CorpusPath}
+	if !c.Generic {
+		paths["metadata"] = c.MetadataPath
+	}
+	inputs := map[string][]byte{}
+	names := map[string]string{}
+	for name, path := range paths {
+		b, err := os.ReadFile(path)
+		if err != nil {
+			return nil, err
+		}
+		sum := fmt.Sprintf("%x", sha256.Sum256(b))
+		inputs[sum] = b
+		names[name] = sum
+	}
+	deny, err := pki.LoadDenyList(c.RemoteDenyList)
+	if err != nil {
+		return nil, err
+	}
+	tlsCfg, err := pki.CoordinatorServerTLSConfig(c.TLSCert, c.TLSKey, c.ClientCA, deny)
+	if err != nil {
+		return nil, err
+	}
+	listener, err := tls.Listen("tcp", c.RemoteListen, tlsCfg)
+	if err != nil {
+		return nil, fmt.Errorf("listen %s: %w", c.RemoteListen, err)
+	}
+	host, _ := os.Hostname()
+	p := &remotePool{fingerprint: fingerprint, corpusHash: names["corpus"], inputs: inputs, inputNames: names, host: host, timeout: c.RemoteTimeout, retries: c.RemoteRetries,
+		pending: map[JobID]*pendingJob{}, leases: map[string]*activeLease{}, serveDone: make(chan error, 1), stopSweep: make(chan struct{}),
+		cfgMsg: transitionNetworkInit(c, fingerprint)}
+	p.listener = listener
+	p.srv = &http.Server{Handler: p.routes(), ReadHeaderTimeout: 5 * time.Second}
+	go func() { p.serveDone <- p.srv.Serve(listener) }()
+	go p.sweepLoop()
+	return p, nil
+}
+
+// newReplicatedLocalAuditRemotePool is the Task44 coordinator for the
+// replicated_local_null job type: same lease queue/mTLS listener as every
+// other remote pool, staging the corpus, the token metadata map (skipped in
+// generic mode), and every relation-dir/discovery-dir file
+// replicatedlocalaudit.LoadForDistribution needs, each once by content
+// hash. Relation/discovery files are staged under keys prefixed
+// "relation:"/"discovery:" so a connecting worker can reconstruct both
+// directories under their original filenames (see runWorkerGeneration's
+// "replicated_local_null" case).
+func newReplicatedLocalAuditRemotePool(c replicatedlocalaudit.Config, fingerprint string) (*remotePool, error) {
+	if c.RemoteListen == "" {
+		return nil, fmt.Errorf("remote executor requires -remote-listen")
+	}
+	if c.TLSCert == "" || c.TLSKey == "" || c.ClientCA == "" {
+		return nil, fmt.Errorf("remote executor requires -tls-cert, -tls-key and -client-ca")
+	}
+	paths := map[string]string{"corpus": c.CorpusPath}
+	if !c.Generic {
+		paths["metadata"] = c.MetadataPath
+	}
+	for _, name := range replicatedlocalaudit.RelationDirFiles {
+		paths["relation:"+name] = filepath.Join(c.RelationDir, name)
+	}
+	for _, name := range replicatedlocalaudit.DiscoveryDirFiles {
+		paths["discovery:"+name] = filepath.Join(c.DiscoveryDir, name)
+	}
+	inputs := map[string][]byte{}
+	names := map[string]string{}
+	for name, path := range paths {
+		b, err := os.ReadFile(path)
+		if err != nil {
+			return nil, err
+		}
+		sum := fmt.Sprintf("%x", sha256.Sum256(b))
+		inputs[sum] = b
+		names[name] = sum
+	}
+	deny, err := pki.LoadDenyList(c.RemoteDenyList)
+	if err != nil {
+		return nil, err
+	}
+	tlsCfg, err := pki.CoordinatorServerTLSConfig(c.TLSCert, c.TLSKey, c.ClientCA, deny)
+	if err != nil {
+		return nil, err
+	}
+	listener, err := tls.Listen("tcp", c.RemoteListen, tlsCfg)
+	if err != nil {
+		return nil, fmt.Errorf("listen %s: %w", c.RemoteListen, err)
+	}
+	host, _ := os.Hostname()
+	p := &remotePool{fingerprint: fingerprint, corpusHash: names["corpus"], inputs: inputs, inputNames: names, host: host, timeout: c.RemoteTimeout, retries: c.RemoteRetries,
+		pending: map[JobID]*pendingJob{}, leases: map[string]*activeLease{}, serveDone: make(chan error, 1), stopSweep: make(chan struct{}),
+		cfgMsg: replicatedLocalAuditInit(c, fingerprint)}
+	p.listener = listener
+	p.srv = &http.Server{Handler: p.routes(), ReadHeaderTimeout: 5 * time.Second}
+	go func() { p.serveDone <- p.srv.Serve(listener) }()
+	go p.sweepLoop()
+	return p, nil
+}
+
+// newHigherOrderRemotePool is the Task44 coordinator for the
+// higher_order_candidate job type: same lease queue/mTLS listener as every
+// other remote pool, staging the corpus, the token metadata map (skipped in
+// generic mode), and every audit-dir/discovery-dir file
+// higherorderseq.LoadForDistribution needs, each once by content hash.
+// Audit/discovery files are staged under keys prefixed "audit:"/
+// "discovery:" so a connecting worker can reconstruct both directories
+// under their original filenames (see runWorkerGeneration's
+// "higher_order_candidate" case).
+func newHigherOrderRemotePool(c higherorderseq.Config, fingerprint string) (*remotePool, error) {
+	if c.RemoteListen == "" {
+		return nil, fmt.Errorf("remote executor requires -remote-listen")
+	}
+	if c.TLSCert == "" || c.TLSKey == "" || c.ClientCA == "" {
+		return nil, fmt.Errorf("remote executor requires -tls-cert, -tls-key and -client-ca")
+	}
+	paths := map[string]string{"corpus": c.CorpusPath}
+	if !c.Generic {
+		paths["metadata"] = c.TokenMetadataMap
+	}
+	for _, name := range higherorderseq.AuditDirFiles {
+		paths["audit:"+name] = filepath.Join(c.AuditDir, name)
+	}
+	for _, name := range higherorderseq.DiscoveryDirFiles {
+		paths["discovery:"+name] = filepath.Join(c.DiscoveryDir, name)
+	}
+	inputs := map[string][]byte{}
+	names := map[string]string{}
+	for name, path := range paths {
+		b, err := os.ReadFile(path)
+		if err != nil {
+			return nil, err
+		}
+		sum := fmt.Sprintf("%x", sha256.Sum256(b))
+		inputs[sum] = b
+		names[name] = sum
+	}
+	deny, err := pki.LoadDenyList(c.RemoteDenyList)
+	if err != nil {
+		return nil, err
+	}
+	tlsCfg, err := pki.CoordinatorServerTLSConfig(c.TLSCert, c.TLSKey, c.ClientCA, deny)
+	if err != nil {
+		return nil, err
+	}
+	listener, err := tls.Listen("tcp", c.RemoteListen, tlsCfg)
+	if err != nil {
+		return nil, fmt.Errorf("listen %s: %w", c.RemoteListen, err)
+	}
+	host, _ := os.Hostname()
+	p := &remotePool{fingerprint: fingerprint, corpusHash: names["corpus"], inputs: inputs, inputNames: names, host: host, timeout: c.RemoteTimeout, retries: c.RemoteRetries,
+		pending: map[JobID]*pendingJob{}, leases: map[string]*activeLease{}, serveDone: make(chan error, 1), stopSweep: make(chan struct{}),
+		cfgMsg: higherOrderInit(c, fingerprint)}
+	p.listener = listener
+	p.srv = &http.Server{Handler: p.routes(), ReadHeaderTimeout: 5 * time.Second}
+	go func() { p.serveDone <- p.srv.Serve(listener) }()
+	go p.sweepLoop()
+	return p, nil
+}
+
+// newPositionalContinuationRemotePool is the Task44 coordinator for the
+// positional_continuation_battery job type: same lease queue/mTLS listener
+// as every other remote pool, staging the corpus, the token metadata map
+// (skipped in generic mode), and every higher-order-dir file
+// positionalcontinuation.LoadForDistribution needs, each once by content
+// hash. Higher-order files are staged under keys prefixed "higherorder:" so
+// a connecting worker can reconstruct that directory under its original
+// filenames (see runWorkerGeneration's "positional_continuation_battery"
+// case).
+func newPositionalContinuationRemotePool(c positionalcontinuation.Config, fingerprint string) (*remotePool, error) {
+	if c.RemoteListen == "" {
+		return nil, fmt.Errorf("remote executor requires -remote-listen")
+	}
+	if c.TLSCert == "" || c.TLSKey == "" || c.ClientCA == "" {
+		return nil, fmt.Errorf("remote executor requires -tls-cert, -tls-key and -client-ca")
+	}
+	paths := map[string]string{"corpus": c.CorpusPath}
+	if !c.Generic {
+		paths["metadata"] = c.TokenMetadataMap
+	}
+	for _, name := range positionalcontinuation.HigherOrderDirFiles {
+		paths["higherorder:"+name] = filepath.Join(c.HigherOrderDir, name)
+	}
+	inputs := map[string][]byte{}
+	names := map[string]string{}
+	for name, path := range paths {
+		b, err := os.ReadFile(path)
+		if err != nil {
+			return nil, err
+		}
+		sum := fmt.Sprintf("%x", sha256.Sum256(b))
+		inputs[sum] = b
+		names[name] = sum
+	}
+	deny, err := pki.LoadDenyList(c.RemoteDenyList)
+	if err != nil {
+		return nil, err
+	}
+	tlsCfg, err := pki.CoordinatorServerTLSConfig(c.TLSCert, c.TLSKey, c.ClientCA, deny)
+	if err != nil {
+		return nil, err
+	}
+	listener, err := tls.Listen("tcp", c.RemoteListen, tlsCfg)
+	if err != nil {
+		return nil, fmt.Errorf("listen %s: %w", c.RemoteListen, err)
+	}
+	host, _ := os.Hostname()
+	p := &remotePool{fingerprint: fingerprint, corpusHash: names["corpus"], inputs: inputs, inputNames: names, host: host, timeout: c.RemoteTimeout, retries: c.RemoteRetries,
+		pending: map[JobID]*pendingJob{}, leases: map[string]*activeLease{}, serveDone: make(chan error, 1), stopSweep: make(chan struct{}),
+		cfgMsg: positionalContinuationInit(c, fingerprint)}
 	p.listener = listener
 	p.srv = &http.Server{Handler: p.routes(), ReadHeaderTimeout: 5 * time.Second}
 	go func() { p.serveDone <- p.srv.Serve(listener) }()
@@ -903,6 +1246,81 @@ func runWorkerGeneration(ctx context.Context, coordinatorURL, caFile, certFile, 
 	case "normalization_compare":
 		init.ClassesPath = filepath.Join(cacheDir, hs.Inputs["classes"])
 		state, e := newNormalizationComputer(init)
+		if e != nil {
+			return fmt.Errorf("input/config fingerprint does not match coordinator's declared experiment identity: %w", e)
+		}
+		computer = state
+	case "token_relation_permutation":
+		if !init.Generic {
+			init.TokenMetadataMap = filepath.Join(cacheDir, hs.Inputs["metadata"])
+		}
+		discoveryDir, e := reconstructTokenRelationDiscoveryDir(cacheDir, hs.Inputs)
+		if e != nil {
+			return fmt.Errorf("reconstruct discovery directory: %w", e)
+		}
+		init.DiscoveryDir = discoveryDir
+		state, e := newTokenRelationComputer(init)
+		if e != nil {
+			return fmt.Errorf("input/config fingerprint does not match coordinator's declared experiment identity: %w", e)
+		}
+		computer = state
+	case "transition_network_permutation":
+		if !init.Generic {
+			init.TokenMetadataMap = filepath.Join(cacheDir, hs.Inputs["metadata"])
+		}
+		state, e := newTransitionNetworkComputer(init)
+		if e != nil {
+			return fmt.Errorf("input/config fingerprint does not match coordinator's declared experiment identity: %w", e)
+		}
+		computer = state
+	case "replicated_local_null":
+		if !init.Generic {
+			init.TokenMetadataMap = filepath.Join(cacheDir, hs.Inputs["metadata"])
+		}
+		relationDir, e := reconstructNamedDir(cacheDir, hs.Inputs, "relation:", "replicated-local-relation")
+		if e != nil {
+			return fmt.Errorf("reconstruct relation directory: %w", e)
+		}
+		discoveryDir, e := reconstructNamedDir(cacheDir, hs.Inputs, "discovery:", "replicated-local-discovery")
+		if e != nil {
+			return fmt.Errorf("reconstruct discovery directory: %w", e)
+		}
+		init.RelationDir = relationDir
+		init.DiscoveryDir = discoveryDir
+		state, e := newReplicatedLocalAuditComputer(init)
+		if e != nil {
+			return fmt.Errorf("input/config fingerprint does not match coordinator's declared experiment identity: %w", e)
+		}
+		computer = state
+	case "higher_order_candidate":
+		if !init.Generic {
+			init.TokenMetadataMap = filepath.Join(cacheDir, hs.Inputs["metadata"])
+		}
+		auditDir, e := reconstructNamedDir(cacheDir, hs.Inputs, "audit:", "higher-order-audit")
+		if e != nil {
+			return fmt.Errorf("reconstruct audit directory: %w", e)
+		}
+		discoveryDir, e := reconstructNamedDir(cacheDir, hs.Inputs, "discovery:", "higher-order-discovery")
+		if e != nil {
+			return fmt.Errorf("reconstruct discovery directory: %w", e)
+		}
+		init.AuditDir = auditDir
+		init.DiscoveryDir = discoveryDir
+		state, e := newHigherOrderComputer(init)
+		if e != nil {
+			return fmt.Errorf("input/config fingerprint does not match coordinator's declared experiment identity: %w", e)
+		}
+		computer = state
+	case "positional_continuation_battery":
+		if !init.Generic {
+			init.TokenMetadataMap = filepath.Join(cacheDir, hs.Inputs["metadata"])
+		}
+		higherOrderDir, e := reconstructNamedDir(cacheDir, hs.Inputs, "higherorder:", "positional-continuation-higher-order")
+		if e != nil {
+			return fmt.Errorf("reconstruct higher-order directory: %w", e)
+		}
+		init.HigherOrderDir = higherOrderDir
+		state, e := newPositionalContinuationComputer(init)
 		if e != nil {
 			return fmt.Errorf("input/config fingerprint does not match coordinator's declared experiment identity: %w", e)
 		}

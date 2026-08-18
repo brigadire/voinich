@@ -6,7 +6,7 @@ import (
 	"sort"
 )
 
-// permWorkspace holds an indexed, permutation-invariant compilation of the
+// PermWorkspace holds an indexed, permutation-invariant compilation of the
 // block data used by the within-block destination permutation null
 // (permutedStatistics), plus scratch buffers reused across every replicate.
 //
@@ -24,7 +24,7 @@ import (
 // eligible vocabulary only (bounded by -min-token-count), which in practice
 // is in the hundreds; it is allocated once and cleared between blocks via a
 // dirty list rather than reallocated or fully zeroed.
-type permWorkspace struct {
+type PermWorkspace struct {
 	vocab    []string
 	V        int
 	minBlock int
@@ -67,13 +67,13 @@ type permBlock struct {
 // newPermWorkspace compiles the invariant, indexed view of a and its
 // per-block data used by the permutation null. It is built once per
 // RunAndWrite call and its buffers are reused for every replicate.
-func newPermWorkspace(a *analysis, minBlock int) *permWorkspace {
+func newPermWorkspace(a *analysis, minBlock int) *PermWorkspace {
 	V := len(a.Vocab)
 	idx := make(map[string]int, V)
 	for i, t := range a.Vocab {
 		idx[t] = i
 	}
-	ws := &permWorkspace{vocab: a.Vocab, V: V, minBlock: minBlock}
+	ws := &PermWorkspace{vocab: a.Vocab, V: V, minBlock: minBlock}
 	ws.blocks = make([]permBlock, len(a.Data))
 	ws.outBlocksFor = make([][]int, V)
 	ws.inBlocksFor = make([][]int, V)
@@ -169,7 +169,7 @@ func newPermWorkspace(a *analysis, minBlock int) *permWorkspace {
 // operation order is unchanged, and within documented roundoff (<1e-12)
 // where a leave-one-out mean is derived from a cached total instead of a
 // fresh per-exclusion sum (see lobo below).
-func (ws *permWorkspace) run(seed int64, rep int, computeProfiles bool) (map[EdgeKey]float64, map[string]profileNullStat, map[string]profileNullStat) {
+func (ws *PermWorkspace) run(seed int64, rep int, computeProfiles bool) (map[EdgeKey]float64, map[string]profileNullStat, map[string]profileNullStat) {
 	rng := rand.New(rand.NewSource(seed + int64(rep)*0x1f123bb5))
 	V := ws.V
 	for i := range ws.edgeVals {
@@ -279,7 +279,7 @@ func (ws *permWorkspace) run(seed int64, rep int, computeProfiles bool) (map[Edg
 // floating-point addition is not associative, so results can differ from
 // the reference (map-based) implementation by up to a few ULPs, far below
 // the documented 1e-12 scientific-equivalence tolerance.
-func (ws *permWorkspace) lobo(vectors [][][]float64, entropyVals [][]float64) map[string]profileNullStat {
+func (ws *PermWorkspace) lobo(vectors [][][]float64, entropyVals [][]float64) map[string]profileNullStat {
 	out := map[string]profileNullStat{}
 	for idx := 0; idx < ws.V; idx++ {
 		xs := vectors[idx]

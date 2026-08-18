@@ -130,67 +130,52 @@ func RunAndWrite(c Config) error {
 	}
 	total := len(candidates)
 
-	runPart := func(stage int, label, partName string, fn func(cand Candidate, r *CandidateResult)) error {
-		p.begin(stage, label)
-		for i, cand := range candidates {
-			key := partKey(cand.Sequence, partName)
-			if !cp.PartsDone[key] {
-				fn(cand, cp.resultFor(cand.Sequence))
-				cp.PartsDone[key] = true
-				if err := checkpoint(); err != nil {
-					return fmt.Errorf("save checkpoint: %w", err)
-				}
+	// Task44: the unit of independent distributed work is a whole candidate
+	// (see executor.go's CandidateExecutor doc comment for why CMI's
+	// permutations can never be split across jobs), so the six previously
+	// separately-checkpointed parts now run together per candidate. A
+	// candidate already fully resolved by every one of its six part keys
+	// (e.g. from a checkpoint saved by a pre-task44 build, or a resumed
+	// distributed run) is skipped entirely; a partially-done candidate is
+	// simply recomputed whole, which is idempotent and produces the exact
+	// same values, just without reusing whatever partial progress existed.
+	partNames := []string{"occ_cond", "cmi", "lobo", "context_meta", "jackknife", "position_family"}
+	candidateDone := func(sequence string) bool {
+		for _, name := range partNames {
+			if !cp.PartsDone[partKey(sequence, name)] {
+				return false
 			}
-			p.update(i+1, total, label)
 		}
-		return nil
+		return true
+	}
+	var pendingSeqs []string
+	for _, cand := range candidates {
+		if !candidateDone(cand.Sequence) {
+			pendingSeqs = append(pendingSeqs, cand.Sequence)
+		}
 	}
 
-	if err := runPart(2, "Part A-C: occurrences and conditional probabilities", "occ_cond", func(cand Candidate, r *CandidateResult) {
-		r.Candidate = cand
-		r.Occurrences = findOccurrences(cand, blocks, lineLength)
-		r.ConditionalRows = conditionalRowsForCandidate(cand, blocks)
-	}); err != nil {
-		return err
+	p.begin(2, "Part A-L: per-candidate occurrences, conditional probabilities, CMI permutation null, LOBO, context/continuation/cross-block/meta-analysis, jackknife, position and structural-family controls")
+	if len(pendingSeqs) > 0 {
+		executor := candidateExecutorFor(c, candidates, blocks, lineLength, relatives)
+		done := total - len(pendingSeqs)
+		err := runCandidateBattery(executorContext(c), executor, pendingSeqs, executorWorkers(c), func(_ int, sequence string, result CandidateResult) error {
+			*cp.resultFor(sequence) = result
+			for _, name := range partNames {
+				cp.PartsDone[partKey(sequence, name)] = true
+			}
+			if err := checkpoint(); err != nil {
+				return fmt.Errorf("save checkpoint: %w", err)
+			}
+			done++
+			p.update(done, total, "Part A-L")
+			return nil
+		})
+		if err != nil {
+			return err
+		}
 	}
-
-	if err := runPart(3, "Part D: conditional-neighbor permutation (CMI)", "cmi", func(cand Candidate, r *CandidateResult) {
-		r.CMI = runCMI(cand, blocks, permutationsFor(cand, c.Permutations), candidateSeed(c.Seed, cand.Sequence))
-	}); err != nil {
-		return err
-	}
-
-	if err := runPart(4, "Part E: leave-one-block-out model comparison", "lobo", func(cand Candidate, r *CandidateResult) {
-		r.LOBO = runLOBO(cand, blocks)
-	}); err != nil {
-		return err
-	}
-
-	if err := runPart(5, "Part F-I: context, continuation, cross-block, meta-analysis", "context_meta", func(cand Candidate, r *CandidateResult) {
-		r.ContextControls = contextControlRows(cand, blocks)
-		r.ContextRank = contextRankRow(cand, blocks)
-		r.Continuations = continuationDistributions(cand, blocks)
-		r.ContinuationEnt = continuationEntropy(cand, blocks)
-		r.CrossBlock = crossBlockRow(r.ConditionalRows)
-		r.Meta = metaAnalysisRow(r.ConditionalRows)
-	}); err != nil {
-		return err
-	}
-
-	if err := runPart(6, "Part J: jackknife", "jackknife", func(cand Candidate, r *CandidateResult) {
-		r.Jackknife = jackknifeRow(cand, blocks, primaryEligible(r.ConditionalRows))
-	}); err != nil {
-		return err
-	}
-
-	if err := runPart(7, "Part K-L: position and structural-family controls", "position_family", func(cand Candidate, r *CandidateResult) {
-		r.Position = positionRows(cand, r.Occurrences, blocks, lineLength)
-		r.BlockPosTVD = positionTVD(r.Position, "block_position_bin")
-		r.LinePosTVD = positionTVD(r.Position, "line_position")
-		r.StructuralFamily = structuralFamilyRows(cand, blocks, relatives)
-	}); err != nil {
-		return err
-	}
+	p.update(total, total, "Part A-L")
 
 	p.begin(8, "Part N, P, Q, R, S: multiple comparisons, classification, and writing outputs")
 	results := make([]*CandidateResult, len(seqs))

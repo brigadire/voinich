@@ -1,6 +1,10 @@
 package tokenrelationvalidation
 
-import "io"
+import (
+	"context"
+	"io"
+	"time"
+)
 
 type Config struct {
 	CorpusPath, MetadataPath, DiscoveryDir, OutputDir, CheckpointPath string
@@ -12,7 +16,21 @@ type Config struct {
 	// IVTFF-sourced MetadataPath file, and Classification never claims a
 	// Currier/hand-conditioned finding (see load.go's loadGenericMetadata
 	// and metrics.go's ClassifyGeneric).
-	Generic        bool
+	Generic bool
+
+	// Task44: where each of the six permutation batteries' replicates
+	// execute. Purely operational - excluded from every scientific
+	// fingerprint/checkpoint key - and never changes a single computed
+	// value; see executor.go's runBattery for the one reduction path every
+	// backend (goroutine/process/remote) goes through.
+	Executor                                                string
+	Workers                                                 int
+	RemoteListen, TLSCert, TLSKey, ClientCA, RemoteDenyList string
+	RemoteTimeout                                           time.Duration
+	RemoteRetries                                           int
+	PermutationExecutor                                     PermutationExecutor
+	Context                                                 context.Context
+
 	ProgressWriter io.Writer
 }
 

@@ -56,7 +56,7 @@ func almostEqual(a, b, tol float64) bool {
 }
 
 // TestPermWorkspaceMatchesReferenceEdgeStats verifies that the indexed,
-// buffer-reusing hot path (permWorkspace.run) computes byte-identical
+// buffer-reusing hot path (PermWorkspace.run) computes byte-identical
 // per-edge median permuted log2-enrichment to the original map-based
 // permutedStatistics, replicate for replicate, across several corpus
 // shapes and seeds. Edge statistics only depend on invariant integer

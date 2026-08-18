@@ -132,6 +132,69 @@ structural-projection-analyze, normalization-compare had no pre-existing
 resume mechanism, and Task42 did not add one (see that document's stop
 condition/scope notes).
 
+Task44 adds five more distributable job types, one per generic-eligible
+stage 23-27, each following the exact same `-executor remote -workers N
+-remote-listen ... -tls-cert ... -tls-key ... -client-ca ...` shape as
+above - only the stage binary and its own scientific/input flags change:
+
+```bash
+./token-relation-validate \
+  -executor remote -workers 10 \
+  -remote-listen 0.0.0.0:8443 \
+  -tls-cert pki/coordinator.crt -tls-key pki/coordinator.key -client-ca pki/ca.crt \
+  -remote-timeout 15m -remote-retries 3 \
+  -corpus data_work/ZL3b-x7.txt -discovery-dir workdir \
+  -output-dir workdir/token-relation-validation
+
+./replicated-local-structure-audit \
+  -executor remote -workers 10 \
+  -remote-listen 0.0.0.0:8443 \
+  -tls-cert pki/coordinator.crt -tls-key pki/coordinator.key -client-ca pki/ca.crt \
+  -remote-timeout 15m -remote-retries 3 \
+  -corpus data_work/ZL3b-x7.txt \
+  -relation-dir workdir/token-relation-validation -discovery-dir workdir \
+  -output-dir workdir/replicated-local-structure
+
+./higher-order-sequence-validate \
+  -executor remote -workers 10 \
+  -remote-listen 0.0.0.0:8443 \
+  -tls-cert pki/coordinator.crt -tls-key pki/coordinator.key -client-ca pki/ca.crt \
+  -remote-timeout 15m -remote-retries 3 \
+  -corpus data_work/ZL3b-x7.txt \
+  -audit-dir workdir/replicated-local-structure -discovery-dir workdir \
+  -output-dir workdir/higher-order-sequences
+
+./positional-continuation-validate \
+  -executor remote -workers 10 \
+  -remote-listen 0.0.0.0:8443 \
+  -tls-cert pki/coordinator.crt -tls-key pki/coordinator.key -client-ca pki/ca.crt \
+  -remote-timeout 15m -remote-retries 3 \
+  -corpus data_work/ZL3b-x7.txt \
+  -higher-order-dir workdir/higher-order-sequences \
+  -output-dir workdir/positional-continuation
+
+./transition-network-validate \
+  -executor remote -workers 10 \
+  -remote-listen 0.0.0.0:8443 \
+  -tls-cert pki/coordinator.crt -tls-key pki/coordinator.key -client-ca pki/ca.crt \
+  -remote-timeout 15m -remote-retries 3 \
+  -corpus data_work/ZL3b-x7.txt \
+  -token-metadata-map workdir/metadata-validation/token_metadata_map.tsv \
+  -output-dir workdir/transition-network
+```
+
+Every one of these five accepts `-generic-corpus` in place of
+`-token-metadata-map`, exactly like every other generic-eligible stage (see
+`GENERIC_STAGE_APPLICABILITY_AUDIT.md`). `token-relation-validate` and
+`replicated-local-structure-audit` still need `-checkpoint-path`
+overridden explicitly if the default (`<output-dir>/checkpoint.json`)
+should live elsewhere; the other three follow the same convention. See
+`DISTRIBUTED_GENERIC_STAGES_AUDIT.md` for the dependency/parallelism audit
+that justified distributing each of these five stages (three at the
+permutation-replicate level, one - higher-order-sequence-validate - at the
+whole-candidate level, and one - positional-continuation-validate - at the
+whole-battery level) and the resulting scaling study.
+
 ## 5. Start workers
 
 ```bash
@@ -152,13 +215,24 @@ each with its own certificate.
 
 The same worker command serves every supported stage/job type
 (conditional-regime part A/B, `structural_projection_trial`,
-`normalization_compare_baseline`): the coordinator's handshake declares
+`normalization_compare_baseline`, and Task44's five new types -
+`token_relation_permutation`, `replicated_local_null`,
+`higher_order_candidate`, `positional_continuation_battery`,
+`transition_network_permutation`): the coordinator's handshake declares
 which workload it is running, and the worker builds the matching
-computation from that, not from any command-line flag of its own.
+computation from that, not from any command-line flag of its own. This is
+why none of the five new stage binaries needed a `-coordinator`/persistent-
+worker mode of their own - `conditional-regime-analyze -coordinator ...`
+already serves every job type any coordinator declares.
 Structural projection intentionally executes one trial at a time in each
 worker process even when `-remote-concurrency` is larger, because its
 scientific core reuses package-level scratch buffers. Scale it with worker
 processes/hosts rather than concurrent trials inside one address space.
+`higher_order_candidate` and `positional_continuation_battery` jobs are
+naturally few in number (one per frozen candidate / one per named battery
+- see `DISTRIBUTED_GENERIC_STAGES_AUDIT.md`), so beyond a handful of
+workers there is simply no more work to hand out; scale those two stages'
+worker count to their job count, not higher.
 
 **Task42: workers are persistent by default.** A worker started with
 `-coordinator` (`conditionalregime.RunPersistentRemoteWorker`) is not tied
@@ -217,6 +291,17 @@ requested experiment.
 Conditional regime stages the corpus and `token_metadata_map.tsv`;
 structural projection stages the corpus, structural-pair table, distance-pair
 YAML and family YAML. Invariant inputs are fetched once, never per trial.
+Task44's five stages stage the corpus, the metadata map (skipped in
+generic mode), and every file in the upstream frozen directory each one
+reads (`token-relation-validate`'s and `transition-network-validate`'s own
+`-discovery-dir`; `replicated-local-structure-audit`'s `-relation-dir` +
+`-discovery-dir`; `higher-order-sequence-validate`'s `-audit-dir` +
+`-discovery-dir`; `positional-continuation-validate`'s
+`-higher-order-dir`) - staged under content-hash keys prefixed by which
+directory they came from (`"discovery:"`, `"relation:"`, `"audit:"`,
+`"higherorder:"`) so a worker can reconstruct each directory under its
+original filenames (some of these stages' loaders hardcode specific
+filenames within one directory) via `reconstructNamedDir`.
 
 ## Lease/retry model
 

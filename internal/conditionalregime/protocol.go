@@ -62,6 +62,34 @@ type protocolMessage struct {
 	SingletonMode string `json:"singleton_mode,omitempty"`
 	RandomRuns    int    `json:"random_runs,omitempty"`
 
+	// token_relation_permutation workload fields (Task44). DiscoveryDir
+	// names the reconstructed directory holding every staged discovery
+	// file (see remote.go's tokenRelationDiscoveryFiles/newTokenRelation-
+	// RemotePool); Generic mirrors tokenrelationvalidation.Config.Generic;
+	// Permutations/RefinePermutations/Seed above are reused verbatim as
+	// that package's own Config fields of the same name.
+	DiscoveryDir       string `json:"discovery_dir,omitempty"`
+	Generic            bool   `json:"generic,omitempty"`
+	RefinePermutations int    `json:"refine_permutations,omitempty"`
+
+	// replicated_local_null workload field (Task44). RelationDir names the
+	// reconstructed directory holding every staged token-relation-validate
+	// output file (see remote.go's newReplicatedLocalAuditRemotePool).
+	RelationDir string `json:"relation_dir,omitempty"`
+
+	// higher_order_candidate workload field (Task44). AuditDir names the
+	// reconstructed directory holding every staged
+	// replicated-local-structure-audit output file (see remote.go's
+	// newHigherOrderRemotePool); DiscoveryDir is reused for
+	// structural_classes.yaml.
+	AuditDir string `json:"audit_dir,omitempty"`
+
+	// positional_continuation_battery workload field (Task44). HigherOrderDir
+	// names the reconstructed directory holding every staged
+	// higher-order-sequence-validate output file (see remote.go's
+	// newPositionalContinuationRemotePool).
+	HigherOrderDir string `json:"higher_order_dir,omitempty"`
+
 	// Ready fields.
 	OK    bool   `json:"ok,omitempty"`
 	Error string `json:"error,omitempty"`

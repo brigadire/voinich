@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"math"
-	"math/rand"
 	"os"
 	"path/filepath"
 	"sort"
@@ -61,10 +60,11 @@ func RunAndWrite(c Config) error {
 	}
 	p := newProgress(c.ProgressWriter)
 	p.begin(1, "Loading and validating frozen inputs")
-	tokens, blocks, dc, sc, corpusSHA, e := loadInputs(c)
+	state, corpusSHA, e := buildDistributionState(c)
 	if e != nil {
 		return e
 	}
+	tokens, blocks, dc, sc := state.tokens, state.blocks, state.dc, state.sc
 	frozenSimilarity, frozenCrossCurrier, frozenCrossHand, frozenLOBOSuccess, e := loadFrozenDistanceDiagnostics(c)
 	if e != nil {
 		return e
@@ -83,21 +83,15 @@ func RunAndWrite(c Config) error {
 	p.update(1, 1, "Frozen inputs loaded")
 
 	p.begin(2, "Building block profiles and frozen observations")
-	profiles := map[string]profile{}
-	refs := map[string]profile{}
+	profiles, refs := state.profiles, state.refs
 	counts := map[string]map[string]int{}
 	for _, b := range blocks {
-		profiles[b.ID] = buildProfile(b)
 		counts[b.ID] = map[string]int{}
 		for _, t := range b.Tokens {
 			counts[b.ID][t.Text]++
 		}
 	}
-	for _, b := range blocks {
-		refs[b.ID] = mergeProfiles(profiles, b.ID)
-	}
 	observed := map[string]float64{}
-	eligible := map[string][]string{}
 	for _, d := range dc {
 		if d.Q > .05 {
 			continue
@@ -106,83 +100,30 @@ func RunAndWrite(c Config) error {
 			if counts[b.ID][d.A] >= 10 && counts[b.ID][d.B] >= 10 {
 				v, _ := compareProfiles(profiles[b.ID], refs[b.ID], d.A, d.B)
 				observed[d.ID+"\x00"+b.ID] = v
-				eligible[d.ID] = append(eligible[d.ID], b.ID)
 			}
 		}
 	}
 	p.update(1, 1, "Block profiles built")
 
+	executor := permutationExecutorFor(c, state)
+
 	p.begin(3, "Frequency-matched distance null")
 	if cp.DistanceCompleted >= c.Permutations {
 		p.update(cp.DistanceCompleted, c.Permutations, "Distance null replicates")
 	}
-	global := map[string]int{}
-	for _, t := range tokens {
-		global[t.Text]++
-	}
-	vocab := make([]string, 0, len(global))
-	for x := range global {
-		vocab = append(vocab, x)
-	}
-	sort.Strings(vocab)
-	type matchedVocab struct{ a, b []string }
-	choices := map[string]matchedVocab{}
-	frozenPairs := map[string]bool{}
-	for _, d := range dc {
-		a, b := d.A, d.B
-		if b < a {
-			a, b = b, a
-		}
-		frozenPairs[a+"\x00"+b] = true
-	}
-	for _, d := range dc {
-		if d.Q > .05 {
-			continue
-		}
-		z := matchedVocab{}
-		for _, a := range vocab {
-			if freqMatch(global[a], global[d.A]) {
-				z.a = append(z.a, a)
-			}
-			if freqMatch(global[a], global[d.B]) {
-				z.b = append(z.b, a)
-			}
-		}
-		choices[d.ID] = z
-	}
-	for run := cp.DistanceCompleted; run < c.Permutations; run++ {
-		r := rand.New(rand.NewSource(c.Seed + int64(run)*104729 + 11))
-		for _, d := range dc {
-			pool := choices[d.ID]
-			if d.Q > .05 || len(pool.a) == 0 || len(pool.b) == 0 {
-				continue
-			}
-			for _, bid := range eligible[d.ID] {
-				a, b := "", ""
-				for tries := 0; tries < 100; tries++ {
-					a, b = pool.a[r.Intn(len(pool.a))], pool.b[r.Intn(len(pool.b))]
-					x, y := a, b
-					if y < x {
-						x, y = y, x
-					}
-					if a != b && !frozenPairs[x+"\x00"+y] {
-						break
-					}
-					a, b = "", ""
-				}
-				v := 0.
-				if a != "" {
-					v, _ = compareProfiles(profiles[bid], refs[bid], a, b)
-				}
-				k := d.ID + "\x00" + bid
-				cp.Distance[k] = append(cp.Distance[k], v)
-			}
+	e = runBattery(executorContext(c), executor, "distance", cp.DistanceCompleted, c.Permutations, executorWorkers(c), func(run int, res ReplicateResult) error {
+		for k, v := range res.Distance {
+			cp.Distance[k] = append(cp.Distance[k], v)
 		}
 		cp.DistanceCompleted = run + 1
-		if e = saveCheckpoint(c.CheckpointPath, cp); e != nil {
-			return fmt.Errorf("save checkpoint: %w", e)
+		if err := saveCheckpoint(c.CheckpointPath, cp); err != nil {
+			return fmt.Errorf("save checkpoint: %w", err)
 		}
 		p.update(cp.DistanceCompleted, c.Permutations, "Distance null replicates")
+		return nil
+	})
+	if e != nil {
+		return e
 	}
 
 	p.begin(4, "Within-block shuffle sequence null")
@@ -193,52 +134,54 @@ func RunAndWrite(c Config) error {
 	for _, s := range sc {
 		seqObs[s.ID] = sequenceObserved(s, tokens, blocks)
 	}
-	for run := cp.ShuffleCompleted; run < c.Permutations; run++ {
-		sim := shuffledBlocks(blocks, c.Seed+int64(run)*104729+23)
-		tot, bc := sequenceStats(sc, sim)
+	e = runBattery(executorContext(c), executor, "shuffle", cp.ShuffleCompleted, c.Permutations, executorWorkers(c), func(run int, res ReplicateResult) error {
 		for _, s := range sc {
 			o := seqObs[s.ID]
-			cp.ShuffleSumBlocks[s.ID] += float64(bc[s.ID])
-			cp.ShuffleSumTotal[s.ID] += float64(tot[s.ID])
-			if bc[s.ID] >= o.Blocks {
+			cp.ShuffleSumBlocks[s.ID] += float64(res.ShuffleBlocks[s.ID])
+			cp.ShuffleSumTotal[s.ID] += float64(res.ShuffleTotal[s.ID])
+			if res.ShuffleBlocks[s.ID] >= o.Blocks {
 				cp.ShuffleExceedBlocks[s.ID]++
 			}
-			if tot[s.ID] >= o.Total {
+			if res.ShuffleTotal[s.ID] >= o.Total {
 				cp.ShuffleExceedTotal[s.ID]++
 			}
 		}
 		cp.ShuffleCompleted = run + 1
-		if e = saveCheckpoint(c.CheckpointPath, cp); e != nil {
-			return fmt.Errorf("save checkpoint: %w", e)
+		if err := saveCheckpoint(c.CheckpointPath, cp); err != nil {
+			return fmt.Errorf("save checkpoint: %w", err)
 		}
 		p.update(cp.ShuffleCompleted, c.Permutations, "Sequence shuffle replicates")
+		return nil
+	})
+	if e != nil {
+		return e
 	}
 
 	p.begin(5, "Leakage-free first-order Markov null")
 	if cp.MarkovCompleted >= c.Permutations {
 		p.update(cp.MarkovCompleted, c.Permutations, "Markov replicates")
 	}
-	markovTraining := buildMarkovTraining(blocks)
-	markovAvailable := len(markovTraining)
-	for run := cp.MarkovCompleted; run < c.Permutations; run++ {
-		sim, _ := markovBlocks(markovTraining, c.Seed+int64(run)*104729+37)
-		tot, bc := sequenceStats(sc, sim)
+	markovAvailable := len(state.markovTraining)
+	e = runBattery(executorContext(c), executor, "markov", cp.MarkovCompleted, c.Permutations, executorWorkers(c), func(run int, res ReplicateResult) error {
 		for _, s := range sc {
-			observedAvailable := sequenceStatsOne(s, blocks, sim)
-			cp.MarkovSumBlocks[s.ID] += float64(bc[s.ID])
-			cp.MarkovSumTotal[s.ID] += float64(tot[s.ID])
-			if bc[s.ID] >= observedAvailable[1] {
+			cp.MarkovSumBlocks[s.ID] += float64(res.MarkovBlocks[s.ID])
+			cp.MarkovSumTotal[s.ID] += float64(res.MarkovTotal[s.ID])
+			if res.MarkovBlocks[s.ID] >= res.MarkovObservedBlocks[s.ID] {
 				cp.MarkovExceedBlocks[s.ID]++
 			}
-			if tot[s.ID] >= observedAvailable[0] {
+			if res.MarkovTotal[s.ID] >= res.MarkovObservedTotal[s.ID] {
 				cp.MarkovExceedTotal[s.ID]++
 			}
 		}
 		cp.MarkovCompleted = run + 1
-		if e = saveCheckpoint(c.CheckpointPath, cp); e != nil {
-			return fmt.Errorf("save checkpoint: %w", e)
+		if err := saveCheckpoint(c.CheckpointPath, cp); err != nil {
+			return fmt.Errorf("save checkpoint: %w", err)
 		}
 		p.update(cp.MarkovCompleted, c.Permutations, "Markov replicates")
+		return nil
+	})
+	if e != nil {
+		return e
 	}
 
 	p.begin(6, "Computing replication diagnostics")
