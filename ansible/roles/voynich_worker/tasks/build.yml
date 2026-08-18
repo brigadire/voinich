@@ -64,6 +64,15 @@
   when: voynich_worker_build_mode == 'copy_from_controller_build'
 
 - name: (copy_from_controller_build) Build one binary per unique GOOS/GOARCH pair, once
+  # No `creates:` guard here deliberately: run_once already limits this to
+  # one build per unique GOOS/GOARCH pair *within this play*, which is the
+  # "once" this task's name refers to. A `creates:` guard keyed on a path
+  # under the persistent controller_build_dir would instead make it "once
+  # ever, across separate playbook invocations" - stale source changes
+  # (e.g. a bug fix merged after the last deploy) would then silently keep
+  # getting shipped from a cached binary indefinitely. go build is fast
+  # enough that always rebuilding fresh, like pipeline-orchestrate's own
+  # per-run coordinator build, is the correct default here.
   run_once: true
   delegate_to: localhost
   become: false
@@ -73,7 +82,6 @@
       -o {{ voynich_worker_controller_build_dir }}/conditional-regime-analyze-{{ item.split('/')[0] }}-{{ item.split('/')[1] }}
       ./conditional-regime-analyze
     chdir: "{{ voynich_worker_repo_path }}"
-    creates: "{{ voynich_worker_controller_build_dir }}/conditional-regime-analyze-{{ item.split('/')[0] }}-{{ item.split('/')[1] }}"
   environment:
     GOOS: "{{ item.split('/')[0] }}"
     GOARCH: "{{ item.split('/')[1] }}"

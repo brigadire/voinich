@@ -108,6 +108,7 @@ another job.
 | `voynich_worker_stop_timeout_seconds` | `15` | Bounded graceful-shutdown wait before SIGKILL. |
 | `voynich_worker_readiness_timeout_seconds` | `20` | Bounded wait for the post-start mTLS probe. |
 | `voynich_worker_readiness_poll_interval_seconds` | `1` | Probe poll interval. |
+| `voynich_worker_readiness_probe_timeout_seconds` | `3` | Per-attempt curl `--connect-timeout`/`--max-time`, so a host that cannot route to the coordinator at all fails each attempt fast instead of hanging on the OS's own TCP SYN-retry timeout - which would otherwise also delay the restart handler for every other host in the same play. |
 
 ## Build strategy (phase 4)
 

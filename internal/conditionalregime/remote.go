@@ -55,8 +55,18 @@ import (
 const (
 	remoteProtocolVersion          = 3 // Task40 adds typed workload descriptors and blob trial results
 	scientificCompatibilityVersion = "distributed-task40-v1"
-	maxRemoteInputBytes            = 64 << 20
-	maxRemoteMessageBytes          = 1 << 20
+	// maxRemoteInputBytes bounds one staged input file a worker will fetch
+	// via GET /v1/input/<hash>. Raised from 64 MiB after a real production
+	// run (a larger generic corpus) produced a 67.5 MiB
+	// soft_structural_pairs.tsv: every worker handshaked successfully but
+	// silently failed stageInputs on every single generation ("input ...
+	// exceeds limit"), forever, with no lease ever issued - the coordinator
+	// itself has no matching cap when staging/serving these files, so only
+	// the worker side needs raising. 256 MiB keeps a real, explicit bound
+	// (never unbounded) while covering every input file size observed to
+	// date with headroom for corpus growth.
+	maxRemoteInputBytes   = 256 << 20
+	maxRemoteMessageBytes = 1 << 20
 	// remoteLeaseBackoff bounds how long a worker idles between "no work
 	// available yet" polls, and the starting backoff after a transport
 	// error. It is purely a polling cadence, not a scientific parameter.

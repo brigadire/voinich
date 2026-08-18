@@ -67,3 +67,12 @@ voynich_worker_stop_timeout_seconds: 15
 # Bounded wait for the post-start mTLS readiness probe (phase 8).
 voynich_worker_readiness_timeout_seconds: 20
 voynich_worker_readiness_poll_interval_seconds: 1
+# Per-attempt curl bound (connect + total) for the readiness probe below.
+# Without this, a host that cannot route to the coordinator at all (a
+# dropped-packet path, not an active refusal) lets curl hang on the TCP
+# handshake for the OS's own SYN-retry timeout (commonly ~60-130s) on
+# *every* retry - turning a "20 second" readiness wait into many minutes
+# per unreachable host, and since the role's tasks run under Ansible's
+# default linear strategy, that also delays the restart handler for every
+# *other*, perfectly healthy host in the same play.
+voynich_worker_readiness_probe_timeout_seconds: 3

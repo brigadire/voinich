@@ -54,6 +54,8 @@
   ansible.builtin.command:
     cmd: >-
       curl -sS -o /dev/null -w '%{http_code}'
+      --connect-timeout {{ voynich_worker_readiness_probe_timeout_seconds }}
+      --max-time {{ voynich_worker_readiness_probe_timeout_seconds }}
       --cacert {{ (voynich_worker_install_dir ~ '/pki/ca.crt') | quote }}
       --cert {{ (voynich_worker_install_dir ~ '/pki/worker.crt') | quote }}
       --key {{ (voynich_worker_install_dir ~ '/pki/worker.key') | quote }}
