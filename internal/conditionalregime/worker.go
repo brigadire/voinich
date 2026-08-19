@@ -11,6 +11,7 @@ import (
 	"strings"
 	"sync"
 
+	"zcore.dev/voinich/internal/beginendanalyze"
 	"zcore.dev/voinich/internal/higherorderseq"
 	"zcore.dev/voinich/internal/normalization"
 	"zcore.dev/voinich/internal/normalizationcompare"
@@ -348,6 +349,48 @@ func newTransitionNetworkComputer(initMsg protocolMessage) (transitionNetworkCom
 	return transitionNetworkComputer{ws: ws, seed: initMsg.Seed, mu: &sync.Mutex{}}, nil
 }
 
+// beginEndComputer serves the Task47 begin_end_candidate_batch job type:
+// one candidate-pair batch per JobID.ReplicateIndex, identical to the
+// computation begin-end-analyze's own default in-process executor runs.
+// Unlike transitionNetworkComputer's PermWorkspace, beginendanalyze.
+// Workspace is read-only once built (LoadForDistribution never mutates it
+// afterward), so compute needs no mutex.
+type beginEndComputer struct {
+	ws        *beginendanalyze.Workspace
+	batchSize int
+}
+
+func (w beginEndComputer) compute(id JobID) (float64, json.RawMessage, error) {
+	if id.Stage != "begin_end_candidate_batch" {
+		return 0, nil, fmt.Errorf("unknown begin-end-analyze job stage %q", id.Stage)
+	}
+	r := beginendanalyze.ComputeBatch(w.ws, id.ReplicateIndex, w.batchSize)
+	b, err := json.Marshal(encodeBeginEndBatchResult(r))
+	return 0, b, err
+}
+
+// newBeginEndComputer reconstructs the exact Workspace a local RunAndWrite
+// run would have from initMsg's (already locally-resolved, for remote
+// mode) CorpusPath/DictionaryPath, verifying the coordinator's declared
+// Fingerprint before trusting any of it.
+func newBeginEndComputer(initMsg protocolMessage) (beginEndComputer, error) {
+	cfg := beginendanalyze.Config{
+		DictionaryPath: initMsg.DictionaryPath, CorpusPath: initMsg.CorpusPath,
+		MaxWindow: initMsg.MaxWindow, Permutations: initMsg.Permutations, MinTokenCount: initMsg.MinTokenCount,
+		RandomSeed: initMsg.Seed, PermutationMode: initMsg.PermutationMode, IncludeUnclear: initMsg.IncludeUnclear,
+		MaxCandidates: initMsg.MaxCandidates, CandidateBatchSize: initMsg.CandidateBatchSize,
+	}
+	fp, err := beginendanalyze.Fingerprint(cfg)
+	if err != nil || fp != initMsg.Fingerprint {
+		return beginEndComputer{}, fmt.Errorf("input/config fingerprint mismatch: worker loaded different input or parameters")
+	}
+	ws, err := beginendanalyze.LoadForDistribution(cfg)
+	if err != nil {
+		return beginEndComputer{}, fmt.Errorf("reconstruct candidate workspace: %w", err)
+	}
+	return beginEndComputer{ws: ws, batchSize: initMsg.CandidateBatchSize}, nil
+}
+
 // replicatedLocalAuditComputer serves the Task44 replicated_local_null job
 // type: one permutation replicate per (phase, run index) across the
 // distance/shuffle/markov null batteries, identical to the computation
@@ -584,6 +627,12 @@ func RunWorker(ctx context.Context, in io.Reader, out io.Writer) error {
 		computer = w
 	case "transition_network_permutation":
 		w, e := newTransitionNetworkComputer(initMsg)
+		if e != nil {
+			return fail("%v", e)
+		}
+		computer = w
+	case "begin_end_candidate_batch":
+		w, e := newBeginEndComputer(initMsg)
 		if e != nil {
 			return fail("%v", e)
 		}

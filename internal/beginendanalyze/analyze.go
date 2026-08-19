@@ -1,4 +1,4 @@
-package main
+package beginendanalyze
 
 import (
 	"fmt"
@@ -19,33 +19,80 @@ type permutationMoments struct {
 	exceed     []int
 }
 
-func runAnalysis(dictionaryPath, corpusPath string, parameters Parameters) (Output, error) {
+// Workspace is everything a Config's dictionary/corpus/parameters resolve
+// to before the (fully RNG-independent) candidate-pair loop runs - see
+// executor.go's ComputeBatch. It is built once, by LoadForDistribution, and
+// never mutated afterward, so concurrent ComputeBatch calls over the same
+// Workspace (goroutine backend) or independently-reconstructed identical
+// Workspaces (process/remote backends) are safe and - because
+// LoadForDistribution's own preamble is the exact pre-Task47 sequential
+// code, including its single sequential *rand.Rand permutation stream -
+// always byte-identical to each other and to the pre-Task47 in-line
+// implementation.
+type Workspace struct {
+	parameters Parameters
+
+	eligible []string
+	ids      map[string]int
+	k        int
+	byToken  map[string]DictionaryToken
+
+	lineSequences, pageSequences []scopeSequence
+	position                     map[string]PositionSide
+	pageCounts                   []map[string]int
+	pageBoundariesKnown          bool
+
+	observedLine, observedPage []int
+	lineMoments, pageMoments   permutationMoments
+
+	unclearExcluded int
+	occurrences     int
+	uniqueTokens    int
+	lines           int
+	pages           int
+	explicitBreaks  int
+}
+
+// TotalPairs is the flat (begin,end) index space size k*k (including the
+// ai==bi diagonal, which ComputeBatch always skips) - the exact quantity
+// Task47 section 2's deterministic candidate-ID-range batches partition.
+func (ws *Workspace) TotalPairs() int { return ws.k * ws.k }
+
+// LoadForDistribution reconstructs exactly the *Workspace a local
+// RunAndWrite run would build from the same dictionary/corpus/parameters -
+// a pure extraction of runAnalysis's pre-Task47 preamble, unchanged down to
+// the single sequential permutation RNG stream. It is exported so
+// internal/conditionalregime's distributed worker (Task47) can reconstruct
+// identical state from staged copies of the same input files without
+// duplicating this package's loading/permutation logic.
+func LoadForDistribution(c Config) (*Workspace, error) {
+	parameters := c.parameters()
 	if parameters.MaxWindow < 1 {
-		return Output{}, fmt.Errorf("max-window must be at least 1")
+		return nil, fmt.Errorf("max-window must be at least 1")
 	}
 	if parameters.Permutations < 0 {
-		return Output{}, fmt.Errorf("permutations cannot be negative")
+		return nil, fmt.Errorf("permutations cannot be negative")
 	}
 	if parameters.MinTokenCount < 1 {
-		return Output{}, fmt.Errorf("min-frequency must be at least 1")
+		return nil, fmt.Errorf("min-frequency must be at least 1")
 	}
 	if parameters.MaxCandidates < 0 {
-		return Output{}, fmt.Errorf("max-candidates cannot be negative")
+		return nil, fmt.Errorf("max-candidates cannot be negative")
 	}
 	if parameters.PermutationMode != "page" && parameters.PermutationMode != "line" {
-		return Output{}, fmt.Errorf("permutation-mode must be page or line")
+		return nil, fmt.Errorf("permutation-mode must be page or line")
 	}
 	parameters.Windows = configuredWindows(parameters.MaxWindow)
-	dictionary, err := loadDictionary(dictionaryPath)
+	dictionary, err := loadDictionary(c.DictionaryPath)
 	if err != nil {
-		return Output{}, fmt.Errorf("load dictionary: %w", err)
+		return nil, fmt.Errorf("load dictionary: %w", err)
 	}
-	c, err := loadCorpus(corpusPath)
+	cp, err := loadCorpus(c.CorpusPath)
 	if err != nil {
-		return Output{}, fmt.Errorf("load corpus: %w", err)
+		return nil, fmt.Errorf("load corpus: %w", err)
 	}
-	if err := validateCorpusDictionary(c, dictionary); err != nil {
-		return Output{}, err
+	if err := validateCorpusDictionary(cp, dictionary); err != nil {
+		return nil, err
 	}
 
 	byToken := make(map[string]DictionaryToken, len(dictionary))
@@ -64,56 +111,87 @@ func runAnalysis(dictionaryPath, corpusPath string, parameters Parameters) (Outp
 	}
 	sort.Strings(eligible)
 	if len(eligible) < 2 {
-		return Output{}, fmt.Errorf("fewer than two eligible tokens")
+		return nil, fmt.Errorf("fewer than two eligible tokens")
 	}
 	ids := make(map[string]int, len(eligible))
 	for i, token := range eligible {
 		ids[token] = i
 	}
-	lineSequences, pageSequences := buildScopeSequences(c)
-	position := calculatePositions(c, dictionary)
-	pageCounts := calculatePageCounts(c)
-	pageBoundariesKnown := c.ExplicitBreaks > 0
+	lineSequences, pageSequences := buildScopeSequences(cp)
+	position := calculatePositions(cp, dictionary)
+	pageCounts := calculatePageCounts(cp)
+	pageBoundariesKnown := cp.ExplicitBreaks > 0
 
-	k := len(eligible)
 	observedLine := enumerateWindowHits(lineSequences, ids, parameters.MaxWindow)
 	observedPage := enumerateWindowHits(pageSequences, ids, parameters.MaxWindow)
-	lineMoments, pageMoments := runPermutations(c, ids, parameters, observedLine, observedPage)
+	lineMoments, pageMoments := runPermutations(cp, ids, parameters, observedLine, observedPage)
 
-	candidates := make([]Candidate, 0, k*(k-1))
-	for ai, a := range eligible {
-		for bi, b := range eligible {
-			if ai == bi {
-				continue
-			}
-			line := directedDistance(a, b, lineSequences, parameters.Windows, parameters.MaxWindow, "line")
-			page := directedDistance(a, b, pageSequences, parameters.Windows, parameters.MaxWindow, "page")
-			index := ai*k + bi
-			reverseIndex := bi*k + ai
-			adjacent := neighborCount(byToken[a].WordAfter, b)
-			localShare := ratio(adjacent, page.Observations)
-			direction := directionality(page.Probability, ratio(observedPage[reverseIndex], byToken[b].Count), "page")
-			if !pageBoundariesKnown {
-				direction = directionality(line.Probability, ratio(observedLine[reverseIndex], byToken[b].Count), "line")
-			}
-			candidate := Candidate{
-				BeginCandidate: a, EndCandidate: b, ContainsUnclear: strings.Contains(a, "?") || strings.Contains(b, "?"),
-				Counts:     CountsResult{Begin: byToken[a].Count, End: byToken[b].Count},
-				Position:   PositionResult{Begin: position[a], End: position[b]},
-				WithinLine: line, WithinPage: page,
-				Directionality:     direction,
-				PageBalance:        pageBalance(a, b, pageCounts),
-				SignificanceLine:   significance(observedLine[index], lineMoments, index, parameters.Permutations),
-				SignificancePage:   significance(observedPage[index], pageMoments, index, parameters.Permutations),
-				LocalCompatibility: LocalCompatibility{AdjacentCount: adjacent, AdjacentShare: localShare, LikelyLocal: page.Observations > 0 && localShare >= 0.8},
-				Reliability:        pairReliability(byToken[a].Count, byToken[b].Count),
-			}
-			candidate.Position.Complementarity = positionalComplementarity(candidate.Position.Begin, candidate.Position.End)
-			candidate.Score = candidateScore(candidate)
-			candidates = append(candidates, candidate)
-		}
+	occurrences := 0
+	for _, count := range cp.Counts {
+		occurrences += count
 	}
-	calibratePageBalance(candidates, len(c.Pages) > 1)
+
+	return &Workspace{
+		parameters: parameters,
+		eligible:   eligible, ids: ids, k: len(eligible), byToken: byToken,
+		lineSequences: lineSequences, pageSequences: pageSequences,
+		position: position, pageCounts: pageCounts, pageBoundariesKnown: pageBoundariesKnown,
+		observedLine: observedLine, observedPage: observedPage,
+		lineMoments: lineMoments, pageMoments: pageMoments,
+		unclearExcluded: unclearExcluded, occurrences: occurrences,
+		uniqueTokens: len(dictionary), lines: len(cp.Lines), pages: len(cp.Pages), explicitBreaks: cp.ExplicitBreaks,
+	}, nil
+}
+
+// candidateAt computes the single Candidate for flat pair index
+// ai*k+bi (ai != bi), byte-identical to the pre-Task47 inline loop body.
+func (ws *Workspace) candidateAt(ai, bi int) Candidate {
+	a, b := ws.eligible[ai], ws.eligible[bi]
+	k := ws.k
+	line := directedDistance(a, b, ws.lineSequences, ws.parameters.Windows, ws.parameters.MaxWindow, "line")
+	page := directedDistance(a, b, ws.pageSequences, ws.parameters.Windows, ws.parameters.MaxWindow, "page")
+	index := ai*k + bi
+	reverseIndex := bi*k + ai
+	adjacent := neighborCount(ws.byToken[a].WordAfter, b)
+	localShare := ratio(adjacent, page.Observations)
+	direction := directionality(page.Probability, ratio(ws.observedPage[reverseIndex], ws.byToken[b].Count), "page")
+	if !ws.pageBoundariesKnown {
+		direction = directionality(line.Probability, ratio(ws.observedLine[reverseIndex], ws.byToken[b].Count), "line")
+	}
+	candidate := Candidate{
+		BeginCandidate: a, EndCandidate: b, ContainsUnclear: strings.Contains(a, "?") || strings.Contains(b, "?"),
+		Counts:     CountsResult{Begin: ws.byToken[a].Count, End: ws.byToken[b].Count},
+		Position:   PositionResult{Begin: ws.position[a], End: ws.position[b]},
+		WithinLine: line, WithinPage: page,
+		Directionality:     direction,
+		PageBalance:        pageBalance(a, b, ws.pageCounts),
+		SignificanceLine:   significance(ws.observedLine[index], ws.lineMoments, index, ws.parameters.Permutations),
+		SignificancePage:   significance(ws.observedPage[index], ws.pageMoments, index, ws.parameters.Permutations),
+		LocalCompatibility: LocalCompatibility{AdjacentCount: adjacent, AdjacentShare: localShare, LikelyLocal: page.Observations > 0 && localShare >= 0.8},
+		Reliability:        pairReliability(ws.byToken[a].Count, ws.byToken[b].Count),
+	}
+	candidate.Position.Complementarity = positionalComplementarity(candidate.Position.Begin, candidate.Position.End)
+	candidate.Score = candidateScore(candidate)
+	return candidate
+}
+
+// RunAndWrite is the top-level entry point: it builds a Workspace exactly
+// as the pre-Task47 runAnalysis did, dispatches the candidate-pair loop
+// through Config.BatchExecutor (goroutine by default), and then runs every
+// post-candidate step (calibration, sort, nesting, final split) exactly as
+// before, over the exact same ascending-pair-index-ordered candidate slice
+// the original single-threaded double loop produced.
+func RunAndWrite(c Config) (Output, error) {
+	ws, err := LoadForDistribution(c)
+	if err != nil {
+		return Output{}, err
+	}
+	candidates, err := collectCandidates(c, ws)
+	if err != nil {
+		return Output{}, err
+	}
+
+	calibratePageBalance(candidates, ws.pages > 1)
 	for i := range candidates {
 		candidates[i].Score = candidateScore(candidates[i])
 	}
@@ -121,11 +199,11 @@ func runAnalysis(dictionaryPath, corpusPath string, parameters Parameters) (Outp
 	// Nesting is more expensive and is evaluated for every record that can reach
 	// an output report, followed by a final transparent re-ranking.
 	nestingLimit := len(candidates)
-	if parameters.MaxCandidates > 0 && nestingLimit > parameters.MaxCandidates*2 {
-		nestingLimit = parameters.MaxCandidates * 2
+	if ws.parameters.MaxCandidates > 0 && nestingLimit > ws.parameters.MaxCandidates*2 {
+		nestingLimit = ws.parameters.MaxCandidates * 2
 	}
 	for i := 0; i < nestingLimit; i++ {
-		candidates[i].Nesting = nestingCounts(candidates[i].BeginCandidate, candidates[i].EndCandidate, pageSequences)
+		candidates[i].Nesting = nestingCounts(candidates[i].BeginCandidate, candidates[i].EndCandidate, ws.pageSequences)
 		candidates[i].Score = candidateScore(candidates[i])
 	}
 	sortCandidates(candidates)
@@ -139,17 +217,17 @@ func runAnalysis(dictionaryPath, corpusPath string, parameters Parameters) (Outp
 			}
 			continue
 		}
-		if parameters.MaxCandidates == 0 || len(main) < parameters.MaxCandidates {
+		if ws.parameters.MaxCandidates == 0 || len(main) < ws.parameters.MaxCandidates {
 			main = append(main, candidate)
 		}
 	}
-	occurrences := 0
-	for _, count := range c.Counts {
-		occurrences += count
-	}
 	return Output{
-		Meta:       Meta{TokenOccurrences: occurrences, UniqueTokens: len(dictionary), EligibleTokens: len(eligible), Lines: len(c.Lines), Pages: len(c.Pages), ExplicitPageBreaks: c.ExplicitBreaks, PageBoundariesKnown: pageBoundariesKnown, CandidatePairs: len(candidates), UnclearExcluded: unclearExcluded},
-		Parameters: parameters,
+		Meta: Meta{
+			TokenOccurrences: ws.occurrences, UniqueTokens: ws.uniqueTokens, EligibleTokens: ws.k,
+			Lines: ws.lines, Pages: ws.pages, ExplicitPageBreaks: ws.explicitBreaks,
+			PageBoundariesKnown: ws.pageBoundariesKnown, CandidatePairs: len(candidates), UnclearExcluded: ws.unclearExcluded,
+		},
+		Parameters: ws.parameters,
 		Methodology: Methodology{
 			Tokenization:       "Go strings.Fields; @NNN; remains one token and no punctuation is removed",
 			Pages:              "blank lines, form-feed, # page: markers, and === page ... === markers delimit pages; absent markers imply one page and page_boundaries_known=false",

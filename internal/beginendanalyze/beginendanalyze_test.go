@@ -1,4 +1,4 @@
-package main
+package beginendanalyze
 
 import (
 	"math"
@@ -11,6 +11,15 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
+func testConfig(dictionary, corpusPath string, p Parameters) Config {
+	return Config{
+		DictionaryPath: dictionary, CorpusPath: corpusPath,
+		MaxWindow: p.MaxWindow, Permutations: p.Permutations, MinTokenCount: p.MinTokenCount,
+		RandomSeed: p.RandomSeed, PermutationMode: p.PermutationMode, IncludeUnclear: p.IncludeUnclear,
+		MaxCandidates: p.MaxCandidates,
+	}
+}
+
 func TestAnalysisFindsDirectedNonLocalPairDeterministically(t *testing.T) {
 	corpusText := strings.Join([]string{
 		"A x x B",
@@ -22,11 +31,11 @@ func TestAnalysisFindsDirectedNonLocalPairDeterministically(t *testing.T) {
 	}, "\n")
 	dictionary, corpusPath := testInputs(t, corpusText)
 	parameters := Parameters{MaxWindow: 5, Permutations: 20, MinTokenCount: 2, RandomSeed: 7, PermutationMode: "line", MaxCandidates: 20}
-	first, err := runAnalysis(dictionary, corpusPath, parameters)
+	first, err := RunAndWrite(testConfig(dictionary, corpusPath, parameters))
 	if err != nil {
 		t.Fatal(err)
 	}
-	second, err := runAnalysis(dictionary, corpusPath, parameters)
+	second, err := RunAndWrite(testConfig(dictionary, corpusPath, parameters))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -48,6 +57,45 @@ func TestAnalysisFindsDirectedNonLocalPairDeterministically(t *testing.T) {
 	}
 }
 
+func TestAnalysisMatchesAcrossExecutorWorkerCounts(t *testing.T) {
+	corpusText := strings.Join([]string{
+		"A x x B", "A y y B", "A x y B", "A y x B", "",
+		"B x y A", "A x B y", "B y A x", "",
+		"A x x x B", "A y y y B",
+	}, "\n")
+	dictionary, corpusPath := testInputs(t, corpusText)
+	parameters := Parameters{MaxWindow: 5, Permutations: 20, MinTokenCount: 2, RandomSeed: 7, PermutationMode: "line", MaxCandidates: 50}
+	base := testConfig(dictionary, corpusPath, parameters)
+
+	sequential, err := RunAndWrite(base)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, tc := range []struct {
+		name      string
+		workers   int
+		batchSize int
+	}{
+		{"single-batch", 1, 10_000},
+		{"tiny-batches-1-worker", 1, 1},
+		{"tiny-batches-4-workers", 4, 1},
+		{"medium-batches-3-workers", 3, 3},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			c := base
+			c.Workers = tc.workers
+			c.CandidateBatchSize = tc.batchSize
+			got, err := RunAndWrite(c)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if !reflect.DeepEqual(got, sequential) {
+				t.Fatalf("executor/batch-size variant %q differs from sequential oracle", tc.name)
+			}
+		})
+	}
+}
+
 func TestDirectionalityComparesBothOrders(t *testing.T) {
 	result := directionality(0.8, 0.2, "page")
 	if math.Abs(result.Score-0.6) > 1e-12 || result.LogRatio <= 0 {
@@ -57,7 +105,7 @@ func TestDirectionalityComparesBothOrders(t *testing.T) {
 
 func TestQuestionMarkExcludedAndAtTokenPreserved(t *testing.T) {
 	dictionary, corpusPath := testInputs(t, "A @192; q?\nA @192; q?\n")
-	output, err := runAnalysis(dictionary, corpusPath, Parameters{MaxWindow: 3, MinTokenCount: 2, PermutationMode: "page", MaxCandidates: 20})
+	output, err := RunAndWrite(testConfig(dictionary, corpusPath, Parameters{MaxWindow: 3, MinTokenCount: 2, PermutationMode: "page", MaxCandidates: 20}))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -77,12 +125,12 @@ func TestQuestionMarkExcludedAndAtTokenPreserved(t *testing.T) {
 
 func TestReportsContainRequiredSections(t *testing.T) {
 	dictionary, corpusPath := testInputs(t, "A x B\nA y B\n")
-	output, err := runAnalysis(dictionary, corpusPath, Parameters{MaxWindow: 3, MinTokenCount: 2, PermutationMode: "page", MaxCandidates: 20})
+	output, err := RunAndWrite(testConfig(dictionary, corpusPath, Parameters{MaxWindow: 3, MinTokenCount: 2, PermutationMode: "page", MaxCandidates: 20}))
 	if err != nil {
 		t.Fatal(err)
 	}
 	directory := t.TempDir()
-	if err := writeReports(directory, output); err != nil {
+	if err := WriteReports(directory, output); err != nil {
 		t.Fatal(err)
 	}
 	for _, name := range []string{"begin_end_candidates.yaml", "begin_end_top.tsv", "begin_end_report.md"} {

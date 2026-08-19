@@ -1,4 +1,4 @@
-package main
+package beginendanalyze
 
 import (
 	"bytes"
@@ -11,7 +11,7 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-func writeReports(directory string, output Output) error {
+func WriteReports(directory string, output Output) error {
 	data, err := yaml.Marshal(output)
 	if err != nil {
 		return fmt.Errorf("marshal YAML: %w", err)

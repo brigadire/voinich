@@ -76,7 +76,7 @@ var stages = []Stage{
 	{Name: "dict-analyze", SourceDir: "dict-analyze", Positional: []string{"workdir/dataset/dictionary.yaml", "workdir/dataset/tokens_analysis.yaml"}},
 	{Name: "structural-analyze", SourceDir: "structural-analyze"},
 	{Name: "sequence-analyze", SourceDir: "sequence-analyze", CorpusFlag: "-input"},
-	{Name: "begin-end-analyze", SourceDir: "begin-end-analyze", CorpusFlag: "-corpus"},
+	{Name: "begin-end-analyze", SourceDir: "begin-end-analyze", Executor: true, CorpusFlag: "-corpus"},
 	{Name: "structural-normalize", SourceDir: "structural-normalize", CorpusFlag: "-input"},
 	{Name: "normalization-compare", SourceDir: "normalization-compare", Executor: true, CorpusFlag: "-input"},
 	{Name: "structural-validate", SourceDir: "structural-validate", CorpusFlag: "-input"},

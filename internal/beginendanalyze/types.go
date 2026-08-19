@@ -1,4 +1,14 @@
-package main
+// Package beginendanalyze holds the begin-end-analyze scientific
+// implementation (Task47): directed paired-token candidate discovery over a
+// dictionary/corpus pair. It was extracted, unchanged, from the former
+// begin-end-analyze `package main` so that internal/conditionalregime's
+// Task28-44 mTLS coordinator/worker executor can dispatch its one expensive,
+// RNG-independent loop (the candidate-pair loop - see executor.go) across
+// goroutine/process/remote backends without a second copy of any formula.
+package beginendanalyze
+
+import "context"
+import "time"
 
 type PositionInput struct {
 	Position int `yaml:"position"`
@@ -20,6 +30,8 @@ type DictionaryToken struct {
 	LineEndCount     int             `yaml:"line_end_count"`
 }
 
+// Parameters is the scientific parameter set recorded verbatim into every
+// Output - unchanged from the pre-Task47 begin-end-analyze.
 type Parameters struct {
 	MaxWindow       int    `yaml:"max_window"`
 	Windows         []int  `yaml:"windows"`
@@ -29,6 +41,47 @@ type Parameters struct {
 	PermutationMode string `yaml:"permutation_mode"`
 	IncludeUnclear  bool   `yaml:"include_unclear_tokens"`
 	MaxCandidates   int    `yaml:"max_candidates"`
+}
+
+// Config is RunAndWrite's input: Parameters' scientific fields plus the
+// purely operational fields Task47 adds (input/output paths and the
+// executor/worker/remote choice). None of the fields below Parameters
+// change a single computed value - see executor.go's runCandidateBatches
+// for the one reduction path every backend (goroutine/process/remote) goes
+// through.
+type Config struct {
+	DictionaryPath string
+	CorpusPath     string
+	OutputDir      string
+
+	MaxWindow       int
+	Permutations    int
+	MinTokenCount   int
+	RandomSeed      int64
+	PermutationMode string
+	IncludeUnclear  bool
+	MaxCandidates   int
+
+	// CandidateBatchSize is the number of (begin,end) candidate-pair flat
+	// indexes dispatched as a single work unit (Task47 section 2/13). Zero
+	// selects DefaultCandidateBatchSize.
+	CandidateBatchSize int
+
+	Executor                                                string
+	Workers                                                 int
+	RemoteListen, TLSCert, TLSKey, ClientCA, RemoteDenyList string
+	RemoteTimeout                                           time.Duration
+	RemoteRetries                                           int
+	BatchExecutor                                           CandidateBatchExecutor
+	Context                                                 context.Context
+}
+
+func (c Config) parameters() Parameters {
+	return Parameters{
+		MaxWindow: c.MaxWindow, Permutations: c.Permutations, MinTokenCount: c.MinTokenCount,
+		RandomSeed: c.RandomSeed, PermutationMode: c.PermutationMode, IncludeUnclear: c.IncludeUnclear,
+		MaxCandidates: c.MaxCandidates,
+	}
 }
 
 type Meta struct {

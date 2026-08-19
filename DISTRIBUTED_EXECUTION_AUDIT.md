@@ -661,3 +661,33 @@ both reproduce the exact oracle) are in
 `DISTRIBUTED_EXECUTION_IMPLEMENTATION.md`'s Task34 section; operational
 procedures (CA generation, issuance, placement, renewal, compromise,
 CA rotation) are in `DISTRIBUTED_EXECUTION_OPERATIONS.md`.
+
+## Task47 implementation update (2026-08-19)
+
+`begin-end-analyze` (Stage 5, `14m52s` on the real generic Astafiev
+corpus at production parameters) is now a fourth distributed-capable
+stage type on this same coordinator/worker/mTLS executor, added the
+Task44 way (a new workload case, never a new framework), with a twist
+this document's original profile never anticipated: the profile audit
+found the stage's expensive loop (`directedDistance`+`pageBalance`,
+94.43% of wall time) has **zero RNG dependency** at all - the
+permutation-null loop this stage's `-permutations` flag controls is
+under 1% of cost at the production default, the inverse of
+`conditional-regime-analyze`'s profile above. The distributed work unit
+is therefore a batch of flat candidate-pair indexes, entirely
+RNG-independent, computed after the stage's one sequential permutation
+RNG stream has already run to completion (once, unchanged, on every
+process that builds a `Workspace`). Real-corpus testing at production
+scale caught two genuine bugs neither this document's Task30-34 profile
+nor any small-fixture unit test had reason to anticipate: `encoding/json`
+silently corrupts non-UTF-8 corpus token bytes on marshal (this is the
+first workload whose wire payload is verbatim token text, not a scalar or
+small map), and the pre-existing 1 MiB `maxRemoteMessageBytes` cap - fine
+for every scalar/small-map result before this - is far too small for this
+stage's richly-detailed per-candidate payload (~5.5 MB per production
+batch), causing silent multi-minute hangs rather than a loud error. Both
+are fixed; full profile table, RNG audit, bug root-causes, and a granularity
++ worker-count scaling study on the real Astafiev corpus (plateauing at a
+measured 1.65x/33% efficiency at 5 workers - this stage is transport-bound,
+not compute-bound, once distributed, and that bottleneck is documented
+rather than hidden) are in `BEGIN_END_ANALYZE_DISTRIBUTED_AUDIT.md`.

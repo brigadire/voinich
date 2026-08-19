@@ -3149,3 +3149,18 @@ were 26.038/21.854/19.839/19.819/20.695/19.952s. Exact coordinator/worker
 CPU/RSS, cold/warm bytes and retry counts are recorded in
 `DISTRIBUTED_EXECUTION_IMPLEMENTATION.md`; the four-permutation oracle's
 fixed coordinator phase explains the plateau after four slots.
+
+## Task47 — begin-end-analyze distribution (pointer)
+
+Later per-stage distribution work (Task42 `normalization-compare`, Task44's
+five generic stages, Task47 `begin-end-analyze`) is recorded in
+`PERFORMANCE_AUDIT.md`'s own `## TaskNN` list plus a dedicated
+`*_DISTRIBUTED_AUDIT.md`/`*_DISTRIBUTION_AUDIT.md` document per stage,
+rather than as further sections here. For Task47: `begin-end-analyze`'s
+expensive loop (candidate-pair computation, 94.43% of wall time, zero RNG
+dependency) was distributed onto the same coordinator/worker/mTLS executor
+this report's Task31-33 sections built; see `PERFORMANCE_AUDIT.md`'s
+`## Task47` entry for the headline numbers and
+`BEGIN_END_ANALYZE_DISTRIBUTED_AUDIT.md` for the full profile, RNG audit,
+two real wire-layer bugs found and fixed on the real corpus, and the
+granularity/scaling studies.

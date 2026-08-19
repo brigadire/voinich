@@ -195,6 +195,35 @@ permutation-replicate level, one - higher-order-sequence-validate - at the
 whole-candidate level, and one - positional-continuation-validate - at the
 whole-battery level) and the resulting scaling study.
 
+Task47 adds a sixth distributable job type, `begin_end_candidate_batch`
+(a batch of candidate-pair indexes, not a permutation replicate - see
+`BEGIN_END_ANALYZE_DISTRIBUTED_AUDIT.md` section 2), for
+`begin-end-analyze`:
+
+```bash
+./begin-end-analyze \
+  -executor remote -workers 5 \
+  -remote-listen 0.0.0.0:8443 \
+  -tls-cert pki/coordinator.crt -tls-key pki/coordinator.key -client-ca pki/ca.crt \
+  -remote-timeout 15m -remote-retries 3 \
+  -corpus data_work/ZL3b-x7.txt -dictionary workdir/dataset/dictionary.yaml \
+  -output-dir workdir
+```
+
+Like `normalization-compare`, it has no checkpoint flag (no pre-existing
+resume mechanism, none added). `-candidate-batch-size` (default 2048)
+controls the work-unit granularity; raise it if a production run has many
+more eligible tokens than the Astafiev corpus this default was measured
+against, but stay mindful of `maxRemoteMessageBytes` (32 MiB as of Task47 -
+see `BEGIN_END_ANALYZE_DISTRIBUTED_AUDIT.md` section 4b for why this cap
+exists and what happens silently if a batch's marshaled result exceeds
+it: not a loud error, but a hang until `-remote-timeout` elapses, repeated
+once per retry). See `BEGIN_END_ANALYZE_DISTRIBUTED_AUDIT.md` for the
+profiling audit, the granularity study that chose the default batch size,
+and the resulting worker-count scaling study (measured on the real
+Astafiev corpus; recommend 5 workers - going higher did not help on that
+single-machine measurement).
+
 ## 5. Start workers
 
 ```bash

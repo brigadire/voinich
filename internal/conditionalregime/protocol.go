@@ -90,6 +90,22 @@ type protocolMessage struct {
 	// newPositionalContinuationRemotePool).
 	HigherOrderDir string `json:"higher_order_dir,omitempty"`
 
+	// begin_end_candidate_batch workload fields (Task47). DictionaryPath
+	// names the staged dictionary.yaml input (this workload has no metadata
+	// map/Generic mode - the dictionary is always required); MaxWindow/
+	// PermutationMode/IncludeUnclear/MaxCandidates mirror
+	// beginendanalyze.Config's fields of the same name; CandidateBatchSize
+	// is the already-resolved (never zero) batch size the coordinator and
+	// every worker must agree on to compute the same JobID.ReplicateIndex's
+	// [lo,hi) pair range; Permutations/MinTokenCount/Seed above are reused
+	// verbatim as that package's Config fields of the same name.
+	DictionaryPath     string `json:"dictionary_path,omitempty"`
+	MaxWindow          int    `json:"max_window,omitempty"`
+	PermutationMode    string `json:"permutation_mode,omitempty"`
+	IncludeUnclear     bool   `json:"include_unclear,omitempty"`
+	MaxCandidates      int    `json:"max_candidates,omitempty"`
+	CandidateBatchSize int    `json:"candidate_batch_size,omitempty"`
+
 	// Ready fields.
 	OK    bool   `json:"ok,omitempty"`
 	Error string `json:"error,omitempty"`

@@ -24,6 +24,7 @@ import (
 	"sync/atomic"
 	"time"
 
+	"zcore.dev/voinich/internal/beginendanalyze"
 	"zcore.dev/voinich/internal/higherorderseq"
 	"zcore.dev/voinich/internal/normalization"
 	"zcore.dev/voinich/internal/normalizationcompare"
@@ -65,8 +66,25 @@ const (
 	// the worker side needs raising. 256 MiB keeps a real, explicit bound
 	// (never unbounded) while covering every input file size observed to
 	// date with headroom for corpus growth.
-	maxRemoteInputBytes   = 256 << 20
-	maxRemoteMessageBytes = 1 << 20
+	maxRemoteInputBytes = 256 << 20
+	// maxRemoteMessageBytes bounds one lease/result/handshake JSON message
+	// (not a staged input file - see maxRemoteInputBytes above). Every
+	// pre-Task47 workload's result payload is a float64 or a small
+	// edge-key/token map, comfortably under the original 1 MiB. Task47's
+	// begin_end_candidate_batch is the first workload whose result payload
+	// is verbatim per-candidate data (histograms, window tables) at
+	// production batch sizes: a 2048-pair batch on the real Astafiev corpus
+	// marshals to ~5.5 MB. At the original 1 MiB cap, decodeJSONBody
+	// silently truncated the read, the coordinator answered "request
+	// exceeds size limit" without draining the rest of the body, and the
+	// worker's still-in-flight POST blocked on TCP backpressure until the
+	// full remote-timeout elapsed - four times per job (one per retry),
+	// with no error ever logged, since the failure was below the
+	// application layer. Raised to 32 MiB: enough headroom for every batch
+	// size the Task47 granularity study exercises (up to several thousand
+	// pairs/batch) while remaining a real, explicit bound rather than
+	// unbounded.
+	maxRemoteMessageBytes = 32 << 20
 	// remoteLeaseBackoff bounds how long a worker idles between "no work
 	// available yet" polls, and the starting backoff after a transport
 	// error. It is purely a polling cadence, not a scientific parameter.
@@ -547,6 +565,56 @@ func newTransitionNetworkRemotePool(c transitionnetwork.Config, fingerprint stri
 	p := &remotePool{fingerprint: fingerprint, corpusHash: names["corpus"], inputs: inputs, inputNames: names, host: host, timeout: c.RemoteTimeout, retries: c.RemoteRetries,
 		pending: map[JobID]*pendingJob{}, leases: map[string]*activeLease{}, serveDone: make(chan error, 1), stopSweep: make(chan struct{}),
 		cfgMsg: transitionNetworkInit(c, fingerprint)}
+	p.listener = listener
+	p.srv = &http.Server{Handler: p.routes(), ReadHeaderTimeout: 5 * time.Second}
+	go func() { p.serveDone <- p.srv.Serve(listener) }()
+	go p.sweepLoop()
+	return p, nil
+}
+
+// newBeginEndRemotePool is the Task47 coordinator for the
+// begin_end_candidate_batch job type: same lease queue/mTLS listener as
+// every other remote pool, staging the corpus and the dictionary once by
+// content hash. Unlike every other stage's remote pool, the batch space
+// this pool dispatches over is entirely RNG-free - every worker
+// independently recomputes the same permutation-null moments via
+// beginendanalyze.LoadForDistribution's own frozen, sequential RNG stream
+// before ever answering a lease.
+func newBeginEndRemotePool(c beginendanalyze.Config, fingerprint string) (*remotePool, error) {
+	if c.RemoteListen == "" {
+		return nil, fmt.Errorf("remote executor requires -remote-listen")
+	}
+	if c.TLSCert == "" || c.TLSKey == "" || c.ClientCA == "" {
+		return nil, fmt.Errorf("remote executor requires -tls-cert, -tls-key and -client-ca")
+	}
+	paths := map[string]string{"corpus": c.CorpusPath, "dictionary": c.DictionaryPath}
+	inputs := map[string][]byte{}
+	names := map[string]string{}
+	for name, path := range paths {
+		b, err := os.ReadFile(path)
+		if err != nil {
+			return nil, err
+		}
+		sum := fmt.Sprintf("%x", sha256.Sum256(b))
+		inputs[sum] = b
+		names[name] = sum
+	}
+	deny, err := pki.LoadDenyList(c.RemoteDenyList)
+	if err != nil {
+		return nil, err
+	}
+	tlsCfg, err := pki.CoordinatorServerTLSConfig(c.TLSCert, c.TLSKey, c.ClientCA, deny)
+	if err != nil {
+		return nil, err
+	}
+	listener, err := tls.Listen("tcp", c.RemoteListen, tlsCfg)
+	if err != nil {
+		return nil, fmt.Errorf("listen %s: %w", c.RemoteListen, err)
+	}
+	host, _ := os.Hostname()
+	p := &remotePool{fingerprint: fingerprint, corpusHash: names["corpus"], inputs: inputs, inputNames: names, host: host, timeout: c.RemoteTimeout, retries: c.RemoteRetries,
+		pending: map[JobID]*pendingJob{}, leases: map[string]*activeLease{}, serveDone: make(chan error, 1), stopSweep: make(chan struct{}),
+		cfgMsg: beginEndInit(c, fingerprint)}
 	p.listener = listener
 	p.srv = &http.Server{Handler: p.routes(), ReadHeaderTimeout: 5 * time.Second}
 	go func() { p.serveDone <- p.srv.Serve(listener) }()
@@ -1279,6 +1347,13 @@ func runWorkerGeneration(ctx context.Context, coordinatorURL, caFile, certFile, 
 			init.TokenMetadataMap = filepath.Join(cacheDir, hs.Inputs["metadata"])
 		}
 		state, e := newTransitionNetworkComputer(init)
+		if e != nil {
+			return fmt.Errorf("input/config fingerprint does not match coordinator's declared experiment identity: %w", e)
+		}
+		computer = state
+	case "begin_end_candidate_batch":
+		init.DictionaryPath = filepath.Join(cacheDir, hs.Inputs["dictionary"])
+		state, e := newBeginEndComputer(init)
 		if e != nil {
 			return fmt.Errorf("input/config fingerprint does not match coordinator's declared experiment identity: %w", e)
 		}

@@ -486,3 +486,33 @@ computation changed - so it is recorded here only briefly; see
 `REMOTE_WORKER_LIFECYCLE.md` for the design (bounded-backoff-with-jitter
 reconnect, per-generation state rebuild, permanent-vs-transient failure
 classification) and the Ansible role changes it enabled.
+
+## Task47: begin-end-analyze distribution
+
+A fresh profile of `begin-end-analyze` on the real Astafiev corpus
+(`data_test/astafiev-1000-culinar-receipts.txt`, production defaults)
+measured 15m38.7s wall time (14m39.9s un-profiled), 4.7-5.1 GB coordinator
+RSS once distributed (all of it pre-existing peak memory the single-process
+implementation always needed - `1,298,460` candidate structs live in
+memory at once - not a regression this task introduced), and found
+`directedDistance`+`pageBalance` (both called once or twice per candidate
+pair, from the stage's one `O(k^2)` double loop) account for 94.43% of
+wall time - a candidate-pair batch, not a permutation replicate, is
+therefore the distributed unit, with zero RNG dependency (the
+`-permutations`-controlled loop this stage also has is under 1% of cost at
+the production default). That is easily the largest independent-work
+fraction any stage in this repository's distribution series has measured,
+yet the resulting scaling study is this series' *weakest* speedup so far -
+1.65x/33% efficiency at 5 workers, and 10 workers measured *worse* than 5 -
+because this is the first stage whose per-job wire payload
+(`~2.7 KB`/candidate, driven by nested histogram/window tables) is large
+relative to its own compute cost, making it transport/serialization-bound
+once distributed rather than compute-bound. Real-corpus testing also
+caught two genuine wire-layer bugs no small-fixture test had reason to
+find: `encoding/json` silently corrupts non-UTF-8 corpus token bytes on
+marshal (this is the first workload whose result payload is verbatim token
+text), and the pre-existing 1 MiB `maxRemoteMessageBytes` cap was far too
+small for this workload's ~5.5 MB production batch payload, causing a
+silent multi-minute hang rather than a loud error (raised to 32 MiB). Full
+profile, RNG/dependency audit, both bug root-causes, and the granularity +
+scaling studies are in `BEGIN_END_ANALYZE_DISTRIBUTED_AUDIT.md`.
