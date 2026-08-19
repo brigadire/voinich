@@ -59,6 +59,39 @@ func runPipeline(repoPath, experimentDir string, opt orchestratorOptions, only s
 
 	fmt.Printf("Task36 pipeline run: experiment %s\n", m.ExperimentID)
 	for i, sm := range m.Stages {
+		if sm.Name == readinessStageName {
+			if only != "" && sm.Name != only {
+				continue
+			}
+			sr := rs.stage(sm.Name)
+			if sr == nil {
+				rs.Stages = append(rs.Stages, StageRun{Name: sm.Name, Status: "pending"})
+				sr = rs.stage(sm.Name)
+			}
+			if sr.Status == "completed" && only == "" {
+				fmt.Printf("[%d/%d] %-35s SKIP (%s)\n", i+1, len(m.Stages), sm.Name, sr.Status)
+				continue
+			}
+			logPath := filepath.Join(logDir, fmt.Sprintf("%02d-%s.log", sm.Index, sm.Name))
+			sr.Status = "running"
+			sr.StartedAt = time.Now().UTC()
+			sr.LogPath = logPath
+			_ = saveRunState(experimentDir, rs)
+			logText, err := runCorpusReadinessCheck(m)
+			_ = os.WriteFile(logPath, []byte(logText), 0644)
+			sr.FinishedAt = time.Now().UTC()
+			sr.DurationSeconds = time.Since(sr.StartedAt).Seconds()
+			if err != nil {
+				sr.Status = "failed"
+				sr.Error = err.Error()
+				_ = saveRunState(experimentDir, rs)
+				return fmt.Errorf("stage %s failed (see %s): %w", sm.Name, logPath, err)
+			}
+			sr.Status = "completed"
+			_ = saveRunState(experimentDir, rs)
+			fmt.Printf("[%d/%d] %-35s completed\n", i+1, len(m.Stages), sm.Name)
+			continue
+		}
 		st, ok := stageByName(sm.Name)
 		if !ok {
 			return fmt.Errorf("manifest contains unknown stage %q", sm.Name)
@@ -98,7 +131,7 @@ func runPipeline(repoPath, experimentDir string, opt orchestratorOptions, only s
 		if err := validateStageDependencies(m, sm, r, rs); err != nil {
 			return err
 		}
-		logPath := filepath.Join(logDir, fmt.Sprintf("%02d-%s.log", i+1, st.Name))
+		logPath := filepath.Join(logDir, fmt.Sprintf("%02d-%s.log", sm.Index, st.Name))
 		sr.Status = "running"
 		sr.StartedAt = time.Now().UTC()
 		sr.LogPath = logPath

@@ -1,49 +1,30 @@
 package validation
 
 import (
-	"bufio"
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
 	"math/rand"
-	"os"
 	"sort"
 	"strconv"
-	"strings"
 
+	"zcore.dev/voinich/internal/corpusprep"
 	"zcore.dev/voinich/internal/normalization"
 )
 
 func LoadCorpus(path string) (Corpus, string, error) {
-	data, err := os.ReadFile(path)
+	corpus, hash, err := corpusprep.LoadCorpus(path)
 	if err != nil {
 		return Corpus{}, "", err
 	}
 	result := Corpus{Counts: make(map[string]int)}
-	scanner := bufio.NewScanner(strings.NewReader(string(data)))
-	scanner.Buffer(make([]byte, 64*1024), 16*1024*1024)
-	lineID := 0
-	for scanner.Scan() {
-		lineID++
-		tokens := strings.Fields(scanner.Text())
-		result.Lines = append(result.Lines, Line{ID: lineID, Tokens: tokens})
-		if len(tokens) == 0 {
-			continue
-		}
-		result.Occurrences += len(tokens)
-		result.Transitions += len(tokens) - 1
-		for _, token := range tokens {
-			result.Counts[token]++
-		}
+	for i, tokens := range corpus.Lines {
+		result.Lines = append(result.Lines, Line{ID: i + 1, Tokens: append([]string(nil), tokens...)})
 	}
-	if err := scanner.Err(); err != nil {
-		return Corpus{}, "", err
-	}
-	if result.Occurrences-nonEmptyLines(result.Lines) != result.Transitions {
-		return Corpus{}, "", fmt.Errorf("corpus invariant failed")
-	}
-	sum := sha256.Sum256(data)
-	return result, hex.EncodeToString(sum[:]), nil
+	result.Counts = corpus.Counts
+	result.Occurrences = corpus.Occurrences
+	result.Transitions = corpus.Transitions
+	return result, hash, nil
 }
 
 func SplitFolds(lines []Line, folds int, seed int64) ([][]int, error) {

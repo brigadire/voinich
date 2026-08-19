@@ -42,11 +42,14 @@ func TestGenericManifestDoesNotReadIVTFFAndHasCompleteInventory(t *testing.T) {
 	if m.Corpus == nil || m.Corpus.SHA256 == "" {
 		t.Fatal("generic corpus hash missing")
 	}
-	if len(m.Stages) != 27 {
+	if len(m.Stages) != 28 {
 		t.Fatalf("got %d stages", len(m.Stages))
 	}
+	if m.Stages[0].Name != readinessStageName || m.Stages[0].Index != 0 {
+		t.Fatalf("stage 0 missing or malformed: %+v", m.Stages[0])
+	}
 
-	for i, sm := range m.Stages {
+	for i, sm := range m.Stages[1:] {
 		st := stages[i]
 		if st.RequiresMetadata && !st.Generic.Applicable {
 			// task43 Class A stages: still NOT_APPLICABLE, but with a
@@ -268,6 +271,59 @@ func TestIsolatedWorkspaceRejectsStaleAndFreezeUsesRegistryOnly(t *testing.T) {
 	if err := verifyExperiment(experiment); err != nil {
 		t.Fatal(err)
 	}
+}
+
+func TestGenericReadinessCheckAcceptsCanonicalCorpusAndRejectsRawInput(t *testing.T) {
+	tmp := t.TempDir()
+	canonical := filepath.Join(tmp, "canonical.txt")
+	if err := os.WriteFile(canonical, []byte("hello world\nline two\n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	m := &Manifest{CorpusPath: canonical, CorpusSHA256: mustSHA256(t, canonical), PreparedBy: "codex_prepare@test", CanonicalCorpusVersion: 1}
+	if _, err := runCorpusReadinessCheck(m); err != nil {
+		t.Fatalf("canonical corpus rejected: %v", err)
+	}
+
+	raw := filepath.Join(tmp, "raw.txt")
+	if err := os.WriteFile(raw, []byte{0xd1, 0xe5, 0xf2, 0x20, 0x2d, 0x2d, 0x20, 0x31, 0x00}, 0644); err != nil {
+		t.Fatal(err)
+	}
+	m.CorpusPath = raw
+	m.CorpusSHA256 = mustSHA256(t, raw)
+	if _, err := runCorpusReadinessCheck(m); err == nil {
+		t.Fatal("raw non-canonical input passed stage 0")
+	}
+}
+
+func TestGenericReadinessCheckRejectsRawCP1251AndCorruptUTF8(t *testing.T) {
+	tmp := t.TempDir()
+	rawCP1251 := filepath.Join(tmp, "raw-cp1251.txt")
+	if err := os.WriteFile(rawCP1251, []byte{0xd1, 0xef, 0xe0, 0xf1, 0xe8, 0xe1, 0xee, 0x20, 0x31, 0x0a}, 0644); err != nil {
+		t.Fatal(err)
+	}
+	m := &Manifest{CorpusPath: rawCP1251, CorpusSHA256: mustSHA256(t, rawCP1251)}
+	if _, err := runCorpusReadinessCheck(m); err == nil {
+		t.Fatal("raw CP1251 input passed stage 0")
+	}
+
+	corrupt := filepath.Join(tmp, "corrupt-utf8.txt")
+	if err := os.WriteFile(corrupt, []byte{0xff, 0xfe, 0xfd, 0x0a}, 0644); err != nil {
+		t.Fatal(err)
+	}
+	m.CorpusPath = corrupt
+	m.CorpusSHA256 = mustSHA256(t, corrupt)
+	if _, err := runCorpusReadinessCheck(m); err == nil {
+		t.Fatal("corrupted UTF-8 input passed stage 0")
+	}
+}
+
+func mustSHA256(t *testing.T, path string) string {
+	t.Helper()
+	sum, err := sha256File(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return sum
 }
 
 func TestResumeRejectsChangedCorpus(t *testing.T) {

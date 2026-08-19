@@ -11,6 +11,7 @@ import (
 	"strings"
 
 	"gopkg.in/yaml.v3"
+	"zcore.dev/voinich/internal/corpusprep"
 )
 
 func LoadStructural(path string) (StructuralInput, error) {
@@ -26,34 +27,22 @@ func LoadStructural(path string) (StructuralInput, error) {
 }
 
 func LoadCorpus(path string) (Corpus, error) {
-	file, err := os.Open(path)
+	corpus, _, err := corpusprep.LoadCorpus(path)
 	if err != nil {
 		return Corpus{}, err
 	}
-	defer file.Close()
-	corpus := Corpus{Counts: make(map[string]int)}
-	scanner := bufio.NewScanner(file)
-	scanner.Buffer(make([]byte, 64*1024), 16*1024*1024)
-	for scanner.Scan() {
-		tokens := strings.Fields(scanner.Text())
-		corpus.Lines = append(corpus.Lines, tokens)
-		if len(tokens) == 0 {
-			continue
-		}
-		corpus.NonEmpty++
-		corpus.Occurrences += len(tokens)
-		corpus.Transitions += len(tokens) - 1
-		for _, token := range tokens {
-			corpus.Counts[token]++
-		}
+	result := Corpus{Counts: make(map[string]int)}
+	for _, line := range corpus.Lines {
+		result.Lines = append(result.Lines, append([]string(nil), line...))
 	}
-	if err := scanner.Err(); err != nil {
-		return Corpus{}, err
-	}
-	if corpus.Occurrences-corpus.NonEmpty != corpus.Transitions {
+	result.Counts = corpus.Counts
+	result.NonEmpty = corpus.NonEmpty
+	result.Occurrences = corpus.Occurrences
+	result.Transitions = corpus.Transitions
+	if result.Occurrences-result.NonEmpty != result.Transitions {
 		return Corpus{}, fmt.Errorf("corpus invariant failed")
 	}
-	return corpus, nil
+	return result, nil
 }
 
 func ParseThresholds(value string) ([]float64, error) {

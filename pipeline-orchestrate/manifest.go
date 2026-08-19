@@ -12,6 +12,8 @@ import (
 	"runtime"
 	"strings"
 	"time"
+
+	"zcore.dev/voinich/internal/corpusprep"
 )
 
 // StageManifest freezes the exact operational command line one stage is
@@ -54,28 +56,35 @@ type WorkerManifest struct {
 // experiments/<name>/FROZEN (see freeze.go) is what makes that immutability
 // enforceable rather than just a convention.
 type Manifest struct {
-	ExperimentID     string             `json:"experiment_id"`
-	CreatedAt        time.Time          `json:"created_at"`
-	GitCommit        string             `json:"git_commit"`
-	GitDirty         bool               `json:"git_dirty"`
-	IVTFFPath        string             `json:"ivtff_path,omitempty"`
-	IVTFFSHA256      string             `json:"ivtff_sha256,omitempty"`
-	CorpusPath       string             `json:"corpus_path"`
-	CorpusSHA256     string             `json:"corpus_sha256"`
-	InputMode        string             `json:"input_mode,omitempty"`
-	Corpus           *InputFileManifest `json:"corpus,omitempty"`
-	IVTFF            *InputFileManifest `json:"ivtff"`
-	GoVersion        string             `json:"go_version"`
-	GOOS             string             `json:"goos"`
-	GOARCH           string             `json:"goarch"`
-	Hostname         string             `json:"hostname"`
-	NumCPU           int                `json:"num_cpu"`
-	Executor         string             `json:"executor"`      // executor for every distributed-capable stage
-	ExecutorNote     string             `json:"executor_note"` // honest description of what "distributed" meant for this run
-	Workers          []WorkerManifest   `json:"workers"`
-	Stages           []StageManifest    `json:"stages"`
-	IsolationVersion int                `json:"isolation_version,omitempty"`
-	Workspace        string             `json:"workspace,omitempty"`
+	ExperimentID           string             `json:"experiment_id"`
+	CreatedAt              time.Time          `json:"created_at"`
+	GitCommit              string             `json:"git_commit"`
+	GitDirty               bool               `json:"git_dirty"`
+	IVTFFPath              string             `json:"ivtff_path,omitempty"`
+	IVTFFSHA256            string             `json:"ivtff_sha256,omitempty"`
+	CorpusPath             string             `json:"corpus_path"`
+	CorpusSHA256           string             `json:"corpus_sha256"`
+	InputMode              string             `json:"input_mode,omitempty"`
+	Corpus                 *InputFileManifest `json:"corpus,omitempty"`
+	IVTFF                  *InputFileManifest `json:"ivtff"`
+	GoVersion              string             `json:"go_version"`
+	GOOS                   string             `json:"goos"`
+	GOARCH                 string             `json:"goarch"`
+	Hostname               string             `json:"hostname"`
+	NumCPU                 int                `json:"num_cpu"`
+	Executor               string             `json:"executor"`      // executor for every distributed-capable stage
+	ExecutorNote           string             `json:"executor_note"` // honest description of what "distributed" meant for this run
+	Workers                []WorkerManifest   `json:"workers"`
+	Stages                 []StageManifest    `json:"stages"`
+	PreparedBy             string             `json:"prepared_by,omitempty"`
+	PrepareManifestSHA256  string             `json:"prepare_manifest_sha256,omitempty"`
+	CanonicalCorpusVersion int                `json:"canonical_corpus_version,omitempty"`
+	CasePolicy             string             `json:"case_policy,omitempty"`
+	PunctuationPolicy      string             `json:"punctuation_policy,omitempty"`
+	WhitespacePolicy       string             `json:"whitespace_policy,omitempty"`
+	LinePolicy             string             `json:"line_policy,omitempty"`
+	IsolationVersion       int                `json:"isolation_version,omitempty"`
+	Workspace              string             `json:"workspace,omitempty"`
 }
 
 func sha256File(path string) (string, error) {
@@ -148,6 +157,10 @@ func buildManifest(repoPath, inputMode, ivtffPath, corpusPath string, opt orches
 	if err != nil {
 		return nil, fmt.Errorf("hash frozen corpus: %w", err)
 	}
+	prepareMeta, prepareSHA, err := loadPrepareManifestMetadata(absCorpusPath, corpusHash)
+	if err != nil {
+		return nil, err
+	}
 	hostname, _ := os.Hostname()
 
 	var workers []WorkerManifest
@@ -170,23 +183,30 @@ func buildManifest(repoPath, inputMode, ivtffPath, corpusPath string, opt orches
 	}
 
 	m := &Manifest{
-		CreatedAt:        time.Now().UTC(),
-		GitCommit:        commit,
-		GitDirty:         dirty,
-		CorpusPath:       absCorpusPath,
-		CorpusSHA256:     corpusHash,
-		InputMode:        inputMode,
-		Corpus:           &InputFileManifest{Path: absCorpusPath, SHA256: corpusHash},
-		GoVersion:        runtime.Version(),
-		GOOS:             runtime.GOOS,
-		GOARCH:           runtime.GOARCH,
-		Hostname:         hostname,
-		NumCPU:           runtime.NumCPU(),
-		Executor:         opt.Executor,
-		ExecutorNote:     executorNote,
-		Workers:          workers,
-		IsolationVersion: 1,
-		Workspace:        "workspace",
+		CreatedAt:              time.Now().UTC(),
+		GitCommit:              commit,
+		GitDirty:               dirty,
+		CorpusPath:             absCorpusPath,
+		CorpusSHA256:           corpusHash,
+		InputMode:              inputMode,
+		Corpus:                 &InputFileManifest{Path: absCorpusPath, SHA256: corpusHash},
+		GoVersion:              runtime.Version(),
+		GOOS:                   runtime.GOOS,
+		GOARCH:                 runtime.GOARCH,
+		Hostname:               hostname,
+		NumCPU:                 runtime.NumCPU(),
+		Executor:               opt.Executor,
+		ExecutorNote:           executorNote,
+		Workers:                workers,
+		PreparedBy:             prepareMeta.PreparedBy,
+		PrepareManifestSHA256:  prepareSHA,
+		CanonicalCorpusVersion: prepareMeta.CanonicalCorpusVersion,
+		CasePolicy:             prepareMeta.CasePolicy,
+		PunctuationPolicy:      prepareMeta.PunctuationPolicy,
+		WhitespacePolicy:       prepareMeta.WhitespacePolicy,
+		LinePolicy:             prepareMeta.LinePolicy,
+		IsolationVersion:       1,
+		Workspace:              "workspace",
 	}
 	if inputMode != "generic" {
 		m.IVTFFPath, m.IVTFFSHA256 = absIVTFFPath, ivtffHash
@@ -212,8 +232,63 @@ func buildManifest(repoPath, inputMode, ivtffPath, corpusPath string, opt orches
 		}
 		m.Stages = append(m.Stages, sm)
 	}
+	if inputMode == "generic" {
+		m.Stages = append([]StageManifest{{
+			Index:            0,
+			Name:             readinessStageName,
+			Dir:              "codex_prepare",
+			Args:             []string{"-input", absCorpusPath, "-check"},
+			Status:           "PLANNED",
+			WorkingDirectory: "workspace",
+		}}, m.Stages...)
+		for i := range m.Stages {
+			m.Stages[i].Index = i
+		}
+	}
 	m.ExperimentID = computeExperimentID(m)
 	return m, nil
+}
+
+type prepareMetadata struct {
+	PreparedBy             string
+	CanonicalCorpusVersion int
+	CasePolicy             string
+	PunctuationPolicy      string
+	WhitespacePolicy       string
+	LinePolicy             string
+}
+
+func loadPrepareManifestMetadata(corpusPath, corpusHash string) (prepareMetadata, string, error) {
+	path := corpusPath + ".prepare.json"
+	data, err := os.ReadFile(path)
+	if err != nil {
+		if os.IsNotExist(err) {
+			return prepareMetadata{}, "", nil
+		}
+		return prepareMetadata{}, "", fmt.Errorf("read prepare manifest %s: %w", path, err)
+	}
+	var manifest corpusprep.PrepareManifest
+	if err := json.Unmarshal(data, &manifest); err != nil {
+		return prepareMetadata{}, "", fmt.Errorf("parse prepare manifest %s: %w", path, err)
+	}
+	if manifest.OutputSHA256 != corpusHash {
+		return prepareMetadata{}, "", fmt.Errorf("prepare manifest %s output sha256 %s does not match corpus %s", path, manifest.OutputSHA256, corpusHash)
+	}
+	if manifest.CanonicalCorpusVersion != corpusprep.CanonicalCorpusVersion {
+		return prepareMetadata{}, "", fmt.Errorf("prepare manifest %s uses unsupported canonical corpus version %d", path, manifest.CanonicalCorpusVersion)
+	}
+	if absOutput, err := filepath.Abs(manifest.OutputPath); err == nil && absOutput != corpusPath {
+		return prepareMetadata{}, "", fmt.Errorf("prepare manifest %s output path %s does not match corpus path %s", path, absOutput, corpusPath)
+	}
+	sum := sha256.Sum256(data)
+	return prepareMetadata{
+		PreparedBy:             manifest.PreparedBy,
+		CanonicalCorpusVersion: manifest.CanonicalCorpusVersion,
+		CasePolicy:             manifest.CasePolicy,
+		PunctuationPolicy:      manifest.PunctuationPolicy,
+		WhitespacePolicy:       manifest.WhitespacePolicy,
+		LinePolicy:             manifest.LinePolicy,
+	}, hex.EncodeToString(sum[:]), nil
 }
 
 // computeExperimentID hashes everything that determines reproducibility:

@@ -39,6 +39,7 @@ func TestStagesMatchRepository(t *testing.T) {
 	// commands this very task introduces or that Task34 introduced.
 	exempt := map[string]bool{
 		"conditional-regime-pki": true,
+		"codex_prepare":          true,
 		"pipeline-orchestrate":   true,
 	}
 	for _, e := range entries {

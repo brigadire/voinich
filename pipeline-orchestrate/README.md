@@ -1,7 +1,8 @@
 # pipeline-orchestrate
 
 Task36's single orchestration CLI: runs every current Voynich pipeline
-stage (27 commands, `stages.go`) in dependency order against production
+stage (27 scientific commands in `stages.go`, plus a generic-corpus Stage 0
+validator in generic mode) in dependency order against production
 parameters, using the distributed executor for structural projection and
 conditional regime (Task31-35/40) where that stage supports it, and freezes the result as an
 immutable, checksummed experiment directory under `experiments/<name>/`.
@@ -47,11 +48,14 @@ Refuses to overwrite an existing manifest without `-force`, and refuses
 entirely once the experiment is `freeze`d.
 
 With `-generic-corpus`, `-corpus` is the sole authoritative input. The
-orchestrator neither hashes nor reads an IVTFF file. The manifest retains all
-27 stages: corpus-only stages are `PLANNED`, while IVTFF-metadata stages are
-`NOT_APPLICABLE` with an explicit reason. Corpus-consuming commands receive
-the selected path explicitly, so their historical Voynich defaults cannot be
-used as fallback. See `STAGE_AUDIT.md` for the input/dependency audit.
+orchestrator neither hashes nor reads an IVTFF file. The manifest includes
+generic Stage 0 (`corpus-readiness-check`) ahead of the 27 scientific stages:
+corpus-only stages are `PLANNED`, while IVTFF-metadata stages are
+`NOT_APPLICABLE` with an explicit reason. If a sibling `*.prepare.json`
+exists, the manifest records its provenance and hash. Corpus-consuming
+commands receive the selected path explicitly, so their historical Voynich
+defaults cannot be used as fallback. See `STAGE_AUDIT.md` for the
+input/dependency audit.
 
 ### run
 
