@@ -5,6 +5,7 @@ import (
 	"crypto/sha256"
 	"encoding/csv"
 	"encoding/hex"
+	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -15,6 +16,24 @@ import (
 
 	"zcore.dev/voinich/internal/genericsegmentation"
 )
+
+// ErrNoReplicatedCandidate marks resolveGenericTarget's "nothing to test"
+// outcome as distinct from a malformed/missing upstream file: a corpus with
+// no HIGHER_ORDER_REPLICATED candidate genuinely has no confirmatory target
+// for this stage, which is a legitimate data-driven result, not a failure.
+// Exported so main.go can check applicability before building any
+// executor (remote/process executor construction also resolves the target
+// to compute its fingerprint, ahead of RunAndWrite's own check).
+var ErrNoReplicatedCandidate = errors.New("no HIGHER_ORDER_REPLICATED candidate")
+
+// CheckGenericTarget reports whether generic-mode target resolution would
+// succeed, without mutating package-level Frozen* state, so callers can
+// decide whether to build a distributed executor at all before anything
+// else runs.
+func CheckGenericTarget(higherOrderDir string) error {
+	_, _, _, err := resolveGenericTarget(higherOrderDir)
+	return err
+}
 
 func readTSV(path string) ([]map[string]string, error) {
 	f, err := os.Open(path)
@@ -203,7 +222,7 @@ func resolveGenericTarget(higherOrderDir string) (a, b, c string, err error) {
 		}
 	}
 	if best == nil {
-		return "", "", "", fmt.Errorf("resolveGenericTarget: no HIGHER_ORDER_REPLICATED candidate in %s/higher_order_validation.tsv", higherOrderDir)
+		return "", "", "", fmt.Errorf("resolveGenericTarget: %w in %s/higher_order_validation.tsv", ErrNoReplicatedCandidate, higherOrderDir)
 	}
 	tokens := strings.Fields(best["sequence"])
 	if len(tokens) != 3 {

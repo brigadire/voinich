@@ -60,9 +60,6 @@ func analyze(cfg Config, pgr *progressReporter) (analysis, error) {
 		}
 		pairs = []pair{{strings.TrimSpace(v[0]), strings.TrimSpace(v[1])}}
 	}
-	if len(pairs) == 0 {
-		return analysis{}, fmt.Errorf("no target pairs")
-	}
 	pgr.update(1, 1, "Loading corpus and target pairs")
 	needed := map[string]bool{}
 	for _, q := range pairs {

@@ -257,6 +257,33 @@ type yamlDoc struct {
 	FinalStatus     string         `yaml:"final_status"`
 }
 
+// WriteNotApplicable records the legitimate "nothing to confirm" outcome
+// when generic-mode target resolution finds no HIGHER_ORDER_REPLICATED
+// candidate: no occurrences, permutations, or statistics are fabricated,
+// only the reason the confirmatory test has no target in this corpus.
+func WriteNotApplicable(c Config, reason string) error {
+	if err := os.MkdirAll(c.OutputDir, 0755); err != nil {
+		return err
+	}
+	doc := map[string]any{
+		"meta": map[string]any{
+			"confirmatory": true,
+			"applicable":   false,
+			"reason":       reason,
+		},
+		"final_status": "NOT_APPLICABLE",
+	}
+	b, err := yaml.Marshal(doc)
+	if err != nil {
+		return err
+	}
+	if err := os.WriteFile(filepath.Join(c.OutputDir, "positional_continuation_analysis.yaml"), b, 0644); err != nil {
+		return err
+	}
+	report := "# Positional-continuation validation\n\nNOT_APPLICABLE: " + reason + "\n\nThis stage confirmatorily tests position-dependence of a single frozen target continuation (Voynichese `s aiin -> chey`, or in generic mode the single best HIGHER_ORDER_REPLICATED candidate from higher-order-sequence-validate). No such candidate exists for this corpus, so there is no target to test; no occurrences were counted and no permutation tests were run.\n"
+	return os.WriteFile(filepath.Join(c.OutputDir, "positional_continuation_report.md"), []byte(report), 0644)
+}
+
 func writeYAML(c Config, meta runMeta, state *RunState) error {
 	doc := yamlDoc{
 		Meta: map[string]any{

@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"errors"
 	"flag"
 	"fmt"
 	"os"
@@ -63,6 +64,26 @@ func run() (code int) {
 		return 2
 	}
 	c.Context = context.Background()
+
+	// Check generic-mode target applicability before building any executor:
+	// remote/process executor construction also resolves the target to
+	// compute its fingerprint, so a corpus with no HIGHER_ORDER_REPLICATED
+	// candidate must be caught here first, or it surfaces as an executor
+	// construction error instead of the legitimate NOT_APPLICABLE outcome.
+	if c.Generic {
+		if e := positionalcontinuation.CheckGenericTarget(c.HigherOrderDir); e != nil {
+			if errors.Is(e, positionalcontinuation.ErrNoReplicatedCandidate) {
+				if err := positionalcontinuation.WriteNotApplicable(c, e.Error()); err != nil {
+					fmt.Fprintln(os.Stderr, "Error:", err)
+					return 1
+				}
+				fmt.Printf("positional-continuation-validate: NOT_APPLICABLE (%v); results written to %s\n", e, c.OutputDir)
+				return 0
+			}
+			fmt.Fprintln(os.Stderr, "Error:", fmt.Errorf("resolve generic target triple: %w", e))
+			return 1
+		}
+	}
 
 	switch c.Executor {
 	case "process":

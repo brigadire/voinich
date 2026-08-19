@@ -191,9 +191,6 @@ func loadFrozenCandidates(auditDir string) ([]Candidate, error) {
 		})
 	}
 	sort.Slice(out, func(i, j int) bool { return out[i].Sequence < out[j].Sequence })
-	if len(out) == 0 {
-		return nil, fmt.Errorf("no frozen n>=3 candidates with shuffle_block_fdr_q<=0.05 found in %s", auditDir)
-	}
 	return out, nil
 }
 

@@ -1,6 +1,7 @@
 package positionalcontinuation
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -67,6 +68,13 @@ func RunAndWrite(c Config) error {
 	if c.Generic {
 		s, aiin, chey, e := resolveGenericTarget(c.HigherOrderDir)
 		if e != nil {
+			if errors.Is(e, ErrNoReplicatedCandidate) {
+				if err := WriteNotApplicable(c, e.Error()); err != nil {
+					return err
+				}
+				fmt.Printf("positional-continuation-validate: NOT_APPLICABLE (%v); results written to %s\n", e, c.OutputDir)
+				return nil
+			}
 			return fmt.Errorf("resolve generic target triple: %w", e)
 		}
 		FrozenS, FrozenAiin, FrozenChey = s, aiin, chey
