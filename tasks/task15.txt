@@ -1,0 +1,740 @@
+Задача: Local-Regime / Non-Stationarity Analysis для корпуса Voynich
+
+Контекст
+
+Предыдущие этапы показали:
+
+1. В корпусе существуют пары токенов с аномально похожими exact-distance distributions на расстояниях +1…+20.
+
+Примеры:
+- chedy / qokeey
+- chol / daiin
+- ol / y
+- chey / ol
+- dar / ol
+- or / s
+- r / s
+
+2. Exact suffix similarity длины 2–3 почти отсутствует.
+
+3. Soft structural projection не объясняет дальний эффект лучше random-space / smoothing controls.
+
+4. Property-trajectory analysis также не дал общего объяснения:
+   target cosine 1–5 ≈ 0.9943,
+   global shuffle ≈ 0.9958,
+   line-preserving shuffle ≈ 0.9957.
+
+Следовательно, следующая гипотеза:
+
+наблюдаемое long-range similarity может быть вызвано не прямой последовательной зависимостью между A и будущим контекстом, а тем, что A и B преимущественно встречаются в одинаковых статистических областях корпуса.
+
+Иначе:
+
+A и B могут быть markers одного local regime, а не элементами одной длинной dependency.
+
+Главный исследовательский вопрос:
+
+Может ли локальная нестационарность корпуса объяснить ранее обнаруженное сходство distributions на +1…+20?
+
+
+1. Основной принцип
+
+Не использовать:
+- soft structural projection;
+- property trajectory;
+- semantic labels;
+- страницы как смысловые единицы;
+- изображения.
+
+Работать непосредственно с последовательностью токенов.
+
+Для каждого occurrence токена A характеризовать большой локальный контекст вокруг него.
+
+
+2. Local regime window
+
+Для каждого occurrence токена A рассматривать симметричное окружение:
+
+[-R ... -G] A [+G ... +R]
+
+где:
+
+R — outer radius;
+G — exclusion gap вокруг центрального токена.
+
+По умолчанию:
+
+R = 100
+G = 20
+
+То есть local-regime profile строится по:
+
+-100 ... -21
+и
++21 ... +100
+
+Центральная область ±20 исключается намеренно, потому что именно на ней ранее измеряется long-range effect.
+
+CLI:
+
+--regime-radius 100
+--regime-gap 20
+
+
+3. Несколько масштабов
+
+Обязательно сделать sweep нескольких outer radii:
+
+50
+100
+200
+500
+
+и gaps:
+
+10
+20
+30
+
+Не выбирать один параметр постфактум как "лучший".
+
+Все результаты сохранять.
+
+
+4. Continuous corpus — основной режим
+
+Основной режим рассматривает корпус как одну последовательность.
+
+Физические линии сохраняются только для controls.
+
+Дополнительно реализовать:
+
+--respect-line-boundaries
+
+но не использовать его как основную модель.
+
+
+5. Local regime profile
+
+Для каждого occurrence A построить локальное distribution токенов во внешнем окне.
+
+Минимальная форма:
+
+P(X | local_context_of_occurrence_A)
+
+Не включать сам A и центральный gap.
+
+Профиль occurrence должен быть sparse token-frequency vector.
+
+
+6. Aggregate regime profile token
+
+Для токена A агрегировать regime profiles всех его occurrences:
+
+R(A)
+
+Но сохранить также variation между occurrences:
+
+- mean regime profile;
+- within-token regime dispersion;
+- pairwise JS between occurrences;
+- centroid distance.
+
+Это важно: токен может встречаться в нескольких разных regimes.
+
+
+7. Pair regime similarity
+
+Для каждой target pair A/B сравнить:
+
+R(A) vs R(B)
+
+Считать минимум:
+
+- Jensen-Shannon similarity;
+- weighted overlap;
+- support Jaccard;
+- cosine similarity как дополнительную метрику.
+
+Главный показатель — JS similarity.
+
+
+8. Основные target pairs
+
+Обязательно анализировать все 28 пар из distance-context analysis.
+
+Особое внимание:
+
+chedy / qokeey
+chol / daiin
+ol / y
+chey / ol
+dar / ol
+ar / ol
+dal / ol
+qokain / qol
+aiin / ar
+or / s
+r / s
+or / r
+
+
+9. Связь regime similarity с long-range similarity
+
+Для каждой пары уже существует:
+
+distance_context_similarity
+
+например mean JS 1–5, 6–10, 11–20.
+
+Нужно проверить корреляцию:
+
+regime_similarity
+vs
+distance_context_similarity
+
+По всем target pairs и, желательно, по более широкому набору частых пар.
+
+Считать:
+
+- Pearson;
+- Spearman.
+
+Но не трактовать обычный p-value как строгий из-за зависимости пар.
+
+
+10. Главный conditional test
+
+Это ключевая часть задачи.
+
+Необходимо проверить:
+
+если контролировать local regime, остаётся ли long-range dependency?
+
+Для каждого occurrence A подобрать occurrences других токенов из максимально похожих local-regime profiles.
+
+Затем построить expected future distribution при условии regime.
+
+Идея:
+
+P(X at +d | regime(A))
+
+и сравнить с:
+
+P(X at +d | A)
+
+Нужно оценить:
+
+residual_dependency(A,d)
+
+то есть насколько знание самого A добавляет информацию сверх знания local regime.
+
+
+11. Regime-matched control occurrences
+
+Для каждого occurrence A подобрать K occurrence controls:
+
+- похожий local regime;
+- центральный token != A;
+- желательно сходная глобальная частота центрального токена.
+
+CLI:
+
+--regime-controls-k
+
+например K=5 или 10.
+
+
+12. Residual distance profile
+
+Для target pair A/B построить:
+
+observed_JS(A,B,d)
+
+и
+
+regime_expected_JS(A,B,d)
+
+Затем:
+
+residual_excess(d) =
+observed_JS - regime_expected_JS
+
+Если long-range similarity объясняется режимом, residual должен быть близок к нулю.
+
+Если остаётся сильный positive residual — существует дополнительная последовательная структура.
+
+
+13. Within-regime permutation control
+
+Это обязательный тест.
+
+Нужно локально перемешивать токены, сохраняя regime composition.
+
+Возможный вариант:
+
+разбить continuous corpus на windows/block segments выбранного размера и перемешивать токены внутри блока.
+
+Размеры:
+
+50
+100
+200
+
+Либо использовать inferred local-regime clusters, если они будут построены.
+
+После такого shuffle:
+
+- крупномасштабная нестационарность сохраняется;
+- локальный порядок уничтожается.
+
+Повторить distance-context analysis.
+
+Это один из главных тестов задачи.
+
+
+14. Сравнить три shuffle режима
+
+Нужно минимум:
+
+A. Global shuffle
+полностью уничтожает порядок и regimes.
+
+B. Line-preserving shuffle
+сохраняет строки.
+
+C. Local block shuffle
+сохраняет локальную composition/non-stationarity, но уничтожает порядок внутри blocks.
+
+Для каждого target pair сравнить:
+
+original
+global shuffle
+line shuffle
+local block shuffle
+
+
+15. Интерпретация local block shuffle
+
+Если:
+
+original ≈ local-block-shuffle >> global-shuffle
+
+то long-range effect в основном объясняется local composition/regime.
+
+Если:
+
+original >> local-block-shuffle
+
+то порядок внутри regime несёт дополнительную информацию.
+
+Это ключевой discriminator.
+
+
+16. Sliding-window non-stationarity
+
+Независимо от target pairs построить sliding-window profiles всего корпуса.
+
+Например:
+
+window size:
+50
+100
+200
+500
+
+step:
+10 или configurable.
+
+Для каждого window получить token-frequency distribution.
+
+
+17. Adjacent-window distance
+
+Считать JS distance между последовательными окнами:
+
+W1 vs W2
+W2 vs W3
+...
+
+Это покажет, является ли corpus distribution stationary или существуют области с резкими изменениями.
+
+
+18. Distant-window comparison
+
+Сравнивать также окна на расстоянии:
+
+1
+2
+5
+10
+20 windows
+
+Построить:
+
+mean JS distance as function of window separation.
+
+Если nearby windows значительно похожее distant windows, это прямое свидетельство local non-stationarity.
+
+
+19. Change-point diagnostic
+
+Реализовать нейтральный change-point detector по sliding-window distributions.
+
+Не искать "страницы" или "разделы".
+
+Можно использовать:
+
+- threshold on JS jump;
+- PELT / binary segmentation;
+- другой простой алгоритм.
+
+Это только diagnostic.
+
+Результат:
+
+positions в continuous token sequence, где composition существенно меняется.
+
+
+20. Не навязывать число regimes
+
+Если используется clustering sliding-window profiles, делать sweep:
+
+K = 2..10
+
+или hierarchical clustering.
+
+Не выбирать правильное K вручную.
+
+Основной анализ должен работать и без discrete clustering.
+
+
+21. Regime embedding
+
+Опционально использовать PCA / UMAP только для визуализации sliding-window profiles.
+
+Не использовать embedding distance как основную метрику.
+
+
+22. Token-regime association
+
+Для каждого token A вычислить:
+
+- распределение occurrences по sliding-window regimes;
+- regime concentration;
+- entropy of regime membership;
+- maximum regime association.
+
+Если токен почти всегда встречается в одном типе local environment, это важно.
+
+
+23. Pair co-regime association
+
+Для target pair A/B вычислить:
+
+- similarity их regime-membership distributions;
+- overlap;
+- JS similarity.
+
+Проверить, объясняет ли это distance-context similarity.
+
+
+24. Occurrence-level heterogeneity
+
+Не ограничиваться aggregate token profile.
+
+Для каждого токена определить:
+
+single-regime token?
+multi-regime token?
+
+Через clustering его occurrence-regime profiles или dispersion.
+
+Это важно, потому что aggregate R(A) может скрыть несколько различных modes.
+
+
+25. Matched controls
+
+Для каждой target pair подобрать control pairs с похожими:
+
+- counts;
+- regime concentration;
+- occurrence count;
+- global frequency.
+
+Но обычной distance-context similarity.
+
+Сравнить target vs controls.
+
+
+26. Frequency confound
+
+Частые токены сильнее отражают global distribution.
+
+Поэтому baseline и controls обязательно frequency-matched.
+
+Не сравнивать редкие и очень частые токены напрямую.
+
+
+27. Exclusion-gap sensitivity
+
+Критически важно проверить, что local regime profile не "подглядывает" в исследуемую dependency.
+
+Поэтому выполнить:
+
+gap 10
+gap 20
+gap 30
+gap 50
+
+Если regime similarity исчезает при увеличении gap, возможно, она была вызвана самой локальной dependency.
+
+
+28. Left-only / right-only regimes
+
+Дополнительно построить:
+
+left regime:
+-R ... -G
+
+right regime:
++G ... +R
+
+и symmetric regime.
+
+Это позволит увидеть, связано ли окружение в основном с предыдущей или будущей частью корпуса.
+
+
+29. Pair decomposition
+
+Для каждой сильной пары вывести:
+
+A/B counts
+
+distance-context JS:
+1–5
+6–10
+11–20
+
+regime JS:
+radius 50
+100
+200
+500
+
+regime concentration A/B
+
+residual dependency:
+1–5
+6–10
+11–20
+
+block-shuffle retained fraction
+
+
+30. Retained-fraction metric
+
+Полезная прозрачная метрика:
+
+retained_fraction =
+distance_similarity_after_local_shuffle /
+original_distance_similarity
+
+Не использовать её как вероятность.
+
+Пример:
+
+0.95 → почти весь эффект сохраняется без порядка
+0.30 → большая часть эффекта зависит от порядка
+
+
+31. Alternative excess-over-baseline metric
+
+Поскольку абсолютный JS имеет baseline, предпочтительнее:
+
+effect_original =
+original_JS - matched_baseline_JS
+
+effect_shuffle =
+shuffle_JS - matched_baseline_JS
+
+retained_effect =
+effect_shuffle / effect_original
+
+Сохранять raw values.
+
+
+32. Output files
+
+Создать минимум:
+
+local_regime_pairs.yaml
+local_regime_top.tsv
+local_regime_controls.tsv
+local_regime_windows.tsv
+local_regime_changes.yaml
+local_regime_report.md
+
+Дополнительно:
+
+token_regime_profiles.yaml
+occurrence_regime_profiles.yaml
+block_shuffle_results.yaml
+
+
+33. Визуализации
+
+Минимум:
+
+plots/nonstationarity_window_js.svg
+
+X:
+continuous corpus position
+
+Y:
+adjacent-window JS distance
+
+
+plots/window_similarity_by_distance.svg
+
+X:
+window separation
+
+Y:
+mean similarity
+
+
+Для target pairs:
+
+plots/regime_chol_daiin.svg
+plots/regime_chedy_qokeey.svg
+plots/regime_or_s.svg
+
+Показывать:
+
+original distance-context
+regime-expected
+local-shuffle
+global-shuffle
+
+
+34. Heatmap corpus
+
+Желательно построить heatmap sliding-window similarity:
+
+window_i × window_j
+
+Это может визуально показать крупные homogeneous regions без предположения о страницах.
+
+
+35. Никакой семантической разметки
+
+Не называть найденные regions:
+
+chapters
+recipes
+botanical section
+astronomical section
+hands
+dialects
+
+Использовать:
+
+local regime
+distributional region
+change point
+window cluster
+
+
+36. Не использовать manuscript metadata в основном анализе
+
+Не использовать:
+
+page
+folio
+illustration
+hand
+Currier A/B
+
+Основной эксперимент должен быть blind к этим данным.
+
+Позже найденные regimes можно будет отдельно сравнить с metadata, но не сейчас.
+
+
+37. Главный statistical question
+
+Нужно разделить две модели:
+
+MODEL A — sequential dependency
+
+A влияет на distributions следующих токенов.
+
+MODEL B — shared local regime
+
+A и B просто появляются в одинаковых distributional regions, поэтому после них наблюдаются похожие токены.
+
+Задача должна оценить, какая часть observed long-range effect объясняется MODEL B.
+
+
+38. Условия интересного результата
+
+Сильное evidence в пользу shared-regime explanation:
+
+- A/B имеют высокий regime similarity;
+- regime similarity коррелирует с long-range similarity;
+- local block shuffle сохраняет большую часть effect;
+- residual dependency после regime conditioning мала.
+
+Evidence в пользу дополнительной sequential structure:
+
+- local block shuffle существенно уменьшает effect;
+- residual dependency остаётся высокой;
+- effect устойчив к большим exclusion gaps.
+
+
+39. Negative result
+
+Если corpus практически stationary и local regimes не объясняют effect, это важный отрицательный результат.
+
+В этом случае следующий этап — latent sequential state model / HMM-like analysis.
+
+Не подгонять regime parameters под положительный вывод.
+
+
+40. Главные исследовательские вопросы
+
+Анализ должен ответить:
+
+1. Является ли corpus distribution stationary?
+
+2. Существуют ли крупные или локальные distributional regimes?
+
+3. Связаны ли сильные target pairs с одинаковыми regimes?
+
+4. Насколько regime membership объясняет long-range context similarity?
+
+5. Сохраняется ли effect после уничтожения локального порядка при сохранении composition?
+
+6. Существует ли residual sequential dependency сверх local regime?
+
+
+41. Tests
+
+Добавить unit tests минимум для:
+
+- local window extraction;
+- exclusion gap;
+- symmetric / left / right profiles;
+- JS regime similarity;
+- sliding-window construction;
+- local block shuffle;
+- frequency-matched occurrence controls;
+- residual dependency;
+- retained effect;
+- deterministic shuffles;
+- change-point detection.
+
+После реализации:
+
+go test ./...
+go vet ./...

@@ -1,0 +1,587 @@
+Task45 — Frozen Experiment Comparative Analysis and Structural Fingerprinting
+
+Цель
+
+Создать отдельный CLI-модуль для воспроизводимого сравнительного анализа
+результатов нескольких уже завершённых/frozen исследований.
+
+Модуль НЕ является stage общего scientific pipeline и никогда не должен
+автоматически запускаться pipeline-orchestrate.
+
+Он работает исключительно с каталогами результатов готовых экспериментов.
+
+Предлагаемое имя:
+
+    experiment-compare
+
+Пример:
+
+    go run ./experiment-compare \
+        -experiment experiments/voynich-v1 \
+        -experiment experiments/doyle-sign-of-four-v1-2 \
+        -experiment experiments/longfellow-song-of-hiawatha-v1 \
+        -experiment experiments/msdos-v2-0-v1 \
+        -output-dir comparisons/comparative-v1
+
+Допускается более удобный repeatable flag/interface, если он лучше
+соответствует существующей архитектуре проекта.
+
+----------------------------------------------------------------------
+1. PRINCIPLE
+----------------------------------------------------------------------
+
+experiment-compare должен отделять:
+
+A. extraction:
+   факты непосредственно из frozen artifacts;
+
+B. derived metrics:
+   значения, вычисляемые по заранее определённым формулам;
+
+C. exploratory multivariate comparison:
+   distances / clustering / projections;
+
+D. interpretation:
+   НЕ выполнять автоматически.
+
+Программа НЕ должна выдавать заключения типа:
+
+    VOYNICH_IS_NATURAL_LANGUAGE
+    VOYNICH_IS_PROGRAMMING_LANGUAGE
+    INSTRUCTION_HYPOTHESIS_CONFIRMED
+    probability_natural_language = ...
+
+если для этого нет заранее валидированной статистической модели.
+
+Основной output — измеряемый structural fingerprint, а не семантический
+диагноз документа.
+
+----------------------------------------------------------------------
+2. INPUT
+----------------------------------------------------------------------
+
+Каждый -experiment указывает на каталог frozen experiment.
+
+Для каждого входа:
+
+- прочитать manifest;
+- проверить FROZEN marker, если он существует;
+- проверить checksums существующим механизмом verify либо общей библиотекой;
+- определить input mode;
+- получить corpus SHA256;
+- corpus token count;
+- vocabulary size;
+- applicable stages;
+- NOT_APPLICABLE stages;
+- scientific parameters соответствующих analyses.
+
+Никогда не изменять входные experiment directories.
+
+Если experiment не frozen:
+по умолчанию отказать с ясной ошибкой.
+
+Опционально можно предусмотреть:
+
+    -allow-unfrozen
+
+только для development/exploratory использования, с явным предупреждением
+в outputs.
+
+----------------------------------------------------------------------
+3. EXPERIMENT IDENTITY
+----------------------------------------------------------------------
+
+Каждому experiment присвоить стабильное display/id имя.
+
+Предпочтительно брать его из manifest/experiment metadata.
+
+В outputs обязательно фиксировать:
+
+    experiment_id
+    input_mode
+    corpus path/name
+    corpus SHA256
+    token_count
+    vocabulary_size
+    git_commit
+    applicable stages
+    unavailable stages
+
+Никакого определения класса документа по имени каталога.
+
+----------------------------------------------------------------------
+4. STAGE COMPATIBILITY AUDIT
+----------------------------------------------------------------------
+
+Перед реализацией провести аудит всех текущих outputs pipeline.
+
+Создать таблицу:
+
+    stage
+    artifact
+    raw metric
+    semantic meaning
+    comparable across corpus modes?
+    normalization required?
+    missing-value semantics
+
+Особенно внимательно проверить stages 23–27, где Voynich-specific
+metadata hypotheses и generic GROUP_* hypotheses могут иметь разные
+categorical labels.
+
+Не считать одинаково названные числа автоматически сопоставимыми.
+
+Не сравнивать categorical labels с различной научной семантикой.
+
+Результат аудита сохранить как:
+
+    experiment-compare/METRIC_COMPATIBILITY.md
+
+----------------------------------------------------------------------
+5. RAW COMPARABLE METRICS
+----------------------------------------------------------------------
+
+Извлекать максимально полный набор действительно сопоставимых численных
+метрик.
+
+Как минимум исследовать возможность включения:
+
+Corpus:
+- token count
+- vocabulary size
+- eligible token count/rate
+
+Sequences:
+- frozen candidates
+- significant candidates
+- replicated candidates
+- significant rate
+- replication rate
+
+Token relations:
+- tested/frozen relations
+- significant relations
+- replicated/group-consistent relations
+- соответствующие rates
+
+Transition network:
+- eligible tokens
+- preferred tested/significant
+- depleted tested/significant
+- strict preferred backbone
+- strict depleted backbone
+- replicated outgoing profiles
+- replicated incoming profiles
+- backbone/significant rates
+- profile replication rates
+- M0 log-loss
+- M1 log-loss
+- M2 log-loss
+- M0→M1 gain
+- M1→M2 gain
+
+Higher order:
+- candidate count
+- FIRST_ORDER_EXPLAINED
+- HIGHER_ORDER_REPLICATED
+- SINGLE_BLOCK_SENSITIVE
+- POSITION_DEPENDENT
+- INSUFFICIENT_SUPPORT
+- normalized rates where denominator is scientifically meaningful
+
+Structural/profile/distance/local/global stages:
+извлечь сопоставимые effect sizes, replication/stability measures,
+entropy/predictability measures и rates после compatibility audit.
+
+Не ограничиваться перечисленными метриками, если другие существующие
+outputs дают честные cross-corpus quantities.
+
+----------------------------------------------------------------------
+6. NORMALIZATION
+----------------------------------------------------------------------
+
+Raw counts сохранять, но НЕ использовать их непосредственно как основной
+cross-corpus fingerprint, если они зависят от:
+
+- corpus length;
+- vocabulary size;
+- eligible candidate count;
+- number of tested edges;
+- number of blocks.
+
+Для каждой такой величины определить прозрачную normalization formula.
+
+Примеры:
+
+    significant_rate =
+        significant / tested
+
+    backbone_retention =
+        strict_backbone / significant
+
+    replication_rate =
+        replicated / significant
+
+    higher_order_replication_rate =
+        higher_order_replicated / eligible_higher_order_candidates
+
+Нельзя использовать произвольные weights.
+
+Все formulas документировать и сохранять machine-readable.
+
+----------------------------------------------------------------------
+7. MISSING / NOT APPLICABLE
+----------------------------------------------------------------------
+
+Строго различать:
+
+    0
+    NA
+    NOT_APPLICABLE
+    NOT_COMPUTED
+    MISSING_ARTIFACT
+    INCOMPATIBLE_METRIC
+
+Никогда не превращать отсутствие анализа в numeric zero.
+
+Distance/clustering должны использовать только совместимые dimensions.
+
+Для каждой pairwise comparison сообщать:
+
+    dimensions_available
+    dimensions_used
+    dimensions_missing
+
+----------------------------------------------------------------------
+8. STRUCTURAL FINGERPRINT
+----------------------------------------------------------------------
+
+Для каждого experiment сформировать machine-readable fingerprint:
+
+    structural_fingerprint.tsv
+    structural_fingerprint.yaml
+
+Строка/объект должен содержать только заранее определённые comparable
+normalized metrics.
+
+Также сохранить:
+
+    raw_metrics.tsv
+    normalized_metrics.tsv
+
+Fingerprint schema должен иметь явную version:
+
+    fingerprint_schema_version: 1
+
+После Task45 изменение набора fingerprint features должно требовать
+новой версии schema.
+
+Это важно для будущих out-of-sample controls.
+
+----------------------------------------------------------------------
+9. DISTANCES
+----------------------------------------------------------------------
+
+Рассчитать pairwise distances между experiments.
+
+Не выбирать одну произвольную metric.
+
+Как минимум рассмотреть:
+
+- standardized Euclidean;
+- Manhattan;
+- cosine distance.
+
+Перед standardized distance определить scaling исключительно из набора
+experiments и явно документировать его.
+
+При малом N предупредить, что distances exploratory.
+
+Output:
+
+    pairwise_distances.tsv
+
+с указанием:
+
+    experiment_a
+    experiment_b
+    metric
+    distance
+    dimensions_used
+    dimensions_total
+
+Не интерпретировать автоматически близость как принадлежность к классу.
+
+----------------------------------------------------------------------
+10. UNSUPERVISED EXPLORATION
+----------------------------------------------------------------------
+
+Если число experiments и dimensions позволяет:
+
+- PCA;
+- hierarchical clustering.
+
+Но:
+
+- никакие document class labels не должны участвовать в вычислениях;
+- названия файлов/каталогов не должны превращаться в features;
+- при N=4 явно пометить результаты как exploratory/illustrative.
+
+Outputs, если математически применимо:
+
+    pca.tsv
+    clustering.tsv
+
+Не пытаться заставить алгоритм кластеризовать данные, если sample size
+слишком мал.
+
+----------------------------------------------------------------------
+11. PAIRWISE COMPARISON
+----------------------------------------------------------------------
+
+Помимо общей матрицы генерировать pairwise comparison table:
+
+    metric
+    corpus A
+    corpus B
+    absolute difference
+    standardized difference (если применимо)
+
+Это должно позволить автоматически получить, например:
+
+    Voynich vs Doyle
+    Voynich vs Longfellow
+    Voynich vs MS-DOS
+    Doyle vs Longfellow
+    Doyle vs MS-DOS
+    Longfellow vs MS-DOS
+
+----------------------------------------------------------------------
+12. REPORT
+----------------------------------------------------------------------
+
+Создать:
+
+    COMPARATIVE_REPORT.md
+
+Report должен содержать:
+
+1. Experiment inventory
+2. Compatibility/missingness summary
+3. Corpus sizes
+4. Raw metrics
+5. Normalized structural fingerprint
+6. Pairwise distances
+7. PCA/clustering, если применимо
+8. Pairwise largest differences
+9. Methodological limitations
+
+Допускаются строго описательные statements:
+
+    "MS-DOS has a higher transition-backbone retention rate than Doyle."
+
+    "Doyle and Longfellow have the smallest distance under metric X."
+
+Но НЕ:
+
+    "Therefore MS-DOS is an instruction language."
+
+и НЕ:
+
+    "Voynich is closer semantically to natural language."
+
+Последнее является научной интерпретацией человеком/LLM.
+
+----------------------------------------------------------------------
+13. NO POST-HOC FEATURE SELECTION
+----------------------------------------------------------------------
+
+Это критическое требование.
+
+Мы уже использовали:
+
+    Voynich
+    Doyle
+    Longfellow
+    MS-DOS
+
+для exploratory analysis.
+
+Поэтому Task45 должен зафиксировать fingerprint schema v1 на основании
+нынешнего compatibility audit.
+
+После фиксации schema новые corpora должны автоматически анализироваться
+по тому же набору features.
+
+Не разрешать CLI автоматически выбирать "лучшие разделяющие признаки"
+после добавления нового корпуса.
+
+Feature selection/classifier training — отдельная будущая задача.
+
+----------------------------------------------------------------------
+14. REPRODUCIBILITY
+----------------------------------------------------------------------
+
+Comparison run должен иметь собственный manifest:
+
+    comparison_manifest.json
+
+Сохранить:
+
+- ordered/unordered set experiment identities;
+- experiment manifest hashes;
+- experiment artifact/checksum hashes;
+- fingerprint schema version;
+- formulas version;
+- comparison program git commit;
+- exact CLI arguments.
+
+Порядок передачи -experiment не должен менять numeric results.
+
+Проверить permutation/order invariance тестом.
+
+----------------------------------------------------------------------
+15. OUTPUT DIRECTORY
+----------------------------------------------------------------------
+
+Пример:
+
+comparisons/comparative-v1/
+    comparison_manifest.json
+    raw_metrics.tsv
+    normalized_metrics.tsv
+    structural_fingerprint.tsv
+    structural_fingerprint.yaml
+    pairwise_distances.tsv
+    pairwise_comparisons.tsv
+    pca.tsv                 # optional
+    clustering.tsv          # optional
+    COMPARATIVE_REPORT.md
+
+Comparison directory НЕ является pipeline experiment и не должен
+создавать FROZEN marker формата pipeline-orchestrate.
+
+При необходимости можно создать собственный immutable comparison snapshot,
+но не смешивать два формата.
+
+----------------------------------------------------------------------
+16. TESTS
+----------------------------------------------------------------------
+
+Минимум:
+
+A. Parser tests для каждого поддерживаемого artifact schema.
+
+B. Missing stage:
+   NOT_APPLICABLE не превращается в zero.
+
+C. Different corpus sizes:
+   raw counts отличаются, normalized metrics вычисляются корректно.
+
+D. Input order invariance:
+   перестановка -experiment arguments даёт byte-identical numeric outputs
+   после canonical ordering.
+
+E. Frozen verification:
+   corrupted artifact/checksum вызывает отказ.
+
+F. Voynich/generic compatibility:
+   несовместимые metadata categorical labels не сравниваются.
+
+G. Formula oracle:
+   normalized metrics проверяются вручную вычисленными fixtures.
+
+H. Distance oracle:
+   synthetic fingerprints с известными distances.
+
+I. Determinism:
+   два запуска дают byte-for-byte identical machine-readable outputs.
+
+----------------------------------------------------------------------
+17. ACCEPTANCE RUN
+----------------------------------------------------------------------
+
+После реализации выполнить реальный comparison:
+
+    Voynich
+    Doyle — The Sign of the Four
+    Longfellow — The Song of Hiawatha
+    MS-DOS 2.0 assembler corpus
+
+Использовать только frozen experiment directories.
+
+НЕ запускать заново scientific pipeline.
+
+Получить fingerprint schema v1 и comparative outputs.
+
+Проверить отдельно:
+
+    distance(Doyle, Longfellow)
+    distance(Doyle, MS-DOS)
+    distance(Longfellow, MS-DOS)
+    distance(Voynich, Doyle)
+    distance(Voynich, Longfellow)
+    distance(Voynich, MS-DOS)
+
+Не требовать заранее какого-либо порядка этих distances.
+Результат должен определяться данными.
+
+----------------------------------------------------------------------
+18. НЕ ДЕЛАТЬ
+----------------------------------------------------------------------
+
+НЕ:
+
+- добавлять experiment-compare в pipeline-orchestrate;
+- запускать scientific analyses;
+- изменять frozen experiments;
+- менять scientific parameters;
+- переоценивать p-values;
+- генерировать новые permutation nulls;
+- использовать document labels как features;
+- обучать classifier;
+- назначать вероятности классам документов;
+- выдавать semantic diagnosis;
+- автоматически выбирать features, лучше всего разделяющие текущие 4 корпуса;
+- скрывать отсутствующие/incompatible metrics.
+
+----------------------------------------------------------------------
+DELIVERABLES
+----------------------------------------------------------------------
+
+- новый standalone `experiment-compare`;
+- METRIC_COMPATIBILITY.md;
+- fingerprint schema v1;
+- tests;
+- COMPARATIVE_REPORT.md для четырёх текущих frozen experiments;
+- machine-readable raw/normalized/fingerprint/distance outputs;
+- при необходимости отдельная краткая документация запуска.
+
+Validation:
+
+    go build ./...
+    go vet ./...
+    go test ./...
+    go test -race ./...
+    git diff --check
+
+Все frozen experiments должны остаться неизменными.
+
+----------------------------------------------------------------------
+DEFINITION OF DONE
+----------------------------------------------------------------------
+
+`experiment-compare` принимает произвольное число каталогов уже
+существующих frozen experiments и детерминированно строит единый набор
+сопоставимых raw metrics, normalized structural fingerprints и pairwise
+distances.
+
+Он корректно различает zero/missing/NA/NOT_APPLICABLE/incompatible,
+не зависит от порядка входных experiments, не запускает scientific
+pipeline и не изменяет исходные experiments.
+
+Fingerprint schema v1 после Task45 фиксируется для последующих
+out-of-sample corpora.
+
+Программа описывает измеренные различия, но не делает выводов о природе
+или семантическом классе документов.

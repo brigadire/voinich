@@ -1,0 +1,1046 @@
+Задача: higher-order-sequence-validate
+
+Цель
+
+Проверить, существует ли в canonical corpus воспроизводимая
+последовательностная зависимость порядка >=2, которую нельзя объяснить:
+
+    unigram frequencies
+    pairwise/bigram transitions
+    Currier class
+    Davis hand
+    physical block
+
+Основной вопрос:
+
+Для наблюдаемой последовательности
+
+    A B C
+
+содержит ли A дополнительную информацию о C после того,
+как B уже известен?
+
+Формально проверить:
+
+    P(C | A,B)
+
+против:
+
+    P(C | B)
+
+и:
+
+    I(A ; C | B)
+
+Если зависимость сохраняется между независимыми physical blocks,
+это является свидетельством higher-order sequential constraint.
+
+Это НЕ означает автоматически:
+
+    natural language
+    grammar
+    operator
+    operand
+    instruction
+    cipher
+    semantics.
+
+
+================================================================
+1. FROZEN INPUT
+================================================================
+
+Canonical corpus:
+
+    data_work/ZL3b-x7.txt
+
+token_count:
+
+    39026
+
+SHA256:
+
+    360d99583145ec549b80edfafdc3f93534f3a11b85a0d52997ba8425e92b87c2
+
+Metadata:
+
+    workdir/metadata-validation/token_metadata_map.tsv
+
+Previous audit:
+
+    workdir/replicated-local-structure/
+
+Использовать:
+
+    universal_sequence_inventory.tsv
+    sequence_null_validation.tsv
+    strict_replicated_sequences.tsv
+    sequence_replication_status.tsv
+    replicated_local_structure.yaml
+
+
+================================================================
+2. FROZEN CONFIRMATORY CANDIDATES
+================================================================
+
+Primary confirmatory candidates:
+
+все n>=3 sequences из предыдущего frozen audit, которые одновременно:
+
+    shuffle FDR q <= 0.05
+    Markov empirical p <= 0.05
+
+По текущему audit это должны быть:
+
+    or or aiin
+    s aiin chey
+
+Но НЕ hardcode список.
+
+Получить его программно из frozen outputs.
+
+
+3. Secondary descriptive candidate:
+
+n>=3 sequence с:
+
+    shuffle FDR q <= 0.05
+    Markov p > 0.05
+
+По текущему audit это, вероятно:
+
+    ol s aiin
+
+Использовать только как negative/comparison case.
+
+Не смешивать с primary confirmatory set.
+
+
+4. Никакого нового sequence discovery.
+
+Запрещено искать новые:
+
+    bigrams
+    trigrams
+    n-grams
+    token combinations
+
+по результатам текущего эксперимента.
+
+
+================================================================
+PART A — EXACT OCCURRENCE AUDIT
+================================================================
+
+5. Для каждого frozen ABC найти все exact occurrences.
+
+Для каждого occurrence сохранить:
+
+    sequence
+    token_position_A
+    token_position_B
+    token_position_C
+
+    physical_block
+    Currier
+    hand
+    joint_class
+
+    normalized_block_position
+
+    line identity, если доступна
+
+
+6. Последовательность не должна пересекать physical block boundary.
+
+
+7. Если доступны line boundaries, отдельно отметить:
+
+    within_same_line
+    crosses_line_boundary
+
+Но НЕ исключать cross-line occurrences из primary analysis,
+если предыдущий frozen sequence analysis использовал continuous corpus.
+
+Сохранить совместимость с исходной постановкой.
+
+
+8. Создать:
+
+    higher_order_occurrences.tsv
+
+
+================================================================
+PART B — CONDITIONAL PROBABILITIES
+================================================================
+
+9. Для каждой ABC и каждого eligible physical block считать:
+
+    count(B)
+    count(AB)
+    count(BC)
+    count(ABC)
+
+и:
+
+    P(C | B)
+    P(C | A,B)
+
+
+10. Primary effect:
+
+    conditional_enrichment =
+        P(C | A,B) / P(C | B)
+
+
+11. Также считать:
+
+    delta_probability =
+        P(C | A,B) - P(C | B)
+
+
+12. Не использовать effect, если denominator недостаточен.
+
+Primary block eligibility:
+
+    count(AB) >= 3
+    count(B) >= 10
+
+Дополнительно descriptive:
+
+    count(AB) >= 2
+
+Но не смешивать эти уровни.
+
+
+13. Для каждого block вывести:
+
+    sequence
+    block
+    Currier
+    hand
+    joint
+    count_B
+    count_AB
+    count_BC
+    count_ABC
+    p_C_given_B
+    p_C_given_AB
+    enrichment
+    delta_probability
+
+
+================================================================
+PART C — REVERSE CONDITIONAL TEST
+================================================================
+
+14. Проверить симметричный вопрос:
+
+Для ABC несёт ли C информацию об A после B?
+
+Считать:
+
+    P(A | B,C)
+
+против:
+
+    P(A | B)
+
+
+15. Это важно для определения направленности constraint.
+
+Считать:
+
+    reverse_enrichment
+    reverse_delta_probability
+
+
+16. Не считать forward/reverse отдельными discoveries.
+Это две заранее определённые характеристики одной frozen relation.
+
+
+================================================================
+PART D — CONDITIONAL MUTUAL INFORMATION
+================================================================
+
+17. Primary information-theoretic statistic:
+
+    I(A ; C | B)
+
+Но здесь A и C нельзя трактовать просто как две бинарные константы.
+
+Для каждого central token B построить distribution:
+
+    left neighbor X
+    right neighbor Y
+
+и оценить:
+
+    I(X ; Y | center=B)
+
+
+18. Затем отдельно измерить contribution конкретной frozen ABC
+к зависимости вокруг B.
+
+
+19. Обязательно применить finite-sample bias control.
+
+Primary:
+
+    permutation-based null
+
+Не полагаться только на plug-in CMI estimator.
+
+
+20. Permutation null:
+
+внутри каждого physical block и для каждого B
+переставлять правых соседей между occurrences B.
+
+Это сохраняет:
+
+    count(B)
+    left-neighbor distribution around B
+    right-neighbor distribution around B
+    block composition
+
+и разрушает:
+
+    dependence left <-> right conditional on B.
+
+
+21. Не переставлять данные между physical blocks.
+
+
+================================================================
+PART E — LOG-LIKELIHOOD / MODEL COMPARISON
+================================================================
+
+22. Сравнить две модели.
+
+
+M1 — first order:
+
+    P(C | B)
+
+
+M2 — second order:
+
+    P(C | A,B)
+
+
+23. Оценивать predictive performance на held-out physical blocks.
+
+Никакого random occurrence split.
+
+
+24. Leave-one-physical-block-out:
+
+training:
+
+    все eligible blocks кроме одного
+
+test:
+
+    held-out block
+
+
+25. На training оценить transition probabilities.
+
+
+26. Использовать фиксированное smoothing:
+
+    additive alpha = 0.5
+
+Не оптимизировать alpha.
+
+
+27. Для held-out observations вычислить:
+
+    log_loss_M1
+    log_loss_M2
+
+    delta_log_loss =
+        log_loss_M1 - log_loss_M2
+
+Положительное значение означает преимущество second-order model.
+
+
+28. Также:
+
+    heldout_log_likelihood_ratio
+
+
+29. Для каждого sequence вывести:
+
+    tested_blocks
+    M2_better_blocks
+    M1_better_blocks
+    ties
+
+    mean_delta_log_loss
+    median_delta_log_loss
+
+
+================================================================
+PART F — CONTEXT SUBSTITUTION CONTROLS
+================================================================
+
+30. Для frozen ABC проверить альтернативные contexts.
+
+
+Для:
+
+    A B C
+
+сравнить:
+
+    A B C
+
+с:
+
+    X B C
+
+где X != A.
+
+
+31. И:
+
+    A B X
+
+где X != C.
+
+
+32. Не выбирать X по максимальному/минимальному effect.
+
+Использовать ВСЕ sufficiently frequent alternatives.
+
+
+33. Для каждого B построить таблицу:
+
+    left token
+    right token
+    count
+
+
+34. Определить:
+
+является ли C особенно характерным продолжением именно после AB,
+или C является обычным частым continuation самого B.
+
+
+================================================================
+PART G — CONDITIONAL CONTINUATION DISTRIBUTION
+================================================================
+
+35. Для каждого frozen AB построить:
+
+    P(X | A,B)
+
+по всем возможным X.
+
+
+36. Для B построить:
+
+    P(X | B)
+
+
+37. Сравнить distributions:
+
+    JS divergence
+    total variation distance
+
+
+38. Важно:
+
+если:
+
+    P(X | A,B)
+
+существенно отличается от:
+
+    P(X | B)
+
+то A влияет не только на один frozen C,
+а на весь набор продолжений B.
+
+
+39. Вывести:
+
+    entropy H(X | B)
+    entropy H(X | A,B)
+
+
+40. Рассчитать:
+
+    entropy_reduction =
+        H(X | B) - H(X | A,B)
+
+
+41. Положительная entropy reduction означает,
+что знание A делает continuation после B более предсказуемым.
+
+
+================================================================
+PART H — CROSS-BLOCK REPLICATION
+================================================================
+
+42. Для каждой primary sequence проверить:
+
+    eligible_blocks
+    positive_enrichment_blocks
+    negative_enrichment_blocks
+
+    sign_consistency
+
+
+43. Primary cross-block criterion:
+
+    eligible_blocks >= 3
+    positive enrichment in >=75% eligible blocks
+
+
+44. Отдельно:
+
+    cross-Currier
+    cross-hand
+    cross-joint
+
+
+45. Нельзя считать несколько occurrences одного block
+независимыми replications.
+
+
+================================================================
+PART I — META-ANALYSIS OF BLOCK EFFECTS
+================================================================
+
+46. Для каждого block effect использовать:
+
+    log(enrichment)
+
+с appropriate smoothing.
+
+
+47. Вывести:
+
+    unweighted mean log enrichment
+    weighted mean log enrichment
+
+    median
+
+    between-block variance
+
+
+48. Не создавать opaque combined score.
+
+
+49. Проверить heterogeneity:
+
+    Cochran Q
+    I²
+
+как descriptive statistics.
+
+
+50. Если один block доминирует по observations,
+явно показать:
+
+    max_block_weight_fraction
+
+
+================================================================
+PART J — JACKKNIFE
+================================================================
+
+51. Для каждой primary sequence:
+
+по очереди исключить каждый eligible physical block.
+
+
+52. Пересчитать:
+
+    pooled conditional enrichment
+    CMI
+    M1 vs M2 predictive advantage
+
+
+53. Вывести:
+
+    min
+    max
+    median
+    SD
+
+по jackknife realizations.
+
+
+54. Если effect исчезает после удаления одного block:
+
+    SINGLE_BLOCK_SENSITIVE
+
+
+================================================================
+PART K — POSITION / BOUNDARY CONTROLS
+================================================================
+
+55. Проверить, не возникает ли ABC преимущественно:
+
+    в начале block
+    в конце block
+    около line boundary
+
+
+56. Normalized block position:
+
+    [0,0.1)
+    ...
+    [0.9,1.0]
+
+
+57. Сравнить occurrence distribution ABC
+с distribution AB.
+
+
+Это важно:
+
+если AB встречается по всему block,
+но ABC только у boundary,
+мы имеем positional rule candidate,
+а не general second-order transition.
+
+
+58. Если line metadata доступна:
+
+сравнить:
+
+    ABC line-start
+    ABC line-middle
+    ABC line-end
+
+с baseline AB positions.
+
+
+================================================================
+PART L — TOKEN-FAMILY CONTROL
+================================================================
+
+59. НЕ вводить новые morphological assumptions.
+
+Но использовать уже frozen structural relationships,
+если они существуют.
+
+
+60. Для A и C определить,
+имеются ли frozen structural relatives.
+
+
+61. Только descriptive:
+
+если заменить A на structural relative A',
+сохраняется ли:
+
+    P(C | A',B) > P(C | B)?
+
+
+62. Аналогично C relatives.
+
+
+63. Это НЕ significance search.
+
+Цель — понять, relation token-specific
+или распространяется на ранее определённую structural family.
+
+
+================================================================
+PART M — NULL MODELS
+================================================================
+
+64. Primary null:
+
+conditional-neighbor permutation из Part D.
+
+
+65. Secondary null:
+
+within-block token-order shuffle,
+как в предыдущем audit.
+
+
+66. Tertiary null:
+
+first-order Markov,
+как в предыдущем audit.
+
+
+67. Для primary candidates использовать:
+
+    10000 permutations
+
+Поскольку кандидатов осталось очень мало.
+
+
+68. Для secondary descriptive candidate:
+
+    1000 permutations
+
+
+69. Empirical p:
+
+    (exceedances + 1) / (N + 1)
+
+
+================================================================
+PART N — MULTIPLE COMPARISONS
+================================================================
+
+70. Primary confirmatory family содержит только frozen primary n>=3
+candidates.
+
+Применить BH FDR q=0.05 отдельно к:
+
+    conditional-dependence test
+
+
+71. Не смешивать с:
+
+    previous shuffle p
+    previous Markov p
+    descriptive family tests.
+
+
+================================================================
+PART O — CRITICAL NEGATIVE CONTROL
+================================================================
+
+72. Для каждого central B взять все sufficiently frequent left tokens A.
+
+Условие:
+
+    count(AB) >= 3
+
+
+73. Рассчитать conditional dependence A -> continuation distribution.
+
+
+74. Frozen ABC НЕ должен сравниваться только с random corpus.
+
+Нужно определить percentile его effect среди:
+
+    alternative A contexts for SAME B.
+
+
+75. Например для:
+
+    s aiin chey
+
+нужно спросить:
+
+является ли context:
+
+    s aiin
+
+необычным среди всех:
+
+    X aiin
+
+а не просто необычным относительно всего корпуса.
+
+
+76. Аналогично:
+
+    or or aiin
+
+сравнивать:
+
+    or or
+
+с другими:
+
+    X or
+
+
+77. Это descriptive conditional rank.
+
+Не использовать его для повторного candidate selection.
+
+
+================================================================
+PART P — OUTCOME CLASSIFICATION
+================================================================
+
+78. Для каждой primary sequence присвоить один diagnostic status.
+
+
+HIGHER_ORDER_REPLICATED
+
+если:
+
+    conditional-dependence FDR q <= 0.05
+    eligible physical blocks >= 3
+    sign consistency >= 0.75
+    LOBO M2 better than M1 in >= 2/3 tested blocks
+    jackknife does not collapse
+    evidence spans >=2 joint metadata classes
+
+
+FIRST_ORDER_EXPLAINED
+
+если:
+
+    second-order predictive model does not improve held-out prediction
+или
+    conditional permutation test non-significant
+
+
+POSITION_DEPENDENT
+
+если higher-order effect существенно локализован
+на block/line boundaries
+
+
+METADATA_LIMITED
+
+если effect воспроизводится,
+но только внутри одного Currier/hand/joint class
+
+
+SINGLE_BLOCK_SENSITIVE
+
+если effect исчезает после удаления одного physical block
+
+
+INSUFFICIENT_SUPPORT
+
+если невозможно получить >=3 eligible blocks.
+
+
+================================================================
+PART Q — OUTPUT
+================================================================
+
+79. Создать команду:
+
+    higher-order-sequence-validate
+
+
+80. CLI:
+
+go run ./higher-order-sequence-validate \
+    -corpus data_work/ZL3b-x7.txt \
+    -token-metadata-map workdir/metadata-validation/token_metadata_map.tsv \
+    -audit-dir workdir/replicated-local-structure \
+    -discovery-dir workdir \
+    -output-dir workdir/higher-order-sequences \
+    -permutations 10000 \
+    -seed 1
+
+
+81. Outputs:
+
+higher_order_candidate_inventory.tsv
+higher_order_occurrences.tsv
+
+conditional_probability_by_block.tsv
+conditional_dependence.tsv
+conditional_cmi.tsv
+
+continuation_distributions.tsv
+continuation_entropy.tsv
+
+first_vs_second_order_lobo.tsv
+
+conditional_context_controls.tsv
+conditional_context_rank.tsv
+
+higher_order_cross_block.tsv
+higher_order_jackknife.tsv
+higher_order_position.tsv
+higher_order_structural_family.tsv
+
+higher_order_validation.tsv
+
+higher_order_sequence_analysis.yaml
+higher_order_sequence_report.md
+
+
+================================================================
+PART R — PLOTS
+================================================================
+
+82. Минимум:
+
+plots/conditional_enrichment_by_block.svg
+
+plots/p_c_given_b_vs_ab.svg
+
+plots/first_vs_second_order_logloss.svg
+
+plots/continuation_entropy.svg
+
+plots/conditional_context_rank.svg
+
+plots/sequence_block_position.svg
+
+
+83. Для каждого primary candidate сделать отдельные plots,
+не объединять всё в нечитаемый график.
+
+
+================================================================
+PART S — REPORT
+================================================================
+
+84. Report начать с exact frozen inventory.
+
+Показать:
+
+    primary candidates
+    secondary descriptive candidates
+    source p/q values из предыдущего audit
+
+
+85. Для каждой primary sequence дать компактную таблицу:
+
+    occurrences
+    blocks
+    joint classes
+
+    P(C|B)
+    P(C|AB)
+    enrichment
+
+    conditional p
+    conditional FDR q
+
+    CMI
+
+    LOBO M2 advantage
+    sign consistency
+
+    jackknife status
+
+    final diagnostic status
+
+
+86. Затем отдельно разобрать каждый candidate.
+
+
+87. Особенно явно ответить:
+
+Для ABC:
+
+    зависит ли C от A при фиксированном B?
+
+
+88. Не использовать формулировку:
+
+    "ABC is a rule"
+
+если HIGHER_ORDER_REPLICATED.
+
+Корректная формулировка:
+
+    "ABC exhibits replicated higher-order conditional dependence."
+
+
+================================================================
+PART T — REPRODUCIBILITY
+================================================================
+
+89. Сохранить:
+
+    corpus SHA256
+    metadata SHA256
+    previous audit SHA256
+
+    exact frozen candidate list
+    parameters
+    seed
+    permutation counts
+
+
+90. Random operations deterministic.
+
+
+================================================================
+PART U — TESTS
+================================================================
+
+91. Unit tests минимум:
+
+- frozen candidate extraction;
+- no new candidate discovery;
+- ABC occurrence extraction;
+- physical-block boundary protection;
+- count(B), count(AB), count(BC), count(ABC);
+- P(C|B);
+- P(C|AB);
+- enrichment;
+- reverse conditional probability;
+- continuation distributions sum to 1;
+- entropy calculation;
+- conditional neighbor permutation preserves marginals;
+- permutation destroys left/right pairing;
+- no cross-block permutation;
+- CMI;
+- additive smoothing alpha=0.5;
+- physical-block LOBO has zero leakage;
+- M1/M2 log loss;
+- context alternative enumeration;
+- normalized block position;
+- jackknife removes exactly one block;
+- BH FDR;
+- deterministic seed;
+- outcome classification.
+
+
+92. После реализации:
+
+go test ./...
+go vet ./...
+
+
+================================================================
+ГЛАВНЫЙ ИССЛЕДОВАТЕЛЬСКИЙ ВОПРОС
+================================================================
+
+Предыдущий audit установил, что существуют frozen триграммы,
+межблочная recurrence которых превышает frequency-aware null,
+а для части из них — также first-order Markov expectation.
+
+Теперь нужно проверить более сильное утверждение:
+
+    влияет ли первый элемент последовательности
+    на выбор третьего элемента
+    при фиксированном втором?
+
+То есть:
+
+             A
+             |
+             v
+        B -> C
+
+против first-order модели:
+
+        B -> C
+
+
+Если:
+
+    P(C | A,B) != P(C | B)
+
+и эта зависимость:
+
+    significant against conditional null
+    reproduces across independent physical blocks
+    survives leave-one-block-out
+    improves held-out prediction over P(C|B)
+    survives jackknife
+
+то мы получаем evidence не просто повторяемой последовательности,
+а воспроизводимого higher-order sequential constraint.
+
+Это следующий уровень проверки гипотезы о наличии
+формальной системы локальных правил.

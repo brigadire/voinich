@@ -1,0 +1,566 @@
+Нужно реализовать анализ следующего уровня структурных зависимостей токенов в корпусе Войнича.
+
+Контекст
+
+Предыдущие этапы уже показали:
+
+* существуют графически далёкие токены с высокой structural similarity;
+* у некоторых сильных пар сходство особенно велико по правому контексту;
+* пример `or / s`: structural similarity 0.7594, position similarity 0.9477, right-context similarity 0.9123;
+* пример `r / s`: structural similarity 0.7010, position similarity 0.9146, right-context similarity 0.8287;
+* family `or / r / s` выделилась как отдельный structural-distant компонент;
+* при этом сходство непосредственного левого окружения заметно слабее.
+
+Цель новой задачи — проверить, сохраняется ли структурное сходство токенов за пределами непосредственного соседа.
+
+Главный исследовательский вопрос:
+
+> Если два токена имеют сходное распределение непосредственных последователей, сохраняется ли это сходство на расстояниях +2, +3, +4, +5 и далее?
+
+Необходимо отличить:
+
+* локальный биграммный эффект;
+* более длинную структурную зависимость.
+
+Не присваивать токенам семантические значения.
+
+## 1. Анализировать непрерывную последовательность
+
+Не использовать страницу как логическую границу.
+
+Не использовать строку как обязательную логическую границу основного анализа.
+
+Основной режим должен рассматривать корпус как последовательность токенов в исходном порядке.
+
+Физические границы строк можно сохранить как метаданные и использовать только в отдельном контрольном режиме.
+
+Если между строками существует обычный переход в исходном корпусе, он должен учитываться в основном continuous-mode.
+
+## 2. Distance-specific distributions
+
+Для каждого достаточно частого токена A построить отдельные распределения:
+
+```text
+P(X at +1 | A)
+P(X at +2 | A)
+P(X at +3 | A)
+...
+P(X at +N | A)
+```
+
+По умолчанию:
+
+```text
+N = 20
+```
+
+с CLI-параметром:
+
+```text
+--max-distance
+```
+
+Аналогично желательно строить левый профиль:
+
+```text
+P(X at -1 | A)
+...
+P(X at -N | A)
+```
+
+Но основная первая задача — правый контекст.
+
+## 3. Не смешивать расстояния
+
+Нельзя строить только одно объединённое окно `+1..+5`.
+
+Нужны отдельные распределения для каждого точного расстояния.
+
+Например:
+
+```text
+distance +1
+distance +2
+distance +3
+distance +4
+distance +5
+```
+
+Потому что необходимо увидеть форму затухания зависимости.
+
+Дополнительно можно рассчитывать cumulative windows:
+
+```text
++1..+2
++1..+3
++1..+5
++1..+10
++1..+20
+```
+
+Но они должны быть вторичными.
+
+## 4. Pair comparison
+
+Для каждой ранее найденной structural pair A/B сравнивать distribution A и B на каждом расстоянии.
+
+Использовать минимум:
+
+* Jensen-Shannon similarity;
+* weighted overlap;
+* Jaccard support overlap как дополнительную грубую метрику.
+
+Результат должен выглядеть примерно так:
+
+```yaml
+pair:
+  a: or
+  b: s
+
+right_context:
+  distance_1:
+    js_similarity: 0.9123
+  distance_2:
+    js_similarity: 0.84
+  distance_3:
+    js_similarity: 0.77
+  distance_4:
+    js_similarity: 0.61
+  distance_5:
+    js_similarity: 0.44
+```
+
+Не использовать один агрегированный score вместо distance profile.
+
+## 5. Основные исследуемые пары
+
+По умолчанию обязательно анализировать:
+
+```text
+or / s
+r / s
+or / r
+
+chol / daiin
+chor / daiin
+daiin / dol
+chol / cthy
+
+qokain / qol
+qokaiin / qol
+qokedy / qol
+lchedy / qokain
+lchedy / qokeey
+```
+
+Также анализировать TOP-N structural-distant pairs из существующего dataset.
+
+CLI:
+
+```text
+--top N
+--pair A,B
+--family ID
+```
+
+## 6. Context decay
+
+Для каждой пары построить profile:
+
+```text
+similarity(distance)
+```
+
+и определить:
+
+* similarity at +1;
+* similarity at +2;
+* similarity at +3;
+* similarity at +5;
+* similarity at +10;
+* similarity at +20;
+* mean similarity over 1..5;
+* mean over 6..10;
+* mean over 11..20.
+
+Не трактовать это как физическое затухание в строгом смысле.
+
+Использовать нейтральный термин:
+
+```text
+context-similarity decay profile
+```
+
+## 7. Сравнение с baseline
+
+Очень важно определить, необычно ли сохранение similarity на расстоянии.
+
+Для каждой distance d вычислить baseline по всем допустимым парам токенов сопоставимой частоты.
+
+Например:
+
+```text
+median JS similarity at distance 1
+P90
+P95
+
+median at distance 2
+P90
+P95
+...
+```
+
+Для target pair вывести percentile rank:
+
+```text
+or/s at +1 = P99.2
+or/s at +2 = P98.4
+or/s at +3 = P96.1
+...
+```
+
+Это предпочтительнее простого сравнения абсолютных значений.
+
+## 8. Negative controls
+
+Использовать существующие negative controls из предыдущего этапа.
+
+Для target:
+
+```text
+or / s
+```
+
+сравнить distance profile с его matched controls.
+
+То же для других сильных target-пар.
+
+Результат должен позволять увидеть:
+
+```text
+target:
+0.91 0.84 0.78 0.70 ...
+
+control:
+0.31 0.28 0.27 0.25 ...
+```
+
+или отсутствие такого различия.
+
+## 9. Sequence-context signatures
+
+Дополнительно построить не только marginal distribution на каждом расстоянии, но и короткие последовательности после токена.
+
+Например для A:
+
+```text
+A → X1 X2
+A → X1 X2 X3
+```
+
+Считать частоты:
+
+* 2-token suffix after A;
+* 3-token suffix after A.
+
+Не начинать с больших n из-за разреженности.
+
+Для каждой пары сравнить distributions таких suffix sequences.
+
+Например:
+
+```text
+P((X1,X2) | A)
+vs
+P((X1,X2) | B)
+```
+
+Использовать Jensen-Shannon similarity или аналогичную меру.
+
+Это отдельная метрика:
+
+```text
+sequence_context_similarity_2
+sequence_context_similarity_3
+```
+
+## 10. Sparse-data reliability
+
+С увеличением distance и длины sequence данных будет меньше.
+
+Для каждого измерения обязательно сохранять:
+
+```text
+observations_A
+observations_B
+effective_support_A
+effective_support_B
+reliability
+```
+
+Не сравнивать пары с недостаточным количеством наблюдений как равноценные частым парам.
+
+Ввести configurable minimum:
+
+```text
+--min-observations
+```
+
+## 11. Не считать конец строки окончанием структуры
+
+При continuous-mode переход через конец строки допускается.
+
+Но создать отдельный контрольный режим:
+
+```text
+--respect-line-boundaries
+```
+
+и повторять analysis внутри строк.
+
+Это позволит позже сравнить:
+
+```text
+continuous profile
+vs
+line-bounded profile
+```
+
+и проверить, действительно ли строка влияет на структуру.
+
+Не считать заранее один режим правильным.
+
+## 12. Boundary sensitivity
+
+Для каждой сильной пары вывести отдельно:
+
+```text
+continuous_similarity(d)
+line_bounded_similarity(d)
+difference
+```
+
+Если результат сильно зависит от запрета переходов через строку, это важное свойство корпуса.
+
+Если практически не зависит — тоже важный результат.
+
+## 13. Directionality
+
+Для каждой пары дополнительно сравнить:
+
+```text
+A → future context
+B → future context
+```
+
+и:
+
+```text
+past context → A
+past context → B
+```
+
+То есть right-profile и left-profile.
+
+Особенно важно проверить, сохраняется ли уже наблюдаемая асимметрия для family:
+
+```text
+or / r / s
+```
+
+где right-context similarity была значительно сильнее left-context similarity.
+
+## 14. Family-level analysis
+
+Для каждой structural-distant family построить матрицы similarity по distance.
+
+Например для family:
+
+```text
+or
+r
+s
+```
+
+создать:
+
+```text
+distance +1 matrix
+distance +2 matrix
+distance +3 matrix
+...
+```
+
+И определить:
+
+* medoid at each distance;
+* меняется ли topology family с distance;
+* распадается ли family после +1;
+* сохраняется ли family как группа на +2..+5.
+
+Не интерпретировать topology семантически.
+
+## 15. Нужен отдельный тест на устойчивость family
+
+Для каждой family вычислить:
+
+```text
+family_cohesion(d)
+```
+
+например как mean pairwise similarity внутри family на distance d.
+
+Сравнить с random matched token groups той же размерности и частотного диапазона.
+
+Вывести percentile.
+
+## 16. Выходные файлы
+
+Создать минимум:
+
+```text
+distance_context_pairs.yaml
+distance_context_top.tsv
+distance_context_controls.tsv
+family_distance_profiles.yaml
+distance_context_report.md
+```
+
+Дополнительно:
+
+```text
+sequence_context_pairs.yaml
+```
+
+для 2-token и 3-token suffix distributions.
+
+## 17. Визуализации
+
+Создать графики:
+
+```text
+plots/or_s_context_decay.svg
+plots/r_s_context_decay.svg
+plots/chol_daiin_context_decay.svg
+...
+```
+
+X:
+
+```text
+distance
+```
+
+Y:
+
+```text
+JS similarity
+```
+
+На одном графике желательно показать:
+
+* target pair;
+* median baseline;
+* P95 baseline;
+* matched control median.
+
+Также family graph/profile:
+
+```text
+plots/family_5_cohesion.svg
+```
+
+## 18. Отчёт
+
+`distance_context_report.md` должен содержать:
+
+1. параметры анализа;
+2. число токенов и пар;
+3. baseline similarity по каждому distance;
+4. TOP-пары по устойчивости similarity;
+5. подробные profiles для известных target-пар;
+6. comparison with negative controls;
+7. continuous vs line-bounded comparison;
+8. family cohesion profiles;
+9. sequence-context similarity для n=2 и n=3;
+10. ограничения анализа.
+
+## 19. Отдельный рейтинг
+
+Сделать рейтинг:
+
+```text
+long-range structural persistence
+```
+
+Но не сводить всё к одному непрозрачному score.
+
+Можно использовать прозрачную величину:
+
+```text
+persistence_1_5 =
+    mean(
+      percentile_rank(distance1),
+      ...
+      percentile_rank(distance5)
+    )
+```
+
+или mean excess over baseline.
+
+Все distance-specific значения должны сохраняться отдельно.
+
+## 20. Не делать
+
+Не использовать:
+
+* изображения;
+* страницы как смысловые блоки;
+* предполагаемые разделы манускрипта;
+* семантику токенов;
+* морфологические интерпретации;
+* термины operator/operand/command/argument.
+
+Не утверждать, что найденные зависимости являются грамматикой.
+
+Не изменять существующий structural similarity.
+
+## 21. Главные вопросы эксперимента
+
+Анализ должен позволить ответить:
+
+1. Является ли similarity сильных пар преимущественно локальным биграммным эффектом?
+
+2. Сохраняется ли сходство контекста на расстояниях +2, +3, +5 и далее?
+
+3. Существуют ли пары, для которых дальний structural profile существенно устойчивее baseline?
+
+4. Сохраняются ли ранее найденные structural families при увеличении расстояния?
+
+5. Отличается ли continuous analysis от анализа, искусственно ограниченного строками?
+
+6. Существуют ли пары, которые имеют сходные распределения не только отдельных будущих токенов, но и коротких последовательностей из 2–3 токенов?
+
+## 22. Tests
+
+Добавить unit tests для:
+
+* exact-distance context extraction;
+* cross-line continuous extraction;
+* line-bounded extraction;
+* cumulative windows;
+* JS similarity by distance;
+* sequence-context extraction;
+* baseline percentile;
+* matched controls;
+* family cohesion;
+* deterministic output.
+
+После реализации выполнить:
+
+```text
+go test ./...
+go vet ./...
+```
+
+Главная цель задачи — определить, являются ли обнаруженные structural similarities локальными свойствами соседства или отражают более длинную организацию последовательности токенов.

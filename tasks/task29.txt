@@ -1,0 +1,210 @@
+Task29 — Dense rewrite of conditional-regime hot path
+
+Goal
+
+Reduce the runtime of conditional-regime-analyze by optimizing its dominant
+CPU hot path identified in Task28:
+
+    expandResidualLabels / euclideanDistance
+
+Task28 profiling shows that this map-based path accounts for approximately
+73% of conditional-regime-analyze CPU time. The current extrapolated
+production runtime at -permutations 1000 is ~41.9 hours.
+
+The purpose of this task is to determine how much of that cost can be removed
+by replacing map-based distance computation with a dense representation,
+without changing the algorithm, statistical procedure, or output semantics.
+
+Do NOT perform a broader algorithmic rewrite.
+
+
+Phase 1 — Audit the current hot path
+
+Before changing code:
+
+1. Inspect expandResidualLabels and euclideanDistance and document:
+   - the data structures passed to euclideanDistance;
+   - how feature/token dimensions are represented;
+   - how often distances are evaluated;
+   - whether maps are repeatedly traversed or looked up in the inner loop;
+   - whether dimensions/keys are stable across distance calculations;
+   - allocations attributable to this path.
+
+2. Capture a reproducible reduced-scale baseline:
+   - wall time;
+   - CPU profile;
+   - allocation profile;
+   - relevant profiling counters;
+   - exact command line and input data.
+
+Choose a scale large enough that the hot-path proportions are representative,
+but small enough that before/after validation can be repeated conveniently.
+Target roughly 10–30 minutes if practical.
+
+Do not use the full -permutations 1000 production run for iterative validation.
+
+
+Phase 2 — Dense representation
+
+Implement the smallest justified change that removes map lookup/traversal from
+the distance-computation inner loop.
+
+Preferred conceptual representation:
+
+    map[feature]float64
+        ->
+    []float64
+
+or an equivalent dense indexed representation.
+
+Requirements:
+
+1. Establish one deterministic feature -> dense-index mapping appropriate to
+   the lifetime of the data being compared.
+
+2. Convert/reuse data so euclideanDistance operates directly on dense numeric
+   arrays/slices.
+
+3. Avoid rebuilding dense representations inside the innermost distance loop.
+
+4. Avoid introducing per-distance allocations.
+
+5. Preserve the existing numerical calculation and algorithm.
+
+6. Do NOT change:
+   - clustering semantics;
+   - residual-label expansion semantics;
+   - permutation procedure;
+   - statistical tests;
+   - thresholds;
+   - randomization;
+   - output format;
+   - unrelated code.
+
+7. Do not introduce GPU/CUDA code in this task.
+
+If a completely dense representation would materially increase memory usage,
+use the smallest equivalent indexed representation that eliminates the
+map-based inner-loop bottleneck and document the tradeoff.
+
+
+Phase 3 — Correctness validation
+
+Validate the implementation against the Task29 baseline.
+
+Required:
+
+- build succeeds;
+- go vet succeeds;
+- existing tests succeed;
+- race tests succeed where applicable;
+- deterministic/reduced-scale runs produce identical output.
+
+Prefer byte-identical output.
+
+If floating-point evaluation order necessarily changes and byte-identical
+output cannot be preserved, STOP before accepting the optimization and report
+the discrepancy. Do not silently introduce tolerance-based equivalence unless
+explicitly justified and approved.
+
+
+Phase 4 — Performance validation
+
+Repeat the exact baseline workload after the change.
+
+Report before/after:
+
+1. wall time;
+2. total CPU profile;
+3. expandResidualLabels CPU contribution;
+4. euclideanDistance CPU contribution;
+5. allocations / allocated bytes;
+6. peak and/or live memory if useful;
+7. time spent converting map/sparse data into the dense representation.
+
+Calculate:
+
+    speedup of euclideanDistance
+    speedup of expandResidualLabels
+    speedup of conditional-regime-analyze overall
+
+Use the measured reduced-scale result to provide a conservative estimate for:
+
+    conditional-regime-analyze -permutations 1000
+
+Compare this estimate with the Task28 baseline of ~41.9 hours.
+
+
+Phase 5 — Re-profile, don't speculate
+
+After the dense rewrite, identify the new dominant CPU consumers.
+
+The report must answer:
+
+1. Did map/hash lookup account for most of the previous ~73% hot-path cost?
+
+2. How much production wall time is the dense rewrite expected to save?
+
+3. What now dominates conditional-regime-analyze?
+
+4. Is euclideanDistance still a sufficiently large and sufficiently dense
+   numerical kernel that GPU/SIMD acceleration is worth investigating?
+
+5. If further optimization is justified, identify the single highest-leverage
+   next target, but DO NOT implement it in Task29.
+
+
+Expected report
+
+Update PERFORMANCE_AUDIT.md and PERFORMANCE_REFACTOR_REPORT.md.
+
+Include a compact before/after table containing at minimum:
+
+Metric                                  Task28 baseline    Task29 dense
+-----------------------------------------------------------------------
+benchmark wall time                     ...                ...
+expandResidualLabels CPU                ...                ...
+euclideanDistance CPU                   ...                ...
+allocations / bytes                     ...                ...
+peak/live memory                        ...                ...
+estimated 1000-permutation runtime      ~41.9 h            ...
+output equivalence                      baseline           ...
+
+Also report the exact benchmark commands so the measurements can be reproduced.
+
+
+Constraints
+
+- Optimize only the identified conditional-regime hot path.
+- Preserve behavior and output.
+- No algorithmic/statistical changes.
+- No GPU implementation.
+- No unrelated refactoring.
+- Do not run a ~42-hour full production validation merely to prove the
+  optimization; use profiling plus a representative reduced-scale workload.
+- If the proposed dense representation turns out not to be appropriate after
+  inspecting the actual data structures, document why and implement only an
+  equivalent minimal optimization that removes the demonstrated map-based
+  bottleneck.
+- If profiling disproves the Task28 hypothesis, report that result rather than
+  forcing the planned rewrite.
+
+
+Definition of Done
+
+Task29 is complete when:
+
+1. The map-based distance hot path has either been replaced by a validated
+   dense/indexed implementation or demonstrated not to benefit from one.
+
+2. Output equivalence has been verified.
+
+3. Before/after CPU, allocation, memory, and wall-time measurements exist.
+
+4. A new production runtime estimate is provided.
+
+5. The post-change profile identifies the next dominant bottleneck.
+
+6. The repository builds, vets, and tests cleanly.
+
+7. No optimization beyond the Task29 scope has been implemented.

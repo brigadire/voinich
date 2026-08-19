@@ -1,0 +1,86 @@
+Task39 — Audit conditional-regime-analyze applicability to generic corpora
+
+Цель
+
+Определить, действительно ли stage 21 `conditional-regime-analyze` целиком
+научно зависит от IVTFF/Voynich metadata, либо часть его анализа является
+corpus-generic и может выполняться для generic corpora.
+
+НЕ менять код на первом этапе.
+
+1. Проследить полный data flow:
+   corpus
+   token_metadata_map.tsv
+   metadata_validation_report.md
+   другие inputs
+
+2. Для каждого вычисляемого результата conditional-regime-analyze определить:
+
+   - какие данные он использует;
+   - требуется ли Currier;
+   - требуется ли hand;
+   - требуется ли folio/line/IVTFF structure;
+   - либо достаточно только token stream.
+
+3. Разбить outputs/внутренние analyses на:
+
+   A. CORPUS_GENERIC
+   B. METADATA_DEPENDENT
+   C. MIXED
+
+4. Особое внимание:
+
+   Проверить Part A / Part B / Part C и все permutation/null models.
+   Не считать компонент metadata-dependent только потому, что функция
+   получает общую структуру, содержащую metadata.
+
+5. Определить, возможно ли выполнить corpus-generic subset без:
+
+   - synthetic metadata;
+   - изменения статистической гипотезы;
+   - изменения RNG/null model;
+   - изменения существующих Voynich results.
+
+6. Если весь stage действительно metadata-dependent:
+
+   ничего не менять;
+   подтвердить, что NOT_APPLICABLE в generic pipeline корректен.
+
+7. Если существует substantial corpus-generic subset:
+
+   предложить минимальный refactoring:
+   
+       conditional-regime generic core
+                 +
+       optional metadata analyses
+
+   Existing Voynich invocation должен выполнять ровно прежний анализ и
+   давать byte-for-byte identical outputs.
+
+   Generic invocation должен выполнять только научно допустимый subset.
+
+8. Отдельно определить, имеет ли corpus-generic subset достаточно
+   permutation workload, чтобы существующий distributed executor имел смысл.
+
+Deliverable:
+
+CONDITIONAL_REGIME_GENERIC_AUDIT.md
+
+с таблицей:
+
+component | output | corpus input | metadata input |
+classification | generic feasibility | reasoning
+
+В конце дать однозначный verdict:
+
+FULLY_METADATA_DEPENDENT
+
+или
+
+GENERIC_SUBSET_EXISTS
+
+или
+
+MOSTLY_GENERIC
+
+Код не изменять.

@@ -1,0 +1,606 @@
+Task48 — codex_prepare and Pipeline Stage 0 Corpus Readiness Validation
+
+Цель
+
+Создать отдельную утилиту подготовки generic corpus:
+
+    codex_prepare
+
+и добавить в pipeline-orchestrate новый Stage 0, который проверяет,
+что входной corpus уже соответствует зафиксированному canonical format
+и безопасен для научного анализа.
+
+Ключевой принцип:
+
+codex_prepare выполняет подготовку корпуса.
+Stage 0 НИЧЕГО не исправляет и не нормализует молча — только валидирует
+готовность входа и останавливает pipeline при нарушениях.
+
+======================================================================
+1. ОБЛАСТЬ ЗАДАЧИ
+======================================================================
+
+codex_prepare должен принимать сырой текстовый документ и выдавать
+canonical generic corpus, пригодный для:
+
+    pipeline-orchestrate manifest -generic-corpus ...
+
+Утилита не является частью scientific pipeline и не должна менять
+существующие scientific stages 1–27.
+
+Stage 0 добавляется в orchestration исключительно как validator.
+
+======================================================================
+2. CANONICAL GENERIC CORPUS FORMAT v1
+======================================================================
+
+Зафиксировать формат:
+
+    canonical_generic_corpus_version: 1
+
+Минимальные требования:
+
+- valid UTF-8;
+- Unicode replacement character U+FFFD запрещён;
+- canonical whitespace;
+- один token = одна whitespace-delimited последовательность;
+- punctuation не должна склеивать соседние лексические элементы;
+- никаких hidden control characters;
+- никаких BOM внутри текста;
+- deterministic preprocessing;
+- scientific input не содержит preprocessing metadata/header.
+
+Не выполнять:
+- stemming;
+- lemmatization;
+- stop-word removal;
+- semantic correction;
+- spelling correction;
+- language detection;
+- translation.
+
+======================================================================
+3. INPUT ENCODING
+======================================================================
+
+codex_prepare должен поддерживать явный input encoding:
+
+    -encoding utf-8
+    -encoding windows-1251
+    -encoding koi8-r
+    -encoding cp866
+
+Минимально реализовать эти четыре кодировки.
+
+Допускается:
+
+    -encoding auto
+
+но auto detection должен быть conservative.
+
+Если кодировка неоднозначна:
+отказаться и потребовать явный -encoding.
+
+Нельзя silently декодировать malformed bytes как U+FFFD.
+
+После conversion output всегда UTF-8.
+
+======================================================================
+4. UTF-8 VALIDATION
+======================================================================
+
+После декодирования проверить:
+
+- utf8.Valid == true;
+- U+FFFD отсутствует;
+- NUL отсутствует;
+- запрещённые C0/C1 controls отсутствуют, кроме:
+    \n
+    \r
+    \t
+
+При нарушении — fail closed.
+
+======================================================================
+5. PUNCTUATION POLICY
+======================================================================
+
+Пунктуацию заменять пробелом, а не удалять.
+
+Например:
+
+    word,word    -> word word
+    2—3          -> 2 3
+    well-known   -> well known
+    "text"       -> text
+    (abc)        -> abc
+
+Это необходимо, чтобы пунктуация не склеивала токены:
+
+    2—3 -> 23
+
+запрещено.
+
+Использовать Unicode-aware punctuation classification, а не только ASCII.
+
+Как минимум punctuation/symbol separators должны покрывать:
+
+    . , ; : ! ?
+    ' " « » „ “ ”
+    - – —
+    ( ) [ ] { }
+    / \
+    …
+    etc.
+
+Перед реализацией документировать точную Unicode policy.
+
+======================================================================
+6. NUMBERS
+======================================================================
+
+Цифры сохранять.
+
+Примеры:
+
+    2 ст ложки
+    500 г
+    15 минут
+
+должны оставаться частью corpus.
+
+Не заменять числа на NUM.
+Не удалять единицы измерения.
+Не интерпретировать значения.
+
+После punctuation normalization:
+
+    2—3 -> 2 3
+    1/2 -> 1 2
+
+Это механическое преобразование, не semantic parsing.
+
+======================================================================
+7. CASE NORMALIZATION
+======================================================================
+
+Поддержать:
+
+    -case preserve
+    -case lower
+
+Для Comparative Corpus v1 preferred/default:
+
+    lower
+
+Использовать Unicode-aware lowercasing.
+
+Не применять locale-dependent language-specific transformations,
+если они делают результат зависимым от runtime locale.
+
+Manifest должен фиксировать policy.
+
+======================================================================
+8. WHITESPACE NORMALIZATION
+======================================================================
+
+Нормализовать:
+
+- tabs;
+- multiple spaces;
+- CRLF;
+- non-breaking spaces;
+- Unicode space separators.
+
+Не создавать пустые tokens.
+
+Здесь есть важный научный нюанс:
+
+существующий generic pipeline может использовать line boundaries.
+
+Поэтому codex_prepare должен иметь явную:
+
+    -line-policy preserve
+    -line-policy reflow
+
+Не выбирать policy автоматически.
+
+======================================================================
+9. LINE POLICY
+======================================================================
+
+Сначала провести audit generic stages, использующих line boundaries.
+
+Документировать результат.
+
+preserve:
+
+- сохраняет исходные logical line breaks;
+- whitespace внутри строки нормализуется;
+- пустые/служебные строки могут удаляться по зафиксированному правилу.
+
+reflow:
+
+- превращает corpus в token stream и сериализует его
+  фиксированным, purely representational способом.
+
+Критически:
+
+если scientific stages трактуют строки как структурные units,
+reflow width не должен случайно становиться scientific signal.
+
+В таком случае Stage 0/README должны предупреждать, что для cross-corpus
+comparison требуется единая line policy.
+
+======================================================================
+10. DOCUMENT METADATA REMOVAL
+======================================================================
+
+codex_prepare не должен пытаться универсально угадывать:
+
+- Project Gutenberg header/footer;
+- chapter headings;
+- copyright;
+- source metadata;
+- comments;
+- assembler comments;
+- recipe title sections.
+
+Это слишком domain-specific.
+
+Но поддержать явные preprocessing options, если они уже нужны:
+
+    -drop-empty-lines
+    -strip-leading-lines N
+    -strip-trailing-lines N
+
+Или другой минимальный механический interface.
+
+НЕ реализовывать language/document-specific heuristics в Task48.
+
+Очистка Gutenberg/assembler comments остаётся отдельной подготовкой
+до codex_prepare либо будущими plugins.
+
+======================================================================
+11. OUTPUT
+======================================================================
+
+Основной output:
+
+    prepared.txt
+
+Он должен содержать только canonical corpus.
+
+Рядом:
+
+    prepared.txt.prepare.json
+
+Manifest:
+
+    schema_version
+    canonical_corpus_version
+    tool_git_commit
+    input_path
+    input_sha256
+    input_size_bytes
+    input_encoding
+    output_path
+    output_sha256
+    output_encoding: utf-8
+
+    case_policy
+    punctuation_policy
+    whitespace_policy
+    line_policy
+
+    input_token_count
+    output_token_count
+    output_unique_token_count
+    line_count
+
+    replacement_char_count: 0
+    invalid_utf8_count: 0
+    forbidden_control_count: 0
+
+    deterministic: true
+
+======================================================================
+12. DRY RUN / INSPECTION
+======================================================================
+
+Поддержать:
+
+    codex_prepare inspect -input file.txt -encoding ...
+
+или эквивалент.
+
+Показывать:
+
+- encoding;
+- UTF-8 validity;
+- suspicious bytes;
+- U+FFFD;
+- control chars;
+- token count;
+- line count;
+- punctuation count;
+- high-bit byte distribution при legacy encoding;
+- proposed output statistics.
+
+Inspect ничего не изменяет.
+
+Особенно полезно для старых DOS/KOI8/CP1251 текстов.
+
+======================================================================
+13. CHECK MODE
+======================================================================
+
+Добавить:
+
+    codex_prepare check -input prepared.txt
+
+Check проверяет canonical format без преобразования.
+
+Exit code:
+
+    0 = valid canonical corpus
+    !=0 = invalid
+
+Machine-readable output:
+
+    -json
+
+желателен.
+
+Stage 0 должен использовать именно эту validation logic
+через shared internal package, а не запускать subprocess если архитектура
+позволяет.
+
+======================================================================
+14. PIPELINE STAGE 0
+======================================================================
+
+Добавить в pipeline-orchestrate:
+
+    [0/27] corpus-readiness-check
+
+или обновить numbering до 0–27 без изменения scientific stage identities.
+
+Stage 0:
+
+- выполняется только для generic corpus;
+- для Voynich IVTFF workflow сохраняется существующая validation logic;
+- НЕ переписывает corpus;
+- НЕ вызывает codex_prepare transform;
+- НЕ меняет файлы;
+- только validates.
+
+Проверки:
+
+- valid UTF-8;
+- no U+FFFD;
+- no forbidden controls;
+- canonical whitespace/tokenization invariants;
+- corpus non-empty;
+- minimum structural validity required by pipeline;
+- optional prepare manifest correspondence.
+
+При ошибке:
+
+    ERROR: generic corpus is not canonical
+    reason: invalid UTF-8 / U+FFFD / ...
+
+и pipeline останавливается до Stage 1.
+
+======================================================================
+15. PREPARE MANIFEST INTEGRATION
+======================================================================
+
+При наличии:
+
+    corpus.txt.prepare.json
+
+pipeline-orchestrate manifest должен по возможности зафиксировать:
+
+    prepared_by
+    prepare_manifest_sha256
+    canonical_corpus_version
+
+Но scientific identity продолжает включать corpus SHA256.
+
+Prepare manifest не является заменой corpus hash.
+
+Если prepare manifest отсутствует, Stage 0 всё равно может принять corpus,
+если он проходит canonical validation.
+
+======================================================================
+16. BACKWARD COMPATIBILITY
+======================================================================
+
+Критично:
+
+- existing Voynich Baseline v1 не менять;
+- existing frozen generic experiments не переписывать;
+- scientific outputs stages 1–27 не менять;
+- ExperimentID старых manifests не пересчитывать;
+- старые frozen manifests должны продолжить читаться.
+
+Новый Stage 0 применяется только новым runs.
+
+======================================================================
+17. FAILURE CASE: ASTAFIEV
+======================================================================
+
+Добавить regression fixture на проблему, обнаруженную в:
+
+    astafiev-1000-culinar-receipt
+
+Legacy Cyrillic corpus должен:
+
+A. fail Stage 0 как raw non-UTF8 input;
+
+B. успешно преобразоваться при правильном:
+
+    codex_prepare ... -encoding <actual encoding>
+
+C. output:
+    utf8.Valid == true
+    U+FFFD == 0
+
+D. после подготовки пройти Stage 0.
+
+Не пытаться угадывать правильную кодировку fixture по содержанию теста.
+
+======================================================================
+18. DETERMINISM
+======================================================================
+
+Одинаковые:
+
+    input bytes
+    encoding
+    policies
+    tool version
+
+должны давать byte-for-byte identical:
+
+    output corpus
+    prepare manifest
+
+Не включать current timestamp в deterministic identity portion.
+Если timestamp сохраняется — он не должен влиять на reproducible hash.
+
+======================================================================
+19. TESTS
+======================================================================
+
+Обязательно:
+
+Encoding:
+- UTF-8;
+- CP1251;
+- KOI8-R;
+- CP866;
+- invalid encoding/input combination;
+- malformed UTF-8.
+
+Unicode:
+- Cyrillic;
+- Latin;
+- smart quotes;
+- em dash;
+- en dash;
+- NBSP;
+- ellipsis.
+
+Punctuation:
+    2—3 -> 2 3
+    word,word -> word word
+    well-known -> well known
+
+Whitespace:
+- CRLF;
+- tabs;
+- multiple spaces;
+- Unicode spaces.
+
+Safety:
+- U+FFFD rejected;
+- NUL rejected;
+- controls rejected.
+
+Determinism:
+- repeated run byte-identical.
+
+Stage 0:
+- canonical corpus accepted;
+- raw CP1251 rejected;
+- corrupted UTF-8 rejected;
+- existing generic prepared corpus accepted.
+
+======================================================================
+20. DOCUMENTATION
+======================================================================
+
+Создать:
+
+    codex_prepare/README.md
+    codex_prepare/CANONICAL_CORPUS_FORMAT.md
+
+Документировать:
+
+- canonical format v1;
+- supported encodings;
+- punctuation policy;
+- numbers;
+- case;
+- line policy;
+- reproducibility;
+- scientific rationale.
+
+Обновить:
+
+    pipeline-orchestrate documentation
+    GENERIC_CORPUS_ORCHESTRATION.md
+
+======================================================================
+21. НЕ ДЕЛАТЬ
+======================================================================
+
+НЕ:
+
+- исправлять текст семантически;
+- восстанавливать потерянные дроби;
+- определять язык;
+- исправлять OCR;
+- удалять stop words;
+- лемматизировать;
+- автоматически удалять главы;
+- автоматически удалять comments source code;
+- менять scientific parameters;
+- запускать scientific pipeline из codex_prepare;
+- молча чинить corpus внутри Stage 0;
+- автоматически конвертировать unknown encoding.
+
+======================================================================
+22. VALIDATION
+======================================================================
+
+Выполнить:
+
+    go build ./...
+    go vet ./...
+    go test ./...
+    go test -race ./...
+    git diff --check
+
+Проверить frozen checksums существующих experiments.
+
+======================================================================
+DELIVERABLES
+======================================================================
+
+1. standalone codex_prepare;
+2. canonical corpus format v1;
+3. UTF-8/legacy encoding conversion;
+4. punctuation/whitespace normalization;
+5. inspect/check modes;
+6. prepare manifest;
+7. shared corpus validation package;
+8. pipeline Stage 0;
+9. Astafiev regression fixture;
+10. documentation and tests.
+
+======================================================================
+DEFINITION OF DONE
+======================================================================
+
+Task48 завершён, когда сырой legacy/UTF-8 текст можно явно и
+детерминированно преобразовать в canonical generic corpus, а
+pipeline-orchestrate перед Stage 1 гарантированно отказывается анализировать
+corpus, который не прошёл readiness validation.
+
+Stage 0 никогда не изменяет input и не скрывает encoding/tokenization
+ошибки.
+
+Ни один существующий scientific result или frozen experiment не меняется.

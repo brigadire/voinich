@@ -1,0 +1,765 @@
+Задача: Global Distributional Regime Discovery для корпуса Voynich
+
+Контекст
+
+Предыдущий local-regime анализ показал, что long-range similarity ранее найденных
+пар токенов в значительной степени объясняется общей принадлежностью к сходным
+локальным distributional regimes.
+
+Для 28 target pairs regime similarity сильно коррелирует с distance-context
+similarity:
+
+Pearson  ≈ 0.793
+Spearman ≈ 0.826
+
+Например:
+
+chedy / qokeey:
+    regime JS       = 0.9191
+    distance JS 1-5 = 0.4718
+
+chol / daiin:
+    regime JS       = 0.9318
+    distance JS 1-5 = 0.4433
+
+or / s:
+    regime JS       = 0.8774
+    distance JS 1-5 = 0.4039
+
+Conditioning on local regime объясняет observed similarity настолько хорошо,
+что residual для всех рассмотренных target pairs отрицательный.
+
+Следовательно, дальнейший анализ должен временно отказаться от заранее
+выбранных пар токенов и исследовать саму нестационарную структуру корпуса.
+
+Основной вопрос:
+
+Существует ли в continuous token sequence небольшое количество устойчивых
+distributional regimes, каковы их границы, масштабы и отличительные свойства?
+
+Важно:
+
+Не использовать manuscript metadata при discovery.
+Не использовать folio/page, illustrations, Currier labels, Davis hands и
+традиционные тематические разделы как входные данные.
+
+Их можно будет использовать только на отдельном validation этапе после того,
+как regimes будут обнаружены вслепую.
+
+
+1. Основной объект анализа
+
+Корпус рассматривается как непрерывная последовательность из 38 887 токенов.
+
+Построить sliding windows разных размеров:
+
+50
+100
+200
+500
+1000
+
+CLI:
+
+--window-sizes 50,100,200,500,1000
+
+Шаг:
+
+по умолчанию max(1, window_size / 10)
+
+с возможностью задать:
+
+--step
+
+
+2. Window distribution
+
+Для каждого окна строить полное token-frequency distribution.
+
+Минимальный порог частоты токена не должен приводить к потере probability
+mass.
+
+Редкие токены можно:
+
+- оставлять отдельно;
+или
+- агрегировать в RARE bucket для отдельных diagnostic runs.
+
+Основной режим желательно выполнять без искусственного объединения.
+
+
+3. Similarity between windows
+
+Для всех соседних окон считать минимум:
+
+- Jensen-Shannon similarity/distance;
+- weighted overlap;
+- cosine similarity.
+
+JS distance использовать как основную метрику.
+
+
+4. Multi-scale change profile
+
+Для каждого масштаба window size построить:
+
+position → JS distance между соседними окнами.
+
+Нужно определить:
+
+- локальные peaks;
+- broad transitions;
+- участки низкой variation;
+- участки высокой variation.
+
+Не считать каждый peak отдельной истинной границей.
+
+
+5. Change-point detection
+
+Предыдущий простой threshold detector обнаружил 2475 candidate points, что
+слишком много для содержательной интерпретации.
+
+Нужно реализовать несколько независимых методов:
+
+A. threshold peaks
+B. PELT
+C. binary segmentation
+D. optional Bayesian/change-point method, если легко реализуемо
+
+Change-point cost должен основываться на distributional distance /
+multinomial likelihood, а не на отдельных токенах.
+
+
+6. Stability across scales
+
+Это один из главных тестов.
+
+Candidate boundary считается более интересным, если похожая позиция
+обнаруживается при разных window sizes:
+
+50
+100
+200
+500
+1000
+
+Нужно реализовать boundary matching с tolerance, например:
+
+± 0.5 * smaller_window_size
+
+Для каждого boundary вычислять:
+
+scale_support_count
+scale_support_fraction
+mean_position
+position_spread
+
+
+7. Stable boundaries
+
+Сформировать отдельный ranking:
+
+stable_distributional_boundaries.tsv
+
+Например:
+
+position
+support_50
+support_100
+support_200
+support_500
+support_1000
+support_count
+mean_jump_strength
+max_jump_strength
+position_uncertainty
+
+
+8. Не навязывать discrete regimes
+
+Основной результат должен быть continuous change profile.
+
+Discrete segmentation использовать как дополнительное представление.
+
+Не считать автоматически, что corpus состоит из K дискретных состояний.
+
+
+9. Window clustering
+
+Для diagnostic purposes выполнить clustering sliding-window distributions.
+
+Минимум:
+
+hierarchical clustering
+k-means / k-medoids на JS-compatible representation
+
+Sweep:
+
+K = 2..15
+
+Не выбирать K вручную по интерпретируемости.
+
+
+10. Model-selection diagnostics
+
+Для каждого K сохранить:
+
+- silhouette;
+- within-cluster dispersion;
+- between-cluster distance;
+- cluster-size distribution;
+- transition count;
+- segment fragmentation.
+
+Если возможно, добавить gap statistic или аналогичный neutral criterion.
+
+
+11. Contiguity
+
+Очень важный тест.
+
+Если два удалённых участка корпуса принадлежат одному distributional regime,
+clustering должен иметь возможность это показать.
+
+Поэтому нельзя заставлять clustering создавать только contiguous segments.
+
+Отдельно сравнить:
+
+A. unconstrained clustering
+B. contiguous segmentation
+
+Это позволит различить:
+
+"regime" как тип распределения
+
+от
+
+"section" как конкретный contiguous участок.
+
+
+12. Regime recurrence
+
+Для каждого discovered cluster/regime определить:
+
+- число contiguous runs;
+- длины runs;
+- расстояния между runs;
+- долю корпуса;
+- повторяется ли regime позже в corpus.
+
+Особенно интересны regimes, которые появляются в нескольких несмежных местах.
+
+
+13. Regime centroids
+
+Для каждого regime сохранить centroid token distribution.
+
+Вывести:
+
+TOP overrepresented tokens
+TOP underrepresented tokens
+
+Но enrichment считать относительно глобального corpus distribution.
+
+
+14. Token enrichment
+
+Для token T и regime R считать, например:
+
+log2(
+    P(T | R)
+    /
+    P(T | corpus)
+)
+
+с frequency/reliability guards.
+
+Создать:
+
+regime_token_enrichment.tsv
+
+
+15. Не путать частоту с специфичностью
+
+Отдельно показывать:
+
+- raw frequency;
+- regime probability;
+- global probability;
+- enrichment;
+- support/count.
+
+Очень частый токен может иметь большое count, но почти нулевой enrichment.
+
+
+16. Regime-specific tokens
+
+Для каждого regime найти:
+
+- strongly enriched tokens;
+- strongly depleted tokens;
+- regime-neutral tokens.
+
+Не использовать semantic labels.
+
+
+17. Token regime concentration
+
+Для каждого token посчитать distribution его occurrences по regimes.
+
+Метрики:
+
+- entropy;
+- normalized entropy;
+- max regime probability;
+- effective number of regimes.
+
+Это позволит различать:
+
+regime-specific tokens
+
+и
+
+regime-general tokens.
+
+
+18. Regime markers
+
+Сформировать ranking потенциальных marker tokens:
+
+Высокий критерий:
+
+- достаточно частый;
+- высокая regime concentration;
+- высокий enrichment;
+- стабильность across window sizes / clustering runs.
+
+Не использовать слово "marker" в семантическом смысле.
+Термин:
+
+distributional marker candidate
+
+
+19. Pair re-evaluation
+
+После global discovery вернуться к предыдущим 28 target pairs.
+
+Для каждой пары проверить:
+
+- regime-membership similarity;
+- совпадают ли их dominant regimes;
+- насколько их distance-context similarity объясняется membership в global
+  regimes.
+
+Это вторичный анализ.
+
+
+20. Boundary-independent validation
+
+Не использовать line/page boundaries при discovery.
+
+Но сохранить positions так, чтобы позднее можно было наложить metadata.
+
+
+21. Blind discovery output
+
+Первый отчёт должен быть полностью blind:
+
+global_regime_report.md
+
+Он не должен содержать:
+
+- Currier A/B;
+- hand IDs;
+- folio;
+- botanical/astronomical/etc;
+- manuscript illustrations.
+
+
+22. Metadata validation — отдельный этап
+
+Если в проекте доступен IVTFF с metadata, реализовать отдельную команду или
+режим:
+
+regime-validate-metadata
+
+которая запускается ПОСЛЕ discovery.
+
+
+23. Metadata для validation
+
+Разрешено сравнить discovered regimes/boundaries с:
+
+- physical line boundaries;
+- folio/page boundaries;
+- paragraph markers;
+- Currier $C;
+- Lisa Fagin Davis hand $H;
+- quire boundaries;
+- locus types, если доступны.
+
+Не использовать эти данные для переобучения или изменения regimes.
+
+
+24. Validation questions
+
+Проверить:
+
+- совпадают ли stable boundaries с folio boundaries чаще случайного?
+- совпадают ли regimes с Currier A/B?
+- связаны ли regimes с Davis hands?
+- совпадают ли change points со сменой hand?
+- связаны ли regimes с paragraph boundaries?
+- есть ли regimes, полностью независимые от известных metadata?
+
+
+25. Permutation validation
+
+Для каждого metadata comparison использовать permutation control.
+
+Например:
+
+наблюдаемое совпадение regime vs hand
+
+сравнить с random reassignment metadata blocks, желательно сохраняя размеры
+блоков.
+
+Не ограничиваться raw overlap.
+
+
+26. Information metrics
+
+Для categorical metadata vs regime clusters считать:
+
+- mutual information;
+- normalized mutual information;
+- adjusted Rand index;
+- variation of information, если удобно.
+
+Для boundaries:
+
+- precision/recall within tolerance;
+- enrichment over random boundary positions.
+
+
+27. Scale robustness
+
+Clustering/regime results должны сравниваться между window sizes.
+
+Например:
+
+NMI(regimes_100, regimes_200)
+
+после projection на token positions.
+
+Нужно определить, существуют ли regimes, устойчивые к масштабу анализа.
+
+
+28. Consensus regime map
+
+Если несколько scales дают сходную структуру, построить consensus map.
+
+Не обязательно жёсткий class ID.
+
+Можно хранить:
+
+position
+probability/support of regime assignment
+boundary confidence
+
+
+29. Local regime duration
+
+Для contiguous segmentation оценить distribution segment lengths.
+
+Показать:
+
+median
+mean
+P25
+P75
+P90
+
+Это даст характерный масштаб нестационарности без предположений о страницах.
+
+
+30. Autocorrelation of distributions
+
+Проверить, насколько similarity windows зависит от расстояния между ними.
+
+Для separations:
+
+1
+2
+5
+10
+20
+50
+100 windows
+
+Считать mean JS similarity.
+
+Это позволит оценить characteristic correlation length корпуса.
+
+
+31. Estimate correlation length
+
+Не навязывать экспоненциальную модель.
+
+Но можно определить distance, при котором similarity опускается, например,
+до halfway между adjacent-window similarity и distant baseline.
+
+Назвать:
+
+distributional correlation length
+
+Это описательная величина.
+
+
+32. Recurrence matrix
+
+Построить window × window similarity matrix.
+
+Сохранить numeric output и SVG heatmap.
+
+Она может показать:
+
+- diagonal local similarity;
+- recurrent distant regimes;
+- abrupt blocks;
+- gradual drifts.
+
+
+33. Graph representation
+
+Опционально:
+
+узел = window
+edge = JS similarity выше threshold
+
+Посмотреть communities.
+
+Но использовать только как diagnostic representation.
+
+
+34. Drift vs regime
+
+Попытаться различить две модели:
+
+A. Discrete regimes
+
+окна образуют повторяющиеся compact clusters.
+
+B. Continuous drift
+
+распределение постепенно перемещается по пространству без чётких clusters.
+
+Для этого сравнить:
+
+- clustering quality;
+- local continuity;
+- recurrence;
+- trajectory in low-dimensional embedding.
+
+
+35. PCA
+
+Для diagnostic visualization допустимо PCA над transformed frequency vectors.
+
+Построить corpus trajectory:
+
+PC1(position)
+PC2(position)
+PC3(position)
+
+Если distribution постепенно дрейфует, это может быть видно.
+
+
+36. Не использовать UMAP/t-SNE как доказательство
+
+Если используются, только для exploratory plot.
+
+Основные выводы должны базироваться на исходных distributional metrics.
+
+
+37. Output files
+
+Создать минимум:
+
+global_regime_windows.tsv
+global_regime_boundaries.tsv
+global_regime_clusters.yaml
+global_regime_token_enrichment.tsv
+global_regime_token_profiles.yaml
+global_regime_scale_stability.yaml
+global_regime_report.md
+
+Отдельно:
+
+metadata_validation.yaml
+metadata_validation_report.md
+
+только если metadata validation выполнялся.
+
+
+38. Графики
+
+Минимум:
+
+plots/window_js_50.svg
+plots/window_js_100.svg
+plots/window_js_200.svg
+plots/window_js_500.svg
+
+plots/boundary_scale_support.svg
+
+plots/window_similarity_matrix.svg
+
+plots/similarity_vs_window_distance.svg
+
+plots/regime_assignments.svg
+
+plots/pca_corpus_trajectory.svg
+
+Если metadata validation выполнен:
+
+plots/regime_vs_currier.svg
+plots/regime_vs_hand.svg
+
+но только в validation report.
+
+
+39. Отчёт discovery
+
+global_regime_report.md должен ответить:
+
+1. Насколько corpus нестационарен?
+2. На каком масштабе наблюдается variation?
+3. Есть ли устойчивые boundaries?
+4. Есть ли evidence дискретных regimes?
+5. Или лучше наблюдается continuous drift?
+6. Повторяются ли похожие regimes в удалённых участках?
+7. Какие tokens наиболее специфичны для regimes?
+8. Какие tokens regime-general?
+9. Какова characteristic correlation length?
+10. Насколько результаты устойчивы к window size?
+
+
+40. Metadata validation report
+
+metadata_validation_report.md должен ответить отдельно:
+
+1. Совпадают ли independently discovered regimes с Currier labels?
+2. Совпадают ли они с Davis hands?
+3. Есть ли связь с physical folio/paragraph boundaries?
+4. Какая часть independently detected structure не объясняется известной
+   metadata?
+
+
+41. Очень важно: порядок выполнения
+
+Discovery:
+
+TOKEN CORPUS
+    ↓
+distributional regimes
+    ↓
+stable boundaries
+    ↓
+finalize discovery result
+
+ТОЛЬКО ПОСЛЕ ЭТОГО:
+
+load manuscript metadata
+    ↓
+independent validation
+
+Не смешивать эти этапы.
+
+
+42. Interpretation limits
+
+Не использовать автоматически термины:
+
+language
+dialect
+author
+chapter
+recipe
+section
+topic
+operator
+command
+
+Использовать:
+
+distributional regime
+distributional region
+stable boundary
+regime-specific token
+regime-general token
+continuous drift
+recurrent regime
+
+
+43. Positive result
+
+Если обнаружится небольшое число robust recurrent regimes, устойчивых к
+scale и значительно отличающихся по token distributions, это будет
+свидетельствовать о глобальной структурной неоднородности корпуса.
+
+Если затем они независимо совпадут с известными metadata, это будет сильной
+валидацией метода.
+
+
+44. Более интересный positive result
+
+Если robust regimes НЕ совпадут с Currier/hand/page metadata, но устойчивы к
+масштабам и controls, это может означать наличие ранее неучтённого уровня
+организации корпуса.
+
+Никаких семантических выводов из этого пока не делать.
+
+
+45. Negative result
+
+Если regimes нестабильны между scales и clustering имеет низкое качество,
+предпочтительная модель может быть continuous distributional drift.
+
+Это полноценный результат.
+
+
+46. Следующий этап после этой задачи
+
+Не реализовывать сейчас, но архитектура данных должна позволять позднее:
+
+- latent-state sequence modelling;
+- transition analysis between robust regimes;
+- formal generative model comparison.
+
+К этим задачам переходить только после global regime discovery.
+
+
+47. Tests
+
+Добавить unit tests минимум для:
+
+- sliding windows;
+- token distribution normalization;
+- JS window distance;
+- multi-scale boundary matching;
+- PELT/binary segmentation wrappers;
+- regime clustering;
+- regime recurrence;
+- enrichment;
+- token regime entropy;
+- scale stability;
+- correlation-length calculation;
+- metadata permutation validation;
+- deterministic output.
+
+После реализации выполнить:
+
+go test ./...
+go vet ./...

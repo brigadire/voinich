@@ -1,0 +1,773 @@
+Задача: residual-diagnostic-analyze
+
+Цель
+
+Объяснить, почему после metadata residualization
+
+    R_w = X_w - μ_(Currier,Hand)
+
+residual clusters всё ещё сильно ассоциированы с Currier:
+
+    original Currier NMI ≈ 0.713
+    residual Currier NMI ≈ 0.719
+
+при том что residual clustering сам по себе НЕ превосходит null:
+
+    k-medoids raw residual:
+        observed silhouette ≈ 0.330
+        null mean ≈ 0.407
+        effect size ≈ -11.14
+        empirical p = 1.0
+
+Не выполнять новый discovery.
+Не подбирать новые window sizes, K или признаки.
+
+Это диагностический эксперимент.
+
+
+============================================================
+1. Входные данные
+============================================================
+
+Canonical corpus:
+
+    data_work/ZL3b-x7.txt
+
+token_count:
+
+    39026
+
+SHA256:
+
+    360d99583145ec549b80edfafdc3f93534f3a11b85a0d52997ba8425e92b87c2
+
+Metadata:
+
+    workdir/metadata-validation/token_metadata_map.tsv
+
+Existing conditional analysis:
+
+    workdir/conditional-regimes/
+
+Использовать существующие:
+
+    residual_cluster_assignments.tsv
+    residual_cluster_summary.tsv
+    residual_metadata_association.tsv
+    residual_regime_candidates.tsv
+    residual_permutations.yaml
+    conditional_regime_analysis.yaml
+
+Не изменять существующие результаты.
+
+
+============================================================
+2. Главный вопрос
+============================================================
+
+Mean-centering по Currier×hand должен удалить различия средних feature
+vectors между metadata classes.
+
+Но это НЕ гарантирует удаления различий:
+
+    variance
+    covariance
+    dispersion
+    feature sparsity
+    block identity
+    temporal position
+
+Нужно установить, какой именно источник позволяет residual representation
+всё ещё различать Currier.
+
+
+============================================================
+PART A — VERIFY RESIDUALIZATION
+============================================================
+
+3. Проверить centering математически
+
+Для каждого joint Currier×hand class и каждого window size:
+
+рассчитать средний raw residual vector:
+
+    mean(R_w | C,H)
+
+Сохранить:
+
+    L1 norm
+    L2 norm
+    max absolute component
+    mean absolute component
+
+Если residualization реализована правильно, training residual means должны
+быть близки к numerical zero.
+
+
+4. Training vs held-out
+
+Поскольку μ_(C,H) вычислялась только по training folds, отдельно показать:
+
+    training residual mean
+    held-out residual mean
+
+Это принципиально.
+
+Held-out mean не обязан быть нулём.
+
+Нужно измерить magnitude этого drift.
+
+
+5. Fold diagnostics
+
+Для каждого:
+
+    window_size
+    fold
+    joint_class
+
+вывести:
+
+    training windows
+    test windows
+    ||mean_train_residual||
+    ||mean_test_residual||
+
+Проверить, не возникает ли residual Currier signal преимущественно из
+train/test distribution shift.
+
+
+============================================================
+PART B — IDENTIFY THE K=2 CLUSTERS
+============================================================
+
+6. Разобрать winning residual solution
+
+Существующий победитель:
+
+    method = k_medoids
+    representation = raw
+    window_size = 500
+    K = 2
+
+Не пересчитывать и не выбирать другой solution.
+
+
+7. Для каждого из двух clusters вывести
+
+    window_count
+
+    token position:
+        min
+        max
+        median
+        Q25
+        Q75
+
+    Currier distribution
+    hand distribution
+    joint Currier×hand distribution
+
+    physical block distribution
+
+    number of physical blocks
+
+    folio distribution, если metadata доступна
+
+
+8. Проверить подозрение на single-block cluster
+
+Из существующих результатов один cluster имеет примерно:
+
+    130 windows
+    1 Currier class
+    1 hand
+    1 joint class
+    1 physical block
+
+Определить ТОЧНО:
+
+    Currier
+    hand
+    joint class
+    physical block
+    corpus token interval
+
+для этого cluster.
+
+
+9. Contiguity
+
+Для каждого cluster вычислить:
+
+    number of contiguous runs
+    largest run
+    median run
+    fraction of windows in largest run
+
+Если cluster почти полностью является одним contiguous interval,
+явно отметить это.
+
+
+============================================================
+PART C — MEAN VS VARIANCE/COVARIANCE
+============================================================
+
+10. Metadata dispersion
+
+Для каждого joint Currier×hand class и window size рассчитать residual:
+
+    total variance
+    mean per-feature variance
+    median per-feature variance
+    covariance trace
+    effective dimensionality
+
+Например effective dimensionality:
+
+    (sum eigenvalues)^2 / sum(eigenvalues^2)
+
+
+11. Pairwise variance differences
+
+Для metadata classes сравнить residual covariance/dispersion.
+
+Сохранить pairwise statistics:
+
+    variance ratio
+    covariance Frobenius distance
+    diagonal covariance distance
+
+
+12. Covariance classifier diagnostic
+
+Не использовать как discovery.
+
+Проверить, насколько metadata можно предсказать только из second-order
+properties residual vectors.
+
+Например features:
+
+    ||R||
+    ||R||²
+    number of positive components
+    number of negative components
+    residual sparsity
+    projection on leading within-class covariance components
+
+Задача — определить наличие variance/covariance signal.
+
+
+============================================================
+PART D — CLASSIFICATION DIAGNOSTICS
+============================================================
+
+13. Metadata prediction from residuals
+
+Провести cross-validated classification:
+
+Targets отдельно:
+
+    Currier
+    hand
+    joint Currier×hand
+
+Primary classifier:
+
+    multinomial logistic regression
+
+Только линейная модель.
+
+Не использовать neural networks, random forests, boosting и т.п.
+
+
+14. Validation split
+
+Random window split ЗАПРЕЩЁН.
+
+Использовать:
+
+    leave-physical-block-out
+
+где возможно.
+
+Если невозможно:
+
+    contiguous folds.
+
+Нельзя допускать windows одного physical block одновременно в train/test
+при block-based evaluation.
+
+
+15. Metrics
+
+Вывести:
+
+    balanced accuracy
+    macro F1
+    cross entropy
+
+и confusion matrix.
+
+
+16. Baseline
+
+Сравнить с:
+
+    majority baseline
+    class-frequency random baseline
+
+и block-aware label permutation.
+
+
+17. Interpret linear prediction
+
+Если linear classifier хорошо предсказывает Currier из R:
+
+mean-centering не удалил весь first-order signal на held-out blocks.
+
+Если linear classifier слаб, но clustering NMI высокий:
+
+вероятнее covariance/block geometry effect.
+
+
+============================================================
+PART E — NORM-ONLY TEST
+============================================================
+
+18. Очень важный diagnostic
+
+Для каждого residual window вычислить только:
+
+    L1 norm
+    L2 norm
+    L∞ norm
+
+Проверить association этих трёх величин с:
+
+    Currier
+    hand
+    joint class
+    physical block
+
+
+19. Norm-only clustering
+
+Для winning window=500 выполнить K=2 clustering ТОЛЬКО по:
+
+    L1
+    L2
+    Linf
+
+Это diagnostic, не новый discovery.
+
+Сравнить assignments с существующим residual K=2:
+
+    ARI
+    NMI
+
+
+20. Интерпретация
+
+Если norm-only clustering почти воспроизводит residual K=2,
+значит основной residual signal — различие dispersion/magnitude,
+а не сложная структурная геометрия.
+
+
+============================================================
+PART F — WHITENING DIAGNOSTIC
+============================================================
+
+21. Joint-class whitening
+
+Следующий заранее определённый transformation:
+
+Для каждого Currier×hand class на training data:
+
+    μ_(C,H)
+    Σ_(C,H)
+
+Преобразовать:
+
+    Z_w =
+        Σ_(C,H)^(-1/2)
+        (X_w - μ_(C,H))
+
+Использовать regularized covariance.
+
+
+22. Regularization
+
+Не подбирать lambda.
+
+Использовать заранее фиксированную shrinkage scheme:
+
+    Σ_reg =
+        0.9 Σ
+        + 0.1 diag(Σ)
+
+Если матрица всё ещё singular:
+
+    eigenvalue floor =
+        1e-6 × largest_eigenvalue
+
+Все параметры записать в report.
+
+
+23. No leakage
+
+μ и Σ вычислять исключительно на training physical blocks/folds.
+
+Held-out windows преобразуются training estimates.
+
+
+24. После whitening
+
+НЕ выполнять полный search K=2..15.
+
+Использовать только заранее существующий winning diagnostic:
+
+    window = 500
+    K = 2
+    k_medoids
+
+
+25. Измерить
+
+    silhouette
+    Currier NMI
+    hand NMI
+    joint-class NMI
+    physical-block NMI
+
+Сравнить:
+
+    original features
+    mean residual
+    whitened residual
+
+
+26. Ключевая таблица
+
+Создать:
+
+representation_comparison.tsv
+
+columns:
+
+representation
+silhouette
+currier_nmi
+hand_nmi
+joint_nmi
+physical_block_nmi
+cluster_run_count
+largest_run_fraction
+
+
+============================================================
+PART G — PHYSICAL BLOCK EFFECT
+============================================================
+
+27. Block association
+
+Для existing residual K=2 рассчитать:
+
+    NMI(cluster, physical_block)
+    ARI(cluster, physical_block)
+    homogeneity
+    completeness
+
+
+28. Conditional on joint metadata
+
+Особенно проверить:
+
+    I(cluster ; block | Currier×hand)
+
+или эквивалентную weighted within-joint-class association.
+
+Нужно выяснить:
+
+отличает ли residual clustering physical blocks внутри одного metadata class.
+
+
+29. Leave-one-block-out recurrence
+
+Для каждого sufficiently large physical block:
+
+    exclude block
+    derive representation/clustering from remaining blocks
+    assign excluded windows to nearest medoids
+
+Считать:
+
+    assignment confidence
+    medoid distance
+    whether both residual regimes recur in held-out block
+
+
+30. Главный критерий recurrence
+
+Режим считается cross-block recurring только если:
+
+    аналогичный cluster присутствует минимум в 2 independent physical blocks
+
+и similarity к medoid превышает заранее используемый within-cluster
+reference threshold.
+
+Не считать один большой contiguous block самостоятельным
+"reproducible regime".
+
+
+============================================================
+PART H — POSITION EFFECT
+============================================================
+
+31. Corpus position
+
+Проверить correlation residual features/clusters с absolute token position.
+
+Для existing K=2:
+
+    NMI/association с coarse position bins
+
+Использовать заранее:
+
+    10 equal-token bins
+
+
+32. Within-block position
+
+Для каждого window вычислить normalized block position:
+
+    p ∈ [0,1]
+
+Проверить распределение p по residual clusters.
+
+
+33. Цель
+
+Определить, не является ли K=2 просто:
+
+    early vs late part of a block
+
+или:
+
+    one manuscript region vs everything else.
+
+
+============================================================
+PART I — NULL CONTROLS
+============================================================
+
+34. Не нужен огромный новый permutation sweep
+
+Это diagnostic analysis.
+
+Использовать:
+
+    1000 permutations
+
+для classification/block association tests.
+
+
+35. Block-aware permutations
+
+Сохранять:
+
+    physical block lengths
+    unknown masks
+    metadata coverage
+
+Не shuffle individual windows через границы blocks.
+
+
+============================================================
+PART J — OUTPUT
+============================================================
+
+36. Создать команду
+
+    residual-diagnostic-analyze
+
+
+37. CLI
+
+Пример:
+
+go run ./residual-diagnostic-analyze \
+    -conditional-dir workdir/conditional-regimes \
+    -token-metadata-map workdir/metadata-validation/token_metadata_map.tsv \
+    -output-dir workdir/residual-diagnostics \
+    -window-size 500 \
+    -k 2 \
+    -permutations 1000 \
+    -seed 1
+
+
+38. Output files
+
+Создать:
+
+residual_centering_diagnostics.tsv
+residual_fold_diagnostics.tsv
+
+winning_cluster_composition.tsv
+winning_cluster_runs.tsv
+
+residual_dispersion_by_metadata.tsv
+residual_covariance_distances.tsv
+
+residual_metadata_classification.tsv
+residual_metadata_confusion.tsv
+
+residual_norm_diagnostics.tsv
+
+representation_comparison.tsv
+
+residual_block_association.tsv
+residual_block_recurrence.tsv
+
+residual_position_diagnostics.tsv
+
+residual_diagnostic_summary.yaml
+
+residual_diagnostic_report.md
+
+
+39. Plots
+
+Минимум:
+
+plots/residual_norm_by_currier.svg
+plots/residual_norm_by_hand.svg
+
+plots/residual_cluster_position.svg
+
+plots/residual_cluster_block_composition.svg
+
+plots/original_vs_centered_vs_whitened_metadata_nmi.svg
+
+plots/heldout_residual_drift.svg
+
+
+============================================================
+PART K — REPORT DECISION TREE
+============================================================
+
+40. Outcome A — centering bug
+
+Если training residual means существенно не равны zero:
+
+    residualization implementation error
+
+Остановить интерпретацию Part B предыдущего эксперимента.
+
+
+41. Outcome B — held-out mean drift
+
+Если:
+
+    train residual ≈ 0
+    test residual != 0
+
+и linear classifier восстанавливает metadata:
+
+вывод:
+
+    metadata distributions are non-stationary across physical blocks;
+    a single class mean does not generalize across blocks.
+
+
+42. Outcome C — covariance/dispersion effect
+
+Если:
+
+    mean residual ≈ 0
+    linear metadata prediction weak
+    norm/covariance diagnostics strong
+    whitening sharply reduces metadata NMI
+
+вывод:
+
+    residual metadata association is primarily second-order.
+
+
+43. Outcome D — physical block effect
+
+Если existing residual cluster:
+
+    dominated by one block
+
+и cross-block recurrence отсутствует:
+
+вывод:
+
+    apparent residual regime is block-specific, not recurrent.
+
+
+44. Outcome E — metadata survives whitening
+
+Если после leakage-safe whitening:
+
+    Currier/hand NMI остаётся высоким
+
+нужно остановиться.
+
+Не выполнять дальнейший regime discovery.
+
+Это означает, что текущая conditioning model недостаточна.
+
+
+45. Outcome F — metadata removed
+
+Если whitening:
+
+    strongly reduces Currier/hand/joint NMI
+
+и residual structure всё ещё воспроизводится между independent blocks:
+
+только тогда оправдан следующий residual discovery experiment.
+
+
+============================================================
+PART L — TESTS
+============================================================
+
+46. Unit tests минимум:
+
+- training residual mean approximately zero;
+- held-out data never used for μ;
+- held-out data never used for Σ;
+- covariance regularization;
+- deterministic whitening;
+- physical-block split has zero block overlap;
+- norm calculation;
+- cluster run extraction;
+- block recurrence;
+- normalized block position;
+- block-aware permutation;
+- deterministic seed.
+
+
+47. Проверки
+
+go test ./...
+go vet ./...
+
+
+Главный вопрос
+
+Почему после Currier×hand mean-residualization:
+
+    Currier NMI ≈ 0.719
+
+не стал меньше исходного:
+
+    Currier NMI ≈ 0.713?
+
+Нужно сначала объяснить этот факт.
+
+До получения ответа НЕ расширять residual discovery и НЕ вводить
+новые window sizes, clustering methods или признаки.

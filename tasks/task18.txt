@@ -1,0 +1,436 @@
+Задача: Global multiple-comparison permutation validation
+distributional regimes vs Currier / Davis hands
+
+Контекст
+
+Blind distributional discovery выполнялся без metadata.
+
+После metadata validation обнаружено:
+
+- boundary-level alignment с Currier/hand слабый;
+- cluster-level association существенно сильнее;
+- при window=200 block-aware permutation с correction over K=2..15
+  показал особенно сильные результаты для k-medoids:
+
+  Currier:
+      observed max NMI ≈ 0.629
+      empirical p < 0.0001
+
+  Hand:
+      observed max NMI ≈ 0.598
+      empirical p < 0.0001
+
+Однако существующий permutation test фиксирует window=200 и корректирует
+только выбор K.
+
+При этом frozen discovery уже содержит заранее определённый sweep:
+
+    window_size = 50,100,200,500,1000
+    method = contiguous,hierarchical,k-medoids
+    K = 2..15
+
+Нельзя теперь выбирать наиболее выгодный window/method без поправки
+на multiple comparisons.
+
+Цель
+
+Проверить association distributional regimes с Currier и Davis hands
+по всему ЗАРАНЕЕ СУЩЕСТВУЮЩЕМУ frozen search space.
+
+Никаких новых window sizes, методов, K или clustering parameters
+не добавлять.
+
+
+1. Discovery остаётся frozen
+
+НЕ пересчитывать:
+
+- windows;
+- clustering;
+- regimes;
+- distances;
+- boundaries.
+
+Использовать существующие frozen cluster assignments.
+
+Metadata разрешено только переставлять в permutation control.
+
+
+2. Search space
+
+Использовать ровно:
+
+window_size:
+    50
+    100
+    200
+    500
+    1000
+
+method:
+    contiguous
+    hierarchical
+    k-medoids
+
+K:
+    2..15
+
+metadata:
+    Currier
+    hand
+
+Основной analysis subset:
+
+    all windows
+
+Purity >=0.8 / >=0.9 пока НЕ включать в primary global test,
+поскольку это создаёт дополнительную степень выбора.
+
+
+3. Block-aware permutations
+
+Использовать тот же принцип, что в существующем
+cluster_metadata_permutations.yaml.
+
+Не shuffle individual token/window labels.
+
+Сохранять contiguous metadata block structure и block lengths.
+
+Для каждой permutation создавать одну переставленную metadata realization,
+которая затем используется для ВСЕГО search space.
+
+Критически важно:
+
+нельзя генерировать независимую permutation отдельно для каждого
+window/method/K.
+
+Одна permutation metadata должна представлять один null corpus.
+
+
+4. Per-method max statistic
+
+Для каждой permutation и каждого metadata:
+
+для каждого method отдельно:
+
+    max NMI over:
+        window_size × K
+
+Получить null distributions:
+
+Currier / contiguous
+Currier / hierarchical
+Currier / k-medoids
+
+Hand / contiguous
+Hand / hierarchical
+Hand / k-medoids
+
+
+5. Global max statistic
+
+Для каждой permutation и каждого metadata:
+
+    global_max_NMI =
+        max NMI over:
+            window_size × method × K
+
+Получить:
+
+Currier global null
+Hand global null
+
+
+6. Observed statistics
+
+На настоящей metadata рассчитать тем же кодом:
+
+per-method observed max NMI
+
+и
+
+global observed max NMI
+
+Обязательно сохранить координаты максимума:
+
+window_size
+method
+K
+NMI
+
+
+7. Empirical significance
+
+Для каждой observed statistic вывести:
+
+observed
+null_mean
+null_median
+null_sd
+null_P95
+null_P99
+null_max
+exceedances
+empirical_p
+
+Использовать:
+
+    empirical_p = (exceedances + 1) / (permutations + 1)
+
+Не выводить p=0.
+
+
+8. Permutations
+
+Основной запуск:
+
+    10000 permutations
+    seed = 1
+
+Если вычислительно дорого:
+
+сначала разрешить diagnostic run:
+
+    1000 permutations
+
+но финальный report должен явно указывать количество permutations.
+
+
+9. Cross-scale persistence
+
+Дополнительно, БЕЗ выбора максимума, посчитать для каждого method:
+
+NMI(window=50)
+NMI(window=100)
+NMI(window=200)
+NMI(window=500)
+NMI(window=1000)
+
+где для каждого window используется max over frozen K=2..15.
+
+Для каждой permutation получить такой же вектор.
+
+
+10. Persistence statistic
+
+Нужна статистика, которая награждает association,
+сохраняющуюся на нескольких масштабах, а не единичный высокий пик.
+
+Например:
+
+    mean_max_NMI_across_scales
+
+где:
+
+для каждого window:
+    взять max NMI over K
+
+затем:
+    mean этих пяти значений.
+
+Отдельно для каждого method и metadata.
+
+
+11. Minimum/persistence diagnostic
+
+Дополнительно сохранить:
+
+    min(max_NMI_per_window)
+
+по пяти scales.
+
+Это отвечает на вопрос:
+
+"насколько сильна худшая из пяти scale-specific associations?"
+
+Использовать как secondary diagnostic.
+
+
+12. Не оптимизировать statistic постфактум
+
+Primary statistics заранее:
+
+A.
+    per-method max NMI over window × K
+
+B.
+    global max NMI over window × method × K
+
+C.
+    per-method mean of scale-specific max NMI
+
+Все остальные показатели считать descriptive.
+
+
+13. ARI
+
+Повторить тот же analysis для ARI как secondary metric:
+
+- per-method max ARI;
+- global max ARI;
+- scale persistence.
+
+NMI остаётся primary.
+
+
+14. Currier coverage
+
+Currier имеет неполное metadata coverage.
+
+Permutation и observed analysis должны использовать идентичный set
+валидных windows.
+
+Нельзя менять denominator между observed и null.
+
+
+15. Hand coverage
+
+Аналогично обеспечить идентичный valid-window set для observed/null.
+
+
+16. Mixed windows
+
+Primary analysis использует существующее majority metadata assignment
+для all-windows subset.
+
+Purity должна сохраняться как diagnostic.
+
+Не выбирать purity threshold для primary test.
+
+
+17. Purity sensitivity — отдельный secondary experiment
+
+После primary test можно повторить полностью тот же global correction
+для:
+
+    purity >= 0.8
+    purity >= 0.9
+
+Но результаты должны быть помечены:
+
+    sensitivity analysis
+
+а не primary evidence.
+
+
+18. Output
+
+Создать:
+
+cluster_metadata_global_permutations.yaml
+cluster_metadata_global_summary.tsv
+cluster_metadata_scale_persistence.tsv
+
+plots/currier_global_nmi_null.svg
+plots/hand_global_nmi_null.svg
+
+plots/currier_nmi_scale_persistence.svg
+plots/hand_nmi_scale_persistence.svg
+
+
+19. Summary TSV
+
+Минимальные поля:
+
+metadata
+method_scope
+metric
+observed
+observed_window
+observed_method
+observed_k
+null_mean
+null_median
+null_sd
+null_p95
+null_p99
+null_max
+exceedances
+empirical_p
+permutations
+
+
+20. Report
+
+Добавить раздел в metadata_validation_report.md:
+
+Global multiple-comparison correction
+
+Отдельно показать:
+
+- Currier;
+- hand;
+- per-method correction;
+- global method×window×K correction;
+- scale-persistence statistics.
+
+
+21. Интерпретация
+
+Если k-medoids остаётся significant после max over window×K:
+
+можно утверждать:
+
+"Association is not explained by post-hoc selection of window size or K
+within the frozen k-medoids search space."
+
+Если global max остаётся significant после window×method×K correction:
+
+можно утверждать:
+
+"Association survives correction across the complete frozen clustering
+search space."
+
+Если max significant, но persistence statistic нет:
+
+association может быть scale-specific.
+
+Если persistence statistic significant:
+
+association воспроизводится на нескольких scales.
+
+
+22. Никаких новых размеров окна
+
+На этом этапе НЕ добавлять:
+
+25
+75
+150
+300
+750
+1500
+и т.п.
+
+Новые scales можно исследовать позже только как отдельный exploratory
+experiment.
+
+Сначала закончить confirmatory validation уже frozen search space.
+
+
+23. Tests
+
+Добавить unit tests для:
+
+- same permutation reused across full search space;
+- max over K;
+- max over window×K;
+- max over window×method×K;
+- scale mean statistic;
+- scale minimum statistic;
+- empirical p with +1 correction;
+- deterministic seed;
+- Currier unknown-mask preservation.
+
+
+24. После реализации
+
+go test ./...
+go vet ./...
+
+
+Главный исследовательский вопрос
+
+Сохраняется ли обнаруженная association blind distributional regimes
+с Currier и Davis hands после честной поправки на ВСЕ варианты clustering,
+которые уже были рассмотрены до анализа metadata?

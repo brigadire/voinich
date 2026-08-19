@@ -1,0 +1,1021 @@
+Задача: replicated-local-structure-audit
+
+Цель
+
+Провести confirmatory audit двух классов результатов
+cross-metadata-token-relation-validate:
+
+A. distance-profile relations, которые имеют статистически значимую
+   cross-block replication, но не получили UNIVERSAL classification;
+
+B. sequence relations, среди которых 104 получили UNIVERSAL classification.
+
+НЕ выполнять новый unrestricted discovery.
+НЕ добавлять новые token pairs, n-grams, distances или thresholds.
+НЕ изменять существующие classification rules задним числом.
+
+Главный вопрос:
+
+    Содержат ли уже frozen результаты воспроизводимую локальную структуру,
+    которую существующая классификация либо недооценивает
+    (distance profiles), либо переоценивает (sequences)?
+
+
+================================================================
+1. INPUT
+================================================================
+
+Canonical corpus:
+
+    data_work/ZL3b-x7.txt
+
+token_count:
+
+    39026
+
+SHA256:
+
+    360d99583145ec549b80edfafdc3f93534f3a11b85a0d52997ba8425e92b87c2
+
+Metadata:
+
+    workdir/metadata-validation/token_metadata_map.tsv
+
+Existing validation:
+
+    workdir/token-relation-validation/
+
+Использовать минимум:
+
+    frozen_candidate_inventory.tsv
+    distance_profile_block_validation.tsv
+    distance_profile_summary.tsv
+    sequence_block_recurrence.tsv
+    relation_classification.tsv
+    relation_controls.tsv
+    leave_one_block_out_transfer.tsv
+    metadata_transfer_matrix.tsv
+    token_relation_validation.yaml
+
+Source discovery:
+
+    workdir/distance_context_pairs.yaml
+    workdir/sequence_analysis.yaml
+
+Все candidate identities остаются frozen.
+
+
+================================================================
+2. НИКАКОГО НОВОГО DISCOVERY
+================================================================
+
+Запрещено:
+
+- искать новые пары;
+- искать новые n-grams;
+- менять max distance;
+- добавлять similarity metrics;
+- подбирать thresholds;
+- менять minimum block support;
+- выбирать candidates по результатам нового анализа.
+
+Анализируется только уже существующий frozen inventory.
+
+
+################################################################
+#
+# PART A — DISTANCE-PROFILE AUDIT
+#
+################################################################
+
+
+================================================================
+3. ЗАДАЧА PART A
+================================================================
+
+В предыдущем validation имеются distance-profile relations с:
+
+    low empirical p
+    low FDR q
+    good leave-one-block-out transfer
+
+но classification = WEAK.
+
+Например в существующих результатах присутствуют отношения вроде:
+
+    aiin / ar
+    chol / daiin
+
+если они действительно находятся в frozen files.
+
+Не hardcode их как единственные candidates.
+
+
+================================================================
+4. CANDIDATE SET
+================================================================
+
+Primary confirmatory set:
+
+все frozen distance-profile candidates, удовлетворяющие:
+
+    FDR q <= 0.05
+
+в уже существующем:
+
+    distance_profile_summary.tsv
+
+ВАЖНО:
+
+это не новый statistical selection:
+q уже рассчитан предыдущим frozen validation.
+
+Также создать descriptive set:
+
+    q > 0.05
+
+только для сравнения distributions.
+
+
+================================================================
+5. ПРОВЕРИТЬ СЕМАНТИКУ МЕТРИКИ
+================================================================
+
+До любых новых расчётов документировать:
+
+что именно означает существующая:
+
+    profile similarity
+
+и что означает:
+
+    fraction_above_frozen_threshold.
+
+Извлечь frozen threshold из исходного discovery output/code.
+
+Не менять его.
+
+
+================================================================
+6. ПОЧЕМУ Q<=0.05, НО WEAK
+================================================================
+
+Для каждого significant distance pair явно определить,
+какое условие существующей classification не выполнено.
+
+Создать:
+
+    distance_profile_classification_audit.tsv
+
+Поля:
+
+relation
+eligible_blocks
+joint_classes
+currier_classes
+hands
+mean_similarity
+median_similarity
+min_similarity
+transfer_success
+raw_p
+fdr_q
+frozen_threshold
+fraction_above_threshold
+failed_classification_conditions
+
+
+================================================================
+7. BLOCK-LEVEL PROFILE REPLICATION
+================================================================
+
+Для каждого q<=0.05 candidate показать каждый physical block отдельно:
+
+    block
+    Currier
+    hand
+    joint class
+    token counts A/B
+    observations
+    similarity
+    similarity_to_LOBO_reference
+    transfer_success
+
+
+================================================================
+8. LEAVE-ONE-BLOCK-OUT PROFILE
+================================================================
+
+Primary replication statistic:
+
+для каждого eligible block:
+
+    reference profile =
+        aggregate profile from all OTHER eligible blocks
+
+затем:
+
+    similarity(
+        held-out block profile,
+        reference profile
+    )
+
+Никакого held-out leakage.
+
+
+================================================================
+9. EFFECT RELATIVE TO NULL
+================================================================
+
+Абсолютное similarity может быть маленьким и всё же систематически
+превышать expected similarity случайных frequency-matched pairs.
+
+Поэтому для каждого held-out block считать:
+
+    observed_similarity
+    null_mean
+    null_sd
+    null_p95
+    null_p99
+
+и:
+
+    standardized_similarity =
+        (observed - null_mean) / null_sd
+
+
+================================================================
+10. НЕ ПОДМЕНЯТЬ ABSOLUTE И RELATIVE EFFECT
+================================================================
+
+Хранить отдельно:
+
+    absolute profile similarity
+
+и:
+
+    similarity relative to null.
+
+Не создавать один score.
+
+
+================================================================
+11. CROSS-METADATA TRANSFER
+================================================================
+
+Для каждого significant pair отдельно проверить:
+
+    within-Currier transfer
+    cross-Currier transfer
+
+    within-hand transfer
+    cross-hand transfer
+
+    within-joint transfer
+    cross-joint transfer
+
+
+================================================================
+12. META-ANALYTIC SIGN CONSISTENCY
+================================================================
+
+Для каждого block определить:
+
+    effect =
+        observed_similarity - null_mean
+
+Посчитать:
+
+    positive_effect_blocks
+    negative_effect_blocks
+    effect_sign_consistency
+
+и weighted/unweighted mean standardized effect.
+
+
+================================================================
+13. BLOCK CONCENTRATION
+================================================================
+
+Проверить, не создаётся ли significance одним большим block.
+
+Вывести:
+
+    observations_per_block
+    max_block_observation_fraction
+    max_block_effect_contribution
+
+
+================================================================
+14. JACKKNIFE
+================================================================
+
+Для каждого significant relation:
+
+по очереди исключить каждый physical block
+и повторно рассчитать aggregate replication statistic.
+
+Вывести:
+
+    full_effect
+    min_jackknife_effect
+    max_jackknife_effect
+    jackknife_sd
+
+и:
+
+    significance_survives_each_block_removal
+
+Последнее descriptive:
+НЕ пересчитывать новый FDR после каждого удаления.
+
+
+================================================================
+15. DISTANCE-SHAPE CONSISTENCY
+================================================================
+
+Использовать только frozen distances:
+
+    ±1..±20
+
+Для каждого block сохранить нормированный профиль по distance.
+
+Проверить:
+
+    peak distance
+    center of mass
+    left/right asymmetry
+
+Не вводить новые optimization criteria.
+
+
+================================================================
+16. PROFILE SHAPE TRANSFER
+================================================================
+
+Проверить отдельно:
+
+A.
+    magnitude similarity
+
+B.
+    shape similarity after unit normalization
+
+Это diagnostic.
+
+Если absolute magnitude различается между blocks,
+но normalized shape воспроизводится,
+это отдельный содержательный результат.
+
+
+================================================================
+17. DISTANCE-PROFILE OUTCOME LABELS
+================================================================
+
+Не менять старую classification.
+
+Создать НОВОЕ diagnostic поле:
+
+    replication_status
+
+со значениями:
+
+
+ROBUST_RELATIVE_REPLICATION
+
+    q <= 0.05
+    eligible blocks >= 3
+    joint classes >= 2
+    LOBO transfer >= 0.67
+    positive null-relative effect >=75% blocks
+    jackknife does not collapse
+
+
+METADATA_LIMITED_REPLICATION
+
+    significant replication,
+    но перенос ограничен Currier/hand/joint class
+
+
+SINGLE_BLOCK_DRIVEN
+
+    effect collapses after removing one block
+    или evidence dominated by one block
+
+
+STATISTICALLY_SIGNIFICANT_BUT_UNSTABLE
+
+    q <= 0.05
+    но cross-block consistency insufficient
+
+
+NOT_SIGNIFICANT
+
+    q > 0.05
+
+
+Эти labels являются diagnostic и НЕ заменяют предыдущие
+UNIVERSAL/WEAK/BLOCK_SPECIFIC.
+
+
+################################################################
+#
+# PART B — SEQUENCE AUDIT
+#
+################################################################
+
+
+================================================================
+18. ЗАДАЧА PART B
+================================================================
+
+Предыдущий validation классифицировал:
+
+    104 sequence candidates as UNIVERSAL.
+
+Нужно проверить, что это действительно meaningful cross-block recurrence,
+а не:
+
+- transcription artifacts;
+- special IVTFF tokens;
+- obsolete candidates;
+- zero-occurrence sequences;
+- extremely short/trivial sequences;
+- concentration внутри одного metadata region.
+
+
+================================================================
+19. EXACT INVENTORY
+================================================================
+
+Создать:
+
+    universal_sequence_inventory.tsv
+
+для ВСЕХ sequence candidates,
+классифицированных UNIVERSAL.
+
+Поля:
+
+sequence
+n
+canonical_occurrences
+eligible_occurrences
+physical_blocks
+joint_classes
+currier_classes
+hands
+max_block_fraction
+classification
+
+
+================================================================
+20. TOKEN VALIDITY
+================================================================
+
+Для каждого sequence token проверить:
+
+    token exists in canonical corpus
+
+и количество canonical occurrences.
+
+Отдельно пометить tokens:
+
+    containing ?
+    containing @
+    containing other non-standard transcription markers
+
+
+21. Ничего автоматически не удалять.
+
+Только классифицировать:
+
+    canonical-clean
+    ambiguous-transcription
+    absent-from-canonical
+
+
+================================================================
+22. ZERO-OCCURRENCE CHECK
+================================================================
+
+Если frozen sequence имеет:
+
+    canonical_occurrences = 0
+
+она не может считаться empirical UNIVERSAL relation.
+
+Пометить:
+
+    INVALID_CANONICAL_SUPPORT
+
+Но не удалять строку из audit output.
+
+
+================================================================
+23. N-GRAM LENGTH DISTRIBUTION
+================================================================
+
+Для 104 UNIVERSAL sequences вывести distribution:
+
+    n=2
+    n=3
+    n=4
+    ...
+    n=8
+
+
+================================================================
+24. FREQUENCY DISTRIBUTION
+================================================================
+
+Вывести:
+
+    min
+    median
+    mean
+    P90
+    max
+
+canonical occurrence count.
+
+
+================================================================
+25. CROSS-BLOCK RECURRENCE
+================================================================
+
+Для каждой sequence:
+
+    total occurrences
+    physical block count
+    joint class count
+    Currier count
+    hand count
+
+    max_block_fraction
+
+    entropy across physical blocks
+
+
+================================================================
+26. STRICT REPLICATION
+================================================================
+
+Создать новый diagnostic subset:
+
+    strict_replicated_sequences.tsv
+
+Критерии заранее:
+
+    canonical_occurrences >= 3
+    physical_blocks >= 3
+    joint_classes >= 2
+    max_block_fraction <= 0.7
+    all tokens canonical-clean
+
+
+Это descriptive filtering.
+
+НЕ называть их statistically significant.
+
+
+================================================================
+27. EXPECTED RECURRENCE
+================================================================
+
+Сам факт повторения короткого bigram/trigram в нескольких blocks
+может быть тривиален из-за частоты tokens.
+
+Для каждой UNIVERSAL sequence построить frequency-aware null.
+
+
+================================================================
+28. NULL MODEL A — WITHIN-BLOCK TOKEN SHUFFLE
+================================================================
+
+Для каждого physical block:
+
+    shuffle token order внутри block
+
+Сохранять:
+
+    token frequencies
+    block lengths
+    metadata composition
+
+Не перемещать tokens между blocks.
+
+
+================================================================
+29. NULL MODEL B — FIRST-ORDER MARKOV
+================================================================
+
+Secondary diagnostic.
+
+Для каждого physical block построить first-order transition model
+на training material.
+
+Генерировать sequences той же длины блока.
+
+Это сохраняет:
+
+    unigram frequencies
+    approximate bigram structure
+
+и проверяет, содержит ли recurrence информацию выше первого порядка.
+
+
+================================================================
+30. NO LEAKAGE FOR MARKOV NULL
+================================================================
+
+Для held-out block transition probabilities оценивать
+по другим blocks того же metadata class, если support достаточен.
+
+Если невозможно:
+
+    Markov result = NA
+
+Не fallback на held-out training.
+
+
+================================================================
+31. SEQUENCE STATISTICS
+================================================================
+
+Для каждой frozen UNIVERSAL sequence считать минимум:
+
+    observed_total_occurrences
+    observed_block_count
+    observed_joint_count
+
+Null distributions для:
+
+    total occurrences
+    block recurrence
+
+
+================================================================
+32. PRIMARY SEQUENCE STATISTIC
+================================================================
+
+Главная statistic:
+
+    physical_block_recurrence_count
+
+а НЕ raw occurrence count.
+
+
+================================================================
+33. EMPIRICAL P
+================================================================
+
+Использовать:
+
+    p = (exceedances + 1) / (permutations + 1)
+
+Primary:
+
+    1000 permutations
+
+
+================================================================
+34. MULTIPLE COMPARISONS
+================================================================
+
+Для 104 UNIVERSAL sequence candidates применить:
+
+    BH FDR q=0.05
+
+отдельно для:
+
+    within-block shuffle null
+
+Markov null оставить secondary.
+
+
+================================================================
+35. SEQUENCE STATUS
+================================================================
+
+Присвоить diagnostic status:
+
+
+REPLICATED_ABOVE_FREQUENCY_NULL
+
+    canonical-clean
+    blocks >=3
+    joint classes >=2
+    max block fraction <=0.7
+    FDR q <=0.05
+
+
+REPLICATED_BUT_EXPECTED_FROM_FREQUENCY
+
+    structural recurrence criteria проходят,
+    но q >0.05
+
+
+TRANSCRIPTION_AMBIGUOUS
+
+    содержит ambiguous transcription tokens
+
+
+INVALID_CANONICAL_SUPPORT
+
+    zero canonical occurrences
+    или sequence token absent from canonical corpus
+
+
+BLOCK_CONCENTRATED
+
+    max block fraction >0.7
+
+
+INSUFFICIENT_REPLICATION
+
+    blocks <3
+    или joint classes <2
+
+
+================================================================
+36. ОСОБО ПРОВЕРИТЬ BIGRAMS
+================================================================
+
+Отдельно вывести results по:
+
+    n=2
+
+поскольку для frequent tokens повторение bigram в нескольких blocks
+может быть почти неизбежным.
+
+
+================================================================
+37. HIGHER-ORDER SEQUENCES
+================================================================
+
+Отдельно:
+
+    n>=3
+
+Если именно n>=3 sequences значительно превышают frequency-aware
+и first-order Markov null,
+это существенно интереснее.
+
+
+################################################################
+#
+# PART C — JOINT INTERPRETATION
+#
+################################################################
+
+
+================================================================
+38. НЕ ОБЪЕДИНЯТЬ DISTANCE И SEQUENCE P-VALUES
+================================================================
+
+Это разные families и разные hypotheses.
+
+FDR выполнять отдельно.
+
+
+================================================================
+39. SUMMARY MATRIX
+================================================================
+
+Создать:
+
+    replicated_local_structure_summary.tsv
+
+Поля:
+
+family
+frozen_candidates
+testable
+previous_universal
+fdr_significant
+robust_cross_block
+cross_currier
+cross_hand
+artifact_or_invalid
+
+
+================================================================
+40. ОСНОВНОЙ ИССЛЕДОВАТЕЛЬСКИЙ ВОПРОС
+================================================================
+
+Нужно различить три ситуации:
+
+
+A. NOTHING REMAINS
+
+Distance-profile significance нестабильна,
+а UNIVERSAL sequences объясняются frequency/null/artifacts.
+
+Вывод:
+
+    no convincing transferable local structure remains
+    under current tests.
+
+
+B. DISTANCE STRUCTURE REMAINS
+
+Distance profiles:
+
+    survive FDR
+    survive jackknife
+    reproduce across blocks
+    transfer across metadata
+    exceed frequency-matched null
+
+Вывод:
+
+    weak but reproducible relative-distance organization exists.
+
+
+C. HIGHER-ORDER SEQUENCES REMAIN
+
+Некоторые n>=3 sequences:
+
+    recur across independent blocks
+    survive within-block shuffle
+    survive FDR
+    preferably exceed first-order Markov expectation
+
+Вывод:
+
+    reproducible higher-order sequential organization exists.
+
+
+D. BOTH REMAIN
+
+Тогда проверить, относятся ли significant sequences
+и significant distance profiles к одним token families.
+
+Но это только descriptive follow-up.
+Не проводить новый significance search.
+
+
+################################################################
+#
+# PART D — OUTPUT
+#
+################################################################
+
+
+41. Создать команду:
+
+    replicated-local-structure-audit
+
+
+42. CLI:
+
+go run ./replicated-local-structure-audit \
+    -corpus data_work/ZL3b-x7.txt \
+    -token-metadata-map workdir/metadata-validation/token_metadata_map.tsv \
+    -relation-dir workdir/token-relation-validation \
+    -discovery-dir workdir \
+    -output-dir workdir/replicated-local-structure \
+    -permutations 1000 \
+    -seed 1
+
+
+43. Outputs:
+
+distance_profile_classification_audit.tsv
+distance_profile_lobo.tsv
+distance_profile_null_effects.tsv
+distance_profile_jackknife.tsv
+distance_profile_replication_status.tsv
+
+universal_sequence_inventory.tsv
+sequence_null_validation.tsv
+strict_replicated_sequences.tsv
+sequence_replication_status.tsv
+
+replicated_local_structure_summary.tsv
+replicated_local_structure.yaml
+replicated_local_structure_report.md
+
+
+44. Plots:
+
+plots/distance_profile_observed_vs_null.svg
+plots/distance_profile_block_effects.svg
+plots/distance_profile_jackknife.svg
+
+plots/universal_sequence_length_distribution.svg
+plots/sequence_block_recurrence_observed_vs_null.svg
+plots/sequence_occurrence_vs_block_coverage.svg
+
+
+################################################################
+#
+# PART E — REPORT REQUIREMENTS
+#
+################################################################
+
+
+45. В report явно сохранить distinction:
+
+    previous classification
+
+vs
+
+    new diagnostic replication status.
+
+
+46. Нельзя писать:
+
+    "UNIVERSAL means statistically significant"
+
+поскольку предыдущий report этого не гарантирует.
+
+
+47. Для distance-profile отдельно перечислить ВСЕ q<=0.05 candidates.
+
+
+48. Для sequences отдельно показать:
+
+    previous UNIVERSAL count
+    canonical-clean count
+    strict replicated count
+    FDR-significant count
+    n>=3 FDR-significant count
+
+
+49. Если sequence имеет zero canonical support,
+явно показать source frozen representation,
+чтобы диагностировать происхождение obsolete/special tokens.
+
+
+50. Записать reproducibility:
+
+    corpus SHA256
+    token count
+    metadata SHA256
+    hashes input validation files
+    parameters
+    seed
+    permutations
+
+
+################################################################
+#
+# PART F — TESTS
+#
+################################################################
+
+
+51. Unit tests минимум:
+
+- load only frozen distance candidates;
+- q<=0.05 selection uses existing q, not recalculated selection;
+- leave-one-block-out excludes held-out block;
+- null mean/SD calculation;
+- standardized effect;
+- jackknife removes exactly one block;
+- normalized profile shape;
+- canonical sequence token validation;
+- zero-occurrence sequence detection;
+- transcription marker detection;
+- physical-block recurrence count;
+- max-block fraction;
+- block entropy;
+- within-block shuffle preserves unigram counts;
+- within-block shuffle preserves block boundaries;
+- first-order Markov estimation has no held-out leakage;
+- empirical p +1 correction;
+- BH FDR;
+- deterministic seed;
+- diagnostic status classification.
+
+
+52. После реализации:
+
+go test ./...
+go vet ./...
+
+
+================================================================
+ГЛАВНАЯ ЦЕЛЬ
+================================================================
+
+Не искать новые закономерности.
+
+Нужно выяснить, что реально осталось после предыдущей жёсткой
+cross-metadata validation.
+
+В частности:
+
+1. Являются ли FDR-significant distance-profile relations
+   устойчивой cross-block структурой, несмотря на низкую absolute
+   similarity?
+
+2. Являются ли 104 UNIVERSAL sequences действительно неожиданно
+   повторяющимися последовательностями, либо их recurrence объясняется
+   частотами токенов, короткой длиной, metadata/block composition
+   или transcription artifacts?
+
+Только после этого решать, какой тип локальной структуры имеет смысл
+исследовать дальше.

@@ -1,0 +1,787 @@
+Задача: out-of-sample validation структурной нормализации токенов
+и leave-one-class-out анализ.
+
+Контекст
+
+В проекте реализованы:
+
+- dictionary generator;
+- token analysis;
+- structural analysis;
+- sequence-analyze;
+- structural-normalize;
+- normalization-compare;
+- matched random baseline.
+
+Raw corpus:
+
+token_occurrences: 38887
+lines:             5371
+transitions:       33516
+
+При structural threshold=0.70 получено:
+
+multi-member classes: 5
+tokens in classes:   12
+occurrence coverage: 8.87%
+
+На полном корпусе:
+
+cross-line trigrams:
+    raw        162
+    structural 247
+
+cross-line 4-grams:
+    raw        1
+    structural 8
+
+matched-random empirical p:
+    ≈ 0.0099
+
+Однако structural similarity включает сходство левого и правого
+контекста токенов. Поэтому рост повторяемости, особенно триграмм,
+может частично быть следствием самого способа построения классов.
+
+Необходимо проверить, воспроизводится ли эффект на данных,
+не участвовавших в построении structural classes.
+
+
+============================================================
+1. Новый инструмент
+============================================================
+
+Создать отдельный инструмент:
+
+    structural-validate/
+
+Предпочтительно:
+
+    structural-validate/main.go
+    internal/validation/...
+
+Не изменять алгоритм existing structural-normalize и
+sequence-analyze без необходимости.
+
+Пример запуска:
+
+    go run ./structural-validate \
+      -input data_work/ivtt_output_1786282555007.txt \
+      -folds 5 \
+      -threshold 0.70 \
+      -random-baselines 100 \
+      -random-seed 1 \
+      -output structural_validation.yaml
+
+
+============================================================
+2. Главный принцип: отсутствие leakage
+============================================================
+
+Для каждого fold structural classes должны быть построены ТОЛЬКО
+по training corpus.
+
+Test corpus не должен участвовать ни в одном из следующих этапов:
+
+- dictionary statistics;
+- token position statistics;
+- predecessor statistics;
+- successor statistics;
+- similarity calculation;
+- equivalence candidate generation;
+- clustering;
+- threshold selection.
+
+Pipeline каждого fold:
+
+TRAIN
+  -> dictionary
+  -> token analysis
+  -> structural analysis
+  -> equivalence candidates
+  -> complete-link classes
+
+TEST
+  -> применить уже зафиксированные TRAIN classes
+  -> sequence analysis
+  -> comparison with raw TEST
+  -> matched random baseline
+
+Никакой информации из TEST нельзя использовать для изменения classes.
+
+
+============================================================
+3. Разделение корпуса
+============================================================
+
+Использовать 5-fold cross-validation.
+
+Предпочтительная единица разделения — страница/folio, если исходный
+подготовленный корпус сохраняет эту информацию.
+
+Если после IVTT преобразования folio boundaries отсутствуют, использовать
+строки как единицы split.
+
+В таком случае явно записать в methodology:
+
+    split_unit: line
+
+Нельзя разбивать отдельную строку между TRAIN и TEST.
+
+
+============================================================
+4. Детерминированный split
+============================================================
+
+Split должен быть полностью воспроизводимым.
+
+Добавить:
+
+    -fold-seed 1
+
+Для line-based split:
+
+1. получить список line IDs;
+2. детерминированно перемешать seed;
+3. распределить по 5 folds максимально равномерно.
+
+Сохранять для каждого fold:
+
+    training_lines
+    test_lines
+    training_token_occurrences
+    test_token_occurrences
+
+И желательно hash или список IDs test lines для воспроизводимости.
+
+
+============================================================
+5. Построение статистики TRAIN
+============================================================
+
+Не использовать structural_analysis.yaml полного корпуса.
+
+Для каждого fold необходимо заново вычислить TRAIN-only:
+
+    dictionary
+    tokens_analysis
+    structural_analysis
+
+Можно:
+
+A. переиспользовать существующие Go packages напрямую;
+
+или
+
+B. вынести общую логику существующих CLI в internal packages.
+
+Не рекомендуется запускать внешние shell commands из Go, если логику
+можно безопасно переиспользовать как package.
+
+Критически важно получить те же результаты, которые существующий pipeline
+дал бы на самостоятельном training text.
+
+
+============================================================
+6. Eligibility токенов
+============================================================
+
+Класс может быть построен только для токенов, удовлетворяющих требованиям
+structural analysis на TRAIN.
+
+Например:
+
+    min_token_count = 10
+
+должен относиться исключительно к TRAIN count.
+
+TEST frequency не должна влиять на eligibility.
+
+
+============================================================
+7. Применение TRAIN classes к TEST
+============================================================
+
+После построения classes они фиксируются.
+
+Если TRAIN class:
+
+    C0001:
+      A
+      B
+
+то в TEST:
+
+    A -> C0001
+    B -> C0001
+
+даже если распределение A/B в TEST совершенно другое.
+
+Если токен отсутствовал в TRAIN class:
+
+    preserve raw token
+
+Нельзя добавлять его в класс на основании TEST.
+
+
+============================================================
+8. Test-only sequence baseline
+============================================================
+
+Для каждого fold провести sequence analysis дважды:
+
+RAW TEST:
+
+    исходные test tokens
+
+STRUCTURAL TEST:
+
+    те же test lines после применения TRAIN classes
+
+Параметры sequence analysis должны быть идентичными.
+
+Особенно собрать:
+
+    cross_line_repeated_ngrams n=2..8
+    maximal_cross_line_sequence_length
+
+    context_order_analysis:
+        conditional_entropy
+        repeated_context_conditional_entropy
+        repeated_context_coverage
+
+Не использовать TRAIN sequences при расчёте этих показателей.
+
+
+============================================================
+9. Test coverage classes
+============================================================
+
+Для каждого fold сохранить:
+
+    train_multi_member_classes
+    train_tokens_in_classes
+
+    test_occurrences_covered
+    test_occurrence_coverage
+
+Особенно важно отличать:
+
+    TRAIN coverage
+
+от:
+
+    TEST coverage
+
+Класс может хорошо выглядеть на TRAIN, но его участники почти не
+встречаться в TEST.
+
+
+============================================================
+10. Метрики эффекта
+============================================================
+
+Для каждого fold и n:
+
+    raw_cross_line_repeated
+    structural_cross_line_repeated
+
+    absolute_delta =
+        structural - raw
+
+Если raw > 0:
+
+    ratio =
+        structural / raw
+
+Если raw == 0, ratio не вычислять / null.
+
+Для context order:
+
+    raw_repeated_context_coverage
+    structural_repeated_context_coverage
+
+    coverage_delta
+
+    raw_conditional_entropy
+    structural_conditional_entropy
+
+    entropy_delta =
+        raw - structural
+
+Не объединять эти показатели в общий score.
+
+
+============================================================
+11. Особое внимание n=4+
+============================================================
+
+Отдельно сохранить:
+
+    new_cross_line_sequences
+
+Это последовательности, которые:
+
+- являются cross-line repeated в STRUCTURAL TEST;
+- отсутствуют как точные cross-line repeated sequence в RAW TEST.
+
+Для каждой:
+
+    normalized_tokens
+    n
+    count
+    line_count
+    occurrences
+
+А также восстановить surface realizations.
+
+Пример:
+
+    normalized:
+        X C0001 Y Z
+
+    occurrences:
+      - line: ...
+        raw_tokens:
+            X A Y Z
+
+      - line: ...
+        raw_tokens:
+            X B Y Z
+
+Это позволит проверить, действительно ли повтор появился благодаря
+замене разных членов одного TRAIN-defined structural class.
+
+
+============================================================
+12. Matched random baseline внутри каждого fold
+============================================================
+
+Random baseline также должен быть TRAIN-derived.
+
+Для каждого fold:
+
+1. взять TRAIN eligible tokens;
+2. сохранить размеры structural classes;
+3. построить 100 matched random class models;
+4. использовать только TRAIN frequencies для frequency bins;
+5. применить random classes к TEST;
+6. провести тот же sequence analysis TEST.
+
+TEST statistics запрещено использовать для построения random classes.
+
+
+============================================================
+13. Random comparison
+============================================================
+
+Для каждой метрики и fold сохранить:
+
+    structural_value
+
+    random:
+        mean
+        stddev
+        min
+        max
+        percentile_05
+        percentile_50
+        percentile_95
+
+    empirical_p
+
+Для метрик, где больший результат считается эффектом:
+
+    p =
+      (number random >= structural + 1)
+      / (random_runs + 1)
+
+Для entropy reduction направление сравнения должно быть явно определено
+в methodology.
+
+
+============================================================
+14. Aggregate cross-validation result
+============================================================
+
+После 5 folds создать aggregate section.
+
+Например:
+
+    aggregate:
+      cross_line_ngrams:
+        n3:
+          folds_positive: ...
+          mean_raw: ...
+          mean_structural: ...
+          mean_delta: ...
+          median_delta: ...
+
+        n4:
+          ...
+
+Сохранять:
+
+    folds_positive
+    folds_zero
+    folds_negative
+
+Не ограничиваться средним значением.
+
+Особенно важно знать, например:
+
+    effect observed in 5/5 folds
+
+в отличие от:
+
+    весь эффект возник в одном fold.
+
+
+============================================================
+15. Pooled out-of-sample counts
+============================================================
+
+Дополнительно можно суммировать независимые TEST результаты:
+
+    pooled_test:
+        raw_cross_line_ngrams:
+        structural_cross_line_ngrams:
+
+Но явно отметить, что это сумма fold-level counts, а не повторный анализ
+объединённого корпуса.
+
+Не объединять TEST corpora и не искать между ними новые последовательности.
+
+
+============================================================
+16. Stability structural classes
+============================================================
+
+Добавить раздел:
+
+    class_stability
+
+Нас интересует, возникают ли сходные классы независимо в разных TRAIN folds.
+
+Для каждой пары токенов:
+
+    folds_both_eligible
+    folds_same_class
+
+    stability =
+        folds_same_class / folds_both_eligible
+
+Пример:
+
+    token_a: qokain
+    token_b: qokaiin
+
+    folds_both_eligible: 5
+    folds_same_class: 5
+    stability: 1.0
+
+Не считать fold, где один токен не eligible.
+
+
+============================================================
+17. Class stability summary
+============================================================
+
+Добавить:
+
+    stable_pairs_100_percent
+    stable_pairs_80_percent
+    unstable_pairs
+
+Это независимый важный результат.
+
+Если structural classes полностью меняются при удалении 20% корпуса,
+их нельзя считать устойчивыми.
+
+
+============================================================
+18. Leave-one-class-out
+============================================================
+
+Отдельно выполнить leave-one-class-out анализ для full-corpus
+threshold=0.70 model.
+
+Имеется 5 multi-member classes.
+
+Baseline:
+
+    все 5 classes
+
+Затем:
+
+    remove C1
+    remove C2
+    remove C3
+    remove C4
+    remove C5
+
+Под remove понимается:
+
+члены удалённого класса снова становятся исходными surface tokens.
+
+Остальные classes не изменяются.
+
+
+============================================================
+19. Leave-one-class-out metrics
+============================================================
+
+Для каждого варианта провести sequence analysis и сохранить:
+
+    class_removed
+    class_members
+    class_occurrence_coverage
+
+    cross_line_repeated_ngrams n=2..8
+
+    maximal_cross_line_sequence_length
+
+    repeated_context_coverage
+
+Сравнить с:
+
+    all_classes model
+
+
+============================================================
+20. Marginal contribution класса
+============================================================
+
+Для каждого класса:
+
+    contribution(n) =
+        all_classes_cross_line(n)
+        -
+        without_class_cross_line(n)
+
+Особенно для:
+
+    n=3
+    n=4
+
+Также:
+
+    contribution_fraction =
+        contribution /
+        (all_classes - raw)
+
+если denominator > 0.
+
+Это позволит определить, какой процент общего прироста обусловлен
+конкретным классом.
+
+
+============================================================
+21. Проверка концентрации эффекта
+============================================================
+
+Добавить summary:
+
+    dominant_class_fraction_n3
+    dominant_class_fraction_n4
+
+где это максимальная contribution_fraction.
+
+Если, например:
+
+    C1 explains 95% of n=4 increase
+
+это должно быть явно видно.
+
+Не интерпретировать такой результат как отрицательный — просто зафиксировать.
+
+
+============================================================
+22. Pair-level ablation для крупных классов
+
+Если класс содержит >2 токенов, leave-one-class-out недостаточно.
+
+Для таких классов дополнительно провести member ablation:
+
+    class {A,B,C,D}
+
+варианты:
+
+    {B,C,D} + A raw
+    {A,C,D} + B raw
+    {A,B,D} + C raw
+    {A,B,C} + D raw
+
+Только если class size > 2.
+
+Сохранять те же основные n=3/n=4 metrics.
+
+
+============================================================
+23. Контроль leakage тестами
+============================================================
+
+Добавить специальный unit test:
+
+Создать synthetic TRAIN и TEST так, чтобы в TEST существовало очевидное
+сходство двух токенов, отсутствующее в TRAIN.
+
+Проверить, что TEST similarity НЕ приводит к их объединению.
+
+Другой тест:
+
+TRAIN определяет A~B.
+
+TEST показывает совершенно разные контексты A/B.
+
+Проверить, что TEST всё равно использует заранее фиксированный TRAIN class.
+
+Это должно гарантировать правильную out-of-sample семантику.
+
+
+============================================================
+24. Дополнительные unit tests
+============================================================
+
+Минимум:
+
+- deterministic folds;
+- line never split;
+- каждый line ровно один раз является TEST;
+- TRAIN/TEST disjoint;
+- TRAIN + TEST = corpus;
+- classes построены только по TRAIN;
+- TEST-only token не классифицируется;
+- random classes используют TRAIN counts;
+- TEST counts не влияют на frequency matching;
+- class stability;
+- leave-one-class-out;
+- member ablation;
+- reconstruction raw realizations;
+- aggregate fold statistics;
+- empirical p.
+
+
+============================================================
+25. Результат
+============================================================
+
+Создать:
+
+    structural_validation.yaml
+
+Предлагаемая структура:
+
+    meta:
+    parameters:
+    methodology:
+
+    folds:
+      - fold: 1
+
+        train:
+        test:
+
+        structural_classes:
+
+        test_normalization:
+
+        sequence_comparison:
+
+        new_cross_line_sequences:
+
+        random_baseline:
+
+      ...
+
+    class_stability:
+
+    cross_validation_aggregate:
+
+    leave_one_class_out:
+
+    member_ablation:
+
+
+============================================================
+26. Не изменять threshold по результатам
+
+Основной out-of-sample эксперимент выполнить для:
+
+    threshold = 0.70
+
+поскольку именно этот threshold уже был исследован на полном корпусе.
+
+НЕ подбирать новый threshold по cross-validation результату.
+
+После завершения основного эксперимента допускается дополнительный
+sensitivity analysis 0.75, но он должен быть явно обозначен как secondary.
+
+0.80–0.90 сейчас не имеют multi-member classes и не требуют CV.
+
+
+============================================================
+27. Не делать
+
+На этом этапе не реализовывать:
+
+- fuzzy n-grams;
+- wildcard patterns;
+- новые similarity metrics;
+- изменение weights similarity;
+- подбор threshold;
+- morphological EVA similarity;
+- semantic classes;
+- operator/operand inference;
+- ML;
+- сравнение с языками программирования;
+- сравнение с естественными языками;
+- визуализацию страниц.
+
+Также не изменять structural classes после просмотра TEST результатов.
+
+
+============================================================
+28. Критерий результата
+
+Эксперимент не должен иметь бинарного PASS/FAIL.
+
+Нужно предоставить измерения.
+
+Особенно важны четыре вопроса:
+
+1. Воспроизводится ли увеличение cross-line n=3/n=4 на unseen TEST?
+
+2. Превышает ли out-of-sample structural normalization matched random
+   normalization?
+
+3. Стабильны ли сами structural classes между folds?
+
+4. Распределён ли эффект между несколькими classes или почти полностью
+   обусловлен одним классом?
+
+
+============================================================
+29. Интерпретационные ограничения
+
+В README и methodology явно указать:
+
+Даже положительный out-of-sample результат не доказывает:
+
+- что корпус является формальным языком;
+- что токены являются командами;
+- что structural classes имеют одинаковое значение;
+- что манускрипт содержит инструкции.
+
+Он показывает только следующее:
+
+структурное сходство токенов, обнаруженное на одной части корпуса,
+обобщается на независимую часть корпуса лучше, чем сопоставимая
+случайная группировка токенов.
+
+Это и является проверяемой гипотезой данного этапа.
+
+
+После реализации:
+
+    go test ./...
+    go vet ./...

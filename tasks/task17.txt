@@ -1,0 +1,1086 @@
+Задача: Blind Metadata Validation для frozen distributional discovery
+с использованием существующего IVTT -x7 корпуса и минимального IVTFF metadata parser
+
+Контекст
+
+Все предыдущие статистические эксперименты выполнялись на уже подготовленном
+plain-text корпусе, полученном внешним инструментом IVTT из ZL3b-n.txt
+с preset:
+
+    -x7 ASCII Full
+
+Этот корпус является CANONICAL / FROZEN CORPUS.
+
+Он уже использован для:
+
+- словаря токенов;
+- begin/end analysis;
+- soft structural space;
+- structural/graphemic analysis;
+- pair decomposition;
+- distance-context analysis;
+- structural projection;
+- property trajectory;
+- local-regime analysis;
+- global distributional regime discovery.
+
+Поэтому НЕЛЬЗЯ создавать новую текстовую транслитерацию и заменять существующий
+корпус результатом собственного преобразования IVTFF.
+
+Цель текущей задачи:
+
+1. прочитать metadata из исходного ZL3b-n.txt;
+2. сопоставить loci/строки/страницы IVTFF с уже существующей frozen
+   последовательностью токенов IVTT -x7;
+3. после строгой проверки alignment выполнить blind metadata validation
+   уже зафиксированных distributional results.
+
+Ключевой принцип:
+
+    IVTT отвечает за text transformation.
+    Наш код отвечает только за metadata parsing + alignment + validation.
+
+
+1. Что НЕ нужно реализовывать
+
+Не реализовывать полный аналог IVTT.
+
+Не создавать собственный новый:
+
+    IVTFF -> plain text corpus
+
+pipeline.
+
+Не заменять существующий -x7 corpus.
+
+Не пытаться улучшать или нормализовывать транслитерацию.
+
+Не менять tokenization уже frozen corpus.
+
+
+2. Входные данные
+
+Использовать:
+
+A. Frozen plain-text corpus
+
+Уже существующий output IVTT:
+
+    ZL3b-n.txt
+        |
+       IVTT
+        |
+      -x7 ASCII Full
+        |
+        v
+    frozen plain corpus
+
+Именно последовательность токенов этого файла должна использоваться
+во всех индексах:
+
+    0 ... N-1
+
+Ожидаемый corpus size для текущего проекта:
+
+    38887 tokens
+
+Если фактическое значение отличается — использовать фактическое, но
+зафиксировать его и проверить совместимость с frozen discovery results.
+
+
+B. Original IVTFF source
+
+    ZL3b-n.txt
+
+Исходный IVTFF используется ТОЛЬКО для извлечения metadata и структуры loci.
+
+
+C. Frozen discovery results
+
+Использовать уже созданные файлы:
+
+- global_distributional_change_points.tsv
+- global_distributional_cluster_assignments.tsv
+- global_distributional_clustering.tsv
+- global_distributional_regimes.yaml
+- global_distributional_windows.tsv
+- stable_distributional_boundaries.tsv
+- global_distributional_report.md
+
+Эти результаты НЕ пересчитывать и НЕ перенастраивать на основании metadata.
+
+
+3. Архитектура
+
+Желаемый pipeline:
+
+                     ZL3b-n.txt
+                        |
+                        | IVTFF metadata parser
+                        v
+                 loci + metadata
+                        |
+                        |
+frozen -x7 corpus ---- alignment
+                        |
+                        v
+              token_metadata_map.tsv
+                        |
+                        v
+              metadata validation
+
+
+4. Минимальный IVTFF parser
+
+Нужно реализовать только необходимый subset IVTFF.
+
+Парсер должен уметь извлекать:
+
+- folio/page identifier;
+- locus identifier;
+- locus type;
+- line identifier;
+- paragraph start markers;
+- page variables;
+- Currier ID $C;
+- Lisa Fagin Davis hand ID $H;
+- другие page variables, если они присутствуют и легко доступны;
+- text content locus в форме, достаточной для alignment.
+
+Не требуется поддерживать все функции IVTT.
+
+
+5. Page variable inheritance
+
+Важно:
+
+$C, $H и другие page variables могут задаваться на уровне страницы,
+а не каждой отдельной строки.
+
+Нужно корректно наследовать active page variables для всех loci данной страницы.
+
+Не угадывать metadata из token text.
+
+Например:
+
+page fXXX:
+    $C = A
+    $H = 3
+
+все loci страницы получают:
+
+    currier = A
+    hand = 3
+
+пока IVTFF явно не задаёт другое правило.
+
+
+6. Quire metadata
+
+Если quire identifier присутствует непосредственно или может быть
+однозначно извлечён из IVTFF metadata — сохранить.
+
+Если его нет:
+
+НЕ выводить quire из номера folio эвристически.
+
+Поле:
+
+    quire = null
+
+и явно сообщить отсутствие данных.
+
+Никаких внешних таблиц quire на этом этапе без отдельного входного файла.
+
+
+7. Alignment: основное правило
+
+Frozen plain corpus является source of truth для token sequence.
+
+IVTFF parser не должен создавать альтернативную последовательность токенов.
+
+Нужно определить:
+
+какой диапазон frozen token positions соответствует каждому IVTFF locus.
+
+
+8. Минимальное text normalization для alignment
+
+Разрешается реализовать только минимальное преобразование IVTFF text,
+необходимое для сопоставления с существующим IVTT -x7 output.
+
+Это НЕ новый corpus generator.
+
+Для каждого locus:
+
+    IVTFF text
+        ↓
+    alignment representation
+        ↓
+    compare against frozen tokens
+
+Каждое такое правило должно быть:
+
+- явно документировано;
+- покрыто test;
+- предназначено только для alignment.
+
+
+9. -x7 semantics
+
+Не пытаться самостоятельно реконструировать все semantics preset -x7,
+если это не требуется.
+
+Если в проекте доступен фактический output IVTT, именно он является expected
+result.
+
+Правильность нашего alignment определяется совпадением с этим output,
+а не предположением о том, как "должен" работать -x7.
+
+
+10. Special IVTFF symbols
+
+Учитывать известные representation rules:
+
+    @NNN;
+
+является единым high-ASCII encoded transliteration sign в ASCII output.
+
+Не разбивать:
+
+    @135;
+
+на отдельные токены/символы при grapheme-level parsing.
+
+Но на текущем этапе grapheme parsing вообще желательно не выполнять,
+если это не требуется для alignment.
+
+
+11. Uncertain characters
+
+    ?
+
+сохранять в соответствии с frozen output.
+
+Не удалять автоматически.
+
+
+12. Word boundaries
+
+Не переопределять word boundaries.
+
+Если frozen -x7 output содержит определённую токенизацию, именно она является
+canonical.
+
+Нельзя:
+
+- объединять frozen tokens;
+- разделять frozen tokens;
+- исправлять spaces;
+- вводить alternative segmentation.
+
+
+13. Strict alignment invariant
+
+После alignment должна выполняться глобальная invariant:
+
+    concatenation(aligned frozen token ranges in IVTFF order)
+        ==
+    frozen corpus token sequence
+
+Посимвольно/потоково на уровне token identity.
+
+Также:
+
+    total aligned tokens == frozen corpus tokens
+
+
+14. Никакого silent fuzzy matching
+
+По умолчанию fuzzy alignment ЗАПРЕЩЁН.
+
+Если locus невозможно сопоставить однозначно:
+
+остановить validation или пометить run failed.
+
+Не использовать:
+
+- Levenshtein auto-correction;
+- nearest approximate locus;
+- token skipping;
+- silent substitutions.
+
+
+15. Alignment diagnostics
+
+При первом mismatch вывести минимум:
+
+- global frozen token position;
+- IVTFF folio;
+- IVTFF locus;
+- raw IVTFF locus text;
+- normalized alignment representation;
+- expected frozen tokens;
+- produced/matched tokens;
+- previous 10 frozen tokens;
+- next 10 frozen tokens.
+
+Пример:
+
+ALIGNMENT ERROR
+
+position: 11423
+folio: fXXr
+locus: fXXr.P.3
+
+IVTFF:
+...
+
+normalized:
+...
+
+expected frozen:
+...
+
+context before:
+...
+
+context after:
+...
+
+
+16. Alignment report
+
+Создать:
+
+alignment_report.md
+
+с:
+
+- IVTFF file;
+- frozen corpus file;
+- total loci;
+- total frozen tokens;
+- aligned tokens;
+- skipped/comment-only loci;
+- mismatches;
+- metadata coverage;
+- result PASS / FAIL.
+
+
+17. token_metadata_map.tsv
+
+После успешного alignment создать:
+
+token_metadata_map.tsv
+
+Минимальные колонки:
+
+token_position
+token
+folio
+locus_id
+locus_type
+line_id
+paragraph_id
+paragraph_start
+currier
+hand
+quire
+
+Дополнительно полезно:
+
+token_index_in_locus
+token_index_in_line
+token_index_in_folio
+
+
+18. Token positions
+
+Использовать ту же indexing convention, что и frozen discovery.
+
+Если discovery использует zero-based:
+
+    0..38886
+
+mapping должен использовать zero-based.
+
+Если discovery использует one-based — следовать ему.
+
+Не смешивать.
+
+В README явно зафиксировать convention.
+
+
+19. Metadata coverage report
+
+Отдельно вывести:
+
+Currier:
+    known tokens
+    unknown tokens
+    coverage %
+
+Hand:
+    known tokens
+    unknown tokens
+    coverage %
+
+Folio:
+    coverage %
+
+Paragraph:
+    coverage %
+
+Quire:
+    coverage %
+
+
+20. Corpus compatibility check
+
+Перед metadata validation проверить, что frozen discovery относится именно
+к этому корпусу.
+
+Минимум:
+
+- token_count совпадает;
+- first tokens совпадают;
+- last tokens совпадают;
+- если возможно, SHA256 frozen corpus сохранить в discovery metadata.
+
+Если hash раньше не сохранялся — вычислить сейчас и добавить в report,
+но не притворяться, что это исторически сохранённый hash.
+
+
+21. Freeze discovery
+
+После успешного alignment metadata validation использует существующие
+stable boundaries и cluster assignments.
+
+Запрещено:
+
+- пересчитывать stable boundaries;
+- менять window sizes;
+- менять change-point thresholds;
+- менять cluster K;
+- менять discovery parameters по metadata.
+
+
+22. Metadata boundary sets
+
+Из token_metadata_map построить reference boundaries:
+
+- line transitions;
+- paragraph transitions;
+- folio transitions;
+- Currier transitions;
+- hand transitions;
+- quire transitions, если данные реально доступны.
+
+Boundary = token position между двумя последовательными token records.
+
+
+23. Unknown metadata
+
+При переходе:
+
+known -> unknown
+unknown -> known
+
+не считать это Currier/hand transition по умолчанию.
+
+Currier transition:
+
+A -> B
+
+только если обе стороны known и labels различаются.
+
+Аналогично hand.
+
+
+24. Stable blind boundaries validation
+
+Основной вход:
+
+stable_distributional_boundaries.tsv
+
+Для каждого blind boundary вычислить distance до ближайшего:
+
+- line boundary;
+- paragraph boundary;
+- folio boundary;
+- Currier transition;
+- hand transition;
+- quire transition.
+
+
+25. Fixed tolerances
+
+Использовать заранее заданный набор:
+
+±10
+±25
+±50
+±100
+±200 tokens
+
+Не выбирать лучший tolerance постфактум.
+
+
+26. Boundary validation output
+
+Для каждого metadata type / tolerance:
+
+- blind boundary count;
+- matched count;
+- match fraction;
+- mean nearest distance;
+- median nearest distance;
+- expected random matches;
+- empirical percentile.
+
+
+27. Stable-boundary strata
+
+Отдельно анализировать:
+
+support >= 3/5
+support >= 4/5
+support = 5/5
+
+Особенно:
+
+~11486
+~12500
+
+но без специальной настройки параметров под эти позиции.
+
+
+28. Permutation controls
+
+Минимум два null models.
+
+A. Uniform boundary null
+
+Случайно разместить такое же число blind boundaries среди допустимых
+token positions.
+
+
+B. Spacing-preserving circular shift
+
+Сохранить взаимные расстояния между frozen blind boundaries и циклически
+сдвигать весь boundary pattern по corpus.
+
+
+29. Permutations
+
+Для основных boundary tests:
+
+    10000
+
+CLI:
+
+    --permutations
+
+Все random operations deterministic:
+
+    --seed
+
+
+30. Physical folio validation
+
+Проверить:
+
+stable blind boundaries
+vs
+folio transitions.
+
+Raw match fraction без permutation baseline не интерпретировать.
+
+
+31. Paragraph validation
+
+Аналогично:
+
+stable blind boundaries
+vs
+paragraph transitions.
+
+
+32. Line validation
+
+Line transitions очень часты.
+
+Использовать их прежде всего как density sanity/control.
+
+Не трактовать высокий raw overlap как meaningful без null.
+
+
+33. Currier boundary validation
+
+Проверить:
+
+blind change boundaries
+vs
+Currier label transitions.
+
+Считать:
+
+nearest distance
+fixed-tolerance matches
+permutation enrichment.
+
+
+34. Hand boundary validation
+
+То же для Lisa Fagin Davis hand transitions.
+
+
+35. Regime assignment validation
+
+Отдельно проверить frozen global clustering against metadata.
+
+Использовать существующие:
+
+global_distributional_cluster_assignments.tsv
+global_distributional_clustering.tsv
+
+Не пересчитывать clusters.
+
+
+36. K sweep
+
+Если frozen clustering содержит K=2..15:
+
+для каждого frozen K посчитать metadata association.
+
+Не выбирать K как "правильный" на основании metadata.
+
+
+37. Currier vs cluster metrics
+
+Для каждого K считать минимум:
+
+- contingency table;
+- Mutual Information;
+- Normalized Mutual Information;
+- Adjusted Rand Index;
+- homogeneity;
+- completeness.
+
+Если AMI легко реализуема — добавить.
+
+
+38. Hand vs cluster metrics
+
+То же для hand IDs.
+
+
+39. Mixed windows
+
+Frozen windows могут пересекать metadata boundaries.
+
+Для каждого window вычислить metadata composition.
+
+Например:
+
+Currier:
+    A 0.80
+    B 0.20
+
+hand:
+    H1 0.95
+    H2 0.05
+
+Сохранить:
+
+majority_label
+purity
+
+
+40. High-purity subsets
+
+Повторить association analysis для:
+
+all windows
+purity >= 0.8
+purity >= 0.9
+
+Но не использовать high-purity subset для изменения clusters.
+
+
+41. Soft metadata comparison
+
+Желательно не ограничиваться majority label.
+
+Для каждого regime cluster построить expected metadata distribution.
+
+Считать conditional entropy:
+
+    H(Currier | regime)
+    H(hand | regime)
+
+и normalized entropy reduction относительно global metadata entropy.
+
+
+42. K-sweep multiple comparison control
+
+Если ищется maximum association across K=2..15:
+
+для каждой metadata permutation:
+
+- permute metadata blocks;
+- рассчитать metric для всех frozen K;
+- сохранить maximum metric.
+
+Сравнить observed maximum с null distribution of maxima.
+
+Это обязательно, если в отчёте упоминается "max NMI over K sweep".
+
+
+43. Block-aware metadata permutation
+
+Для Currier/hand не использовать только random token-label shuffle.
+
+Нужно сохранять block structure.
+
+Предпочтительно:
+
+- shuffle labels между существующими contiguous metadata blocks;
+или
+- circularly shift metadata block sequence.
+
+Сохранить block lengths.
+
+
+44. Recurring regime consistency
+
+Для unconstrained clusters определить contiguous runs.
+
+Если один regime появляется в разных удалённых местах:
+
+проверить metadata composition каждого run.
+
+Считать:
+
+within-regime Currier entropy
+within-regime hand entropy
+between-run metadata consistency
+
+
+45. Contiguous vs unconstrained comparison
+
+Сравнить frozen:
+
+A. contiguous segmentation
+B. unconstrained clustering
+
+against metadata.
+
+Это позволит различить:
+
+distributional section boundaries
+и
+recurrent distributional regimes.
+
+
+46. Strongest blind boundaries report
+
+Создать:
+
+strongest_boundaries_metadata.tsv
+
+Для TOP frozen boundaries:
+
+position
+scale_support
+mean_jump
+uncertainty
+
+nearest_folio
+distance_folio
+
+nearest_paragraph
+distance_paragraph
+
+nearest_currier_transition
+distance_currier
+
+nearest_hand_transition
+distance_hand
+
+nearest_quire
+distance_quire
+
+
+47. Residual blind structure
+
+После validation выделить frozen boundaries, которые:
+
+- имеют support >=4/5;
+- имеют высокий mean jump;
+- далеко от tested metadata transitions;
+- не объясняются tested reference structures.
+
+Создать:
+
+unexplained_distributional_structure.tsv
+
+Не называть их новыми секциями или неизвестным языком.
+
+
+48. Residual output columns
+
+Например:
+
+position
+scale_support
+mean_jump
+distance_folio
+distance_paragraph
+distance_currier
+distance_hand
+distance_quire
+nearest_known_metadata_distance
+
+
+49. Metadata association with regime-specific tokens
+
+Если frozen global discovery уже содержит token enrichment by regime:
+
+можно дополнительно проверить association с Currier/hand.
+
+Но это вторично.
+
+Нельзя пересчитывать regime enrichment с использованием metadata.
+
+
+50. No semantic sections
+
+На этом этапе НЕ использовать:
+
+- botanical;
+- zodiac;
+- astronomical;
+- pharmaceutical;
+- recipes;
+- biological;
+- illustrations.
+
+Только:
+
+- physical organization;
+- Currier;
+- hand;
+- paragraph;
+- folio;
+- quire, если metadata реально имеется.
+
+
+51. Validation categories
+
+Финальный report может использовать три нейтральных категории:
+
+A. Strong alignment
+
+Большая часть blind distributional structure совпадает с tested metadata
+существенно сильнее null.
+
+B. Partial alignment
+
+Часть blind structure объясняется metadata, но имеется устойчивый residual.
+
+C. Weak alignment
+
+Blind structure слабо связана с tested metadata.
+
+
+52. Нельзя считать metadata ground truth
+
+Currier, hand, paragraph и folio являются reference annotations/physical
+metadata, а не "истинной структурой текста".
+
+Поэтому использовать формулировку:
+
+association with metadata
+
+а не:
+
+accuracy against metadata.
+
+
+53. Output files
+
+Создать минимум:
+
+alignment_report.md
+token_metadata_map.tsv
+metadata_boundaries.tsv
+
+boundary_validation.tsv
+boundary_validation_permutations.yaml
+
+currier_validation.tsv
+hand_validation.tsv
+quire_validation.tsv
+
+cluster_metadata_association.tsv
+cluster_metadata_permutations.yaml
+
+strongest_boundaries_metadata.tsv
+unexplained_distributional_structure.tsv
+
+metadata_validation.yaml
+metadata_validation_report.md
+
+
+54. Plots
+
+Минимум:
+
+plots/blind_boundaries_vs_folio.svg
+plots/blind_boundaries_vs_paragraph.svg
+plots/blind_boundaries_vs_currier.svg
+plots/blind_boundaries_vs_hand.svg
+
+plots/boundary_distance_cdf.svg
+
+plots/nmi_by_k_currier.svg
+plots/nmi_by_k_hand.svg
+
+plots/regime_currier_heatmap.svg
+plots/regime_hand_heatmap.svg
+
+
+55. CLI
+
+Предпочтительная команда:
+
+metadata-validate
+
+Параметры:
+
+--ivtff ZL3b-n.txt
+--frozen-corpus corpus.txt
+--discovery-dir ...
+--output-dir ...
+--permutations 10000
+--seed 1
+--boundary-tolerances 10,25,50,100,200
+
+
+56. Fail-fast behavior
+
+Validation НЕ запускать, если alignment failed.
+
+Порядок:
+
+parse metadata
+    ↓
+align against frozen corpus
+    ↓
+verify exact token invariant
+    ↓
+PASS?
+    |
+    +-- NO -> stop
+    |
+    +-- YES
+         ↓
+metadata validation
+
+
+57. Никакой auto-repair
+
+Если alignment не совпадает:
+
+НЕ:
+
+- пропускать token;
+- менять token;
+- объединять token;
+- split token;
+- fuzzy match;
+- продолжать validation.
+
+Сначала исправить alignment implementation и добиться exact match.
+
+
+58. README
+
+Обновить README:
+
+- frozen corpus origin: IVTT preset -x7 ASCII Full;
+- frozen corpus is canonical for previous analyses;
+- IVTFF parser does not replace IVTT;
+- metadata parser exists only for alignment/validation;
+- exact alignment invariant;
+- indexing convention.
+
+
+59. Unit tests: IVTFF metadata parser
+
+Минимум:
+
+- page variable parsing;
+- $C inheritance;
+- $H inheritance;
+- locus ID;
+- paragraph marker;
+- folio transition;
+- unknown metadata;
+- comments/metadata not interpreted as text.
+
+
+60. Unit tests: alignment
+
+Минимум:
+
+- exact locus alignment;
+- multiple loci;
+- @NNN; preservation;
+- '?' preservation;
+- mismatch detection;
+- context diagnostic;
+- no fuzzy fallback;
+- token count invariant.
+
+
+61. Unit tests: validation
+
+Минимум:
+
+- metadata transition extraction;
+- nearest boundary;
+- fixed tolerance matching;
+- uniform permutation;
+- spacing-preserving circular shift;
+- block-label permutation;
+- metadata purity;
+- contingency table;
+- MI/NMI/ARI;
+- K-sweep maximum null;
+- deterministic output.
+
+
+62. После реализации выполнить
+
+go test ./...
+go vet ./...
+
+
+Главная цель
+
+Не повторять IVTT.
+
+Не создавать новую транслитерацию.
+
+Использовать уже существующий IVTT -x7 output как frozen canonical token
+sequence и лишь восстановить для каждого frozen token его происхождение
+в IVTFF metadata.
+
+После строгого exact alignment проверить:
+
+какая часть ранее обнаруженной вслепую distributional structure независимо
+совпадает с Currier, Davis hands и физической организацией рукописи, а какая
+часть остаётся ими необъяснённой.

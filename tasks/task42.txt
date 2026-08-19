@@ -1,0 +1,488 @@
+Task42 — normalization-compare distribution audit and persistent remote-worker reconnect
+
+Цель
+
+Исправить две эксплуатационные проблемы comparative pipeline:
+
+1. `normalization-compare` на реальном generic corpus Doyle занимает 5m47s
+   и является потенциальным кандидатом для существующего distributed executor.
+
+2. Remote workers после завершения/перезапуска coordinator не могут
+   автоматически переподключиться к следующему experiment/run.
+   Сейчас для повторного использования workers требуется redeploy.
+
+Scientific algorithms и результаты не менять.
+
+==================================================
+PART A — normalization-compare
+==================================================
+
+1. Profile first
+
+Снять свежий production profile `normalization-compare` на:
+
+    data_test/pg2097-2.txt
+
+с теми же scientific parameters, которые использует pipeline-orchestrate.
+
+Зафиксировать:
+
+    wall time
+    CPU profile
+    alloc profile
+    peak RSS
+    время по внутренним фазам
+
+Текущий observed baseline:
+
+    Doyle: 5m47s
+
+Не использовать старый Voynich timing как замену свежему профилю.
+
+2. Найти естественные units of work
+
+Проверить внутреннюю структуру normalization-compare.
+
+Особое внимание:
+
+    thresholds
+    random baselines
+    normalization variants
+    sequence analyses
+    independent repetitions
+
+Определить, какие вычисления:
+
+    - независимы;
+    - имеют deterministic identity;
+    - могут выполняться в произвольном порядке;
+    - не зависят от shared sequential RNG state.
+
+Составить dependency graph.
+
+3. RNG / reduction audit
+
+Для потенциально распределяемой единицы доказать:
+
+    result = f(corpus, parameters, base seed, work index)
+
+или существующий эквивалент.
+
+Проверить float reductions и ordering.
+
+Network arrival order никогда не должен определять порядок суммирования.
+
+Coordinator обязан восстанавливать canonical work-index order перед
+существующим reduction.
+
+Требование:
+
+    local == remote
+
+byte-for-byte, не approximately.
+
+4. Stop condition
+
+Реализовывать distribution только если профиль показывает разумный выигрыш.
+
+Ориентир:
+
+если >=50% текущих 5m47s приходится на независимо распределяемую работу,
+реализовать remote execution.
+
+Если serial fraction слишком велика — остановиться после аудита и
+зафиксировать отрицательный результат.
+
+5. Reuse infrastructure
+
+Если distribution оправдан:
+
+НЕ создавать новый distributed framework.
+
+Расширить существующие:
+
+    coordinator
+    worker
+    mTLS
+    JobID
+    lease
+    retry
+    deterministic collection
+
+новым job type, например:
+
+    normalization_compare_baseline
+
+или более подходящим типом после аудита.
+
+6. Correctness
+
+Проверить:
+
+    local vs remote 1 worker
+    local vs remote N workers
+    different completion order
+    retry
+    worker failure
+    same seed repeated
+    resume where applicable
+
+Все persisted scientific outputs должны быть byte-for-byte identical.
+
+7. Scaling
+
+На Doyle измерить:
+
+    local
+    1 remote
+    2 remote
+    5 remote
+    10 remote
+
+Таблица:
+
+workers | distributed phase | total | speedup | efficiency
+
+==================================================
+PART B — persistent workers / reconnect
+==================================================
+
+8. Current problem
+
+Сейчас worker deployment фактически привязан к одному coordinator
+lifecycle.
+
+После завершения experiment/run или рестарта coordinator workers не
+переподключаются автоматически.
+
+Для следующего run требуется redeploy.
+
+Это исправить.
+
+9. Desired worker lifecycle
+
+Worker после deployment должен быть долгоживущим клиентом:
+
+    start
+      |
+      v
+    connect coordinator
+      |
+      +-- success -> register -> accept jobs
+      |
+      +-- disconnect
+              |
+              v
+          reconnect loop
+              |
+              v
+          connect again
+
+Coordinator может:
+
+    - ещё не быть запущен;
+    - завершиться;
+    - перезапуститься;
+    - временно быть недоступен;
+    - начать следующий experiment.
+
+Ни один из этих случаев не должен требовать redeploy worker.
+
+10. Reconnect policy
+
+Реализовать bounded exponential backoff с jitter.
+
+Например концептуально:
+
+    1s
+    2s
+    4s
+    8s
+    ...
+    max 30–60s
+
+Не использовать tight reconnect loop.
+
+Worker должен логировать состояние:
+
+    coordinator unavailable
+    reconnecting
+    connected
+    authenticated
+    registered
+    disconnected
+
+Не спамить одинаковым сообщением каждую секунду.
+
+11. Coordinator identity
+
+mTLS validation сохранить полностью.
+
+Reconnect НЕ означает ослабление authentication.
+
+Worker каждый раз должен проверять:
+
+    CA
+    coordinator certificate
+    serverAuth
+    SAN/hostname
+
+Coordinator каждый раз проверяет:
+
+    worker certificate
+    clientAuth
+    worker URI identity
+
+Никаких insecure fallback.
+
+12. Experiment independence
+
+Worker process не должен быть привязан к ExperimentID при startup.
+
+Experiment/Job identity приходит с job.
+
+После окончания experiment A тот же worker должен иметь возможность
+обрабатывать experiment B без restart/redeploy.
+
+Но никакое состояние experiment A не должно загрязнять B.
+
+13. Corpus/artifact lifecycle
+
+Проверить worker-side caches/staging.
+
+При переходе между experiments:
+
+    JobID
+    ExperimentID
+    corpus SHA256
+    artifact hashes
+
+должны предотвращать reuse неправильного input.
+
+Если caching существует, cache key должен включать scientific identity
+artifact.
+
+Если безопасно доказать reuse нельзя — очищать experiment-local state
+между experiments.
+
+14. Coordinator restart
+
+Обязательный integration test:
+
+    deploy workers
+    start coordinator
+    workers connect
+    execute jobs
+    stop coordinator
+    wait
+    start coordinator again
+    workers reconnect automatically
+    execute another job
+
+Без redeploy и без restart workers.
+
+15. Coordinator starts late
+
+Тест:
+
+    deploy/start workers
+    coordinator absent
+    wait >= reconnect interval
+    start coordinator
+    workers connect automatically
+
+16. Multiple sequential experiments
+
+Тест:
+
+    worker deployment once
+
+    experiment A
+    coordinator run
+    complete
+
+    experiment B
+    coordinator run
+    complete
+
+Workers не redeploy/restart.
+
+Проверить отсутствие cross-experiment contamination.
+
+17. Failure semantics
+
+Проверить:
+
+    TCP reset
+    coordinator graceful shutdown
+    coordinator crash
+    TLS handshake failure
+    temporary DNS/network failure
+    coordinator restart
+
+Transient failures -> reconnect.
+
+Permanent authentication failures, например:
+
+    invalid CA
+    expired/revoked certificate where detectable
+    wrong worker identity
+
+не должны превращаться в aggressive infinite retry without clear diagnostics.
+
+18. Shutdown
+
+Нужен корректный способ сознательно остановить worker.
+
+SIGTERM/SIGINT:
+
+    stop accepting new work
+    finish/cancel according to existing semantics
+    close connection
+    remove temporary state where appropriate
+    exit
+
+Reconnect loop не должен мешать shutdown.
+
+19. Ansible role
+
+Task35 role изменить так, чтобы:
+
+    deploy != lifecycle of one experiment
+
+Нужны отдельные операции:
+
+    deploy/start workers
+    status workers
+    stop workers
+    cleanup workers
+
+Обычный новый experiment не должен требовать deploy.
+
+Worker binaries по-прежнему могут жить в `/tmp` согласно существующему
+решению.
+
+Cleanup должен полностью удалить их.
+
+20. Operations documentation
+
+Обновить DISTRIBUTED_EXECUTION_OPERATIONS.md.
+
+Новый normal workflow должен выглядеть примерно так:
+
+    deploy workers once
+          |
+    workers wait/reconnect
+          |
+    run experiment A
+          |
+    run experiment B
+          |
+    run experiment C
+          |
+    cleanup workers
+
+а не:
+
+    deploy -> experiment -> cleanup
+    deploy -> experiment -> cleanup
+
+21. pipeline-orchestrate
+
+Orchestrator не должен предполагать, что workers появились одновременно
+с coordinator.
+
+После запуска coordinator он ждёт registrations согласно существующей
+политике/timeout.
+
+Уже работающие persistent workers должны автоматически подключаться.
+
+Если workers отсутствуют, diagnostics должны показывать:
+
+    expected/registered workers
+    elapsed waiting time
+
+22. Tests
+
+Обязательно:
+
+    reconnect after coordinator restart
+    coordinator starts after worker
+    repeated reconnect
+    sequential experiments
+    worker identity preserved
+    cross-experiment isolation
+    graceful worker shutdown
+    mTLS rejection
+    -race
+
+23. Validation
+
+    go build ./...
+    go vet ./...
+    go test ./...
+    go test -race ./...
+    git diff --check
+
+Frozen Voynich baseline не изменять.
+
+Scientific output regression tests должны оставаться byte-identical.
+
+==================================================
+Deliverables
+==================================================
+
+Создать:
+
+    NORMALIZATION_COMPARE_DISTRIBUTION_AUDIT.md
+    REMOTE_WORKER_LIFECYCLE.md
+
+Обновить:
+
+    DISTRIBUTED_EXECUTION_OPERATIONS.md
+    PERFORMANCE_AUDIT.md
+    PERFORMANCE_REFACTOR_REPORT.md
+
+если соответствующие данные относятся к этим документам.
+
+==================================================
+Не делать
+==================================================
+
+НЕ:
+
+- менять normalization algorithms;
+- менять random baseline count;
+- менять RNG semantics без доказанной необходимости;
+- менять thresholds;
+- принимать tolerance вместо byte identity;
+- ослаблять mTLS;
+- делать worker-specific scientific seeds;
+- привязывать persistent worker к одному ExperimentID;
+- распределять другие stages в Task42;
+- менять frozen Voynich v1.
+
+==================================================
+Definition of Done
+==================================================
+
+1. Для normalization-compare имеется измерительный ответ, стоит ли её
+   распределять.
+
+2. Если distribution оправдана — она использует существующий remote
+   executor и даёт byte-for-byte identical outputs с local execution.
+
+3. Worker можно deploy один раз.
+
+4. Worker автоматически подключается, если coordinator появляется позже.
+
+5. После остановки/restart coordinator worker автоматически reconnect.
+
+6. Один deployment обслуживает несколько последовательных experiments.
+
+7. mTLS и experiment isolation полностью сохраняются.
+
+8. Redeploy нужен только при обновлении binary/config/certificate либо
+   при сознательном cleanup, а не при каждом новом pipeline run.
+
+Деплой зависает на задаче TASK [voynich_worker : readiness - probe the coordinator with this worker's own mTLS credentials].

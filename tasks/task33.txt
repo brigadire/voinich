@@ -1,0 +1,191 @@
+Task33 — Deterministic Remote Distributed Executor
+
+Goal
+
+Extend the Task31/Task32 executor contract to multiple machines.
+
+Implement a minimal coordinator/remote-worker architecture for conditional-regime-analyze preserving the existing scientific implementation and producing bit-for-bit identical outputs regardless of worker host, count, completion order, retries or coordinator restart.
+
+Primary invariant
+
+local reference == goroutine executor == local process executor == remote distributed executor
+
+for identical corpus, configuration and seed.
+
+Phase 1 — Freeze Task32 oracle
+
+Save SHA256 for all outputs of the established representative workload and record exact corpus/config/seed.
+
+Phase 2 — Reuse existing contract
+
+Remote execution must use the same JobID, JobResult and shared scientific implementation from Task31/32.
+
+Transport may wrap the contract but must not alter replicate identity, RNG derivation, parameters, result values or reduction semantics.
+
+Phase 3 — Minimal remote protocol
+
+Implement the smallest robust transport suitable for trusted experiment machines.
+
+Requirements:
+- protocol/version identity;
+- deterministic JobID;
+- experiment/config identity;
+- worker compatibility/version check;
+- explicit success/failure;
+- bounded messages;
+- timeout/cancellation;
+- retryable transport failures;
+- diagnostics with host and JobID.
+
+Prefer a small dependency footprint and simple transport such as standard-library HTTP if sufficient.
+
+Document the trust/security model. Do not expose unauthenticated workers to untrusted networks.
+
+Phase 4 — Input distribution
+
+Avoid sending the whole corpus per replicate.
+
+Choose the smallest reliable strategy such as pre-staged files, one-time content-addressed upload/cache, or immutable experiment bundle.
+
+Requirements:
+- cryptographic input hash;
+- worker rejects mismatched input/config;
+- cache cannot permit stale-input execution;
+- scientific output independent of local filesystem path.
+
+Measure transfer size/cache behavior.
+
+Phase 5 — Coordinator
+
+Coordinator must:
+- construct deterministic jobs;
+- track pending/running/completed JobIDs;
+- assign work;
+- receive results;
+- retry failed/lost jobs;
+- prevent duplicate counting;
+- checkpoint completion state;
+- perform canonical deterministic reduction;
+- generate existing final outputs.
+
+Never reduce in network arrival order.
+
+Phase 6 — Worker
+
+Worker must:
+- verify protocol/code compatibility;
+- accept bounded concurrent jobs;
+- call shared scientific implementation;
+- derive RNG exactly as local execution;
+- return exact JobID with JobResult;
+- never perform final cross-replicate reduction;
+- support graceful shutdown;
+- retain no mutable state affecting later jobs.
+
+Provide configurable worker concurrency.
+
+Phase 7 — At-least-once-safe idempotency
+
+Required:
+- deterministic JobID;
+- retry is scientifically identical;
+- duplicate result cannot count twice;
+- stale result from another experiment rejected;
+- disconnect does not lose experiment;
+- coordinator restart resumes;
+- workers may join/leave;
+- worker count may change.
+
+Do not require exactly-once network delivery. Achieve exactly-once contribution via deterministic identity/idempotent coordinator logic.
+
+Phase 8 — Heterogeneous workers
+
+Test at least two independent worker processes and, if available, two physical machines.
+
+Record OS, architecture, Go/runtime version and CPU model.
+
+Verify heterogeneous CPUs preserve byte-identical floating-point output.
+
+If not, stop and document exact divergence. Do not weaken acceptance to tolerance equivalence. If homogeneous architecture/runtime must initially be required, enforce and document it.
+
+Phase 9 — Correctness matrix
+
+Validate:
+1. Task32 oracle;
+2. one remote worker;
+3. two remote workers;
+4. different concurrency;
+5. shuffled completion order;
+6. worker killed mid-job + retry;
+7. duplicate result;
+8. coordinator interrupted + resumed;
+9. worker removed/re-added;
+10. cold and cached input.
+
+Every successful run must be SHA256-identical to the oracle.
+
+Phase 10 — Scaling
+
+Where resources permit benchmark 1/2/4/8/16/32 worker slots.
+
+Report wall time, CPU slots, speedup, efficiency, coordinator CPU/RSS, worker CPU/RSS, network bytes, staging time, result traffic, retry overhead and SHA256 identity.
+
+Clearly separate measured from extrapolated values.
+
+Phase 11 — Multi-corpus readiness
+
+Do not implement a full comparative-corpus scheduler unless trivial.
+
+Audit how scheduling can extend to:
+
+ExperimentID / CorpusID / JobID
+
+so future work can parallelize both across corpora and within a corpus across replicates.
+
+Document a scheduling policy that keeps workers occupied without starving small corpora and preserves deterministic reduction independently per experiment.
+
+Phase 12 — Operations
+
+Provide minimal commands/configuration for:
+- starting worker;
+- starting coordinator;
+- configuring worker endpoints;
+- staging/verifying input;
+- resuming interrupted run;
+- inspecting progress.
+
+No web UI.
+
+Phase 13 — Documentation
+
+Create DISTRIBUTED_EXECUTION_OPERATIONS.md.
+
+Update DISTRIBUTED_EXECUTION_IMPLEMENTATION.md, DISTRIBUTED_EXECUTION_AUDIT.md, PERFORMANCE_AUDIT.md and PERFORMANCE_REFACTOR_REPORT.md.
+
+Document architecture, protocol, trust model, input hashing/cache, JobID/idempotency, checkpoint/resume, compatibility restrictions, measured scaling, failure recovery, exact two-worker example and future multi-corpus extension.
+
+Constraints
+
+- conditional-regime-analyze is the initial distributed workload;
+- reuse Task31/Task32 scientific code;
+- no algorithm/statistical/RNG changes;
+- no completion-order reduction;
+- no tolerance-based acceptance;
+- no GPU;
+- no heavy distributed infrastructure unless simple transport is proven inadequate;
+- no web UI;
+- do not turn Task33 into general cluster orchestration.
+
+Validation
+
+go build ./...
+go vet ./...
+go test ./...
+go test -race ./internal/conditionalregime
+git diff --check
+
+Add integration tests for remote transport, retries, duplicates, coordinator resume and deterministic reduction.
+
+Definition of Done
+
+Task33 is complete when remote workers execute conditionalregime jobs; coordinator scheduling cannot affect scientific output; retries/duplicates cannot alter statistics; reduction preserves canonical sequential order; distributed output is byte-identical to local oracle; coordinator resume works; input identity is cryptographically verified; scaling is measured on available hardware; operations are documented; and the architecture is ready for later multi-corpus scheduling.

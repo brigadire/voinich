@@ -1,0 +1,415 @@
+Task: pre-production algorithmic optimization of the remaining dominant pipeline stages
+
+Context
+
+The task27 performance-refactor backlog is complete.
+
+Do NOT reopen completed backlog items.
+
+Before running the complete production pipeline, optimize the two remaining
+stages that are known to dominate end-to-end runtime:
+
+1. conditional-regime-analyze
+2. structural-projection-analyze
+
+This remains a PERFORMANCE-ONLY refactor.
+
+Scientific semantics, statistical formulas, null models, RNG behavior,
+candidate sets, iteration semantics, output schemas, and CLI behavior must
+remain unchanged.
+
+The purpose is to remove redundant computation and representation overhead,
+not to change the experiment.
+
+============================================================
+PHASE 1 — conditional-regime-analyze
+============================================================
+
+This is the first priority.
+
+Known issue from the performance audit:
+
+fitResidualClustering rebuilds the same distance matrix for every K.
+
+For a fixed:
+
+    (scale, permutation/replicate)
+
+the residual data from which the distance matrix is calculated do not change
+with K, yet the current code appears to perform approximately:
+
+    for K = 2..15:
+        build distance matrix
+        cluster for K
+
+With the production configuration:
+
+    k-max-residual = 15
+    permutations = 1000
+
+this potentially repeats an expensive invariant calculation roughly 14 times
+per scale/replicate.
+
+STEP 1 — verify before modifying
+
+Profile a representative run and prove:
+
+- where the distance matrix is constructed;
+- whether its inputs are truly invariant over K;
+- how much CPU/allocation time is spent rebuilding it;
+- how many times it is constructed per scale/replicate.
+
+Do not optimize based only on the audit statement.
+
+Record:
+
+- CPU pprof;
+- alloc_space pprof;
+- wall time;
+- total allocations if practical;
+- number of distance-matrix constructions.
+
+STEP 2 — implement invariant hoisting
+
+If confirmed, transform conceptually:
+
+    for replicate:
+        for scale:
+            for K:
+                D = distanceMatrix(data)
+                cluster(D, K)
+
+into:
+
+    for replicate:
+        for scale:
+            D = distanceMatrix(data)
+
+            for K:
+                cluster(D, K)
+
+The exact implementation may differ.
+
+Requirements:
+
+- distance values must remain identical;
+- K iteration order must remain identical;
+- RNG calls and RNG call order must remain identical;
+- clustering initialization must remain identical;
+- permutation realization must remain identical;
+- no changes to tie-breaking;
+- no changes to floating-point accumulation order unless unavoidable;
+- no changes to model selection;
+- no changes to empirical p-value calculation;
+- no changes to output serialization/schema.
+
+Do not introduce concurrency.
+
+STEP 3 — reference oracle
+
+Preserve or expose the old implementation sufficiently to test it against the
+optimized implementation.
+
+Test several:
+
+- synthetic datasets;
+- scales;
+- K ranges;
+- seeds;
+- permutation realizations.
+
+Compare:
+
+- distance matrices: exact equality;
+- cluster assignments: exact equality;
+- selected K: exact equality;
+- test statistics: exact equality where possible;
+- RNG-dependent decisions: exact equality.
+
+Then run old vs new CLI with a manageable but meaningful configuration,
+preferably:
+
+    -permutations 10
+
+using identical inputs and seed.
+
+Require SHA256-identical persisted outputs.
+
+If output differs, STOP and diagnose the difference rather than accepting
+"statistical equivalence".
+
+STEP 4 — benchmark
+
+Repeat the same profiling run used for the before measurement.
+
+Report:
+
+- before/after wall time;
+- before/after CPU profile;
+- before/after allocations;
+- number of distance-matrix builds before/after;
+- speedup of fitResidualClustering;
+- speedup of the whole CLI.
+
+If this optimization exposes another obvious implementation bottleneck inside
+conditional-regime-analyze, report it but DO NOT automatically rewrite it.
+
+============================================================
+PHASE 2 — structural-projection-analyze
+============================================================
+
+Only begin this phase after Phase 1 is fully validated.
+
+Known state:
+
+The production:
+
+    -random-projections 200
+
+run currently takes approximately 3–3.5 hours.
+
+Previous work removed pathological allocation churn in GenericSmoothing and
+made memory behavior bounded, but the algorithm still performs expensive
+O(V²)-scale work.
+
+The audit also identified map/string-heavy representations in:
+
+- GenericSmoothing
+- RandomizeProjection
+- ProjectDistribution
+- normalize
+- metricsFloat
+
+A dense TokenID representation was proposed.
+
+IMPORTANT:
+
+Do NOT assume that a dense-ID rewrite is automatically the correct solution.
+
+Profile the CURRENT optimized implementation first.
+
+STEP 5 — current production-representative profile
+
+Use a representative configuration that finishes in practical time but
+exercises the same hot paths.
+
+Determine:
+
+- current top CPU consumers;
+- current top allocators;
+- map[string] lookup/hash contribution;
+- string comparison/hash contribution;
+- GC contribution;
+- live-memory contribution;
+- whether GenericSmoothing remains dominant;
+- whether dense TokenID conversion would actually attack the current
+  bottleneck.
+
+Also inspect why the production run reaches approximately 14–15 GB RSS.
+
+Distinguish:
+
+    allocation churn
+
+from:
+
+    genuinely live retained data.
+
+Provide a live-heap breakdown.
+
+STEP 6 — dependency/representation analysis
+
+For the remaining dominant path, document which values depend on:
+
+- token identity;
+- projection;
+- random projection;
+- trial;
+- distance;
+- frequency.
+
+Determine which data can safely be represented as stable integer TokenIDs and
+which buffers can be reused.
+
+A TokenID mapping must be frozen and deterministic:
+
+    token string <-> integer ID
+
+Its construction order must not depend on Go map iteration.
+
+If token order already has semantic/RNG significance, preserve exactly the
+existing deterministic order.
+
+STEP 7 — optimize only if justified by the profile
+
+If map/string representation is still materially responsible for runtime or
+memory, implement the smallest dense representation necessary.
+
+Possible targets:
+
+    []float64
+    []int
+    []int32
+    flat matrices
+    reusable scratch buffers
+
+instead of repeatedly using:
+
+    map[string]float64
+    map[string]int
+    map[string]...
+
+Do NOT perform a repository-wide TokenID migration.
+
+Limit the change to structuralprojection and reusable internal primitives only
+where necessary.
+
+Do not alter the fundamental O(V²) experiment merely to make it faster.
+
+Specifically forbidden:
+
+- approximate candidate search;
+- sampling fewer candidates;
+- changing frequency matching;
+- pruning candidates;
+- changing projection count;
+- changing null model;
+- independent RNG streams;
+- reordering RNG-visible candidate lists;
+- concurrency that changes RNG or accumulation order.
+
+STEP 8 — correctness oracle
+
+Keep the existing implementation as a reference oracle where practical.
+
+For multiple synthetic corpora and seeds compare old vs optimized:
+
+- projections;
+- selected candidates;
+- normalized vectors;
+- distributions;
+- intermediate metrics;
+- final statistics.
+
+Exact equality is preferred.
+
+If floating-point accumulation order necessarily changes, require <=1e-12
+and document exactly why byte identity is impossible.
+
+However, persisted production outputs should remain SHA256-identical whenever
+the existing deterministic implementation permits it.
+
+Given the nondeterminism bugs already found in this repository, explicitly
+audit all modified paths for:
+
+- Go map iteration affecting RNG;
+- Go map iteration affecting float accumulation;
+- unstable sorting with equal primary keys;
+- candidate slices derived from unordered maps.
+
+STEP 9 — empirical scaling
+
+Add focused benchmarks for the optimized dominant primitive.
+
+Use several vocabulary sizes, for example:
+
+    V=100
+    V=500
+    V=1000
+    V=real corpus vocabulary
+
+Record:
+
+    ns/op
+    B/op
+    allocs/op
+
+If the algorithm remains O(V²), say so explicitly.
+
+The objective is reducing the constant factor and memory cost without
+pretending the asymptotic complexity changed.
+
+STEP 10 — production validation
+
+After correctness tests pass, run the real scientific configuration:
+
+    -random-projections 200
+
+Record:
+
+- wall time;
+- peak RSS;
+- stage timings;
+- CPU profile if practical.
+
+Compare directly against the existing ~3–3.5 hour baseline.
+
+============================================================
+GLOBAL ACCEPTANCE REQUIREMENTS
+============================================================
+
+For both phases:
+
+    gofmt
+    go test ./...
+    go vet ./...
+    go build ./...
+    relevant go test -race
+
+must pass.
+
+Same-seed repeated runs must be deterministic.
+
+Where applicable, run at least 3 independent identical invocations and verify
+SHA256 equality of all persisted outputs.
+
+Do not silently fix unrelated scientific or algorithmic behavior discovered
+during the refactor.
+
+If a correctness/nondeterminism bug is discovered:
+
+1. isolate it;
+2. reproduce it with a regression test;
+3. explain whether it affects existing scientific results;
+4. fix it separately;
+5. validate old-vs-fixed consequences;
+6. document it.
+
+Update:
+
+    PERFORMANCE_AUDIT.md
+    PERFORMANCE_REFACTOR_REPORT.md
+
+Add a new section:
+
+    Pre-production dominant-stage optimization
+
+containing:
+
+- hypotheses tested;
+- profiles;
+- changes made;
+- rejected optimization ideas and why;
+- before/after measurements;
+- correctness evidence;
+- remaining bottlenecks.
+
+============================================================
+STOP CONDITION
+============================================================
+
+Do not continue optimizing indefinitely.
+
+After both phases, identify the runtime composition of the remaining pipeline.
+
+If the remaining expensive work represents necessary computation of the
+current scientific algorithms rather than implementation overhead, STOP.
+
+Do not change the scientific algorithms as part of this task.
+
+At completion provide a concise recommendation:
+
+1. whether we are ready for the first complete production end-to-end run;
+2. expected dominant stages;
+3. whether any remaining optimization is likely to save hours rather than
+   seconds/minutes.

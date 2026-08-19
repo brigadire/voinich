@@ -1,0 +1,1346 @@
+Задача: positional-continuation-validate
+
+Цель
+
+Проверить, является ли обнаруженная higher-order зависимость
+
+    s aiin -> chey
+
+частным случаем более общего ПОЗИЦИОННО ОБУСЛОВЛЕННОГО ограничения
+на продолжение контекста:
+
+    s aiin -> X
+
+То есть проверить:
+
+    P(X | s, aiin, position)
+
+против:
+
+    P(X | s, aiin)
+
+и одновременно контролировать:
+
+    P(X | aiin, position)
+
+Главный вопрос:
+
+    Меняется ли распределение продолжений после "s aiin"
+    в зависимости от структурной позиции?
+
+Если да, необходимо установить, является ли эффект:
+
+    1. специфическим для chey;
+    2. общим сужением/изменением множества допустимых продолжений;
+    3. обычным позиционным свойством aiin;
+    4. артефактом одного physical block;
+    5. следствием line/block boundaries.
+
+
+================================================================
+1. КОНТЕКСТ ПРЕДЫДУЩЕГО ЭКСПЕРИМЕНТА
+================================================================
+
+Canonical corpus:
+
+    data_work/ZL3b-x7.txt
+
+token_count:
+
+    39026
+
+SHA256:
+
+    360d99583145ec549b80edfafdc3f93534f3a11b85a0d52997ba8425e92b87c2
+
+Metadata:
+
+    workdir/metadata-validation/token_metadata_map.tsv
+
+Previous analysis:
+
+    workdir/higher-order-sequences/
+
+Использовать минимум:
+
+    higher_order_candidate_inventory.tsv
+    higher_order_occurrences.tsv
+    conditional_probability_by_block.tsv
+    conditional_dependence.tsv
+    conditional_cmi.tsv
+    continuation_distributions.tsv
+    continuation_entropy.tsv
+    first_vs_second_order_lobo.tsv
+    conditional_context_controls.tsv
+    conditional_context_rank.tsv
+    higher_order_cross_block.tsv
+    higher_order_jackknife.tsv
+    higher_order_position.tsv
+    higher_order_validation.tsv
+    higher_order_sequence_analysis.yaml
+
+
+================================================================
+2. FROZEN TARGET
+================================================================
+
+Target context:
+
+    s aiin
+
+Target continuation observed in previous experiment:
+
+    chey
+
+
+НЕ искать новые AB contexts.
+
+НЕ выбирать другой context после просмотра результатов.
+
+НЕ выполнять новый n-gram discovery.
+
+Все возможные X после:
+
+    s aiin X
+
+анализируются только как continuation distribution
+заранее зафиксированного context "s aiin".
+
+
+================================================================
+3. ОСНОВАНИЕ
+================================================================
+
+Previous result for:
+
+    s aiin chey
+
+was approximately:
+
+    canonical occurrences = 4
+
+    eligible physical blocks = 3
+    joint classes = 3
+
+    P(chey | aiin)       = 0.04878
+    P(chey | s,aiin)     = 0.23077
+
+    enrichment           = 4.73
+
+    conditional p        = 0.009799
+    FDR q                = 0.019598
+
+    M2 better than M1    = 11/17 blocks
+    mean delta log loss  = +0.522 bits
+
+    jackknife enrichment = 2.94 .. 6.0
+
+    cross-Currier        = true
+    cross-hand           = true
+
+But:
+
+    block-position TVD = 0.571
+    line-position TVD  = 0.226
+
+Final diagnostic status:
+
+    POSITION_DEPENDENT
+
+Новый анализ должен объяснить именно этот positional effect.
+
+
+################################################################
+#
+# PART A — COMPLETE s aiin INVENTORY
+#
+################################################################
+
+
+================================================================
+4. НАЙТИ ВСЕ OCCURRENCES "s aiin"
+================================================================
+
+Для каждого exact occurrence:
+
+    s aiin
+
+найти следующий token X.
+
+
+Для каждого occurrence сохранить:
+
+    position_s
+    position_aiin
+    position_X
+
+    X
+
+    physical_block
+    Currier
+    hand
+    joint_class
+
+    absolute corpus position
+
+    normalized physical-block position
+
+    line identity
+    position within line
+
+    tokens before context:
+        -3
+        -2
+        -1
+
+    tokens after X:
+        +1
+        +2
+        +3
+
+если доступны.
+
+
+5. Никакой occurrence не должна пересекать physical-block boundary.
+
+
+6. Отдельно отметить:
+
+    X missing because block ends
+    X missing because corpus ends
+
+
+7. Не отбрасывать boundary occurrence молча.
+
+
+Output:
+
+    sai_in_context_occurrences.tsv
+
+
+################################################################
+#
+# PART B — LINE POSITION
+#
+################################################################
+
+
+================================================================
+8. LINE POSITION CATEGORIES
+================================================================
+
+Если line metadata надёжно доступны, классифицировать occurrence
+"s aiin" по позиции.
+
+
+Использовать заранее определённые категории:
+
+    LINE_START
+    LINE_EARLY
+    LINE_MIDDLE
+    LINE_LATE
+    LINE_END
+
+
+9. Определение:
+
+Пусть aiin имеет normalized position p внутри строки.
+
+    LINE_START:
+        s является первым token строки
+
+    LINE_END:
+        X является последним token строки
+        или aiin является последним token при отсутствии X
+
+Для остальных:
+
+    LINE_EARLY:
+        p < 0.25
+
+    LINE_MIDDLE:
+        0.25 <= p <= 0.75
+
+    LINE_LATE:
+        p > 0.75
+
+
+10. START/END имеют приоритет над EARLY/MIDDLE/LATE.
+
+
+11. Также сохранить continuous:
+
+    normalized_line_position ∈ [0,1]
+
+
+################################################################
+#
+# PART C — PHYSICAL BLOCK POSITION
+#
+################################################################
+
+
+================================================================
+12. BLOCK POSITION
+================================================================
+
+Для каждого occurrence:
+
+    normalized_block_position ∈ [0,1]
+
+
+13. Primary fixed bins:
+
+    B0 = [0.0, 0.1)
+    B1 = [0.1, 0.2)
+    ...
+    B9 = [0.9, 1.0]
+
+
+14. Дополнительно coarse bins:
+
+    BLOCK_START = [0.0,0.2)
+    BLOCK_MIDDLE = [0.2,0.8)
+    BLOCK_END = [0.8,1.0]
+
+
+15. Не оптимизировать boundaries.
+
+
+################################################################
+#
+# PART D — CONTINUATION DISTRIBUTION
+#
+################################################################
+
+
+================================================================
+16. GLOBAL CONTINUATION
+================================================================
+
+Построить:
+
+    P(X | s,aiin)
+
+для всех observed X.
+
+
+17. Для каждого line-position class:
+
+    P(X | s,aiin,line_position)
+
+
+18. Для каждого block-position class:
+
+    P(X | s,aiin,block_position)
+
+
+19. Не ограничиваться chey.
+
+Нужно анализировать ПОЛНОЕ continuation distribution.
+
+
+20. Для каждой distribution вывести:
+
+    occurrence count
+    unique continuation count
+
+    entropy
+    normalized entropy
+
+    top continuation
+    top continuation probability
+
+    chey probability
+
+
+Output:
+
+    sai_in_continuation_distributions.tsv
+
+
+################################################################
+#
+# PART E — DOES POSITION CHANGE THE DISTRIBUTION?
+#
+################################################################
+
+
+================================================================
+21. PRIMARY QUESTION
+================================================================
+
+Проверить independence:
+
+    X ⟂ position | context="s aiin"
+
+против:
+
+    X зависит от position.
+
+
+22. Primary positional variable:
+
+    line-position category
+
+если line boundaries доступны и надёжны.
+
+
+23. Secondary:
+
+    coarse physical-block position
+
+
+24. Test statistic:
+
+    conditional mutual information:
+
+        I(X ; position | context=s aiin)
+
+Поскольку context фиксирован:
+
+        I(X ; position)
+
+
+25. Primary significance:
+
+permutation test.
+
+
+================================================================
+26. PERMUTATION NULL
+================================================================
+
+Переставлять position labels между occurrences "s aiin"
+ВНУТРИ physical blocks.
+
+
+Это сохраняет:
+
+    continuation frequencies
+    physical block composition
+    Currier/hand composition
+    number of s-aiin occurrences per block
+
+и разрушает:
+
+    continuation-position association.
+
+
+27. Не shuffle occurrences между physical blocks.
+
+
+28. permutations:
+
+    10000
+
+
+29. empirical p:
+
+    (exceedances + 1)/(N + 1)
+
+
+################################################################
+#
+# PART F — ENTROPY EFFECT
+#
+################################################################
+
+
+================================================================
+30. ПРОВЕРИТЬ СУЖЕНИЕ CONTINUATION SPACE
+================================================================
+
+Для каждой positional category считать:
+
+    H(X | s,aiin,position)
+
+
+31. Сравнить с:
+
+    H(X | s,aiin)
+
+
+32. Вывести:
+
+    entropy_difference =
+        H_global - H_position
+
+
+33. Положительное значение:
+
+    continuation space becomes more constrained.
+
+
+34. Но significance проверять permutation null,
+а не интерпретировать raw entropy.
+
+
+35. Отдельно проверить:
+
+    unique continuation count
+    effective continuation count = exp(H)
+
+
+################################################################
+#
+# PART G — CHEY-SPECIFIC EFFECT
+#
+################################################################
+
+
+================================================================
+36. Теперь отдельно проверить chey
+================================================================
+
+Для каждой positional category:
+
+    P(chey | s,aiin,position)
+
+
+37. Сравнить:
+
+    P(chey | s,aiin)
+
+
+38. Рассчитать:
+
+    positional_chey_enrichment =
+        P(chey | s,aiin,position)
+        /
+        P(chey | s,aiin)
+
+
+39. Использовать fixed categories.
+
+Не искать position bin с максимальным enrichment.
+
+
+40. Проверить permutation significance.
+
+
+41. Это SECONDARY test.
+
+Primary остаётся изменение полной continuation distribution.
+
+
+################################################################
+#
+# PART H — CRITICAL CONTROL: aiin
+#
+################################################################
+
+
+================================================================
+42. ГЛАВНЫЙ КОНТРОЛЬ
+================================================================
+
+Повторить positional analysis для:
+
+    aiin -> X
+
+без требования предыдущего s.
+
+
+43. Построить:
+
+    P(X | aiin,position)
+
+и:
+
+    H(X | aiin,position)
+
+
+44. Главный вопрос:
+
+позиционный эффект специфичен для:
+
+    s aiin
+
+или является общим свойством:
+
+    aiin?
+
+
+45. Для chey сравнить:
+
+    P(chey | s,aiin,position)
+
+против:
+
+    P(chey | aiin,position)
+
+
+46. Рассчитать within-position enrichment:
+
+    E(position) =
+        P(chey | s,aiin,position)
+        /
+        P(chey | aiin,position)
+
+
+47. Это одна из важнейших статистик эксперимента.
+
+
+Если E(position) ≈ 1:
+
+    positional effect объясняется aiin.
+
+
+Если E(position) >> 1:
+
+    s сохраняет дополнительную информацию
+    даже после контроля position.
+
+
+################################################################
+#
+# PART I — STRATIFIED CONDITIONAL DEPENDENCE
+#
+################################################################
+
+
+================================================================
+48. Проверить:
+================================================================
+
+    chey ⟂ s | aiin, position
+
+То есть сравнить:
+
+    P(chey | s,aiin,position)
+
+с:
+
+    P(chey | aiin,position)
+
+
+49. Primary stratification:
+
+    line position.
+
+
+50. Secondary:
+
+    block position.
+
+
+51. Использовать exact/Monte-Carlo conditional test,
+подходящий для малых counts.
+
+Не использовать asymptotic chi-square,
+если expected cell counts малы.
+
+
+52. permutations:
+
+    10000
+
+
+53. Переставлять predecessor identity
+среди aiin occurrences внутри:
+
+    same physical block
+    same positional category
+
+тем самым сохраняя:
+
+    aiin
+    position
+    block
+    continuation frequencies
+
+и разрушая только:
+
+    predecessor s -> continuation association.
+
+
+################################################################
+#
+# PART J — MODEL COMPARISON
+#
+################################################################
+
+
+================================================================
+54. Сравнить три predictive models
+================================================================
+
+Для continuation X:
+
+
+M1:
+
+    P(X | aiin)
+
+
+M2:
+
+    P(X | aiin, position)
+
+
+M3:
+
+    P(X | predecessor, aiin, position)
+
+
+55. Нас особенно интересует predecessor=s.
+
+
+56. Leave-one-physical-block-out.
+
+Random occurrence split запрещён.
+
+
+57. Training:
+
+    all blocks except held-out.
+
+
+58. Test:
+
+    held-out block.
+
+
+59. Fixed smoothing:
+
+    additive alpha = 0.5
+
+
+60. Для каждого held-out block считать:
+
+    log_loss_M1
+    log_loss_M2
+    log_loss_M3
+
+
+61. Сравнить:
+
+    M2 - M1:
+        value of position
+
+    M3 - M2:
+        additional value of predecessor
+
+
+62. Использовать:
+
+    delta_21 = loss_M1 - loss_M2
+
+    delta_32 = loss_M2 - loss_M3
+
+
+Положительный delta означает улучшение более сложной модели.
+
+
+63. Вывести:
+
+    blocks M2 > M1
+    blocks M3 > M2
+
+    mean/median delta_21
+    mean/median delta_32
+
+
+################################################################
+#
+# PART K — CROSS-BLOCK REPLICATION
+#
+################################################################
+
+
+================================================================
+64. Для каждого eligible physical block отдельно проверить:
+================================================================
+
+    P(chey | s,aiin,position)
+
+vs
+
+    P(chey | aiin,position)
+
+
+65. Из-за малых counts не требовать significance каждого block.
+
+
+66. Считать:
+
+    effect sign
+    enrichment
+    available support
+
+
+67. Вывести:
+
+    eligible blocks
+    positive blocks
+    negative blocks
+    neutral blocks
+
+    sign consistency
+
+
+68. Отдельно:
+
+    joint classes
+    Currier classes
+    hands
+
+
+################################################################
+#
+# PART L — JACKKNIFE
+#
+################################################################
+
+
+================================================================
+69. Leave-one-block-out jackknife
+================================================================
+
+По очереди удалить каждый physical block.
+
+
+70. Пересчитать:
+
+    positional CMI
+    entropy effect
+    chey positional enrichment
+    stratified s effect
+
+
+71. Если эффект исчезает при удалении одного block:
+
+    SINGLE_BLOCK_SENSITIVE
+
+
+72. Иначе:
+
+    JACKKNIFE_STABLE
+
+
+################################################################
+#
+# PART M — LINE VS BLOCK POSITION
+#
+################################################################
+
+
+================================================================
+73. Это принципиальный вопрос.
+================================================================
+
+Line position и block position могут быть коррелированы.
+
+
+74. Проверить association:
+
+    line_position <-> block_position
+
+для всех s-aiin occurrences.
+
+
+75. Затем построить stratified comparisons:
+
+A.
+
+    line position effect
+    controlling coarse block position
+
+B.
+
+    block position effect
+    controlling line position
+
+
+76. Цель — определить источник POSITION_DEPENDENT результата:
+
+    LINE
+    BLOCK
+    BOTH
+    UNRESOLVED
+
+
+77. Не создавать optimized bins.
+
+
+################################################################
+#
+# PART N — BOUNDARY DISTANCE
+#
+################################################################
+
+
+================================================================
+78. Вместо только категорий сохранить exact distances:
+================================================================
+
+    tokens_from_line_start
+    tokens_to_line_end
+
+    tokens_from_block_start
+    tokens_to_block_end
+
+
+79. Для s-aiin-chey и всех s-aiin occurrences сравнить distributions.
+
+
+80. Не искать оптимальный cutoff.
+
+
+81. Использовать descriptive:
+
+    median
+    Q25
+    Q75
+
+
+82. И permutation comparison.
+
+
+################################################################
+#
+# PART O — LOCAL CONTEXT AROUND s aiin
+#
+################################################################
+
+
+================================================================
+83. Проверить, не является ли positional effect частью
+более длинной фиксированной конструкции.
+================================================================
+
+Для всех s-aiin occurrences собрать:
+
+    token -3
+    token -2
+    token -1
+    s
+    aiin
+    X
+    token +1
+    token +2
+    token +3
+
+
+84. Не искать новые significant n-grams.
+
+
+85. Только descriptive:
+
+для occurrences с X=chey сравнить surrounding token diversity
+с occurrences X!=chey.
+
+
+86. Вывести:
+
+    preceding entropy
+    following entropy
+    unique surrounding contexts
+
+
+87. Если четыре s-aiin-chey входят фактически в одну
+более длинную повторяющуюся formula,
+это должно быть явно видно.
+
+
+################################################################
+#
+# PART P — REVERSE POSITION TEST
+#
+################################################################
+
+
+================================================================
+88. Проверить:
+================================================================
+
+не является ли сама последовательность:
+
+    s aiin
+
+позиционно специализированной.
+
+
+89. Сравнить positions:
+
+    all aiin
+
+vs
+
+    s aiin
+
+
+90. То есть проверить:
+
+    P(position | s,aiin)
+
+против:
+
+    P(position | aiin)
+
+
+91. Это важно для причинной интерпретации.
+
+Возможны:
+
+A.
+
+    s aiin уже является boundary construction,
+    а chey просто обычное продолжение boundary aiin.
+
+B.
+
+    s aiin встречается широко,
+    но chey выбирается только в определённой позиции.
+
+Это принципиально разные структуры.
+
+
+################################################################
+#
+# PART Q — DIAGNOSTIC CLASSIFICATION
+#
+################################################################
+
+
+92. Присвоить один итоговый status:
+
+
+GENERAL_HIGHER_ORDER
+
+если:
+
+    predecessor s remains significant after controlling position
+    AND
+    M3 improves over M2
+    AND
+    effect cross-block stable
+
+
+POSITION_CONDITIONED_HIGHER_ORDER
+
+если:
+
+    effect exists only in specific fixed positional strata
+    BUT within those strata s still predicts continuation beyond aiin
+    AND cross-block replication exists
+
+
+AIIN_POSITION_EFFECT
+
+если:
+
+    position predicts continuation,
+    but after controlling position predecessor s adds no information
+
+
+BOUNDARY_FORMULA
+
+если:
+
+    s aiin chey is strongly concentrated at line/block boundary
+    AND surrounding context indicates a recurrent boundary construction
+
+
+SINGLE_BLOCK_SENSITIVE
+
+если:
+
+    effect collapses after removing one physical block
+
+
+INSUFFICIENT_SUPPORT
+
+если:
+
+    positional stratification leaves insufficient independent evidence
+
+
+NO_POSITIONAL_STRUCTURE
+
+если:
+
+    previous positional signal does not survive block-aware tests
+
+
+================================================================
+PART R — ВАЖНО: НЕ СЧИТАТЬ POSITION КОНФАУНДЕРОМ АВТОМАТИЧЕСКИ
+================================================================
+
+93. Position не является nuisance variable по умолчанию.
+
+Если continuation действительно зависит от позиции,
+это само по себе является структурным результатом.
+
+
+94. Поэтому report должен отдельно отвечать на два вопроса:
+
+Q1:
+
+    Does position affect continuation after s aiin?
+
+Q2:
+
+    Does s affect continuation after aiin
+    after position is controlled?
+
+
+95. Не сводить результат к одному p-value.
+
+
+================================================================
+PART S — OUTPUT
+================================================================
+
+96. Создать команду:
+
+    positional-continuation-validate
+
+
+97. CLI:
+
+go run ./positional-continuation-validate \
+    -corpus data_work/ZL3b-x7.txt \
+    -token-metadata-map workdir/metadata-validation/token_metadata_map.tsv \
+    -higher-order-dir workdir/higher-order-sequences \
+    -output-dir workdir/positional-continuation \
+    -permutations 10000 \
+    -seed 1
+
+
+98. Outputs:
+
+sai_in_context_occurrences.tsv
+
+sai_in_continuation_distributions.tsv
+sai_in_position_distributions.tsv
+
+positional_continuation_dependence.tsv
+positional_entropy.tsv
+positional_chey_effect.tsv
+
+aiin_position_control.tsv
+stratified_predecessor_effect.tsv
+
+positional_model_lobo.tsv
+positional_cross_block.tsv
+positional_jackknife.tsv
+
+line_vs_block_position.tsv
+boundary_distance.tsv
+
+sai_in_surrounding_context.tsv
+
+positional_continuation_validation.tsv
+
+positional_continuation_analysis.yaml
+positional_continuation_report.md
+
+
+================================================================
+PART T — PLOTS
+================================================================
+
+99. Минимум:
+
+plots/sai_in_continuation_by_line_position.svg
+
+plots/sai_in_continuation_by_block_position.svg
+
+plots/chey_probability_by_position.svg
+
+plots/sai_in_vs_aiin_chey_probability.svg
+
+plots/continuation_entropy_by_position.svg
+
+plots/model_lobo_comparison.svg
+
+plots/sai_in_block_positions.svg
+
+plots/sai_in_line_positions.svg
+
+
+================================================================
+PART U — REPORT
+================================================================
+
+100. Report начать с counts:
+
+    total aiin occurrences
+    total s-aiin occurrences
+    total s-aiin-X occurrences
+    total s-aiin-chey occurrences
+
+    physical blocks
+    joint classes
+    Currier classes
+    hands
+
+
+101. Затем ответить отдельно:
+
+A. Is s-aiin itself positionally specialized?
+
+B. Does position change continuation distribution after s-aiin?
+
+C. Is chey specifically enriched at some position?
+
+D. Does the same positional effect exist for aiin generally?
+
+E. After controlling position, does predecessor s still matter?
+
+F. Does adding position improve held-out prediction?
+
+G. Does adding predecessor after position improve held-out prediction?
+
+H. Does the result reproduce across physical blocks?
+
+
+102. Для всех выводов явно указывать support counts.
+
+
+103. Особенно подчеркнуть малое число:
+
+    s aiin chey occurrences = 4
+
+если canonical recount подтверждает это.
+
+
+================================================================
+PART V — REPRODUCIBILITY
+================================================================
+
+104. Сохранить:
+
+    corpus SHA256
+    metadata SHA256
+    higher-order analysis SHA256
+
+    exact frozen context = "s aiin"
+    target continuation = "chey"
+
+    seed
+    permutations
+    smoothing alpha
+    positional bins
+
+
+105. Все random operations deterministic.
+
+
+================================================================
+PART W — UNIT TESTS
+================================================================
+
+106. Добавить минимум:
+
+- exact s-aiin occurrence extraction;
+- continuation extraction;
+- no physical-block crossing;
+- missing continuation at boundary;
+- normalized line position;
+- normalized block position;
+- fixed line categories;
+- fixed block bins;
+- continuation probabilities sum to 1;
+- entropy;
+- effective continuation count;
+- positional CMI;
+- within-block position permutation;
+- permutation preserves continuation counts;
+- permutation preserves block membership;
+- chey positional enrichment;
+- aiin control construction;
+- stratified predecessor permutation;
+- predecessor permutation preserves block and position strata;
+- M1/M2/M3 probabilities;
+- alpha=0.5 smoothing;
+- LOBO has zero physical-block leakage;
+- line/block position association;
+- boundary distances;
+- jackknife removes exactly one block;
+- deterministic seed;
+- diagnostic status classification.
+
+
+107. После реализации:
+
+go test ./...
+go vet ./...
+
+
+================================================================
+ГЛАВНЫЙ ИССЛЕДОВАТЕЛЬСКИЙ ВОПРОС
+================================================================
+
+Предыдущий confirmatory experiment показал:
+
+    s aiin chey
+
+имеет statistically significant conditional dependence:
+
+    P(chey | s,aiin)
+        >
+    P(chey | aiin)
+
+и second-order model показывает held-out advantage.
+
+Однако sequence имеет positional concentration.
+
+Теперь нельзя просто считать position конфаундером и "вычесть" его.
+
+Нужно определить структуру зависимости:
+
+
+Вариант 1:
+
+    s aiin
+       |
+       +---- position
+       |
+       +---- continuation
+
+то есть сам context является positional construction.
+
+
+Вариант 2:
+
+    position -> aiin -> continuation
+
+а s не добавляет информации.
+
+
+Вариант 3:
+
+    position
+       |
+       v
+    s aiin -> continuation
+
+и predecessor s сохраняет дополнительный predictive effect
+внутри позиции.
+
+
+Вариант 4:
+
+    определённая position
+          |
+          v
+    s aiin -> restricted continuation set
+
+то есть позиция активирует локальное ограничение.
+
+
+Особенно важен вариант 4.
+
+Если после "s aiin" в определённых структурных позициях
+не просто чаще появляется chey, а систематически уменьшается entropy
+всего множества продолжений, и это воспроизводится в независимых
+physical blocks, мы получим evidence существования:
+
+    position-conditioned continuation constraint
+
+Это значительно интереснее единичной повторяющейся триграммы
+и непосредственно проверяет наличие позиционно зависимого
+локального правила, не приписывая ему пока никакой семантики.

@@ -1,0 +1,932 @@
+Задача: реализовать анализ устойчивости структурных профилей токенов
+(structural-profile-stability).
+
+Контекст
+
+В проекте уже реализованы:
+
+- dictionary generation;
+- token analysis;
+- structural analysis;
+- sequence analysis;
+- structural normalization;
+- matched random baseline;
+- 5-fold out-of-sample validation;
+- leave-one-class-out / member ablation.
+
+Out-of-sample validation показала:
+
+- cross-line n=3:
+    positive effect in 4/5 folds
+    pooled raw        = 37
+    pooled structural = 54
+
+- significant excess over matched random:
+    fold 2: p ≈ 0.0099
+    fold 5: p ≈ 0.0297
+
+- cross-line n=4:
+    positive effect in 1/5 folds
+    pooled 1 -> 2
+
+- structural pair stability:
+    stability 1.0: 0 pairs
+    stability 0.8: 2 pairs
+    unstable:      10 pairs
+
+Таким образом, sequence-level сигнал для триграмм частично
+воспроизводится out-of-sample, но hard structural classes нестабильны.
+
+Необходимо определить причину:
+
+A. structural profiles токенов устойчивы, но similarity колеблется
+   около выбранного threshold и hard clustering усиливает небольшие
+   статистические изменения;
+
+или
+
+B. сами structural profiles и отношения ближайшего соседства
+   существенно меняются между выборками.
+
+На данном этапе НЕ изменять similarity formula, weights, threshold
+или clustering algorithm.
+
+
+============================================================
+1. Новый инструмент
+============================================================
+
+Создать:
+
+    structural-profile-stability/
+
+Предпочтительная структура:
+
+    structural-profile-stability/main.go
+    internal/profilestability/...
+
+Пример:
+
+    go run ./structural-profile-stability \
+      -input data_work/ivtt_output_1786282555007.txt \
+      -folds 5 \
+      -fold-seed 1 \
+      -min-token-count 10 \
+      -neighbors 10 \
+      -bootstrap-runs 200 \
+      -bootstrap-seed 1 \
+      -output structural_profile_stability.yaml
+
+
+============================================================
+2. Не менять существующую методологию
+============================================================
+
+Использовать ту же логику structural profile и similarity,
+которая уже применяется в structural-analysis.
+
+Similarity должна по-прежнему основываться на существующих:
+
+    position_similarity
+    left_context_similarity
+    right_context_similarity
+    combined similarity
+
+Не добавлять:
+
+- EVA spelling similarity;
+- edit distance;
+- morphology;
+- n-grams;
+- sequence_analysis;
+- semantic information;
+- page illustrations;
+- результаты normalization.
+
+Цель — исследовать устойчивость существующей модели, а не создать новую.
+
+
+============================================================
+3. Full-corpus reference
+
+Сначала вычислить structural profiles на полном корпусе.
+
+Для каждого eligible token сохранить:
+
+    token
+    count
+
+и его full-corpus nearest neighbors:
+
+    neighbors:
+      - token:
+        similarity:
+        position_similarity:
+        left_context_similarity:
+        right_context_similarity:
+        rank:
+
+Количество:
+
+    -neighbors 10
+
+Это reference ranking, а не ground truth.
+
+
+============================================================
+4. Cross-validation profiles
+============================================================
+
+Использовать тот же deterministic 5-fold split, что и
+structural-validate.
+
+Для каждого fold вычислить structural statistics отдельно на TRAIN.
+
+ВАЖНО:
+
+Для анализа profile stability желательно также вычислить профиль
+на соответствующем TEST, но TRAIN и TEST similarity должны храниться
+как независимые измерения.
+
+Никакие TEST statistics не должны использоваться для изменения TRAIN.
+
+
+============================================================
+5. Eligibility
+============================================================
+
+Pair comparison между folds разрешён только когда оба токена
+eligible в обеих сравниваемых выборках.
+
+Для каждого токена сохранять:
+
+    eligible_full
+    eligible_train_folds
+    eligible_test_folds
+
+Не считать отсутствие редкого токена свидетельством нестабильности.
+
+
+============================================================
+6. Stability отдельных компонент профиля
+============================================================
+
+Для каждого токена измерить, насколько устойчивы отдельно:
+
+    positional profile
+    left-context distribution
+    right-context distribution
+
+между TRAIN folds.
+
+Использовать ту же метрику similarity, которая применяется
+structural-analysis для соответствующей компоненты.
+
+Для каждого token:
+
+    position_stability:
+        comparisons:
+        mean:
+        stddev:
+        min:
+        max:
+
+    left_context_stability:
+        ...
+
+    right_context_stability:
+        ...
+
+Здесь сравнивается ТОКЕН С САМИМ СОБОЙ между разными выборками:
+
+    profile(token, fold A)
+          vs
+    profile(token, fold B)
+
+
+============================================================
+7. TRAIN -> TEST profile generalization
+============================================================
+
+Отдельно измерить similarity профиля одного и того же токена:
+
+    TRAIN profile
+        vs
+    TEST profile
+
+для каждого fold, где token eligible с обеих сторон.
+
+Сохранять:
+
+    train_test_position_similarity
+    train_test_left_similarity
+    train_test_right_similarity
+
+и summary по folds.
+
+Это важнее простого TRAIN-vs-TRAIN сравнения.
+
+
+============================================================
+8. Pairwise similarity stability
+============================================================
+
+Для каждой пары токенов, которая хотя бы в одном fold:
+
+- была equivalence candidate;
+ИЛИ
+- входила в top-N nearest neighbors одного из токенов;
+ИЛИ
+- входила в structural class;
+
+собрать similarity во всех folds, где оба eligible.
+
+Пример:
+
+    token_a: qokain
+    token_b: qokaiin
+
+    full_similarity: 0.798
+
+    folds:
+      - fold: 1
+        similarity: 0.76
+      - fold: 2
+        similarity: 0.72
+      - fold: 3
+        similarity: 0.68
+      ...
+
+    summary:
+        observations: 5
+        mean: ...
+        stddev: ...
+        min: ...
+        max: ...
+        range: ...
+
+Не фильтровать результаты только по threshold.
+
+
+============================================================
+9. Threshold crossing analysis
+============================================================
+
+Для threshold:
+
+    0.70
+    0.75
+    0.80
+    0.85
+    0.90
+
+для каждой pair сохранить:
+
+    folds_above_threshold
+    folds_below_threshold
+
+Особенно:
+
+    threshold_crossing_count
+
+Пример:
+
+    similarities:
+        0.69
+        0.72
+        0.71
+        0.68
+        0.73
+
+Это должно интерпретироваться иначе, чем:
+
+        0.31
+        0.82
+        0.47
+        0.75
+        0.22
+
+Хотя hard-class stability у обеих пар может быть низкой.
+
+
+============================================================
+10. Margin относительно threshold
+============================================================
+
+Для основного threshold=0.70:
+
+    margin = similarity - 0.70
+
+Для каждой pair:
+
+    mean_margin
+    min_margin
+    max_margin
+
+Также:
+
+    near_threshold_fraction
+
+где near-threshold определяется параметром:
+
+    -threshold-margin 0.05
+
+то есть:
+
+    abs(similarity - threshold) <= 0.05
+
+Это позволит увидеть, сколько нестабильности объясняется
+небольшими колебаниями вокруг decision boundary.
+
+
+============================================================
+11. Nearest-neighbor stability
+============================================================
+
+Hard classes могут быть нестабильными даже при устойчивой локальной
+геометрии.
+
+Для каждого eligible token получить top-K structural neighbors
+в каждом TRAIN fold.
+
+Default:
+
+    K = 10
+
+Для каждой пары folds вычислить Jaccard similarity top-K sets:
+
+    J(A,B) =
+        |neighbors_A ∩ neighbors_B|
+        /
+        |neighbors_A ∪ neighbors_B|
+
+Для token сохранить:
+
+    neighbor_stability:
+        fold_pair_comparisons:
+        mean_jaccard:
+        min_jaccard:
+        max_jaccard:
+
+
+============================================================
+12. Rank stability
+============================================================
+
+Одного Jaccard недостаточно.
+
+Если ближайший сосед токена стабильно один и тот же, это сильный
+результат, даже если позиции 7-10 меняются.
+
+Сохранять:
+
+    top1_same_fraction
+    top3_overlap_mean
+    top5_overlap_mean
+    top10_overlap_mean
+
+Также для full-corpus top neighbor:
+
+    full_top1_neighbor
+    folds_where_top1_eligible
+    folds_where_same_top1
+    top1_recovery_fraction
+
+
+============================================================
+13. Rank correlation
+============================================================
+
+Для пар folds, где имеется достаточно общий набор candidate neighbors,
+вычислить rank correlation.
+
+Предпочтительно:
+
+    Spearman rho
+
+или Kendall tau.
+
+Не вычислять корреляцию, если общих элементов недостаточно.
+
+Сохранять число элементов, использованных для correlation.
+
+
+============================================================
+14. Bootstrap uncertainty
+============================================================
+
+Cross-validation даёт только пять крупных выборок.
+
+Добавить bootstrap-анализ для оценки неопределённости structural
+similarity.
+
+Default:
+
+    bootstrap_runs = 200
+
+Bootstrap unit:
+
+    line
+
+Каждый bootstrap corpus формировать выборкой строк с возвращением,
+сохраняя исходное число строк.
+
+Для каждого bootstrap run пересчитать structural statistics.
+
+
+============================================================
+15. Какие пары bootstrap-анализировать
+============================================================
+
+Не считать все ~35 млн возможных пар.
+
+Bootstrap проводить для ограниченного candidate set:
+
+- все full-corpus equivalence candidates;
+- все пары, входящие в structural classes threshold=0.70;
+- top-10 neighbors достаточно частых токенов;
+- пары, проявившиеся в CV.
+
+Deduplicate candidate set.
+
+
+============================================================
+16. Bootstrap CI pair similarity
+============================================================
+
+Для каждой candidate pair:
+
+    bootstrap_similarity:
+        observations:
+        mean:
+        stddev:
+        percentile_025:
+        percentile_50:
+        percentile_975:
+
+Также отдельно при возможности:
+
+    position_similarity CI
+    left_context_similarity CI
+    right_context_similarity CI
+
+
+============================================================
+17. Probability above threshold
+============================================================
+
+Для threshold=0.70 вычислить:
+
+    bootstrap_probability_above_threshold
+
+то есть долю bootstrap runs:
+
+    similarity >= 0.70
+
+Пример:
+
+    pair A/B:
+        mean = 0.715
+        CI95 = [0.66, 0.77]
+        P(sim >= .70) = 0.64
+
+отличается от:
+
+    pair C/D:
+        mean = 0.78
+        CI95 = [0.75, 0.82]
+        P(sim >= .70) = 0.99
+
+Даже если обе пары попали в один full-corpus class.
+
+
+============================================================
+18. Component uncertainty
+============================================================
+
+Для каждой пары определить, какая компонента similarity наиболее
+нестабильна.
+
+Например:
+
+    position:
+        mean 0.98
+        sd   0.01
+
+    left:
+        mean 0.71
+        sd   0.12
+
+    right:
+        mean 0.68
+        sd   0.15
+
+Сохранять:
+
+    most_variable_component
+
+определяемую по stddev.
+
+Не интерпретировать её семантически.
+
+
+============================================================
+19. Frequency dependence
+============================================================
+
+Проверить зависимость стабильности от частоты токенов.
+
+Разделить eligible tokens на frequency bins по full-corpus count,
+например:
+
+    10-19
+    20-39
+    40-79
+    80-159
+    160+
+
+Для каждого bin:
+
+    tokens
+    mean_position_stability
+    mean_left_stability
+    mean_right_stability
+    mean_neighbor_jaccard
+    mean_top1_recovery
+
+Это поможет проверить очевидную гипотезу:
+
+    instability mainly comes from insufficient observations.
+
+
+============================================================
+20. Pair frequency dependence
+============================================================
+
+Для candidate pairs сохранить:
+
+    token_a_count
+    token_b_count
+    min_count
+    geometric_mean_count
+
+и связь с:
+
+    similarity_stddev
+    neighbor stability
+    threshold crossing
+
+Не требуется regression model.
+
+Достаточно агрегатов по frequency bins.
+
+
+============================================================
+21. Distinguish class instability from geometry instability
+============================================================
+
+Добавить summary diagnostic.
+
+Не создавать единственный score.
+
+Отдельно вывести:
+
+    hard_class_stability
+
+    pair_similarity_stability
+
+    nearest_neighbor_stability
+
+    self_profile_stability
+
+Например:
+
+    summary:
+      eligible_tokens: ...
+
+      self_profile:
+        mean_position_stability: ...
+        mean_left_stability: ...
+        mean_right_stability: ...
+
+      nearest_neighbors:
+        mean_top1_recovery: ...
+        mean_top5_overlap: ...
+
+      pairs:
+        mean_similarity_stddev: ...
+        pairs_near_threshold: ...
+        pairs_with_bootstrap_p_above_070_ge_095: ...
+
+Это должно позволить различать разные типы нестабильности.
+
+
+============================================================
+22. Особый отчёт по пяти full-corpus classes
+============================================================
+
+Для каждого из пяти классов threshold=0.70 создать подробный раздел:
+
+    reference_classes:
+
+      - class_id:
+        members:
+
+        pairwise:
+          - token_a:
+            token_b:
+
+            full_similarity:
+
+            fold_mean:
+            fold_stddev:
+            fold_min:
+            fold_max:
+
+            bootstrap_mean:
+            bootstrap_ci95:
+            bootstrap_probability_above_070:
+
+        member_neighbor_stability:
+            ...
+
+        weakest_pair:
+            ...
+
+        strongest_pair:
+            ...
+
+Это особенно важно, поскольку именно эти пять классов дали
+наблюдавшийся normalization effect.
+
+
+============================================================
+23. Leave-one-component-out diagnostic
+
+Не менять production similarity.
+
+Но для диагностики дополнительно пересчитать similarity candidate pairs
+в трёх вариантах:
+
+    without_position
+    without_left_context
+    without_right_context
+
+Использовать те же существующие component similarities и тот же способ
+агрегации, просто исключив одну компоненту с корректной перенормировкой.
+
+НЕ строить по этим значениям новые classes.
+
+НЕ запускать sequence analysis.
+
+Цель только определить, какая компонента поддерживает конкретную
+pair similarity.
+
+
+============================================================
+24. Component contribution report
+============================================================
+
+Для каждой reference pair:
+
+    full_similarity
+
+    similarity_without_position
+    similarity_without_left
+    similarity_without_right
+
+    delta_without_position
+    delta_without_left
+    delta_without_right
+
+Это диагностический результат, а не новая модель.
+
+
+============================================================
+25. Контрольные synthetic tests
+============================================================
+
+Добавить synthetic corpora как минимум для следующих случаев.
+
+CASE A: стабильная структура
+
+TRAIN samples различаются, но:
+
+    A и B всегда имеют практически одинаковое окружение.
+
+Ожидание:
+
+    high pair stability
+    high neighbor stability
+    narrow bootstrap CI
+
+
+CASE B: threshold noise
+
+True similarity около 0.70.
+
+Ожидание:
+
+    hard class membership меняется
+    pair similarity остаётся в узком диапазоне около threshold
+
+
+CASE C: unstable geometry
+
+A имеет разных соседей в разных subsets.
+
+Ожидание:
+
+    low neighbor Jaccard
+    wide similarity variation
+
+
+CASE D: rare token
+
+Структура формально стабильна, но наблюдений мало.
+
+Ожидание:
+
+    wide bootstrap CI
+
+
+CASE E: frequent token
+
+Та же структура с большим числом observations.
+
+Ожидание:
+
+    narrower CI
+
+
+============================================================
+26. Дополнительные tests
+============================================================
+
+Проверить:
+
+- deterministic fold assignment;
+- deterministic bootstrap for fixed seed;
+- no cross-fold contamination;
+- eligibility handling;
+- self-profile comparison;
+- pair similarity across folds;
+- threshold crossing;
+- nearest-neighbor Jaccard;
+- top1 recovery;
+- rank correlation;
+- bootstrap percentiles;
+- probability above threshold;
+- frequency bins;
+- component ablation;
+- reference class report.
+
+После реализации:
+
+    go test ./...
+    go vet ./...
+
+
+============================================================
+27. Output
+============================================================
+
+Создать:
+
+    structural_profile_stability.yaml
+
+Предлагаемая структура:
+
+    meta:
+    parameters:
+    methodology:
+
+    summary:
+
+    token_profile_stability:
+
+    nearest_neighbor_stability:
+
+    pair_similarity_stability:
+
+    bootstrap_pair_uncertainty:
+
+    frequency_dependence:
+
+    reference_classes:
+
+    component_diagnostics:
+
+
+============================================================
+28. Не использовать sequence metrics
+============================================================
+
+Это принципиально.
+
+Новый анализатор не должен читать:
+
+    sequence_analysis.yaml
+    normalization_comparison.yaml
+    structural_validation.yaml
+
+за исключением, если structural_validation используется исключительно
+для получения фиксированного списка reference pairs/classes.
+
+Предпочтительно брать reference classes непосредственно из
+structural_classes.yaml.
+
+Нельзя использовать sequence results для:
+
+- отбора пар;
+- изменения similarity;
+- ранжирования;
+- выбора threshold.
+
+
+============================================================
+29. Не оптимизировать модель
+============================================================
+
+По результатам этого анализа автоматически НЕ:
+
+- менять threshold;
+- менять weights;
+- менять complete-link;
+- исключать компоненты;
+- увеличивать/уменьшать min_token_count;
+- создавать soft classes.
+
+Любое изменение модели должно стать отдельным следующим экспериментом.
+
+
+============================================================
+30. Главный исследовательский вопрос
+============================================================
+
+Результат должен позволить различить минимум три сценария.
+
+SCENARIO 1 — stable geometry / unstable thresholding
+
+Structural neighbors и pair similarities устойчивы, но часть значений
+находится около threshold=0.70.
+
+Тогда проблема преимущественно в дискретизации непрерывного structural
+space.
+
+
+SCENARIO 2 — frequency-limited stability
+
+Высокочастотные токены имеют устойчивые profiles и neighbors,
+низкочастотные — нет.
+
+Тогда главным ограничением является объём наблюдений.
+
+
+SCENARIO 3 — unstable geometry
+
+Даже частые токены имеют разные structural neighbors и существенно
+разные similarities между folds.
+
+Тогда существующая structural similarity сама по себе недостаточно
+устойчива.
+
+
+============================================================
+31. Интерпретационные ограничения
+============================================================
+
+Не использовать термины:
+
+    operator
+    operand
+    grammar
+    instruction
+    semantic equivalence
+
+при описании результатов анализатора.
+
+Structural similarity означает только статистическое сходство
+наблюдаемого поведения токенов.
+
+Даже очень стабильная пара не доказывает одинакового значения токенов.
+
+
+============================================================
+32. Что делать после результата
+============================================================
+
+Не реализовывать это сейчас.
+
+Последующий выбор метода будет зависеть от результата:
+
+Scenario 1:
+    исследовать soft structural representation вместо hard classes.
+
+Scenario 2:
+    исследовать reliability-aware similarity / frequency thresholds.
+
+Scenario 3:
+    пересмотреть сами признаки structural profile.
+
+Сначала получить измерения текущей модели.

@@ -1,0 +1,722 @@
+Task46 — Deterministic Historical Cipher Corpus Transformer
+
+Цель
+
+Создать отдельный CLI-инструмент для детерминированного преобразования
+существующих текстовых корпусов методами:
+
+1. transposition;
+2. homophonic substitution.
+
+Результатом должны быть НОВЫЕ canonical corpora, пригодные для последующего
+запуска через существующий scientific pipeline в режиме -generic-corpus.
+
+Инструмент:
+
+- НЕ является stage scientific pipeline;
+- НЕ запускается pipeline-orchestrate автоматически;
+- НЕ выполняет статистический анализ;
+- НЕ сравнивает результат с Voynich;
+- НЕ оптимизирует параметры преобразования по близости к Voynich;
+- НЕ изменяет исходный corpus.
+
+Предлагаемое имя:
+
+    corpus-transform
+
+Пример:
+
+    go run ./corpus-transform \
+        -corpus data_test/pg2097-2.txt \
+        -method transposition \
+        -output data_test/transformed/doyle-transposition-w8.txt \
+        -seed 1 \
+        -transposition-width 8
+
+или:
+
+    go run ./corpus-transform \
+        -corpus data_test/pg2097-2.txt \
+        -method homophonic \
+        -output data_test/transformed/doyle-homophonic-4.txt \
+        -seed 1 \
+        -homophones 4
+
+======================================================================
+1. ОСНОВНОЙ ПРИНЦИП
+======================================================================
+
+corpus-transform должен рассматриваться как experiment-input generator.
+
+Pipeline после преобразования не должен знать:
+
+- какой исходный corpus использовался;
+- какой cipher применён;
+- какие параметры использовались.
+
+На вход pipeline поступает обычный canonical whitespace-tokenized corpus.
+
+Все сведения о преобразовании сохраняются отдельно в manifest transformer-а.
+
+======================================================================
+2. INPUT MODEL
+======================================================================
+
+Основной режим Task46 — TOKEN-LEVEL transformation.
+
+Исходный corpus трактуется как последовательность:
+
+    T = [t0, t1, t2, ..., tN-1]
+
+где tokens определяются whitespace splitting.
+
+Не выполнять дополнительную лингвистическую tokenization.
+
+Не менять case, punctuation или normalization входного corpus:
+предполагается, что canonical corpus уже подготовлен заранее.
+
+Количество входных tokens обязательно фиксировать.
+
+======================================================================
+3. TRANSPOSITION
+======================================================================
+
+Реализовать как минимум rectangular columnar transposition.
+
+Параметр:
+
+    -transposition-width N
+
+Исходный поток раскладывается по строкам:
+
+    A B C D
+    E F G H
+    I J K L
+
+при width=4.
+
+Затем читается по столбцам:
+
+    A E I B F J C G K D H L
+
+Последняя неполная строка должна обрабатываться без padding по
+детерминированному документированному правилу.
+
+Ни один token не должен:
+
+- исчезнуть;
+- появиться;
+- измениться.
+
+Для transposition должны выполняться invariants:
+
+    input token count == output token count
+    input token multiset == output token multiset
+
+======================================================================
+4. TRANSPOSITION VARIANTS
+======================================================================
+
+Поддержать:
+
+    -transposition-order natural
+    -transposition-order keyed
+
+natural:
+
+    столбцы читаются 0,1,...,width-1.
+
+keyed:
+
+    порядок столбцов определяется детерминированной permutation,
+    полученной из seed.
+
+Не использовать текстовый password/key в Task46 — seed достаточно для
+экспериментального исследования.
+
+Опционально, если архитектурно просто, поддержать:
+
+    -rounds N
+
+для repeated/double transposition.
+
+Но default:
+
+    rounds=1
+
+Double transposition не должна смешиваться с single в manifest.
+
+======================================================================
+5. HOMOPHONIC SUBSTITUTION
+======================================================================
+
+Реализовать token-level homophonic substitution.
+
+Каждому уникальному plaintext token t назначается H различных
+cipher tokens:
+
+    t -> h(t,0), h(t,1), ... h(t,H-1)
+
+Параметр:
+
+    -homophones H
+
+Например H=4.
+
+При каждом occurrence plaintext token один из его homophones выбирается
+PRNG.
+
+Критические требования:
+
+- mapping разных plaintext tokens не пересекается;
+- cipher tokens не содержат plaintext token;
+- cipher token сам является одним whitespace-delimited token;
+- mapping полностью воспроизводим по manifest/seed.
+
+Не использовать human-readable encoding вроде:
+
+    the_1
+    the_2
+
+так как это сохраняет plaintext identity в строковом представлении.
+
+Использовать opaque deterministic IDs, например:
+
+    x000001
+    x000002
+    ...
+
+либо эквивалентную стабильную схему.
+
+======================================================================
+6. HOMOPHONE DISTRIBUTION MODES
+======================================================================
+
+Минимально поддержать два режима:
+
+    -homophone-selection uniform
+    -homophone-selection weighted
+
+uniform:
+
+    каждый из H homophones имеет одинаковую вероятность.
+
+weighted:
+
+    при создании mapping каждому homophone назначаются
+    детерминированные неравные probabilities, нормированные к 1.
+
+Алгоритм генерации weights должен быть явно зафиксирован и versioned.
+
+Не подбирать weights по Voynich.
+
+Default:
+
+    uniform
+
+======================================================================
+7. FREQUENCY-AWARE HOMOPHONY
+======================================================================
+
+Кроме фиксированного H предусмотреть отдельный экспериментальный режим:
+
+    -homophone-model fixed
+    -homophone-model frequency
+
+fixed:
+
+    каждому plaintext token даётся одинаковое H.
+
+frequency:
+
+    число homophones зависит от частоты plaintext token.
+
+Например схема может иметь параметр:
+
+    -target-homophone-load N
+
+или другую прозрачную формулу.
+
+Но перед реализацией frequency mode агент должен:
+
+1. определить формулу;
+2. документировать её;
+3. доказать deterministic behavior;
+4. не использовать Voynich statistics для выбора параметров.
+
+Если это существенно усложняет Task46, frequency mode допустимо
+задокументировать как backlog и оставить только fixed-H implementation.
+
+======================================================================
+8. RANDOMNESS
+======================================================================
+
+Все stochastic operations должны использовать явный:
+
+    -seed N
+
+Default seed допустим, но он обязательно записывается в manifest.
+
+Одинаковые:
+
+    corpus SHA256
+    method
+    parameters
+    seed
+    transformer version
+
+обязаны давать byte-for-byte identical output.
+
+Нельзя использовать:
+
+    current time
+    map iteration order
+    crypto/rand
+    process ID
+
+или другой внешний entropy source.
+
+======================================================================
+9. OUTPUT FORMAT
+======================================================================
+
+Основной output — простой canonical text corpus:
+
+    token token token ...
+    token token ...
+
+Не добавлять в него:
+
+- headers;
+- comments;
+- metadata;
+- method name;
+- seed;
+- markers.
+
+Новый corpus должен непосредственно приниматься:
+
+    pipeline-orchestrate manifest \
+        -generic-corpus \
+        -corpus <transformed-corpus>
+
+без специальной поддержки pipeline.
+
+======================================================================
+10. LINE BOUNDARIES
+======================================================================
+
+Отдельно провести аудит существующего generic pipeline:
+
+имеют ли line boundaries scientific meaning.
+
+Если имеют:
+
+Task46 должен явно определить policy:
+
+    -line-policy preserve
+    -line-policy reflow
+
+Для transposition token order неизбежно меняется, поэтому preserve должен
+иметь точную семантику.
+
+Предпочтительная baseline policy:
+
+    reflow
+
+с фиксированным числом tokens per line либо с другой чисто
+serialization-oriented схемой.
+
+Критически важно:
+
+serialization line wrapping НЕ должно создавать скрытый scientific
+parameter.
+
+Если pipeline использует строки как structural units, остановиться и
+документировать проблему до выбора policy.
+
+======================================================================
+11. MANIFEST
+======================================================================
+
+Для каждого output создать рядом:
+
+    <output>.transform.json
+
+Минимальные поля:
+
+    schema_version
+    transformer
+    transformer_git_commit
+
+    input_path
+    input_sha256
+    input_token_count
+    input_unique_tokens
+
+    output_path
+    output_sha256
+    output_token_count
+    output_unique_tokens
+
+    method
+    parameters
+    seed
+
+    deterministic: true
+
+Для transposition:
+
+    width
+    order
+    rounds
+    remainder_policy
+
+Для homophonic:
+
+    homophone_model
+    homophones
+    selection
+    mapping_sha256
+
+======================================================================
+12. HOMOPHONIC MAPPING
+======================================================================
+
+Homophonic run должен дополнительно сохранять mapping:
+
+    <output>.mapping.tsv
+
+Например:
+
+    plaintext_token    cipher_token    probability
+
+Mapping нужен для reproducibility/audit.
+
+Scientific pipeline его НЕ получает.
+
+Manifest должен содержать SHA256 mapping-файла.
+
+Порядок строк mapping.tsv должен быть canonical/deterministic.
+
+======================================================================
+13. BATCH GENERATION
+======================================================================
+
+Добавить режим, позволяющий удобно создавать series corpora.
+
+Например:
+
+    corpus-transform batch ...
+
+или repeatable parameters.
+
+Нужно уметь без shell-магии создать серии:
+
+Transposition:
+
+    width = 2,4,8,16,32,64
+
+Homophonic:
+
+    H = 2,4,8,16
+
+Seeds:
+
+    1,2,3
+
+Предпочтительно предусмотреть CLI вроде:
+
+    -transposition-widths 2,4,8,16,32
+    -homophone-counts 2,4,8
+    -seeds 1,2,3
+
+Но batch interface выбрать в соответствии со стилем repository.
+
+Каждый generated corpus должен иметь отдельный manifest.
+
+======================================================================
+14. EXPERIMENT ID
+======================================================================
+
+Создать стабильное human-readable имя output experiment input.
+
+Например:
+
+    doyle__transposition__w008__natural__seed001.txt
+
+    doyle__homophonic__h004__uniform__seed001.txt
+
+Но scientific identity определяется НЕ filename, а manifest hashes +
+parameters.
+
+======================================================================
+15. SANITY / INVARIANT REPORT
+======================================================================
+
+После преобразования CLI должен сообщать:
+
+Transposition:
+
+    input tokens
+    output tokens
+    unique input/output
+    token multiset preserved: YES/NO
+    positions changed fraction
+    output SHA256
+
+Homophonic:
+
+    input tokens
+    output tokens
+    plaintext vocabulary
+    cipher vocabulary
+    average homophones/token
+    mapping collisions: 0
+    output SHA256
+
+Не вычислять scientific pipeline metrics.
+
+======================================================================
+16. TESTS — TRANSPOSITION
+======================================================================
+
+Обязательные tests:
+
+A. Known example:
+
+    A B C D E F G H I J K L
+
+width=4 →
+
+    A E I B F J C G K D H L
+
+B. Incomplete final row.
+
+C. width=1 gives identity.
+
+D. width > token count.
+
+E. multiset preservation.
+
+F. deterministic keyed permutation.
+
+G. repeated rounds reproducibility.
+
+H. empty corpus.
+
+I. one-token corpus.
+
+======================================================================
+17. TESTS — HOMOPHONIC
+======================================================================
+
+A. Exact token count preserved.
+
+B. Mapping domains do not overlap.
+
+C. Every output token maps to exactly one plaintext token.
+
+D. H=1 behaves as opaque monoalphabetic token substitution.
+
+E. H=2/4/8 produces expected vocabulary bounds.
+
+F. same seed → byte-identical output.
+
+G. different seeds → normally different occurrence assignment.
+
+H. uniform distribution sanity test on sufficiently large synthetic corpus.
+
+I. mapping serialization deterministic.
+
+J. no plaintext leakage in cipher-token names.
+
+======================================================================
+18. ROUND-TRIP TESTS
+======================================================================
+
+Хотя production tool может не требовать decrypt command, тестовый код
+должен доказать reversibility там, где она математически существует.
+
+Transposition:
+
+    inverse(transform(T)) == T
+
+Homophonic:
+
+используя mapping:
+
+    decode(transform(T)) == T
+
+Это важный correctness oracle.
+
+======================================================================
+19. FIRST EXPERIMENT MATRIX
+======================================================================
+
+После реализации НЕ запускать полный scientific pipeline.
+
+Только создать transformed corpora для двух controls:
+
+    Doyle
+    Longfellow
+
+Transposition:
+
+    widths:
+        2
+        4
+        8
+        16
+        32
+
+    order:
+        natural
+
+    seed:
+        1
+
+Homophonic:
+
+    H:
+        2
+        4
+        8
+
+    selection:
+        uniform
+
+    seed:
+        1
+
+То есть первоначально:
+
+    5 transposition corpora
+    3 homophonic corpora
+
+на каждый plaintext corpus.
+
+Всего:
+
+    16 transformed corpora.
+
+Не подбирать параметры после просмотра Voynich.
+
+======================================================================
+20. SCIENTIFIC SEPARATION
+======================================================================
+
+Task46 заканчивается НА СОЗДАНИИ корпусов.
+
+НЕ:
+
+- запускать pipeline-orchestrate;
+- запускать experiment-compare;
+- вычислять distance to Voynich;
+- выбирать "best cipher";
+- менять transformation parameters по результатам сравнения;
+- объявлять историческую правдоподобность алгоритма.
+
+Это будет отдельный следующий эксперимент.
+
+======================================================================
+21. DOCUMENTATION
+======================================================================
+
+Создать:
+
+    corpus-transform/README.md
+
+и:
+
+    corpus-transform/TRANSFORMATION_METHODS.md
+
+Документировать:
+
+- mathematical definition каждого transformation;
+- tokenization assumptions;
+- randomness;
+- seed derivation;
+- remainder handling;
+- reversibility;
+- limitations;
+- отличие mechanistic controls от исторического утверждения о Voynich.
+
+Особо указать:
+
+Token-level transposition/homophonic transformations являются прежде всего
+mechanistic controls для существующего word-token pipeline.
+
+Они НЕ утверждают, что именно таким образом исторически шифровался Voynich.
+
+======================================================================
+22. FUTURE / BACKLOG
+======================================================================
+
+Не реализовывать без необходимости, но зафиксировать:
+
+- character-level substitution;
+- character-level homophonic cipher;
+- character-level transposition;
+- nomenclator;
+- null insertion;
+- padding;
+- combined substitution + transposition;
+- homophonic + nulls;
+- frequency-flattening homophonic systems;
+- historically specific cipher reconstructions.
+
+Это отдельные будущие tasks.
+
+======================================================================
+VALIDATION
+======================================================================
+
+Выполнить:
+
+    go build ./...
+    go vet ./...
+    go test ./...
+    go test -race ./...
+    git diff --check
+
+Проверить, что:
+
+- существующий scientific pipeline не изменён;
+- pipeline-orchestrate не изменил scientific behavior;
+- experiments/voynich-v1 и остальные frozen experiments не изменены;
+- существующие frozen checksums остаются валидными.
+
+======================================================================
+DELIVERABLES
+======================================================================
+
+- standalone corpus-transform CLI;
+- deterministic transposition implementation;
+- deterministic homophonic implementation;
+- manifests;
+- homophonic mapping files;
+- batch-generation support;
+- unit/invariant/round-trip tests;
+- README.md;
+- TRANSFORMATION_METHODS.md;
+- 16 initial transformed corpora:
+    Doyle × {T2,T4,T8,T16,T32,H2,H4,H8}
+    Longfellow × {T2,T4,T8,T16,T32,H2,H4,H8}
+
+Scientific analysis этих 16 corpora НЕ выполнять.
+
+======================================================================
+DEFINITION OF DONE
+======================================================================
+
+Task46 завершён, когда произвольный canonical corpus можно детерминированно
+преобразовать token-level transposition или homophonic substitution,
+получить новый чистый corpus + полный reproducibility manifest и затем
+передать этот corpus существующему generic scientific pipeline без каких-либо
+изменений pipeline.
+
+Одинаковые input/method/parameters/seed дают byte-for-byte identical corpus.
+
+Task46 не знает ничего о Voynich fingerprint и не пытается подобрать
+преобразование под результаты Voynich.

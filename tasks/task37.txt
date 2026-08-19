@@ -1,0 +1,114 @@
+Task37 — Audit and remove hardcoded Voynich corpus size assumptions
+
+Цель
+
+Проверить весь репозиторий на явные и неявные предположения, что размер frozen corpus равен 39026 токенам, и исправить их так, чтобы pipeline корректно работал с корпусами произвольного размера.
+
+Важно: задача касается ТОЛЬКО размера корпуса. Не менять scientific parameters существующего Voynich Baseline v1: window sizes, thresholds, folds, bootstrap/permutation counts, seeds, min-token-count и другие зафиксированные параметры анализа.
+
+1. Audit
+
+Найти во всём репозитории:
+
+- literal 39026 / 39_026 / "39026";
+- старые corpus sizes, включая 38887 и другие исторические значения;
+- проверки вида token_count == constant;
+- заранее выделенные массивы/циклы/границы, рассчитанные из фиксированного N;
+- normalization/division на фиксированный corpus size;
+- ожидаемые фиксированные количества строк/токенов/windows;
+- тестовые fixtures/golden files, где 39026 ошибочно используется как алгоритмическая константа;
+- shell scripts, orchestration, manifests и report generators с такими предположениями.
+
+Разделить найденное на:
+
+A. legitimate historical/reference metadata
+   Например документация или frozen Voynich Baseline v1, где 39026 описывает конкретный corpus.
+   НЕ ИЗМЕНЯТЬ.
+
+B. algorithmic hardcode
+   Значение влияет на вычисления/валидацию/циклы/границы.
+   ИСПРАВИТЬ.
+
+C. suspicious but harmless
+   Зафиксировать в отчёте и объяснить решение.
+
+2. Fix
+
+Во всех algorithmic случаях получать corpus size из реально загруженного корпуса:
+
+    N := len(tokens)
+
+или соответствующей authoritative структуры.
+
+Не вводить новую глобальную переменную со значением 39026.
+
+Все вычисляемые размеры, bounds и denominators должны зависеть от фактического N.
+
+3. Small-corpus behavior
+
+Не адаптировать scientific parameters автоматически.
+
+Если fixed scientific parameter невозможно применить к короткому корпусу, код должен:
+
+- корректно завершить конкретную стадию с понятной диагностикой или documented NOT_APPLICABLE, если архитектура pipeline это поддерживает;
+- не panic;
+- не выходить за границы массива;
+- не уменьшать window/threshold/min-count молча.
+
+4. Tests
+
+Добавить regression tests минимум для нескольких размеров:
+
+N ≈ 1,000
+N ≈ 8,000
+N = 39,026
+N ≈ 60,000+
+
+Проверить прежде всего отсутствие assumptions о конкретном N, а не научную значимость результатов коротких synthetic corpora.
+
+Добавить тест, который гарантирует, что 39026 больше не является алгоритмической константой.
+
+5. Voynich regression oracle
+
+После изменений выполнить существующий Voynich pipeline либо достаточный набор affected stages на исходном frozen corpus.
+
+Все scientific outputs Voynich Baseline должны остаться byte-for-byte идентичными.
+
+Если какой-либо output отличается — остановиться и исследовать причину. Не принимать numerical tolerance как замену bit-for-bit equivalence без отдельного обоснования.
+
+6. Не делать
+
+НЕ:
+
+- менять fixed window sizes;
+- переводить windows в проценты от N;
+- менять thresholds/min-counts;
+- менять RNG/seeds;
+- менять statistical formulas;
+- менять tokenization;
+- менять frozen Voynich Baseline v1;
+- оптимизировать производительность заодно;
+- начинать general corpus-abstraction rewrite.
+
+7. Report
+
+Создать CORPUS_SIZE_AUDIT.md:
+
+- все найденные occurrences;
+- классификация A/B/C;
+- что исправлено;
+- что намеренно оставлено;
+- поведение для слишком коротких корпусов;
+- результаты тестов;
+- результат Voynich byte-equivalence проверки.
+
+Validation:
+
+go build ./...
+go vet ./...
+go test ./...
+git diff --check
+
+Definition of Done:
+
+Pipeline не содержит алгоритмической зависимости от N=39026 или прежних размеров Voynich corpus; фактический N определяется из входного корпуса; корпуса другого размера не приводят к ошибкам из-за hardcoded N; scientific parameters остаются frozen; результаты исходного Voynich corpus остаются побитово идентичными.

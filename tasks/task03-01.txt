@@ -1,0 +1,424 @@
+Задача: расширить sequence-analyze для анализа межстрочной повторяемости
+и зависимости следующего токена от длины контекста.
+
+Контекст
+
+В проекте уже реализован sequence-analyze, который напрямую анализирует
+исходный корпус и строит sequence_analysis.yaml.
+
+Текущий корпус:
+
+token_occurrences: 38887
+lines: 5371
+transitions: 33516
+
+Анализ показал, что длинные повторяющиеся n-граммы сильно искажаются
+локальными повторами внутри одной строки (в частности line 1456).
+
+Необходимо расширить анализ так, чтобы:
+
+1. отличать локальные повторы внутри одной строки от повторов,
+   воспроизводящихся в разных строках корпуса;
+2. измерять, насколько увеличение длины левого контекста повышает
+   предсказуемость следующего токена.
+
+Не выполнять никакой семантической интерпретации.
+Не использовать structural equivalence / equivalence_candidates.
+Не объединять похожие токены.
+Работать с исходными токенами как с атомарными значениями.
+
+
+1. Межстрочная повторяемость n-грамм
+
+Расширить ngram_summary.
+
+Для каждого n добавить:
+
+multi_occurrence:
+    количество различных n-грамм с count >= 2
+
+multi_line:
+    количество различных n-грамм, встречающихся минимум
+    в двух различных строках
+
+single_line_repeated:
+    количество различных n-грамм с count >= 2,
+    все появления которых находятся в одной строке
+
+Пример:
+
+ngram_summary:
+  - n: 4
+    unique: 24862
+    repeated: 22
+    multi_line_repeated: ...
+    single_line_repeated: ...
+
+Существующее поле repeated можно сохранить для обратной совместимости.
+
+
+2. Число различных строк для repeated_ngrams
+
+Для каждой repeated n-gram уже имеется line_count.
+
+Добавить логический признак:
+
+cross_line: true|false
+
+где:
+
+cross_line = line_count >= 2
+
+Не удалять локальные повторы из основного результата.
+
+
+3. Отдельный раздел cross_line_repeated_ngrams
+
+Создать:
+
+cross_line_repeated_ngrams:
+
+с подразделами по n:
+
+2:
+3:
+4:
+...
+8:
+
+Включать только n-граммы:
+
+count >= min-count
+line_count >= 2
+
+Сортировка:
+
+1. line_count DESC
+2. count DESC
+3. последовательность токенов лексикографически
+
+max-items применять отдельно для каждого n.
+
+
+4. Максимальные межстрочные последовательности
+
+Добавить:
+
+maximal_cross_line_sequences:
+
+Использовать ту же идею maximal repeated sequence, которая уже реализована,
+но последовательность должна встречаться минимум в двух различных строках.
+
+Локальное повторение одной последовательности несколько раз в одной строке
+не должно делать её cross-line sequence.
+
+Для каждой записи сохранять:
+
+tokens
+n
+count
+line_count
+start_count
+end_count
+occurrences
+
+occurrences:
+
+- line: ...
+  token_offset: ...
+
+Этот раздел должен позволить непосредственно увидеть самые длинные точные
+последовательности, независимо воспроизводящиеся в разных строках.
+
+
+5. Context-order analysis
+
+Добавить новый раздел:
+
+context_order_analysis:
+
+Цель — проверить, насколько знание нескольких предыдущих токенов уменьшает
+неопределённость следующего токена.
+
+Для context length:
+
+1..7
+
+рассматривать:
+
+context -> next_token
+
+Например:
+
+context length 1:
+
+B -> C
+
+context length 2:
+
+A B -> C
+
+context length 3:
+
+X A B -> C
+
+
+6. Агрегированная условная энтропия
+
+Для каждого context length k вычислить corpus-level conditional entropy:
+
+H(next | previous k tokens)
+
+Использовать только переходы, полностью находящиеся внутри одной строки.
+
+Не переходить через границы строк.
+
+Результат:
+
+context_order_analysis:
+  - context_length: 1
+    observations: ...
+    unique_contexts: ...
+    conditional_entropy: ...
+    perplexity: ...
+
+  - context_length: 2
+    observations: ...
+    unique_contexts: ...
+    conditional_entropy: ...
+    perplexity: ...
+
+...
+
+perplexity:
+
+2 ^ conditional_entropy
+
+Conditional entropy считать как взвешенное среднее энтропий распределения
+следующего токена для каждого наблюдаемого контекста:
+
+H(next|context) =
+    Σ P(context) * H(next|specific_context)
+
+
+7. Coverage и проблема единичных контекстов
+
+При росте context length многие контексты становятся уникальными.
+
+Поэтому обязательно сохранять:
+
+unique_contexts
+singleton_contexts
+repeated_contexts
+singleton_fraction
+
+где singleton_context — context, встретившийся ровно один раз.
+
+Также сохранить:
+
+observations_in_repeated_contexts
+repeated_context_coverage
+
+где:
+
+repeated_context_coverage =
+    observations_in_repeated_contexts / observations
+
+Это критически важно: падение conditional entropy при больших k
+не должно интерпретироваться как повышение структурной предсказуемости,
+если почти все контексты стали уникальными.
+
+
+8. Conditional entropy только для повторяющихся контекстов
+
+Дополнительно вычислить:
+
+repeated_context_conditional_entropy
+
+Использовать только contexts с count >= 2.
+
+Также:
+
+repeated_context_perplexity
+
+Это отдельная диагностическая метрика, не замена общей conditional entropy.
+
+
+9. Context gain
+
+Для k >= 2 добавить:
+
+entropy_delta_from_previous
+
+conditional_entropy(k-1) - conditional_entropy(k)
+
+и отдельно:
+
+repeated_entropy_delta_from_previous
+
+для repeated-context conditional entropy.
+
+Положительное значение означает снижение неопределённости следующего
+токена при добавлении ещё одного предыдущего токена.
+
+Не называть эту величину доказательством "правила" или "грамматики".
+
+
+10. Наиболее информативные расширения контекста
+
+Добавить раздел:
+
+context_extensions:
+
+Искать случаи:
+
+B -> distribution(next)
+
+и
+
+A B -> distribution(next)
+
+где добавление A существенно меняет распределение следующего токена.
+
+Аналогично для:
+
+A B -> next
+X A B -> next
+
+и далее до установленного max context length.
+
+Для кандидата сохранять:
+
+short_context
+long_context
+
+short_count
+long_count
+
+short_entropy
+long_entropy
+
+entropy_reduction
+
+short_unique_next
+long_unique_next
+
+short_dominant_next:
+    token
+    probability
+
+long_dominant_next:
+    token
+    probability
+
+Включать только long_context с числом наблюдений >=
+-min-context-observations.
+
+Использовать существующий default:
+
+min-context-observations = 10
+
+Добавить отдельный флаг при необходимости:
+
+-context-min-observations 10
+
+
+11. Не использовать raw predictability как основной критерий
+
+Контекст, встретившийся один раз:
+
+A B C -> X
+
+имеет формальную predictability 1, но статистически не представляет интереса.
+
+Поэтому singleton contexts никогда не должны попадать
+в context_extensions.
+
+Ранжировать context_extensions прежде всего по:
+
+entropy_reduction
+
+при достаточном числе наблюдений.
+
+Сохранять raw observations, чтобы результат можно было проверить.
+
+
+12. Параметры
+
+Добавить:
+
+-max-context-length 7
+-context-min-observations 10
+-context-max-items 200
+
+max-context-length не должен превышать max-n - 1 без явной причины.
+
+
+13. Методология
+
+Обновить methodology в sequence_analysis.yaml.
+
+Явно описать:
+
+- различие repeated и cross-line repeated;
+- определение conditional entropy;
+- способ взвешивания contexts;
+- определение singleton context;
+- repeated_context_coverage;
+- entropy_delta;
+- что снижение entropy при увеличении context length может быть
+  следствием разреженности данных;
+- что эти показатели не являются семантической интерпретацией.
+
+
+14. Тесты
+
+Добавить unit tests для:
+
+- repeated n-gram только внутри одной строки;
+- той же n-gram в двух разных строках;
+- multi_line_repeated;
+- maximal_cross_line_sequences;
+- H(next|context);
+- weighted conditional entropy;
+- singleton_contexts;
+- repeated_context_coverage;
+- repeated_context_conditional_entropy;
+- entropy_delta_from_previous;
+- context extension с реальным снижением entropy;
+- исключение context extension при недостаточном числе наблюдений;
+- отсутствие переходов через границы строк.
+
+После изменений должны проходить:
+
+go test ./...
+go vet ./...
+
+
+15. README
+
+Обновить описание sequence-analyze.
+
+Особенно явно указать различие:
+
+repeated sequence
+    !=
+cross-line repeated sequence
+
+и описать context_order_analysis.
+
+
+Цель
+
+После выполнения задачи sequence_analysis.yaml должен позволять ответить
+на два вопроса:
+
+1. Какие точные последовательности действительно воспроизводятся
+   в независимых строках корпуса, а не являются локальным повтором?
+
+2. Насколько знание дополнительного предыдущего токена статистически
+   уменьшает неопределённость следующего токена, с учётом разреженности
+   данных?
+
+Не делать выводов о языке, операторах, операндах, грамматике или значении
+токенов.

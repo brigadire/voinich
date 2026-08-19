@@ -1,0 +1,525 @@
+Task43 — Audit IVTFF dependency of stages 19–27 and extend the generic-corpus pipeline
+
+Цель
+
+Провести научный и технический аудит стадий 19–27 pipeline-orchestrate,
+которые сейчас целиком исключаются из generic-corpus experiments как:
+
+    NOT_APPLICABLE: requires IVTFF metadata
+
+Текущий список:
+
+19 metadata-validate
+20 cluster-metadata-global
+21 conditional-regime-analyze
+22 residual-diagnostic-analyze
+23 token-relation-validate
+24 replicated-local-structure-audit
+25 higher-order-sequence-validate
+26 positional-continuation-validate
+27 transition-network-validate
+
+На реальном generic experiment Doyle поэтому выполняются только стадии 1–18.
+
+Это слишком грубая классификация.
+
+Нужно определить для каждой стадии:
+
+A. IVTFF metadata является частью научного определения анализа;
+B. metadata используется только как технический источник segmentation/grouping;
+C. metadata вообще не является принципиально необходимой, а зависимость —
+   исторический артефакт реализации/pipeline.
+
+Все стадии B/C, для которых можно определить научно нейтральный generic mode,
+должны быть включены в generic pipeline.
+
+==================================================
+PHASE 1 — dependency audit
+==================================================
+
+Для каждой стадии 19–27 проследить полный data flow:
+
+    CLI
+      -> internal package
+      -> input loaders
+      -> metadata structures
+      -> algorithms
+      -> outputs
+
+Для каждого metadata field определить:
+
+    field
+    source
+    where consumed
+    scientific meaning
+    whether mathematically required
+    whether generic substitute is possible
+
+Особенно проверить:
+
+    token_metadata_map.tsv
+    $H / hand
+    $C / Currier
+    folio/page
+    section
+    quire
+    paragraph/block identifiers
+    line/locus information
+    any derived grouping labels
+
+Не делать вывод по имени файла или CLI argument.
+Проследить фактическое использование значения в формулах.
+
+==================================================
+PHASE 2 — classification
+==================================================
+
+Создать таблицу:
+
+stage | metadata used | role | class A/B/C | generic strategy
+
+Определения:
+
+CLASS A — intrinsically metadata-dependent
+
+Исследование непосредственно проверяет связь текстовой структуры с
+Voynich-specific external metadata.
+
+Примеры потенциального смысла:
+
+    hand dependence
+    Currier language dependence
+    manuscript section dependence
+
+Такую стадию НЕ адаптировать искусственно.
+
+Для generic corpus оставить:
+
+    NOT_APPLICABLE
+
+с конкретной причиной, а не общей фразой "requires IVTFF metadata".
+
+
+CLASS B — metadata supplies generic segmentation/grouping
+
+Алгоритм исследует текстовую структуру, но использует metadata для получения
+блоков/групп/реплик.
+
+Проверить возможность заменить это corpus-internal deterministic segmentation.
+
+
+CLASS C — accidental implementation dependency
+
+Сам алгоритм работает исключительно с token sequence/positions/edges,
+а metadata dependency возникла из-за существующего API, shared loader,
+historical pipeline structure или удобства реализации.
+
+Такую зависимость удалить.
+
+==================================================
+PHASE 3 — particular stages requiring close review
+==================================================
+
+Особенно тщательно проверить следующие стадии.
+
+25 higher-order-sequence-validate
+
+Вопрос:
+
+    Почему анализ higher-order sequence dependence требует IVTFF?
+
+Если фактически нужны только token sequences и deterministic blocks,
+реализовать generic mode.
+
+Не менять definition of higher-order dependence.
+
+
+26 positional-continuation-validate
+
+Определить, является ли position:
+
+    corpus/line-relative position
+
+или:
+
+    Voynich metadata-specific position.
+
+Если используются только строки/позиции токенов, generic corpus должен
+поддерживаться.
+
+
+27 transition-network-validate
+
+Проверить отдельно все компоненты:
+
+    transition matrix
+    edge effects
+    profiles
+    entropy
+    permutation null
+    held-out prediction
+    model order
+
+Определить, где именно появляется metadata.
+
+Если metadata используется только для block normalization/permutation,
+разработать generic deterministic blocks.
+
+
+23 token-relation-validate
+
+Разделить:
+
+    token-relation mathematics
+
+и:
+
+    metadata-conditioned validation.
+
+Если существует corpus-only core analysis, предоставить generic mode,
+не подменяя metadata-conditioned гипотезу другой гипотезой.
+
+
+24 replicated-local-structure-audit
+
+Выяснить смысл replicate.
+
+Если replicate = manuscript metadata group, стадия может быть Class A.
+
+Если алгоритму нужны лишь независимые участки корпуса, рассмотреть
+deterministic corpus segmentation и Class B.
+
+
+21 conditional-regime-analyze
+22 residual-diagnostic-analyze
+
+Особенно осторожно.
+
+Эти стадии исторически тесно связаны с metadata/regime analysis.
+
+Не делать generic analogue только ради увеличения числа стадий.
+
+Сначала доказать, что generic interpretation сохраняет исходную
+статистическую гипотезу.
+
+==================================================
+PHASE 4 — generic segmentation specification
+==================================================
+
+Если Class B stages существуют, нужен ОДИН общий generic segmentation layer.
+
+Не создавать отдельное разбиение для каждой стадии.
+
+Требования:
+
+    deterministic
+    language-agnostic
+    corpus-size-aware
+    no Voynich constants
+    no semantic knowledge
+    no punctuation requirement
+    reproducible
+    independent of worker count
+    independent of execution order
+
+Не использовать hardcode:
+
+    39026
+    Voynich line count
+    Voynich folio count
+    Voynich block count
+
+Segmentation должна масштабироваться с N корпуса.
+
+Предпочтительно сохранять естественные строки corpus, если научный алгоритм
+работает со строками.
+
+Если требуются более крупные blocks — определить их из corpus structure/N
+по явному алгоритму.
+
+ВАЖНО:
+
+не пытаться искусственно имитировать folios, hands или Currier languages.
+
+Generic blocks — это statistical resampling units, а не fake manuscript
+metadata.
+
+==================================================
+PHASE 5 — hypothesis equivalence
+==================================================
+
+Для каждой адаптируемой Class B stage документировать:
+
+Original Voynich hypothesis:
+    ...
+
+Role of metadata:
+    ...
+
+Generic hypothesis:
+    ...
+
+Why the statistical test remains meaningful:
+    ...
+
+What comparison between Voynich and generic corpus is legitimate:
+    ...
+
+What comparison is NOT legitimate:
+    ...
+
+Если это невозможно сформулировать убедительно — оставить stage
+NOT_APPLICABLE.
+
+==================================================
+PHASE 6 — implementation
+==================================================
+
+После аудита адаптировать только доказанные B/C stages.
+
+CLI должен поддерживать corpus-only invocation без fake IVTFF files.
+
+Например:
+
+    higher-order-sequence-validate -corpus ...
+    positional-continuation-validate -corpus ...
+    transition-network-validate -corpus ...
+
+Конкретный interface определить после аудита.
+
+Не заставлять пользователя генерировать фиктивный:
+
+    token_metadata_map.tsv
+
+для обычной прозы.
+
+==================================================
+PHASE 7 — pipeline integration
+==================================================
+
+Обновить pipeline-orchestrate stage applicability.
+
+В generic mode:
+
+Class A:
+    NOT_APPLICABLE: <specific scientific reason>
+
+Class B/C:
+    PLANNED
+
+Stage dependencies должны использовать experiment-local workspace,
+созданный Task41.
+
+Никакого fallback в repository workdir.
+
+Все generated inputs должны иметь provenance текущего:
+
+    ExperimentID
+    corpus SHA256
+
+==================================================
+PHASE 8 — comparability with Voynich
+==================================================
+
+Критически важно не сломать существующий Voynich analysis.
+
+Voynich mode должен продолжить использовать реальные IVTFF metadata там,
+где это предусмотрено научным методом.
+
+Не заменять Voynich segmentation generic segmentation ради унификации кода,
+если это изменит существующий эксперимент.
+
+Generic support должен быть дополнительным mode.
+
+==================================================
+PHASE 9 — oracle tests
+==================================================
+
+Для Class C:
+
+старый corpus-only internal calculation и новый generic invocation должны
+быть byte-identical там, где существует reference path.
+
+Для Class B:
+
+проверить deterministic segmentation отдельно.
+
+Одинаковый:
+
+    corpus
+    seed
+    parameters
+
+должен всегда давать byte-identical output.
+
+==================================================
+PHASE 10 — generic corpus size tests
+==================================================
+
+Проверить минимум:
+
+    N ~ 1,000
+    N ~ 8,000
+    N ~ 43,713 (Doyle scale)
+    N ~ 60,000+
+
+Не должно быть Voynich-size assumptions.
+
+Если corpus слишком мал для статистического теста:
+
+    explicit NOT_ENOUGH_DATA/error
+
+а не panic, divide-by-zero или бессмысленный результат.
+
+==================================================
+PHASE 11 — Doyle validation
+==================================================
+
+После реализации НЕ запускать сразу дорогой полный pipeline.
+
+Создать новый smoke experiment на:
+
+    data_test/pg2097-2.txt
+
+с reduced permutations там, где это необходимо.
+
+Проверить, что новые generic-enabled stages действительно выполняются.
+
+Особенно желательно получить, если аудит подтвердит применимость:
+
+    higher-order-sequence
+    positional-continuation
+    transition-network
+
+поскольку они важны для сравнения natural language vs Voynich.
+
+==================================================
+PHASE 12 — scientific output validation
+==================================================
+
+Никаких изменений:
+
+    formulas
+    thresholds
+    RNG definitions
+    normalization
+    statistical tests
+    numeric precision
+
+кроме явно необходимого определения generic resampling units для Class B.
+
+Любое такое определение документировать.
+
+==================================================
+PHASE 13 — frozen Voynich baseline
+==================================================
+
+experiments/voynich-v1/ не изменять.
+
+Все frozen checksums должны оставаться валидными.
+
+Если internal refactor затрагивает Voynich execution path, выполнить
+reference-vs-new comparison.
+
+Требование:
+
+    existing Voynich scientific outputs byte-identical
+
+если алгоритм не изменялся.
+
+==================================================
+PHASE 14 — performance/distribution
+==================================================
+
+В Task43 НЕ заниматься новым распределением этих стадий.
+
+Но при аудите отметить natural work units:
+
+    permutations
+    folds
+    blocks
+    trials
+    replicates
+
+которые потенциально пригодны для existing remote executor.
+
+Создать backlog recommendations, но не реализовывать distribution.
+
+==================================================
+PHASE 15 — documentation
+==================================================
+
+Создать:
+
+    GENERIC_STAGE_APPLICABILITY_AUDIT.md
+
+В нём обязательная итоговая таблица:
+
+stage
+current reason for IVTFF dependency
+actual metadata dependency
+classification A/B/C
+generic enabled yes/no
+generic segmentation used
+scientific comparability notes
+distribution opportunity
+
+Обновить:
+
+    pipeline-orchestrate/STAGE_AUDIT.md
+    pipeline documentation
+
+==================================================
+PHASE 16 — validation
+==================================================
+
+Обязательно:
+
+    gofmt
+    go build ./...
+    go vet ./...
+    go test ./...
+    go test -race ./...
+    git diff --check
+
+Проверить:
+
+    frozen Voynich v1 verify PASS
+    generic isolation tests PASS
+    corpus-size guards PASS
+
+==================================================
+Не делать
+==================================================
+
+НЕ:
+
+- объявлять все 19–27 generic-compatible;
+- создавать fake hand/Currier/folio metadata;
+- менять scientific hypothesis незаметно;
+- использовать Voynich constants;
+- использовать язык/словарь/семантику текста;
+- менять algorithms ради удобства generic mode;
+- использовать tolerance вместо byte identity там, где ожидается identity;
+- распределять новые stages;
+- изменять frozen Voynich v1;
+- запускать дорогой production Doyle run до завершения audit/smoke.
+
+==================================================
+Definition of Done
+==================================================
+
+Для каждой стадии 19–27 известно, ПОЧЕМУ она требует metadata.
+
+Зависимость классифицирована как scientific, segmentation-only или accidental.
+
+Все scientifically legitimate corpus-only stages включены в generic pipeline.
+
+Metadata-specific analyses остаются NOT_APPLICABLE с точной причиной.
+
+Generic implementation остаётся полностью language-agnostic.
+
+Voynich execution semantics и frozen baseline не изменены.
+
+После smoke-run известно новое фактическое число применимых generic stages
+из 27.

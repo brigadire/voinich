@@ -1,0 +1,537 @@
+Задача: Structural Pair Decomposition — объяснение структурного сходства токенов
+
+Контекст
+
+Предыдущий анализ построил reliability-aware soft structural space для 537
+достаточно частых токенов и сравнил structural similarity с графемным
+расстоянием.
+
+Результаты находятся, в частности, в:
+
+- soft_structural_space.yaml
+- soft_structural_pairs.tsv
+- structural_graphemic_pairs.tsv
+- structural_distant_top.tsv
+- structural_distant_families.yaml
+
+Обнаружены пары токенов с одновременно:
+
+- высокой structural similarity;
+- высокой reliability;
+- большим graphemic distance.
+
+Например:
+
+or    ~ s       structural=0.7594
+chol  ~ daiin   structural=0.7206
+r     ~ s       structural=0.7010
+ol    ~ y       structural=0.6787
+dar   ~ ol      structural=0.6742
+
+Также обнаружены structural-distant families.
+
+Цель новой задачи — НЕ искать новые похожие пары, а объяснить, почему уже
+найденные пары получили высокую structural similarity.
+
+Необходимо декомпозировать агрегированный structural similarity до
+конкретных наблюдаемых свойств корпуса.
+
+
+1. Основной принцип
+
+Для каждой исследуемой пары A/B построить подробный структурный профиль:
+
+    A vs B
+
+и показать отдельно:
+
+- позиционное поведение;
+- левое окружение;
+- правое окружение;
+- ограничения окружения;
+- энтропию;
+- общих соседей;
+- различающихся соседей;
+- направление различий.
+
+Никаких семантических интерпретаций токенов.
+
+
+2. Выбор исследуемых пар
+
+По умолчанию анализировать:
+
+- TOP 50 structurally-close / graphically-distant пар;
+- все edges из structural_distant_families.yaml.
+
+CLI должен позволять:
+
+    --top N
+    --pair tokenA,tokenB
+    --family ID
+
+для анализа конкретной пары или family.
+
+
+3. Базовая карточка пары
+
+Для каждой пары вывести:
+
+    token A
+    token B
+
+    count A
+    count B
+
+    structural similarity
+    reliability
+    graphemic distance
+
+и все компоненты structural similarity, использованные существующим
+анализатором:
+
+    position similarity
+    left-context similarity
+    right-context similarity
+    и прочие существующие компоненты
+
+Не пересчитывать и не менять формулу structural similarity.
+
+
+4. Позиционный профиль
+
+Для каждого токена показать полное нормированное распределение позиции
+в строке.
+
+Например:
+
+position    A       B
+0           .21     .19
+1           .14     .16
+2           .11     .10
+...
+
+Также:
+
+    line_start_probability
+    line_end_probability
+    mean_position
+    median_position
+
+Если длины строк доступны, желательно дополнительно использовать
+normalized position:
+
+    token_position / (line_length - 1)
+
+Но raw position сохранить отдельно.
+
+Посчитать расстояние/сходство между позиционными распределениями.
+
+
+5. Левое окружение
+
+Для A и B построить нормированные распределения предшественников:
+
+    P(X | before A)
+    P(X | before B)
+
+Показать:
+
+- TOP common predecessors;
+- predecessors strongly associated with both;
+- predecessors characteristic mainly for A;
+- predecessors characteristic mainly for B.
+
+Пример отчёта:
+
+COMMON PREDECESSORS
+
+token    P(before A)    P(before B)    difference
+
+qok...       .14            .13           .01
+chedy        .09            .11           .02
+
+
+A-SPECIFIC
+
+token    P(before A)    P(before B)
+
+...
+
+
+B-SPECIFIC
+
+...
+
+
+6. Правое окружение
+
+Аналогично построить:
+
+    P(X | after A)
+    P(X | after B)
+
+и вывести:
+
+- common successors;
+- A-specific successors;
+- B-specific successors.
+
+
+7. Не использовать только TOP-N при вычислениях
+
+Все similarity/difference metrics считать по ПОЛНЫМ распределениям.
+
+TOP-N используется только для человекочитаемого отчёта.
+
+
+8. Энтропия и effective vocabulary
+
+Для каждого токена посчитать отдельно:
+
+    left_entropy
+    right_entropy
+
+и effective number of neighbors:
+
+    exp(entropy)
+
+или эквивалентную явно документированную меру.
+
+Это позволит различать:
+
+    токен допускает почти любое окружение
+
+от
+
+    токен допускает очень ограниченный набор окружений.
+
+Для пары показать:
+
+    A left entropy
+    B left entropy
+
+    A right entropy
+    B right entropy
+
+и их разницу.
+
+
+9. Пересечение окружений
+
+Для каждой пары посчитать минимум:
+
+    predecessor Jaccard
+    successor Jaccard
+
+а также weighted similarity для распределений, например:
+
+    Jensen-Shannon similarity
+
+или существующую метрику soft structural space, если она уже реализована.
+
+Нужно явно различать:
+
+    overlap of allowed tokens
+
+и
+
+    similarity of their probabilities.
+
+
+10. Shared restrictions
+
+Попытаться явно выделить ограничения вида:
+
+    оба токена почти никогда не следуют после X;
+    оба токена часто следуют после Y;
+    после обоих часто появляется Z;
+    после обоих редко появляется Q.
+
+Но "никогда" использовать только при достаточном количестве наблюдений.
+
+Основной интерес — не только положительные связи, но и совпадающие
+запреты/ограничения.
+
+
+11. Differential profile
+
+Для каждой пары построить список контекстов с максимальным:
+
+    abs(P(context | A) - P(context | B))
+
+Отдельно слева и справа.
+
+Это должно показать, где структурное поведение A и B наиболее сильно
+различается несмотря на высокий общий similarity.
+
+
+12. Negative controls
+
+Это обязательная часть задачи.
+
+Для каждой исследуемой пары A/B подобрать несколько контрольных пар.
+
+Контрольная пара должна иметь примерно:
+
+- сходные частоты token counts;
+- сходный graphemic distance;
+- сходную reliability;
+
+но structural similarity должна находиться около медианы корпуса
+(ориентировочно ~0.25 для текущего dataset).
+
+Например:
+
+    target:
+        or / s
+        structural = 0.759
+
+    control:
+        X / Y
+        structural ≈ 0.25
+
+Контроль подбирать алгоритмически, а не вручную.
+
+Для target и control строить одинаковые decomposition metrics.
+
+
+13. Pair contrast score
+
+Можно создать дополнительные прозрачные показатели, но НЕ новый
+агрегированный "истинный" structural score.
+
+Например:
+
+    shared_context_strength
+    differential_context_strength
+    positional_agreement
+    entropy_agreement
+
+Каждый показатель должен быть документирован и выводиться отдельно.
+
+
+14. Family decomposition
+
+Для каждой structural-distant family провести отдельный анализ.
+
+Текущие семьи включают, например:
+
+Family:
+
+    or
+    r
+    s
+
+Family:
+
+    chol
+    chor
+    cthy
+    daiin
+    dol
+
+Family:
+
+    chedy
+    lchedy
+    qokaiin
+    qokain
+    qokar
+    qokedy
+    qokeey
+    qol
+    qotain
+
+ВАЖНО:
+
+connected component не означает, что все элементы family непосредственно
+похожи друг на друга.
+
+Поэтому для каждой family вывести:
+
+- edge list;
+- pairwise similarity matrix;
+- pairwise reliability matrix;
+- pairwise graphemic-distance matrix;
+- position-similarity matrix;
+- left-context-similarity matrix;
+- right-context-similarity matrix.
+
+
+15. Поиск центральных токенов family
+
+Для каждой family определить:
+
+    structural medoid
+
+то есть токен с минимальным средним structural distance до остальных
+элементов family.
+
+Также показать наиболее периферийные токены.
+
+Это только геометрическая характеристика, без семантической
+интерпретации.
+
+
+16. Визуализация пары
+
+Для каждой TOP-пары желательно создать компактную визуализацию:
+
+    pair_or_s.svg
+
+с тремя блоками:
+
+    POSITION
+
+    LEFT CONTEXT
+
+    RIGHT CONTEXT
+
+Для context-графиков показывать наиболее информативные общие и
+различающиеся токены.
+
+Не требуется визуализировать тысячи соседей.
+
+
+17. Визуализация family
+
+Для каждой structural-distant family создать graph:
+
+    family_N.svg
+
+Узлы:
+
+    tokens
+
+Рёбра:
+
+    structural-distant edges
+
+Толщина ребра:
+
+    structural similarity
+
+Подписать значение similarity.
+
+Не использовать графемную близость для расположения узлов.
+
+
+18. Выходные данные
+
+Создать:
+
+    pair_decomposition.yaml
+
+Полные машинно-читаемые decomposition results.
+
+
+    pair_decomposition_top.tsv
+
+Компактные показатели для TOP-пар.
+
+
+    pair_controls.tsv
+
+Подобранные negative controls.
+
+
+    family_decomposition.yaml
+
+Полный анализ structural-distant families.
+
+
+    structural_pair_report.md
+
+Человекочитаемый отчёт.
+
+
+Опционально:
+
+    plots/pair_*.svg
+    plots/family_*.svg
+
+
+19. Особый раздел отчёта
+
+Для каждой сильной пары сформировать краткое описание исключительно
+формальными терминами.
+
+Например:
+
+    or / s
+
+    Structural similarity: 0.759
+    Reliability: 0.934
+
+    Similarity is primarily explained by:
+    - high positional agreement;
+    - strongly overlapping successor distributions;
+    - moderately overlapping predecessor distributions.
+
+    Main differences:
+    - predecessor X is substantially more common before or;
+    - successor Y is substantially more common after s.
+
+Формулировка должна генерироваться из метрик, а не быть вручную
+захардкожена для конкретных токенов.
+
+
+20. Не делать
+
+Не использовать термины:
+
+    noun
+    verb
+    morphology
+    operator
+    operand
+    command
+    argument
+    begin
+    end
+
+как интерпретацию результатов.
+
+Не пытаться переводить токены.
+
+Не менять existing structural similarity.
+
+Не добавлять graphemic similarity в structural similarity.
+
+Не использовать изображения манускрипта или предполагаемую тематику
+страниц.
+
+
+21. Главные исследовательские вопросы
+
+Анализ должен позволить ответить на три вопроса:
+
+1. Почему конкретные графически далёкие токены считаются структурно
+   похожими?
+
+2. Является ли сходство многомерным — position + left + right —
+   или возникает преимущественно за счёт одного компонента?
+
+3. Отличаются ли сильные structural-distant пары качественно от
+   случайных пар токенов сопоставимой частоты и графемной дистанции?
+
+
+22. Tests
+
+Добавить unit tests для:
+
+- normalization of context distributions;
+- entropy;
+- effective neighbor count;
+- Jaccard;
+- Jensen-Shannon similarity;
+- differential profile;
+- negative-control selection;
+- family medoid;
+- deterministic output.
+
+Выполнить:
+
+    go test ./...
+    go vet ./...

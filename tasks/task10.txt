@@ -1,0 +1,411 @@
+Задача: анализ зависимости между структурным и графемным сходством токенов
+Voynich corpus
+
+Контекст
+
+Уже построено reliability-aware soft structural space токенов.
+
+Имеются файлы:
+
+- soft_structural_space.yaml
+- soft_structural_pairs.tsv
+
+Для пар токенов рассчитаны:
+- structural similarity;
+- reliability/evidence;
+- сходство позиционного распределения;
+- сходство левого контекста;
+- сходство правого контекста;
+- дополнительные структурные компоненты.
+
+Графемное сходство токенов при построении structural similarity намеренно
+не использовалось.
+
+В верхней части structural ranking обнаружено много графически похожих пар:
+
+qokedy   ~ qokeedy
+chedy    ~ shedy
+qokaiin  ~ qokain
+qokeedy  ~ qokeey
+
+Но присутствуют и менее очевидные пары:
+
+qokain ~ qol
+ar     ~ or
+or     ~ s
+
+Необходимо определить, насколько структурное сходство объясняется графемным
+сходством токенов, и найти токены, которые структурно очень похожи,
+несмотря на значительное различие записи.
+
+
+1. Основная задача
+
+Для каждой существующей пары токенов вычислить независимую меру графемного
+расстояния.
+
+ВАЖНО:
+
+Графемное расстояние НЕ должно входить в существующий structural similarity.
+
+Мы исследуем две независимые координаты:
+
+    structural_similarity
+    graphemic_distance
+
+Нельзя пересчитывать structural similarity с учётом написания токена.
+
+
+2. Grapheme tokenizer
+
+Нельзя безусловно считать каждый ASCII-символ отдельной графемой.
+
+В транслитерации конструкции вида:
+
+    @135;
+    @148;
+
+являются едиными знаками и при вычислении edit distance должны считаться
+одной графемой.
+
+Например:
+
+    @135;odaiin
+
+должно токенизироваться примерно как:
+
+    ["@135;", "o", "d", "a", "i", "i", "n"]
+
+Символ '?' считать одной неизвестной графемой.
+
+Не удалять и не нормализовывать специальные знаки без явного правила.
+
+Реализовать отдельную функцию:
+
+    tokenize_graphemes(token)
+
+
+3. Метрики графемного расстояния
+
+Как минимум вычислять:
+
+    levenshtein_distance
+    normalized_levenshtein_distance
+
+где:
+
+    normalized_distance =
+        levenshtein_distance /
+        max(grapheme_length(A), grapheme_length(B))
+
+и:
+
+    graphemic_similarity = 1 - normalized_distance
+
+Дополнительно желательно вычислять:
+
+    common_prefix_length
+    common_suffix_length
+    length_difference
+
+Все операции производить над последовательностями графем, а не байтами
+или rune без предварительной токенизации специальных IVTFF-кодов.
+
+
+4. Объединённый dataset
+
+Расширить существующий pair dataset примерно до:
+
+token_a
+token_b
+count_a
+count_b
+structural_similarity
+reliability
+position_similarity
+left_similarity
+right_similarity
+grapheme_distance
+normalized_grapheme_distance
+grapheme_similarity
+common_prefix
+common_suffix
+length_difference
+
+Существующие структурные значения не изменять.
+
+
+5. Основной интересующий класс
+
+Найти пары:
+
+    HIGH structural similarity
+    HIGH reliability
+    HIGH graphemic distance
+
+То есть токены, которые сильно различаются графически, но занимают
+сходное структурное пространство.
+
+Не задавать единственный жёсткий threshold как определение класса.
+
+Сделать configurable параметры, например:
+
+    --min-structural-similarity
+    --min-reliability
+    --min-graphemic-distance
+
+и дополнительно percentile-based ranking.
+
+
+6. Ranking
+
+Сделать отдельный рейтинг structurally-close / graphically-distant.
+
+Прозрачный ranking score можно определить, например, как:
+
+    discovery_score =
+        structural_similarity *
+        reliability *
+        normalized_grapheme_distance
+
+Но это только средство сортировки.
+
+Все три исходных компонента обязательно сохранять отдельно.
+
+Не трактовать discovery_score как вероятность или статистическую
+значимость.
+
+
+7. Контроль противоположного класса
+
+Отдельно вывести:
+
+    HIGH structural similarity
+    HIGH graphemic similarity
+
+Например, ожидается, что туда могут попасть:
+
+    qokedy/qokeedy
+    chedy/shedy
+
+Этот список нужен как контроль и для сравнения с graphically-distant
+классом.
+
+
+8. Глобальная зависимость
+
+Определить, существует ли в корпусе общая зависимость:
+
+    graphemic similarity ↑
+             =>
+    structural similarity ↑
+
+Рассчитать как минимум:
+
+    Pearson correlation
+    Spearman correlation
+
+Но поскольку пары токенов не являются независимыми наблюдениями,
+не интерпретировать обычные p-values как строгую статистическую
+значимость.
+
+Также разбить пары по диапазонам normalized grapheme distance, например:
+
+    0.0–0.1
+    0.1–0.2
+    ...
+    0.9–1.0
+
+и для каждого bin вывести:
+
+    pair_count
+    mean_structural_similarity
+    median_structural_similarity
+    p90_structural_similarity
+    p95_structural_similarity
+
+
+9. Контроль частоты
+
+Редкие токены могут давать случайно высокое структурное сходство.
+
+Поэтому результаты обязательно анализировать с учётом:
+
+    count_a
+    count_b
+    reliability
+
+Отдельно показать результаты минимум для нескольких порогов частоты:
+
+    >= 10
+    >= 20
+    >= 50
+    >= 100
+
+если данных достаточно.
+
+Не требуется заново вычислять structural space для этих порогов:
+можно фильтровать существующие пары.
+
+
+10. Морфологически близкие семейства
+
+Найти connected components / группы токенов, где одновременно высоки:
+
+    structural similarity
+    graphemic similarity
+
+Например потенциальное семейство:
+
+    qokedy
+    qokeedy
+    qokeey
+    qokey
+    ...
+
+Эти группы сохранить отдельно.
+
+ВАЖНО:
+
+Не называть их морфемами, словами одного корня, вариантами команд и т.п.
+
+Использовать нейтральный термин:
+
+    graphemic-structural family
+
+
+11. Структурно близкие, графически далёкие группы
+
+Аналогично попытаться построить группы по условию:
+
+    high structural similarity
+    high reliability
+    low graphemic similarity
+
+Именно этот результат является главным исследовательским объектом задачи.
+
+
+12. Выходные файлы
+
+Создать минимум:
+
+    structural_graphemic_pairs.tsv
+
+Полный dataset всех пар.
+
+
+    structural_distant_top.tsv
+
+Лучшие:
+structurally close / graphically distant.
+
+
+    structural_graphemic_close_top.tsv
+
+Контроль:
+structurally close / graphically close.
+
+
+    graphemic_structural_families.yaml
+
+Группы токенов, близких по обеим координатам.
+
+
+    structural_distant_families.yaml
+
+Если обнаруживаются устойчивые группы структурно близких, но графически
+далёких токенов.
+
+
+    structural_graphemic_report.md
+
+Человекочитаемый отчёт.
+
+
+13. Отчёт
+
+В structural_graphemic_report.md показать:
+
+1. число исследованных токенов и пар;
+2. распределение graphemic distance;
+3. Pearson/Spearman correlation;
+4. structural similarity по bins графемного расстояния;
+5. TOP structurally-close / graphically-close;
+6. TOP structurally-close / graphically-distant;
+7. влияние минимальной частоты;
+8. найденные graphemic-structural families;
+9. найденные structural-distant families;
+10. ограничения анализа.
+
+
+14. Желательная визуализация
+
+Если проект уже имеет средства построения графиков, создать:
+
+    structural_vs_graphemic.svg/png
+
+X:
+
+    normalized_grapheme_distance
+
+Y:
+
+    structural_similarity
+
+Не требуется подписывать все точки.
+
+Подписать только наиболее сильные outliers в области:
+
+    high structural similarity
+    high graphemic distance
+
+Также желательно построить binned plot:
+
+    grapheme distance
+          vs
+    median / p95 structural similarity
+
+
+15. Интерпретационные ограничения
+
+Код и отчёт не должны делать выводов:
+
+    "это язык"
+    "это морфология"
+    "это команды"
+    "это операторы"
+    "это шифр"
+
+Задача исключительно формальная.
+
+Основной исследовательский вопрос:
+
+    Существуют ли в корпусе пары или группы токенов,
+    графемно существенно различающиеся, но демонстрирующие
+    устойчиво сходное структурное поведение?
+
+Вторичный вопрос:
+
+    Насколько вообще структурная близость токенов коррелирует
+    с близостью их написания?
+
+
+16. Проверки
+
+Добавить unit tests как минимум для:
+
+- grapheme tokenizer;
+- @NNN; как одной графемы;
+- '?' как одной графемы;
+- Levenshtein;
+- normalized distance;
+- prefix/suffix calculations;
+- deterministic ranking.
+
+После реализации выполнить:
+
+    go test ./...
+    go vet ./...
+
+Не изменять существующую формулу structural similarity без отдельной
+необходимости.

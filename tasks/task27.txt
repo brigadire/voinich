@@ -1,0 +1,535 @@
+# Task: repository-wide performance and architecture refactoring
+
+Провести системный performance-refactoring всего аналитического pipeline
+репозитория, используя успешную оптимизацию `transition-network-validate`
+как эталон подхода.
+
+## Контекст
+
+Репозиторий содержит большое число аналитических CLI, многие из которых
+выполняют permutation/bootstrap/random-baseline/cross-validation расчёты.
+Некоторые этапы полного pipeline занимают от нескольких часов до ~15 часов.
+
+Недавнее профилирование `transition-network-validate` обнаружило, что основная
+причина высокой стоимости была не в статистическом алгоритме как таковом,
+а в реализации hot path:
+
+- повторное создание больших `map[string]...` и `map[EdgeKey]...`;
+- string hashing в тысячах permutation replicates;
+- повторный расчёт invariant quantities;
+- огромный allocation churn и GC;
+- вычисление промежуточных результатов, которые конкретной стадии не нужны.
+
+После введения compiled dense workspace:
+
+- wall-clock полного 1000 + 10000 permutation run уменьшился до ~84 секунд;
+- результаты остались идентичными reference implementation;
+- statistical methodology не изменилась.
+
+Нужно проверить, насколько те же проблемы распространены по всему repository,
+и создать общую эффективную вычислительную архитектуру там, где это оправдано.
+
+---
+
+# Главное ограничение
+
+Это PERFORMANCE/ARCHITECTURE REFACTORING.
+
+НЕЛЬЗЯ изменять:
+
+- статистические гипотезы;
+- формулы метрик;
+- null models;
+- permutation semantics;
+- bootstrap semantics;
+- random-baseline semantics;
+- eligibility rules;
+- thresholds;
+- search spaces;
+- frozen candidate sets;
+- multiple-comparison correction;
+- FDR procedures;
+- seed semantics;
+- physical-block semantics;
+- line/page boundary semantics;
+- metadata conditioning;
+- train/test split semantics;
+- leakage protection;
+- checkpoint semantics;
+- существующие output schemas;
+- имена/смысл output fields;
+- deterministic ordering.
+
+Оптимизированный код должен вычислять тот же эксперимент, а не
+математически похожий эксперимент.
+
+Нельзя уменьшать количество permutations, samples, folds, windows или
+candidate pairs ради ускорения production/default runs.
+
+---
+
+# Phase 1 — inventory
+
+Просмотреть ВСЕ executable analysis stages и соответствующие `internal/*`
+packages.
+
+Для каждого определить:
+
+1. основные computational stages;
+2. асимптотическую стоимость;
+3. циклы:
+   - permutations;
+   - bootstrap;
+   - random baselines;
+   - folds;
+   - windows;
+   - candidate pairs;
+   - blocks;
+4. какие структуры создаются внутри hot loops;
+5. какие значения пересчитываются, хотя не зависят от replicate;
+6. где используются:
+   - map[string]...
+   - map[struct]...
+   - string token lookup;
+   - repeated YAML/TSV parsing;
+   - repeated corpus parsing;
+   - repeated probability/entropy/baseline calculation;
+7. где возможны dense integer representations;
+8. где возможен reusable workspace;
+9. где возможны buffer reuse / preallocation;
+10. где вычисляются результаты, которые вызывающей стадии не нужны.
+
+Создать:
+
+    PERFORMANCE_AUDIT.md
+
+Таблица минимум:
+
+CLI/package
+hot stage
+estimated complexity
+allocation risk
+string-map risk
+recomputed invariants
+optimization opportunity
+correctness risk
+priority
+
+Не оптимизировать вслепую только потому, что код выглядит неоптимальным.
+
+---
+
+# Phase 2 — common immutable corpus representation
+
+Проверить возможность введения общего внутреннего representation, например:
+
+    internal/corpusmodel
+
+или другого подходящего package.
+
+Цель — после parsing корпуса иметь canonical immutable representation:
+
+    token string <-> TokenID integer
+
+и плотные структуры для:
+
+- token sequence;
+- line boundaries;
+- physical blocks;
+- metadata labels;
+- token counts;
+- block token counts;
+- transition indices;
+
+где это действительно переиспользуется несколькими анализаторами.
+
+Предпочтительный тип TokenID выбрать на основании реального vocabulary size.
+Не hardcode uint16/int32 без проверки диапазона.
+
+String tokens должны сохраняться на I/O/reporting boundary.
+Внутренние repeated numerical calculations по возможности должны работать
+с integer IDs.
+
+ВАЖНО:
+
+не делать massive rewrite всех packages только ради единого abstraction.
+Shared representation вводить только там, где оно уменьшает реальную
+стоимость или дублирование.
+
+---
+
+# Phase 3 — reusable computational primitives
+
+Проверить повторение следующих примитивов:
+
+- token indexing;
+- physical block construction;
+- transition counting;
+- frequency vectors;
+- probability vectors;
+- entropy;
+- JSD;
+- cosine similarity;
+- permutation generation;
+- block-aware permutation;
+- BH FDR;
+- empirical p-value;
+- LOBO;
+- deterministic RNG derivation;
+- checkpoint fingerprinting;
+- progress/status reporting;
+- profiling.
+
+Если несколько packages реализуют фактически один алгоритм, вынести общий
+implementation ТОЛЬКО если можно доказать эквивалентность semantics.
+
+Не объединять функции, которые выглядят похожими, но реализуют разные null
+models или conditioning rules.
+
+---
+
+# Phase 4 — profile expensive analyzers
+
+Подключить существующий `internal/profiling` ко всем long-running CLI.
+
+Минимум:
+
+    -cpuprofile
+    -memprofile
+    -trace
+
+Без флагов profiling должен иметь практически нулевую дополнительную стоимость.
+
+Для expensive stages выполнить representative reduced runs, которые сохраняют
+структуру вычислений, но заканчиваются достаточно быстро для profiling.
+
+Не использовать reduced runs для научных результатов.
+
+Собрать baseline:
+
+    profiles/before/<analyzer>.cpu.pprof
+    profiles/before/<analyzer>.mem.pprof
+
+и summary в PERFORMANCE_AUDIT.md.
+
+Приоритет сначала отдать стадиям, которые исторически выполнялись часами.
+
+Особенно проверить:
+
+- structural-projection-analyze
+- conditional-regime-analyze
+- token-relation-validate
+- replicated-local-structure-audit
+- higher-order-sequence-validate
+- normalization/random-baseline pipeline
+- structural-validate
+- structural-profile-stability
+- structural-reliability
+
+и любые другие CLI, которые profiling покажет более дорогими.
+
+---
+
+# Phase 5 — optimize hot paths
+
+Использовать следующие техники только после подтверждения profiler:
+
+## A. Compile strings to IDs
+
+В repeated numerical hot loops заменить string-keyed structures на dense
+integer-indexed representations там, где это корректно.
+
+## B. Hoist invariants
+
+Вынести за permutation/bootstrap/fold loops всё, что не зависит от replicate.
+
+Например:
+
+- baseline probabilities;
+- opportunity counts;
+- static masks;
+- eligibility;
+- block geometry;
+- candidate indexing;
+- constant normalization factors;
+- immutable marginal distributions.
+
+Но внимательно проверить: quantity действительно должно быть invariant
+относительно конкретного null model.
+
+## C. Reusable workspace
+
+Для repeated replicates использовать заранее выделенные:
+
+- slices;
+- matrices;
+- counters;
+- temporary vectors;
+- scratch buffers.
+
+Избегать повторного `make()` больших структур.
+
+## D. Sparse reset / dirty list
+
+Если dense array значительно больше реально изменяемой части, использовать
+dirty indices/generation counters вместо полного memset, если benchmark
+подтверждает выигрыш.
+
+## E. Avoid unnecessary outputs
+
+Если permutation stage требует только scalar statistics, не строить profiles,
+maps или intermediate structures, которые затем отбрасываются.
+
+Использовать explicit computation modes вместо скрытого изменения поведения.
+
+## F. Preallocation
+
+Использовать известные upper bounds для slice/map capacity.
+
+## G. Avoid repeated parsing
+
+Один CLI не должен повторно читать/парсить один и тот же immutable input без
+необходимости.
+
+---
+
+# Phase 6 — concurrency audit
+
+ТОЛЬКО после устранения allocation/hash/recomputation bottlenecks проверить,
+есть ли смысл распараллелить independent replicates.
+
+Не добавлять concurrency автоматически.
+
+Если она добавляется:
+
+- default results должны оставаться deterministic;
+- одинаковый seed должен давать одинаковые outputs независимо от scheduling;
+- RNG stream каждого replicate должен определяться его index, а не порядком
+  выполнения goroutines;
+- reduction order floating-point statistics должен быть deterministic;
+- checkpoint/resume должен давать тот же результат, что uninterrupted run;
+- race detector должен быть чистым.
+
+Если последовательная оптимизация уже даёт приемлемое время, предпочесть
+простую последовательную реализацию.
+
+---
+
+# Phase 7 — correctness oracle
+
+КРИТИЧЕСКОЕ ТРЕБОВАНИЕ.
+
+Перед заменой каждого hot path сохранить reference implementation или создать
+эквивалентный test oracle.
+
+Для каждой оптимизации сравнивать old vs new на synthetic fixtures.
+
+Требовать:
+
+- integer/count outputs: exact equality;
+- categorical decisions: exact equality;
+- RNG-dependent results: exact equality при сохранении iteration semantics;
+- floating point: exact equality, где возможно;
+- если изменился только порядок суммирования — tolerance не хуже 1e-12 или
+  обоснованный более строгий package-specific tolerance.
+
+Отдельно проверять edge cases:
+
+- empty block;
+- one-token block;
+- absent candidate;
+- zero opportunities;
+- rare tokens;
+- unknown metadata;
+- missing transition;
+- all-zero vector;
+- singleton class;
+- boundary token;
+- candidate absent from a replicate.
+
+Никогда не превращать "absence" в числовой zero, если старый algorithm
+различал эти состояния.
+
+---
+
+# Phase 8 — golden integration tests
+
+Создать небольшой deterministic corpus fixture, на котором можно быстро
+запустить ключевые pipeline stages.
+
+Зафиксировать golden outputs или semantic hashes.
+
+После refactoring проверить old/new output.
+
+Для production-equivalent runs, где это практически возможно, сравнить
+generated files byte-for-byte.
+
+Допустимые различия только:
+
+- runtime;
+- profiling files;
+- explicitly documented performance metadata.
+
+Научные TSV/YAML/JSON/GraphML/SVG/Markdown результаты не должны меняться.
+
+---
+
+# Phase 9 — benchmarks
+
+Добавить Go benchmarks для выявленных hot paths.
+
+Минимально измерять:
+
+    ns/op
+    B/op
+    allocs/op
+
+Для каждого существенно оптимизированного участка сохранить before/after
+результаты в:
+
+    PERFORMANCE_REFACTOR_REPORT.md
+
+Не ставить искусственную цель вроде "каждый analyzer должен стать 10x быстрее".
+
+Цель — устранить доказанные implementation bottlenecks.
+
+---
+
+# Phase 10 — full pipeline runner
+
+Проверить `run-full-analysis.sh`.
+
+Сделать его пригодным для performance measurement:
+
+- elapsed time каждого stage;
+- общий elapsed time;
+- явное имя текущего stage;
+- failure propagation;
+- deterministic invocation;
+- без изменения параметров научного анализа.
+
+Если разумно, добавить отдельный:
+
+    run-profile-analysis.sh
+
+для representative profiling runs.
+
+Не смешивать profiling run с production scientific run.
+
+---
+
+# Phase 11 — validation
+
+После всех изменений обязательно:
+
+    gofmt
+    go test ./...
+    go vet ./...
+    go test -race ./...
+
+Если race run для всего repository непрактичен, выполнить его минимум для
+изменённых packages и объяснить ограничение.
+
+Запустить benchmarks.
+
+Затем выполнить representative end-to-end pipeline и проверить outputs.
+
+---
+
+# Deliverables
+
+1. PERFORMANCE_AUDIT.md
+
+   Архитектурный/performance audit до изменений.
+
+2. PERFORMANCE_REFACTOR_REPORT.md
+
+   Для каждой оптимизации:
+
+   - bottleneck;
+   - profiler evidence;
+   - old implementation;
+   - new implementation;
+   - correctness validation;
+   - before/after wall time;
+   - CPU profile difference;
+   - allocated bytes;
+   - allocations;
+   - speedup.
+
+3. Shared internal packages только там, где они реально оправданы.
+
+4. Profiling flags для всех long-running CLI.
+
+5. Benchmarks для основных hot paths.
+
+6. Tests old-vs-new/reference-vs-optimized.
+
+7. Обновлённый README:
+   - profiling;
+   - performance runner;
+   - новые shared architecture components;
+   - никаких изменений научной интерпретации результатов.
+
+---
+
+# Execution strategy
+
+НЕ выполнять giant rewrite одним commit.
+
+Работать поэтапно:
+
+1. inventory;
+2. profiling;
+3. определить top bottlenecks;
+4. оптимизировать один analyzer;
+5. доказать equivalence;
+6. benchmark;
+7. только затем переходить к следующему.
+
+Приоритет выбирать по приблизительной величине:
+
+    expected total saved pipeline runtime
+
+а не по простоте изменения кода.
+
+После первых 3–5 analyzer optimizations повторно измерить полный pipeline:
+bottleneck может переместиться.
+
+---
+
+# Scientific invariance rule
+
+Главный критерий успешности:
+
+    same experiment + same inputs + same seed
+        => same scientific result
+
+Performance improvement не является основанием для изменения statistical
+experiment.
+
+Если оптимизация требует изменения experiment semantics — НЕ выполнять её.
+Зафиксировать возможность в отчёте отдельно как потенциальную будущую
+методологическую работу.
+
+---
+
+# Initial reference
+
+Использовать оптимизацию `internal/transitionnetwork/permworkspace.go` как
+пример успешного pattern:
+
+    strings/maps in hot path
+        ↓
+    compiled integer representation
+        ↓
+    precomputed invariants
+        ↓
+    reusable buffers
+        ↓
+    specialized computation mode
+        ↓
+    reference-vs-optimized tests
+
+Но не предполагать заранее, что этот pattern оптимален для каждого analyzer.
+Profiler является источником истины.

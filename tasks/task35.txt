@@ -1,0 +1,212 @@
+Task35 — Ansible Role for Ephemeral Distributed Workers
+
+Goal
+
+Create an Ansible role that builds, installs, configures, starts, verifies and removes Task33/Task34 remote workers.
+
+Workers are intentionally ephemeral and live under /tmp on target hosts. The role must support both deployment and complete cleanup. It manages workers only: never deploy the coordinator or CA private key.
+
+Core state model
+
+  voynich_worker_state: present|absent
+  voynich_worker_install_dir: /tmp/voynich-worker
+
+present:
+- build/obtain correct worker binary;
+- create temporary directory;
+- install binary/config;
+- install ca.crt plus that host's unique worker cert/key;
+- start worker;
+- verify mTLS/readiness.
+
+absent:
+- stop exact managed worker;
+- remove runtime artifacts, credentials, caches and binary;
+- remove complete managed directory;
+- verify no managed worker remains.
+
+Phase 1 — Audit actual worker interface
+
+Use the interfaces produced by Task33/34. Identify worker build command, runtime flags, coordinator URL, mTLS flags, concurrency, cache/input directories, logging, graceful shutdown and readiness mechanism. Do not invent a parallel configuration system.
+
+Phase 2 — Role structure
+
+Use conventional layout, following existing repository conventions if present:
+
+ansible/
+  roles/
+    voynich_worker/
+      defaults/main.yml
+      tasks/main.yml
+      handlers/main.yml
+      templates/...
+      README.md
+  inventory.example.yml
+  deploy-workers.yml
+
+Phase 3 — Variables
+
+Document at least:
+
+voynich_worker_state
+voynich_worker_install_dir
+voynich_worker_coordinator_url
+voynich_worker_concurrency
+voynich_worker_ca_src
+voynich_worker_cert_src
+voynich_worker_key_src
+voynich_worker_build_mode / binary source as appropriate
+voynich_worker_log_dir or logging mode if required
+
+Default install dir: /tmp/voynich-worker.
+
+Do not define authoritative WorkerID independently of the Task34 certificate identity.
+
+Phase 4 — Build strategy
+
+Choose based on repository reality:
+A. build once on Ansible controller and copy;
+B. build on targets;
+C. copy supplied prebuilt binary.
+
+Account for GOOS/GOARCH if workers differ. Avoid rebuilding independently on every identical host without reason. Make deployed binary version/identity diagnosable.
+
+Phase 5 — Installation
+
+For state=present:
+- create managed /tmp directory;
+- copy worker executable;
+- copy ca.crt;
+- copy this host's individual worker certificate/key;
+- create needed cache/work directories;
+- use restrictive permissions (private key preferably 0600);
+- fail if credential material is missing.
+
+NEVER copy ca.key.
+
+Phase 6 — Process lifecycle
+
+Use the smallest robust mechanism compatible with /tmp payload.
+
+Worker must survive SSH session termination, have known process identity, restart idempotently, stop cleanly and leave no orphan.
+
+A transient systemd-run unit is acceptable if available, while payload remains under /tmp and the role removes the unit/process for state=absent. If systemd is not assumed, implement safe PID validation.
+
+Never kill by a broad process-name match.
+
+Phase 7 — Per-host mTLS mapping
+
+Each inventory host receives its own cert/key through host variables.
+
+The role should guard against accidentally deploying one shared worker private key to all hosts unless explicitly allowed for a test environment.
+
+Identity remains certificate-derived.
+
+Phase 8 — Readiness
+
+After start verify more than process existence.
+
+Prefer coordinator registration/heartbeat or worker self-check. At minimum verify:
+- process alive;
+- mTLS handshake succeeds;
+- coordinator recognizes worker or worker can correctly acquire/decline work.
+
+Deployment fails if worker runs but cannot authenticate.
+
+Phase 9 — Removal
+
+For state=absent:
+1. stop exact managed process;
+2. wait bounded time;
+3. force termination only after graceful timeout;
+4. remove PID/runtime metadata;
+5. remove worker cert/key and copied CA;
+6. remove managed caches/input bundles;
+7. remove executable;
+8. remove complete managed /tmp directory;
+9. verify managed process is gone.
+
+Repeated absent runs must be safe. Never delete outside configured managed directory.
+
+Phase 10 — /tmp/reboot semantics
+
+Workers are deliberately ephemeral. Tolerate /tmp being cleared on reboot and stale coordinator leases from vanished workers. Re-running the role recreates the worker from scratch.
+
+Do not add boot persistence by default.
+
+Phase 11 — Fleet/rolling deployment
+
+Support normal Ansible targeting:
+- all workers;
+- one host;
+- groups/subsets;
+- serial/rolling deployment;
+- removal from all workers.
+
+No custom scheduler in Ansible.
+
+Phase 12 — Security
+
+- no ca.key on workers;
+- private keys restrictive;
+- no_log where task output could expose secrets;
+- never print key contents;
+- never disable TLS verification;
+- production coordinator URL must use HTTPS;
+- no silent unauthenticated fallback.
+
+Document Ansible Vault (or operator-controlled equivalent) for protecting worker private keys stored with Ansible material; do not require a new secret-management service.
+
+Phase 13 — Idempotency tests
+
+Verify:
+1. present on clean host;
+2. present again;
+3. running/authenticated;
+4. absent;
+5. absent again;
+6. present after absent;
+7. present after simulated /tmp loss;
+8. changed certificate triggers controlled redeploy/restart;
+9. changed binary triggers controlled redeploy/restart.
+
+Use ansible-playbook --check where practical and document limitations.
+
+Phase 14 — Example inventory/playbook
+
+Provide minimal inventory.example.yml and deploy-workers.yml demonstrating host-specific worker certificates. Include no real hosts, keys, passwords or production certificates.
+
+Phase 15 — End-to-end acceptance
+
+On at least one reachable test worker:
+1. deploy;
+2. verify mTLS;
+3. verify coordinator sees/uses worker;
+4. run a small deterministic distributed job;
+5. compare scientific output with established oracle;
+6. remove worker;
+7. verify process gone;
+8. verify /tmp/voynich-worker gone;
+9. deploy again successfully.
+
+If multiple hosts exist, repeat with at least two unique client certificates.
+
+Documentation
+
+Create ansible/roles/voynich_worker/README.md and update DISTRIBUTED_EXECUTION_OPERATIONS.md with prerequisites, variables, inventory, certificate mapping, build strategy, deployment, verification, rolling deployment, removal, /tmp behavior and security.
+
+Constraints
+
+- Payload under /tmp by default.
+- Complete removal required.
+- No coordinator deployment.
+- No CA private-key deployment.
+- No scientific/RNG/JobID/reduction changes.
+- No permanent boot service by default.
+- No Docker/Kubernetes requirement.
+- No external secret-management requirement.
+- Do not modify firewalls unless explicitly justified; workers make outbound connections to coordinator.
+
+Definition of Done
+
+Task35 is complete when a reusable idempotent Ansible role can build/install an ephemeral worker under /tmp, install unique mTLS credentials, start and verify it independently of SSH, restart on binary/certificate changes, completely remove process and managed files with state=absent, tolerate /tmp loss/reboot, and includes reproducible example inventory/playbook and operational documentation.

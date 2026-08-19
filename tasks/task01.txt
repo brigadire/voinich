@@ -1,0 +1,50 @@
+Сделай go-программу dict-analyze, которая получает на входе yaml-файл (dictionary.yaml).
+Структура:
+type Position struct {
+	Position int `yaml:"position"`
+	Count    int `yaml:"count"`
+}
+
+type Token struct {
+	Token string `yaml:"token"`
+	Count int    `yaml:"count"`
+}
+
+type Tokens struct {
+	Token            string     `yaml:"token"`
+	Count            int        `yaml:"count"`
+	PositionInString []Position `yaml:"position_in_string"`
+	WordBefore       []Token    `yaml:"word_before"`
+	WordAfter        []Token    `yaml:"word_after"`
+	LineStartCount   int        `yaml:"line_start_count"`
+	LineEndCount     int        `yaml:"line_end_count"`
+}
+
+
+Первая версия анализатора должна посчитать для каждого токена:
+
+P(start | token) и P(end | token) — насколько он привязан к началу/концу строки;
+число уникальных предшественников и последователей;
+энтропию левого и правого окружения;
+P(B|A) для всех переходов A → B;
+асимметрию A→B против B→A;
+самопереходы A→A;
+насколько распределение позиции токена отличается от среднего по корпусу.
+
+Результат работы программа сохраняет в tokens_analysis.yaml:
+
+---
+- token: qokedy
+  count: 305
+  start_probability: 0.08
+  end_probability: 0.01
+  left:
+   unique: 47
+   entropy: 3.72
+  right:
+   unique: 12
+   entropy: 1.43
+  structural_scores:
+   positional_specialization: 0.61
+   successor_restriction: 0.82
+   predecessor_restriction: 0.34
