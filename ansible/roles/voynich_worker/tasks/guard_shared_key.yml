@@ -28,4 +28,8 @@
       scratch/test environment, set voynich_worker_allow_shared_key: true
       to proceed anyway.
   vars:
-    voynich_worker_all_checksums: "{{ ansible_play_hosts_all | map('extract', hostvars, 'voynich_worker_key_checksum') | list }}"
+    # ansible_play_hosts_all includes hosts that already failed an earlier
+    # task in this run (e.g. present.yml's missing-credential assert) and
+    # therefore never reached the set_fact above - extracting from their
+    # hostvars raises AttributeError. ansible_play_hosts excludes them.
+    voynich_worker_all_checksums: "{{ ansible_play_hosts | map('extract', hostvars, 'voynich_worker_key_checksum') | list }}"
