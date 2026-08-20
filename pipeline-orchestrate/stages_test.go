@@ -41,6 +41,7 @@ func TestStagesMatchRepository(t *testing.T) {
 		"conditional-regime-pki": true,
 		"codex_prepare":          true,
 		"pipeline-orchestrate":   true,
+		"experiment-compare":     true,
 	}
 	for _, e := range entries {
 		if !e.IsDir() {
