@@ -281,7 +281,17 @@ func loadOrientationProvenance(corpusPath, corpusHash string) (*TransformationPr
 	if err := json.Unmarshal(data, &manifest); err != nil {
 		return nil, fmt.Errorf("parse transformation manifest %s: %w", path, err)
 	}
-	if manifest.SchemaVersion != orientation.SchemaVersion || manifest.Transformation != orientation.Transformation || manifest.TransformationVersion != orientation.TransformationVersion || !orientation.ValidMode(manifest.Mode) {
+	if manifest.Transformation != orientation.Transformation {
+		// <corpus>.transform.json is not exclusive to orientation: task46's
+		// corpus-transform (and any future transformer) writes its own
+		// manifest at the same path with a different schema. Orientation
+		// provenance is optional enrichment (Manifest.Transformation is
+		// omitempty), so a sidecar that doesn't self-identify as an
+		// orientation manifest is just "no orientation provenance here",
+		// not a corrupt orientation manifest.
+		return nil, nil
+	}
+	if manifest.SchemaVersion != orientation.SchemaVersion || manifest.TransformationVersion != orientation.TransformationVersion || !orientation.ValidMode(manifest.Mode) {
 		return nil, fmt.Errorf("transformation manifest %s has unsupported orientation schema or mode", path)
 	}
 	if manifest.OutputSHA256 != corpusHash {
