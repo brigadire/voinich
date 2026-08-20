@@ -1,0 +1,731 @@
+Task50 — Scientific Stage Applicability and Empty-Result Safety
+
+Цель
+
+Провести аудит всех scientific stages текущего pipeline и устранить класс
+ошибок, при котором легитимно пустой/недостаточный вход для конкретного
+анализа приводит к аварийному завершению experiment.
+
+Pipeline должен различать как минимум:
+
+1. COMPLETED_WITH_RESULTS
+2. COMPLETED_EMPTY
+3. NOT_APPLICABLE
+4. FAILED
+
+Ключевой принцип:
+
+Отсутствие statistically eligible candidates, target pairs, observations
+или достаточной support не является software failure.
+
+FAILED допустим только при реальной технической/инвариантной ошибке:
+corrupt input, malformed artifact, schema violation, I/O error,
+нарушение internal invariant и т.п.
+
+======================================================================
+1. ИСХОДНАЯ ПРОБЛЕМА
+======================================================================
+
+На corpus visnusahasranama-v1:
+
+    N = 2035
+    max token frequency = 23
+
+несколько stages получили корректно разреженные scientific inputs.
+
+Были обнаружены три случая:
+
+A. local-regime-analyze
+
+    upstream distance-context-analyze корректно нашёл 0 target pairs,
+    но local-regime-analyze завершался:
+
+        no target pairs
+
+    Хотя downstream scientific logic уже умела работать с пустым списком.
+
+B. higher-order-sequence-validate
+
+    отсутствовали n>=3 sequences с:
+
+        shuffle_block_fdr_q <= 0.05
+
+    stage падал, хотя output/report logic уже могла корректно сформировать:
+
+        NO_REPLICATED_HIGHER_ORDER_CONDITIONAL_DEPENDENCE
+
+C. positional-continuation-validate
+
+    отсутствовал HIGHER_ORDER_REPLICATED target.
+
+    Здесь scientific analysis действительно не имеет объекта исследования,
+    поэтому правильный результат:
+
+        NOT_APPLICABLE
+
+    а не empty scientific result и не FAILED.
+
+Эти три fixes уже сделаны.
+
+Task50 должен найти остальные аналогичные места до следующих experiments.
+
+======================================================================
+2. AUDIT ВСЕХ SCIENTIFIC STAGES
+======================================================================
+
+Проверить все stages текущего pipeline, включая новую Stage 0 и все
+scientific stages.
+
+Для каждой стадии составить таблицу:
+
+    stage
+    required inputs
+    eligibility conditions
+    minimum observations/support
+    possible empty upstream artifact
+    current behavior
+    scientifically correct behavior
+    status on insufficient support
+
+Создать:
+
+    STAGE_APPLICABILITY_AUDIT.md
+
+Особенно искать код вида:
+
+    if len(x) == 0 {
+        return errors.New(...)
+    }
+
+    if count < threshold {
+        return fmt.Errorf(...)
+    }
+
+    if target == nil {
+        return error
+    }
+
+и определить, является ли это:
+
+A. настоящим invariant failure;
+
+B. COMPLETED_EMPTY;
+
+C. NOT_APPLICABLE.
+
+Не заменять ошибки автоматически — решение должно быть scientific,
+а не syntactic.
+
+======================================================================
+3. ЧЁТКАЯ СЕМАНТИКА СТАТУСОВ
+======================================================================
+
+Зафиксировать в общей orchestration/library model:
+
+COMPLETED
+
+    Scientific analysis применим и выполнен.
+
+Допустимо, что результат содержит zero significant findings.
+
+Например:
+
+    candidates tested = 100
+    significant = 0
+
+или даже:
+
+    eligible candidates = 0
+
+если сама гипотеза всё равно корректно тестируется как empty result.
+
+NOT_APPLICABLE
+
+    Scientific question невозможно поставить для данного corpus,
+    потому что отсутствует обязательная target structure.
+
+Например:
+
+    positional-continuation требует выбранного higher-order replicated
+    sequence, а такого sequence нет.
+
+FAILED
+
+    Реальная ошибка:
+
+    malformed/corrupt artifact
+    schema mismatch
+    impossible invariant
+    invalid UTF-8 after Stage 0
+    filesystem failure
+    failed checksum
+    executor/protocol failure after retries
+    numerical NaN/Inf where prohibited
+    bug/internal inconsistency
+
+Не использовать FAILED для:
+
+    no candidates
+    no significant candidates
+    insufficient frequency
+    insufficient blocks
+    no eligible pair
+    empty statistically filtered inventory
+
+если это ожидаемая область входных данных.
+
+======================================================================
+4. COMPLETED_EMPTY VS COMPLETED
+======================================================================
+
+Не обязательно вводить новый orchestration enum, если существующая
+архитектура не требует его.
+
+Можно оставить:
+
+    status = completed
+
+и в scientific summary:
+
+    result_status = EMPTY / NO_ELIGIBLE_CANDIDATES
+
+Но machine-readable output должен позволять отличить:
+
+    analysis ran and found nothing
+
+от:
+
+    analysis was not applicable.
+
+Не кодировать оба случая просто как нули.
+
+======================================================================
+5. NOT_APPLICABLE CONTRACT
+======================================================================
+
+Создать общий механизм для scientific stages, если его ещё нет.
+
+Предпочтительно typed result/error, например концептуально:
+
+    applicability.NotApplicable(reason)
+
+или другой существующий project-style mechanism.
+
+Не распознавать NOT_APPLICABLE по тексту stderr.
+
+Orchestrator должен получать structured status.
+
+Каждый NOT_APPLICABLE обязан иметь:
+
+    stage
+    reason_code
+    human_readable_reason
+    dependency/input causing N/A
+
+Например:
+
+    reason_code:
+        NO_HIGHER_ORDER_REPLICATED_TARGET
+
+    reason:
+        no HIGHER_ORDER_REPLICATED candidate is available
+
+======================================================================
+6. REASON CODES
+======================================================================
+
+Создать небольшой стабильный vocabulary reason codes.
+
+Например:
+
+    NO_ELIGIBLE_CANDIDATES
+    NO_TARGET_PAIRS
+    NO_REPLICATED_SEQUENCE
+    NO_HIGHER_ORDER_TARGET
+    INSUFFICIENT_OBSERVATIONS
+    INSUFFICIENT_BLOCKS
+    INSUFFICIENT_TOKEN_FREQUENCY
+    UPSTREAM_NOT_APPLICABLE
+
+Не создавать код для каждого отдельного token/pair.
+
+Reason codes должны быть пригодны для Task45 experiment-compare.
+
+======================================================================
+7. DEPENDENCY PROPAGATION
+======================================================================
+
+Проверить dependency graph.
+
+Если Stage B зависит от Stage A:
+
+A = NOT_APPLICABLE
+
+не означает автоматически:
+
+B = NOT_APPLICABLE.
+
+Нужно определить тип зависимости.
+
+Пример:
+
+Stage 25 N/A
+    ↓
+Stage 26 действительно N/A
+
+Но независимый Stage 27 должен продолжить работу.
+
+Это уже произошло правильно на Vishnu experiment и должно стать
+общим правилом.
+
+Не прекращать весь pipeline из-за N/A одного branch.
+
+Orchestrator должен продолжать все независимые downstream stages.
+
+======================================================================
+8. PRE-FLIGHT APPLICABILITY
+======================================================================
+
+Где возможно, eligibility проверять ДО:
+
+    создания process executor
+    remote coordinator
+    worker leases
+    больших allocations
+    expensive preprocessing
+
+Пример positional-continuation показал проблему:
+
+    Fingerprint()
+
+пытался разрешить target раньше applicability check.
+
+Провести audit аналогичных случаев.
+
+Порядок должен быть:
+
+    load minimal inputs
+        ↓
+    determine applicability
+        ↓
+    if N/A -> emit status/output
+        ↓
+    only then initialize expensive executor/resources
+
+Это особенно важно для distributed stages.
+
+======================================================================
+9. REMOTE/DISTRIBUTED STAGES
+======================================================================
+
+Для всех stages с remote executor проверить:
+
+- applicability определяется на coordinator;
+- worker farm не запускает jobs при N/A;
+- no eligible jobs не считается executor failure;
+- zero-job distributed run корректно завершается;
+- checkpoint не создаёт ложное FAILED state.
+
+Remote worker availability вообще не должна влиять на applicability.
+
+======================================================================
+10. OUTPUT CONTRACT ДЛЯ EMPTY RESULTS
+======================================================================
+
+Если stage применим, но scientific result пуст:
+
+создавать обычные expected output files.
+
+TSV:
+
+    header присутствует
+    data rows = 0
+
+YAML/JSON:
+
+    schema присутствует
+    counts = 0
+    result_status = ...
+
+Markdown:
+
+    ясно говорит:
+
+        No eligible/significant candidates were found.
+
+Не пропускать outputs молча.
+
+Это позволит freeze/verify/Task45 отличать корректный empty artifact
+от потерянного файла.
+
+======================================================================
+11. OUTPUT CONTRACT ДЛЯ NOT_APPLICABLE
+======================================================================
+
+Для N/A stage обеспечить machine-readable запись хотя бы в run-state
+и comparison-visible metadata.
+
+По возможности создать небольшой standard artifact:
+
+    stage_status.yaml
+
+например:
+
+    status: NOT_APPLICABLE
+    reason_code: NO_HIGHER_ORDER_REPLICATED_TARGET
+    reason: ...
+    upstream_stage: higher-order-sequence-validate
+
+Но не создавать fake scientific TSV с нулями, если анализ не выполнялся.
+
+======================================================================
+12. TASK45 / EXPERIMENT-COMPARE
+======================================================================
+
+experiment-compare должен уметь различать:
+
+    numeric 0
+    COMPLETED_EMPTY
+    NOT_APPLICABLE
+    FAILED
+    missing artifact
+
+Если Task45 ещё не реализован — зафиксировать contract для его будущей
+реализации.
+
+Если реализован — обновить parser/schema.
+
+Особенно:
+
+    Stage25 NOT_APPLICABLE
+
+не должен превращаться в:
+
+    higher_order_replicated = 0
+
+без дополнительного applicability indicator.
+
+Это разные научные утверждения.
+
+======================================================================
+13. SMALL/SPARSE CORPUS TEST SUITE
+======================================================================
+
+Добавить integration fixtures специально для sparse corpora.
+
+Минимально:
+
+A. N = 1
+B. N ~ 50
+C. N ~ 500
+D. N ~ 2000
+E. large vocabulary / low repetition
+F. one repeated token
+G. all tokens unique
+H. no n>=3 repeated sequence
+I. no eligible pair
+J. only one block eligible
+
+Pipeline должен завершаться без FAILED там, где научно допустимы
+EMPTY/N/A.
+
+======================================================================
+14. VISHNU REGRESSION
+======================================================================
+
+Добавить fixture/acceptance scenario, воспроизводящий свойства:
+
+    token count ~2035
+    maximum frequency <30
+    sparse candidate space
+
+Проверить минимум:
+
+- local-regime does not fail on zero target pairs;
+- higher-order validation does not fail when strict candidate inventory
+  is empty;
+- positional continuation becomes NOT_APPLICABLE;
+- transition-network still executes;
+- whole experiment reaches finished state.
+
+Не обязательно включать реальный copyrighted/source corpus в tests;
+synthetic fixture с теми же structural properties достаточен.
+
+======================================================================
+15. THRESHOLDS НЕ АДАПТИРОВАТЬ
+======================================================================
+
+Критически важно:
+
+НЕ решать проблему так:
+
+    min_observations=30 -> min(30, corpus_size/...)
+
+НЕ уменьшать автоматически:
+
+    min-token-count
+    min-observations
+    FDR thresholds
+    required blocks
+    candidate support
+
+Scientific parameters должны оставаться frozen.
+
+Sparse corpus может просто не иметь данных для конкретного test.
+
+Это корректный результат.
+
+======================================================================
+16. FAIL-CLOSED НА НАСТОЯЩИХ ОШИБКАХ
+======================================================================
+
+Предохранитель не должен превратить pipeline в систему,
+которая проглатывает настоящие bugs.
+
+Например, эти случаи всё ещё MUST FAIL:
+
+    required TSV malformed
+    duplicate impossible IDs
+    corpus checksum changed
+    NaN statistic
+    negative count
+    impossible block index
+    schema missing required column
+    incompatible artifact version
+    RNG/checkpoint corruption
+
+Каждый изменённый error path должен иметь test, доказывающий,
+что настоящий invariant violation всё ещё FAILED.
+
+======================================================================
+17. AUDIT ERROR MESSAGES
+======================================================================
+
+Поискать по repo:
+
+    "no "
+    "none "
+    "empty"
+    "insufficient"
+    "not enough"
+    "zero"
+    "candidate"
+    "target"
+    "observations"
+    "eligible"
+
+в return errors / fmt.Errorf.
+
+Каждый такой error классифицировать вручную.
+
+Не ограничиваться stages, которые уже падали.
+
+======================================================================
+18. ORCHESTRATOR BEHAVIOR
+======================================================================
+
+pipeline-orchestrate должен:
+
+- не прекращать experiment из-за N/A;
+- помечать stage finished/N/A;
+- продолжать независимые branches;
+- корректно resume;
+- не пытаться повторно запустить N/A stage;
+- корректно freeze;
+- корректно verify;
+- показывать N/A в status;
+- включать N/A summary в REPORT.md.
+
+Пример:
+
+    28/28 stages:
+        24 completed
+         4 NOT_APPLICABLE
+         0 failed
+
+должен считаться успешным завершённым experiment.
+
+======================================================================
+19. RESUME
+======================================================================
+
+Проверить сценарий:
+
+    stage becomes NOT_APPLICABLE
+    process interrupted later
+    pipeline resumed
+
+N/A stage не должна запускаться повторно.
+
+Reason/status должны сохраняться deterministically.
+
+======================================================================
+20. MANIFEST / SCIENTIFIC IDENTITY
+======================================================================
+
+Applicability result определяется corpus + frozen scientific parameters.
+
+Он не должен изменять исходный manifest/ExperimentID постфактум.
+
+run-state фиксирует actual applicability.
+
+Freeze snapshot содержит этот результат.
+
+======================================================================
+21. REPORTING
+======================================================================
+
+В REPORT.md добавить сводку:
+
+    Completed stages
+    Completed with empty result
+    Not applicable stages
+    Failed stages
+
+Для N/A показывать причину.
+
+Не писать "successful scientific finding" для N/A.
+
+======================================================================
+22. PERFORMANCE
+======================================================================
+
+Applicability check должен быть дешёвым.
+
+Не запускать permutation/distribution work, если уже известно,
+что необходимого candidate inventory нет.
+
+Если аудит обнаружит такие случаи, отметить как дополнительный
+performance improvement.
+
+Но не менять научный алгоритм ради оптимизации.
+
+======================================================================
+23. VALIDATION НА СУЩЕСТВУЮЩИХ EXPERIMENTS
+======================================================================
+
+Проверить regressions на:
+
+    Voynich
+    Doyle
+    Longfellow
+    MS-DOS
+    Astafiev
+    Vishnu sparse case
+
+Для обычных корпусов scientific outputs должны остаться byte-identical.
+
+Новые applicability metadata допустимы только для новых experiment runs,
+если backward compatibility требует этого.
+
+Frozen experiments не менять.
+
+======================================================================
+24. TESTS
+======================================================================
+
+Минимально:
+
+- zero candidate list -> correct EMPTY;
+- zero target pair -> correct EMPTY;
+- missing mandatory target -> N/A;
+- upstream N/A propagation;
+- independent stage after N/A still runs;
+- zero remote jobs;
+- resume after N/A;
+- freeze/verify with N/A;
+- malformed input still FAILED;
+- corrupted artifact still FAILED;
+- NaN/invariant violation still FAILED.
+
+======================================================================
+25. DOCUMENTATION
+======================================================================
+
+Создать:
+
+    SCIENTIFIC_STAGE_APPLICABILITY.md
+
+Документировать:
+
+    FAILED vs EMPTY vs NOT_APPLICABLE
+    eligibility rules
+    dependency propagation
+    reason codes
+    distributed behavior
+    comparison semantics
+
+Обновить:
+
+    pipeline-orchestrate docs
+    experiment-compare docs/schema
+    distributed operations documentation
+
+======================================================================
+26. НЕ ДЕЛАТЬ
+======================================================================
+
+НЕ:
+
+- адаптировать scientific thresholds к corpus size;
+- превращать N/A в numeric zero;
+- проглатывать malformed input;
+- blanket-catch все errors как NOT_APPLICABLE;
+- менять scientific formulas;
+- менять RNG;
+- менять existing frozen experiments;
+- добавлять corpus-specific exception вида:
+      if corpus == Vishnu ...
+- использовать имя experiment для определения applicability.
+
+======================================================================
+DELIVERABLES
+======================================================================
+
+1. Полный audit всех scientific stages.
+2. STAGE_APPLICABILITY_AUDIT.md.
+3. Общая семантика COMPLETED/EMPTY/N/A/FAILED.
+4. Structured NOT_APPLICABLE mechanism.
+5. Stable reason codes.
+6. Dependency-aware orchestrator continuation.
+7. Pre-executor applicability checks.
+8. Sparse-corpus regression suite.
+9. Vishnu-like acceptance test.
+10. Task45-compatible missingness/applicability contract.
+11. Documentation.
+
+======================================================================
+VALIDATION
+======================================================================
+
+    go build ./...
+    go vet ./...
+    go test ./...
+    go test -race ./...
+    git diff --check
+
+Проверить существующие frozen checksums.
+
+======================================================================
+DEFINITION OF DONE
+======================================================================
+
+Task50 завершён, когда ни одна scientific stage не завершает experiment
+ошибкой только потому, что corpus слишком мал/разрежен и корректно не
+содержит eligible candidates или target structures.
+
+Каждая такая ситуация детерминированно классифицируется как:
+
+    completed empty result
+
+или:
+
+    NOT_APPLICABLE
+
+в зависимости от научной семантики.
+
+Настоящие data/software/invariant errors по-прежнему приводят к FAILED.
+
+Pipeline продолжает все независимые stages, корректно resume/freeze/verify
+и сохраняет applicability как часть воспроизводимого результата
+эксперимента.
