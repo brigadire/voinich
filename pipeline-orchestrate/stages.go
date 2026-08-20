@@ -67,7 +67,7 @@ type GenericSupport struct {
 }
 
 // stages is the complete, ordered (topologically sorted by dependency)
-// Task36 production pipeline: 27 commands from the raw IVTFF corpus
+// Task49 production pipeline: 28 commands from the raw IVTFF corpus
 // through every validation/discovery stage added by tasks 1-27. Order
 // matters - every stage's default input path assumes every earlier stage
 // in this list has already written its default output.
@@ -99,6 +99,7 @@ var stages = []Stage{
 	{Name: "higher-order-sequence-validate", SourceDir: "higher-order-sequence-validate", Quiet: true, Checkpoint: true, Executor: true, CorpusFlag: "-corpus", RequiresMetadata: true, Generic: GenericSupport{Applicable: true}},
 	{Name: "positional-continuation-validate", SourceDir: "positional-continuation-validate", Quiet: true, Checkpoint: true, Executor: true, CorpusFlag: "-corpus", RequiresMetadata: true, Generic: GenericSupport{Applicable: true}},
 	{Name: "transition-network-validate", SourceDir: "transition-network-validate", Quiet: true, Checkpoint: true, Executor: true, CorpusFlag: "-corpus", RequiresMetadata: true, Generic: GenericSupport{Applicable: true}},
+	{Name: "vocabulary-growth-analyze", SourceDir: "vocabulary-growth-analyze", CorpusFlag: "-input"},
 }
 
 // stageByName looks up a stage by its orchestrator Name, used by -only/
@@ -264,6 +265,8 @@ func stageArgsForIsolatedInput(s Stage, opt orchestratorOptions, corpusPath, inp
 			args = append(args, "-token-metadata-map", "workdir/metadata-validation/token_metadata_map.tsv")
 		}
 		args = append(args, "-output-dir", "workdir/transition-network")
+	case "vocabulary-growth-analyze":
+		args = append(args, "-output-dir", "workdir/vocabulary-growth")
 	}
 	return args
 }

@@ -42,7 +42,7 @@ func TestGenericManifestDoesNotReadIVTFFAndHasCompleteInventory(t *testing.T) {
 	if m.Corpus == nil || m.Corpus.SHA256 == "" {
 		t.Fatal("generic corpus hash missing")
 	}
-	if len(m.Stages) != 28 {
+	if len(m.Stages) != 29 {
 		t.Fatalf("got %d stages", len(m.Stages))
 	}
 	if m.Stages[0].Name != readinessStageName || m.Stages[0].Index != 0 {
