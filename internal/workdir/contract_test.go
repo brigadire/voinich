@@ -30,7 +30,11 @@ func TestAllPipelineCommandsUseWorkdirContract(t *testing.T) {
 		}
 	}
 	for _, path := range mainFiles {
-		if filepath.Base(filepath.Dir(path)) == "codex_prepare" {
+		// codex_prepare and corpus-transform are experiment-input generators,
+		// not pipeline stages: their outputs are new corpora the caller places
+		// wherever it likes (e.g. alongside data_test/*.txt), never generated
+		// analysis artifacts under the shared ./workdir contract.
+		if base := filepath.Base(filepath.Dir(path)); base == "codex_prepare" || base == "corpus-transform" {
 			continue
 		}
 		parsed, err := parser.ParseFile(token.NewFileSet(), path, nil, parser.ImportsOnly)
