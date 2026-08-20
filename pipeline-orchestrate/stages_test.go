@@ -40,6 +40,8 @@ func TestStagesMatchRepository(t *testing.T) {
 	exempt := map[string]bool{
 		"conditional-regime-pki": true,
 		"codex_prepare":          true,
+		"codex_orientation":      true,
+		"corpus-transform":       true,
 		"pipeline-orchestrate":   true,
 		"experiment-compare":     true,
 	}

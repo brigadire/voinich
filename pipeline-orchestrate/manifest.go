@@ -14,6 +14,7 @@ import (
 	"time"
 
 	"zcore.dev/voinich/internal/corpusprep"
+	"zcore.dev/voinich/internal/orientation"
 )
 
 // StageManifest freezes the exact operational command line one stage is
@@ -39,6 +40,17 @@ type InputFileManifest struct {
 	SHA256 string `json:"sha256"`
 }
 
+// TransformationProvenance links an optional deterministic corpus
+// transformation to this experiment. The transformed corpus hash remains the
+// scientific input identity; this record explains how it was derived.
+type TransformationProvenance struct {
+	ManifestSHA256 string `json:"manifest_sha256"`
+	Type           string `json:"type"`
+	Mode           string `json:"mode"`
+	SourceSHA256   string `json:"source_corpus_sha256"`
+	OutputSHA256   string `json:"transformed_corpus_sha256"`
+}
+
 // WorkerManifest documents one execution resource actually used by the
 // distributed-capable stages (conditional regime and structural projection).
 // Task36 requires "a list of workers" in the
@@ -56,35 +68,36 @@ type WorkerManifest struct {
 // experiments/<name>/FROZEN (see freeze.go) is what makes that immutability
 // enforceable rather than just a convention.
 type Manifest struct {
-	ExperimentID           string             `json:"experiment_id"`
-	CreatedAt              time.Time          `json:"created_at"`
-	GitCommit              string             `json:"git_commit"`
-	GitDirty               bool               `json:"git_dirty"`
-	IVTFFPath              string             `json:"ivtff_path,omitempty"`
-	IVTFFSHA256            string             `json:"ivtff_sha256,omitempty"`
-	CorpusPath             string             `json:"corpus_path"`
-	CorpusSHA256           string             `json:"corpus_sha256"`
-	InputMode              string             `json:"input_mode,omitempty"`
-	Corpus                 *InputFileManifest `json:"corpus,omitempty"`
-	IVTFF                  *InputFileManifest `json:"ivtff"`
-	GoVersion              string             `json:"go_version"`
-	GOOS                   string             `json:"goos"`
-	GOARCH                 string             `json:"goarch"`
-	Hostname               string             `json:"hostname"`
-	NumCPU                 int                `json:"num_cpu"`
-	Executor               string             `json:"executor"`      // executor for every distributed-capable stage
-	ExecutorNote           string             `json:"executor_note"` // honest description of what "distributed" meant for this run
-	Workers                []WorkerManifest   `json:"workers"`
-	Stages                 []StageManifest    `json:"stages"`
-	PreparedBy             string             `json:"prepared_by,omitempty"`
-	PrepareManifestSHA256  string             `json:"prepare_manifest_sha256,omitempty"`
-	CanonicalCorpusVersion int                `json:"canonical_corpus_version,omitempty"`
-	CasePolicy             string             `json:"case_policy,omitempty"`
-	PunctuationPolicy      string             `json:"punctuation_policy,omitempty"`
-	WhitespacePolicy       string             `json:"whitespace_policy,omitempty"`
-	LinePolicy             string             `json:"line_policy,omitempty"`
-	IsolationVersion       int                `json:"isolation_version,omitempty"`
-	Workspace              string             `json:"workspace,omitempty"`
+	ExperimentID           string                    `json:"experiment_id"`
+	CreatedAt              time.Time                 `json:"created_at"`
+	GitCommit              string                    `json:"git_commit"`
+	GitDirty               bool                      `json:"git_dirty"`
+	IVTFFPath              string                    `json:"ivtff_path,omitempty"`
+	IVTFFSHA256            string                    `json:"ivtff_sha256,omitempty"`
+	CorpusPath             string                    `json:"corpus_path"`
+	CorpusSHA256           string                    `json:"corpus_sha256"`
+	InputMode              string                    `json:"input_mode,omitempty"`
+	Corpus                 *InputFileManifest        `json:"corpus,omitempty"`
+	Transformation         *TransformationProvenance `json:"transformation,omitempty"`
+	IVTFF                  *InputFileManifest        `json:"ivtff"`
+	GoVersion              string                    `json:"go_version"`
+	GOOS                   string                    `json:"goos"`
+	GOARCH                 string                    `json:"goarch"`
+	Hostname               string                    `json:"hostname"`
+	NumCPU                 int                       `json:"num_cpu"`
+	Executor               string                    `json:"executor"`      // executor for every distributed-capable stage
+	ExecutorNote           string                    `json:"executor_note"` // honest description of what "distributed" meant for this run
+	Workers                []WorkerManifest          `json:"workers"`
+	Stages                 []StageManifest           `json:"stages"`
+	PreparedBy             string                    `json:"prepared_by,omitempty"`
+	PrepareManifestSHA256  string                    `json:"prepare_manifest_sha256,omitempty"`
+	CanonicalCorpusVersion int                       `json:"canonical_corpus_version,omitempty"`
+	CasePolicy             string                    `json:"case_policy,omitempty"`
+	PunctuationPolicy      string                    `json:"punctuation_policy,omitempty"`
+	WhitespacePolicy       string                    `json:"whitespace_policy,omitempty"`
+	LinePolicy             string                    `json:"line_policy,omitempty"`
+	IsolationVersion       int                       `json:"isolation_version,omitempty"`
+	Workspace              string                    `json:"workspace,omitempty"`
 }
 
 func sha256File(path string) (string, error) {
@@ -161,6 +174,10 @@ func buildManifest(repoPath, inputMode, ivtffPath, corpusPath string, opt orches
 	if err != nil {
 		return nil, err
 	}
+	transformation, err := loadOrientationProvenance(absCorpusPath, corpusHash)
+	if err != nil {
+		return nil, err
+	}
 	hostname, _ := os.Hostname()
 
 	var workers []WorkerManifest
@@ -190,6 +207,7 @@ func buildManifest(repoPath, inputMode, ivtffPath, corpusPath string, opt orches
 		CorpusSHA256:           corpusHash,
 		InputMode:              inputMode,
 		Corpus:                 &InputFileManifest{Path: absCorpusPath, SHA256: corpusHash},
+		Transformation:         transformation,
 		GoVersion:              runtime.Version(),
 		GOOS:                   runtime.GOOS,
 		GOARCH:                 runtime.GOARCH,
@@ -208,6 +226,7 @@ func buildManifest(repoPath, inputMode, ivtffPath, corpusPath string, opt orches
 		IsolationVersion:       1,
 		Workspace:              "workspace",
 	}
+
 	if inputMode != "generic" {
 		m.IVTFFPath, m.IVTFFSHA256 = absIVTFFPath, ivtffHash
 		m.IVTFF = &InputFileManifest{Path: absIVTFFPath, SHA256: ivtffHash}
@@ -247,6 +266,38 @@ func buildManifest(repoPath, inputMode, ivtffPath, corpusPath string, opt orches
 	}
 	m.ExperimentID = computeExperimentID(m)
 	return m, nil
+}
+
+func loadOrientationProvenance(corpusPath, corpusHash string) (*TransformationProvenance, error) {
+	path := corpusPath + ".transform.json"
+	data, err := os.ReadFile(path)
+	if err != nil {
+		if os.IsNotExist(err) {
+			return nil, nil
+		}
+		return nil, fmt.Errorf("read transformation manifest %s: %w", path, err)
+	}
+	var manifest orientation.Manifest
+	if err := json.Unmarshal(data, &manifest); err != nil {
+		return nil, fmt.Errorf("parse transformation manifest %s: %w", path, err)
+	}
+	if manifest.SchemaVersion != orientation.SchemaVersion || manifest.Transformation != orientation.Transformation || manifest.TransformationVersion != orientation.TransformationVersion || !orientation.ValidMode(manifest.Mode) {
+		return nil, fmt.Errorf("transformation manifest %s has unsupported orientation schema or mode", path)
+	}
+	if manifest.OutputSHA256 != corpusHash {
+		return nil, fmt.Errorf("transformation manifest %s output sha256 %s does not match corpus %s", path, manifest.OutputSHA256, corpusHash)
+	}
+	if manifest.InputSHA256 == "" {
+		return nil, fmt.Errorf("transformation manifest %s has no source corpus sha256", path)
+	}
+	sum := sha256.Sum256(data)
+	return &TransformationProvenance{
+		ManifestSHA256: hex.EncodeToString(sum[:]),
+		Type:           manifest.Transformation,
+		Mode:           manifest.Mode,
+		SourceSHA256:   manifest.InputSHA256,
+		OutputSHA256:   manifest.OutputSHA256,
+	}, nil
 }
 
 type prepareMetadata struct {
