@@ -9,6 +9,20 @@ import (
 	"testing"
 )
 
+func addTask49(t *testing.T, dir string) {
+	t.Helper()
+	root := filepath.Join(dir, "outputs", "vocabulary-growth")
+	if err := os.MkdirAll(root, 0755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(root, "vocabulary_growth.tsv"), []byte("checkpoint_n\tvocabulary_size\ttype_token_ratio\thapax_count\tdis_count\ttri_count\tbeta_effective\n100\t80\t0.8\t70\t5\t2\t0\n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(root, "summary.yaml"), []byte("final_profile:\n  total_tokens: 100\n  unique_tokens: 80\n  heaps_K: 2\n  heaps_beta: 0.7\n  heaps_R2: 0.9\n  hapax: 70\n  hapax_fraction_of_types: 0.875\n  hapax_fraction_of_tokens: 0.7\n  dis_legomena: 5\n  singleton_to_doubleton_ratio: 14\n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+}
+
 func fixture(t *testing.T, root, id string, tokens, eligible int) string {
 	t.Helper()
 	dir := filepath.Join(root, id)
@@ -71,6 +85,60 @@ func TestDistanceOracle(t *testing.T) {
 	}
 	if got := distance("standardized_euclidean", []float64{1, 2}, []float64{4, 6}, []float64{3, 4}); got != mathSqrt(2) {
 		t.Fatalf("standardized euclidean=%v", got)
+	}
+}
+
+func TestTransitionRetentionSemantics(t *testing.T) {
+	root := t.TempDir()
+	dir := fixture(t, root, "transition", 100, 10)
+	e, err := loadExperiment(dir, false)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got := e.Normalized["transition.preferred_backbone_retention"]; got != 0.5 {
+		t.Fatalf("preferred retention=%v", got)
+	}
+	if _, ok := e.Normalized["transition.preferred_rate"]; ok {
+		t.Fatal("prototype preferred_rate leaked into v2")
+	}
+}
+
+func TestLegacyMissingTask49AndSchemaFamilies(t *testing.T) {
+	root := t.TempDir()
+	dir := fixture(t, root, "legacy", 100, 10)
+	e, err := loadExperiment(dir, false)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if value, status := val(e, "vocabulary_growth.heaps_beta"); value != "" || status != "MISSING_ARTIFACT" {
+		t.Fatalf("legacy Task49 status=%q/%q", value, status)
+	}
+	if len(fingerprintFeatures()) == 0 {
+		t.Fatal("fingerprint feature registry is empty")
+	}
+}
+
+func TestDistanceKindPrefixes(t *testing.T) {
+	a, b := Experiment{ID: "a", Normalized: map[string]float64{"x": 1}}, Experiment{ID: "b", Normalized: map[string]float64{"x": 4}}
+	row := distanceRow(a, b, "pairwise_available_manhattan", []string{"x"}, map[string]float64{"x": 1})
+	if got := parse(row[3]); got != 3 {
+		t.Fatalf("manhattan distance=%v", got)
+	}
+}
+
+func TestTask49OptionalArtifact(t *testing.T) {
+	root := t.TempDir()
+	dir := fixture(t, root, "task49", 100, 10)
+	addTask49(t, dir)
+	e, err := loadExperiment(dir, true)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if e.Raw["vocabulary_growth.heaps_beta"] != 0.7 {
+		t.Fatalf("heaps beta=%v", e.Raw["vocabulary_growth.heaps_beta"])
+	}
+	if _, status := val(e, "vocabulary_growth.V_1000_per_token"); status != "NOT_APPLICABLE" {
+		t.Fatalf("checkpoint status=%s", status)
 	}
 }
 func mathSqrt(v float64) float64 { return 1.4142135623730951 }

@@ -1,4 +1,7 @@
-# Metric compatibility audit (Task45)
+# Metric compatibility audit (Task45/Task52)
+
+Task45's v1 fingerprint was a prototype. Task52 defines schema v2; the
+authoritative full audit is [`COMPARISON_METRIC_AUDIT.md`](../COMPARISON_METRIC_AUDIT.md).
 
 `experiment-compare` reads frozen artifacts only. It never invokes a pipeline
 stage and it does not use experiment names or corpus labels as features.
@@ -28,9 +31,9 @@ corpus.eligible_token_rate       = eligible_tokens / token_count
 sequence.significant_rate        = significant_candidates / frozen_candidates
 sequence.replication_rate        = replicated_candidates / significant_candidates
 relation.significant_rate        = significant_relations / tested_relations
-transition.preferred_rate        = preferred_significant / significant_preferred
-transition.depleted_rate         = depleted_significant / significant_depleted
-transition.backbone_retention    = strict_backbone / significant_backbone
+transition.preferred_backbone_retention = backbone_preferred / fdr_significant_preferred
+transition.depleted_backbone_retention  = backbone_depleted / fdr_significant_depleted
+transition.backbone_retention            = strict_backbone / significant_edges
 transition.outgoing_profile_rate = replicated_outgoing_profiles / eligible_tokens
 transition.incoming_profile_rate = replicated_incoming_profiles / eligible_tokens
 higher_order.replication_rate    = higher_order_replicated / candidate_count

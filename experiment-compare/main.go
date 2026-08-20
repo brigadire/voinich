@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"os/exec"
 	"runtime/debug"
 	"strings"
 
@@ -34,14 +35,26 @@ func main() {
 	}
 	fs.Parse(os.Args[1:])
 	commit := "unknown"
+	dirty := false
 	if info, ok := debug.ReadBuildInfo(); ok {
 		for _, s := range info.Settings {
 			if s.Key == "vcs.revision" {
 				commit = s.Value
 			}
+			if s.Key == "vcs.modified" {
+				dirty = s.Value == "true"
+			}
 		}
 	}
-	if err := experimentcompare.Run(experimentcompare.Options{Experiments: exps, OutputDir: *out, AllowUnfrozen: *allow, Args: os.Args[1:], GitCommit: commit}); err != nil {
+	if commit == "unknown" {
+		if out, err := exec.Command("git", "rev-parse", "HEAD").Output(); err == nil {
+			commit = strings.TrimSpace(string(out))
+		}
+	}
+	if out, err := exec.Command("git", "status", "--porcelain").Output(); err == nil {
+		dirty = len(strings.TrimSpace(string(out))) > 0
+	}
+	if err := experimentcompare.Run(experimentcompare.Options{Experiments: exps, OutputDir: *out, AllowUnfrozen: *allow, Args: os.Args[1:], GitCommit: commit, GitDirty: dirty}); err != nil {
 		fmt.Fprintln(os.Stderr, "experiment-compare:", err)
 		os.Exit(1)
 	}
