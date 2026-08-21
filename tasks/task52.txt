@@ -1,0 +1,1058 @@
+Task52 — Task45 Hardening: Complete Scientific Fingerprint, Correct Metrics,
+Task49 Integration and Reproducible Cross-Experiment Comparison
+
+Цель
+
+Доработать созданный в Task45 experiment comparison/interpreter до
+полноценного воспроизводимого слоя сравнения scientific experiments.
+
+Текущая реализация Task45 является хорошим prototype, но до фиксации
+fingerprint schema v1 необходимо устранить обнаруженные проблемы:
+
+1. исправить semantics/naming transition metrics;
+2. существенно расширить fingerprint за пределы stages 23–27;
+3. учитывать Task49 vocabulary-growth metrics, если они присутствуют;
+4. корректно работать со старыми experiments без Task49;
+5. выполнять production comparison только над verified frozen experiments;
+6. полностью фиксировать provenance;
+7. сделать distances корректнее при различающейся availability dimensions;
+8. сохранить EMPTY / NOT_APPLICABLE / MISSING как разные состояния.
+
+Не менять scientific algorithms исходных stages.
+
+======================================================================
+1. НЕ ФИКСИРОВАТЬ ТЕКУЩУЮ SCHEMA КАК v1
+======================================================================
+
+Текущий structural fingerprint считать prototype.
+
+Если сейчас:
+
+    fingerprint_schema_version: 1
+
+ещё не используется как immutable external contract, заменить на:
+
+    prototype / draft
+
+или bump/version согласно существующей архитектуре.
+
+Fingerprint schema v1 можно freeze только после выполнения Task52 и
+acceptance run.
+
+======================================================================
+2. ИСПРАВИТЬ TRANSITION METRICS
+======================================================================
+
+Обнаружено несоответствие naming/formulas.
+
+Текущие значения:
+
+    transition.preferred_rate
+    transition.depleted_rate
+
+фактически соответствуют примерно:
+
+    backbone_preferred / fdr_significant_preferred
+    backbone_depleted / fdr_significant_depleted
+
+Например:
+
+    MS-DOS:
+        363 / 548 = 0.662408...
+
+    Doyle:
+        246 / 303 = 0.811881...
+
+Это backbone retention, а не generic "preferred rate".
+
+Исправить semantics.
+
+Ввести явно:
+
+    transition.preferred_backbone_retention
+    transition.depleted_backbone_retention
+
+с формулами:
+
+    backbone_preferred / fdr_significant_preferred
+
+    backbone_depleted / fdr_significant_depleted
+
+При denominator == 0:
+
+    NOT_COMPUTED
+
+а не numeric zero.
+
+======================================================================
+3. SIGNIFICANT EDGE RATES
+======================================================================
+
+Отдельно добавить реальные rates значимых edges.
+
+Если scientific artifact предоставляет корректный denominator:
+
+    preferred_significant_rate =
+        significant_preferred / tested_preferred
+
+    depleted_significant_rate =
+        significant_depleted / tested_depleted
+
+Если имеется только общий:
+
+    testable_edges
+
+провести audit semantics перед использованием.
+
+Не придумывать denominator.
+
+Если scientifically correct denominator отсутствует:
+
+    metric unavailable
+
+и документировать причину.
+
+======================================================================
+4. ОБЩИЙ TRANSITION RETENTION
+======================================================================
+
+Проверить возможность корректного вычисления:
+
+    transition.backbone_retention
+
+Если meaningful formula:
+
+    total strict backbone /
+    total significant edges
+
+использовать её только после проверки scientific semantics исходного
+analyzer.
+
+Не оставлять metric MISSING_ARTIFACT, если необходимые исходные counts
+реально присутствуют.
+
+Но не создавать derived metric только ради заполнения fingerprint.
+
+======================================================================
+5. ПОЛНЫЙ AUDIT SCIENTIFIC OUTPUTS
+======================================================================
+
+Провести систематический audit ВСЕХ corpus-comparable scientific stages,
+а не только последних stages.
+
+Создать:
+
+    COMPARISON_METRIC_AUDIT.md
+
+Для каждой stage:
+
+    stage
+    output artifact
+    candidate raw metrics
+    semantic meaning
+    comparable generic/Voynich?
+    corpus-size dependent?
+    normalization required?
+    missingness semantics
+    include in fingerprint?
+    reason if excluded
+
+Особенно проверить семейства:
+
+    token statistics
+    begin/end
+    sequence/repetition
+    distance-context
+    structural normalization
+    profile stability
+    structural reliability
+    soft structural space
+    structural analysis
+    property trajectories
+    local regimes
+    global regimes
+    conditional regimes
+    positional continuation
+    higher-order sequences
+    token relations
+    transition network
+    structural projection
+    normalization comparison
+
+и другие реально существующие stages.
+
+Не включать metric только потому, что файл существует.
+
+Каждый fingerprint feature должен иметь научно понятную semantics.
+
+======================================================================
+6. FEATURE FAMILIES
+======================================================================
+
+Fingerprint должен быть организован по semantic families.
+
+Например:
+
+    lexical.*
+    sequence.*
+    context.*
+    structural.*
+    regime.*
+    higher_order.*
+    transition.*
+    vocabulary_growth.*
+
+Не привязывать public fingerprint schema к номерам stages.
+
+Stage numbering может меняться.
+
+======================================================================
+7. RAW METRICS VS DERIVED FEATURES
+======================================================================
+
+Чётко разделить:
+
+    raw_metrics
+    derived_metrics
+    normalized_fingerprint
+
+Raw metric:
+
+    непосредственно извлечена из frozen scientific artifact.
+
+Derived metric:
+
+    формула над raw metrics.
+
+Каждая derived metric должна иметь machine-readable definition:
+
+    numerator
+    denominator
+    formula/version
+
+или equivalent schema.
+
+Нельзя скрывать преобразования внутри Go code без документации.
+
+======================================================================
+8. TASK49 INTEGRATION
+======================================================================
+
+Если experiment содержит outputs Task49 / vocabulary-growth-analyze,
+включить их в comparison.
+
+Task49 является OPTIONAL capability.
+
+Старые experiments без Task49 должны:
+
+    корректно загружаться
+    корректно сравниваться
+    НЕ считаться corrupt
+    получать MISSING_ARTIFACT для Task49-specific dimensions
+
+Не требовать перезапуска frozen legacy experiments.
+
+======================================================================
+9. TASK49 RAW METRICS
+======================================================================
+
+Провести audit фактического schema Task49.
+
+Если соответствующие metrics реально существуют, извлекать минимум:
+
+    total_tokens
+    unique_tokens
+
+    heaps_K
+    heaps_beta
+    heaps_R2
+
+    final_hapax_count
+    final_hapax_fraction_of_types
+    final_hapax_fraction_of_tokens
+
+    final_dis_legomena_count
+    singleton_to_doubleton_ratio
+
+    final_new_type_rate
+
+Не предполагать названия файлов/полей — использовать фактический Task49
+output contract.
+
+======================================================================
+10. TASK49 LENGTH-NORMALIZED FEATURES
+======================================================================
+
+Особенно важно для cross-corpus comparison.
+
+Если Task49 trajectory содержит V(N), добавить comparison features на
+общих checkpoints.
+
+Например:
+
+    vocabulary_growth.V_1000
+    vocabulary_growth.V_2000
+    vocabulary_growth.V_4000
+    vocabulary_growth.V_8000
+    vocabulary_growth.V_16000
+    vocabulary_growth.V_32000
+
+Но:
+
+если corpus length < checkpoint:
+
+    NOT_APPLICABLE
+
+а не zero.
+
+Также добавить normalized variants, если scientific audit подтверждает
+их смысл:
+
+    V(N) / N
+
+на фиксированном N.
+
+Не использовать final TTR как основной cross-corpus lexical metric.
+
+======================================================================
+11. TASK49 COMMON-N COMPARISON
+======================================================================
+
+При pairwise comparison корпусов разных размеров вычислять:
+
+    N_common = min(N_A, N_B)
+
+и, если Task49 trajectory позволяет, получать:
+
+    V_A(N_common)
+    V_B(N_common)
+
+или интерполированное/nearest-defined значение только если interpolation
+rule была заранее определена Task49.
+
+Не физически обрезать corpora.
+
+Сохранить:
+
+    vocabulary_growth.common_n
+    vocabulary_growth.V_at_common_n_A
+    vocabulary_growth.V_at_common_n_B
+    difference / normalized difference
+
+Это pairwise metric, а не обязательно fingerprint dimension.
+
+======================================================================
+12. TASK49 TRAJECTORY COMPARISON
+======================================================================
+
+Не сводить Task49 только к Heaps beta.
+
+Если данные доступны, добавить расстояние между trajectories на общем
+диапазоне:
+
+    V_A(N) vs V_B(N)
+
+и отдельно:
+
+    beta_eff_A(N) vs beta_eff_B(N)
+    new_type_rate_A(position) vs B
+
+Выбрать простую заранее определённую metric:
+
+например RMS standardized difference на common checkpoints.
+
+Не подбирать distance по Voynich.
+
+Документировать формулу.
+
+======================================================================
+13. TASK49 NULL EFFECTS
+======================================================================
+
+Если Task49 содержит observed-vs-shuffled-null metrics, включить
+наиболее устойчивые summary features:
+
+    vocabulary_growth.order_effect_mean
+    vocabulary_growth.order_effect_max
+    vocabulary_growth.order_effect_final/common
+
+Только если semantics однозначна по Task49 outputs.
+
+Не использовать p-value как обычную линейную feature без обоснования.
+
+Предпочесть standardized effect size.
+
+======================================================================
+14. TASK49 SEGMENT STABILITY
+======================================================================
+
+Если Task49 сохраняет segment analysis, добавить summary metrics,
+например:
+
+    segment_beta_mean
+    segment_beta_sd
+    segment_new_type_rate_variability
+
+Только после audit.
+
+Цель:
+
+отличать corpus с равномерной lexical productivity от corpus, где она
+сосредоточена в отдельных участках.
+
+======================================================================
+15. MISSINGNESS MODEL
+======================================================================
+
+Task45/52 должен строго различать:
+
+    VALUE
+    COMPLETED_EMPTY
+    NOT_APPLICABLE
+    NOT_COMPUTED
+    MISSING_ARTIFACT
+    FAILED / INVALID EXPERIMENT
+
+Numeric zero никогда не заменяет эти состояния.
+
+Пример:
+
+    significant_depleted = 0
+
+может быть настоящим VALUE=0.
+
+Но:
+
+    depleted_backbone_retention
+
+при denominator=0:
+
+    NOT_COMPUTED.
+
+Task49 checkpoint > corpus length:
+
+    NOT_APPLICABLE.
+
+Task49 stage отсутствует в старом experiment:
+
+    MISSING_ARTIFACT.
+
+======================================================================
+16. TASK50 COMPATIBILITY
+======================================================================
+
+Если Task50 уже реализован, использовать его structured applicability
+metadata.
+
+Если ещё не реализован, comparison layer должен быть готов принять
+его schema.
+
+Не infer NOT_APPLICABLE из отсутствующего файла, если run-state способен
+дать точный статус.
+
+======================================================================
+17. SUPPORT / COVERAGE
+======================================================================
+
+Добавить понятие statistical support рядом с metric.
+
+Особенно для:
+
+    transition network
+    higher-order tests
+    token relations
+    sparse corpora
+
+Сохранять relevant denominators:
+
+    eligible_tokens
+    tested_edges
+    candidate_count
+    observations
+    blocks
+    etc.
+
+Comparison report должен позволять отличить:
+
+    0 significant among 10,000 tests
+
+от:
+
+    0 significant among 3 tests.
+
+Не обязательно включать все support values в distance vector.
+
+Но они должны быть доступны для интерпретации.
+
+======================================================================
+18. FEATURE ELIGIBILITY FOR DISTANCE
+======================================================================
+
+Не каждая raw metric должна входить в distance.
+
+Для каждой fingerprint feature зафиксировать:
+
+    use_for_distance: true/false
+
+Причины исключения:
+
+    redundant
+    raw count strongly corpus-size dependent
+    support-only
+    unstable
+    metadata-only
+    p-value
+    diagnostic
+
+Это предотвращает double-counting.
+
+======================================================================
+19. REDUNDANCY AUDIT
+======================================================================
+
+Проверить коррелированные/математически зависимые features.
+
+Например:
+
+    count
+    rate
+    retention
+
+не должны автоматически получать одинаковый вес.
+
+Создать раздел в COMPARISON_METRIC_AUDIT.md:
+
+    redundant / dependent features
+
+Не удалять raw metrics; ограничивать только fingerprint/distance layer.
+
+======================================================================
+20. NORMALIZATION
+======================================================================
+
+Документировать normalization каждого feature.
+
+Не использовать одну normalization formula механически для всех metrics.
+
+Различать:
+
+    proportions [0,1]
+    signed effects
+    positive unbounded values
+    counts
+    fit coefficients
+    standardized effects
+
+Normalization parameters должны вычисляться детерминированно.
+
+======================================================================
+21. SMALL-N WARNING
+======================================================================
+
+При малом числе experiments normalization по самой comparison cohort
+может быть нестабильной.
+
+Текущий acceptance N=4 — слишком мал для серьёзной оценки population
+distribution.
+
+Report должен явно фиксировать:
+
+    normalization_scope
+    number_of_experiments
+
+и warning при малом N.
+
+Не выдавать standardized distances как универсальные абсолютные меры.
+
+======================================================================
+22. COMMON-CORE DISTANCE
+======================================================================
+
+Добавить обязательную distance metric по common feature core:
+
+    features present and numerically valid
+    for ALL experiments in current comparison set.
+
+Назвать, например:
+
+    standardized_euclidean_common_core
+    cosine_common_core
+
+В output сохранить:
+
+    common_core_dimension_count
+    common_core_feature_names
+
+Это позволит сравнивать все пары в одном и том же пространстве.
+
+======================================================================
+23. PAIRWISE-AVAILABLE DISTANCE
+======================================================================
+
+Существующий pairwise available-feature distance можно сохранить.
+
+Но явно назвать его:
+
+    pairwise_available_distance
+
+и всегда сохранять:
+
+    dimensions_used
+    dimensions_total
+    coverage_fraction
+
+Не сравнивать без предупреждения absolute distances, рассчитанные по
+разным наборам dimensions.
+
+======================================================================
+24. FAMILY-LEVEL DISTANCES
+======================================================================
+
+Добавить optional distances по semantic families:
+
+    lexical distance
+    sequence distance
+    structural distance
+    regime distance
+    transition distance
+    vocabulary-growth distance
+
+Это особенно важно для Voynich.
+
+Два corpora могут быть:
+
+    близки по transition structure
+
+но:
+
+    далеки по vocabulary growth.
+
+Не скрывать это одним scalar total distance.
+
+======================================================================
+25. НЕ ПОДГОНЯТЬ WEIGHTS
+======================================================================
+
+На Task52 использовать:
+
+    equal feature weights
+
+или заранее определённые family-balanced weights.
+
+Не оптимизировать weights так, чтобы:
+
+    Voynich оказался ближе/дальше от какого-либо corpus.
+
+Если вводится family balancing, формулу зафиксировать до acceptance run.
+
+======================================================================
+26. FROZEN INPUT REQUIREMENT
+======================================================================
+
+Production comparison должен по умолчанию принимать только:
+
+    finished
+    frozen
+    verify PASS
+
+experiments.
+
+Текущий acceptance использовал:
+
+    -allow-unfrozen
+
+для MS-DOS / Longfellow / Doyle.
+
+Это допустимо только для development/debug mode.
+
+Новый acceptance run должен выполняться БЕЗ:
+
+    -allow-unfrozen.
+
+======================================================================
+27. ALLOW-UNFROZEN
+======================================================================
+
+Флаг можно сохранить как explicit unsafe/development override.
+
+При его использовании:
+
+    report status = NON_REPRODUCIBLE / DEVELOPMENT COMPARISON
+
+и prominently warning.
+
+Нельзя freeze comparison snapshot как production scientific comparison,
+если использовался allow-unfrozen.
+
+======================================================================
+28. PROVENANCE
+======================================================================
+
+Исправить comparison_manifest.
+
+Обязательно сохранять для каждого experiment:
+
+    experiment_id
+    experiment manifest SHA256
+    frozen marker/status
+    verification status
+    corpus SHA256
+    relevant artifact SHA256 values
+
+Не оставлять:
+
+    experiment_artifact_sha256: ""
+
+для использованных scientific artifacts.
+
+======================================================================
+29. PROGRAM VERSION
+======================================================================
+
+Не допускать в frozen comparison:
+
+    comparison_program_git_commit: "unknown"
+
+Production comparison должен фиксировать:
+
+    git commit
+    dirty-tree status
+    comparison schema version
+
+Если commit определить невозможно:
+
+    refuse production freeze
+
+или требовать explicit development override.
+
+======================================================================
+30. LEGACY VOYNICH MODE
+======================================================================
+
+Исправить:
+
+    Voynich input_mode = unknown
+
+если legacy manifest содержит достаточно информации, чтобы однозначно
+определить:
+
+    IVTFF / Voynich legacy mode.
+
+Не угадывать по имени experiment.
+
+Использовать manifest structure.
+
+Если определить невозможно:
+
+    legacy_unknown
+
+и документировать.
+
+======================================================================
+31. REPRODUCIBLE COMPARISON SNAPSHOT
+======================================================================
+
+Comparison output должен иметь собственную immutable identity.
+
+Например hash от:
+
+    comparison schema version
+    ordered experiment IDs
+    experiment manifest hashes
+    scientific artifact hashes
+    feature definitions
+    normalization definition
+    distance definition
+    comparison program git commit
+
+Одинаковые inputs должны давать byte-identical scientific TSV/YAML outputs.
+
+======================================================================
+32. REPORT
+======================================================================
+
+REPORT.md должен содержать:
+
+    experiments
+    frozen/verified status
+    feature families
+    common-core dimension count
+    missing/N/A metrics
+    support warnings
+    Task49 availability
+    normalization scope
+    distance definitions
+    family-level distances
+    provenance
+
+И обязательно disclaimer:
+
+    similarity != classification
+    similarity != causal explanation
+    nearest corpus != same document type
+
+======================================================================
+33. TASK49 REPORT SECTION
+======================================================================
+
+Если хотя бы два experiments имеют Task49:
+
+создать отдельный раздел:
+
+    Vocabulary Growth Comparison
+
+Минимально показать:
+
+    N
+    V
+    Heaps beta
+    Heaps R²
+    hapax fraction
+    V at shared checkpoints
+    trajectory distance
+
+Если Task49 отсутствует:
+
+    явно MISSING_ARTIFACT
+
+а не молча убрать family из отчёта.
+
+======================================================================
+34. VOYNICH-SPECIFIC INTERPRETATION НЕ КОДИРОВАТЬ
+======================================================================
+
+Программа не должна содержать правила:
+
+    if experiment == Voynich ...
+    "closer to Voynich means cipher"
+    "low transition means Voynich-like"
+
+Voynich — обычный experiment с точки зрения comparison engine.
+
+Это принципиально для дальнейших:
+
+    Task46 cryptographic corpora
+    transcription-error corpora
+    Task51 orientation corpora.
+
+======================================================================
+35. TRANSFORMATION PROVENANCE
+======================================================================
+
+Если experiment создан через:
+
+    codex_prepare
+    Task46 transformation
+    Task51 orientation transformation
+
+и manifest содержит provenance, comparison report должен его показать.
+
+Но transformation type не используется как feature.
+
+Это label/provenance only.
+
+======================================================================
+36. ACCEPTANCE CORPORA
+======================================================================
+
+После исправлений выполнить production acceptance минимум на:
+
+    Voynich
+    Doyle
+    Longfellow
+    MS-DOS
+    Astafiev
+
+если все пять доступны как frozen/verified experiments.
+
+Sahasranama можно включить дополнительно, но обязательно учитывать его
+низкий statistical support.
+
+Не использовать Sahasranama как единственный validation sparse case.
+
+======================================================================
+37. TASK49 ACCEPTANCE
+======================================================================
+
+Если Task49 уже выполнен хотя бы для части этих experiments:
+
+проверить mixed comparison:
+
+    experiment A with Task49
+    experiment B without Task49
+
+Comparison обязан завершиться корректно.
+
+Затем, если Task49 доступен для всех основных acceptance corpora,
+выполнить common-core comparison с vocabulary_growth family.
+
+======================================================================
+38. SANITY CHECKS
+======================================================================
+
+Не задавать ожидаемые nearest-neighbor результаты как tests.
+
+Но проверить mathematical invariants:
+
+    distance(A,A) = 0
+
+    distance(A,B) = distance(B,A)
+
+    identical fingerprints -> distance 0
+
+    missing optional family does not become zero
+
+    permutation of experiment input order does not alter results
+
+    common-core feature list identical for all pairs
+
+======================================================================
+39. TRANSITION REGRESSION TESTS
+======================================================================
+
+Добавить explicit fixtures, ловящие обнаруженный bug.
+
+Например:
+
+    significant_preferred = 100
+    backbone_preferred = 25
+
+Expected:
+
+    preferred_backbone_retention = 0.25
+
+а не mislabeled preferred_rate.
+
+Для denominator = 0:
+
+    NOT_COMPUTED.
+
+======================================================================
+40. TASK49 REGRESSION TESTS
+======================================================================
+
+Synthetic Task49 artifacts:
+
+A. full Task49 result;
+B. Task49 absent;
+C. checkpoint > corpus length;
+D. NOT_APPLICABLE Task49 submetric;
+E. malformed Task49 artifact.
+
+Проверить:
+
+    correct VALUE
+    MISSING_ARTIFACT
+    NOT_APPLICABLE
+    FAILED
+
+соответственно.
+
+======================================================================
+41. BACKWARD COMPATIBILITY
+======================================================================
+
+Не менять:
+
+    frozen scientific experiment outputs
+    frozen Voynich baseline
+    existing stage calculations
+
+Task52 только читает их.
+
+Если old comparison snapshot существует, не переписывать его.
+
+Создать новую comparison schema/output version.
+
+======================================================================
+42. PERFORMANCE
+======================================================================
+
+Task52 не является тяжёлым scientific computation.
+
+Не подключать distributed executor.
+
+Все тяжёлые расчёты уже выполнены scientific pipeline.
+
+Comparison должен работать только по frozen artifacts и быть относительно
+дешёвым.
+
+Если trajectory comparison Task49 оказывается неожиданно дорогим,
+сначала profile; distribution не внедрять без необходимости.
+
+======================================================================
+43. DOCUMENTATION
+======================================================================
+
+Создать/обновить:
+
+    COMPARISON_METRIC_AUDIT.md
+    EXPERIMENT_COMPARISON.md
+    FINGERPRINT_SCHEMA.md
+
+Отдельно документировать:
+
+    Task49 integration
+    missingness semantics
+    support semantics
+    common-core distance
+    pairwise-available distance
+    family-level distance
+    provenance/freeze requirements.
+
+======================================================================
+44. VALIDATION
+======================================================================
+
+Выполнить:
+
+    go build ./...
+    go vet ./...
+    go test ./...
+    go test -race ./...
+    git diff --check
+
+Проверить existing frozen experiment checksums.
+
+Comparison output должен быть deterministic.
+
+======================================================================
+DELIVERABLES
+======================================================================
+
+1. Исправленные transition metric definitions.
+2. Полный audit scientific metrics.
+3. Расширенный multi-family fingerprint.
+4. Optional Task49 integration.
+5. Task49 trajectory/common-N comparison.
+6. Strict missingness/applicability semantics.
+7. Statistical support metadata.
+8. Common-core distances.
+9. Pairwise-available distances with coverage.
+10. Family-level distances.
+11. Complete artifact provenance.
+12. Frozen/verified production comparison.
+13. Updated fingerprint schema.
+14. Documentation and regression tests.
+
+======================================================================
+DEFINITION OF DONE
+======================================================================
+
+Task52 завершён, когда experiment comparison:
+
+- корректно читает все scientifically comparable frozen outputs;
+- не сводится только к stages 23–27;
+- правильно вычисляет и называет transition metrics;
+- использует Task49 vocabulary-growth metrics, если они присутствуют;
+- корректно сравнивает experiments без Task49;
+- различает VALUE / EMPTY / N/A / NOT_COMPUTED / MISSING;
+- учитывает statistical support;
+- предоставляет distances в общем common-core space;
+- дополнительно показывает family-level similarity;
+- полностью фиксирует hashes/version/provenance;
+- воспроизводимо работает только над verified frozen experiments в
+  production mode.
+
+Только после успешного acceptance run fingerprint schema можно
+зафиксировать как scientific schema v1.
