@@ -239,6 +239,36 @@ func TestIsolatedWorkspaceRejectsStaleAndFreezeUsesRegistryOnly(t *testing.T) {
 		t.Fatal(err)
 	}
 
+	// A stage-local checkpoint may survive an interrupted run and is not
+	// part of the experiment artifact registry.
+	checkpoint := filepath.Join(workspaceWorkdir(experiment), "token-relation-validation", "checkpoint.json")
+	if err := os.MkdirAll(filepath.Dir(checkpoint), 0755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(checkpoint, []byte(`{"completed":25}`), 0644); err != nil {
+		t.Fatal(err)
+	}
+	projectionCheckpoint := filepath.Join(workspaceWorkdir(experiment), "structural-projection-checkpoint.json")
+	if err := os.WriteFile(projectionCheckpoint, []byte(`{"trial":3}`), 0644); err != nil {
+		t.Fatal(err)
+	}
+	actual, err := scanScientificArtifacts(experiment)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, ok := actual["token-relation-validation/checkpoint.json"]; ok {
+		t.Fatal("stage checkpoint was treated as a scientific artifact")
+	}
+	if _, ok := actual["structural-projection-checkpoint.json"]; ok {
+		t.Fatal("explicit stage checkpoint was treated as a scientific artifact")
+	}
+	if err := os.Remove(checkpoint); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.Remove(projectionCheckpoint); err != nil {
+		t.Fatal(err)
+	}
+
 	valid := filepath.Join(workspaceWorkdir(experiment), "result.yaml")
 	if err := os.WriteFile(valid, []byte("corpus: beta\n"), 0644); err != nil {
 		t.Fatal(err)

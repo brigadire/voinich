@@ -99,6 +99,14 @@ func scanScientificArtifacts(experimentDir string) (map[string]string, error) {
 			}
 			return nil
 		}
+		// Checkpoints are stage-local operational state, not scientific
+		// artifacts.  A stage can leave one behind when the process is
+		// interrupted; it must remain available for the stage's own resume
+		// logic without making the whole experiment workspace stale.
+		name := filepath.Base(rel)
+		if name == "checkpoint.json" || strings.HasSuffix(name, "-checkpoint.json") {
+			return nil
+		}
 		if d.IsDir() {
 			return nil
 		}
