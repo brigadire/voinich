@@ -38,12 +38,13 @@ func TestStagesMatchRepository(t *testing.T) {
 	// Tools that are not pipeline stages: administrative/orchestration
 	// commands this very task introduces or that Task34 introduced.
 	exempt := map[string]bool{
-		"conditional-regime-pki": true,
-		"codex_prepare":          true,
-		"codex_orientation":      true,
-		"corpus-transform":       true,
-		"pipeline-orchestrate":   true,
-		"experiment-compare":     true,
+		"conditional-regime-pki":       true,
+		"codex_prepare":                true,
+		"codex_orientation":            true,
+		"corpus-transform":             true,
+		"inverse-transposition-search": true,
+		"pipeline-orchestrate":         true,
+		"experiment-compare":           true,
 	}
 	for _, e := range entries {
 		if !e.IsDir() {
