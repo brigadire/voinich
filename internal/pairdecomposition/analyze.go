@@ -3,6 +3,7 @@ package pairdecomposition
 import (
 	"fmt"
 	"math"
+	"os"
 	"sort"
 	"strings"
 )
@@ -95,6 +96,7 @@ func Run(c Config) (Output, []FamilyResult, error) {
 			}
 		}
 	}
+	printCardinalityDiagnostics(len(ordered), families, c.Controls)
 	globalLeft, globalRight := globalContext(profiles, "left"), globalContext(profiles, "right")
 	out := Output{Methodology: map[string]string{
 		"structural_similarity":       "copied unchanged from structural_graphemic_pairs.tsv; arithmetic mean of existing position, left-cosine, and right-cosine components",
@@ -104,23 +106,41 @@ func Run(c Config) (Output, []FamilyResult, error) {
 		"negative_controls":           "minimum deterministic match cost over log-counts, graphemic distance, reliability, and distance from corpus-median structural similarity",
 		"shared_absence":              "globally frequent context tokens absent from both distributions, reported only when each side has at least 30 context observations; absence means unobserved, not impossible",
 	}}
+	// A target can also be selected as a control for another target. Decomposition
+	// is immutable for a PairSource, so reuse it without changing ordering or
+	// serialization. This is particularly important when one large family adds
+	// thousands of target edges.
+	decomposed := make(map[[2]string]PairResult, len(ordered))
+	decomposePair := func(p PairSource) (PairResult, error) {
+		k := key(p.TokenA, p.TokenB)
+		if r, ok := decomposed[k]; ok {
+			return r, nil
+		}
+		r, e := decompose(p, profiles, globalLeft, globalRight, c.ContextLimit)
+		if e != nil {
+			return PairResult{}, e
+		}
+		decomposed[k] = r
+		return r, nil
+	}
 	for _, k := range ordered {
 		p, ok := by[k]
 		if !ok {
 			return Output{}, nil, fmt.Errorf("pair %s/%s not found in full pair file", k[0], k[1])
 		}
-		r, e := decompose(p, profiles, globalLeft, globalRight, c.ContextLimit)
+		r, e := decomposePair(p)
 		if e != nil {
 			return Output{}, nil, e
 		}
 		out.Pairs = append(out.Pairs, r)
 	}
 	median := medianStructural(pairs)
+	controlIndex := newControlIndex(pairs)
 	for _, target := range out.Pairs {
 		src := by[key(target.TokenA, target.TokenB)]
-		controls := chooseControls(src, pairs, median, c.Controls)
+		controls := controlIndex.choose(src, median, c.Controls)
 		for i, x := range controls {
-			r, e := decompose(x.Pair, profiles, globalLeft, globalRight, c.ContextLimit)
+			r, e := decomposePair(x.Pair)
 			if e != nil {
 				return Output{}, nil, e
 			}
@@ -142,6 +162,24 @@ func Run(c Config) (Output, []FamilyResult, error) {
 		familyResults = append(familyResults, fr)
 	}
 	return out, familyResults, nil
+}
+
+func printCardinalityDiagnostics(targetPairs int, families []FamilyInput, controls int) {
+	totalEdges, largestTokens, largestEdges := 0, 0, 0
+	for _, f := range families {
+		totalEdges += len(f.Edges)
+		if len(f.Tokens) > largestTokens {
+			largestTokens = len(f.Tokens)
+		}
+		if len(f.Edges) > largestEdges {
+			largestEdges = len(f.Edges)
+		}
+	}
+	estimated := targetPairs * (1 + controls)
+	fmt.Fprintf(os.Stderr, "structural cardinality: target_pairs=%d estimated_decompositions=%d family_count=%d largest_family_tokens=%d largest_family_edges=%d total_family_edges=%d\n", targetPairs, estimated, len(families), largestTokens, largestEdges, totalEdges)
+	if largestEdges > 1000 || (targetPairs > 0 && largestEdges > targetPairs*10) {
+		fmt.Fprintf(os.Stderr, "STRUCTURAL_CARDINALITY_EXPLOSION target_pairs=%d estimated_decompositions=%d largest_family_edges=%d total_family_edges=%d\n", targetPairs, estimated, largestEdges, totalEdges)
+	}
 }
 
 func decompose(s PairSource, profiles map[string]profile, globalLeft, globalRight map[string]int, limit int) (PairResult, error) {
@@ -475,31 +513,31 @@ type controlCandidate struct {
 	Cost float64
 }
 
-func medianStructural(p []PairSource) float64 {
-	v := make([]float64, len(p))
-	for i, x := range p {
-		v[i] = x.Structural
-	}
-	sort.Float64s(v)
-	if len(v) == 0 {
-		return 0
-	}
-	if len(v)%2 == 1 {
-		return v[len(v)/2]
-	}
-	return (v[len(v)/2-1] + v[len(v)/2]) / 2
+type indexedControlCandidate struct {
+	pair PairSource
+	a, b float64
 }
-func chooseControls(t PairSource, all []PairSource, median float64, n int) []controlCandidate {
+type controlIndex struct{ candidates []indexedControlCandidate }
+
+func newControlIndex(all []PairSource) controlIndex {
+	x := controlIndex{candidates: make([]indexedControlCandidate, 0, len(all))}
+	for _, p := range all {
+		counts := []float64{math.Log1p(float64(p.CountA)), math.Log1p(float64(p.CountB))}
+		sort.Float64s(counts)
+		x.candidates = append(x.candidates, indexedControlCandidate{p, counts[0], counts[1]})
+	}
+	return x
+}
+func (x controlIndex) choose(t PairSource, median float64, n int) []controlCandidate {
 	var near, fallback []controlCandidate
 	tc := []float64{math.Log1p(float64(t.CountA)), math.Log1p(float64(t.CountB))}
 	sort.Float64s(tc)
-	for _, p := range all {
+	for _, indexed := range x.candidates {
+		p := indexed.pair
 		if key(p.TokenA, p.TokenB) == key(t.TokenA, t.TokenB) || p.TokenA == t.TokenA || p.TokenA == t.TokenB || p.TokenB == t.TokenA || p.TokenB == t.TokenB {
 			continue
 		}
-		pc := []float64{math.Log1p(float64(p.CountA)), math.Log1p(float64(p.CountB))}
-		sort.Float64s(pc)
-		cost := math.Abs(pc[0]-tc[0]) + math.Abs(pc[1]-tc[1]) + 2*math.Abs(p.Graphemic-t.Graphemic) + 2*math.Abs(p.Reliability-t.Reliability) + 10*math.Abs(p.Structural-median)
+		cost := math.Abs(indexed.a-tc[0]) + math.Abs(indexed.b-tc[1]) + 2*math.Abs(p.Graphemic-t.Graphemic) + 2*math.Abs(p.Reliability-t.Reliability) + 10*math.Abs(p.Structural-median)
 		candidate := controlCandidate{p, cost}
 		fallback = append(fallback, candidate)
 		if math.Abs(p.Structural-median) <= .05 {
@@ -520,6 +558,24 @@ func chooseControls(t PairSource, all []PairSource, median float64, n int) []con
 		out = out[:n]
 	}
 	return out
+}
+
+func medianStructural(p []PairSource) float64 {
+	v := make([]float64, len(p))
+	for i, x := range p {
+		v[i] = x.Structural
+	}
+	sort.Float64s(v)
+	if len(v) == 0 {
+		return 0
+	}
+	if len(v)%2 == 1 {
+		return v[len(v)/2]
+	}
+	return (v[len(v)/2-1] + v[len(v)/2]) / 2
+}
+func chooseControls(t PairSource, all []PairSource, median float64, n int) []controlCandidate {
+	return newControlIndex(all).choose(t, median, n)
 }
 
 func decomposeFamily(f FamilyInput, by map[[2]string]PairSource) (FamilyResult, error) {

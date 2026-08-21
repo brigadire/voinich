@@ -4,6 +4,10 @@ type Config struct {
 	DictionaryPath, PairsPath, DistantPath, FamiliesPath, OutputDir string
 	TopN, ContextLimit, Controls, FamilyID                          int
 	Pair                                                            string
+	// SkipSVG omits derived presentation plots. Scientific YAML/TSV outputs are
+	// always written; keeping this separate makes large runs bounded by the
+	// scientific result rather than by thousands of small files.
+	SkipSVG bool
 }
 
 type PairSource struct {

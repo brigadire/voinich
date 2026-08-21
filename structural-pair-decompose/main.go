@@ -21,6 +21,7 @@ func main() {
 	flag.IntVar(&c.FamilyID, "family", 0, "analyze one family ID; 0 means all in default mode")
 	flag.IntVar(&c.ContextLimit, "context-limit", 12, "rows per human-readable context list")
 	flag.IntVar(&c.Controls, "controls", 3, "negative controls per target")
+	flag.BoolVar(&c.SkipSVG, "no-svg", false, "skip derived SVG plots (scientific outputs are written regardless)")
 	flag.Parse()
 	if err := pairdecomposition.ValidateConfig(c); err != nil {
 		fmt.Fprintln(os.Stderr, "Invalid parameters:", err)

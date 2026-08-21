@@ -15,6 +15,7 @@ scientific semantics in generic and IVTFF corpora.
 | regimes/context/trajectory/projection | local/global/conditional/distance/property/projection outputs | often window-, metadata-, or candidate-specific | no single cross-corpus denominator established | excluded; metadata labels are incompatible |
 | begin/end and normalization comparison | candidate and normalization reports | hypothesis-specific candidate lists | no stable generic common quantity in current contract | excluded from fingerprint |
 | vocabulary growth (Task49) | `vocabulary-growth/*` | V(n), Heaps coefficients, hapax fractions, null effects, segment summaries | common checkpoints; V(n)/n only at fixed n | optional family; missing legacy artifacts remain missing |
+| structural family cardinality (Task52/53) | structural family diagnostics | family count, largest-family token/edge counts, total family edges | raw support for interpreting structural explosion | diagnostic only; excluded from aggregate distance |
 
 ## Transition semantics
 

@@ -16,8 +16,10 @@ func WriteAll(c Config, out Output, families []FamilyResult) error {
 		return err
 	}
 	plots := filepath.Join(c.OutputDir, "plots")
-	if err := os.MkdirAll(plots, 0o755); err != nil {
-		return err
+	if !c.SkipSVG {
+		if err := os.MkdirAll(plots, 0o755); err != nil {
+			return err
+		}
 	}
 	if err := writeYAML(filepath.Join(c.OutputDir, "pair_decomposition.yaml"), out); err != nil {
 		return err
@@ -34,14 +36,16 @@ func WriteAll(c Config, out Output, families []FamilyResult) error {
 	if err := writeReport(filepath.Join(c.OutputDir, "structural_pair_report.md"), out, families); err != nil {
 		return err
 	}
-	for _, p := range out.Pairs {
-		if err := writePairSVG(filepath.Join(plots, "pair_"+safe(p.TokenA)+"_"+safe(p.TokenB)+".svg"), p); err != nil {
-			return err
+	if !c.SkipSVG {
+		for _, p := range out.Pairs {
+			if err := writePairSVG(filepath.Join(plots, "pair_"+safe(p.TokenA)+"_"+safe(p.TokenB)+".svg"), p); err != nil {
+				return err
+			}
 		}
-	}
-	for _, f := range families {
-		if err := writeFamilySVG(filepath.Join(plots, fmt.Sprintf("family_%d.svg", f.ID)), f); err != nil {
-			return err
+		for _, f := range families {
+			if err := writeFamilySVG(filepath.Join(plots, fmt.Sprintf("family_%d.svg", f.ID)), f); err != nil {
+				return err
+			}
 		}
 	}
 	return nil
