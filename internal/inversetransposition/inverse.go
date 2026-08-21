@@ -11,7 +11,7 @@ import (
 	"zcore.dev/voinich/internal/corpustransform"
 )
 
-const ObjectiveVersion = "structural-v1"
+const ObjectiveVersion = "structural-v2"
 
 type Candidate struct {
 	Width  int    `json:"width"`
@@ -114,7 +114,31 @@ func Rank(tokens []string, candidates []Candidate) ([]ScoredCandidate, error) {
 			return nil, err
 		}
 		m := Measure(out)
-		result = append(result, ScoredCandidate{Candidate: c, Metrics: m, Score: (m.TransitionConcentration + m.RelationSignificance + m.SequenceRepetition + m.HigherOrderRepetition) / 4})
+		result = append(result, ScoredCandidate{Candidate: c, Metrics: m})
+	}
+	// structural-v2 is family-balanced: each metric is min-max normalized over
+	// the pre-registered blind candidate set before taking the arithmetic mean.
+	// This uses no oracle and prevents the raw scale of one family from
+	// determining the objective.
+	minv, maxv := [4]float64{math.Inf(1), math.Inf(1), math.Inf(1), math.Inf(1)}, [4]float64{math.Inf(-1), math.Inf(-1), math.Inf(-1), math.Inf(-1)}
+	for _, x := range result {
+		v := [4]float64{x.Metrics.TransitionConcentration, x.Metrics.RelationSignificance, x.Metrics.SequenceRepetition, x.Metrics.HigherOrderRepetition}
+		for i := range v {
+			minv[i] = math.Min(minv[i], v[i])
+			maxv[i] = math.Max(maxv[i], v[i])
+		}
+	}
+	for i := range result {
+		v := [4]float64{result[i].Metrics.TransitionConcentration, result[i].Metrics.RelationSignificance, result[i].Metrics.SequenceRepetition, result[i].Metrics.HigherOrderRepetition}
+		var score float64
+		for j := range v {
+			if maxv[j] == minv[j] {
+				score += 0.5
+			} else {
+				score += (v[j] - minv[j]) / (maxv[j] - minv[j])
+			}
+		}
+		result[i].Score = score / 4
 	}
 	sort.Slice(result, func(i, j int) bool {
 		if result[i].Score == result[j].Score {

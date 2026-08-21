@@ -1,0 +1,471 @@
+Task53 — Scientific Pipeline Scalability Audit and Semantic-Preserving Optimization
+
+Цель
+
+Провести систематический performance/scalability audit scientific pipeline
+на корпусах, которые порождают существенно более крупные промежуточные
+структуры, чем Voynich baseline, и устранить алгоритмические bottlenecks
+БЕЗ изменения scientific semantics и результатов анализа.
+
+Проблема была обнаружена на:
+
+    Doyle transposition W=8
+
+Этот corpus имеет обычный размер:
+
+    N = 43,713
+    V = 5,360
+
+но некоторые промежуточные structural representations оказались намного
+крупнее Voynich.
+
+Stage 13, например, вместо обычных ~26–29 target pairs получил:
+
+    3,170 target pairs
+
+из-за structural family:
+
+    3,315 tokens
+    3,170 edges
+
+и выполнился примерно за 28 минут с peak RSS ~31 GB.
+
+Но проблема НЕ ограничивается stage 13.
+
+======================================================================
+1. ПРОВЕСТИ FULL PIPELINE PERFORMANCE AUDIT
+======================================================================
+
+Не оптимизировать только structural-pair-decompose.
+
+Провести audit всех stages текущего pipeline.
+
+По timestamps проблемного production run приблизительно наблюдалось:
+
+    00–04       практически мгновенно
+    05          ~2 min
+    06–07       быстро
+    08          ~1 min
+    09–12       быстро
+    13          ~29 min
+    14          ~18 min
+    15–16       ~2 min combined
+    17          ~2 h 16 min
+    18          ~2 min
+
+    23          длительная stage
+    24–26       быстро
+    27          ~6 min
+    28          быстро
+
+Интервал:
+
+    Aug 21 01:46 -> 09:48
+
+НЕ считать временем вычисления:
+
+    компьютер был выключен.
+
+Использовать run-state/per-stage timing, если они дают более точные
+значения, чем filesystem timestamps.
+
+======================================================================
+2. BASELINE VS PATHOLOGICAL CORPUS
+======================================================================
+
+Сравнить минимум:
+
+    frozen Voynich baseline
+    Doyle original
+    Doyle transposition W=8
+
+Цель — определить не просто абсолютное время, а причину изменения
+complexity.
+
+Для каждой stage собрать:
+
+    wall time
+    user CPU
+    system CPU
+    peak RSS
+    alloc-space, если практически доступно
+    input cardinalities
+    intermediate cardinalities
+    output cardinalities
+    output bytes
+
+======================================================================
+3. ОБЪЯСНИТЬ SCALING VARIABLES
+======================================================================
+
+Для каждой дорогой stage определить переменные, от которых реально зависит
+complexity.
+
+Например:
+
+    N = corpus tokens
+    V = vocabulary
+    P = candidate pairs
+    F = structural family edges
+    C = controls
+    R = permutations
+    K = structural classes
+    S = sequences
+    etc.
+
+Не считать автоматически N главным predictor runtime.
+
+Transposition W8 уже показал, что при почти неизменном N промежуточная
+структура может вырасти на порядки.
+
+======================================================================
+4. STAGE 13
+======================================================================
+
+Использовать существующий аудит
+STAGE13_STRUCTURAL_PAIR_DECOMPOSE_AUDIT.md как starting point.
+
+Известная проблема:
+
+    top-N distant pairs
+
+после первоначального отбора расширяются всеми edges всех structural
+families без ограничения.
+
+Для каждой target pair:
+
+    chooseControls
+
+повторно проходит примерно по 115k candidate pairs и сортирует candidates.
+
+Дополнительно:
+
+    тысячи decompositions
+    тысячи SVG
+    ~1.1 GB YAML
+    ~11 MB Markdown
+    peak RSS ~31 GB.
+
+Оптимизировать в первую очередь без изменения target set.
+
+Запрещено просто:
+
+    cap family edges
+    reduce target count
+    reduce controls
+    change thresholds
+
+ради производительности.
+
+======================================================================
+5. STAGE 13 SEMANTIC-PRESERVING OPTIMIZATION
+======================================================================
+
+Исследовать:
+
+- precomputed/indexed control candidate structures;
+- устранение повторных full scans;
+- устранение повторных sorts;
+- reuse immutable computations;
+- streaming result generation;
+- bounded-memory serialization;
+- разделение scientific result и visualization;
+- lazy/optional SVG generation;
+- возможность отдельной render-команды.
+
+Если SVG не участвуют в downstream science, разрешается вынести их из
+critical path при сохранении возможности получить идентичные графики
+отдельной командой.
+
+======================================================================
+6. STAGES 14, 17, 23, 27
+======================================================================
+
+Отдельно profile stages, показавшие заметный runtime:
+
+    14 distance-context-analyze
+    17 structural-projection-analyze
+    23 token-relation-validate
+    27 transition-network-validate
+
+и любые другие stages, которые profiling определит как expensive.
+
+Не предполагать, что причины одинаковы.
+
+Для каждой stage определить:
+
+    dominant CPU hotspot
+    dominant allocation hotspot
+    dominant cardinality multiplier
+    asymptotic behaviour.
+
+======================================================================
+7. STAGE 17
+======================================================================
+
+Stage 17 особенно важен:
+
+по timestamps проблемного run он выполнялся порядка двух часов.
+
+Проверить:
+
+    distributed executor действительно использовался?
+    сколько jobs было создано?
+    насколько равномерно они распределялись?
+    есть ли serial preprocessing/postprocessing?
+    возникло ли explosion количества trials/pairs/classes?
+    не происходит ли повторное вычисление одинаковых structures?
+
+Если remote distribution уже существует, не считать сам факт большого
+runtime основанием для добавления workers.
+
+Сначала определить scaling bottleneck.
+
+======================================================================
+8. STAGE 23
+======================================================================
+
+Проверить token-relation-validate аналогичным образом.
+
+Учитывать, что wall-clock interval мог включать shutdown компьютера.
+
+Использовать фактический run-state/log timing, а не разницу timestamps,
+если возможно.
+
+======================================================================
+9. OUTPUT EXPLOSION
+======================================================================
+
+Отдельно проанализировать ситуации, когда scientific computation
+заканчивается созданием огромного количества:
+
+    YAML
+    TSV
+    Markdown
+    SVG
+
+Определить:
+
+    что является scientific artifact;
+    что является derived presentation artifact.
+
+Scientific data не удалять и не усекать.
+
+Presentation artifacts разрешается:
+
+    генерировать отдельно
+    генерировать по запросу
+    хранить компактнее
+
+если это не влияет на scientific reproducibility.
+
+======================================================================
+10. НЕ МЕНЯТЬ SCIENTIFIC SEMANTICS
+======================================================================
+
+Главное acceptance requirement:
+
+optimized analyzer должен выдавать те же scientific results.
+
+Для существующих manageable corpora:
+
+    byte-for-byte identity
+
+где serialization deterministic.
+
+Если технически невозможно сохранить byte identity из-за изменения
+presentation serialization:
+
+    semantic identity
+
+должна быть доказана отдельным comparator.
+
+Никаких tolerance concessions для floating-point calculations без
+отдельного обоснования.
+
+======================================================================
+11. НЕ СКРЫВАТЬ STRUCTURAL EXPLOSION
+======================================================================
+
+Большая structural family в transposition W8 сама может быть scientific
+result.
+
+Поэтому нельзя "исправлять производительность":
+
+    отбрасыванием family
+    truncation
+    silent sampling
+    повышением thresholds.
+
+Зафиксировать:
+
+    family count
+    largest family tokens
+    largest family edges
+    total family edges
+
+как diagnostics.
+
+======================================================================
+12. TASK52 CANDIDATE METRICS
+======================================================================
+
+Проверить целесообразность передачи в comparison layer новых raw metrics:
+
+    structural.family_count
+    structural.largest_family_tokens
+    structural.largest_family_edges
+    structural.total_family_edges
+
+и нормированных вариантов.
+
+Не добавлять их автоматически в aggregate distance.
+
+Сначала классифицировать в COMPARISON_METRIC_AUDIT:
+
+    scientific feature
+    support/diagnostic
+    distance eligible?
+
+======================================================================
+13. SCALABILITY GUARDS
+======================================================================
+
+Добавить deterministic preflight estimates там, где это возможно.
+
+Например перед stage 13:
+
+    target_pairs
+    estimated decompositions
+    estimated output count
+
+Не прекращать scientific run автоматически только из-за большого объёма.
+
+Но выводить явное предупреждение:
+
+    STRUCTURAL_CARDINALITY_EXPLOSION
+
+с cardinalities.
+
+======================================================================
+14. DISTRIBUTION AUDIT
+======================================================================
+
+Для computationally independent work проверить возможность использования
+существующего remote executor.
+
+Но:
+
+    сначала algorithmic optimization,
+    затем distribution.
+
+Не распределять очевидно лишнюю работу.
+
+Если stage естественно разбивается на deterministic independent units,
+подготовить recommendation.
+
+Реализацию remote execution делать только там, где она оправдана и не
+требует изменения scientific result.
+
+======================================================================
+15. BENCHMARK
+======================================================================
+
+Главный stress benchmark:
+
+    Doyle transposition W8
+
+Потому что именно он воспроизводимо создаёт pathological intermediate
+cardinalities.
+
+Сохранить baseline timings/resources ДО изменений.
+
+После каждого существенного optimization измерять:
+
+    wall
+    CPU
+    RSS
+    output size.
+
+======================================================================
+16. PERFORMANCE REPORT
+======================================================================
+
+Создать:
+
+    PIPELINE_SCALABILITY_AUDIT.md
+    PIPELINE_SCALABILITY_REFACTOR_REPORT.md
+
+Для каждой stage таблица:
+
+    baseline Voynich runtime
+    Doyle runtime
+    T8 runtime
+    cardinality difference
+    hotspot
+    root cause
+    optimization
+    runtime after
+    RSS before/after
+    scientific identity status.
+
+======================================================================
+17. НЕ ЗАПУСКАТЬ СРАЗУ FULL PRODUCTION
+======================================================================
+
+Сначала:
+
+    unit tests
+    targeted benchmarks
+    reduced permutation runs
+    oracle comparisons.
+
+После доказательства identity выполнить один full T8 benchmark.
+
+Не расходовать полный distributed run на каждую промежуточную правку.
+
+======================================================================
+18. VALIDATION
+======================================================================
+
+Выполнить:
+
+    go build ./...
+    go vet ./...
+    go test ./...
+    go test -race ./...
+    git diff --check
+
+Проверить frozen Voynich checksums.
+
+Для изменённых stages провести before/after oracle comparison.
+
+======================================================================
+DELIVERABLES
+======================================================================
+
+1. Full pipeline scalability audit.
+2. Profiles expensive stages.
+3. Stage 13 semantic-preserving optimization.
+4. Optimization других обнаруженных pathological stages.
+5. Cardinality diagnostics/guards.
+6. Distribution recommendations where justified.
+7. Before/after benchmarks on T8.
+8. Scientific identity proof.
+9. PIPELINE_SCALABILITY_AUDIT.md.
+10. PIPELINE_SCALABILITY_REFACTOR_REPORT.md.
+
+======================================================================
+DEFINITION OF DONE
+======================================================================
+
+Task53 завершён, когда:
+
+- причины резкого runtime growth T8 объяснены по всем expensive stages;
+- bottlenecks определены измерениями, а не предположениями;
+- очевидная algorithmic redundancy устранена;
+- scientific target sets/thresholds/parameters не урезаны;
+- scientific results совпадают с pre-optimization oracle;
+- pathological intermediate structures остаются видимыми;
+- T8 full-run показывает измеримое снижение wall time и/или memory;
+- frozen Voynich baseline остаётся валиден.

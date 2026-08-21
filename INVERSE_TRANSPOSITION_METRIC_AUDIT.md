@@ -25,11 +25,15 @@ sequence is opened only by the separate `validate` command, after ranking.
 
 ## Frozen objective
 
-`structural-v1` is the arithmetic mean of the four displayed metrics, with
-equal weights. No weights, thresholds, or candidate widths are changed after
-looking at Voynich candidates. Ties are resolved by candidate id. The CLI
-does not accept an oracle flag in search mode; `validate` reports exact
-byte/token-sequence recovery separately.
+Raw arithmetic means fail the equal-contribution check: relation significance
+is roughly two orders of magnitude smaller than the other displayed metrics.
+The frozen objective is therefore `structural-v2`: min-max normalization of
+each of the four metric families over the pre-registered blind candidate set,
+followed by their arithmetic mean. The normalization is computed without an
+oracle and follows the same pre-registered rule for every input. No weights, thresholds, or candidate
+widths are changed after looking at Voynich candidates. Ties are resolved by
+candidate id. The CLI does not accept an oracle flag in search mode;
+`validate` reports exact byte/token-sequence recovery separately.
 
 This is a validation framework, not a decryptor. A high score means only that
 the candidate has more concentrated/repeated token adjacency under this

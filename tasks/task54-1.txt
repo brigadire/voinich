@@ -1,0 +1,37 @@
+Before Voynich search:
+
+1. На untransformed Doyle и известных T2/T4/T8 controls
+   измерить empirical range и variance каждой из четырех
+   structural-v1 metrics.
+
+2. Проверить, действительно ли arithmetic mean raw values
+   обеспечивает приблизительно равный вклад metrics.
+
+3. Построить correlation matrix четырех metrics на synthetic
+   transposition controls.
+
+4. Если scale imbalance или сильная redundancy обнаружены:
+   определить normalization/family balancing сейчас,
+   ДО любого Voynich search.
+
+5. После этого окончательно freeze objective как structural-v1
+   или structural-v2.
+
+6. Выполнить blind recovery:
+       T2(Doyle)
+       T4(Doyle)
+       T8(Doyle)
+
+   search не знает true width.
+
+7. Отдельный validate должен показать:
+       true rank
+       top-1 recovery
+       top-k recovery
+       exact inverse recovery
+       structural recovery.
+
+8. Только если synthetic recovery работает существенно лучше
+   null/random search, разрешить первый Voynich discovery run.
+
+После первого Voynich run objective запрещено менять.

@@ -4,7 +4,7 @@ Controlled Task54 inverse search for the rectangular columnar transposition
 implemented by Task46. The search is blind: it reads only the transformed
 canonical corpus, enumerates the pre-registered `natural` and `keyed` column
 orders, and ranks exact inverse reconstructions using the frozen
-`structural-v1` objective described in
+`structural-v2` objective described in
 [`INVERSE_TRANSPOSITION_METRIC_AUDIT.md`](../INVERSE_TRANSPOSITION_METRIC_AUDIT.md).
 
 ```bash

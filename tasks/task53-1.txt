@@ -1,0 +1,35 @@
+Task53 completion benchmark
+
+1. Выполнить полный post-optimization run Stage 13 на том же
+   Doyle transposition W8 corpus и тех же scientific parameters.
+
+2. Выполнить два режима:
+   a) default — для проверки полной output identity;
+   b) -no-svg — для performance benchmark critical path.
+
+3. Сравнить pre/post scientific outputs:
+   - byte-for-byte там, где это предусмотрено;
+   - отдельно подтвердить identical target pairs;
+   - identical controls;
+   - identical decompositions;
+   - identical YAML/TSV/Markdown scientific data.
+
+4. Зафиксировать:
+   wall time
+   user/sys CPU
+   peak RSS
+   output bytes
+
+   before vs after.
+
+5. Затем отдельно profile Stage 14, 17, 23 и 27 на T8.
+
+6. Не менять их код до получения CPU/allocation profiles.
+
+7. Для каждой определить конкретный hotspot и предложить
+   semantic-preserving optimization.
+
+8. Обновить PIPELINE_SCALABILITY_REFACTOR_REPORT.md.
+
+Task53 считать завершённым только после измеренного before/after
+benchmark и подтверждения scientific identity.

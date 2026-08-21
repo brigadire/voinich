@@ -191,7 +191,7 @@ func parseWidths(s string) ([]int, error) {
 }
 func writeReport(dir string, r []inversetransposition.ScoredCandidate) error {
 	var b strings.Builder
-	b.WriteString("# Inverse-transposition search\n\nObjective: `structural-v1`; equal weights; no lexical metrics and no oracle.\n\n| rank | candidate | score | transition | relation | sequence-2 | sequence-3 |\n|---:|---|---:|---:|---:|---:|---:|\n")
+	b.WriteString("# Inverse-transposition search\n\nObjective: `structural-v2`; candidate-set min-max family balancing; no lexical metrics and no oracle.\n\n| rank | candidate | score | transition | relation | sequence-2 | sequence-3 |\n|---:|---|---:|---:|---:|---:|---:|\n")
 	for _, x := range r {
 		fmt.Fprintf(&b, "| %d | %s | %.6f | %.6f | %.6f | %.6f | %.6f |\n", x.Rank, x.ID(), x.Score, x.Metrics.TransitionConcentration, x.Metrics.RelationSignificance, x.Metrics.SequenceRepetition, x.Metrics.HigherOrderRepetition)
 	}
