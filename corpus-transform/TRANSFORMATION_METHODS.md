@@ -138,9 +138,11 @@ sequence.
 
 ### 3.2 Homophone count model (`-homophone-model`)
 
-- `fixed` (default, only implemented value): every plaintext token gets the
-  same `H`, from `-homophones`.
-- `frequency`: **backlog, not implemented** (see section 6).
+- `fixed` (default): every plaintext token gets the same `H`, from
+  `-homophones` (`homophonic-global-v1`).
+- `frequency`: rank-quantile allocation (`frequency-v1`), specified in
+  [FREQUENCY_HOMOPHONE_MODEL.md](../FREQUENCY_HOMOPHONE_MODEL.md). Here
+  `-homophones` means `Hmax`; selection remains independent.
 
 ### 3.3 Selection distribution (`-homophone-selection`)
 
@@ -177,6 +179,10 @@ one row per `(plaintext token, homophone)` pair, in the same deterministic
 order as `V` (sorted) x homophone-index. This file is for
 reproducibility/audit only; **the scientific pipeline never receives it**.
 Its SHA256 is recorded in the manifest as `mapping_sha256`.
+
+Frequency runs additionally write `<output>.homophone_allocation.tsv` with
+`plaintext_token`, `raw_frequency`, `frequency_rank`, `frequency_quantile`,
+and `allocated_H`; its SHA256 is recorded as `allocation_sha256`.
 
 ### 3.5 Reversibility
 

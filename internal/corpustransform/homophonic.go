@@ -8,8 +8,8 @@ import (
 // HomophonicParams fully determines a deterministic token-level homophonic
 // substitution (task46 sections 5-7).
 type HomophonicParams struct {
-	Model      string // HomophoneModelFixed (HomophoneModelFrequency is backlog, see TRANSFORMATION_METHODS.md)
-	Homophones int    // H, used when Model == HomophoneModelFixed
+	Model      string // fixed (global H) or frequency (frequency-v1, Hmax)
+	Homophones int    // H or Hmax, depending on Model
 	Selection  string // SelectionUniform or SelectionWeighted
 	Seed       int64
 }
@@ -29,7 +29,22 @@ type HomophoneEntry struct {
 type Mapping struct {
 	Vocabulary []string
 	Entries    map[string][]HomophoneEntry
+	Allocation []AllocationRecord
 }
+
+// AllocationRecord is the frozen frequency-v1 allocation decision for one
+// plaintext type. Rank is one-based, descending by frequency (lexical order
+// breaks ties), and Quantile is in [0,1].
+type AllocationRecord struct {
+	PlaintextToken    string
+	RawFrequency      int
+	FrequencyRank     int
+	FrequencyQuantile float64
+	AllocatedH        int
+}
+
+const FrequencyModelVersion = "frequency-v1"
+const GlobalModelVersion = "homophonic-global-v1"
 
 // WeightScheme is the versioned, fixed formula used by
 // -homophone-selection weighted (task46 section 6): "triangular-v1" gives
@@ -63,19 +78,10 @@ func uniformWeights(h int) []float64 {
 // mapping.tsv rows are fully deterministic (see the "Go map iteration
 // determinism" project convention).
 func BuildMapping(tokens []string, p HomophonicParams) (Mapping, error) {
-	if p.Model != HomophoneModelFixed {
-		return Mapping{}, fmt.Errorf("homophone model %q is not implemented; see TRANSFORMATION_METHODS.md backlog", p.Model)
-	}
 	if p.Homophones < 1 {
 		return Mapping{}, fmt.Errorf("-homophones must be >= 1, got %d", p.Homophones)
 	}
-	var weights []float64
-	switch p.Selection {
-	case SelectionUniform:
-		weights = uniformWeights(p.Homophones)
-	case SelectionWeighted:
-		weights = triangularWeights(p.Homophones)
-	default:
+	if p.Selection != SelectionUniform && p.Selection != SelectionWeighted {
 		return Mapping{}, fmt.Errorf("unsupported homophone selection %q", p.Selection)
 	}
 
@@ -88,18 +94,48 @@ func BuildMapping(tokens []string, p HomophonicParams) (Mapping, error) {
 		vocab = append(vocab, t)
 	}
 	sort.Strings(vocab)
+	counts := TokenCounts(tokens)
+	allocation := make([]AllocationRecord, 0, len(vocab))
+	if p.Model == HomophoneModelFrequency {
+		// Vocab is already lexical order. Sort a copy by raw frequency first;
+		// lexical order is a deterministic tie-breaker.
+		sort.SliceStable(vocab, func(i, j int) bool {
+			if counts[vocab[i]] != counts[vocab[j]] {
+				return counts[vocab[i]] > counts[vocab[j]]
+			}
+			return vocab[i] < vocab[j]
+		})
+	} else if p.Model != HomophoneModelFixed {
+		return Mapping{}, fmt.Errorf("unsupported homophone model %q", p.Model)
+	}
 
 	entries := make(map[string][]HomophoneEntry, len(vocab))
 	counter := 0
-	for _, t := range vocab {
-		list := make([]HomophoneEntry, p.Homophones)
-		for k := range p.Homophones {
+	for rank, t := range vocab {
+		h := p.Homophones
+		q := 0.0
+		if p.Model == HomophoneModelFrequency {
+			if len(vocab) > 1 {
+				q = float64(len(vocab)-rank-1) / float64(len(vocab)-1)
+			}
+			h = 1 + int(float64(p.Homophones-1)*q)
+		}
+		allocation = append(allocation, AllocationRecord{PlaintextToken: t, RawFrequency: counts[t], FrequencyRank: rank + 1, FrequencyQuantile: q, AllocatedH: h})
+		weights := uniformWeights(h)
+		if p.Selection == SelectionWeighted {
+			weights = triangularWeights(h)
+		}
+		list := make([]HomophoneEntry, h)
+		for k := range h {
 			list[k] = HomophoneEntry{CipherToken: opaqueID(counter), Probability: weights[k]}
 			counter++
 		}
 		entries[t] = list
 	}
-	return Mapping{Vocabulary: vocab, Entries: entries}, nil
+	// Keep mapping.tsv order lexical for compatibility, while allocation rank
+	// remains explicit in the diagnostic artifact.
+	sort.Strings(vocab)
+	return Mapping{Vocabulary: vocab, Entries: entries, Allocation: allocation}, nil
 }
 
 func opaqueID(counter int) string {

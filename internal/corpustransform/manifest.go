@@ -3,6 +3,7 @@ package corpustransform
 import (
 	"encoding/json"
 	"fmt"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -39,17 +40,20 @@ type Manifest struct {
 	RemainderPolicy string `json:"remainder_policy,omitempty"`
 
 	// Homophonic-only.
-	HomophoneModel string `json:"homophone_model,omitempty"`
-	Homophones     *int   `json:"homophones,omitempty"`
-	Selection      string `json:"selection,omitempty"`
-	MappingSHA256  string `json:"mapping_sha256,omitempty"`
+	HomophoneModel        string `json:"homophone_model,omitempty"`
+	HomophoneModelVersion string `json:"homophone_model_version,omitempty"`
+	Homophones            *int   `json:"homophones,omitempty"`
+	Selection             string `json:"selection,omitempty"`
+	SelectionModelVersion string `json:"selection_model_version,omitempty"`
+	MappingSHA256         string `json:"mapping_sha256,omitempty"`
+	AllocationSHA256      string `json:"allocation_sha256,omitempty"`
 }
 
 func intPtr(v int) *int { return &v }
 
 // NewTranspositionManifest builds the manifest for one transposition run.
 func NewTranspositionManifest(gitCommit, inputPath string, input Corpus, outputPath string, output []byte, outputTokens []string, p TranspositionParams, linePolicy string) Manifest {
-	return Manifest{
+	m := Manifest{
 		SchemaVersion:        SchemaVersion,
 		Transformer:          Transformer,
 		TransformerGitCommit: gitCommit,
@@ -80,11 +84,12 @@ func NewTranspositionManifest(gitCommit, inputPath string, input Corpus, outputP
 		Rounds:          intPtr(p.Round),
 		RemainderPolicy: RemainderPolicy,
 	}
+	return m
 }
 
 // NewHomophonicManifest builds the manifest for one homophonic run.
-func NewHomophonicManifest(gitCommit, inputPath string, input Corpus, outputPath string, output []byte, outputTokens []string, p HomophonicParams, linePolicy, mappingSHA256 string) Manifest {
-	return Manifest{
+func NewHomophonicManifest(gitCommit, inputPath string, input Corpus, outputPath string, output []byte, outputTokens []string, p HomophonicParams, linePolicy, mappingSHA256, allocationSHA256 string) Manifest {
+	m := Manifest{
 		SchemaVersion:        SchemaVersion,
 		Transformer:          Transformer,
 		TransformerGitCommit: gitCommit,
@@ -110,11 +115,23 @@ func NewHomophonicManifest(gitCommit, inputPath string, input Corpus, outputPath
 		Deterministic: true,
 		LinePolicy:    linePolicy,
 
-		HomophoneModel: p.Model,
-		Homophones:     intPtr(p.Homophones),
-		Selection:      p.Selection,
-		MappingSHA256:  mappingSHA256,
+		HomophoneModel:   p.Model,
+		Homophones:       intPtr(p.Homophones),
+		Selection:        p.Selection,
+		MappingSHA256:    mappingSHA256,
+		AllocationSHA256: allocationSHA256,
 	}
+	m.HomophoneModelVersion = GlobalModelVersion
+	if p.Selection == SelectionUniform {
+		m.SelectionModelVersion = SelectionUniformVersion
+	} else {
+		m.SelectionModelVersion = WeightScheme
+	}
+	if p.Model == HomophoneModelFrequency {
+		m.HomophoneModelVersion = FrequencyModelVersion
+		m.Parameters["homophones_max"] = p.Homophones
+	}
+	return m
 }
 
 // MarshalManifest renders m as indented JSON with a trailing newline,
@@ -142,6 +159,26 @@ func MarshalMappingTSV(mapping Mapping) []byte {
 			b.WriteString(strconv.FormatFloat(e.Probability, 'g', -1, 64))
 			b.WriteByte('\n')
 		}
+	}
+	return []byte(b.String())
+}
+
+// MarshalAllocationTSV is the reproducibility/audit artifact for frequency
+// allocation. It is independent of selection probabilities.
+func MarshalAllocationTSV(mapping Mapping) []byte {
+	var b strings.Builder
+	b.WriteString("plaintext_token\traw_frequency\tfrequency_rank\tfrequency_quantile\tallocated_H\n")
+	for _, a := range mapping.Allocation {
+		b.WriteString(a.PlaintextToken)
+		b.WriteByte('\t')
+		b.WriteString(strconv.Itoa(a.RawFrequency))
+		b.WriteByte('\t')
+		b.WriteString(strconv.Itoa(a.FrequencyRank))
+		b.WriteByte('\t')
+		b.WriteString(strconv.FormatFloat(a.FrequencyQuantile, 'g', -1, 64))
+		b.WriteByte('\t')
+		b.WriteString(strconv.Itoa(a.AllocatedH))
+		b.WriteByte('\n')
 	}
 	return []byte(b.String())
 }
@@ -195,13 +232,18 @@ func (s TranspositionSanity) String() string {
 // HomophonicSanity is the human-readable invariant report printed after a
 // homophonic run (task46 section 15).
 type HomophonicSanity struct {
-	InputTokens        int
-	OutputTokens       int
-	PlaintextVocab     int
-	CipherVocab        int
-	AvgHomophonesToken float64
-	MappingCollisions  int
-	OutputSHA256       string
+	InputTokens                 int
+	OutputTokens                int
+	PlaintextVocab              int
+	CipherVocab                 int
+	AvgHomophonesToken          float64
+	MappingCollisions           int
+	AllocatedHomophones         int
+	ObservedHomophones          int
+	HapaxWithMultipleHomophones int
+	AllocationByH               map[int]int
+	OccurrenceWeightedByH       map[int]int
+	OutputSHA256                string
 }
 
 func NewHomophonicSanity(input, output []string, mapping Mapping, outputSHA256 string) HomophonicSanity {
@@ -215,19 +257,68 @@ func NewHomophonicSanity(input, output []string, mapping Mapping, outputSHA256 s
 		avg = float64(total) / float64(len(mapping.Vocabulary))
 	}
 	return HomophonicSanity{
-		InputTokens:        len(input),
-		OutputTokens:       len(output),
-		PlaintextVocab:     len(mapping.Vocabulary),
-		CipherVocab:        cipherVocab,
-		AvgHomophonesToken: avg,
-		MappingCollisions:  MappingCollisions(mapping),
-		OutputSHA256:       outputSHA256,
+		InputTokens:                 len(input),
+		OutputTokens:                len(output),
+		PlaintextVocab:              len(mapping.Vocabulary),
+		CipherVocab:                 cipherVocab,
+		AvgHomophonesToken:          avg,
+		MappingCollisions:           MappingCollisions(mapping),
+		AllocatedHomophones:         allocatedHomophones(mapping),
+		ObservedHomophones:          cipherVocab,
+		HapaxWithMultipleHomophones: hapaxMultiple(mapping),
+		AllocationByH:               allocationByH(mapping),
+		OccurrenceWeightedByH:       occurrenceWeightedByH(input, mapping),
+		OutputSHA256:                outputSHA256,
 	}
 }
 
 func (s HomophonicSanity) String() string {
 	return fmt.Sprintf(
-		"input tokens: %d\noutput tokens: %d\nplaintext vocabulary: %d\ncipher vocabulary: %d\naverage homophones/token: %.6f\nmapping collisions: %d\noutput SHA256: %s\n",
-		s.InputTokens, s.OutputTokens, s.PlaintextVocab, s.CipherVocab, s.AvgHomophonesToken, s.MappingCollisions, s.OutputSHA256,
+		"input tokens: %d\noutput tokens: %d\nplaintext vocabulary: %d\ncipher vocabulary: %d\naverage homophones/token: %.6f\nallocated homophones: %d\nobserved homophones: %d\nH distribution by plaintext types: %s\nH distribution weighted by occurrences: %s\nhapax with H>1: %d\nmapping collisions: %d\noutput SHA256: %s\n",
+		s.InputTokens, s.OutputTokens, s.PlaintextVocab, s.CipherVocab, s.AvgHomophonesToken, s.AllocatedHomophones, s.ObservedHomophones, formatDistribution(s.AllocationByH), formatDistribution(s.OccurrenceWeightedByH), s.HapaxWithMultipleHomophones, s.MappingCollisions, s.OutputSHA256,
 	)
+}
+
+func formatDistribution(values map[int]int) string {
+	keys := make([]int, 0, len(values))
+	for k := range values {
+		keys = append(keys, k)
+	}
+	sort.Ints(keys)
+	parts := make([]string, 0, len(keys))
+	for _, k := range keys {
+		parts = append(parts, fmt.Sprintf("H=%d:%d", k, values[k]))
+	}
+	return strings.Join(parts, ",")
+}
+
+func allocatedHomophones(m Mapping) int {
+	n := 0
+	for _, e := range m.Entries {
+		n += len(e)
+	}
+	return n
+}
+func hapaxMultiple(m Mapping) int {
+	n := 0
+	for _, a := range m.Allocation {
+		if a.RawFrequency == 1 && a.AllocatedH > 1 {
+			n++
+		}
+	}
+	return n
+}
+func allocationByH(m Mapping) map[int]int {
+	out := map[int]int{}
+	for _, a := range m.Allocation {
+		out[a.AllocatedH]++
+	}
+	return out
+}
+func occurrenceWeightedByH(tokens []string, m Mapping) map[int]int {
+	out := map[int]int{}
+	for _, t := range tokens {
+		out[len(m.Entries[t])]++
+	}
+	return out
 }

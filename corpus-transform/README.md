@@ -53,7 +53,8 @@ Every run writes:
   section 11);
 - for `-method homophonic` only: `<output>.mapping.tsv` - the plaintext to
   cipher-token mapping used for audit/reproducibility. **This file is never
-  given to the scientific pipeline.**
+  given to the scientific pipeline. Frequency runs additionally write
+  `<output>.homophone_allocation.tsv`.**
 
 The input corpus is never modified.
 
@@ -81,7 +82,7 @@ The input corpus is never modified.
 |---|---|---|
 | `-homophones` | `4` | H, homophones per plaintext token |
 | `-homophone-selection` | `uniform` | `uniform` or `weighted` |
-| `-homophone-model` | `fixed` | `fixed` only; `frequency` is backlog (see TRANSFORMATION_METHODS.md) |
+| `-homophone-model` | `fixed` | `fixed` or `frequency` (`frequency-v1`) |
 
 ## Batch generation
 

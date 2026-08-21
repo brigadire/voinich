@@ -91,8 +91,14 @@ func RunHomophonic(req HomophonicRequest) (RunResult, error) {
 	if err := writeNewFile(mappingPath, mappingBytes); err != nil {
 		return RunResult{}, err
 	}
+	allocationBytes := MarshalAllocationTSV(mapping)
+	allocationPath := req.OutputPath + ".homophone_allocation.tsv"
+	if err := writeNewFile(allocationPath, allocationBytes); err != nil {
+		return RunResult{}, err
+	}
 	mappingSHA256 := ShaBytes(mappingBytes)
-	manifest := NewHomophonicManifest(req.GitCommit, req.CorpusPath, input, req.OutputPath, outputBytes, outputTokens, req.Params, req.LinePolicy, mappingSHA256)
+	allocationSHA256 := ShaBytes(allocationBytes)
+	manifest := NewHomophonicManifest(req.GitCommit, req.CorpusPath, input, req.OutputPath, outputBytes, outputTokens, req.Params, req.LinePolicy, mappingSHA256, allocationSHA256)
 	if err := writeManifest(req.OutputPath, manifest); err != nil {
 		return RunResult{}, err
 	}

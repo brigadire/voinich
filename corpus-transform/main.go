@@ -50,7 +50,7 @@ Usage:
       -transposition-width N [-transposition-order natural|keyed] [-rounds N] [-line-policy preserve|reflow]
 
   corpus-transform -corpus FILE -method homophonic -output FILE -seed N \
-      -homophones N [-homophone-selection uniform|weighted] [-homophone-model fixed] [-line-policy preserve|reflow]
+      -homophones N [-homophone-selection uniform|weighted] [-homophone-model fixed|frequency] [-line-policy preserve|reflow]
 
   corpus-transform batch -corpus FILE -output-dir DIR [-label NAME] \
       [-transposition-widths 2,4,8,16,32] [-transposition-order natural|keyed] [-rounds N] \
@@ -58,7 +58,8 @@ Usage:
       [-seeds 1,2,3] [-line-policy preserve|reflow]
 
 Every output <path> is written alongside <path>.transform.json; homophonic
-runs additionally write <path>.mapping.tsv. See TRANSFORMATION_METHODS.md.
+runs additionally write <path>.mapping.tsv and <path>.homophone_allocation.tsv.
+See TRANSFORMATION_METHODS.md.
 `)
 }
 
@@ -88,7 +89,7 @@ func runSingle(args []string) int {
 
 	homophones := fs.Int("homophones", 4, "homophones per plaintext token (H)")
 	selection := fs.String("homophone-selection", corpustransform.SelectionUniform, "uniform or weighted")
-	model := fs.String("homophone-model", corpustransform.HomophoneModelFixed, "fixed (frequency is backlog, not implemented)")
+	model := fs.String("homophone-model", corpustransform.HomophoneModelFixed, "fixed or frequency (frequency-v1)")
 
 	if err := fs.Parse(args); err != nil {
 		return 2
@@ -150,7 +151,7 @@ func runBatch(args []string) int {
 
 	homophoneCounts := fs.String("homophone-counts", "", "comma-separated H values, e.g. 2,4,8 (empty skips homophonic)")
 	selection := fs.String("homophone-selection", corpustransform.SelectionUniform, "uniform or weighted")
-	model := fs.String("homophone-model", corpustransform.HomophoneModelFixed, "fixed (frequency is backlog, not implemented)")
+	model := fs.String("homophone-model", corpustransform.HomophoneModelFixed, "fixed or frequency (frequency-v1)")
 
 	seeds := fs.String("seeds", "1", "comma-separated seeds, e.g. 1,2,3")
 
@@ -207,6 +208,9 @@ func runBatch(args []string) int {
 		}
 		for _, h := range counts {
 			id := corpustransform.HomophonicExperimentID(lbl, h, *selection, seed)
+			if *model == corpustransform.HomophoneModelFrequency {
+				id = corpustransform.FrequencyHomophonicExperimentID(lbl, h, *selection, seed)
+			}
 			outputPath := *outputDir + "/" + id + ".txt"
 			res, err := corpustransform.RunHomophonic(corpustransform.HomophonicRequest{
 				CorpusPath: *corpus,

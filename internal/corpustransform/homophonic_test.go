@@ -213,9 +213,43 @@ func TestHomophonicRoundTrip(t *testing.T) {
 	}
 }
 
-func TestHomophonicFrequencyModelIsBacklog(t *testing.T) {
-	_, err := BuildMapping(words("a b c"), HomophonicParams{Model: HomophoneModelFrequency, Homophones: 4, Selection: SelectionUniform, Seed: 1})
-	if err == nil {
-		t.Fatal("expected frequency model to be rejected as not implemented")
+func TestHomophonicFrequencyModelMonotoneAndBounded(t *testing.T) {
+	in := words("a a a a a b b b c c d e")
+	m, err := BuildMapping(in, HomophonicParams{Model: HomophoneModelFrequency, Homophones: 4, Selection: SelectionUniform, Seed: 1})
+	if err != nil {
+		t.Fatal(err)
+	}
+	byFreq := map[int]int{}
+	for _, a := range m.Allocation {
+		if a.AllocatedH < 1 || a.AllocatedH > 4 {
+			t.Fatalf("H=%d outside bounds", a.AllocatedH)
+		}
+		byFreq[a.RawFrequency] = a.AllocatedH
+	}
+	if byFreq[5] < byFreq[3] || byFreq[3] < byFreq[2] || byFreq[2] < byFreq[1] {
+		t.Fatalf("allocation is not monotone: %v", byFreq)
+	}
+	if byFreq[1] != 1 {
+		t.Fatalf("least frequent token H=%d, want 1", byFreq[1])
+	}
+}
+
+func TestHomophonicFrequencyPreservesCountAndIsDeterministic(t *testing.T) {
+	in := words("a a a a b b c d e")
+	p := HomophonicParams{Model: HomophoneModelFrequency, Homophones: 6, Selection: SelectionWeighted, Seed: 7}
+	m1, err := BuildMapping(in, p)
+	if err != nil {
+		t.Fatal(err)
+	}
+	m2, err := BuildMapping(in, p)
+	if err != nil {
+		t.Fatal(err)
+	}
+	o1, o2 := Encode(in, m1, p.Seed), Encode(in, m2, p.Seed)
+	if !reflect.DeepEqual(o1, o2) || !reflect.DeepEqual(MarshalAllocationTSV(m1), MarshalAllocationTSV(m2)) {
+		t.Fatal("same frequency parameters were not deterministic")
+	}
+	if len(o1) != len(in) {
+		t.Fatalf("output count=%d, input=%d", len(o1), len(in))
 	}
 }

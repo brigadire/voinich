@@ -27,3 +27,9 @@ func TranspositionExperimentID(label string, width int, order string, seed int64
 func HomophonicExperimentID(label string, homophones int, selection string, seed int64) string {
 	return fmt.Sprintf("%s__homophonic__h%03d__%s__seed%03d", label, homophones, selection, seed)
 }
+
+// FrequencyHomophonicExperimentID includes the allocation model so fixed-H
+// and frequency-v1 runs cannot overwrite one another in a batch directory.
+func FrequencyHomophonicExperimentID(label string, homophones int, selection string, seed int64) string {
+	return fmt.Sprintf("%s__homophonic-frequency-v1__hmax%03d__%s__seed%03d", label, homophones, selection, seed)
+}

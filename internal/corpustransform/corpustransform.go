@@ -33,8 +33,9 @@ const (
 	OrderNatural = "natural"
 	OrderKeyed   = "keyed"
 
-	SelectionUniform  = "uniform"
-	SelectionWeighted = "weighted"
+	SelectionUniform        = "uniform"
+	SelectionWeighted       = "weighted"
+	SelectionUniformVersion = "uniform-v1"
 
 	HomophoneModelFixed     = "fixed"
 	HomophoneModelFrequency = "frequency"
