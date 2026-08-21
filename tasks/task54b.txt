@@ -1,0 +1,471 @@
+Task54b — Voynich inverse-transposition effect measurement and holdout validation
+
+Цель
+
+Проверить, действительно ли найденный на discovery search кандидат
+
+    width = 2
+    order = natural
+
+восстанавливает статистическую последовательную структуру Voynich,
+или его первое место является следствием candidate-local min-max
+normalization и малых случайных различий между candidates.
+
+ВАЖНО:
+
+    НЕ выполнять новый поиск параметров.
+    НЕ менять structural-v2.
+    НЕ менять weights.
+    НЕ расширять widths/orders.
+    НЕ запускать полный scientific pipeline.
+
+Discovery уже завершён. Победитель зафиксирован:
+
+    width=2
+    order=natural
+
+Задача является validation/effect-measurement, а не новым search.
+
+======================================================================
+1. ORIGINAL VOYNICH BASELINE
+======================================================================
+
+Тем же evaluator, который использовался inverse-transposition-search,
+вычислить для НЕПРЕОБРАЗОВАННОГО canonical Voynich corpus четыре raw
+компонента structural-v2:
+
+    transition
+    relation
+    sequence-2
+    sequence-3
+
+Использовать ровно тот же corpus SHA256, что использовался в
+voynich-discovery.
+
+Никаких преобразований original corpus.
+
+======================================================================
+2. ABSOLUTE EFFECT
+======================================================================
+
+Для каждого уже существующего discovery candidate вычислить относительно
+original Voynich:
+
+    delta_absolute = metric(candidate) - metric(original)
+
+и, где denominator корректен:
+
+    delta_relative =
+        (metric(candidate) - metric(original)) / metric(original)
+
+Создать таблицу:
+
+    candidate
+    width
+    order
+
+    transition_raw
+    transition_delta
+    transition_relative_delta
+
+    relation_raw
+    relation_delta
+    relation_relative_delta
+
+    sequence2_raw
+    sequence2_delta
+    sequence2_relative_delta
+
+    sequence3_raw
+    sequence3_delta
+    sequence3_relative_delta
+
+Особенно явно показать:
+
+    original
+    w2 natural
+    w2 keyed
+    следующие top candidates.
+
+======================================================================
+3. НЕ ИСПОЛЬЗОВАТЬ DISCOVERY MIN-MAX КАК EFFECT SIZE
+======================================================================
+
+Текущий structural-v2 использует min-max normalization по candidate set.
+
+Он остаётся неизменным как зарегистрированный SEARCH/RANKING objective.
+
+Но:
+
+    structural-v2 discovery score НЕ интерпретировать как величину
+    физического эффекта.
+
+То есть:
+
+    score(w2)=0.6735
+
+не означает improvement 67%.
+
+В validation report отделить:
+
+    SEARCH SCORE
+
+от:
+
+    RAW EFFECT SIZE.
+
+======================================================================
+4. FIXED CALIBRATION EFFECT SCORE
+======================================================================
+
+Если calibration data Task54 для Doyle/T2/T4/T8 сохранены, построить
+дополнительный POST-HOC effect score с фиксированной шкалой.
+
+Шкала должна определяться ТОЛЬКО pre-Voynich calibration controls.
+
+Например использовать заранее полученные ranges/scales:
+
+    Doyle
+    T2(Doyle)
+    T4(Doyle)
+    T8(Doyle)
+
+Никакие Voynich candidates не должны участвовать в определении
+normalization parameters.
+
+Назвать метрику явно иначе, например:
+
+    fixed_calibration_effect_score
+
+Это НЕ замена structural-v2 и НЕ новый search objective.
+
+Это только post-search measurement.
+
+Если корректную fixed calibration невозможно восстановить из сохранённых
+pre-Voynich artifacts — НЕ придумывать её заново и не подбирать шкалу по
+Voynich.
+
+В таком случае оставить только raw deltas и документировать причину.
+
+======================================================================
+5. WIDTH=2 SPECIAL-EFFECT AUDIT
+======================================================================
+
+Discovery показал необычно высокий sequence-3 для w2 natural:
+
+    sequence3 ≈ 0.003581
+
+при значительно меньших значениях большинства других candidates.
+
+Проверить, не является ли это механическим свойством width=2
+transposition.
+
+Для этого использовать natural-text controls, НЕ Voynich tuning.
+
+Минимально:
+
+    Doyle original
+    T2(Doyle)
+
+и, если уже доступны:
+
+    Longfellow
+    Astafiev
+    другие natural corpora.
+
+Сравнить:
+
+    original -> inverse-w2
+
+на untransformed corpus и соответствующие known-transposition controls.
+
+Ответить:
+
+    создаёт ли width=2 повышенный repeated-trigram/sequence3 signal
+    сам по себе?
+
+Не менять transformation на основании результата.
+
+======================================================================
+6. DISCOVERY / HOLDOUT SPLIT
+======================================================================
+
+Использовать deterministic split Voynich, предусмотренный Task54.
+
+Если split уже зафиксирован manifest/documentation — использовать его
+без изменений.
+
+Если split был реализован, но не материализован — материализовать
+строго существующее правило.
+
+Если правило split вообще не было заранее определено, НЕ выбирать split,
+ориентируясь на результаты w2.
+
+Использовать простое deterministic правило, максимально сохраняющее
+существующие logical boundaries, и явно отметить это как limitation.
+
+Создать:
+
+    discovery corpus
+    holdout corpus
+
+с SHA256 обоих.
+
+======================================================================
+7. НЕ ПЕРЕОПТИМИЗИРОВАТЬ HOLDOUT
+======================================================================
+
+На discovery уже выбран:
+
+    theta*:
+        width=2
+        order=natural
+
+На holdout применить РОВНО:
+
+    width=2
+    order=natural
+
+Запрещено:
+
+    search widths 2..16 на holdout
+    выбирать лучший order
+    менять objective
+    менять seed
+    выбирать другой candidate.
+
+======================================================================
+8. HOLDOUT BASELINE
+======================================================================
+
+На исходном, непреобразованном holdout вычислить:
+
+    transition
+    relation
+    sequence-2
+    sequence-3
+
+Затем применить fixed w2 natural inverse и вычислить те же metrics.
+
+Получить:
+
+    Δtransition_holdout
+    Δrelation_holdout
+    Δsequence2_holdout
+    Δsequence3_holdout.
+
+======================================================================
+9. DISCOVERY VS HOLDOUT
+======================================================================
+
+Основная validation table:
+
+                    ORIGINAL    W2       ABS Δ       REL Δ
+    discovery:
+      transition
+      relation
+      sequence2
+      sequence3
+
+    holdout:
+      transition
+      relation
+      sequence2
+      sequence3
+
+Для каждой metric классифицировать направление:
+
+    SAME_DIRECTION
+    OPPOSITE_DIRECTION
+    NO_MEANINGFUL_CHANGE
+
+Не вводить произвольный threshold после просмотра результатов.
+
+Если threshold для meaningful effect отсутствует в pre-registration,
+показать raw values без бинарного significance claim.
+
+======================================================================
+10. NULL CONTROL
+======================================================================
+
+Использовать существующий Task54 null/random framework.
+
+Для holdout выполнить null transformations с тем же computational budget,
+который предусмотрен Task54.
+
+Но НЕ использовать null search для выбора нового theta.
+
+Цель:
+
+    определить, насколько effect фиксированного w2 отличается от
+    распределения эффектов случайных допустимых transformations.
+
+Зафиксировать:
+
+    null mean
+    null median
+    null quantiles
+    empirical percentile w2
+
+по каждой диагностической metric и, если корректно, fixed-calibration
+composite.
+
+======================================================================
+11. PARAMETER-LANDSCAPE REPORT
+======================================================================
+
+Используя УЖЕ выполненный discovery search, построить таблицу/график:
+
+    width
+    natural score
+    keyed score
+
+для widths 2..16.
+
+Не выполнять дополнительные candidates.
+
+Показать также RAW metrics, чтобы было видно, насколько реальны различия
+за normalized structural-v2 ranking.
+
+Отдельно ответить:
+
+    существует ли узкий parameter optimum?
+
+или наблюдается:
+
+    broad/irregular landscape.
+
+Не использовать визуальное впечатление как statistical significance.
+
+======================================================================
+12. RESULT CLASSIFICATION
+======================================================================
+
+В отчёте классифицировать результат консервативно.
+
+STRONG SUPPORT:
+
+    несколько transposition-sensitive raw metrics улучшаются на discovery;
+    те же metrics улучшаются в том же направлении на holdout;
+    effect заметно превосходит null;
+    fixed w2 работает без переоптимизации.
+
+WEAK/MIXED:
+
+    часть metrics переносится на holdout;
+    часть нет;
+    effect небольшой или сравним с null.
+
+NEGATIVE:
+
+    discovery improvement исчезает/меняет направление на holdout;
+    либо raw effect оказывается практически нулевым;
+    либо w2 не отличается от null transformations.
+
+Не использовать формулировки:
+
+    decrypted
+    deciphered
+    plaintext recovered.
+
+======================================================================
+13. OUTPUT
+======================================================================
+
+Создать отдельный каталог, например:
+
+    experiments/inverse-transposition/voynich-validation/
+
+Сохранить:
+
+    manifest.json
+    original_metrics.tsv
+    discovery_effects.tsv
+    holdout_metrics.tsv
+    null_distribution.tsv
+    parameter_landscape.tsv
+    VALIDATION_REPORT.md
+
+Manifest должен содержать:
+
+    source corpus SHA256
+    discovery artifact SHA256/path
+    git commit
+    fixed candidate:
+        width=2
+        order=natural
+    objective version:
+        structural-v2
+    split definition
+    discovery SHA256
+    holdout SHA256
+    null configuration
+    fixed calibration provenance, если использована.
+
+======================================================================
+14. НЕ ЗАПУСКАТЬ FULL PIPELINE
+======================================================================
+
+Даже если holdout положительный:
+
+    НЕ запускать автоматически 28-stage pipeline.
+
+Task54b должен только определить, заслуживает ли w2 дальнейшего полного
+scientific analysis.
+
+Full pipeline будет отдельным решением после интерпретации validation.
+
+======================================================================
+15. TESTS
+======================================================================
+
+Добавить regression tests:
+
+1. Original evaluator:
+       input corpus не преобразуется.
+
+2. Fixed candidate validation:
+       holdout не вызывает search.
+
+3. Discovery candidate:
+       width=2 natural immutable.
+
+4. Candidate-local min-max:
+       не используется как raw effect size.
+
+5. Fixed calibration:
+       normalization parameters не зависят от Voynich.
+
+6. Determinism:
+       одинаковый input -> identical metrics/results.
+
+7. Existing synthetic T2/T4/T8 recovery tests остаются PASS.
+
+Выполнить:
+
+    go build ./...
+    go vet ./...
+    go test ./...
+    go test -race ./...
+    git diff --check
+
+======================================================================
+DEFINITION OF DONE
+======================================================================
+
+Task54b завершён, когда мы можем ответить числами на четыре вопроса:
+
+1. Насколько w2 natural реально изменяет raw structural metrics Voynich
+   относительно непреобразованного текста?
+
+2. Является ли высокий sequence-3 w2 специфическим эффектом Voynich или
+   обычным механическим свойством width=2?
+
+3. Переносится ли найденный discovery effect на независимый holdout при
+   фиксированном width=2 natural?
+
+4. Превосходит ли этот effect null/random transformations?
+
+После выполнения НЕ делать вывод о дешифровке.
+Результат определяет только дальнейшую судьбу гипотезы простой
+rectangular transposition.
