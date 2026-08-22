@@ -6,7 +6,9 @@
 package evaglyph
 
 import (
+	"fmt"
 	"math"
+	"math/rand"
 	"sort"
 	"strings"
 	"unicode"
@@ -95,6 +97,28 @@ func entropy(counts map[string]int) float64 {
 		h -= p * math.Log2(p)
 	}
 	return h
+}
+
+// RandomHomophony maps each token's glyph sequence through a
+// position-independent synthetic homophonic substitution: every glyph
+// occurrence independently draws k = r.Intn(h) and is relabeled
+// "glyph_k". The draw depends only on r's next value, never on the
+// occurrence's within-token index, so this is a valid negative control
+// for "does homophony by itself create positional/sequential structure"
+// questions (task59 sections 17-18, task60 section 28) - task59's own
+// control generator originally got this wrong by deriving the homophone
+// index from the within-token position; fixed there and shared here so
+// the mistake cannot recur in a second implementation.
+func RandomHomophony(tokens [][]string, h int, r *rand.Rand) [][]string {
+	out := make([][]string, len(tokens))
+	for i, t := range tokens {
+		nt := make([]string, len(t))
+		for j, g := range t {
+			nt[j] = fmt.Sprintf("%s_%d", g, r.Intn(h))
+		}
+		out[i] = nt
+	}
+	return out
 }
 
 // MI returns the discrete mutual information (bits) between two paired

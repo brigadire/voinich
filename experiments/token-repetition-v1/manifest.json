@@ -1,0 +1,23 @@
+{
+  "adjacency_definition": "pairs crossing a natural line boundary are excluded, matching Task58's own adjacency convention",
+  "corpus_path": "data_work/ZL3b-x7.canonical.txt",
+  "corpus_sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692",
+  "dirty": true,
+  "edit_distance_definition": "glyph-level Levenshtein, adjacent pairs only (O(number of transitions))",
+  "git_commit": "ba88b2de62331a6638aacaa24112717ec48dd21b",
+  "ivtff_path": "data/ZL3b-n.txt",
+  "label_subsamples": 500,
+  "matched_null_draws": 200,
+  "min_chain_length": 3,
+  "null_permutations_exact": 1000,
+  "null_permutations_near": 1000,
+  "parser": "internal/evaglyph (shared with Task58/59)",
+  "position_class_definition": "changed/inserted/deleted glyph position, divided by the longer token's length, bucketed at thirds",
+  "rank_tolerance": 25,
+  "schema_version": 1,
+  "seed": 20260823,
+  "task": "Task60",
+  "task58_source": "experiments/rozanova-temerev-v1/comparison.tsv",
+  "task59_source": "experiments/glyph-position-v1/POSITIONAL_SPECIALIZATION_COMPARISON.tsv",
+  "tokens": 39380
+}
