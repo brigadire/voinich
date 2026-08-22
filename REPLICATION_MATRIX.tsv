@@ -1,0 +1,10 @@
+result_id	major_result	original_source	independent_replication	partial_replication	contradiction	status	notes
+R001	Currier A/B statistical distinction	CURRIER1976	PARISEL2026	NONE	Task65 metadata analysis is not a direct A/B replication	INDEPENDENT_REPLICATION	A/B partition is reproducible; its linguistic cause is not
+R002	Weak adjacent-token dependence	ROZANOVA_TEMEREV2026	Task58	NONE	Task63 finds a small local form residual	INDEPENDENT_REPLICATION	Task58 direction matches but uses a different transcription/sample
+R003	High glyph-edge coupling	ROZANOVA_TEMEREV2026	Task58	NONE	NONE	INDEPENDENT_REPLICATION	Task58 direction matches; exact estimator/sample differ
+R004	Low/atypical character conditional entropy	LINDEMANN_BOWERN2021	Task61	NONE	NONE	PARTIAL_REPLICATION	Task61 reproduces direction only because representation differs
+R005	Language-like co-occurrence/section structure	MONTEMURRO_ZANETTE2013	NONE	Sterneck et al. 2021	TIMM_SCHINNER2019 offers non-message reproduction of other language-like statistics	PARTIAL_REPLICATION	No direct replication with matched generator controls found
+R006	Selected Voynich statistics reproducible by self-citation	TIMM_SCHINNER2019	NONE	Task60/62/63 show separate local properties not all reproduced by simple models	NONE	NO_INDEPENDENT_REPLICATION_FOUND	Official code exists; no independent full-fingerprint audit found
+R007	Word-level metrics compatible with some ciphers	BOWERN_GASKELL2022	GRESHKO2025	Tasks59-60 reject only simple position-independent homophony	NONE	NO_DIRECT_REPLICATION_FOUND	Independent models support non-specificity, not the same metric suite
+R008	Strong positional glyph specialization	STOLFI2007	Task59	NONE	NONE	TASK59_INTERNAL_REPLICATION	Task59 measures and controls the property independently
+R009	Near-token families/local repetition	SCHINNER2017	Task60	Task63 finds modest residual after controls	NONE	CONVERGENT_NOT_IDENTICAL	Claim-level full comparison is limited by unavailable Schinner full text
