@@ -35,6 +35,26 @@ func TestLineBoundariesAndCap(t *testing.T) {
 		t.Fatal("cap produced invalid corrected MI")
 	}
 }
+// entropy()/mi() used to sum over an unsorted Go map, so with enough
+// distinct token types float64 accumulation order (and thus the result's
+// low-order bits) varied from run to run despite an identical seed and
+// corpus - Task58's own determinism requirement (section 34 test 1). A
+// 2-type toy corpus can't detect this (two-term float addition is
+// commutative regardless of order), so this uses a wider vocabulary.
+func TestEntropyDeterministicAcrossManyRuns(t *testing.T) {
+	var line []string
+	for i := 0; i < 40; i++ {
+		line = append(line, string(rune('a'+i%23)))
+	}
+	c := toy(line)
+	first, _ := analyse(c, 100, 5, 7)
+	for i := 0; i < 20; i++ {
+		got, _ := analyse(c, 100, 5, 7)
+		if got != first {
+			t.Fatalf("run %d: analysis not deterministic across repeated calls:\n%+v\n%+v", i, first, got)
+		}
+	}
+}
 func TestVoynichCompositeGlyphs(t *testing.T) {
 	if got := feature("cthaiin", "voynich", "first"); got != "C" {
 		t.Fatalf("first collapsed glyph=%q", got)

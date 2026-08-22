@@ -11,6 +11,8 @@ import (
 	"sort"
 	"strings"
 	"unicode/utf8"
+
+	"zcore.dev/voinich/internal/evaglyph"
 )
 
 const (
@@ -54,19 +56,15 @@ func loadCorpus(path string, mode string) (Corpus, error) {
 	return c, nil
 }
 
-func collapseEVA(s string) string {
-	// Longest-first replacement is the convention used by R&T's loader.
-	for _, p := range [][2]string{{"cth", "C"}, {"ckh", "K"}, {"cph", "P"}, {"cfh", "F"}, {"iin", "N"}, {"ain", "A"}, {"e e", "EE"}} {
-		s = strings.ReplaceAll(s, p[0], p[1])
-	}
-	for _, p := range [][2]string{{"ch", "H"}, {"sh", "S"}, {"ee", "E"}, {"in", "I"}} {
-		s = strings.ReplaceAll(s, p[0], p[1])
-	}
-	return s
-}
+// glyphs delegates Voynich-mode tokenization to the shared evaglyph
+// parser (also used by Task59/60) so all three interpret EVA composites
+// identically; this is a pure refactor - evaglyph.CollapseEVA reproduces
+// the exact lowercase+longest-first-composite-collapse+rune-split
+// sequence this function used to do inline (verified byte-identical
+// against the committed Task58 experiment artifacts).
 func glyphs(token, mode string) []string {
 	if mode == "voynich" {
-		token = collapseEVA(strings.ToLower(token))
+		return evaglyph.CollapseEVA(token)
 	}
 	if mode == "opaque" {
 		return nil
@@ -104,6 +102,13 @@ func feature(token, mode, which string) string {
 	}
 	return token
 }
+// entropy sums in sorted-key order so the float64 accumulation - and
+// therefore the result's low-order bits - does not depend on Go's
+// randomized map iteration order (a pre-existing non-determinism this
+// fixes; see project memory on sorting map keys before float
+// accumulation). This changes only the last few significant digits of
+// every published Task58 MI value, never their qualitative conclusions;
+// experiments/rozanova-temerev-v1 was regenerated after this fix.
 func entropy(c map[string]int) float64 {
 	n := 0
 	for _, v := range c {
@@ -112,8 +117,14 @@ func entropy(c map[string]int) float64 {
 	if n == 0 {
 		return 0
 	}
+	keys := make([]string, 0, len(c))
+	for k := range c {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
 	h := 0.0
-	for _, v := range c {
+	for _, k := range keys {
+		v := c[k]
 		p := float64(v) / float64(n)
 		h -= p * math.Log2(p)
 	}
