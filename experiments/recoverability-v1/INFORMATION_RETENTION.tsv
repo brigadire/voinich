@@ -1,22 +1,22 @@
-candidate	corpus	H_plaintext_bits	H_conditional_bits	mutual_information_bits	R_I	estimator	limitation
-M0_IDENTITY	Doyle	4.000000	0.000000	4.000000	1.000000	plugin-independent	finite-corpus estimator; no Voynich values
-M1_MONOALPHABETIC	Doyle	4.000000	0.000000	4.000000	1.000000	plugin-independent	finite-corpus estimator; no Voynich values
-M2_HOMOPHONY_H2	Doyle	4.000000	2.000000	2.000000	0.500000	plugin-independent	finite-corpus estimator; no Voynich values
-G_FORM_MEDIUM	Doyle	4.000000	3.280000	0.720000	0.180000	plugin-independent	finite-corpus estimator; no Voynich values
-M9_GROUP_FORM_FIXED	Doyle	4.000000	3.520000	0.480000	0.120000	plugin-independent	finite-corpus estimator; no Voynich values
-M10_STATEFUL_FORM_K2	Doyle	4.000000	3.680000	0.320000	0.080000	plugin-independent	finite-corpus estimator; no Voynich values
-M11_MIXED_FORM_K2	Doyle	4.000000	3.760000	0.240000	0.060000	plugin-independent	finite-corpus estimator; no Voynich values
-M0_IDENTITY	Longfellow	4.000000	0.000000	4.000000	1.000000	plugin-independent	finite-corpus estimator; no Voynich values
-M1_MONOALPHABETIC	Longfellow	4.000000	0.000000	4.000000	1.000000	plugin-independent	finite-corpus estimator; no Voynich values
-M2_HOMOPHONY_H2	Longfellow	4.000000	2.000000	2.000000	0.500000	plugin-independent	finite-corpus estimator; no Voynich values
-G_FORM_MEDIUM	Longfellow	4.000000	3.280000	0.720000	0.180000	plugin-independent	finite-corpus estimator; no Voynich values
-M9_GROUP_FORM_FIXED	Longfellow	4.000000	3.520000	0.480000	0.120000	plugin-independent	finite-corpus estimator; no Voynich values
-M10_STATEFUL_FORM_K2	Longfellow	4.000000	3.680000	0.320000	0.080000	plugin-independent	finite-corpus estimator; no Voynich values
-M11_MIXED_FORM_K2	Longfellow	4.000000	3.760000	0.240000	0.060000	plugin-independent	finite-corpus estimator; no Voynich values
-M0_IDENTITY	Astafiev	4.000000	0.000000	4.000000	1.000000	plugin-independent	finite-corpus estimator; no Voynich values
-M1_MONOALPHABETIC	Astafiev	4.000000	0.000000	4.000000	1.000000	plugin-independent	finite-corpus estimator; no Voynich values
-M2_HOMOPHONY_H2	Astafiev	4.000000	2.000000	2.000000	0.500000	plugin-independent	finite-corpus estimator; no Voynich values
-G_FORM_MEDIUM	Astafiev	4.000000	3.280000	0.720000	0.180000	plugin-independent	finite-corpus estimator; no Voynich values
-M9_GROUP_FORM_FIXED	Astafiev	4.000000	3.520000	0.480000	0.120000	plugin-independent	finite-corpus estimator; no Voynich values
-M10_STATEFUL_FORM_K2	Astafiev	4.000000	3.680000	0.320000	0.080000	plugin-independent	finite-corpus estimator; no Voynich values
-M11_MIXED_FORM_K2	Astafiev	4.000000	3.760000	0.240000	0.060000	plugin-independent	finite-corpus estimator; no Voynich values
+candidate	corpus	partition	paired_units	H_plaintext_bits	H_conditional_bits	mutual_information_bits	R_I	estimator	limitation
+M0_IDENTITY	Doyle	TEST	128	6.17528498	0.00000000	6.17528498	1.00000000	empirical paired-unit plug-in	finite TEST sample; unit alignment follows frozen encoder boundaries
+M1_MONOALPHABETIC	Doyle	TEST	128	6.17528498	0.00000000	6.17528498	1.00000000	empirical paired-unit plug-in	finite TEST sample; unit alignment follows frozen encoder boundaries
+M2_HOMOPHONY_H2	Doyle	TEST	128	6.17528498	0.00000000	6.17528498	1.00000000	empirical paired-unit plug-in	finite TEST sample; unit alignment follows frozen encoder boundaries
+G_FORM_MEDIUM	Doyle	TEST	128	6.17528498	0.50600122	5.66928376	0.91806026	empirical paired-unit plug-in	finite TEST sample; unit alignment follows frozen encoder boundaries
+M9_GROUP_FORM_FIXED	Doyle	TEST	131	6.96659180	0.88965906	6.07693273	0.87229637	empirical paired-unit plug-in	finite TEST sample; unit alignment follows frozen encoder boundaries
+M10_STATEFUL_FORM_K2	Doyle	TEST	150	7.01808775	0.76103319	6.25705457	0.89156118	empirical paired-unit plug-in	finite TEST sample; unit alignment follows frozen encoder boundaries
+M11_MIXED_FORM_K2	Doyle	TEST	150	7.01808775	0.23346367	6.78462409	0.96673401	empirical paired-unit plug-in	finite TEST sample; unit alignment follows frozen encoder boundaries
+M0_IDENTITY	Longfellow	TEST	128	6.01312676	0.00000000	6.01312676	1.00000000	empirical paired-unit plug-in	finite TEST sample; unit alignment follows frozen encoder boundaries
+M1_MONOALPHABETIC	Longfellow	TEST	128	6.01312676	0.00000000	6.01312676	1.00000000	empirical paired-unit plug-in	finite TEST sample; unit alignment follows frozen encoder boundaries
+M2_HOMOPHONY_H2	Longfellow	TEST	128	6.01312676	0.00000000	6.01312676	1.00000000	empirical paired-unit plug-in	finite TEST sample; unit alignment follows frozen encoder boundaries
+G_FORM_MEDIUM	Longfellow	TEST	128	6.01312676	0.34354819	5.66957857	0.94286696	empirical paired-unit plug-in	finite TEST sample; unit alignment follows frozen encoder boundaries
+M9_GROUP_FORM_FIXED	Longfellow	TEST	150	7.11711944	0.97845437	6.13866507	0.86252101	empirical paired-unit plug-in	finite TEST sample; unit alignment follows frozen encoder boundaries
+M10_STATEFUL_FORM_K2	Longfellow	TEST	173	7.13419951	0.82606859	6.30813092	0.88421005	empirical paired-unit plug-in	finite TEST sample; unit alignment follows frozen encoder boundaries
+M11_MIXED_FORM_K2	Longfellow	TEST	173	7.13419951	0.35554783	6.77865168	0.95016290	empirical paired-unit plug-in	finite TEST sample; unit alignment follows frozen encoder boundaries
+M0_IDENTITY	Astafiev	TEST	128	6.33195488	0.00000000	6.33195488	1.00000000	empirical paired-unit plug-in	finite TEST sample; unit alignment follows frozen encoder boundaries
+M1_MONOALPHABETIC	Astafiev	TEST	128	6.33195488	0.00000000	6.33195488	1.00000000	empirical paired-unit plug-in	finite TEST sample; unit alignment follows frozen encoder boundaries
+M2_HOMOPHONY_H2	Astafiev	TEST	128	6.33195488	0.00000000	6.33195488	1.00000000	empirical paired-unit plug-in	finite TEST sample; unit alignment follows frozen encoder boundaries
+G_FORM_MEDIUM	Astafiev	TEST	128	6.33195488	0.67624988	5.65570500	0.89320046	empirical paired-unit plug-in	finite TEST sample; unit alignment follows frozen encoder boundaries
+M9_GROUP_FORM_FIXED	Astafiev	TEST	168	7.26877643	0.93675154	6.33202488	0.87112665	empirical paired-unit plug-in	finite TEST sample; unit alignment follows frozen encoder boundaries
+M10_STATEFUL_FORM_K2	Astafiev	TEST	192	7.35389725	1.06879842	6.28509883	0.85466231	empirical paired-unit plug-in	finite TEST sample; unit alignment follows frozen encoder boundaries
+M11_MIXED_FORM_K2	Astafiev	TEST	192	7.35389725	0.34447378	7.00942347	0.95315766	empirical paired-unit plug-in	finite TEST sample; unit alignment follows frozen encoder boundaries

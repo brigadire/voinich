@@ -1,8 +1,31 @@
-candidate	corpus	metric	value	method	note
-M0_IDENTITY	ALL	RESET_EXPERIMENT	1.000000	synthetic known-plaintext	see REPORT.md
-M1_MONOALPHABETIC	ALL	RESET_EXPERIMENT	1.000000	synthetic known-plaintext	see REPORT.md
-M2_HOMOPHONY_H2	ALL	RESET_EXPERIMENT	0.500000	synthetic known-plaintext	see REPORT.md
-G_FORM_MEDIUM	ALL	RESET_EXPERIMENT	0.180000	synthetic known-plaintext	see REPORT.md
-M9_GROUP_FORM_FIXED	ALL	RESET_EXPERIMENT	0.120000	synthetic known-plaintext	see REPORT.md
-M10_STATEFUL_FORM_K2	ALL	RESET_EXPERIMENT	0.080000	synthetic known-plaintext	see REPORT.md
-M11_MIXED_FORM_K2	ALL	RESET_EXPERIMENT	0.060000	synthetic known-plaintext	see REPORT.md
+candidate	corpus	reset_condition	reset_interval_tokens	error_type	error_position	seed	damaged_units	recovery_after_error	L_sync	catastrophic_desync	glyph_recovery	token_recovery	checkpoint_observation
+M10_STATEFUL_FORM_K2	Doyle	NO_RESET	0	TOKEN_BOUNDARY_DELETION	75	67400001	75	0.00000000	-1	true	0.31166348	0.03333333	explicit synthetic reset markers survive the same injected error
+M10_STATEFUL_FORM_K2	Doyle	RESET_EVERY_TOKEN	1	TOKEN_BOUNDARY_DELETION	75	67400001	0	1.00000000	1	false	0.30975143	0.08000000	explicit synthetic reset markers survive the same injected error
+M10_STATEFUL_FORM_K2	Doyle	RESET_LINE_SIZED	13	TOKEN_BOUNDARY_DELETION	75	67400001	3	0.96000000	3	false	0.31166348	0.08000000	explicit synthetic reset markers survive the same injected error
+M10_STATEFUL_FORM_K2	Doyle	RESET_PAGE_SIZED	260	TOKEN_BOUNDARY_DELETION	75	67400001	75	0.00000000	-1	true	0.31166348	0.03333333	explicit synthetic reset markers survive the same injected error
+M10_STATEFUL_FORM_K2	Doyle	RESET_FIXED_N	32	TOKEN_BOUNDARY_DELETION	75	67400001	21	0.72000000	21	false	0.31166348	0.07333333	explicit synthetic reset markers survive the same injected error
+M11_MIXED_FORM_K2	Doyle	NO_RESET	0	TOKEN_BOUNDARY_DELETION	75	67400001	75	0.00000000	-1	true	0.28107075	0.02666667	explicit synthetic reset markers survive the same injected error
+M11_MIXED_FORM_K2	Doyle	RESET_EVERY_TOKEN	1	TOKEN_BOUNDARY_DELETION	75	67400001	0	1.00000000	1	false	0.27915870	0.08666667	explicit synthetic reset markers survive the same injected error
+M11_MIXED_FORM_K2	Doyle	RESET_LINE_SIZED	13	TOKEN_BOUNDARY_DELETION	75	67400001	3	0.96000000	3	false	0.27915870	0.08666667	explicit synthetic reset markers survive the same injected error
+M11_MIXED_FORM_K2	Doyle	RESET_PAGE_SIZED	260	TOKEN_BOUNDARY_DELETION	75	67400001	75	0.00000000	-1	true	0.28107075	0.02666667	explicit synthetic reset markers survive the same injected error
+M11_MIXED_FORM_K2	Doyle	RESET_FIXED_N	32	TOKEN_BOUNDARY_DELETION	75	67400001	21	0.72000000	21	false	0.28107075	0.07333333	explicit synthetic reset markers survive the same injected error
+M10_STATEFUL_FORM_K2	Longfellow	NO_RESET	0	TOKEN_BOUNDARY_DELETION	86	67400001	87	0.00000000	-1	true	0.33833333	0.05780347	explicit synthetic reset markers survive the same injected error
+M10_STATEFUL_FORM_K2	Longfellow	RESET_EVERY_TOKEN	1	TOKEN_BOUNDARY_DELETION	86	67400001	0	1.00000000	1	false	0.34000000	0.13872832	explicit synthetic reset markers survive the same injected error
+M10_STATEFUL_FORM_K2	Longfellow	RESET_LINE_SIZED	5	TOKEN_BOUNDARY_DELETION	86	67400001	4	0.95402299	4	false	0.33666667	0.13872832	explicit synthetic reset markers survive the same injected error
+M10_STATEFUL_FORM_K2	Longfellow	RESET_PAGE_SIZED	100	TOKEN_BOUNDARY_DELETION	86	67400001	14	0.83908046	14	false	0.33833333	0.13294798	explicit synthetic reset markers survive the same injected error
+M10_STATEFUL_FORM_K2	Longfellow	RESET_FIXED_N	32	TOKEN_BOUNDARY_DELETION	86	67400001	10	0.88505747	10	false	0.33833333	0.13294798	explicit synthetic reset markers survive the same injected error
+M11_MIXED_FORM_K2	Longfellow	NO_RESET	0	TOKEN_BOUNDARY_DELETION	86	67400001	86	0.01149425	-1	true	0.29166667	0.07514451	explicit synthetic reset markers survive the same injected error
+M11_MIXED_FORM_K2	Longfellow	RESET_EVERY_TOKEN	1	TOKEN_BOUNDARY_DELETION	86	67400001	0	1.00000000	1	false	0.28833333	0.13872832	explicit synthetic reset markers survive the same injected error
+M11_MIXED_FORM_K2	Longfellow	RESET_LINE_SIZED	5	TOKEN_BOUNDARY_DELETION	86	67400001	4	0.95402299	4	false	0.29166667	0.13872832	explicit synthetic reset markers survive the same injected error
+M11_MIXED_FORM_K2	Longfellow	RESET_PAGE_SIZED	100	TOKEN_BOUNDARY_DELETION	86	67400001	14	0.83908046	14	false	0.29166667	0.13294798	explicit synthetic reset markers survive the same injected error
+M11_MIXED_FORM_K2	Longfellow	RESET_FIXED_N	32	TOKEN_BOUNDARY_DELETION	86	67400001	10	0.88505747	10	false	0.29000000	0.13294798	explicit synthetic reset markers survive the same injected error
+M10_STATEFUL_FORM_K2	Astafiev	NO_RESET	0	TOKEN_BOUNDARY_DELETION	96	67400001	95	0.01041667	-1	true	0.33134328	0.05208333	explicit synthetic reset markers survive the same injected error
+M10_STATEFUL_FORM_K2	Astafiev	RESET_EVERY_TOKEN	1	TOKEN_BOUNDARY_DELETION	96	67400001	0	1.00000000	1	false	0.33134328	0.11458333	explicit synthetic reset markers survive the same injected error
+M10_STATEFUL_FORM_K2	Astafiev	RESET_LINE_SIZED	41	TOKEN_BOUNDARY_DELETION	96	67400001	27	0.71875000	27	false	0.33134328	0.08854167	explicit synthetic reset markers survive the same injected error
+M10_STATEFUL_FORM_K2	Astafiev	RESET_PAGE_SIZED	820	TOKEN_BOUNDARY_DELETION	96	67400001	95	0.01041667	-1	true	0.32985075	0.05208333	explicit synthetic reset markers survive the same injected error
+M10_STATEFUL_FORM_K2	Astafiev	RESET_FIXED_N	32	TOKEN_BOUNDARY_DELETION	96	67400001	32	0.66666667	32	false	0.33134328	0.08854167	explicit synthetic reset markers survive the same injected error
+M11_MIXED_FORM_K2	Astafiev	NO_RESET	0	TOKEN_BOUNDARY_DELETION	96	67400001	95	0.01041667	-1	true	0.31343284	0.05729167	explicit synthetic reset markers survive the same injected error
+M11_MIXED_FORM_K2	Astafiev	RESET_EVERY_TOKEN	1	TOKEN_BOUNDARY_DELETION	96	67400001	0	1.00000000	1	false	0.31343284	0.10937500	explicit synthetic reset markers survive the same injected error
+M11_MIXED_FORM_K2	Astafiev	RESET_LINE_SIZED	41	TOKEN_BOUNDARY_DELETION	96	67400001	27	0.71875000	27	false	0.31343284	0.08854167	explicit synthetic reset markers survive the same injected error
+M11_MIXED_FORM_K2	Astafiev	RESET_PAGE_SIZED	820	TOKEN_BOUNDARY_DELETION	96	67400001	95	0.01041667	-1	true	0.31194030	0.05729167	explicit synthetic reset markers survive the same injected error
+M11_MIXED_FORM_K2	Astafiev	RESET_FIXED_N	32	TOKEN_BOUNDARY_DELETION	96	67400001	32	0.66666667	32	false	0.31194030	0.08333333	explicit synthetic reset markers survive the same injected error

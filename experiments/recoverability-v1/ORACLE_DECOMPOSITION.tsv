@@ -1,8 +1,43 @@
-candidate	corpus	metric	value	method	note
-M0_IDENTITY	ALL	ORACLE_DECOMPOSITION	1.000000	synthetic known-plaintext	see REPORT.md
-M1_MONOALPHABETIC	ALL	ORACLE_DECOMPOSITION	1.000000	synthetic known-plaintext	see REPORT.md
-M2_HOMOPHONY_H2	ALL	ORACLE_DECOMPOSITION	0.500000	synthetic known-plaintext	see REPORT.md
-G_FORM_MEDIUM	ALL	ORACLE_DECOMPOSITION	0.180000	synthetic known-plaintext	see REPORT.md
-M9_GROUP_FORM_FIXED	ALL	ORACLE_DECOMPOSITION	0.120000	synthetic known-plaintext	see REPORT.md
-M10_STATEFUL_FORM_K2	ALL	ORACLE_DECOMPOSITION	0.080000	synthetic known-plaintext	see REPORT.md
-M11_MIXED_FORM_K2	ALL	ORACLE_DECOMPOSITION	0.060000	synthetic known-plaintext	see REPORT.md
+candidate	corpus	condition	oracle_key	oracle_boundaries	oracle_error_positions	glyph_recovery	token_recovery	word_error_rate	exact_message_recovery	note
+M0_IDENTITY	Doyle	PRACTICAL	false	false	false	1.00000000	1.00000000	0.00000000	1	frozen TRAIN+VALIDATION decoder
+M0_IDENTITY	Doyle	ORACLE_TEST_CODEBOOK	true	true	false	1.00000000	1.00000000	0.00000000	1	explicit upper bound; TEST plaintext used only here
+M1_MONOALPHABETIC	Doyle	PRACTICAL	false	false	false	1.00000000	1.00000000	0.00000000	1	frozen TRAIN+VALIDATION decoder
+M1_MONOALPHABETIC	Doyle	ORACLE_TEST_CODEBOOK	true	true	false	1.00000000	1.00000000	0.00000000	1	explicit upper bound; TEST plaintext used only here
+M2_HOMOPHONY_H2	Doyle	PRACTICAL	false	false	false	1.00000000	1.00000000	0.00000000	1	frozen TRAIN+VALIDATION decoder
+M2_HOMOPHONY_H2	Doyle	ORACLE_TEST_CODEBOOK	true	true	false	1.00000000	1.00000000	0.00000000	1	explicit upper bound; TEST plaintext used only here
+G_FORM_MEDIUM	Doyle	PRACTICAL	false	false	false	0.62332696	0.57031250	0.42968750	0	frozen TRAIN+VALIDATION decoder
+G_FORM_MEDIUM	Doyle	ORACLE_TEST_CODEBOOK	true	true	false	0.83747610	0.79687500	0.20312500	0	explicit upper bound; TEST plaintext used only here
+M9_GROUP_FORM_FIXED	Doyle	PRACTICAL	false	false	false	0.44656489	0.19083969	0.80916031	0	frozen TRAIN+VALIDATION decoder
+M9_GROUP_FORM_FIXED	Doyle	ORACLE_TEST_CODEBOOK	true	true	false	0.73804971	0.64885496	0.35114504	0	explicit upper bound; TEST plaintext used only here
+M10_STATEFUL_FORM_K2	Doyle	PRACTICAL	false	false	false	0.30975143	0.08000000	0.92000000	0	frozen TRAIN+VALIDATION decoder
+M10_STATEFUL_FORM_K2	Doyle	ORACLE_TEST_CODEBOOK	true	true	false	0.75525813	0.72000000	0.28000000	0	explicit upper bound; TEST plaintext used only here
+M11_MIXED_FORM_K2	Doyle	PRACTICAL	false	false	false	0.27915870	0.08666667	0.91333333	0	frozen TRAIN+VALIDATION decoder
+M11_MIXED_FORM_K2	Doyle	ORACLE_TEST_CODEBOOK	true	true	false	0.90822180	0.89333333	0.10666667	0	explicit upper bound; TEST plaintext used only here
+M0_IDENTITY	Longfellow	PRACTICAL	false	false	false	1.00000000	1.00000000	0.00000000	1	frozen TRAIN+VALIDATION decoder
+M0_IDENTITY	Longfellow	ORACLE_TEST_CODEBOOK	true	true	false	1.00000000	1.00000000	0.00000000	1	explicit upper bound; TEST plaintext used only here
+M1_MONOALPHABETIC	Longfellow	PRACTICAL	false	false	false	1.00000000	1.00000000	0.00000000	1	frozen TRAIN+VALIDATION decoder
+M1_MONOALPHABETIC	Longfellow	ORACLE_TEST_CODEBOOK	true	true	false	1.00000000	1.00000000	0.00000000	1	explicit upper bound; TEST plaintext used only here
+M2_HOMOPHONY_H2	Longfellow	PRACTICAL	false	false	false	1.00000000	1.00000000	0.00000000	1	frozen TRAIN+VALIDATION decoder
+M2_HOMOPHONY_H2	Longfellow	ORACLE_TEST_CODEBOOK	true	true	false	1.00000000	1.00000000	0.00000000	1	explicit upper bound; TEST plaintext used only here
+G_FORM_MEDIUM	Longfellow	PRACTICAL	false	false	false	0.50333333	0.48437500	0.51562500	0	frozen TRAIN+VALIDATION decoder
+G_FORM_MEDIUM	Longfellow	ORACLE_TEST_CODEBOOK	true	true	false	0.91833333	0.85937500	0.14062500	0	explicit upper bound; TEST plaintext used only here
+M9_GROUP_FORM_FIXED	Longfellow	PRACTICAL	false	false	false	0.40166667	0.12000000	0.88000000	0	frozen TRAIN+VALIDATION decoder
+M9_GROUP_FORM_FIXED	Longfellow	ORACLE_TEST_CODEBOOK	true	true	false	0.71000000	0.60666667	0.39333333	0	explicit upper bound; TEST plaintext used only here
+M10_STATEFUL_FORM_K2	Longfellow	PRACTICAL	false	false	false	0.34000000	0.13872832	0.86127168	0	frozen TRAIN+VALIDATION decoder
+M10_STATEFUL_FORM_K2	Longfellow	ORACLE_TEST_CODEBOOK	true	true	false	0.78000000	0.71098266	0.28901734	0	explicit upper bound; TEST plaintext used only here
+M11_MIXED_FORM_K2	Longfellow	PRACTICAL	false	false	false	0.28833333	0.13872832	0.86127168	0	frozen TRAIN+VALIDATION decoder
+M11_MIXED_FORM_K2	Longfellow	ORACLE_TEST_CODEBOOK	true	true	false	0.89000000	0.83815029	0.16184971	0	explicit upper bound; TEST plaintext used only here
+M0_IDENTITY	Astafiev	PRACTICAL	false	false	false	1.00000000	1.00000000	0.00000000	1	frozen TRAIN+VALIDATION decoder
+M0_IDENTITY	Astafiev	ORACLE_TEST_CODEBOOK	true	true	false	1.00000000	1.00000000	0.00000000	1	explicit upper bound; TEST plaintext used only here
+M1_MONOALPHABETIC	Astafiev	PRACTICAL	false	false	false	1.00000000	1.00000000	0.00000000	1	frozen TRAIN+VALIDATION decoder
+M1_MONOALPHABETIC	Astafiev	ORACLE_TEST_CODEBOOK	true	true	false	1.00000000	1.00000000	0.00000000	1	explicit upper bound; TEST plaintext used only here
+M2_HOMOPHONY_H2	Astafiev	PRACTICAL	false	false	false	1.00000000	1.00000000	0.00000000	1	frozen TRAIN+VALIDATION decoder
+M2_HOMOPHONY_H2	Astafiev	ORACLE_TEST_CODEBOOK	true	true	false	1.00000000	1.00000000	0.00000000	1	explicit upper bound; TEST plaintext used only here
+G_FORM_MEDIUM	Astafiev	PRACTICAL	false	false	false	0.55970149	0.55468750	0.44531250	0	frozen TRAIN+VALIDATION decoder
+G_FORM_MEDIUM	Astafiev	ORACLE_TEST_CODEBOOK	true	true	false	0.81194030	0.78125000	0.21875000	0	explicit upper bound; TEST plaintext used only here
+M9_GROUP_FORM_FIXED	Astafiev	PRACTICAL	false	false	false	0.34821429	0.16666667	0.83333333	0	frozen TRAIN+VALIDATION decoder
+M9_GROUP_FORM_FIXED	Astafiev	ORACLE_TEST_CODEBOOK	true	true	false	0.72089552	0.63095238	0.36904762	0	explicit upper bound; TEST plaintext used only here
+M10_STATEFUL_FORM_K2	Astafiev	PRACTICAL	false	false	false	0.33134328	0.11458333	0.88541667	0	frozen TRAIN+VALIDATION decoder
+M10_STATEFUL_FORM_K2	Astafiev	ORACLE_TEST_CODEBOOK	true	true	false	0.71791045	0.63020833	0.36979167	0	explicit upper bound; TEST plaintext used only here
+M11_MIXED_FORM_K2	Astafiev	PRACTICAL	false	false	false	0.31343284	0.10937500	0.89062500	0	frozen TRAIN+VALIDATION decoder
+M11_MIXED_FORM_K2	Astafiev	ORACLE_TEST_CODEBOOK	true	true	false	0.90447761	0.85416667	0.14583333	0	explicit upper bound; TEST plaintext used only here

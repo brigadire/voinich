@@ -1,8 +1,22 @@
-candidate	corpus	metric	value	method	note
-M0_IDENTITY	ALL	CASCADE_DAMAGE	1.000000	synthetic known-plaintext	see REPORT.md
-M1_MONOALPHABETIC	ALL	CASCADE_DAMAGE	1.000000	synthetic known-plaintext	see REPORT.md
-M2_HOMOPHONY_H2	ALL	CASCADE_DAMAGE	0.500000	synthetic known-plaintext	see REPORT.md
-G_FORM_MEDIUM	ALL	CASCADE_DAMAGE	0.180000	synthetic known-plaintext	see REPORT.md
-M9_GROUP_FORM_FIXED	ALL	CASCADE_DAMAGE	0.120000	synthetic known-plaintext	see REPORT.md
-M10_STATEFUL_FORM_K2	ALL	CASCADE_DAMAGE	0.080000	synthetic known-plaintext	see REPORT.md
-M11_MIXED_FORM_K2	ALL	CASCADE_DAMAGE	0.060000	synthetic known-plaintext	see REPORT.md
+candidate	corpus	replicate	seed	copying_errors	conflated_pairs	segmentation_errors	glyph_recovery	token_recovery	word_error_rate	exact_message_recovery	damage_order
+M0_IDENTITY	Doyle	0	67600001	5	2	1	0.85468451	0.31250000	0.45312500	0	corruption->transcription->segmentation
+M1_MONOALPHABETIC	Doyle	0	67600001	5	2	1	0.89101338	0.30468750	0.38281250	0	corruption->transcription->segmentation
+M2_HOMOPHONY_H2	Doyle	0	67600001	5	5	1	0.92160612	0.33593750	0.30468750	0	corruption->transcription->segmentation
+G_FORM_MEDIUM	Doyle	0	67600001	6	1	1	0.35778175	0.17968750	0.69531250	0	corruption->transcription->segmentation
+M9_GROUP_FORM_FIXED	Doyle	0	67600001	6	1	1	0.30210325	0.05343511	0.90839695	0	corruption->transcription->segmentation
+M10_STATEFUL_FORM_K2	Doyle	0	67600001	7	1	1	0.24091778	0.02666667	0.94000000	0	corruption->transcription->segmentation
+M11_MIXED_FORM_K2	Doyle	0	67600001	7	3	1	0.26577438	0.02666667	0.92666667	0	corruption->transcription->segmentation
+M0_IDENTITY	Longfellow	0	67600001	6	3	1	0.83000000	0.17968750	0.62500000	0	corruption->transcription->segmentation
+M1_MONOALPHABETIC	Longfellow	0	67600001	6	3	1	0.75000000	0.10156250	0.77343750	0	corruption->transcription->segmentation
+M2_HOMOPHONY_H2	Longfellow	0	67600001	6	5	1	0.84333333	0.18750000	0.55468750	0	corruption->transcription->segmentation
+G_FORM_MEDIUM	Longfellow	0	67600001	6	1	1	0.32049307	0.10937500	0.78125000	0	corruption->transcription->segmentation
+M9_GROUP_FORM_FIXED	Longfellow	0	67600001	6	1	1	0.29833333	0.03333333	0.94000000	0	corruption->transcription->segmentation
+M10_STATEFUL_FORM_K2	Longfellow	0	67600001	8	1	1	0.26166667	0.04046243	0.89595376	0	corruption->transcription->segmentation
+M11_MIXED_FORM_K2	Longfellow	0	67600001	8	3	1	0.25333333	0.05202312	0.88439306	0	corruption->transcription->segmentation
+M0_IDENTITY	Astafiev	0	67600001	7	3	1	0.93880597	0.38281250	0.28125000	0	corruption->transcription->segmentation
+M1_MONOALPHABETIC	Astafiev	0	67600001	7	3	1	0.93432836	0.39062500	0.28125000	0	corruption->transcription->segmentation
+M2_HOMOPHONY_H2	Astafiev	0	67600001	7	6	1	0.84179104	0.25781250	0.51562500	0	corruption->transcription->segmentation
+G_FORM_MEDIUM	Astafiev	0	67600001	6	1	1	0.35567715	0.17187500	0.72656250	0	corruption->transcription->segmentation
+M9_GROUP_FORM_FIXED	Astafiev	0	67600001	8	1	1	0.24029851	0.04761905	0.90476190	0	corruption->transcription->segmentation
+M10_STATEFUL_FORM_K2	Astafiev	0	67600001	9	1	1	0.24626866	0.02604167	0.95312500	0	corruption->transcription->segmentation
+M11_MIXED_FORM_K2	Astafiev	0	67600001	9	3	1	0.30149254	0.05729167	0.90625000	0	corruption->transcription->segmentation

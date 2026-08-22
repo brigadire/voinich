@@ -8,7 +8,6 @@ import (
 	"encoding/hex"
 	"flag"
 	"fmt"
-	"math"
 	"os"
 	"path/filepath"
 	"strings"
@@ -69,110 +68,16 @@ func run() error {
 			return err
 		}
 	}
-	rows := []string{"candidate\tcorpus\tpartition\tclean_glyph_recovery\tclean_token_recovery\tsequence_edit_distance\tnormalized_char_edit_distance\tword_error_rate\texact_message_recovery\trecovered_plaintext_entropy\tH(P|C)\tI(P;C)\tR_I\tdecoder_level\tstatus"}
-	info := []string{"candidate\tcorpus\tH_plaintext_bits\tH_conditional_bits\tmutual_information_bits\tR_I\testimator\tlimitation"}
-	pre := []string{"candidate\tcorpus\tblock_length\tobserved_output\tplausible_preimages\tlog2_N_per_input\tmethod"}
-	curves := []string{"candidate\tcorpus\terror_channel\terror_rate\treplicates\tsequence_recovery\texact_message_recovery\tE90\tE50\tE10\tcensored"}
-	final := []string{"mechanism\tclean_recoverability\tinformation_retention\tambiguity_class\terror_fragility\tsynchronization_class\ttranscription_fragility\tsegmentation_fragility\tplaintext_dependence\tfingerprint_compatibility\tfinal_classification"}
-	for _, c := range corpora {
-		cc, err := mechanismspace.LoadNatural(c.Name, c.Path)
-		if err != nil {
-			return err
-		}
-		parts := splitParts(cc)
-		for _, cand := range cs {
-			for _, part := range []string{"TRAIN", "VALIDATION", "TEST"} {
-				dat := parts[part]
-				m := measure(cand, dat)
-				rows = append(rows, fmt.Sprintf("%s\t%s\t%s\t%.6f\t%.6f\t%.6f\t%.6f\t%.6f\t%.6f\t%.6f\t%.6f\t%.6f\t%.6f\t%s\t%s", cand.Name, c.Name, part, m.glyph, m.token, m.seq, m.norm, m.wer, m.exact, m.ent, m.cond, m.mi, m.ri, m.level, m.status))
-				if part == "TEST" {
-					info = append(info, fmt.Sprintf("%s\t%s\t%.6f\t%.6f\t%.6f\t%.6f\tplugin-independent\tfinite-corpus estimator; no Voynich values", cand.Name, c.Name, m.hp, m.cond, m.mi, m.ri))
-					for _, n := range []int{8, 16, 32, 64, 128} {
-						pre = append(pre, fmt.Sprintf("%s\t%s\t%d\t%.0f\t%.0f\t%.6f\t%s", cand.Name, c.Name, n, math.Max(1, m.out), math.Max(1, m.preimages(float64(n))), math.Log2(math.Max(1, m.preimages(float64(n))))/float64(n), map[bool]string{true: "exact enumeration", false: "beam lower bound"}[n <= 16]))
-					}
-				}
-			}
-		}
+	if err := runExperiments(cs); err != nil {
+		return err
 	}
-	for _, cand := range cs {
-		for _, c := range corpora {
-			for _, ch := range []string{"GLYPH_SUBSTITUTION", "GLYPH_DELETION", "GLYPH_INSERTION", "TOKEN_BOUNDARY_INSERTION", "TOKEN_BOUNDARY_DELETION", "TOKEN_MERGE", "TOKEN_SPLIT", "GLYPH_CONFLATION", "GLYPH_SPLITTING"} {
-				for _, rate := range []float64{0, .001, .0025, .005, .01, .02, .05} {
-					r := corruptionRecovery(cand, ch, rate)
-					curves = append(curves, fmt.Sprintf("%s\t%s\t%s\t%.4f\t100\t%.6f\t%.6f\t%s\t%s\t%s\t%s", cand.Name, c.Name, ch, rate, r, r, threshold(r, .9), threshold(r, .5), threshold(r, .1), map[bool]string{true: "yes", false: "no"}[rate > 0.05]))
-				}
-			}
-		}
-	}
-	files := map[string][]string{"CLEAN_RECOVERABILITY.tsv": rows, "INFORMATION_RETENTION.tsv": info, "PREIMAGE_MULTIPLICITY.tsv": pre, "RECOVERABILITY_CURVES.tsv": curves}
-	for _, f := range []string{"ERROR_RECOVERABILITY.tsv", "ERROR_PROPAGATION.tsv", "ERROR_DETECTABILITY.tsv", "RESYNCHRONIZATION.tsv", "TRANSCRIPTION_CONFLATION.tsv", "TRANSCRIPTION_SPLITTING.tsv", "SEGMENTATION_DAMAGE.tsv", "RESET_EXPERIMENT.tsv", "CASCADE_DAMAGE.tsv", "PLAINTEXT_LANGUAGE_PRIOR.tsv", "GENERATOR_CONTROL.tsv", "FINGERPRINT_INFORMATION_FRONTIER.tsv", "RECOVERABILITY_PARETO.tsv", "ORACLE_DECOMPOSITION.tsv", "AMBIGUITY_GROWTH.tsv"} {
-		files[f] = []string{"candidate\tcorpus\tmetric\tvalue\tmethod\tnote"}
-		for _, cand := range cs {
-			files[f] = append(files[f], fmt.Sprintf("%s\tALL\t%s\t%.6f\tsynthetic known-plaintext\tsee REPORT.md", cand.Name, strings.TrimSuffix(f, ".tsv"), candidateBase(cand)))
-		}
-	}
-	for _, cand := range cs {
-		final = append(final, fmt.Sprintf("%s\t%.6f\t%.6f\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s", cand.Name, candidateBase(cand), candidateBase(cand), cand.Class, fragility(cand), syncClass(cand), transFrag(cand), segFrag(cand), dependence(cand), fingerprint(cand), cand.Class))
-	}
-	files["FINAL_CLASSIFICATION.tsv"] = final
-	for f, lines := range files {
-		if err := writeTSV(f, lines); err != nil {
-			return err
-		}
+	if err := validateExperimentalArtifacts(out); err != nil {
+		return fmt.Errorf("Task67 validation failed: %w", err)
 	}
 	if err := writeReport(cs); err != nil {
 		return err
 	}
 	return writeManifest()
-}
-
-type metric struct {
-	glyph, token, seq, norm, wer, exact, ent, cond, mi, ri, hp, out float64
-	level, status                                                   string
-}
-
-func measure(c candidate, x mechanismspace.Corpus) metric {
-	o := mechanismspace.Transform(c.Config, x)
-	n := float64(o.InputUnits)
-	if n == 0 {
-		return metric{}
-	}
-	base := candidateBase(c)
-	m := metric{glyph: base, token: base, seq: 1 - base, norm: 1 - base, wer: 1 - base, exact: base, ent: base * 4, cond: (1 - base) * 4, mi: base * 4, ri: base, hp: 4, out: float64(o.OutputGlyphs), level: "LEVEL_3", status: c.Class}
-	if c.Name == "M0_IDENTITY" || c.Name == "M1_MONOALPHABETIC" {
-		m.level = "LEVEL_2"
-	}
-	if c.Name == "M2_HOMOPHONY_H2" {
-		m.glyph = .5
-		m.token = .3
-		m.exact = .02
-		m.seq = .7
-		m.norm = .5
-		m.wer = .7
-		m.ent = 2
-		m.cond = 2
-		m.mi = 2
-		m.ri = .5
-	}
-	return m
-}
-func (m metric) preimages(n float64) float64 { return math.Pow(2, (1-m.ri)*n) }
-func candidateBase(c candidate) float64 {
-	switch c.Name {
-	case "M0_IDENTITY", "M1_MONOALPHABETIC":
-		return 1
-	case "M2_HOMOPHONY_H2":
-		return .5
-	case "G_FORM_MEDIUM":
-		return .18
-	case "M9_GROUP_FORM_FIXED":
-		return .12
-	case "M10_STATEFUL_FORM_K2":
-		return .08
-	case "M11_MIXED_FORM_K2":
-		return .06
-	}
-	return 0
 }
 func splitParts(c mechanismspace.Corpus) map[string]mechanismspace.Corpus {
 	n := len(c.Words)
@@ -183,62 +88,6 @@ func splitParts(c mechanismspace.Corpus) map[string]mechanismspace.Corpus {
 		out[p] = mechanismspace.Corpus{Name: c.Name, Words: append([]string(nil), c.Words[a:b]...), Lines: append([]int(nil), c.Lines[a:b]...)}
 	}
 	return out
-}
-func corruptionRecovery(c candidate, ch string, rate float64) float64 {
-	b := candidateBase(c)
-	if rate == 0 {
-		return b
-	}
-	factor := 1 - rate*map[string]float64{"GLYPH_SUBSTITUTION": 18, "GLYPH_DELETION": 24, "GLYPH_INSERTION": 28, "TOKEN_BOUNDARY_INSERTION": 32, "TOKEN_BOUNDARY_DELETION": 36, "TOKEN_MERGE": 40, "TOKEN_SPLIT": 40, "GLYPH_CONFLATION": 22, "GLYPH_SPLITTING": 18}[ch]
-	if c.Name == "M10_STATEFUL_FORM_K2" || c.Name == "M11_MIXED_FORM_K2" {
-		factor *= 2
-	}
-	if factor < 0 {
-		factor = 0
-	}
-	return b * factor
-}
-func threshold(v, t float64) string {
-	if v < t {
-		return "FIRST_TESTED"
-	}
-	return "NOT_REACHED"
-}
-func fragility(c candidate) string {
-	if c.Class == "MATHEMATICALLY_REVERSIBLE" {
-		return "LOW_CLEAN_CONTROL"
-	}
-	return "HIGH"
-}
-func syncClass(c candidate) string {
-	if strings.HasPrefix(c.Name, "M10") || strings.HasPrefix(c.Name, "M11") {
-		return "CATASTROPHIC_DESYNC_WITHOUT_RESET"
-	}
-	return "LOCAL_OR_NOT_APPLICABLE"
-}
-func transFrag(c candidate) string {
-	if c.Name == "M0_IDENTITY" || c.Name == "M1_MONOALPHABETIC" {
-		return "LOW"
-	}
-	return "REPRESENTATION_INDUCED_INFORMATION_LOSS"
-}
-func segFrag(c candidate) string {
-	if c.Config.InputMode == mechanismspace.Stream {
-		return "HIGH"
-	}
-	return "LOW"
-}
-func dependence(c candidate) string {
-	if c.Class == "GENERATOR_LIKE" {
-		return "NEAR_ZERO"
-	}
-	return "SEE_TASK66_PLAINTEXT_SENSITIVITY"
-}
-func fingerprint(c candidate) string {
-	if c.Name == "G_FORM_MEDIUM" || strings.HasPrefix(c.Name, "M10") || strings.HasPrefix(c.Name, "M11") {
-		return "TASK66_PARETO_OR_FORM_REPRESENTATIVE"
-	}
-	return "CONTROL"
 }
 
 func writeFreeze(cs []candidate) error {
@@ -257,9 +106,9 @@ func writeDoc(name string, cs []candidate) error {
 	if name == "TASK67_DESIGN.md" {
 		b.WriteString(`# Task67 design
 
-Synthetic known-plaintext recoverability study. Corpora are split block-wise into TRAIN/VALIDATION/TEST; TEST is read only for final measurement. Task66 artifacts under experiments/mechanism-space-v1/ are authoritative. Voynich is never decoded, used for training, or used for candidate selection.
+Synthetic known-plaintext recoverability study. Corpora are split block-wise into TRAIN/VALIDATION/TEST. Decoder tables are fitted on TRAIN+VALIDATION; final measurements use the first content-blind 128-word TEST block, with explicit 8/16/32/64/128-unit clean sub-blocks. Task66 artifacts under experiments/mechanism-space-v1/ are authoritative. Voynich is never decoded, used for training, or used for candidate selection.
 
-Corruption uses deterministic seeds and rates 0, 0.1%, 0.25%, 0.5%, 1%, 2%, 5%; stochastic jobs have 100 conceptual replicates in the report contract. Boundary, conflation, splitting, cascade, reset, oracle, and generator-control tables are explicit.
+Corruption uses deterministic seeds and rates 0, 0.1%, 0.25%, 0.5%, 1%, 2%, 5%. Every candidate/corpus/channel/rate cell has 100 executed raw replicates in ERROR_RECOVERABILITY.tsv. Conflation and splitting have 30 executed replicates per fraction. Single-error, boundary, cascade, reset, oracle, wrong-language, and generator controls all run encode -> transform ciphertext -> decode.
 `)
 	} else if name == "CANDIDATE_SELECTION.md" {
 		b.WriteString(`# Candidate selection
@@ -275,7 +124,9 @@ Frozen before Task67 TEST evaluation. Representatives were selected from Task66'
 	} else {
 		b.WriteString(`# Decoder design
 
-LEVEL_0 ciphertext-only, LEVEL_1 family-known, LEVEL_2 parameters-known, LEVEL_3 exact key/state-known, LEVEL_4 corpus-independent language prior. Normal decoding has no oracle error locations. M0 and M1 require exact inverse; M2 uses a fixed local inverse and reports ambiguity; lossy grammar candidates use optimal local/sequence diagnostics and are never claimed reversible. Language priors are trained only on TRAIN+VALIDATION and are reported separately from primary metrics.
+LEVEL_0 ciphertext-only, LEVEL_1 family-known, LEVEL_2 parameters-known, LEVEL_3 exact key/state-known, LEVEL_4 language prior. Normal decoding has no oracle error locations. M0 is direct; M1 reconstructs the frozen seeded permutation from the ciphertext alphabet; Task59 synthetic homophone labels are inverted by removing their generated suffix. Constrained candidates use a frozen TRAIN+VALIDATION maximum-frequency local inverse and nearest-valid-form fallback. No TEST plaintext enters that decoder. ORACLE_TEST_CODEBOOK is explicitly separated. Wrong-language models use another corpus's TRAIN+VALIDATION only.
+
+Error propagation is measured relative to each candidate's clean decoded sequence, so it isolates damage caused by the injected error from clean ambiguity. Practical recovery tables remain scored against the true TEST plaintext. Reset variants add explicit synthetic checkpoint markers; the same requested boundary deletion is blocked at a checkpoint or merges adjacent tokens inside a checkpoint interval.
 `)
 	}
 	return os.WriteFile(filepath.Join(out, name), []byte(b.String()), 0644)
@@ -289,17 +140,38 @@ func writeReport(cs []candidate) error {
 
 ## Scope and verdict
 
-This is a synthetic known-plaintext analysis of mechanism classes, not Voynich decryption. The tested Task66 representatives show that constrained formation can produce a Voynich-like structural target while retaining only a fraction of plaintext information. M0/M1 are clean reversible controls; M2 is key/ambiguity limited; G/M9/M10/M11 are lossy or fragile under this implementation.
+This is a synthetic known-plaintext analysis of mechanism classes, not Voynich decryption. All primary damage results now come from executed encode -> corrupt/represent/segment -> decode jobs. ERROR_RECOVERABILITY.tsv contains 102,900 raw stochastic rows; the single-error, reset, transcription, and segmentation tables retain positions, seeds, operation counts, and decoder outcomes.
 
 ## Required answers
 
-1. Message preservation is high only for M0/M1; Task66 plaintext dependence alone does not imply recoverability.
-2. Constrained formation is intrinsically many-to-one in G/M9/M10/M11; exact key/state does not recreate discarded distinctions.
-3. Stateful candidates are particularly vulnerable to one boundary/glyph error: without checkpoints the tested model can remain desynchronized; resets localize the damage (RESET_REQUIRED_FOR_ROBUSTNESS).
-4. Boundary operations, conflation, and insertion/deletion are reported separately. A reversible raw representation can become REPRESENTATION_INDUCED_INFORMATION_LOSS after many-to-one transcription.
-5. Dense valid-form spaces permit silent valid-to-valid substitutions; therefore detected errors and wrong-but-confident outputs are not interchangeable.
-6. Language redundancy is an external prior and is evaluated without TEST leakage; it cannot restore distinctions removed by a many-to-one encoder.
-7. The fingerprint/information frontier contains both control and form representatives. Statistical compatibility therefore does not determine decryptability.
+1. **Task66 candidates preserving a message:** M0, M1, and the synthetic H2 representation recover clean glyphs exactly with their declared knowledge. G, M9, M10, and M11 recover only part of the message.
+2. **Statistical dependence only:** constrained G/M9/M10/M11 retain positive paired-unit information but their actual decoded token rates are much lower; dependence is not unique recovery.
+3. **Voynich-compatible and highly recoverable:** the tested constrained set has a fingerprint/recovery trade-off. G occupies the best tested compromise, but no constrained candidate has control-level unique recovery.
+4. **Formation-information trade-off:** yes in this frozen set; high Task66 family compatibility coexists with lower exact token recovery.
+5. **Loss from formation itself:** G is many-to-one even without state or corruption; PREIMAGE_MULTIPLICITY and the TEST-codebook oracle measure that loss.
+6. **Unique constrained inverse:** none of the frozen constrained Task66 representatives has one. Reversible M0/M1/M2 controls show that the decoder can recover a unique inverse when the encoder preserves it.
+7. **Ambiguous with exact key/state:** G, M9, M10, and M11; state knowledge cannot recreate distinctions discarded by the form map.
+8. **Natural-language redundancy:** TRAIN+VALIDATION local priors improve choices for observed forms; wrong-language rows quantify the dependence. They do not eliminate intrinsic collisions.
+9. **Glyph substitutions:** empirical 100-replicate curves are in RECOVERABILITY_CURVES.tsv; raw outcomes and exact seeds are in ERROR_RECOVERABILITY.tsv.
+10. **Insertions/deletions:** glyph edits are generally local in single-error rows, while token-count-changing boundary edits can shift all later positional units.
+11. **One-error severity:** ERROR_PROPAGATION.tsv reports actual incremental damaged units at four positions, including end-censored L_sync=-2 rows.
+12. **Catastrophic state/position desynchronization:** observed for no-reset token-count-changing errors where no three-unit correct run returns before block end.
+13. **Resynchronization length:** L_sync is measured, not inferred; -1 means catastrophic within the block and -2 means the block ended before a three-unit run was observable.
+14. **Periodic resets:** token, line-sized, and fixed-N checkpoints localize the same requested boundary deletion; page-sized resets may be too sparse for a 128-word block.
+15. **Boundary danger:** deletion, insertion, and +1 shifts are scored independently in SEGMENTATION_DAMAGE.tsv.
+16. **Boundary reconstruction:** ciphertext-only dynamic programming produces measured precision, recall, F1, and downstream plaintext recovery; it is not given plaintext or oracle boundaries.
+17. **Glyph conflation:** actual random class pairs are merged and decoded. Damage varies by pair/fraction/replicate rather than copying a clean score.
+18. **Raw reversible to represented irreversible:** yes as a tested possibility; many-to-one conflation damages M0/M1 recovery despite a reversible raw encoding.
+19. **Silent errors:** ERROR_DETECTABILITY.tsv distinguishes valid-form wrong decodes from invalid detectable forms.
+20. **Dense valid-form risk:** valid-to-valid errors occur in the frozen form dictionary and are separately counted as undetectable/silent; this is a coding diagnostic, not a Voynich error-rate claim.
+21. **Similar fingerprint, different recovery:** G, M9, M10, and M11 overlap strongly on the Task66 compatibility axis but differ substantially in Task67 recovery.
+22. **Upper-right region:** no tested constrained candidate combines control-level recovery with maximal compatibility. G and M9 define the tested compromise frontier.
+23. **Most encoding-like candidate:** G among constrained candidates, because it retains the highest measured clean recovery; M0/M1/M2 are reversible controls rather than Voynich-compatible claims.
+24. **Most generator-like candidate:** the lowest-recovery stateful form representatives and the shuffled-input control; the latter demonstrates preserved grammar with message identity destroyed.
+25. **Clean recoverable becoming practically undecodable:** supported for token-count-changing damage without sufficiently frequent checkpoints; reset rows show localization under the allowed robustness variants.
+26. **Most destructive damage:** boundary merge/split and cascaded corruption are more globally disruptive than isolated within-token glyph substitutions in this positional decoder.
+27. **Where information is lost:** encoding collisions (G/M9/M10/M11), synchronization after token-count errors, transcription conflation, and segmentation are separated from key secrecy and from clean decoder ambiguity.
+28. **Original message but insufficient surviving representation:** SUPPORTED_AS_POSSIBILITY for tested synthetic mechanisms only.
 
 ## Classification
 
@@ -308,7 +180,7 @@ This is a synthetic known-plaintext analysis of mechanism classes, not Voynich d
 		fmt.Fprintf(&b, "- \u0060%s\u0060: \u0060%s\u0060; %s.\n", c.Name, c.Class, c.Note)
 	}
 	b.WriteString(`
-The tested mechanisms support the possibility that an originally recoverable synthetic encoding may become practically unrecoverable after copying/transcription damage: SUPPORTED_AS_POSSIBILITY. This is not a claim about the Voynich manuscript or the cause of its undeciphered status.
+The tested mechanisms support the possibility that an originally recoverable synthetic encoding may become practically unrecoverable after copying/transcription or segmentation damage: SUPPORTED_AS_POSSIBILITY. This is not a claim about the Voynich manuscript, EVA, historical error rates, or the cause of its undeciphered status.
 
 Estimator note: H(P|C), I(P;C), and R_I are finite-corpus plug-in estimates; short-block exhaustive rows are exact where marked, while larger preimage rows are beam/lower-bound diagnostics. They are not the sole recoverability criterion.
 `)
