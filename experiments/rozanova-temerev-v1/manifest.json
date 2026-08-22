@@ -1,0 +1,16 @@
+{
+  "experiment": "rozanova-temerev-v1",
+  "source": "Rozanova & Temerev arXiv:2608.17096v1",
+  "implementation": "independent/rozanova-temerev",
+  "protocol": {"vocabulary_cap": 2000, "shuffles": 100, "seed": 20260816, "null": "uniform within-line permutation"},
+  "canonical_voynich": {"path": "data_work/ZL3b-x7.canonical.txt", "sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692", "tokens": 39380, "lines": 5385, "classification": "METHOD_REPLICATION_DIFFERENT_TRANSCRIPTION"},
+  "controls": {
+    "Doyle": {"path": "data_test/pg2097-2.txt", "sha256": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80"},
+    "Longfellow": {"path": "data_test/pg30795-mod.txt", "sha256": "95bdc2940f56a69e28ac912245d40a601ae329fc42aeec489a3557fc7416c398"},
+    "Astafiev": {"path": "data_test/astafiev-1000-culinar-receipts-prepared.txt", "sha256": "ff67a4fbf2606be4409724722e3e4d426aed27bdbeec1698babd92bd2b5eba5a"}
+  },
+  "synthetic_glyph_edge": "NOT_APPLICABLE_OPAQUE_TOKENS",
+  "unavailable_frozen_series": ["global-H triangular-v1 H4/H6/H8"],
+  "task52_used_for_selection": false,
+  "new_pipeline_stage": false
+}
