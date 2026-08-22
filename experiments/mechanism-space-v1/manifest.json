@@ -1,0 +1,28 @@
+{
+  "authoritative_target_manifest": "VOYNICH_TARGET_MANIFEST.tsv",
+  "design_frozen": true,
+  "development": "DEVELOPMENT_RESULTS.tsv",
+  "held_out": "HELDOUT_RESULTS.tsv",
+  "held_out_access": "coordinator-after-candidate-freeze",
+  "inverse_search": false,
+  "overfit_classification": {
+    "M0_IDENTITY": "INCONCLUSIVE",
+    "M10_STATEFUL_FORM_K2": "CONFIRMED",
+    "M10_STATEFUL_FORM_K4": "CONFIRMED",
+    "M10_STATEFUL_FORM_K8": "INCONCLUSIVE",
+    "M11_MIXED_FORM_K2": "INCONCLUSIVE",
+    "M11_MIXED_FORM_K5": "INCONCLUSIVE"
+  },
+  "pareto_frontier": [
+    "M0_IDENTITY",
+    "M10_STATEFUL_FORM_K2",
+    "M10_STATEFUL_FORM_K4",
+    "M10_STATEFUL_FORM_K8",
+    "M11_MIXED_FORM_K2",
+    "M11_MIXED_FORM_K5"
+  ],
+  "target_mode": "authoritative-artifact-only",
+  "task": "Task66",
+  "version": "mechanism-space-v1",
+  "worker_contract": "immutable experiment_id/corpus/mechanism/config_hash/seed/evaluation_set"
+}

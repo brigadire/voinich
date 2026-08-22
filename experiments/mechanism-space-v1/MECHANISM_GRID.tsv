@@ -1,0 +1,40 @@
+mechanism	family	input_mode	parameters	development_replicates	final_replicates
+M0_IDENTITY	M0		fixed	12	40
+M1_MONOALPHABETIC	M1		fixed	12	40
+M2_HOMOPHONY_H2	M2		H=2	12	40
+M2_HOMOPHONY_H4	M2		H=4	12	40
+M2_HOMOPHONY_H8	M2		H=8	12	40
+M3_FORM_LOW	M3		grammar=LOW	12	40
+M3_FORM_MEDIUM	M3		grammar=MEDIUM	12	40
+M3_FORM_HIGH	M3		grammar=HIGH	12	40
+M4_STATE_K2_A	M4		state=2;update=A	12	40
+M4_STATE_K2_B	M4		state=2;update=B	12	40
+M4_STATE_K2_C	M4		state=2;update=C	12	40
+M4_STATE_K4_A	M4		state=4;update=A	12	40
+M4_STATE_K4_B	M4		state=4;update=B	12	40
+M4_STATE_K4_C	M4		state=4;update=C	12	40
+M4_STATE_K8_A	M4		state=8;update=A	12	40
+M4_STATE_K8_B	M4		state=8;update=B	12	40
+M4_STATE_K8_C	M4		state=8;update=C	12	40
+M5_DRIFT_N5	M5		state=1000;drift=5	12	40
+M5_DRIFT_N20	M5		state=1000;drift=20	12	40
+M5_DRIFT_N80	M5		state=1000;drift=80	12	40
+M6_MACRO_K2	M6		macro=2	12	40
+M6_MACRO_K5	M6		macro=5	12	40
+M7_MIXED_K2_N5	M7		state=1000;macro=2;drift=5	12	40
+M7_MIXED_K2_N20	M7		state=1000;macro=2;drift=20	12	40
+M7_MIXED_K2_N80	M7		state=1000;macro=2;drift=80	12	40
+M7_MIXED_K5_N5	M7		state=1000;macro=5;drift=5	12	40
+M7_MIXED_K5_N20	M7		state=1000;macro=5;drift=20	12	40
+M7_MIXED_K5_N80	M7		state=1000;macro=5;drift=80	12	40
+M8_BOUNDARY_FIXED	M8	STREAM	state=4;grouping=FIXED,len=4	12	40
+M8_BOUNDARY_RANDOM	M8	STREAM	state=4;grouping=RANDOM,len=4	12	40
+M8_BOUNDARY_STATE	M8	STREAM	state=4;grouping=STATE,len=4	12	40
+M9_GROUP_FORM_FIXED	M9	STREAM	grammar=MEDIUM;grouping=FIXED,len=4	12	40
+M9_GROUP_FORM_RANDOM	M9	STREAM	grammar=MEDIUM;grouping=RANDOM,len=4	12	40
+M9_GROUP_FORM_STATE	M9	STREAM	grammar=MEDIUM;grouping=STATE,len=4	12	40
+M10_STATEFUL_FORM_K2	M10	STREAM	state=2;grammar=MEDIUM;grouping=STATE,len=4	12	40
+M10_STATEFUL_FORM_K4	M10	STREAM	state=4;grammar=MEDIUM;grouping=STATE,len=4	12	40
+M10_STATEFUL_FORM_K8	M10	STREAM	state=8;grammar=MEDIUM;grouping=STATE,len=4	12	40
+M11_MIXED_FORM_K2	M11	STREAM	state=4;macro=2;grammar=MEDIUM;grouping=STATE,len=4	12	40
+M11_MIXED_FORM_K5	M11	STREAM	state=4;macro=5;grammar=MEDIUM;grouping=STATE,len=4	12	40

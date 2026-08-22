@@ -78,17 +78,29 @@ func Entropy(tokens [][]string, lines []int, mode Mode, order int, resetLines bo
 	if samples == 0 {
 		return Estimate{Order: order, Status: "INSUFFICIENT_DATA"}
 	}
+	ctxKeys := make([]string, 0, len(counts))
+	for k := range counts {
+		ctxKeys = append(ctxKeys, k)
+	}
+	sort.Strings(ctxKeys)
 	total := 0.0
 	contexts := 0
 	unique := 0
-	for _, next := range counts {
+	for _, ck := range ctxKeys {
+		next := counts[ck]
 		contexts++
-		for _, v := range next {
+		n := 0
+		for _, w := range next {
+			n += w
+		}
+		contKeys := make([]string, 0, len(next))
+		for k := range next {
+			contKeys = append(contKeys, k)
+		}
+		sort.Strings(contKeys)
+		for _, nk := range contKeys {
+			v := next[nk]
 			unique++
-			n := 0
-			for _, w := range next {
-				n += w
-			}
 			p := float64(v) / float64(n)
 			total -= float64(v) / float64(samples) * math.Log2(p)
 		}

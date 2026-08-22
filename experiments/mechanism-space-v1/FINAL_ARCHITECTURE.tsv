@@ -1,0 +1,9 @@
+operation	verdict	evidence	caveat
+MEMORY_REQUIRED	NOT_REQUIRED	family score with=-0.5 without=-0.5 delta=0	no Voynich target tuning; compares ablation S_ONLY vs G_ONLY on LOCAL_REGIME_TOPOLOGY
+SLOW_STATE_REQUIRED	NOT_REQUIRED	family score with=0 without=0 delta=0	compares M5 (drift scale 20) vs M4 (per-unit state) on LOCAL_REGIME_TOPOLOGY
+MACRO_STATE_REQUIRED	NOT_REQUIRED	family score with=-0.5 without=-0.5 delta=0	compares ablation M_PLUS_S vs S_ONLY on LOCAL_REGIME_TOPOLOGY
+CONSTRAINED_FORMATION_REQUIRED	REQUIRED	family score with=2.85 without=-1.34 delta=4.19	compares ablation G_ONLY vs S_ONLY on POSITIONAL_STRUCTURE+CHARACTER_ENTROPY+TOKEN_FORMATION
+GENERATED_BOUNDARIES_REQUIRED	NOT_REQUIRED	family score with=3.08 without=3.03 delta=0.0534	compares STREAM+generated-boundary M9 vs WORD_PRESERVING form-only M3 on POSITIONAL_STRUCTURE+CHARACTER_ENTROPY
+HOMOPHONY_HELPFUL	DISFAVORED	family score with=-0.879 without=-0.00259 delta=-0.877	compares M2 (H=4 homophony) vs M1 (monoalphabetic) across TOKEN_ORDER/POSITIONAL_STRUCTURE/CHARACTER_ENTROPY/REPETITION_EDIT_GEOMETRY
+STOCHASTIC_OUTPUT_REQUIRED	DISFAVORED	family score with=-1.95 without=0 delta=-1.95	compares M2 vs M1 and M8-RANDOM vs M8-FIXED; a positive combined delta favors stochastic output
+PLAINTEXT_DEPENDENCE_PRESERVED	SUPPORTED	33/36 representative mechanisms show strong/partial input dependence	
