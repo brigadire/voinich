@@ -1,0 +1,957 @@
+Task57 — Blind Inverse Homophony Recovery and Structural Validation
+
+Цель
+
+Разработать и валидировать метод слепого частичного обращения
+homophonic substitution.
+
+Основной исследовательский вопрос:
+
+    Если homophonic transformation систематически превращает обычный
+    plaintext corpus в корпус с некоторыми Voynich-like свойствами,
+    способен ли алгоритм, НЕ знающий ключа, восстановить из ciphertext
+    часть статистических свойств исходного plaintext?
+
+После успешной blind validation на synthetic controls применить
+полностью замороженный метод к canonical Voynich и проверить:
+
+    приобретает ли corpus после предполагаемого homophone collapse
+    свойства, противоположные наблюдавшимся в forward-homophony
+    experiments?
+
+ВАЖНО:
+
+    Task57 НЕ является задачей дешифровки Voynich.
+    Task57 НЕ должен восстанавливать значения plaintext tokens.
+    Task57 ищет latent equivalence classes предполагаемых homophones.
+
+======================================================================
+0. SCIENTIFIC SEPARATION
+======================================================================
+
+Разделить работу на две фазы.
+
+PHASE A — METHOD DEVELOPMENT AND BLIND VALIDATION
+
+    Использовать только synthetic homophonic corpora и их plaintext
+    oracles.
+
+    Voynich запрещено использовать:
+
+        при проектировании objective;
+        при выборе features;
+        при выборе thresholds;
+        при выборе search algorithm;
+        при выборе hyperparameters;
+        при выборе stopping criteria.
+
+PHASE B — FROZEN VOYNICH APPLICATION
+
+    Разрешена только после прохождения validation gate.
+
+    Все параметры, features и objective к этому моменту immutable.
+
+======================================================================
+1. INPUT MODEL
+======================================================================
+
+Ciphertext рассматривается как последовательность opaque tokens:
+
+    C = c1,c2,...,cN.
+
+Предполагается существование неизвестного отображения:
+
+    g(c) -> latent plaintext class.
+
+Несколько ciphertext types могут соответствовать одному latent type:
+
+    c17 \
+    c42  -> p3
+    c91 /
+
+Задача:
+
+    восстановить partition ciphertext vocabulary
+
+        Ĉ1, Ĉ2, ..., Ĉk
+
+    без знания transformation manifest/key.
+
+Semantic identity p3 не требуется.
+
+======================================================================
+2. THREAT MODEL
+======================================================================
+
+Первая версия должна работать с семейством transformations Task46/55:
+
+    global-H + uniform selection
+    global-H + triangular-v1 selection
+    frequency-v1 allocation + uniform selection
+
+когда соответствующие Task55 corpora готовы.
+
+Не предполагать:
+
+    известный H;
+    известный plaintext vocabulary size;
+    известный plaintext corpus;
+    известный allocation model;
+    известный selection model;
+    известный transformation manifest.
+
+Алгоритм получает только ciphertext.
+
+Oracle используется исключительно evaluator после recovery.
+
+======================================================================
+3. SYNTHETIC CORPORA
+======================================================================
+
+Минимальный development/validation набор:
+
+    Doyle H4 uniform
+    Doyle H6 uniform
+    Doyle H8 uniform
+
+    Doyle H4 triangular-v1
+    Doyle H6 triangular-v1
+    Doyle H8 triangular-v1
+
+После Task55:
+
+    Doyle frequency-v1 Hmax4 uniform
+    Doyle frequency-v1 Hmax6 uniform
+    Doyle frequency-v1 Hmax8 uniform
+
+Но одной семьи plaintext недостаточно.
+
+Добавить synthetic controls минимум ещё из двух существенно отличающихся
+corpora, уже имеющихся в проекте, если размер позволяет:
+
+    Longfellow
+    Astafiev
+
+или другие подходящие generic corpora.
+
+Transformation parameters для них должны быть известны evaluator,
+но скрыты от recovery algorithm.
+
+======================================================================
+4. DEVELOPMENT / TEST SEPARATION
+======================================================================
+
+Не использовать один и тот же transformed Doyle одновременно как источник
+ручной настройки и доказательство качества.
+
+Зафиксировать разделение synthetic experiments:
+
+    DEVELOPMENT
+    VALIDATION
+
+Например:
+
+    development:
+        часть Doyle transformations
+
+    validation:
+        unseen H/model combinations
+        и/или другие plaintext corpora.
+
+Предпочтительно validation должен проверять перенос между plaintext genres.
+
+Точное правило split документировать ДО итоговой оценки.
+
+======================================================================
+5. ORACLE ISOLATION
+======================================================================
+
+Создать архитектурное разделение:
+
+    recovery engine
+    oracle evaluator.
+
+Recovery engine НЕ должен иметь доступа к:
+
+    plaintext;
+    Task46 mapping;
+    transformation manifest;
+    token naming metadata, раскрывающей plaintext;
+    source filename, содержащему H/model;
+    oracle allocation TSV.
+
+Если Task46 cipher token names технически содержат исходный token,
+перед recovery обязательно выполнять deterministic opaque relabeling:
+
+    cipher_token_A -> x000001
+    cipher_token_B -> x000002
+    ...
+
+Mapping relabeling доступен только evaluator.
+
+Это обязательный anti-leakage safeguard.
+
+======================================================================
+6. RECOVERY OUTPUT
+======================================================================
+
+Основной output recovery:
+
+    ciphertext_token -> latent_class
+
+например:
+
+    x000001    class_00042
+    x000002    class_00117
+    x000003    class_00042
+
+После этого строится collapsed corpus:
+
+    x000001 x000003 ...
+        ->
+    class_00042 class_00042 ...
+
+Не пытаться присвоить class_00042 реальное слово Doyle.
+
+======================================================================
+7. FEATURES
+======================================================================
+
+Разрешённые features должны вычисляться только из ciphertext.
+
+Кандидаты:
+
+    token frequency
+    predecessor distribution
+    successor distribution
+    positional distribution
+    distance-context profile
+    local-regime profile
+    transition-network profile
+    graphemic similarity — только если она содержательно допустима
+    для opaque synthetic representation.
+
+При использовании существующих Stage 3/9/10/11/13/14/27 metrics
+переиспользовать production implementations, где возможно.
+
+Не создавать отдельные несовместимые версии тех же estimands.
+
+======================================================================
+8. IMPORTANT GRAPHEMIC SAFEGUARD
+======================================================================
+
+Task46 synthetic cipher tokens могут искусственно кодировать происхождение
+через naming scheme.
+
+Поэтому graphemic/edit-distance features по synthetic token labels
+ЗАПРЕЩЕНЫ, если label construction раскрывает общий plaintext source.
+
+После opaque relabeling:
+
+    x000001
+    x000002
+
+графемическая близость бессодержательна и должна быть отключена.
+
+Иначе blind recovery будет ложным.
+
+======================================================================
+9. SEARCH OBJECTIVE
+======================================================================
+
+Objective нельзя определять как:
+
+    make corpus look like Doyle
+
+или:
+
+    minimize Task52 distance to Voynich.
+
+Objective должен быть выбран исключительно по способности восстанавливать
+synthetic plaintext structure.
+
+Разделить две цели:
+
+A. CLASS RECOVERY
+
+    насколько найденный partition совпадает с настоящими homophone classes.
+
+B. STRUCTURAL RECOVERY
+
+    насколько collapsed corpus восстанавливает statistical properties
+    исходного plaintext.
+
+Эти результаты всегда показывать отдельно.
+
+======================================================================
+10. CLASS RECOVERY METRICS
+======================================================================
+
+Использовать permutation-invariant clustering metrics.
+
+Минимально:
+
+    pairwise precision
+    pairwise recall
+    pairwise F1
+    Adjusted Rand Index
+    normalized mutual information
+
+или эквивалентные стандартные metrics.
+
+Не сравнивать numeric class IDs напрямую.
+
+Особенно важен pairwise вопрос:
+
+    если два cipher types действительно являются homophones,
+    объединил ли их алгоритм?
+
+======================================================================
+11. STRUCTURAL RECOVERY METRICS
+======================================================================
+
+Сравнивать три состояния:
+
+    plaintext P
+    ciphertext H(P)
+    recovered/collapsed R(H(P)).
+
+Для каждой metric m вычислять:
+
+    corruption:
+
+        Δcipher = m(H(P)) - m(P)
+
+    recovery:
+
+        Δrecover = m(R(H(P))) - m(P)
+
+и normalized recovery fraction там, где математически корректно:
+
+        recovery_fraction =
+            1 - |m(R(H(P))) - m(P)|
+                / |m(H(P)) - m(P)|
+
+Не использовать формулу при denominator≈0.
+
+======================================================================
+12. PRIMARY STRUCTURAL FAMILIES
+======================================================================
+
+Основные заранее ожидаемые направления на основании forward experiments:
+
+Vocabulary:
+
+    V decreases after inverse collapse
+    hapax/type fraction decreases
+
+Transition:
+
+    transition structure strengthens
+    significant/backbone relations increase
+
+Relation:
+
+    проверить возвращение к plaintext baseline.
+
+Sequence:
+
+    проверить, восстанавливается ли sequence organization.
+
+Использовать существующие production metrics Stages 23–28 / Task52,
+где они применимы.
+
+Не выбирать post-hoc только те metrics, которые улучшились.
+
+======================================================================
+13. DIRECTIONAL PREDICTIONS
+======================================================================
+
+До validation зафиксировать:
+
+Forward homophony обычно наблюдалась как:
+
+    vocabulary diversity ↑
+    transition structure ↓
+
+Следовательно inverse recovery предсказывает:
+
+    vocabulary diversity ↓
+    transition structure ↑
+
+Для relation/sequence использовать empirical forward controls и заранее
+зафиксировать ожидаемое направление только там, где оно действительно
+стабильно.
+
+Если forward effect нестабилен — metric считать exploratory.
+
+======================================================================
+14. BASELINES
+======================================================================
+
+Обязательные recovery baselines:
+
+A. NO_COLLAPSE
+
+    каждый cipher type остаётся отдельным.
+
+B. FREQUENCY-ONLY
+
+    простой deterministic baseline, использующий только frequency.
+
+C. RANDOM_PARTITION
+
+    random partitions с сопоставимым:
+
+        number of classes
+        class-size distribution
+
+D. ORACLE
+
+    настоящий Task46 mapping.
+
+ORACLE показывает верхнюю границу возможного восстановления.
+
+======================================================================
+15. ANTI-TRIVIAL-COLLAPSE SAFEGUARD
+======================================================================
+
+Нельзя получать высокий score простым объединением большого количества
+tokens.
+
+Поэтому objective должен штрафовать excessive collapse.
+
+Запрещено решение:
+
+    all tokens -> one class.
+
+Контролировать минимум:
+
+    recovered vocabulary size
+    class-size distribution
+    largest-class fraction
+    entropy of class assignments.
+
+Search complexity penalty должен быть зафиксирован до validation.
+
+======================================================================
+16. UNKNOWN H
+======================================================================
+
+Recovery не должен получать настоящий H.
+
+Если алгоритму требуется параметр максимального размера класса или
+ожидаемого vocabulary compression, его выбор должен быть:
+
+    estimated from ciphertext
+
+или:
+
+    заранее зафиксирован на development controls.
+
+На validation нельзя подставлять oracle H.
+
+======================================================================
+17. SEARCH METHODS
+======================================================================
+
+Реализовать сначала простой интерпретируемый baseline.
+
+Например:
+
+    similarity graph
+        ->
+    constrained agglomerative clustering
+
+или другой deterministic/constrained clustering.
+
+Не начинать с большого ML/LLM optimizer.
+
+Для каждой merge операции должны быть понятны:
+
+    evidence
+    score
+    constraint.
+
+Алгоритм должен сохранять audit trail.
+
+======================================================================
+18. MERGE EVIDENCE
+======================================================================
+
+Для пары ciphertext types a,b потенциальные признаки homophony могут
+включать сходство:
+
+    predecessor distributions
+    successor distributions
+    position profiles
+    distance-context profiles.
+
+Интуиция:
+
+если a и b являются альтернативными representations одного plaintext
+unit, их contexts могут быть статистически похожи.
+
+Но это является гипотезой Task57 и должно проверяться synthetic oracle,
+а не приниматься как факт.
+
+======================================================================
+19. NULL TEST FOR MERGES
+======================================================================
+
+Проверить, отличаются ли true homophone pairs от random non-homophone
+pairs по используемым similarity features.
+
+До построения сложного recovery algorithm создать diagnostic:
+
+    true-pair score distribution
+    false-pair score distribution
+
+и оценить discriminability:
+
+    AUC либо эквивалентную metric.
+
+Если features вообще не различают true/false pairs, сложный search
+не запускать.
+
+Это важный early-stop criterion.
+
+======================================================================
+20. VALIDATION GATE
+======================================================================
+
+До применения к Voynich метод должен пройти blind synthetic validation.
+
+Минимальные требования:
+
+1. class recovery статистически лучше random baseline;
+
+2. structural recovery лучше NO_COLLAPSE и RANDOM_PARTITION;
+
+3. improvement наблюдается не только на Doyle development corpus;
+
+4. хотя бы transition + vocabulary families демонстрируют ожидаемое
+   обратное направление на unseen validation corpora;
+
+5. recovery не достигается чрезмерным collapse.
+
+Не задавать численные thresholds post-hoc.
+
+Если количественные thresholds невозможно разумно определить заранее,
+использовать заранее зафиксированный relative criterion:
+
+    recovery > matched random controls
+
+с confidence/null distribution.
+
+======================================================================
+21. FAILURE IS A VALID RESULT
+======================================================================
+
+Если blind recovery не работает на synthetic controls:
+
+    STOP.
+
+Voynich не анализировать.
+
+Результат Task57:
+
+    current ciphertext-only features are insufficient for blind
+    inverse-homophony recovery.
+
+Не ослаблять validation gate ради перехода к Voynich.
+
+======================================================================
+22. FREEZE
+======================================================================
+
+После успешной validation создать:
+
+    INVERSE_HOMOPHONY_METHOD.md
+    METHOD_FROZEN
+
+Зафиксировать:
+
+    git commit
+    features
+    normalization
+    similarity formula
+    clustering/search algorithm
+    thresholds
+    complexity penalty
+    stopping rule
+    random seeds
+    validation results.
+
+После METHOD_FROZEN запрещено менять метод на основании Voynich.
+
+======================================================================
+23. VOYNICH INPUT
+======================================================================
+
+Использовать тот же canonical generic Voynich corpus, который является
+актуальной базой новых comparative experiments:
+
+    ZL3b-x7.canonical.txt
+
+Manifest должен фиксировать SHA256.
+
+Не использовать metadata/Currier/hand information как подсказку recovery.
+
+Recovery получает только canonical token sequence.
+
+======================================================================
+24. VOYNICH APPLICATION
+======================================================================
+
+На Voynich выполнить ровно один preregistered recovery run
+(или заранее зафиксированный ensemble/seeds, если это часть frozen method).
+
+Получить:
+
+    voy_to_latent.tsv
+    voynich_collapsed.txt
+    merge_audit.tsv
+
+Никакого повторного search после просмотра результатов.
+
+======================================================================
+25. VOYNICH BEFORE/AFTER
+======================================================================
+
+Сравнить:
+
+    original Voynich
+    collapsed Voynich
+
+по заранее зафиксированным structural families.
+
+Минимум:
+
+    vocabulary size
+    hapax/type
+    dis-legomena
+    Heaps beta/new-type trajectory
+
+    relation metrics
+
+    sequence metrics
+
+    transition metrics.
+
+Показать raw before/after, а не только Task52 composite distance.
+
+======================================================================
+26. DO NOT USE DOYLE AS VOYNICH TARGET
+======================================================================
+
+После применения к Voynich запрещено утверждать успех потому, что:
+
+    Task52 distance(V_collapsed, Doyle)
+        <
+    Task52 distance(V_original, Doyle).
+
+Это можно показать только как secondary diagnostic.
+
+Primary evidence:
+
+    произошли ли заранее предсказанные inverse-homophony effects,
+    которые recovery method демонстрировал на synthetic controls?
+
+======================================================================
+27. VOYNICH NULL
+======================================================================
+
+Создать matched null partitions Voynich с теми же:
+
+    number of classes
+    class-size distribution
+
+что у recovered partition.
+
+Для каждого null corpus вычислить те же before/after effects.
+
+Основной вопрос:
+
+    отличается ли frozen recovery от произвольного collapse
+    сопоставимой мощности?
+
+======================================================================
+28. CROSS-FAMILY RESULT
+======================================================================
+
+Особенно важно проверить совместность изменений.
+
+Положительный результат требует не просто:
+
+    vocabulary became smaller.
+
+Это почти неизбежно при collapse.
+
+Интерес представляет одновременное:
+
+    expected vocabulary response
+    +
+    expected transition recovery
+    +
+    relation/sequence response, если preregistered
+    +
+    superiority over matched random collapse.
+
+======================================================================
+29. RESULT CLASSIFICATION
+======================================================================
+
+NEGATIVE:
+
+    synthetic validation failed
+
+или после freeze:
+
+    Voynich effect indistinguishable from matched random collapse.
+
+WEAK/MIXED:
+
+    часть preregistered effects появляется,
+    но cross-family recovery слабый/неустойчивый.
+
+POSITIVE_MECHANISTIC:
+
+    frozen blind recovery produces multiple preregistered inverse-homophony
+    effects on Voynich and exceeds matched null collapse.
+
+Даже POSITIVE_MECHANISTIC НЕ означает:
+
+    decrypted
+    plaintext recovered
+    homophonic cipher proven.
+
+======================================================================
+30. INTERPRETATION LIMIT
+======================================================================
+
+Допустимая формулировка положительного результата:
+
+    "A ciphertext-only homophone-class recovery procedure, validated on
+    synthetic controls before exposure to Voynich, identifies a partition
+    of Voynich token types whose collapse reverses several independently
+    predicted statistical effects of homophonic substitution."
+
+Недопустимая:
+
+    "We deciphered Voynich."
+
+======================================================================
+31. DISTRIBUTED EXECUTION
+======================================================================
+
+Оценить computational complexity до production run.
+
+Если pair scoring / clustering / null validation тяжелы:
+
+    использовать существующую remote-executor infrastructure проекта.
+
+Не создавать второй несовместимый distributed framework.
+
+Поддержать:
+
+    goroutine
+    process
+    remote
+
+где это оправдано.
+
+Byte-for-byte deterministic result не должен зависеть от executor.
+
+======================================================================
+32. CHECKPOINT / RESUME
+======================================================================
+
+Для дорогих операций поддержать:
+
+    deterministic work units
+    checkpoint
+    resume
+    retry
+    progress reporting.
+
+Особенно для:
+
+    pair-feature computation
+    null partitions
+    structural evaluation.
+
+======================================================================
+33. OUTPUT — SYNTHETIC
+======================================================================
+
+Создать:
+
+    experiments/inverse-homophony/synthetic-validation/
+
+с:
+
+    manifest.json
+    development_split.tsv
+    validation_split.tsv
+
+    pair_discrimination.tsv
+    class_recovery.tsv
+    structural_recovery.tsv
+    baseline_comparison.tsv
+    null_distribution.tsv
+
+    SYNTHETIC_VALIDATION_REPORT.md
+
+и при успехе:
+
+    INVERSE_HOMOPHONY_METHOD.md
+    METHOD_FROZEN
+
+======================================================================
+34. OUTPUT — VOYNICH
+======================================================================
+
+Только после validation gate:
+
+    experiments/inverse-homophony/voynich-v1/
+
+с:
+
+    manifest.json
+    voy_to_latent.tsv
+    voynich_collapsed.txt
+    merge_audit.tsv
+
+    before_after_metrics.tsv
+    null_distribution.tsv
+    cross_family_effects.tsv
+
+    VOYNICH_INVERSE_HOMOPHONY_REPORT.md
+
+======================================================================
+35. PROVENANCE
+======================================================================
+
+Manifest должен фиксировать:
+
+    input SHA256
+    git commit
+    dirty state
+
+    recovery method version
+    feature definitions
+    normalization
+    thresholds
+    stopping rule
+
+    executor configuration
+    seeds
+
+    synthetic validation artifact SHA256
+    METHOD_FROZEN SHA256
+
+для Voynich run.
+
+======================================================================
+36. TESTS
+======================================================================
+
+Добавить минимум:
+
+1. opaque relabeling действительно скрывает plaintext identity;
+
+2. recovery engine не читает oracle mapping;
+
+3. same input + same config -> byte-identical output;
+
+4. executor independence;
+
+5. all-to-one collapse запрещён/штрафуется;
+
+6. class metrics invariant к permutation class IDs;
+
+7. oracle collapse точно восстанавливает synthetic plaintext class sequence;
+
+8. random baseline воспроизводим;
+
+9. validation corpus не используется при parameter fitting;
+
+10. Voynich execution невозможен без METHOD_FROZEN и successful
+    validation gate.
+
+Выполнить:
+
+    go build ./...
+    go vet ./...
+    go test ./...
+    go test -race ./...
+    git diff --check
+
+======================================================================
+37. DOCUMENTATION
+======================================================================
+
+Создать:
+
+    INVERSE_HOMOPHONY_DESIGN.md
+
+До реализации production search документ должен описывать:
+
+    threat model
+    synthetic split
+    features
+    similarity estimators
+    clustering/search method
+    anti-collapse constraints
+    baselines
+    validation gate
+    Voynich protocol
+    interpretation limits.
+
+======================================================================
+DEFINITION OF DONE — PHASE A
+======================================================================
+
+Phase A завершена, когда:
+
+1. synthetic ciphertext полностью opaque для recovery engine;
+
+2. true-vs-false homophone pair discriminability измерена;
+
+3. blind class recovery реализован;
+
+4. structural recovery измерен относительно plaintext oracle;
+
+5. NO_COLLAPSE, FREQUENCY-ONLY, RANDOM и ORACLE baselines выполнены;
+
+6. validation проведена на unseen transformations/corpora;
+
+7. результат либо честно FAILED, либо прошёл заранее заданный gate;
+
+8. при успехе создан immutable METHOD_FROZEN.
+
+======================================================================
+DEFINITION OF DONE — PHASE B
+======================================================================
+
+Phase B выполняется только при успехе Phase A.
+
+Она завершена, когда:
+
+1. frozen method один раз применён к canonical Voynich;
+
+2. получен latent-class partition;
+
+3. before/after effects измерены по preregistered families;
+
+4. выполнен matched random-collapse null;
+
+5. результат классифицирован NEGATIVE / WEAK_MIXED /
+   POSITIVE_MECHANISTIC;
+
+6. Task52 distance не использовался как optimization target;
+
+7. никакие параметры не изменялись после exposure to Voynich;
+
+8. никаких claims о дешифровке или восстановленном plaintext не сделано.

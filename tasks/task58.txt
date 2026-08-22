@@ -1,0 +1,838 @@
+Task58 — Independent Rozanova–Temerev Metric Replication
+
+Цель
+
+Создать независимый исследовательский модуль, реализующий ключевые
+статистические estimands Rozanova & Temerev (2026), прежде всего:
+
+    1. adjacent-token dependency / token-order MI;
+    2. glyph-edge coupling MI;
+
+и применить их к:
+
+    canonical Voynich;
+    natural-text controls;
+    уже существующим homophonic transformed controls.
+
+Основной вопрос:
+
+    Подтверждаются ли наблюдения Rozanova–Temerev на нашей транскрипции
+    Voynich и наших независимых controls?
+
+Вторичный вопрос:
+
+    Воспроизводит ли homophonic transformation именно те свойства Voynich,
+    которые измеряются Rozanova–Temerev, а не только похожие свойства
+    нашего собственного pipeline?
+
+Task58 является независимым исследованием.
+
+НЕ встраивать новые metrics в Stages 1–28.
+НЕ использовать Task52 fingerprint/distance как optimization target.
+НЕ менять существующие scientific stages.
+
+======================================================================
+1. PRIMARY SOURCE
+======================================================================
+
+Перед реализацией получить и изучить первичный текст:
+
+    Rozanova & Temerev (2026)
+    "A Glyph Is Not a Letter, a Token Is Not a Word, a Space Is Not a Space"
+
+Использовать:
+
+    paper/preprint;
+    supplementary material;
+    официальный repository/code, если существует.
+
+Task56 использовать только как навигационный материал.
+
+Математические определения брать из первичного источника.
+
+Создать:
+
+    ROZANOVA_TEMEREV_METHOD.md
+
+с точными:
+
+    definitions;
+    formulas;
+    normalization;
+    preprocessing;
+    controls;
+    sample restrictions;
+    randomization;
+    uncertainty treatment.
+
+======================================================================
+2. REPLICATION BEFORE EXTENSION
+======================================================================
+
+Разделить исследование на:
+
+    Phase A — methodological replication;
+    Phase B — independent control experiment.
+
+Сначала реализовать максимально точные аналоги R&T metrics.
+
+Только после этого применять их к нашим homophonic corpora.
+
+Не модифицировать estimands для получения лучшего разделения
+Voynich/controls.
+
+======================================================================
+3. TOKEN-ORDER DEPENDENCY
+======================================================================
+
+Реализовать exact R&T adjacent-token dependency estimand.
+
+Если paper определяет его как mutual information:
+
+    I(T_i ; T_{i+1})
+
+использовать именно их estimator, включая:
+
+    probability estimation;
+    vocabulary restrictions/capping;
+    bias correction;
+    shuffle correction;
+    normalization;
+
+если эти элементы присутствуют в paper.
+
+Не заменять его:
+
+    Stage 27 transition metrics;
+    higher-order CMI Stage 25;
+    network statistics.
+
+Это отдельный estimand.
+
+======================================================================
+4. SHUFFLE CORRECTION
+======================================================================
+
+Если R&T используют shuffled-token baseline, воспроизвести процедуру
+максимально точно.
+
+Фиксировать:
+
+    number of shuffles;
+    seed generation;
+    whether line boundaries are preserved;
+    whether token frequencies are preserved;
+    averaging/median procedure.
+
+Выводить отдельно:
+
+    MI_raw
+    MI_shuffle_mean
+    MI_shuffle_sd
+    MI_corrected
+
+или точные аналоги терминологии paper.
+
+======================================================================
+5. VOCABULARY CAP / RARE TYPES
+======================================================================
+
+Особенно внимательно воспроизвести treatment редких tokens.
+
+Если R&T используют:
+
+    top-N vocabulary;
+    frequency threshold;
+    OTHER bucket;
+    vocabulary cap;
+
+реализовать именно эту процедуру.
+
+Voynich имеет чрезвычайно высокий hapax fraction, поэтому различия
+rare-token handling способны существенно изменить MI.
+
+Не выбирать cap на основании результатов наших корпусов.
+
+======================================================================
+6. GLYPH-EDGE COUPLING
+======================================================================
+
+Реализовать второй основной estimand R&T:
+
+    dependency between
+
+        final glyph of token i
+
+    and
+
+        initial glyph of token i+1.
+
+Условно:
+
+    I(last(T_i); first(T_{i+1}))
+
+но использовать точное определение paper.
+
+Это НЕ token-transition metric.
+
+======================================================================
+7. GLYPH DEFINITION
+======================================================================
+
+До расчётов зафиксировать, что считается glyph в:
+
+    R&T corpus;
+    нашем canonical Voynich corpus.
+
+Проверить:
+
+    EVA multi-character conventions;
+    uncertain glyphs;
+    ligatures;
+    transcription operators;
+    punctuation/markers.
+
+Не считать автоматически Unicode character == Voynich glyph.
+
+Создать явный tokenizer/parser, если это требуется используемой
+транскрипцией.
+
+======================================================================
+8. TRANSCRIPTION COMPATIBILITY
+======================================================================
+
+Основной Voynich input:
+
+    data_work/ZL3b-x7.canonical.txt
+
+Зафиксировать:
+
+    SHA256
+    N
+    V
+    line count
+    preprocessing.
+
+Отдельно документировать различия между нашей транскрипцией и
+транскрипцией R&T.
+
+Если exact numerical replication невозможна из-за различий corpus,
+это не является failure.
+
+Классификация:
+
+    EXACT_CORPUS_REPLICATION
+    METHOD_REPLICATION_DIFFERENT_TRANSCRIPTION.
+
+======================================================================
+9. NATURAL CONTROLS
+======================================================================
+
+Использовать существующие подготовленные corpora минимум:
+
+    Doyle
+    Longfellow
+    Astafiev
+
+если они проходят readiness requirements.
+
+Можно добавить другие уже существующие controls, но не требуется
+расширять библиотеку корпусов в Task58.
+
+Основная цель — разнообразие:
+
+    prose
+    poetry
+    instructional/recipe text.
+
+======================================================================
+10. HOMOPHONIC CONTROLS
+======================================================================
+
+Использовать уже существующие frozen/prepared corpora.
+
+Минимальная серия:
+
+    Doyle original
+
+    global-H uniform:
+        H2
+        H4
+        H6
+        H8
+
+    global-H triangular-v1:
+        H4
+        H6
+        H8
+
+    frequency-v1 uniform:
+        Hmax4
+        Hmax6
+        Hmax8
+
+    canonical Voynich.
+
+Не создавать новые homophonic models в Task58.
+
+======================================================================
+11. PRIMARY EXPERIMENT
+======================================================================
+
+Для каждого corpus вычислить:
+
+    token-order metric
+    glyph-edge metric.
+
+Главная таблица:
+
+Corpus | Token-order | Glyph-edge
+
+Отдельно показать raw и shuffle-corrected значения, если это
+предусмотрено методом.
+
+======================================================================
+12. DOSE-RESPONSE
+======================================================================
+
+Для global-H uniform проверить trajectory:
+
+    Doyle
+      ->
+    H2
+      ->
+    H4
+      ->
+    H6
+      ->
+    H8.
+
+Вопрос:
+
+    движется ли R&T token-order metric монотонно в сторону Voynich?
+
+Отдельно:
+
+    движется ли glyph-edge coupling в сторону Voynich?
+
+Не предполагать одинакового направления этих metrics.
+
+======================================================================
+13. ALLOCATION MODEL COMPARISON
+======================================================================
+
+Сравнить при близком H:
+
+    global uniform
+    triangular-v1
+    frequency-v1.
+
+Например:
+
+    H4 global uniform
+    H4 triangular
+    Hmax4 frequency-v1.
+
+Это позволяет проверить, зависит ли R&T fingerprint от:
+
+    homophone load
+
+или от:
+
+    allocation/selection mechanism.
+
+======================================================================
+14. CRITICAL GLYPH-EDGE CONTROL
+======================================================================
+
+Наши Task46/55 transformations работают на token level.
+
+Поэтому существует важное предсказание:
+
+    они могут менять token-order MI,
+
+но их эффект на glyph-edge MI может оказаться искусственным следствием
+способа генерации cipher-token labels.
+
+Нельзя рассчитывать glyph-edge MI непосредственно по служебным labels:
+
+    x000001
+    x000002
+    ...
+
+и интерпретировать это как содержательный результат.
+
+======================================================================
+15. SYNTHETIC GLYPH PROBLEM
+======================================================================
+
+До Phase B определить, имеют ли Task46 synthetic tokens осмысленную
+внутреннюю glyph structure.
+
+Если нет:
+
+    glyph-edge MI для этих corpora = NOT_APPLICABLE.
+
+НЕ изобретать post-hoc glyph encoding специально для получения
+Voynich-like edge coupling.
+
+Это принципиальный safeguard.
+
+Следовательно возможно, что:
+
+    token-order experiment
+
+может быть выполнен на всех transformed corpora,
+
+а:
+
+    glyph-edge experiment
+
+только на Voynich + естественных textual controls,
+если representations сопоставимы.
+
+======================================================================
+16. NATURAL-CONTROL GLYPH SEMANTICS
+======================================================================
+
+Для Doyle/Longfellow/Astafiev определить:
+
+    glyph = character?
+
+Если paper работает с обычными alphabetic texts именно таким образом,
+следовать их процедуре.
+
+Документировать:
+
+    case normalization
+    punctuation
+    Unicode normalization
+    diacritics
+    encoding.
+
+Не менять исходную encoding silently.
+
+======================================================================
+17. ENCODING SAFEGUARD
+======================================================================
+
+Astafiev ранее мог иметь legacy Cyrillic encoding.
+
+Перед glyph-level analysis определить encoding явно.
+
+Если корректная decoding не может быть доказана:
+
+    glyph-edge metric = NOT_APPLICABLE
+
+для этого corpus.
+
+Token-level analysis может оставаться применимым, если существующий
+prepared corpus уже корректно tokenized.
+
+======================================================================
+18. REPLICATION OF R&T CONTROLS
+======================================================================
+
+Если исходные controls R&T доступны без существенной новой инфраструктуры,
+воспроизвести хотя бы representative subset.
+
+Цель:
+
+    проверить, что наша implementation воспроизводит qualitative
+    ordering, опубликованный авторами.
+
+Это должно произойти ДО интерпретации наших Doyle/Voynich results.
+
+======================================================================
+19. IMPLEMENTATION VALIDATION
+======================================================================
+
+Если R&T предоставляют code:
+
+    сравнить результаты нашей реализации с reference implementation
+    на одном и том же небольшом corpus.
+
+Если code отсутствует:
+
+    создать hand-verifiable toy corpora.
+
+Например:
+
+A:
+    a b a b a b
+
+B:
+    a b c d e f
+
+C:
+    shuffled A
+
+Проверить ожидаемые MI analytically/independently.
+
+======================================================================
+20. NULL MODELS
+======================================================================
+
+Использовать только null models, предусмотренные R&T replication,
+для primary result.
+
+Дополнительные null models разрешены только как:
+
+    OUR_EXTENSION
+
+и должны быть отделены в output.
+
+Не смешивать replication protocol с нашими Stage 23–28 permutation tests.
+
+======================================================================
+21. STATISTICAL UNCERTAINTY
+======================================================================
+
+Если R&T оценивают uncertainty:
+
+    reproduce it.
+
+Если нет, разрешается дополнительно выполнить:
+
+    bootstrap
+    repeated shuffle null
+
+как OUR_EXTENSION.
+
+Но original and extended estimates должны храниться отдельно.
+
+======================================================================
+22. SIZE EFFECT
+======================================================================
+
+Voynich:
+
+    N ≈ 39k
+
+Doyle:
+
+    N ≈ 44k.
+
+Другие corpora могут существенно отличаться.
+
+Проверить чувствительность MI к corpus length.
+
+Создать matched-length control:
+
+    truncate/subsample natural corpora to Voynich N
+
+детерминированным preregistered способом.
+
+Не использовать результат для выбора наиболее удобного fragment.
+
+======================================================================
+23. RARE-VOCABULARY EFFECT
+======================================================================
+
+Поскольку Voynich имеет высокий hapax fraction, проверить отдельно:
+
+    насколько token-order result обусловлен размером vocabulary.
+
+Использовать только protocol-compatible manipulation, например
+R&T vocabulary cap.
+
+Не объединять tokens специально для приближения к Voynich.
+
+======================================================================
+24. RELATION TO OUR STAGE 27
+======================================================================
+
+После получения R&T token-order results сравнить их с существующими
+Stage 27 transition results.
+
+Основной вопрос:
+
+    коррелируют ли два estimands на серии
+
+        Doyle -> H2 -> H4 -> H6 -> H8?
+
+Если да:
+
+    наши Stage27 observations получают independent external support.
+
+Если нет:
+
+    Stage27 и R&T metric измеряют разные аспекты local dependency.
+
+Оба результата допустимы.
+
+======================================================================
+25. RELATION TO OUR STAGE 25
+======================================================================
+
+Аналогично сравнить R&T token-order MI с:
+
+    higher-order sequence validation.
+
+Не ожидать совпадения.
+
+Это особенно важно из-за нашего результата:
+
+    homophony делает transition family Voynich-like,
+    но sequence family — менее Voynich-like.
+
+R&T metric может помочь определить, к какой стороне этого расхождения
+относится их "weak token order".
+
+======================================================================
+26. NO TASK52 OPTIMIZATION
+======================================================================
+
+Task52 разрешён только после завершения primary R&T analysis как
+secondary descriptive comparison.
+
+Запрещено:
+
+    выбирать H по Task52;
+    выбирать MI settings по Task52;
+    менять preprocessing для уменьшения distance до Voynich.
+
+======================================================================
+27. RESULT CLASSIFICATION
+======================================================================
+
+Для TOKEN-ORDER результата:
+
+REPLICATED:
+    canonical Voynich qualitatively/quantitatively воспроизводит
+    опубликованный R&T effect относительно comparable controls.
+
+PARTIAL:
+    направление совпадает, magnitude/protocol differs.
+
+NOT_REPLICATED:
+    expected effect отсутствует.
+
+INCOMPARABLE:
+    transcription/preprocessing incompatibility не позволяет сравнение.
+
+Для homophonic extension:
+
+SUPPORTS_FORWARD_HOMOPHONY_EFFECT:
+    homophonic dose-response систематически движется к Voynich
+    по exact R&T estimand.
+
+MIXED:
+    часть models/H движется, часть нет.
+
+NEGATIVE:
+    homophony не приближает exact R&T metric к Voynich.
+
+======================================================================
+28. GLYPH-EDGE RESULT CLASSIFICATION
+======================================================================
+
+Glyph-edge анализ классифицировать независимо.
+
+Особенно важен возможный результат:
+
+    token-order becomes Voynich-like
+    BUT
+    glyph-edge coupling does not.
+
+Это будет свидетельством, что homophony воспроизводит только один
+уровень организации Voynich.
+
+Не усреднять эти результаты в один score.
+
+======================================================================
+29. NO DECRYPTION CLAIMS
+======================================================================
+
+Даже если homophonic controls совпадают с Voynich по R&T metrics:
+
+НЕ утверждать:
+
+    Voynich is homophonically encrypted.
+
+Допустимая формулировка:
+
+    "Homophonic transformation reproduces the direction/magnitude of
+    specific statistical estimands independently proposed by
+    Rozanova and Temerev."
+
+======================================================================
+30. SOFTWARE
+======================================================================
+
+Создать отдельный инструмент, например:
+
+    rozanova-temerev-analyze
+
+или каталог:
+
+    independent/rozanova-temerev/
+
+CLI должен принимать corpus напрямую.
+
+Например:
+
+    rozanova-temerev-analyze \
+        -corpus PATH \
+        -output-dir DIR \
+        -seed 1
+
+Не делать его Stage29.
+
+======================================================================
+31. BATCH COMPARISON
+======================================================================
+
+Добавить отдельный режим:
+
+    rozanova-temerev-analyze compare \
+        -experiment NAME=PATH \
+        -experiment NAME=PATH \
+        ...
+
+или manifest-driven equivalent.
+
+Он должен строить одну comparative table без Task52.
+
+======================================================================
+32. OUTPUT
+======================================================================
+
+Предлагаемая структура:
+
+experiments/rozanova-temerev-v1/
+
+    METHOD.md
+    manifest.json
+
+    replication/
+        reference_controls.tsv
+        replication_results.tsv
+
+    corpora/
+        voynich/
+        doyle/
+        longfellow/
+        astafiev/
+
+        doyle-h2-uniform/
+        doyle-h4-uniform/
+        doyle-h6-uniform/
+        doyle-h8-uniform/
+
+        doyle-h4-triangular/
+        doyle-h6-triangular/
+        doyle-h8-triangular/
+
+        doyle-frequency-h4/
+        doyle-frequency-h6/
+        doyle-frequency-h8/
+
+    TOKEN_ORDER_RESULTS.tsv
+    GLYPH_EDGE_RESULTS.tsv
+    DOSE_RESPONSE.tsv
+    STAGE27_COMPARISON.tsv
+    STAGE25_COMPARISON.tsv
+
+    REPORT.md
+
+======================================================================
+33. PROVENANCE
+======================================================================
+
+Manifest фиксирует:
+
+    paper/version used
+    implementation git commit
+    dirty state
+
+    corpus path
+    corpus SHA256
+
+    transcription/preprocessing
+    tokenizer version
+
+    MI estimator
+    vocabulary cap
+    shuffle procedure
+    shuffle count
+    seeds
+
+    NOT_APPLICABLE reasons.
+
+======================================================================
+34. TESTS
+======================================================================
+
+Добавить минимум:
+
+1. deterministic output;
+2. known toy MI;
+3. shuffled sequence destroys expected dependency;
+4. identical sequences reproduce identical metric;
+5. line-boundary behavior matches documented protocol;
+6. rare-token handling;
+7. vocabulary-cap handling;
+8. glyph first/last extraction;
+9. Unicode/encoding handling;
+10. synthetic opaque labels do not silently produce a valid
+    glyph-edge scientific result;
+11. missing/incompatible glyph representation -> NOT_APPLICABLE;
+12. batch and single-corpus calculations agree.
+
+Выполнить:
+
+    go build ./...
+    go vet ./...
+    go test ./...
+    git diff --check
+
+======================================================================
+35. DELIVERABLES
+======================================================================
+
+1. ROZANOVA_TEMEREV_METHOD.md
+2. independent analyzer implementation
+3. exact/closest possible token-order estimator
+4. exact/closest possible glyph-edge estimator
+5. reference-control replication
+6. natural-control analysis
+7. existing homophonic-series analysis
+8. dose-response analysis
+9. comparison with Stage25/27
+10. REPORT.md
+11. tests and provenance.
+
+======================================================================
+DEFINITION OF DONE
+======================================================================
+
+Task58 завершён, когда:
+
+1. primary-source methodology R&T документирована;
+
+2. exact estimands отделены от наших похожих metrics;
+
+3. implementation проверена reference code/data либо independent toy tests;
+
+4. R&T result проверен на canonical Voynich;
+
+5. natural controls проанализированы;
+
+6. existing homophonic H-series проанализированы без создания новых
+   transformations;
+
+7. token-order dose-response проверен;
+
+8. glyph-edge analysis выполнен только там, где representation
+   scientifically meaningful;
+
+9. результаты сопоставлены со Stage25/27, но не смешаны с ними;
+
+10. replication и OUR_EXTENSION явно разделены;
+
+11. Task52 не использовался для parameter selection;
+
+12. никаких новых stages в production pipeline не добавлено;
+
+13. никаких выводов о дешифровке не сделано.
