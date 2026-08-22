@@ -1,0 +1,1400 @@
+Task63 — Token-to-Token Form Transition Process
+
+Цель
+
+Проверить гипотезу, возникшую из Tasks 58–62:
+
+    структура Voynich может быть разделена как минимум на два уровня:
+
+        G — локальный механизм образования допустимых token forms;
+        S — механизм перехода между формами соседних tokens.
+
+Task62 показал, что локальная position-aware Markov model способна
+частично воспроизводить:
+
+    - low glyph conditional entropy;
+    - positional specialization;
+    - giant d=1 vocabulary component;
+
+но существенно недовоспроизводит:
+
+    adjacent near-repeat enrichment.
+
+Основной вопрос Task63:
+
+    существует ли статистически воспроизводимый локальный
+    token-to-token transformation process, который действует
+    преимущественно над ФОРМОЙ предыдущего token, а не над его
+    identity?
+
+И если существует:
+
+    достаточно ли простой модели этого процесса вместе с frozen
+    Task62 token-formation model для воспроизведения наблюдаемой
+    структуры Voynich?
+
+НЕ делать выводов о языке, морфологии, шифре или дешифровке.
+
+НЕ добавлять Stage29.
+НЕ изменять Stages 1–28.
+НЕ оптимизировать модель по Task58–62 fingerprint metrics.
+
+======================================================================
+1. CORE HYPOTHESIS
+======================================================================
+
+Проверить различие:
+
+    TOKEN IDENTITY DEPENDENCE
+
+и:
+
+    TOKEN FORM DEPENDENCE.
+
+Task58 показывает слабую глобальную зависимость token identities.
+
+Task60 показывает сильное adjacent d=1 enrichment.
+
+Task62 показывает, что independent token generation создаёт
+Voynich-like vocabulary geometry, но недостаточную adjacency:
+
+    Voynich TEST near-repeat ≈ 0.03952
+    POSITION_MARKOV_1 ≈ 0.02341.
+
+Рабочая гипотеза:
+
+    P(T_i | T_i-1)
+
+может быть слабой на уровне exact token identity,
+
+но:
+
+    P(form(T_i) | form(T_i-1))
+
+может быть существенно структурирована.
+
+======================================================================
+2. NO COPY/MUTATE ASSUMPTION
+======================================================================
+
+Не предполагать заранее модель:
+
+    previous token
+        ->
+    copy
+        ->
+    mutate one glyph.
+
+Это только одна возможная интерпретация.
+
+Сначала измерить empirical transition structure.
+
+Только после discovery/freeze разрешается generative modeling.
+
+======================================================================
+3. PHASES
+======================================================================
+
+Разделить Task63:
+
+    Phase A — descriptive transition analysis;
+    Phase B — null/control validation;
+    Phase C — frozen model specification;
+    Phase D — generative validation.
+
+До завершения Phase B не реализовывать explanatory generator.
+
+======================================================================
+4. PRE-REGISTRATION
+======================================================================
+
+Создать до анализа результатов:
+
+    TOKEN_TRANSITION_DESIGN.md
+
+Зафиксировать:
+
+    adjacency definition;
+    line-boundary handling;
+    edit-distance definition;
+    edit-operation canonicalization;
+    positional bins;
+    null models;
+    natural controls;
+    minimum counts;
+    significance procedure;
+    candidate transition features;
+    model-selection rule;
+    generation protocol;
+    acceptance criteria.
+
+После Phase B создать:
+
+    TRANSITION_ANALYSIS_FROZEN
+
+После specification Phase C:
+
+    TRANSITION_MODEL_FROZEN
+
+TEST generation выполняется только после второго freeze.
+
+======================================================================
+5. SHARED IMPLEMENTATIONS
+======================================================================
+
+Переиспользовать authoritative implementations:
+
+    internal/evaglyph
+    Task60 edit-distance machinery
+    Task61 entropy estimator
+    Task62 frozen POSITION_MARKOV_1 model
+
+где применимо.
+
+Не создавать альтернативные определения glyph/edit distance.
+
+======================================================================
+6. ADJACENCY DATASET
+======================================================================
+
+Для каждой пары соседних tokens внутри строки:
+
+    (T_i, T_i+1)
+
+сохранить:
+
+    line/page identifier
+    position_in_line
+    line_length
+
+    token A
+    token B
+
+    length(A)
+    length(B)
+
+    edit_distance(A,B)
+
+    exact_same
+    d1
+
+    canonical edit operation, если d=1
+
+    edit position
+
+    normalized edit position.
+
+Переход через line boundary анализировать отдельно.
+
+======================================================================
+7. PRIMARY DISTANCE DISTRIBUTION
+======================================================================
+
+Вычислить empirical distribution:
+
+    P(d=0)
+    P(d=1)
+    P(d=2)
+    P(d=3)
+    P(d>=4)
+
+и полное distribution при разумном диапазоне.
+
+Сравнить:
+
+    adjacent pairs
+
+с:
+
+    non-adjacent matched pairs.
+
+======================================================================
+8. MATCHED NON-ADJACENT CONTROL
+======================================================================
+
+Для каждой adjacent pair подобрать non-adjacent controls с matching
+минимум по:
+
+    token length A
+    token length B
+
+и желательно:
+
+    line/page regime
+
+без использования непосредственного соседа.
+
+Цель:
+
+    проверить, является ли d=1 enrichment именно adjacency effect,
+    а не следствием dense vocabulary geometry Task60/62.
+
+Это PRIMARY control.
+
+======================================================================
+9. DISTANCE-AS-FUNCTION-OF-SEPARATION
+======================================================================
+
+Вычислить:
+
+    P(d<=1 | separation=k)
+
+для:
+
+    k = 1..10
+
+или до заранее установленного K.
+
+Также:
+
+    mean edit distance(k)
+    median edit distance(k).
+
+Главный вопрос:
+
+    является ли form dependence локальной и затухающей с расстоянием?
+
+======================================================================
+10. EXACT COPY VS NEAR COPY
+======================================================================
+
+Разделять:
+
+    d=0
+    d=1.
+
+Task60 показал различное поведение exact и near repetition.
+
+Не объединять их в одну statistic.
+
+======================================================================
+11. D=1 OPERATION TYPES
+======================================================================
+
+Для adjacent d=1 pairs классифицировать:
+
+    SUBSTITUTION
+    INSERTION
+    DELETION.
+
+Для каждой операции вычислить enrichment относительно matched null.
+
+======================================================================
+12. EDIT POSITION
+======================================================================
+
+Для d=1 operations классифицировать позицию:
+
+    BEGIN
+    MIDDLE
+    END
+
+и дополнительно normalized position:
+
+    p = edit_index / token_length.
+
+Task60 уже обнаружил преимущество BEGIN для insert/delete.
+
+Task63 должен проверить:
+
+    является ли этот эффект специфичным именно для adjacent pairs.
+
+======================================================================
+13. SUBSTITUTION MATRIX
+======================================================================
+
+Для substitutions построить:
+
+    source glyph -> target glyph
+
+matrix.
+
+Но обязательно сравнить с null, учитывающим:
+
+    glyph frequencies
+    positional frequencies.
+
+Иначе частые glyphs автоматически создадут apparent rules.
+
+======================================================================
+14. INSERTION MATRIX
+======================================================================
+
+Для insertion:
+
+    context -> inserted glyph
+
+минимум по:
+
+    BEGIN
+    MIDDLE
+    END.
+
+Проверить, существуют ли повторяемые insertion patterns.
+
+======================================================================
+15. DELETION MATRIX
+======================================================================
+
+Аналогично:
+
+    deleted glyph
+    position
+    surrounding context.
+
+======================================================================
+16. DIRECTIONALITY
+======================================================================
+
+Для каждой достаточно частой transformation:
+
+    A -> B
+
+сравнить с:
+
+    B -> A.
+
+Вычислить directional asymmetry.
+
+Например:
+
+    qX -> X
+
+против:
+
+    X -> qX.
+
+Не интерпретировать направление как derivation без дополнительных
+доказательств.
+
+======================================================================
+17. TRANSFORMATION ENTROPY
+======================================================================
+
+Для d<=1 transitions определить operation variable:
+
+    O ∈ {
+        COPY,
+        SUBSTITUTE_BEGIN,
+        SUBSTITUTE_MIDDLE,
+        SUBSTITUTE_END,
+        INSERT_BEGIN,
+        INSERT_MIDDLE,
+        INSERT_END,
+        DELETE_BEGIN,
+        DELETE_MIDDLE,
+        DELETE_END
+    }
+
+и вычислить:
+
+    H(O)
+
+а также conditional variants:
+
+    H(O | previous token length)
+    H(O | previous initial glyph)
+    H(O | previous final glyph)
+    H(O | position in line).
+
+Цель:
+
+    определить, насколько transition process сам по себе предсказуем.
+
+======================================================================
+18. TOKEN FEATURES
+======================================================================
+
+Не использовать exact token identity как основной predictor.
+
+Разрешённые structural features:
+
+    token length
+    initial glyph
+    final glyph
+    Task59 positional-region composition
+    selected local glyph contexts
+    d=1 neighborhood degree
+    giant-family membership.
+
+Feature set зафиксировать до model fitting.
+
+======================================================================
+19. LINE POSITION
+======================================================================
+
+Проверить dependence от:
+
+    first token in line
+    early
+    middle
+    late
+    last token.
+
+Особенно проверить:
+
+    P(d<=1 | position_in_line).
+
+Это необходимо из-за сильной line structure Task60.
+
+======================================================================
+20. LINE START
+======================================================================
+
+Отдельно анализировать первый token каждой строки:
+
+    similarity to previous line final token
+    similarity to same-line second token.
+
+Не смешивать cross-line и within-line transitions.
+
+======================================================================
+21. LINE RESET HYPOTHESIS
+======================================================================
+
+Проверить гипотезу:
+
+    line boundary acts as partial reset of form-transition process.
+
+Сравнить:
+
+    within-line adjacent similarity
+
+с:
+
+    last token line n
+        ->
+    first token line n+1.
+
+Если form dependence резко исчезает:
+
+    LINE_RESET_SUPPORTED.
+
+======================================================================
+22. DISTANCE FROM LINE START
+======================================================================
+
+Проверить, меняется ли:
+
+    token length
+    d(previous,current)
+    edit-operation type
+    initial/final glyph distribution
+
+по мере продвижения по строке.
+
+Не предполагать направление эффекта заранее.
+
+======================================================================
+23. REPEATED TRANSFORMATION CHAINS
+======================================================================
+
+Искать chains:
+
+    T1 -> T2 -> T3
+
+где:
+
+    d(T1,T2)<=1
+    d(T2,T3)<=1.
+
+Отдельно:
+
+    exact-copy chains
+    substitution chains
+    insertion/deletion chains
+    mixed chains.
+
+======================================================================
+24. LONGER CHAINS
+======================================================================
+
+Для chain lengths:
+
+    2
+    3
+    4
+    5+
+
+вычислить observed counts и null enrichment.
+
+Не перечислять только anecdotal examples.
+
+======================================================================
+25. RETURN / OSCILLATION PATTERNS
+======================================================================
+
+Проверить:
+
+    A B A
+    A B B
+    A B A B
+
+на уровне exact tokens
+
+и аналогично на уровне form families.
+
+Сопоставить с существующими sequence analyses, если authoritative
+artifact доступен.
+
+======================================================================
+26. EDIT-FAMILY TRANSITIONS
+======================================================================
+
+Использовать Task60 giant d=1 component.
+
+Проверить:
+
+    Giant -> Giant
+    Giant -> Outside
+    Outside -> Giant
+    Outside -> Outside.
+
+Но контролировать огромный base rate Giant membership.
+
+======================================================================
+27. LOCAL NEIGHBORHOOD DEGREE
+======================================================================
+
+Проверить, влияет ли degree token type в d=1 graph на вероятность:
+
+    next token is d<=1.
+
+Высокая degree сама по себе увеличивает chance adjacency.
+
+Нужно отделить:
+
+    vocabulary opportunity
+
+от:
+
+    sequence preference.
+
+======================================================================
+28. PRIMARY NULL — TOKEN SHUFFLE
+======================================================================
+
+Shuffle tokens globally.
+
+Сохраняются:
+
+    token forms
+    frequencies
+    vocabulary geometry.
+
+Уничтожается:
+
+    sequence.
+
+Это основной null для transition structure.
+
+======================================================================
+29. STRICT NULL — WITHIN-LINE SHUFFLE
+======================================================================
+
+Shuffle tokens только внутри каждой строки.
+
+Сохраняются:
+
+    line membership
+    line length
+    per-line vocabulary.
+
+Уничтожается:
+
+    local order.
+
+Task60 показал, что этот null критически важен.
+
+======================================================================
+30. CONDITIONAL NULL
+======================================================================
+
+Создать matched null, сохраняющий минимум:
+
+    token length transition
+
+и при необходимости:
+
+    line-position distribution.
+
+Цель:
+
+    исключить возможность, что near-repeat enrichment возникает
+    из локальной корреляции длин.
+
+======================================================================
+31. NATURAL CONTROLS
+======================================================================
+
+Применить тот же анализ к:
+
+    Doyle
+    Longfellow
+    Astafiev.
+
+Использовать line representation существующих corpora.
+
+Не интерпретировать литературную строку как эквивалент строки
+манускрипта; это statistical controls.
+
+======================================================================
+32. TASK62 GENERATED CONTROL
+======================================================================
+
+Обязательно использовать frozen Task62:
+
+    POSITION_MARKOV_1 generated corpora.
+
+Это особенно важный null.
+
+Они уже воспроизводят:
+
+    большую часть vocabulary geometry,
+
+но не полный adjacency effect.
+
+Task63 должен показать, какие transition statistics отсутствуют
+именно в этих corpora.
+
+======================================================================
+33. POSITIVE CONTROL — COPY/MUTATE
+======================================================================
+
+Использовать Task62 copy/mutate positive control.
+
+Analyzer должен обнаружить:
+
+    d<=1 enrichment
+    edit-operation enrichment
+    short-range decay.
+
+Не использовать этот control как evidence за copy/mutate Voynich.
+
+======================================================================
+34. PHASE A/B RESULT
+======================================================================
+
+После descriptive/null analysis классифицировать:
+
+NO_FORM_TRANSITION_EFFECT:
+
+    adjacency полностью объясняется vocabulary geometry,
+    line structure и matched controls.
+
+FORM_TRANSITION_EFFECT:
+
+    adjacent tokens остаются существенно ближе matched controls.
+
+STRUCTURED_FORM_TRANSITION_EFFECT:
+
+    кроме distance enrichment обнаружены reproducible biases
+    operation/position/direction.
+
+Только последние два результата разрешают Phase C/D.
+
+======================================================================
+35. REPLICATION SPLIT
+======================================================================
+
+Transition effects должны быть проверены минимум на independent
+folio/page blocks.
+
+Discovery и replication blocks определить заранее.
+
+Нельзя объявлять transformation rule на полном corpus и затем
+"подтверждать" её тем же corpus.
+
+======================================================================
+36. STABILITY
+======================================================================
+
+Для основных effects сообщать:
+
+    effect size
+    CI
+    discovery value
+    replication value
+    sign consistency.
+
+Не считать редкие glyph-specific transformations устойчивыми только
+по nominal p-value.
+
+======================================================================
+37. MULTIPLE TESTING
+======================================================================
+
+Для glyph/edit matrices применять FDR correction.
+
+Отдельно хранить:
+
+    raw p
+    q.
+
+Не выполнять fishing по тысячам transitions без correction.
+
+======================================================================
+38. PHASE C — MINIMAL TRANSITION MODEL
+======================================================================
+
+Если FORM_TRANSITION_EFFECT подтверждён, построить минимальную модель S.
+
+Baseline:
+
+    INDEPENDENT
+
+где следующий token независимо генерируется frozen Task62 model.
+
+======================================================================
+39. MODEL S1 — DISTANCE MIXTURE
+======================================================================
+
+Минимальная transition model:
+
+    с вероятностью p_local:
+        выбрать local form transition;
+
+    иначе:
+        RESET и сгенерировать token frozen Task62 model.
+
+p_local оценивается только на TRAIN.
+
+Не подбирать по final fingerprint.
+
+======================================================================
+40. MODEL S2 — OPERATION MODEL
+======================================================================
+
+Если empirical analysis подтверждает structured operations:
+
+    choose:
+        COPY
+        SUBSTITUTE
+        INSERT
+        DELETE
+        RESET
+
+из learned TRAIN distribution.
+
+Для mutation:
+
+    position/glyph выбираются из TRAIN transition statistics.
+
+Не использовать TEST.
+
+======================================================================
+41. MODEL S3 — FEATURE-CONDITIONED
+======================================================================
+
+Разрешается только если validation показывает преимущество S2.
+
+Condition operation probabilities на ограниченный frozen feature set,
+например:
+
+    previous length
+    previous final glyph
+    line position.
+
+Не использовать exact previous token identity как categorical feature.
+
+======================================================================
+42. RESET
+======================================================================
+
+RESET означает:
+
+    новый token генерируется frozen Task62 POSITION_MARKOV_1.
+
+Таким образом общая модель:
+
+    G = token formation
+    S = token transition
+
+имеет явное разделение.
+
+======================================================================
+43. LINE RESET
+======================================================================
+
+Если Phase A/B подтверждает line reset:
+
+    на начале строки использовать RESET
+
+или отдельную TRAIN-estimated probability.
+
+Правило должно быть заморожено до TEST generation.
+
+======================================================================
+44. INVALID MUTATION
+======================================================================
+
+Mutation может породить token с очень низкой вероятностью по G.
+
+Нельзя автоматически запрещать такие forms после просмотра TEST.
+
+Заранее выбрать один вариант:
+
+    allow all;
+
+или:
+
+    accept/reject по TRAIN-derived G likelihood threshold.
+
+Threshold фиксируется до TEST.
+
+======================================================================
+45. MODEL SELECTION
+======================================================================
+
+Выбор:
+
+    Independent
+    S1
+    S2
+    S3
+
+только по TRAIN/VALIDATION.
+
+Primary criterion:
+
+    held-out transition likelihood/cross-entropy.
+
+Secondary:
+
+    validation distance distribution.
+
+Не использовать Task58–62 final fingerprint для выбора модели.
+
+======================================================================
+46. TEST GENERATION
+======================================================================
+
+После:
+
+    TRANSITION_MODEL_FROZEN
+
+сгенерировать минимум:
+
+    100 TEST-sized corpora.
+
+Структуру строк сохранить по TEST:
+
+    number of lines
+    tokens per line.
+
+Не копировать TEST token identities.
+
+======================================================================
+47. PRIMARY GENERATIVE TARGET — NEAR REPETITION
+======================================================================
+
+Проверить:
+
+    adjacent d=1 rate
+
+against TEST Voynich.
+
+Task62:
+
+    ≈0.02341
+
+Voynich:
+
+    ≈0.03952.
+
+Главный вопрос:
+
+    устраняет ли S этот residual gap?
+
+======================================================================
+48. EXACT REPETITION
+======================================================================
+
+Отдельно проверить:
+
+    adjacent d=0.
+
+Нельзя улучшить d=1 ценой патологического количества exact copies.
+
+======================================================================
+49. DISTANCE DISTRIBUTION
+======================================================================
+
+Сравнить полную:
+
+    P(d=k)
+
+для observed и generated.
+
+Модель не должна воспроизводить только одну выбранную statistic.
+
+======================================================================
+50. OPERATION DISTRIBUTION
+======================================================================
+
+Сравнить:
+
+    substitution
+    insertion
+    deletion
+
+и:
+
+    BEGIN
+    MIDDLE
+    END.
+
+======================================================================
+51. RUN/CHAIN STRUCTURE
+======================================================================
+
+Generated corpus проверить по:
+
+    d<=1 chain lengths
+    exact runs
+    ABA/ABAB
+    form-family chains.
+
+Модель должна воспроизводить не только pairwise adjacency.
+
+======================================================================
+52. CRITICAL PRESERVATION TEST
+======================================================================
+
+Добавление S не должно разрушать свойства, которые уже частично
+воспроизводит G.
+
+Повторно измерить authoritative:
+
+    Task61 h2
+    Task59 positional specialization
+    Task60 giant d=1 component.
+
+Сравнить:
+
+    G only
+
+против:
+
+    G + S
+
+против:
+
+    Voynich TEST.
+
+======================================================================
+53. TASK58 TOKEN-ORDER CHECK
+======================================================================
+
+Это критический safeguard.
+
+Применить authoritative Task58 token-order metric к generated G+S.
+
+Мы хотим проверить, возможно ли одновременно:
+
+    strong local form dependence
+
+и:
+
+    weak global token-identity dependence.
+
+Если S исправляет near repetition, но создаёт слишком сильную
+token-order dependence:
+
+    model fails.
+
+======================================================================
+54. CENTRAL TEST
+======================================================================
+
+Проверить возможность совместного существования:
+
+    LOW token identity dependency
+    HIGH adjacent form similarity.
+
+Это центральная гипотеза Task63.
+
+======================================================================
+55. NOVEL TOKEN REQUIREMENT
+======================================================================
+
+Отдельно анализировать transitions, где current token:
+
+    NOT PRESENT IN TRAIN.
+
+Если эффект существует только для copied TRAIN forms:
+
+    generative explanation считается слабой.
+
+======================================================================
+56. NATURAL CONTROL GENERATION
+======================================================================
+
+При разумной стоимости обучить тот же G+S protocol на:
+
+    Doyle
+    Longfellow
+    Astafiev.
+
+Проверить, не возникает ли аналогичный fingerprint автоматически
+из любого текста.
+
+======================================================================
+57. ABLATION
+======================================================================
+
+Для frozen G+S:
+
+    remove S entirely;
+    remove operation conditioning;
+    remove position conditioning;
+    remove line reset;
+    force substitutions only;
+    force RESET after every token.
+
+Сравнить effects.
+
+======================================================================
+58. ACCEPTANCE — TRANSITION PROCESS
+======================================================================
+
+STRUCTURED_TRANSITION_SUPPORTED:
+
+    adjacency remains enriched against matched + within-line nulls;
+
+    operation/position structure replicates;
+
+    frozen transition model improves held-out transition likelihood.
+
+FORM_DEPENDENCE_ONLY:
+
+    distance enrichment replicates,
+    but no stable operation-level structure exists.
+
+NOT_SUPPORTED:
+
+    effect disappears under appropriate controls.
+
+======================================================================
+59. ACCEPTANCE — GENERATIVE MODEL
+======================================================================
+
+G_PLUS_S_SUPPORTED:
+
+    frozen G+S substantially closes Task62 near-repeat residual
+
+    AND preserves:
+
+        low h2
+        positional specialization
+        giant d1 vocabulary structure
+        weak token-order dependence
+
+    AND does not create pathological exact repetition.
+
+PARTIAL:
+
+    improves adjacency but fails at least one preservation criterion.
+
+NOT_SUPPORTED:
+
+    cannot improve adjacency out of sample or improvement requires
+    destroying existing fingerprint.
+
+======================================================================
+60. IMPORTANT FAILURE MODE
+======================================================================
+
+Следующий результат является особенно важным negative result:
+
+    G+S reproduces near-repeat enrichment
+
+но:
+
+    Task58 token-order dependence becomes much stronger than Voynich.
+
+Это будет означать:
+
+    простой sequential copy/mutation process НЕ объясняет Voynich,
+    несмотря на правильную near-repeat statistic.
+
+Обязательно выделить этот случай в REPORT.
+
+======================================================================
+61. OUTPUT — EMPIRICAL
+======================================================================
+
+Создать:
+
+experiments/token-transition-v1/
+
+    TOKEN_TRANSITION_DESIGN.md
+    TRANSITION_ANALYSIS_FROZEN
+
+    manifest.json
+
+    ADJACENT_DISTANCE.tsv
+    DISTANCE_BY_SEPARATION.tsv
+    MATCHED_ADJACENCY_CONTROL.tsv
+
+    EDIT_OPERATION.tsv
+    EDIT_POSITION.tsv
+    SUBSTITUTION_MATRIX.tsv
+    INSERTION_MATRIX.tsv
+    DELETION_MATRIX.tsv
+    DIRECTIONALITY.tsv
+
+    TRANSFORMATION_ENTROPY.tsv
+
+    LINE_POSITION.tsv
+    LINE_BOUNDARY.tsv
+
+    TRANSFORMATION_CHAINS.tsv
+    EDIT_FAMILY_TRANSITIONS.tsv
+
+    DISCOVERY_REPLICATION.tsv
+    NULL_COMPARISON.tsv
+    NATURAL_CONTROLS.tsv
+    TASK62_CONTROL.tsv
+
+======================================================================
+62. OUTPUT — MODEL
+======================================================================
+
+После Phase C/D:
+
+    TRANSITION_MODEL.md
+    TRANSITION_MODEL_FROZEN
+
+    MODEL_FIT.tsv
+    GENERATIVE_TRANSITION_VALIDATION.tsv
+    DISTANCE_DISTRIBUTION_VALIDATION.tsv
+    CHAIN_VALIDATION.tsv
+
+    TASK58_PRESERVATION.tsv
+    TASK59_PRESERVATION.tsv
+    TASK60_PRESERVATION.tsv
+    TASK61_PRESERVATION.tsv
+
+    NOVEL_TOKEN_TRANSITIONS.tsv
+    ABLATION.tsv
+
+    REPORT.md
+
+======================================================================
+63. REPORT QUESTIONS
+======================================================================
+
+REPORT.md должен явно ответить:
+
+1. Ближе ли adjacent tokens друг к другу, чем matched
+   non-adjacent tokens?
+
+2. Сохраняется ли эффект при within-line null?
+
+3. Как быстро form dependence затухает с token separation?
+
+4. Отличается ли exact repetition от d=1 behavior?
+
+5. Какие edit operations enriched?
+
+6. Где внутри token происходят edits?
+
+7. Есть ли directional transformations?
+
+8. Реплицируются ли они между независимыми blocks?
+
+9. Сбрасывается ли процесс на line boundary?
+
+10. Объясняется ли эффект giant-component membership/degree?
+
+11. Воспроизводит ли простой S остаток, оставшийся после Task62?
+
+12. Сохраняет ли G+S weak Task58 token-order dependence?
+
+13. Сохраняются ли Task59–61 properties?
+
+14. Нужен ли вообще отдельный sequential mechanism?
+
+======================================================================
+64. INTERPRETATION SAFEGUARDS
+======================================================================
+
+Не использовать без доказательства термины:
+
+    prefix
+    suffix
+    root
+    inflection
+    derivation
+    word
+    grammar rule.
+
+Предпочитать:
+
+    token
+    initial region
+    final region
+    edit operation
+    form transition
+    local dependency.
+
+Не утверждать:
+
+    A derives from B
+
+только потому, что A непосредственно предшествует B и d=1.
+
+======================================================================
+65. PERFORMANCE
+======================================================================
+
+Не выполнять наивный O(N²) search для matched controls.
+
+Использовать:
+
+    length buckets
+    edit indices
+    существующие Task60 optimized structures.
+
+Permutation/generation replicates распределять через существующую
+remote/process executor infrastructure при необходимости.
+
+Не создавать новый scheduler.
+
+======================================================================
+66. DETERMINISM
+======================================================================
+
+При одинаковых:
+
+    corpus
+    design
+    split
+    seed
+
+все statistical artifacts должны быть byte-for-byte deterministic,
+кроме явно исключённого provenance timestamp.
+
+======================================================================
+67. PROVENANCE
+======================================================================
+
+Manifest фиксирует:
+
+    git commit
+    dirty state
+    corpus SHA256
+
+    EVA parser version
+    edit-distance implementation
+
+    split definition
+    discovery/replication loci
+
+    null definitions
+    permutation count
+    seeds
+
+    Task58 artifacts
+    Task59 artifacts
+    Task60 commit c938b9d/artifacts
+    Task61 artifacts
+    Task62 artifacts/model definition.
+
+======================================================================
+68. TESTS
+======================================================================
+
+Минимум:
+
+1. identical tokens -> d=0;
+2. single substitution -> correct d=1 operation;
+3. insertion -> correct operation/position;
+4. deletion -> correct operation/position;
+5. canonical ambiguous edit deterministic;
+6. cross-line adjacency separated correctly;
+7. within-line shuffle preserves line membership;
+8. global shuffle preserves token multiset;
+9. matched null respects length constraints;
+10. distance-by-separation correct;
+11. directionality A->B/B->A correct;
+12. chain detection correct;
+13. FDR deterministic;
+14. discovery/replication split has no overlap;
+15. Task62 generated control reproduced;
+16. copy/mutate positive control detected;
+17. RESET calls frozen G rather than TEST vocabulary;
+18. no TEST data enter transition training;
+19. generated line lengths equal requested structure;
+20. preservation metrics reproduce authoritative Tasks58–61;
+21. same seed => identical output;
+22. insufficient observations => EMPTY/NOT_APPLICABLE, not crash.
+
+Выполнить:
+
+    go build ./...
+    go vet ./...
+    go test ./...
+    go test -race ./...
+    git diff --check
+
+======================================================================
+DEFINITION OF DONE
+======================================================================
+
+Task63 завершён, когда:
+
+1. adjacency effect отделён от dense vocabulary geometry;
+
+2. выполнен matched non-adjacent control;
+
+3. выполнен within-line shuffle control;
+
+4. построена distance-vs-separation curve;
+
+5. exact и d=1 transitions разделены;
+
+6. substitution/insertion/deletion проанализированы;
+
+7. edit positions проанализированы;
+
+8. directional asymmetry проверена;
+
+9. line-position и line-boundary effects проверены;
+
+10. transformation chains проверены;
+
+11. effects проверены на discovery/replication blocks;
+
+12. natural controls и Task62 generated controls обработаны тем же
+    pipeline;
+
+13. empirical transition effect классифицирован;
+
+14. если эффект подтверждён — minimal S model заморожена;
+
+15. G+S проверена на TEST generation;
+
+16. Task62 near-repeat residual проверен out-of-sample;
+
+17. exact-repeat pathology исключена;
+
+18. сохранение Tasks58–61 fingerprint проверено;
+
+19. особенно проверено совместное существование:
+
+        weak token-identity dependence
+        +
+        strong token-form dependence;
+
+20. результат классифицирован как:
+
+        G_PLUS_S_SUPPORTED /
+        PARTIAL /
+        NOT_SUPPORTED;
+
+21. Stages 1–28 не изменены;
+
+22. никаких выводов о языке, конкретном шифре или дешифровке
+    не сделано.
