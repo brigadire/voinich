@@ -42,6 +42,7 @@ func TestStagesMatchRepository(t *testing.T) {
 		"codex_prepare":                true,
 		"codex_orientation":            true,
 		"corpus-transform":             true,
+		"inverse-homophony":            true,
 		"inverse-transposition-search": true,
 		"voynich-validation":           true,
 		"pipeline-orchestrate":         true,
