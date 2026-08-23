@@ -2,29 +2,29 @@
 
 ## BLOCKING
 
-1. **Corpus rights:** IVTFF source/derivative rights are not documented for
-   redistribution. Do not make `data/` or `data_work/` public with corpus
-   bytes until permission or a compatible license is established.
-2. **Tracked control corpus:** Astafiev recipe files are tracked with no
-   license record. Verify rights or remove them from the reviewed public
-   release while retaining source/checksum/procedure documentation.
-3. **Vendored IVTT:** `ivtt/ivtt.c` and `ivtt/ivtt` have no recorded license.
-   Obtain permission, replace, or exclude them.
-4. **Project license:** No license has been selected for code, documentation,
-   or generated artifacts.
+None.
 
-## SHOULD_FIX
+## RESOLVED IN TASK72B
 
-1. Decide a reviewed archival strategy for the approximately 527 MiB Git
-   history and large frozen artifacts.
-2. Inspect/prune local dangling Git objects according to normal retention
-   policy before publication.
-3. Run a dedicated secret scanner in the release environment and retain its
-   report; no such scanner was installed for this audit.
+- IVTFF source and ordinary derivatives are external-only, ignored, and fully
+  documented with source/output checksums.
+- Astafiev source, normalized plaintext, and sidecar were removed; external
+  acquisition and deterministic preparation are documented.
+- Vendored IVTT source/binary were removed; the pipeline resolves an external
+  executable using `IVTT_BIN` or `PATH`.
+- Original project source code is licensed under Apache-2.0 with an explicit
+  scope that excludes third-party and non-code material.
+- Exact dependency licenses were verified.
+- A clean-root public-history strategy excludes private reachable history and
+  the removed `tasks/` tree. The original private history was not rewritten.
+- Dedicated gitleaks scans passed for the candidate tree/history.
+- At the owner's explicit direction, the two exact ZL3b-x7 payloads formerly
+  stored as `normalized_085.txt` and `normalized_090.txt` were excluded while
+  their paths, SHA-256, provenance, and local backup were retained. The clean
+  public history never contains those blobs.
 
-## INFORMATIONAL
+## MANUAL
 
-- A clean detached worktree passed build, vet, ordinary tests, and race tests.
-- The security pattern scan found no credential-shaped material in reachable
-  history or the current tracked tree.
-- Repository visibility and remote state were not changed.
+- Human owner review of the final candidate and license scope for
+  documentation/generated research artifacts.
+- Repository visibility and public push remain owner-only actions.

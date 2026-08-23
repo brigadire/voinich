@@ -4,6 +4,9 @@ dataset/**
 !dataset/.gitkeep
 data_work/**
 !data_work/.gitkeep
+# External IVTT installations are local prerequisites, never project files.
+ivtt/
+.local-tools/
 .openmono
 bin/
 scratch/
@@ -14,10 +17,28 @@ coverage.out
 workdir/**
 !workdir/.gitkeep
 workdir.v0/
-pki/
+/pki/
 # Authoritative research artifacts under experiments/ are repository content,
 # even when generated. Historical embedded build products are not artifacts.
 experiments/**/workspace/workdir/bin/
+# Public artifact subsets: keep reviewed reports/aggregates while excluding
+# untracked corpus payloads and multi-gigabyte private workspaces.
+experiments/inverse-transposition/**
+!experiments/inverse-transposition/voynich-validation/
+experiments/inverse-transposition/voynich-validation/**
+!experiments/inverse-transposition/voynich-validation/VALIDATION_REPORT.md
+!experiments/inverse-transposition/voynich-validation/discovery_effects.tsv
+!experiments/inverse-transposition/voynich-validation/manifest.json
+!experiments/inverse-transposition/voynich-validation/null_distribution.tsv
+!experiments/inverse-transposition/voynich-validation/parameter_landscape.tsv
+!experiments/inverse-transposition/voynich-validation/width2_natural_controls.tsv
+experiments/doyle__transposition__w008__natural__seed001-v1/**
+!experiments/doyle__transposition__w008__natural__seed001-v1/run-state.json
+!experiments/doyle__transposition__w008__natural__seed001-v1/workspace/
+experiments/doyle__transposition__w008__natural__seed001-v1/workspace/**
+!experiments/doyle__transposition__w008__natural__seed001-v1/workspace/workdir/
+experiments/doyle__transposition__w008__natural__seed001-v1/workspace/workdir/**
+!experiments/doyle__transposition__w008__natural__seed001-v1/workspace/workdir/structural_distant_families.yaml
 # Local profiling output is ignored; the few already-tracked profiles are
 # historical evidence and remain tracked.
 profiles/
@@ -29,6 +50,24 @@ profiles/
 data_test/*
 !data_test/pg2097-2.txt
 !data_test/pg30795-mod.txt
-!data_test/astafiev-1000-culinar-receipts-prepared.txt
-!data_test/astafiev-1000-culinar-receipts-prepared.txt.prepare.json
+# Private task specifications are retained locally but excluded from releases.
+tasks/
+tasks_ph2/
+# Local post-Phase-I experiment workspaces are not part of this release.
+experiments/astafiev-1000-culinar-receipt-v1/
+experiments/astafiev-1000-culinar-receipt-v1-2/
+experiments/doyle-sign-of-four-v1/
+experiments/doyle-sign-of-four-v1-2/
+experiments/glyph-position-v1/controls/
+experiments/glyph-position-v1/homophony/
+experiments/glyph-position-v1/null/
+experiments/glyph-position-v1/positive-controls/
+experiments/longfellow-song-of-hiawatha-v1/
+experiments/msdos-v2-0-v1/
+experiments/visnusahasranama-v1/
+experiments/voynich-token-full-reverse-v1/
+experiments/voynich-token-glyph-reverse-v1/
+experiments/voynich-token-revers-v1/
+experiments/voynich-v2/
+experiments/voynich-v3/
 *.tar.gz

@@ -1,10 +1,19 @@
 category	path_or_source	inclusion	reason_or_status
-code	cmd/; internal/; pipelines/	INCLUDE	Primary Go implementation and deterministic orchestration.
-documentation	README.md; DATA.md; REPRODUCIBILITY.md; CONTRIBUTING.md; CITATION.cff; docs/	INCLUDE	Public entry points, methods, audit trail, and citation metadata.
-experiments	experiments/	INCLUDE_WITH_SIZE_REVIEW	Frozen scientific artifacts; preserve unless a reviewed archival plan replaces them with checksummed assets.
-canonical corpus	data/; data_work/	EXCLUDE	Local placeholders only; IVTFF redistribution status is LICENSE_UNCLEAR.
-control corpus	data_test/pg2097-2.txt; data_test/pg30795-mod.txt	INCLUDE_WITH_ATTRIBUTION	Public-domain controls with Project Gutenberg provenance.
-control corpus	data_test/astafiev*	EXCLUDE_PENDING_REVIEW	Tracked material has LICENSE_UNCLEAR status.
-vendored tool	ivtt/	EXCLUDE_PENDING_REVIEW	No license or copyright notice was found for IVTT.
-external dependencies	gopkg.in/yaml.v3 v3.0.1; golang.org/x/text v0.31.0	RESOLVE_AT_BUILD	Pinned Go modules; retain and verify upstream notices.
-excluded local outputs	workdir/; data_work/; untracked controls	EXCLUDE	Mutable or local inputs; not release artifacts.
+project code	cmd/; internal/; pipelines/; research/; scripts/	INCLUDED_APACHE-2.0	Original project source; root LICENSE scope applies.
+documentation	README.md; DATA.md; REPRODUCIBILITY.md; CONTRIBUTING.md; CITATION.cff; docs/	INCLUDED_SCOPE_UNDETERMINED	Public entry points and audit trail; Apache-2.0 is not automatically assigned to non-code material.
+experiments	experiments/	INCLUDED_REVIEWED	Frozen evidence retained with reviewed linked aggregate subsets; the two exact canonical-corpus payloads were excluded by owner direction.
+IVTFF	data/ZL3b-n.txt	EXTERNAL	Not redistributed; obtain and validate locally per DATA.md.
+IVTFF derivative	data_work/ZL3b-x7.txt	EXTERNAL	Generated locally; source/expected SHA-256 documented.
+Astafiev	data_test/astafiev*	EXTERNAL	Removed because redistribution rights are not established; local acquisition/preparation documented.
+IVTT	ivtt/ivtt.c; ivtt/ivtt	EXTERNAL	Removed as uncleared third-party material; external source/build/interface documented.
+reviewed controls	data_test/pg2097-2.txt; data_test/pg30795-mod.txt	INCLUDED_WITH_ATTRIBUTION	Project Gutenberg controls with provenance.
+external dependencies	gopkg.in/yaml.v3 v3.0.1; golang.org/x/text v0.31.0	RESOLVE_AT_BUILD	Not vendored; exact licenses verified in THIRD_PARTY_AUDIT.md.
+private tasks	tasks/	EXCLUDED	Internal task specifications preserved locally outside the public candidate.
+local outputs	workdir/; data/; data_work/; untracked controls; local IVTT	EXCLUDED	Ignored mutable or external inputs.
+removed path	data_test/astafiev-1000-culinar-receipts.txt	REMOVED	Uncleared copyrighted plaintext.
+removed path	data_test/astafiev-1000-culinar-receipts-prepared.txt	REMOVED	Normalized reproduction of uncleared plaintext.
+removed path	data_test/astafiev-1000-culinar-receipts-prepared.txt.prepare.json	REMOVED	Sidecar removed with excluded corpus distribution.
+removed path	ivtt/ivtt.c	REMOVED	External source without confirmed redistribution license.
+removed path	ivtt/ivtt	REMOVED	External compiled binary without confirmed redistribution license.
+removed path	experiments/voynich-v1/outputs/normalized_085.txt	REMOVED	Exact full copy of external canonical derivative; checksum/provenance retained locally.
+removed path	experiments/voynich-v1/outputs/normalized_090.txt	REMOVED	Exact full copy of external canonical derivative; checksum/provenance retained locally.

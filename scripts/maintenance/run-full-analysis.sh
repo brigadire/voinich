@@ -12,7 +12,7 @@ mkdir -p "$dataset"
 
 # The IVTFF source is authoritative. All analyzers consume this deterministic
 # IVTT -x7 derivative and never the former timestamp-named export.
-./ivtt/ivtt -x7 "$ivtff" "$input"
+scripts/prepare-external-data.sh ivtff "$ivtff" "$input"
 
 go run ./cmd/voinich "$input" "$dataset/dictionary.yaml"
 go run ./cmd/dict-analyze "$dataset/dictionary.yaml" "$dataset/tokens_analysis.yaml"

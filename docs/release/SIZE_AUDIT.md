@@ -1,18 +1,23 @@
 # Artifact size audit
 
-At audit time the reachable Git object database was approximately **527 MiB**
-(`git count-objects -vH`), with many individual tracked TSV/YAML artifacts in
-the 40–58 MiB range. The largest include structural graphemic-pair,
-transition-profile, and structural-profile-stability outputs in historical
-homophony experiments, plus the baseline permutation artifact.
+**Date:** 2026-08-23
 
-These files are frozen research artifacts and may be source-of-truth evidence.
-They were not deleted or ignored merely because they are large. A public
-release must decide, with scientific review, whether each large artifact stays
-in Git, moves to an archival release asset with checksums, or receives a
-reproducible regeneration path. Rewriting history to reduce size is out of
-scope and requires an explicit decision.
+The original private repository reported approximately 526.91 MiB of packed
+reachable objects at the Task72b start commit. It was not pruned or rewritten.
 
-The repository ignores mutable `workdir/`, local corpora, build binaries, and
-profiling output. The audit added ignores for common IDE, scratch, temporary,
-and coverage files without ignoring authoritative experiment artifacts.
+The final clean-root public candidate contains 3,207 tracked files with
+3,545,677,319 logical bytes. After `git gc`, `git count-objects -vH`
+reported one pack, 3,040 objects, and **498.95 MiB** `size-pack`; its
+checkout (excluding `.git`) uses approximately 3.4 GiB on disk. The size is
+driven by retained frozen research artifacts and repeated/tabular scientific
+outputs, not by the removed corpora, IVTT, or task files.
+
+The largest tracked files remain 50–58 MiB transition-profile,
+structural-graphemic-pair, and profile-stability artifacts. Size alone is not a
+release blocker and no scientific evidence was deleted merely to reduce it.
+
+Content audit is separate from size audit: two small
+`experiments/voynich-v1/outputs/normalized_0*.txt` artifacts were exact full
+copies of the excluded canonical derivative. They were removed at the owner's
+explicit direction because of content, not size; checksums and provenance are
+retained in [RELEASE_BLOCKERS.md](RELEASE_BLOCKERS.md) and the Task72b report.

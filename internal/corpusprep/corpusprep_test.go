@@ -3,8 +3,6 @@ package corpusprep
 import (
 	"bytes"
 	"io"
-	"os"
-	"path/filepath"
 	"reflect"
 	"strings"
 	"testing"
@@ -138,12 +136,9 @@ func TestPrepareDeterministic(t *testing.T) {
 	}
 }
 
-func TestAstafievFixtureNeedsExplicitEncoding(t *testing.T) {
-	rawPath := filepath.Join("..", "..", "data_test", "astafiev-1000-culinar-receipts.txt")
-	raw, err := os.ReadFile(rawPath)
-	if err != nil {
-		t.Fatal(err)
-	}
+func TestLegacyCP1251NeedsExplicitEncoding(t *testing.T) {
+	rawPath := "fixture.cp1251"
+	raw := mustEncode(t, charmap.Windows1251.NewEncoder(), "Пример текста\n")
 	if _, _, err := Prepare(raw, Options{Encoding: EncodingUTF8, CasePolicy: CasePreserve, LinePolicy: LinePreserve}, "deadbeef", rawPath, "prepared.txt"); err == nil {
 		t.Fatal("raw CP1251 fixture was accepted as UTF-8")
 	}
@@ -152,17 +147,17 @@ func TestAstafievFixtureNeedsExplicitEncoding(t *testing.T) {
 		t.Fatalf("cp1251 prepare failed: %v", err)
 	}
 	if !utf8.Valid(prepared.Text) {
-		t.Fatal("prepared astafiev output is not utf-8")
+		t.Fatal("prepared CP1251 output is not utf-8")
 	}
 	check, err := Check(prepared.Text)
 	if err != nil {
 		t.Fatal(err)
 	}
 	if !check.Valid {
-		t.Fatalf("prepared astafiev corpus failed check: %+v", check)
+		t.Fatalf("prepared CP1251 fixture failed check: %+v", check)
 	}
 	if manifest.ReplacementCharCount != 0 || manifest.InvalidUTF8Count != 0 {
-		t.Fatalf("astafiev manifest indicates encoding loss: %+v", manifest)
+		t.Fatalf("CP1251 manifest indicates encoding loss: %+v", manifest)
 	}
 	if _, _, err := Prepare(raw, Options{Encoding: EncodingAuto, CasePolicy: CasePreserve, LinePolicy: LinePreserve}, "deadbeef", rawPath, "prepared.txt"); err == nil {
 		t.Fatal("auto detection accepted a non-utf8 legacy corpus")

@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "source_corpus": "data_work/ZL3b-x7.canonical.txt",
+  "source_sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692",
+  "discovery_artifact": "experiments/inverse-transposition/voynich-discovery/search-manifest.json",
+  "discovery_sha256": "24ed6f7121527e0870075323ad6b066ba8959007f4a6903a44fe46b710277d05",
+  "git_commit": "df5eb2410fe5fc57c0981e699c7392bc2ceb71be",
+  "fixed_candidate": {
+    "width": 2,
+    "order": "natural",
+    "rounds": 1,
+    "seed": 1
+  },
+  "objective_version": "structural-v2",
+  "split_definition": "first 80% of existing logical lines for discovery, last 20% for holdout; split was not pre-registered in Task54 (limitation)",
+  "discovery_corpus_sha256": "35628e9ddf1ba295093e06f99e1cebc1f9986ca880a3f2135cc7d4327478bc5c",
+  "holdout_corpus_sha256": "d6f8dd4575c756be037640ce4de6cb9e496f31719d75d51ac6b30f0c5b60b502",
+  "null_configuration": "30 deterministic full-token Fisher-Yates permutations; seed=5401",
+  "fixed_calibration_provenance": "INVERSE_TRANSPOSITION_TASK54_1_REPORT.md, frozen Doyle/T2/T4/T8 ranges; no Voynich values used"
+}

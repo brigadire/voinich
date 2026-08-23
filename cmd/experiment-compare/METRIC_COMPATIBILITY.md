@@ -1,7 +1,7 @@
 # Metric compatibility audit (Task45/Task52)
 
 Task45's v1 fingerprint was a prototype. Task52 defines schema v2; the
-authoritative full audit is [`COMPARISON_METRIC_AUDIT.md`](../COMPARISON_METRIC_AUDIT.md).
+authoritative full audit is [`COMPARISON_METRIC_AUDIT.md`](COMPARISON_METRIC_AUDIT.md).
 
 `experiment-compare` reads frozen artifacts only. It never invokes a pipeline
 stage and it does not use experiment names or corpus labels as features.

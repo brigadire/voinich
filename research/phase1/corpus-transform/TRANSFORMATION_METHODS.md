@@ -141,7 +141,7 @@ sequence.
 - `fixed` (default): every plaintext token gets the same `H`, from
   `-homophones` (`homophonic-global-v1`).
 - `frequency`: rank-quantile allocation (`frequency-v1`), specified in
-  [FREQUENCY_HOMOPHONE_MODEL.md](../FREQUENCY_HOMOPHONE_MODEL.md). Here
+  [FREQUENCY_HOMOPHONE_MODEL.md](../../../docs/literature/FREQUENCY_HOMOPHONE_MODEL.md). Here
   `-homophones` means `Hmax`; selection remains independent.
 
 ### 3.3 Selection distribution (`-homophone-selection`)

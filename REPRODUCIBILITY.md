@@ -2,52 +2,64 @@
 
 ## Requirements
 
-- Go 1.25.5 or newer (the version declared in `go.mod`);
-- a POSIX shell for `scripts/maintenance/run-full-analysis.sh`;
-- sufficient disk for frozen artifacts and a multi-core machine for the full
-  pipeline; `go test ./...` alone includes tests that take several minutes;
-- for the canonical Voynich workflow, a lawfully obtained IVTFF source and
-  IVTT binary. Neither is currently cleared for public redistribution.
+- Go 1.25.5 or newer;
+- a POSIX shell;
+- sufficient disk for frozen artifacts;
+- for canonical Voynich preparation, externally obtained IVTFF and IVTT;
+- for the Astafiev control, an externally obtained source file.
 
-Build and test a clean checkout with:
+External data and IVTT are not bundled. Follow [DATA.md](DATA.md) from a fresh
+clone; no knowledge of the private repository is required.
+
+## Clean checkout smoke test
 
 ```bash
 go build ./...
 go vet ./...
 go test ./...
 go test -race ./...
+git diff --check
 ```
 
-## Corpus preparation
-
-For a generic text corpus, use the deterministic preparer:
+These checks require no external corpora. A generic public smoke workflow is:
 
 ```bash
 go run ./cmd/codex_prepare -input input.txt -output prepared.txt
+go run ./pipelines/pipeline-orchestrate manifest \
+  -experiment-dir experiments/example-v1 \
+  -corpus prepared.txt \
+  -generic-corpus
 ```
 
-It writes `prepared.txt` and a `prepared.txt.prepare.json` sidecar with the
-input SHA-256 and preparation metadata. Do not substitute a corpus into an
-existing frozen experiment: create a new manifest instead.
+Use a new experiment directory; never substitute a corpus into a frozen run.
 
-The canonical workflow requires `data/ZL3b-n.txt`, locally supplied from the
-IVTFF source documented in [DATA.md](DATA.md). Generate its analysis input:
+## External-input bootstrap
+
+1. Download the exact `ZL3b-n.txt` and IVTT source listed in
+   [DATA.md](DATA.md); build IVTT outside the checkout.
+2. Place the IVTFF source at `data/ZL3b-n.txt`.
+3. Run
+   `IVTT_BIN=/absolute/path/to/ivtt scripts/prepare-external-data.sh ivtff`.
+   The script validates both the source and `data_work/ZL3b-x7.txt`.
+4. If reproducing the Astafiev control, obtain the documented source, place it
+   at `data_test/astafiev-1000-culinar-receipts.txt`, and run
+   `scripts/prepare-external-data.sh astafiev`.
+5. Confirm `git status --ignored --short` marks all external inputs,
+   derivatives, sidecars, and local IVTT installations as ignored.
+
+The legacy canonical pipeline then runs as:
 
 ```bash
-./ivtt/ivtt -x7 data/ZL3b-n.txt data_work/ZL3b-x7.txt
+IVTT_BIN=/absolute/path/to/ivtt scripts/maintenance/run-full-analysis.sh
 ```
 
-## Canonical analysis
+The script retains the historical IVTT `-x7` behavior. Analysis commands
+also accept explicit corpus/IVTFF paths where their command-line interfaces
+provide those flags; repository-local IVTT is never assumed.
 
-The legacy canonical pipeline is:
+## Frozen experiments
 
-```bash
-scripts/maintenance/run-full-analysis.sh
-```
-
-It writes ignored mutable files below `workdir/`; the frozen, versioned
-evidence is under `experiments/`. A new isolated experiment should instead
-use:
+The versioned evidence is under `experiments/`. For a new isolated run:
 
 ```bash
 go run ./pipelines/pipeline-orchestrate manifest \
@@ -60,20 +72,10 @@ go run ./pipelines/pipeline-orchestrate verify \
   -experiment-dir experiments/name-v1
 ```
 
-The manifest records source hashes, Go/OS/architecture, command arguments and
-deterministic seeds. Scientific flags are frozen in each tool's defaults;
-do not change them when reproducing an existing result.
+Manifests record source hashes, Go/OS/architecture, arguments, and deterministic
+seeds. Scientific flags and frozen artifacts must not be changed when
+reproducing an existing result.
 
-## Outputs and runtime
-
-Expected frozen outputs are `manifest.json`, `run-state.json`,
-`artifacts.json`, `checksums.sha256`, `REPORT.md`, and the registered contents
-of `outputs/`. `pipeline-orchestrate verify` checks their hashes.
-
-Task66-class mechanism-space and full Stage 1–28 runs are expensive
-multi-stage experiments. Their runtime depends strongly on CPU count, memory,
-selected controls, and worker executor; use the recorded experiment report
-rather than treating a laptop run as a fixed benchmark. The quick build/test
-commands above are the appropriate smoke test. Seeded analyses record their
-seed in manifests or command arguments; unseeded reruns must not be described
-as reproductions of a frozen result.
+Task66-class mechanism-space and full Stage 1–28 runs are expensive. Runtime
+depends on CPU, memory, controls, and executor. Use the recorded reports rather
+than a fixed laptop benchmark.

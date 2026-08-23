@@ -54,13 +54,15 @@ go run ./pipelines/pipeline-orchestrate manifest \
 ```
 
 Canonical Voynich runs additionally require a locally obtained IVTFF source
-and IVTT; their preparation, commands, outputs, deterministic seeds, and
-runtime constraints are in [REPRODUCIBILITY.md](REPRODUCIBILITY.md).
+and an external IVTT installation. Datasets and IVTT are not bundled because
+their redistribution rights were not established. Acquisition, checksum,
+preparation, command, and placement instructions are in [DATA.md](DATA.md)
+and [REPRODUCIBILITY.md](REPRODUCIBILITY.md).
 
 ## Data, reproducibility, and citation
 
-The canonical Voynich corpus and several historical control corpora have
-unresolved redistribution terms and are not a public-release input. See
+The canonical Voynich corpus and the Astafiev historical control have
+unresolved redistribution terms and are external-only inputs. See
 [DATA.md](DATA.md) and
 [the data-license audit](docs/release/DATA_LICENSE_AUDIT.tsv) before obtaining
 or sharing them. Frozen artifacts are retained as research evidence; the
@@ -68,5 +70,10 @@ or sharing them. Frozen artifacts are retained as research evidence; the
 
 Please cite this repository as described in [CITATION.cff](CITATION.cff).
 Contribution and scientific-correction policy are in
-[CONTRIBUTING.md](CONTRIBUTING.md). A project license has not yet been selected
-by its owner; see [license options](docs/release/LICENSE_OPTIONS.md).
+[CONTRIBUTING.md](CONTRIBUTING.md).
+
+Original project source code is licensed under the
+[Apache License 2.0](LICENSE). That grant does not cover third-party datasets,
+IVTT, or other external material. No license is granted here for research
+documentation or generated/frozen non-code artifacts unless a file explicitly
+says otherwise; their scope remains for the owner to determine.

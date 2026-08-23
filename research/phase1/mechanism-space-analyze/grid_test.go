@@ -1,6 +1,9 @@
 package main
 
-import "testing"
+import (
+	"os"
+	"testing"
+)
 
 // test: the frozen grid instantiates every family M0-M11 at least once,
 // and every ablation entry is uniquely named (task66 sections 9, 26, 33).
@@ -47,6 +50,12 @@ func TestAblationMatrixIsComplete(t *testing.T) {
 // plaintext corpora (task66 sections 6-7).
 func TestLoadCorporaMatchesVoynichSize(t *testing.T) {
 	chdirRepoRoot(t)
+	if _, err := os.Stat("data_test/astafiev-1000-culinar-receipts-prepared.txt"); err != nil {
+		if os.IsNotExist(err) {
+			t.Skip("external Astafiev control not installed; see DATA.md")
+		}
+		t.Fatal(err)
+	}
 	corpora, err := LoadCorpora()
 	if err != nil {
 		t.Fatalf("LoadCorpora: %v", err)
