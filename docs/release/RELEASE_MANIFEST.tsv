@@ -1,0 +1,10 @@
+category	path_or_source	inclusion	reason_or_status
+code	cmd/; internal/; pipelines/	INCLUDE	Primary Go implementation and deterministic orchestration.
+documentation	README.md; DATA.md; REPRODUCIBILITY.md; CONTRIBUTING.md; CITATION.cff; docs/	INCLUDE	Public entry points, methods, audit trail, and citation metadata.
+experiments	experiments/	INCLUDE_WITH_SIZE_REVIEW	Frozen scientific artifacts; preserve unless a reviewed archival plan replaces them with checksummed assets.
+canonical corpus	data/; data_work/	EXCLUDE	Local placeholders only; IVTFF redistribution status is LICENSE_UNCLEAR.
+control corpus	data_test/pg2097-2.txt; data_test/pg30795-mod.txt	INCLUDE_WITH_ATTRIBUTION	Public-domain controls with Project Gutenberg provenance.
+control corpus	data_test/astafiev*	EXCLUDE_PENDING_REVIEW	Tracked material has LICENSE_UNCLEAR status.
+vendored tool	ivtt/	EXCLUDE_PENDING_REVIEW	No license or copyright notice was found for IVTT.
+external dependencies	gopkg.in/yaml.v3 v3.0.1; golang.org/x/text v0.31.0	RESOLVE_AT_BUILD	Pinned Go modules; retain and verify upstream notices.
+excluded local outputs	workdir/; data_work/; untracked controls	EXCLUDE	Mutable or local inputs; not release artifacts.
