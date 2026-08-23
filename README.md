@@ -43,7 +43,7 @@
 Все промежуточные и итоговые результаты приложений сохраняются в `./workdir`.
 Содержимое этой директории не версионируется. Общий программный контракт
 находится в `internal/workdir`, а нормативные правила для существующих и новых
-этапов описаны в [PIPELINE_OUTPUT_CONTRACT.md](PIPELINE_OUTPUT_CONTRACT.md).
+этапов описаны в [docs/methods/PIPELINE_OUTPUT_CONTRACT.md](docs/methods/PIPELINE_OUTPUT_CONTRACT.md).
 Исходные корпуса не являются результатами и остаются в `data/` и `data_work/`.
 
 ## Требования
@@ -65,33 +65,33 @@ go vet ./...
 ```bash
 mkdir -p workdir/bin
 go build -o workdir/bin/dictionary-build .
-go build -o workdir/bin/dict-analyze ./dict-analyze
-go build -o workdir/bin/structural-analyze ./structural-analyze
-go build -o workdir/bin/sequence-analyze ./sequence-analyze
-go build -o workdir/bin/structural-normalize ./structural-normalize
-go build -o workdir/bin/normalization-compare ./normalization-compare
-go build -o workdir/bin/structural-validate ./structural-validate
-go build -o workdir/bin/structural-profile-stability ./structural-profile-stability
-go build -o workdir/bin/structural-reliability ./structural-reliability
-go build -o workdir/bin/soft-structural-space ./soft-structural-space
-go build -o workdir/bin/begin-end-analyze ./begin-end-analyze
-go build -o workdir/bin/structural-graphemic ./structural-graphemic
-go build -o workdir/bin/structural-pair-decompose ./structural-pair-decompose
-go build -o workdir/bin/distance-context-analyze ./distance-context-analyze
-go build -o workdir/bin/structural-projection-analyze ./structural-projection-analyze
-go build -o workdir/bin/global-regime-analyze ./global-regime-analyze
-go build -o workdir/bin/local-regime-analyze ./local-regime-analyze
-go build -o workdir/bin/metadata-validate ./metadata-validate
-go build -o workdir/bin/cluster-metadata-global ./cluster-metadata-global
-go build -o workdir/bin/conditional-regime-analyze ./conditional-regime-analyze
-go build -o workdir/bin/residual-diagnostic-analyze ./residual-diagnostic-analyze
-go build -o workdir/bin/token-relation-validate ./token-relation-validate
+go build -o workdir/bin/dict-analyze ./cmd/dict-analyze
+go build -o workdir/bin/structural-analyze ./cmd/structural-analyze
+go build -o workdir/bin/sequence-analyze ./cmd/sequence-analyze
+go build -o workdir/bin/structural-normalize ./cmd/structural-normalize
+go build -o workdir/bin/normalization-compare ./cmd/normalization-compare
+go build -o workdir/bin/structural-validate ./cmd/structural-validate
+go build -o workdir/bin/structural-profile-stability ./cmd/structural-profile-stability
+go build -o workdir/bin/structural-reliability ./cmd/structural-reliability
+go build -o workdir/bin/soft-structural-space ./cmd/soft-structural-space
+go build -o workdir/bin/begin-end-analyze ./cmd/begin-end-analyze
+go build -o workdir/bin/structural-graphemic ./cmd/structural-graphemic
+go build -o workdir/bin/structural-pair-decompose ./cmd/structural-pair-decompose
+go build -o workdir/bin/distance-context-analyze ./cmd/distance-context-analyze
+go build -o workdir/bin/structural-projection-analyze ./cmd/structural-projection-analyze
+go build -o workdir/bin/global-regime-analyze ./cmd/global-regime-analyze
+go build -o workdir/bin/local-regime-analyze ./cmd/local-regime-analyze
+go build -o workdir/bin/metadata-validate ./cmd/metadata-validate
+go build -o workdir/bin/cluster-metadata-global ./cmd/cluster-metadata-global
+go build -o workdir/bin/conditional-regime-analyze ./cmd/conditional-regime-analyze
+go build -o workdir/bin/residual-diagnostic-analyze ./cmd/residual-diagnostic-analyze
+go build -o workdir/bin/token-relation-validate ./cmd/token-relation-validate
 ```
 
 Графемно-структурный анализ запускается поверх неизменённого pair dataset:
 
 ```bash
-go run ./structural-graphemic \
+go run ./cmd/structural-graphemic \
   -input workdir/soft_structural_pairs.tsv \
   -output-dir workdir \
   -min-structural-similarity 0.65 \
@@ -106,7 +106,7 @@ go run ./structural-graphemic \
 Декомпозиция по умолчанию анализирует TOP 50 distant-пар и все рёбра family:
 
 ```bash
-go run ./structural-pair-decompose
+go run ./cmd/structural-pair-decompose
 ```
 
 Для узкого запуска доступны `-top N`, `-pair tokenA,tokenB` и `-family ID`.
@@ -120,7 +120,7 @@ Distance-specific анализ по умолчанию использует ис
 непрерывную последовательность и считает точные расстояния `+1..+20` отдельно:
 
 ```bash
-go run ./distance-context-analyze
+go run ./cmd/distance-context-analyze
 ```
 
 Доступны `-max-distance`, `-min-observations`, `-top`, `-pair`, `-family` и
@@ -133,7 +133,7 @@ Markdown-отчёт и SVG-профили в `workdir/plots/`.
 распределения в soft structural space:
 
 ```bash
-go run ./structural-projection-analyze \
+go run ./cmd/structural-projection-analyze \
   -min-structural-similarity 0.65 \
   -min-reliability 0.70 \
   -random-projections 200
@@ -160,7 +160,7 @@ Local-regime анализ напрямую строит sparse token-frequency p
 gap и размеров local-block shuffle:
 
 ```bash
-go run ./local-regime-analyze \
+go run ./cmd/local-regime-analyze \
   -regime-radius 100 \
   -regime-gap 20 \
   -regime-controls-k 5
@@ -178,7 +178,7 @@ Global distributional regime discovery не использует заранее 
 или metadata рукописи и рассматривает корпус как одну непрерывную token sequence:
 
 ```bash
-go run ./global-regime-analyze \
+go run ./cmd/global-regime-analyze \
   -window-sizes 50,100,200,500,1000
 ```
 
@@ -211,7 +211,7 @@ Blind metadata validation сопоставляет metadata исходного I
 представление, необходимое для строгого сопоставления с производными tokens.
 
 ```bash
-go run ./metadata-validate \
+go run ./cmd/metadata-validate \
   -ivtff data/ZL3b-n.txt \
   -frozen-corpus data_work/ZL3b-x7.txt \
   -discovery-dir workdir \
@@ -239,7 +239,7 @@ Discovery (windows, clustering, cluster assignments) не пересчитыва
 только читается как frozen input; переставляется исключительно metadata.
 
 ```bash
-go run ./cluster-metadata-global \
+go run ./cmd/cluster-metadata-global \
   -discovery-dir workdir \
   -token-metadata-map workdir/metadata-validation/token_metadata_map.tsv \
   -metadata-report workdir/metadata-validation/metadata_validation_report.md \
@@ -280,7 +280,7 @@ clustering/change-point примитивы, что и в `global-regime-analyze`
 новых признаков.
 
 ```bash
-go run ./conditional-regime-analyze \
+go run ./cmd/conditional-regime-analyze \
   -corpus data_work/ZL3b-x7.txt \
   -token-metadata-map workdir/metadata-validation/token_metadata_map.tsv \
   -output-dir workdir/conditional-regimes \
@@ -336,7 +336,7 @@ leave-physical-block-out linear classification и применяет train-only
 joint-class whitening с фиксированным `0.9 Σ + 0.1 diag(Σ)` shrinkage.
 
 ```bash
-go run ./residual-diagnostic-analyze \
+go run ./cmd/residual-diagnostic-analyze \
   -conditional-dir workdir/conditional-regimes \
   -token-metadata-map workdir/metadata-validation/token_metadata_map.tsv \
   -output-dir workdir/residual-diagnostics \
@@ -355,13 +355,13 @@ inputs и не изменяются.
 Из корня репозитория:
 
 ```bash
-go run . data_work/ZL3b-x7.txt workdir/dataset/dictionary.yaml
-go run ./dict-analyze workdir/dataset/dictionary.yaml workdir/dataset/tokens_analysis.yaml
-go run ./structural-analyze -output workdir/dataset/structural_analysis.yaml
-go run ./sequence-analyze \
+go run ./cmd/voinich data_work/ZL3b-x7.txt workdir/dataset/dictionary.yaml
+go run ./cmd/dict-analyze workdir/dataset/dictionary.yaml workdir/dataset/tokens_analysis.yaml
+go run ./cmd/structural-analyze -output workdir/dataset/structural_analysis.yaml
+go run ./cmd/sequence-analyze \
   -input data_work/ZL3b-x7.txt \
   -output workdir/sequence_analysis.yaml
-go run ./begin-end-analyze \
+go run ./cmd/begin-end-analyze \
   -dictionary workdir/dataset/dictionary.yaml \
   -corpus data_work/ZL3b-x7.txt \
   -output-dir workdir
@@ -374,17 +374,17 @@ go run ./begin-end-analyze \
 Полный пересчёт всех этапов, включая 100 random baselines и out-of-sample validation:
 
 ```bash
-./run-full-analysis.sh
+scripts/maintenance/run-full-analysis.sh
 ```
 
 ## 1. Генератор словаря
 
-Исходный код находится в корневом [main.go](main.go). Программа читает обычный текст и создаёт YAML-словарь.
+Исходный код находится в корневом [cmd/voinich/main.go](cmd/voinich/main.go). Программа читает обычный текст и создаёт YAML-словарь.
 
 Запуск:
 
 ```bash
-go run . <input.txt> [workdir/dataset/dictionary.yaml]
+go run ./cmd/voinich <input.txt> [workdir/dataset/dictionary.yaml]
 ```
 
 Если второй аргумент не указан, результат записывается в `workdir/dataset/dictionary.yaml`.
@@ -425,12 +425,12 @@ go run . <input.txt> [workdir/dataset/dictionary.yaml]
 
 ## 2. Анализатор словаря `dict-analyze`
 
-Исходный код находится в [dict-analyze/main.go](dict-analyze/main.go).
+Исходный код находится в [cmd/dict-analyze/main.go](cmd/dict-analyze/main.go).
 
 Запуск:
 
 ```bash
-go run ./dict-analyze <dictionary.yaml> [workdir/dataset/tokens_analysis.yaml]
+go run ./cmd/dict-analyze <dictionary.yaml> [workdir/dataset/tokens_analysis.yaml]
 ```
 
 Выходной файл по умолчанию — `workdir/dataset/tokens_analysis.yaml`.
@@ -463,18 +463,18 @@ restriction(A) = 1 − H(neighbor|A) / log2(unique observed neighbors)
 
 ## 3. Структурный анализатор `structural-analyze`
 
-Реализация находится в директории [structural-analyze](structural-analyze). Программа совместно использует `dictionary.yaml` и `tokens_analysis.yaml`.
+Реализация находится в директории [cmd/structural-analyze](cmd/structural-analyze). Программа совместно использует `dictionary.yaml` и `tokens_analysis.yaml`.
 
 Запуск с параметрами по умолчанию:
 
 ```bash
-go run ./structural-analyze
+go run ./cmd/structural-analyze
 ```
 
 Полная форма:
 
 ```bash
-go run ./structural-analyze \
+go run ./cmd/structural-analyze \
   -dictionary workdir/dataset/dictionary.yaml \
   -analysis workdir/dataset/tokens_analysis.yaml \
   -output workdir/dataset/structural_analysis.yaml \
@@ -576,18 +576,18 @@ meta:
 
 ## 4. Анализатор последовательностей `sequence-analyze`
 
-Программа в директории [sequence-analyze](sequence-analyze) считает реально наблюдавшиеся точные n-граммы. Она работает непосредственно с исходным текстом: статистика соседей из `dictionary.yaml` недостаточна, чтобы доказать существование конкретной триграммы или более длинной цепочки.
+Программа в директории [cmd/sequence-analyze](cmd/sequence-analyze) считает реально наблюдавшиеся точные n-граммы. Она работает непосредственно с исходным текстом: статистика соседей из `dictionary.yaml` недостаточна, чтобы доказать существование конкретной триграммы или более длинной цепочки.
 
 Запуск с параметрами по умолчанию:
 
 ```bash
-go run ./sequence-analyze
+go run ./cmd/sequence-analyze
 ```
 
 Полный пример:
 
 ```bash
-go run ./sequence-analyze \
+go run ./cmd/sequence-analyze \
   -input data_work/ZL3b-x7.txt \
   -output workdir/sequence_analysis.yaml \
   -min-n 2 \
@@ -691,7 +691,7 @@ workdir/normalization_comparison.yaml
 Основной воспроизводимый запуск:
 
 ```bash
-./run-normalization-analysis.sh
+scripts/maintenance/run-normalization-analysis.sh
 ```
 
 Он строит пять заранее заданных моделей, запускает одинаковый sequence-анализ и выполняет по 100 matched random прогонов для каждого threshold.
@@ -699,7 +699,7 @@ workdir/normalization_comparison.yaml
 Нормализатор можно запустить отдельно:
 
 ```bash
-go run ./structural-normalize \
+go run ./cmd/structural-normalize \
   -input data_work/ZL3b-x7.txt \
   -structural workdir/dataset/structural_analysis.yaml \
   -output workdir/normalized.txt \
@@ -742,7 +742,7 @@ go run ./structural-normalize \
 `structural-validate` выполняет детерминированную line-based cross-validation без утечки TEST-данных:
 
 ```bash
-go run ./structural-validate \
+go run ./cmd/structural-validate \
   -input data_work/ZL3b-x7.txt \
   -classes workdir/structural_classes.yaml \
   -folds 5 \
@@ -764,7 +764,7 @@ LOCO и member-ablation всегда используют заранее зад�
 `structural-profile-stability` исследует уже существующую геометрию similarity, не меняя формулу, веса, threshold или complete-link clustering:
 
 ```bash
-go run ./structural-profile-stability \
+go run ./cmd/structural-profile-stability \
   -input data_work/ZL3b-x7.txt \
   -classes workdir/structural_classes.yaml \
   -folds 5 \
@@ -806,7 +806,7 @@ reliability-aware soft structural model
 ```
 
 ```bash
-go run ./structural-reliability \
+go run ./cmd/structural-reliability \
   -input data_work/ZL3b-x7.txt \
   -classes workdir/structural_classes.yaml \
   -folds 5 \
@@ -846,7 +846,7 @@ go run ./structural-reliability \
 `soft-structural-space` строит полное попарное continuous-пространство для токенов с достаточным числом наблюдений и хранит similarity отдельно от reliability:
 
 ```bash
-go run ./soft-structural-space \
+go run ./cmd/soft-structural-space \
   -dictionary workdir/dataset/dictionary.yaml \
   -analysis workdir/dataset/tokens_analysis.yaml \
   -reliability workdir/structural_reliability.yaml \
@@ -872,7 +872,7 @@ Soft structural space пока **не** объединяет токены, не 
 `token-relation-validate` не выполняет новый discovery: он фиксирует кандидатов из pre-metadata outputs, пересчитывает всё evidence на canonical corpus и использует contiguous `Currier×hand` runs как независимые physical blocks.
 
 ```bash
-go run ./token-relation-validate \
+go run ./cmd/token-relation-validate \
   -corpus data_work/ZL3b-x7.txt \
   -token-metadata-map workdir/metadata-validation/token_metadata_map.tsv \
   -discovery-dir workdir \
@@ -889,7 +889,7 @@ go run ./token-relation-validate \
 `replicated-local-structure-audit` работает только с frozen inventory предыдущего validation. Он отдельно проверяет FDR-significant distance profiles через leakage-free block LOBO, frequency-matched null и jackknife, а все ранее UNIVERSAL sequences — через within-block shuffle и secondary first-order Markov null.
 
 ```bash
-go run ./replicated-local-structure-audit \
+go run ./cmd/replicated-local-structure-audit \
   -corpus data_work/ZL3b-x7.txt \
   -token-metadata-map workdir/metadata-validation/token_metadata_map.tsv \
   -relation-dir workdir/token-relation-validation \
@@ -906,7 +906,7 @@ go run ./replicated-local-structure-audit \
 `higher-order-sequence-validate` берёт только frozen n>=3 sequences из `replicated-local-structure-audit` (программно, без hardcoded списка: shuffle FDR q<=0.05 из `strict_replicated_sequences.tsv`, разделение на primary/secondary по `markov_block_p` из `sequence_null_validation.tsv`) и проверяет более сильную гипотезу: несёт ли первый токен A дополнительную информацию о третьем токене C при уже известном втором токене B, то есть P(C|A,B) против P(C|B). Никакой новый bigram/trigram discovery не выполняется.
 
 ```bash
-go run ./higher-order-sequence-validate \
+go run ./cmd/higher-order-sequence-validate \
   -corpus data_work/ZL3b-x7.txt \
   -token-metadata-map workdir/metadata-validation/token_metadata_map.tsv \
   -audit-dir workdir/replicated-local-structure \
@@ -923,7 +923,7 @@ go run ./higher-order-sequence-validate \
 `transition-network-validate` проверяет полную заранее определённую матрицу наблюдавшихся adjacent transitions `A -> B` без нового token/candidate mining. Эффекты нормализуются на частоты destination внутри каждого physical block; preferred и depleted edges проверяются within-block destination permutation null, раздельным BH FDR, cross-block sign replication и LOBO transfer. Отдельно валидируются outgoing/incoming profiles, entropy, metadata transfer, topology и held-out модели M0/M1/M2.
 
 ```bash
-go run ./transition-network-validate \
+go run ./cmd/transition-network-validate \
   -corpus data_work/ZL3b-x7.txt \
   -token-metadata-map workdir/metadata-validation/token_metadata_map.tsv \
   -output-dir workdir/transition-network \
@@ -941,7 +941,7 @@ go run ./transition-network-validate \
 Инструмент читает агрегированный YAML-словарь совместно с исходным линейным корпусом. Он не восстанавливает дальний порядок из `word_before`/`word_after`: эти поля используются только для отделения тривиальных смежных пар.
 
 ```bash
-go run ./begin-end-analyze \
+go run ./cmd/begin-end-analyze \
   -dictionary workdir/dataset/dictionary.yaml \
   -corpus data_work/ZL3b-x7.txt \
   -max-window 55 \
@@ -965,39 +965,47 @@ go run ./begin-end-analyze \
 
 ## Структура репозитория
 
+Task70 переместил все Go CLI из корня в `cmd/` (инструменты) и `research/phase1/`
+(независимые эксперименты Task46/54/57/58-67); `pipeline-orchestrate` теперь
+живёт в `pipelines/`. Полная и актуальная карта репозитория, включая этапы
+24-28, `independent`-эксперименты, distributed execution и mTLS worker fleet,
+которые этот README не описывает, находится в
+[docs/REPOSITORY_STRUCTURE.md](docs/REPOSITORY_STRUCTURE.md).
+Ниже — только те пути, которые упоминаются в разделах выше:
+
 ```text
 .
-├── main.go                    # генератор dictionary.yaml
-├── dict-analyze/              # анализ каждого токена и перехода
-├── structural-analyze/        # корпусные рейтинги и группы сходства
-├── sequence-analyze/          # точные n-граммы исходного текста
-├── internal/sequenceanalyze/  # n-грамм/контекст расчёты, общие с normalization-compare
-├── structural-normalize/      # complete-link нормализация
-├── normalization-compare/     # raw/structural/random сравнение (in-process sequence-анализ)
-├── internal/normalization/    # общее ядро классов и random matching
-├── structural-validate/       # out-of-sample validation и ablation
-├── internal/validation/       # TRAIN-only статистики, split и метрики
-├── structural-profile-stability/ # устойчивость структурной геометрии
-├── internal/profilestability/ # profile/fold/bootstrap/rank расчёты
-├── soft-structural-space/     # reliability-aware continuous pair space
-├── internal/softstructural/   # pair, neighbor, graph и summary расчёты
-├── structural-reliability/    # reliability similarity-компонентов как функция count
-├── begin-end-analyze/         # кандидаты на направленные дальние парные зависимости
-├── token-relation-validate/   # frozen cross-metadata validation локальных отношений
+├── cmd/voinich/                # генератор dictionary.yaml (root main.go до Task70)
+├── cmd/dict-analyze/           # анализ каждого токена и перехода
+├── cmd/structural-analyze/     # корпусные рейтинги и группы сходства
+├── cmd/sequence-analyze/       # точные n-граммы исходного текста
+├── internal/sequenceanalyze/   # n-грамм/контекст расчёты, общие с normalization-compare
+├── cmd/structural-normalize/   # complete-link нормализация
+├── cmd/normalization-compare/  # raw/structural/random сравнение (in-process sequence-анализ)
+├── internal/normalization/     # общее ядро классов и random matching
+├── cmd/structural-validate/    # out-of-sample validation и ablation
+├── internal/validation/        # TRAIN-only статистики, split и метрики
+├── cmd/structural-profile-stability/ # устойчивость структурной геометрии
+├── internal/profilestability/  # profile/fold/bootstrap/rank расчёты
+├── cmd/soft-structural-space/  # reliability-aware continuous pair space
+├── internal/softstructural/    # pair, neighbor, graph и summary расчёты
+├── cmd/structural-reliability/ # reliability similarity-компонентов как функция count
+├── cmd/begin-end-analyze/      # кандидаты на направленные дальние парные зависимости
+├── cmd/token-relation-validate/ # frozen cross-metadata validation локальных отношений
 ├── internal/tokenrelationvalidation/ # blocks, transfer, controls, FDR и отчёты
-├── replicated-local-structure-audit/ # confirmatory audit frozen distance/sequence relations
+├── cmd/replicated-local-structure-audit/ # confirmatory audit frozen distance/sequence relations
 ├── internal/replicatedlocalaudit/ # LOBO, null models, checkpoint и audit outputs
-├── higher-order-sequence-validate/ # frozen n>=3 sequences: P(C|A,B) vs P(C|B)
+├── cmd/higher-order-sequence-validate/ # frozen n>=3 sequences: P(C|A,B) vs P(C|B)
 ├── internal/higherorderseq/    # conditional probabilities, CMI, LOBO, jackknife, checkpoint
-├── transition-network-validate/ # directed adjacent-transition network validation
+├── cmd/transition-network-validate/ # directed adjacent-transition network validation
 ├── internal/transitionnetwork/  # edge/profile nulls, LOBO, graph transfer и prediction
 ├── internal/structuralreliability/ # cumulative/bin/subsampling/reliability расчёты
-├── run-full-analysis.sh       # полный пересчёт конвейера и экспериментов
-├── internal/workdir/          # единый программный контракт выходных путей
-├── workdir/                   # игнорируемые результаты, dataset, plots и bin
-├── data/ и data_work/         # исходные и подготовленные тексты
-├── tasks/                     # формулировки задач
-└── PIPELINE_OUTPUT_CONTRACT.md # правило для новых приложений пайплайна
+├── scripts/maintenance/run-full-analysis.sh # полный пересчёт конвейера и экспериментов
+├── internal/workdir/           # единый программный контракт выходных путей
+├── workdir/                    # игнорируемые результаты, dataset, plots и bin
+├── data/ и data_work/          # исходные и подготовленные тексты (см. corpora/README.md)
+├── tasks/                      # формулировки задач
+└── docs/methods/PIPELINE_OUTPUT_CONTRACT.md # правило для новых приложений пайплайна
 ```
 
 ## Тестирование
@@ -1014,7 +1022,7 @@ go vet ./...
 `internal/profiling` даёт opt-in CPU/heap/trace профилирование через стандартные флаги `-cpuprofile`, `-memprofile` и `-trace`; без них профилирование полностью выключено, и ни алгоритмы, ни статистика, ни output не меняются. Сейчас флаги подключены в `transition-network-validate`, `structural-projection-analyze`, `replicated-local-structure-audit`, `normalization-compare` и `metadata-validate` через общий helper; остальные CLI можно подключить тем же способом. Родительские директории создаются автоматически, ошибки открытия/записи profile файла завершают программу ненулевым кодом с диагностикой в stderr. Heap profile снимается после `runtime.GC()` по завершении вычислений. Elapsed runtime всего процесса всегда печатается в stderr, независимо от профилирования.
 
 ```bash
-go run ./transition-network-validate \
+go run ./cmd/transition-network-validate \
   -corpus data_work/ZL3b-x7.txt \
   -token-metadata-map workdir/metadata-validation/token_metadata_map.tsv \
   -output-dir workdir/transition-network-profile \

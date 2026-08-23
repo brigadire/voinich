@@ -80,7 +80,7 @@
     cmd: >-
       {{ voynich_worker_go_bin }} build -buildvcs=false
       -o {{ voynich_worker_controller_build_dir }}/conditional-regime-analyze-{{ item.split('/')[0] }}-{{ item.split('/')[1] }}
-      ./conditional-regime-analyze
+      ./cmd/conditional-regime-analyze
     chdir: "{{ voynich_worker_repo_path }}"
   environment:
     GOOS: "{{ item.split('/')[0] }}"
@@ -105,7 +105,7 @@
     cmd: >-
       {{ voynich_worker_go_bin }} build -buildvcs=false
       -o {{ voynich_worker_install_dir }}/bin/conditional-regime-analyze
-      ./conditional-regime-analyze
+      ./cmd/conditional-regime-analyze
     chdir: "{{ voynich_worker_repo_path }}"
   environment:
     CGO_ENABLED: '0'

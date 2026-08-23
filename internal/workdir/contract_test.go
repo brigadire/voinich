@@ -16,30 +16,32 @@ import (
 func TestAllPipelineCommandsUseWorkdirContract(t *testing.T) {
 	_, file, _, _ := runtime.Caller(0)
 	root := filepath.Clean(filepath.Join(filepath.Dir(file), "..", ".."))
-	entries, err := os.ReadDir(root)
+	// Task70 moved every pipeline-stage/tool main.go under cmd/ and the
+	// Task36 orchestrator under pipelines/pipeline-orchestrate/; research/
+	// phase1/* (corpus-transform, inverse-transposition-search,
+	// inverse-homophony, voynich-validation, and the Task58-67 independent
+	// experiments) is deliberately out of scope, same as before the move.
+	cmdDir := filepath.Join(root, "cmd")
+	entries, err := os.ReadDir(cmdDir)
 	if err != nil {
 		t.Fatal(err)
 	}
-	mainFiles := []string{filepath.Join(root, "main.go")}
+	mainFiles := []string{filepath.Join(root, "pipelines", "pipeline-orchestrate", "main.go")}
 	for _, entry := range entries {
 		if entry.IsDir() {
-			path := filepath.Join(root, entry.Name(), "main.go")
+			path := filepath.Join(cmdDir, entry.Name(), "main.go")
 			if _, err := os.Stat(path); err == nil {
 				mainFiles = append(mainFiles, path)
 			}
 		}
 	}
 	for _, path := range mainFiles {
-		// codex_prepare, corpus-transform, inverse-transposition-search, and codex_orientation are
-		// experiment-input generators,
-		// not pipeline stages: their outputs are new corpora the caller places
-		// wherever it likes (e.g. alongside data_test/*.txt), never generated
-		// analysis artifacts under the shared ./workdir contract.
-		// inverse-homophony (task57) is the same shape: it is a standalone,
-		// self-contained synthetic-validation harness and blind-recovery tool,
-		// never invoked by pipeline-orchestrate, with its own explicit
-		// -output/-out-dir placement - not a pipeline stage.
-		if base := filepath.Base(filepath.Dir(path)); base == "codex_prepare" || base == "corpus-transform" || base == "inverse-transposition-search" || base == "codex_orientation" || base == "voynich-validation" || base == "inverse-homophony" {
+		// codex_prepare and codex_orientation are experiment-input
+		// generators, not pipeline stages: their outputs are new corpora
+		// the caller places wherever it likes (e.g. alongside
+		// data_test/*.txt), never generated analysis artifacts under the
+		// shared ./workdir contract.
+		if base := filepath.Base(filepath.Dir(path)); base == "codex_prepare" || base == "codex_orientation" {
 			continue
 		}
 		parsed, err := parser.ParseFile(token.NewFileSet(), path, nil, parser.ImportsOnly)
