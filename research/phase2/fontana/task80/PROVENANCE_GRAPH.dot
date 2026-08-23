@@ -1,0 +1,12 @@
+digraph fontana_provenance {
+  rankdir=LR;
+  "NAL 635 19v-21r" -> "F01 dossier" -> "rotate/align/traverse" -> "F01 literal readout" -> "F01 core";
+  "NAL 635 29v-31r" -> "F08 package" -> "place/traverse" -> "F08 spiral store" -> "F08 core";
+  "NAL 635 33r-34v" -> "F11 package" -> "index/select" -> "F11 indexed cue" -> "F11 core";
+  "NAL 635 34v-35r" -> "F12 package" -> "repeat/signal/associate" -> "F12 cue cycle" -> "F12 core";
+  "task76/task78 tests" -> "V-FONTANA operational validation";
+  "V-FONTANA operational validation" -> "F01 literal readout";
+  "V-FONTANA operational validation" -> "F08 spiral store";
+  "V-FONTANA operational validation" -> "F11 indexed cue";
+  "V-FONTANA operational validation" -> "F12 cue cycle";
+}

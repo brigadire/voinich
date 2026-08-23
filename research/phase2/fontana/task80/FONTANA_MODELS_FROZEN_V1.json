@@ -1,0 +1,138 @@
+{
+  "schema": "fontana-models-frozen-v1",
+  "version": "V1",
+  "immutable_policy": "Identifiers, source references, profile definitions, operation semantics, verdicts, results, and listed checksums are immutable. Any change creates V2.",
+  "models": [
+    {
+      "model_id": "F01_SPECULUM_CORE",
+      "canonical_name": "Speculum invariant literal-storage core",
+      "freeze_version": "V1",
+      "freeze_level": "FROZEN_CORE",
+      "source_references": ["NAL 635, 19v-21r", "research/phase2/fontana/f01_speculum/F01_RECONSTRUCTION_DOSSIER.md"],
+      "reconstruction_version": "task76",
+      "reconstruction_confidence": "HIGH",
+      "core_profile": "independently rotatable alphabet rings read at a common reference",
+      "alternative_profiles": ["F01_SPECULUM_PROFILE_LATIN23_R12"],
+      "components": ["concentric rings", "alphabet sectors", "common reading radius"],
+      "state_schema": "ring orientations only; no hidden used/unused metadata",
+      "operations": ["select", "rotate", "align", "place", "traverse", "compose"],
+      "transitions": ["set one ring orientation"],
+      "knowledge_requirements": ["alphabet", "reading radius", "ring order", "message length"],
+      "retrieval_relation": "literal sequence under complete convention; ambiguity set otherwise",
+      "information_flow": ["ExternalState:PRESERVE", "Convention:ADD_CONTEXT", "MessageContext:AMBIGUATE when missing"],
+      "validation_summary": "24/24 exact full-knowledge recovery; no recovery after damage to a used ring (0/170).",
+      "uncertainties": ["exact capacity", "alphabet size", "ring identity mounting"],
+      "forbidden_interpretations": ["polyalphabetic cipher", "self-sufficient decoder", "error-correcting store"],
+      "tests": ["go test ./internal/speculumf01", "go test ./internal/fontanaalgebra"],
+      "checksums": [
+        {"path":"research/phase2/fontana/f01_speculum/F01_RECONSTRUCTION_DOSSIER.md","sha256":"f3f177c9d72688d064c47f2cc0fd47ceda34a0933627949a953068b33880ceb8"},
+        {"path":"research/phase2/fontana/f01_speculum/FORMAL_MODEL.md","sha256":"3ebf5bc60241a097c2751bbef792b88c409793fbebacedddddb7661c4c7690e1"}
+      ]
+    },
+    {
+      "model_id": "F01_SPECULUM_PROFILE_LATIN23_R12",
+      "canonical_name": "Speculum task76 Latin23 twelve-ring reconstruction profile",
+      "freeze_version": "V1",
+      "freeze_level": "FROZEN_PROFILE",
+      "source_references": ["NAL 635, 19v-21r", "research/phase2/fontana/f01_speculum/manifest.json"],
+      "reconstruction_version": "task76",
+      "reconstruction_confidence": "HIGH with H-bounded capacity/alphabet",
+      "core_profile": "12 rings, Latin23, marked radius 5, inner-to-outer order",
+      "alternative_profiles": ["Modern26 sensitivity profile (not frozen)"],
+      "components": ["12 concentric rings", "Latin23 sectors", "marked radius"],
+      "state_schema": "12 offsets modulo 23",
+      "operations": ["select", "rotate", "align", "place", "traverse", "compose"],
+      "transitions": ["independent ring rotation"],
+      "knowledge_requirements": ["full task76 convention"],
+      "retrieval_relation": "D_K(E_K(M)) = M for tested messages",
+      "information_flow": ["literal external storage", "convention-dependent exact recovery"],
+      "validation_summary": "24/24 baseline; bounds are profile properties rather than historical capacity claims.",
+      "uncertainties": ["all numeric construction parameters are reconstruction assumptions"],
+      "forbidden_interpretations": ["historical proof of 12-ring or 23-letter capacity"],
+      "tests": ["go test ./internal/speculumf01", "go test ./internal/fontanaalgebra"],
+      "checksums": [
+        {"path":"research/phase2/fontana/f01_speculum/FORMAL_MODEL.md","sha256":"3ebf5bc60241a097c2751bbef792b88c409793fbebacedddddb7661c4c7690e1"}
+      ]
+    },
+    {
+      "model_id": "F08_SERPENS_CORE",
+      "canonical_name": "Serpens ordered positional-storage core",
+      "freeze_version": "V1",
+      "freeze_level": "FROZEN_CORE",
+      "source_references": ["NAL 635, 29v-31r", "research/phase2/fontana/task78/models/f08_serpens.json"],
+      "reconstruction_version": "task78 R0 core",
+      "reconstruction_confidence": "MEDIUM",
+      "core_profile": "ordered occupied spiral positions read centre-to-edge under an explicit path convention",
+      "alternative_profiles": [],
+      "components": ["spiral body", "ordered holes", "inserts"],
+      "state_schema": "ordered nullable symbols",
+      "operations": ["place", "traverse", "compose"],
+      "transitions": ["place", "remove", "swap"],
+      "knowledge_requirements": ["start", "direction", "boundary", "alphabet"],
+      "retrieval_relation": "literal sequence only under a declared path and boundary",
+      "information_flow": ["ExternalState:COMBINE", "Path:REORDER", "Convention:ADD_CONTEXT"],
+      "validation_summary": "6/6 R0 exact recovery; order-changing corruption blocks exact recovery.",
+      "uncertainties": ["capacity", "insert mobility", "message boundary", "associative role"],
+      "forbidden_interpretations": ["autonomous cyclic machine", "frozen capacity", "proven human mnemonic recall"],
+      "tests": ["go test ./internal/fontanafamily", "go test ./internal/fontanaalgebra"],
+      "checksums": [
+        {"path":"research/phase2/fontana/task78/models/f08_serpens.json","sha256":"fa83a72a38edb6719a0f4b9123826919e688e9445787bf5ebe3d03d3bf7e2356"}
+      ]
+    },
+    {
+      "model_id": "F11_ARISMETRICUM_CORE",
+      "canonical_name": "Arismetricum indexed opaque-cue core",
+      "freeze_version": "V1",
+      "freeze_level": "FROZEN_CORE",
+      "source_references": ["NAL 635, 33r-34v", "research/phase2/fontana/task78/models/f11_arismetricum.json"],
+      "reconstruction_version": "task78 R0 core",
+      "reconstruction_confidence": "MEDIUM",
+      "core_profile": "known index convention resolves an occupied numbered position to an opaque cue",
+      "alternative_profiles": [],
+      "components": ["body", "numbered holes", "inserts"],
+      "state_schema": "finite partial map from index to opaque cue",
+      "operations": ["index", "select", "place"],
+      "transitions": ["place", "remove", "swap"],
+      "knowledge_requirements": ["index convention", "cue meaning"],
+      "retrieval_relation": "index maps to cue; rich semantic retrieval remains outside ExternalState",
+      "information_flow": ["Index:SELECT", "Convention:ADD_CONTEXT", "Cue:AMBIGUATE"],
+      "validation_summary": "6/6 known-convention lookup; absent or swapped state blocks exact lookup.",
+      "uncertainties": ["exact mapping", "content type", "movability"],
+      "forbidden_interpretations": ["arithmetic computation", "literal text storage", "frozen cue mapping"],
+      "tests": ["go test ./internal/fontanafamily", "go test ./internal/fontanaalgebra"],
+      "checksums": [
+        {"path":"research/phase2/fontana/task78/models/f11_arismetricum.json","sha256":"877da471a06ef69c0cc58f2d87a05a294aba8fe107844a3d33be180b14ba5a41"}
+      ]
+    },
+    {
+      "model_id": "F12_HORALOGIUS_CORE",
+      "canonical_name": "Horalogius temporal cue core",
+      "freeze_version": "V1",
+      "freeze_level": "FROZEN_CORE",
+      "source_references": ["NAL 635, 34v-35r", "research/phase2/fontana/task78/models/f12_horalogius.json"],
+      "reconstruction_version": "task78 R0 core",
+      "reconstruction_confidence": "MEDIUM",
+      "core_profile": "cyclic temporal state emits opaque cues that can trigger learned recall",
+      "alternative_profiles": [],
+      "components": ["time mechanism", "cyclic state", "signal"],
+      "state_schema": "cyclic tick plus emitted cue identifiers",
+      "operations": ["repeat", "signal", "associate"],
+      "transitions": ["advance", "emit"],
+      "knowledge_requirements": ["calibration", "cue meaning", "learned association"],
+      "retrieval_relation": "cue plus InternalMemoryState yields a possible recalled intention",
+      "information_flow": ["ExternalState:SIGNAL", "InternalMemoryState:RECALL_TRIGGER", "Cue:AMBIGUATE"],
+      "validation_summary": "12/12 R0 transition/cue checks; untrained formal decoder and wrong map are 0/3.",
+      "uncertainties": ["drive", "calibration", "signal form", "human retention"],
+      "forbidden_interpretations": ["literal storage", "indexed lookup", "validated human retention effect"],
+      "tests": ["go test ./internal/fontanafamily", "go test ./internal/fontanaalgebra"],
+      "checksums": [
+        {"path":"research/phase2/fontana/task78/models/f12_horalogius.json","sha256":"a29fe60849e13fadba35bfe15cb02e92af70e780863b8c1d6b3ba3ff26979f24"}
+      ]
+    }
+  ],
+  "reference_only": [
+    {"model_id":"F07_ROTA","reason":"step, zero, layout, and cycle cardinality are profile assumptions; retained as a sensitivity example."},
+    {"model_id":"F10_CYLINDRUS","reason":"band independence, coupling, route, and capacity are not invariant historical semantics."}
+  ],
+  "excluded": ["F02_CLAVICULAE","F03_STELLA","F04_SOL","F05_ZIRBUS","F06_GRADATUM","F09_COLUMNA"]
+}
