@@ -1,0 +1,17 @@
+# Phase I: short research summary
+
+Phase I asked what structure is actually present in the Voynich transcription, whether simple transformations explain it, which synthetic mechanism components reproduce it, and whether statistical resemblance says anything about recovery. It did not attempt a translation and did not assume that glyphs are letters, spaces are word boundaries or tokens are words.
+
+The main finding is a conjunction. Voynich glyphs occupy strongly constrained positions inside tokens. Visible token identities have weak average adjacent dependence, but boundary glyphs remain coupled. Exact repeats are largely explained by line/local organization, whereas near-edit repeats remain enriched after line, length and frequency controls and show boundary-biased edits. The glyph stream has low conditional entropy, but the number changes materially with representation. A small adjacent form residual survives matching. Local organization is broader than the physical line and varies heterogeneously across the manuscript; it looks like a mixture of drift and state-like clustering, not a demonstrated sequence of topics or keys.
+
+Several negative results matter. The selected simple inverse transposition worsened four holdout structural metrics. The inverse-homophony method failed its synthetic gate, so it was correctly never run on Voynich. Corrected position-independent homophony controls failed to reproduce positional specialization and moved near-repeat geometry away from Voynich. After a corrected multiple-opportunity null, distant discrete-regime recurrence was unsupported. In the finite Task66 grid, constrained formation was required, while homophony and stochastic output were disfavored as main explanations.
+
+Recoverability remained a separate question. In known-plaintext synthetic tests, identity, bijection and declared-codebook homophony could decode exactly; constrained mechanisms ranged from many-to-one to practically fragile. Boundary and segmentation errors could cause desynchronization, while resets localized it. This shows that reversibility, exact recovery, retained information, ambiguity and robustness are different axes. It does **not** show that the Voynich manuscript is intrinsically lossy or unrecoverable.
+
+The literature audit finds agreement with earlier work on Currier heterogeneity, positional restrictions, weak token order, glyph-edge coupling, entropy and local repetition, but many methods and transcriptions differ. Forward ciphers and copy/modify generators each reproduce selected properties; neither constitutes a validated inverse explanation of the manuscript.
+
+The conservative conclusion is that the observed text is a strongly structured symbolic system and that several simple mechanisms are inadequate. Phase I does not yet distinguish conclusively among complex encoded meaningful input, an artificial/formal symbolic language and structured message-free generation.
+
+What remains unknown includes the correct analytical units, the cause of local regimes and edit families, whether meaningful input exists and is recoverable, what external key/state might be required, and whether any single mechanism can match the complete held-out fingerprint. These are open questions, not claims about the next research phase.
+
+Start with the [full report](PHASE1_RESEARCH_REPORT.md), [claim registry](PHASE1_CLAIMS.tsv), [result index](RESULT_INDEX.tsv), and [fingerprint v1](VOYNICH_FINGERPRINT_V1.md).
