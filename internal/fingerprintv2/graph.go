@@ -240,9 +240,26 @@ func degreePreservingSwap(g editGraph, attempts int, rng *rand.Rand) editGraph {
 			out.adj[n][v] = true
 		}
 	}
+	canon := func(a, b string) [2]string {
+		if a < b {
+			return [2]string{a, b}
+		}
+		return [2]string{b, a}
+	}
+	// edges is maintained incrementally (task77 audit fix): a swap never
+	// changes the edge count, only rewires two edges, so the two affected
+	// slots are overwritten in place. The previous version called
+	// out.edgeList() (an O(V+E) rebuild-and-sort) after every ACCEPTED
+	// swap, making the whole loop O(attempts x (V+E) log(V+E)); on the
+	// real corpus's ~50-80k-edge graph with graph_swaps x edge_count
+	// attempts this did not finish in bounded time.
 	edges := out.edgeList()
 	for i := 0; i < attempts && len(edges) > 1; i++ {
-		x, y := edges[rng.Intn(len(edges))], edges[rng.Intn(len(edges))]
+		ix, iy := rng.Intn(len(edges)), rng.Intn(len(edges))
+		if ix == iy {
+			continue
+		}
+		x, y := edges[ix], edges[iy]
 		a, b, c, d := x[0], x[1], y[0], y[1]
 		if a == c || a == d || b == c || b == d {
 			continue
@@ -259,7 +276,8 @@ func degreePreservingSwap(g editGraph, attempts int, rng *rand.Rand) editGraph {
 		delete(out.adj[d], c)
 		out.adj[a][d], out.adj[d][a] = true, true
 		out.adj[c][b], out.adj[b][c] = true, true
-		edges = out.edgeList()
+		edges[ix] = canon(a, d)
+		edges[iy] = canon(c, b)
 	}
 	return out
 }

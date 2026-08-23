@@ -28,18 +28,28 @@ func analyzeBare(c corpus, cfg Config) bareMetrics {
 	g := buildGraph(c)
 	lp, candidates := lp1(c, g, cfg.MinRuleSupport)
 	cluster, triangles, paths3, cycles4 := graphMotifs(g)
+	eligible := eligibleAttachmentCount(c)
 	return bareMetrics{
 		graph: g, lp1: lp, candidates: candidates, ef1: ef1(g),
 		clustering: cluster, triangles: triangles, paths3: paths3, cycles4: cycles4,
 		spearman:  degreeFrequencySpearman(g, frequencies(c)),
 		prefixNMI: attachmentMI(c, true), suffixNMI: attachmentMI(c, false),
-		attachmentN: eligibleAttachmentCount(c), excludedN: len(c.records) - eligibleAttachmentCount(c),
+		attachmentN: eligible, excludedN: len(c.records) - eligible,
 	}
 }
 
+// attachmentValues, eligibleAttachmentCount, attachmentPermutation and
+// attachmentTriples all iterate the vocabulary and previously rebuilt the
+// full glyphByToken map (an O(corpus size) scan) on every single
+// vocabulary-token access instead of once: O(vocabulary size x corpus
+// size) instead of O(vocabulary size). On the real ~8,200-type/~39,000-
+// token corpus that made a single LP4 call take over a minute; hoisting
+// the map build to once per call (task77 stage-1 audit finding) is a
+// local fix, not a redesign of the LP4/attachment statistic itself.
 func attachmentValues(c corpus, prefix bool) (core, affix []string) {
+	glyphs := glyphByToken(c)
 	for _, token := range vocabulary(c) {
-		glyph := glyphByToken(c)[token]
+		glyph := glyphs[token]
 		if len(glyph) < 3 {
 			continue
 		}
@@ -59,9 +69,10 @@ func attachmentMI(c corpus, prefix bool) float64 {
 }
 
 func eligibleAttachmentCount(c corpus) int {
+	glyphs := glyphByToken(c)
 	n := 0
 	for _, token := range vocabulary(c) {
-		if len(glyphByToken(c)[token]) >= 3 {
+		if len(glyphs[token]) >= 3 {
 			n++
 		}
 	}
@@ -139,9 +150,10 @@ func attachmentPermutation(c corpus, repetitions int, rng *rand.Rand) (prefix, s
 	if len(core) == 0 {
 		return make([]float64, repetitions), make([]float64, repetitions)
 	}
+	vocab, glyphs := vocabulary(c), glyphByToken(c)
 	byLength := map[int][]int{}
-	for i, token := range vocabulary(c) {
-		if glyph := glyphByToken(c)[token]; len(glyph) >= 3 {
+	for i, token := range vocab {
+		if glyph := glyphs[token]; len(glyph) >= 3 {
 			byLength[len(glyph)] = append(byLength[len(glyph)], i)
 		}
 	}
@@ -149,8 +161,8 @@ func attachmentPermutation(c corpus, repetitions int, rng *rand.Rand) (prefix, s
 	// matching buckets in that index space to preserve the length marginal.
 	eligibleIndex := map[int]int{}
 	j := 0
-	for i, token := range vocabulary(c) {
-		if len(glyphByToken(c)[token]) >= 3 {
+	for i, token := range vocab {
+		if len(glyphs[token]) >= 3 {
 			eligibleIndex[i] = j
 			j++
 		}
@@ -190,8 +202,9 @@ func attachmentPermutation(c corpus, repetitions int, rng *rand.Rand) (prefix, s
 }
 
 func attachmentTriples(c corpus) (core, prefix, suffix []string) {
+	glyphs := glyphByToken(c)
 	for _, token := range vocabulary(c) {
-		glyph := glyphByToken(c)[token]
+		glyph := glyphs[token]
 		if len(glyph) < 3 {
 			continue
 		}

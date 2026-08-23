@@ -1,0 +1,20 @@
+version: fingerprint-v2-lexical-paradigms-v1
+output_dir: experiments/fingerprint-v2-cross-scale-v1/smoke-out
+seed: 20260823
+repetitions: 5
+min_rule_support: 3
+alpha: 0.05
+graph_swaps: 5
+diagnostic_tolerance: 0.20
+grammar:
+  modes: [structure-preserving, frequency-aware]
+cross_scale:
+  folds: 5
+  hub_top_percent: 5
+  min_family_size: 3
+  structural_sample: 300
+primary:
+  id: voynich-zl3b-eva
+  path: data_work/ZL3b-x7.canonical.txt
+  glyph_mode: eva
+  ivtff_path: data/ZL3b-n.txt

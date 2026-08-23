@@ -15,6 +15,20 @@ type tokenRecord struct {
 	Glyph []string
 	Line  int
 	Page  string
+
+	// The fields below are populated only under strict IVTFF alignment
+	// (task77 cross-scale block); they are zero-valued otherwise and
+	// callers must check corpus.info.MetadataAlignment before relying on
+	// them.
+	LineID         string
+	IndexInLine    int
+	LineLength     int
+	LocusType      string
+	ParagraphStart bool
+	FolioSide      string
+	Section        string
+	Currier        string
+	Hand           string
 }
 
 type corpus struct {
@@ -37,6 +51,8 @@ func loadCorpus(c CorpusConfig) (corpus, error) {
 	out := corpus{records: make([]tokenRecord, len(tokens))}
 	alignment := "not requested"
 	pages := make([]string, len(tokens))
+	meta := make([]metadatavalidation.TokenMetadata, len(tokens))
+	haveMeta := false
 	if c.IVTFFPath != "" {
 		doc, e := metadatavalidation.ParseIVTFF(c.IVTFFPath)
 		if e != nil {
@@ -60,17 +76,52 @@ func loadCorpus(c CorpusConfig) (corpus, error) {
 			lines[i] = v
 			pages[i] = r.Folio
 		}
+		meta = aligned.Records
+		haveMeta = true
 		alignment = "strict IVTFF aligned"
+	}
+	lineLength := map[int]int{}
+	if haveMeta {
+		for i := range tokens {
+			lineLength[lines[i]]++
+		}
 	}
 	for i, token := range tokens {
 		glyphs := glyphsFor(token, mode)
 		if len(glyphs) == 0 {
 			return corpus{}, fmt.Errorf("corpus %q token %d has no glyphs after %s preprocessing", c.ID, i, mode)
 		}
-		out.records[i] = tokenRecord{Token: glyphKey(glyphs), Glyph: glyphs, Line: lines[i], Page: pages[i]}
+		rec := tokenRecord{Token: glyphKey(glyphs), Glyph: glyphs, Line: lines[i], Page: pages[i]}
+		if haveMeta {
+			m := meta[i]
+			rec.LineID = m.Folio + "\x00" + m.LineID
+			rec.IndexInLine = m.IndexInLine
+			rec.LineLength = lineLength[lines[i]]
+			rec.LocusType = m.LocusType
+			rec.ParagraphStart = m.ParagraphStart
+			rec.FolioSide = folioSide(m.Folio)
+			rec.Section = m.Section
+			rec.Currier = m.Currier
+			rec.Hand = m.Hand
+		}
+		out.records[i] = rec
 	}
 	out.info = corpusInfo(c, sha, mode, alignment, out.records)
 	return out, nil
+}
+
+// folioSide returns the trailing recto/verso letter of an IVTFF folio
+// identifier (e.g. "f1r" -> "r"), or "" if the identifier does not end in
+// one of the two documented side letters.
+func folioSide(folio string) string {
+	if folio == "" {
+		return ""
+	}
+	last := folio[len(folio)-1]
+	if last == 'r' || last == 'v' {
+		return string(last)
+	}
+	return ""
 }
 
 func glyphsFor(token, mode string) []string {
@@ -113,9 +164,13 @@ func corpusInfo(c CorpusConfig, sha, mode, alignment string, records []tokenReco
 func generatedCorpus(source corpus, glyphs [][]string) corpus {
 	out := corpus{records: make([]tokenRecord, len(glyphs)), info: source.info}
 	for i, g := range glyphs {
+		src := source.records[i]
 		out.records[i] = tokenRecord{
 			Token: glyphKey(g), Glyph: append([]string(nil), g...),
-			Line: source.records[i].Line, Page: source.records[i].Page,
+			Line: src.Line, Page: src.Page,
+			LineID: src.LineID, IndexInLine: src.IndexInLine, LineLength: src.LineLength,
+			LocusType: src.LocusType, ParagraphStart: src.ParagraphStart, FolioSide: src.FolioSide,
+			Section: src.Section, Currier: src.Currier, Hand: src.Hand,
 		}
 	}
 	out.info.ID = source.info.ID + ":c-grammar"

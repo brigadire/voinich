@@ -68,17 +68,21 @@ func containsDistance(m map[string]int, key string) bool {
 	return ok
 }
 
-func lp3(c corpus, productive map[string]bool, base editGraph, repetitions int, rng *rand.Rand) LP3Result {
+func lp3(c corpus, productive map[string]bool, base editGraph, repetitions int, rng *rand.Rand) (LP3Result, editGraph) {
 	g := productiveGraph(c, base, productive)
 	if len(g.nodes) == 0 {
 		return LP3Result{ProductiveRuleCount: len(productive), Locality: LocalityResult{
 			Available: true, FamilyCount: 0,
-		}}
+		}}, g
 	}
 	comps := g.components()
 	summaries := make([]FamilySummary, 0)
 	small := 0
 	large := make([][]string, 0)
+	// Hoisted once: glyphByToken(c) rebuilds a map over the whole corpus,
+	// so calling it per neighbor-edge below (task75's original code) was
+	// O(edges x corpus size) instead of O(corpus size) (task77 audit fix).
+	glyphs := glyphByToken(c)
 	for _, component := range comps {
 		if len(component) < 3 {
 			small++
@@ -91,10 +95,10 @@ func lp3(c corpus, productive map[string]bool, base editGraph, repetitions int, 
 			// declared graph-theoretic approximation to rule overlap.
 			rules := map[string]bool{}
 			for v := range g.adj[n] {
-				if r, ok := ruleFor(n, v, glyphByToken(c)); ok && productive[r] {
+				if r, ok := ruleFor(n, v, glyphs); ok && productive[r] {
 					rules[r] = true
 				}
-				if r, ok := ruleFor(v, n, glyphByToken(c)); ok && productive[r] {
+				if r, ok := ruleFor(v, n, glyphs); ok && productive[r] {
 					rules[r] = true
 				}
 			}
@@ -116,7 +120,18 @@ func lp3(c corpus, productive map[string]bool, base editGraph, repetitions int, 
 		return summaries[i].Depth > summaries[j].Depth
 	})
 	locality := locality(c, large, repetitions, rng)
-	return LP3Result{ProductiveRuleCount: len(productive), Families: summaries, SmallFamilyCount: small, Locality: locality}
+	return LP3Result{ProductiveRuleCount: len(productive), Families: summaries, SmallFamilyCount: small, Locality: locality}, g
+}
+
+// regimeKey returns a non-empty label only when both Currier and Section
+// are recorded for the occurrence; a record missing either is excluded from
+// the regime-locality computation rather than pooled into a false "unknown"
+// regime.
+func regimeKey(r tokenRecord) (string, bool) {
+	if r.Currier == "" || r.Section == "" {
+		return "", false
+	}
+	return r.Currier + "\x00" + r.Section, true
 }
 
 func locality(c corpus, families [][]string, repetitions int, rng *rand.Rand) LocalityResult {
@@ -130,12 +145,13 @@ func locality(c corpus, families [][]string, repetitions int, rng *rand.Rand) Lo
 		}
 	}
 	counts := make([]int, len(families))
-	lineGroups, pageGroups := make([]map[int]int, len(families)), make([]map[string]int, len(families))
-	hasPage := false
+	lineGroups, pageGroups, regimeGroups := make([]map[int]int, len(families)), make([]map[string]int, len(families)), make([]map[string]int, len(families))
+	hasPage, hasRegime := false, false
 	for i := range families {
-		lineGroups[i], pageGroups[i] = map[int]int{}, map[string]int{}
+		lineGroups[i], pageGroups[i], regimeGroups[i] = map[int]int{}, map[string]int{}, map[string]int{}
 	}
-	for _, record := range c.records {
+	regimeEligible := make([]bool, len(c.records))
+	for idx, record := range c.records {
 		family, ok := member[record.Token]
 		if !ok {
 			continue
@@ -146,8 +162,26 @@ func locality(c corpus, families [][]string, repetitions int, rng *rand.Rand) Lo
 			hasPage = true
 			pageGroups[family][record.Page]++
 		}
+		if key, ok := regimeKey(record); ok {
+			hasRegime = true
+			regimeEligible[idx] = true
+			regimeGroups[family][key]++
+		}
 	}
 	rate := func(groups []map[int]int) float64 {
+		num, den := 0, 0
+		for i, total := range counts {
+			den += choose2(total)
+			for _, group := range groups[i] {
+				num += choose2(group)
+			}
+		}
+		if den == 0 {
+			return 0
+		}
+		return float64(num) / float64(den)
+	}
+	rateStr := func(groups []map[string]int, counts []int) float64 {
 		num, den := 0, 0
 		for i, total := range counts {
 			den += choose2(total)
@@ -195,6 +229,47 @@ func locality(c corpus, families [][]string, repetitions int, rng *rand.Rand) Lo
 			v = float64(num) / float64(den)
 		}
 		result.SamePageRate = &v
+	}
+	if hasRegime {
+		// C-REGIME: redraw, once per replicate, which regime-eligible corpus
+		// positions each family's regime-eligible occurrences land on
+		// (preserving each family's true regime-eligible occurrence count
+		// and the true regime label of every eligible position), then
+		// recompute the same-regime pairwise rate. This is the regime
+		// analogue of the C-GLOBAL same-line/same-page draw above.
+		eligibleIdx := make([]int, 0, len(c.records))
+		for idx, ok := range regimeEligible {
+			if ok {
+				eligibleIdx = append(eligibleIdx, idx)
+			}
+		}
+		regimeCounts := make([]int, len(families))
+		for i := range families {
+			for _, n := range regimeGroups[i] {
+				regimeCounts[i] += n
+			}
+		}
+		observedRegime := rateStr(regimeGroups, regimeCounts)
+		regimeNullValues := make([]float64, repetitions)
+		for r := range regimeNullValues {
+			order := rng.Perm(len(eligibleIdx))
+			shuffled := make([]map[string]int, len(families))
+			for i := range shuffled {
+				shuffled[i] = map[string]int{}
+			}
+			offset := 0
+			for i, n := range regimeCounts {
+				for _, pos := range order[offset : offset+n] {
+					key, _ := regimeKey(c.records[eligibleIdx[pos]])
+					shuffled[i][key]++
+				}
+				offset += n
+			}
+			regimeNullValues[r] = rateStr(shuffled, regimeCounts)
+		}
+		regimeTest := nullTest("ef5/c-regime-same-regime", "C-REGIME family-occurrence placement among regime-eligible positions", observedRegime, regimeNullValues)
+		result.SameRegimeRate = &observedRegime
+		result.RegimeNull = &regimeTest
 	}
 	return result
 }

@@ -36,7 +36,7 @@ type TokenMetadata struct {
 	Token, Folio, LocusID, LocusType, LineID          string
 	ParagraphID                                       int
 	ParagraphStart                                    bool
-	Currier, Hand, Quire                              string
+	Currier, Hand, Quire, Section                     string
 }
 
 type AlignmentResult struct {

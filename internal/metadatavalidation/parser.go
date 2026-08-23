@@ -98,8 +98,11 @@ func cloneStrings(x map[string]string) map[string]string {
 
 // NormalizeForAlignment implements the minimal observed -x7 representation:
 // comments/control markers disappear; alternatives select their first branch;
-// braces retain their contents; dot, comma and physical gaps are word breaks.
-// @NNN; and '?' are ordinary content and therefore remain intact.
+// braces retain their contents; dot, comma, apostrophe, question mark and
+// physical gaps are all word breaks (confirmed against the real ZL3b-x7
+// canonical corpus during task77's audit: it contains zero apostrophes and
+// zero question marks, and every position where the raw source has one is
+// a token boundary in the canonical output). @NNN; remains ordinary content.
 func NormalizeForAlignment(raw string) string {
 	s := raw
 	s = inlineVariableRE.ReplaceAllString(s, "")
@@ -154,6 +157,15 @@ func NormalizeForAlignment(raw string) string {
 		}
 		s = s[:a] + inside + s[b+1:]
 	}
-	s = strings.NewReplacer("{", "", "}", "", ".", " ", ",", " ", "=", " ", "-", " ").Replace(s)
+	// An apostrophe is the transcriber's own probable-word-break marker
+	// (observed only inside {...} uncertain-reading braces in ZL3b-n.txt,
+	// e.g. "{c'y}" -> "c y"); a bare '?' (illegible glyph) is also a word
+	// break in the real -x7 canonical output (e.g. "d?n" -> "d n"); and a
+	// bare in-text "@NNN;" marker (not wrapped in <!...>, which is already
+	// stripped above as a comment) splits into its own numeric token, e.g.
+	// "@192;chy" -> "192 chy". All four are confirmed against the
+	// historical -x7 canonical conversion, which contains none of these
+	// four characters at all.
+	s = strings.NewReplacer("{", "", "}", "", ".", " ", ",", " ", "=", " ", "-", " ", "'", " ", "?", " ", "@", " ", ";", " ").Replace(s)
 	return strings.Join(strings.Fields(s), " ")
 }

@@ -27,6 +27,37 @@ type Config struct {
 	GraphSwaps          int           `yaml:"graph_swaps" json:"graph_swaps"`
 	DiagnosticTolerance float64       `yaml:"diagnostic_tolerance" json:"diagnostic_tolerance"`
 	Grammar             GrammarConfig `yaml:"grammar" json:"grammar"`
+
+	// CrossScale is task77's additional configuration for the edit-graph
+	// validation and cross-scale block. A caller who omits this section
+	// gets task77's declared defaults, not a skipped block, so the new
+	// artifacts are always present for any corpus with >=2 vocabulary
+	// types; task75's own LP/EF fields and existing configs are otherwise
+	// untouched.
+	CrossScale *CrossScaleConfig `yaml:"cross_scale,omitempty" json:"cross_scale,omitempty"`
+}
+
+type CrossScaleConfig struct {
+	Folds            int `yaml:"folds" json:"folds"`
+	HubTopPercent    int `yaml:"hub_top_percent" json:"hub_top_percent"`
+	MinFamilySize    int `yaml:"min_family_size" json:"min_family_size"`
+	StructuralSample int `yaml:"structural_sample" json:"structural_sample"`
+}
+
+func (c CrossScaleConfig) normalized() CrossScaleConfig {
+	if c.Folds <= 0 {
+		c.Folds = 5
+	}
+	if c.HubTopPercent <= 0 {
+		c.HubTopPercent = 5
+	}
+	if c.MinFamilySize <= 0 {
+		c.MinFamilySize = 3
+	}
+	if c.StructuralSample <= 0 {
+		c.StructuralSample = 2000
+	}
+	return c
 }
 
 type CorpusConfig struct {
@@ -89,6 +120,11 @@ func (c Config) normalized() (Config, error) {
 		}
 		seenModes[mode] = true
 	}
+	if c.CrossScale == nil {
+		c.CrossScale = &CrossScaleConfig{}
+	}
+	normalizedCrossScale := c.CrossScale.normalized()
+	c.CrossScale = &normalizedCrossScale
 	for i := range c.Controls {
 		if c.Controls[i].Name == "" {
 			return c, fmt.Errorf("controls[%d].name is required", i)
@@ -182,11 +218,13 @@ type FamilySummary struct {
 }
 
 type LocalityResult struct {
-	Available    bool      `json:"available"`
-	SameLineRate float64   `json:"same_line_rate"`
-	SamePageRate *float64  `json:"same_page_rate,omitempty"`
-	GlobalNull   *NullTest `json:"global_null,omitempty"`
-	FamilyCount  int       `json:"family_count"`
+	Available      bool      `json:"available"`
+	SameLineRate   float64   `json:"same_line_rate"`
+	SamePageRate   *float64  `json:"same_page_rate,omitempty"`
+	SameRegimeRate *float64  `json:"same_regime_rate,omitempty"`
+	GlobalNull     *NullTest `json:"global_null,omitempty"`
+	RegimeNull     *NullTest `json:"regime_null,omitempty"`
+	FamilyCount    int       `json:"family_count"`
 }
 
 type LP3Result struct {
@@ -256,6 +294,11 @@ type Metrics struct {
 	EF2 EF2Result `json:"ef2"`
 	EF3 EF3Result `json:"ef3"`
 	EF4 EF4Result `json:"ef4"`
+	// EF5 is the same locality computation as LP3.Locality (task73 §5:
+	// "identical to LP3's locality computation and therefore implemented
+	// once, not twice"), extended here with the C-REGIME comparison.
+	// It is copied by value, not recomputed.
+	EF5 LocalityResult `json:"ef5"`
 }
 
 type DistributionDiagnostic struct {
@@ -299,9 +342,11 @@ type GrammarSummary struct {
 }
 
 type CorpusResult struct {
-	Corpus  CorpusInfo      `json:"corpus"`
-	Metrics Metrics         `json:"metrics"`
-	Grammar *GrammarSummary `json:"grammar,omitempty"`
+	Corpus     CorpusInfo            `json:"corpus"`
+	Metrics    Metrics               `json:"metrics"`
+	Grammar    *GrammarSummary       `json:"grammar,omitempty"`
+	EditGraph  *EditFamilyValidation `json:"edit_graph_validation,omitempty"`
+	CrossScale *CrossScaleResult     `json:"cross_scale,omitempty"`
 }
 
 type Verdict struct {
@@ -323,4 +368,194 @@ type Fingerprint struct {
 
 func stableTests(tests []NullTest) {
 	sort.Slice(tests, func(i, j int) bool { return tests[i].ID < tests[j].ID })
+}
+
+// ---- Task77: edit-graph validation (stage 2) ----
+
+type GraphRepresentation struct {
+	Kind        string `json:"kind"`
+	Status      string `json:"status"` // IMPLEMENTED or DEFERRED
+	Description string `json:"description"`
+	Reason      string `json:"reason,omitempty"`
+}
+
+type FamilyStructuralDiagnostic struct {
+	FamilyIndex              int     `json:"family_index"`
+	Size                     int     `json:"size"`
+	Diameter                 int     `json:"diameter"`
+	AverageShortestPath      float64 `json:"average_shortest_path"`
+	IndirectPairShare        float64 `json:"indirect_pair_share"`
+	MeanInternalEditDistance float64 `json:"mean_internal_edit_distance"`
+	ArticulationPoints       int     `json:"articulation_points"`
+	BridgeEdges              int     `json:"bridge_edges"`
+	CoreSize                 int     `json:"core_size"`
+	PeripherySize            int     `json:"periphery_size"`
+}
+
+type HubDependence struct {
+	HubFraction      float64 `json:"hub_fraction"`
+	RemovedNodes     int     `json:"removed_nodes"`
+	GiantShareBefore float64 `json:"giant_share_before"`
+	GiantShareAfter  float64 `json:"giant_share_after"`
+	GiantShareDrop   float64 `json:"giant_share_drop"`
+}
+
+type PathRestriction struct {
+	MaxHops        int     `json:"max_hops"`
+	ComponentCount int     `json:"component_count"`
+	GiantShare     float64 `json:"giant_share"`
+}
+
+type CommunityComparison struct {
+	Method string  `json:"method"`
+	ARI    float64 `json:"adjusted_rand_index"`
+	NMI    float64 `json:"normalized_mutual_information"`
+	VI     float64 `json:"variation_of_information"`
+	Seed   int64   `json:"seed"`
+}
+
+type TransitiveMergeAudit struct {
+	Families                  []FamilyStructuralDiagnostic `json:"families"`
+	HubDependence             HubDependence                `json:"hub_dependence"`
+	PathRestrictions          []PathRestriction            `json:"path_restrictions"`
+	CommunityVsComponents     CommunityComparison          `json:"community_vs_components"`
+	FrequencyWeightedHubShare float64                      `json:"frequency_weighted_hub_share"`
+	ContextWeightedHubShare   float64                      `json:"context_weighted_hub_share"`
+}
+
+type StabilityRun struct {
+	Perturbation    string  `json:"perturbation"`
+	Value           string  `json:"value"`
+	ARI             float64 `json:"adjusted_rand_index"`
+	NMI             float64 `json:"normalized_mutual_information"`
+	ComparableNodes int     `json:"comparable_nodes"`
+	Status          string  `json:"status"` // GLOBAL/PARTITION_SPECIFIC/UNSTABLE/INSUFFICIENT_DATA/NOT_TESTABLE
+	Note            string  `json:"note,omitempty"`
+}
+
+type FamilyMember struct {
+	Token      string  `json:"token"`
+	Role       string  `json:"role"` // CORE or PERIPHERY
+	Confidence float64 `json:"confidence"`
+}
+
+type ConsensusFamily struct {
+	Index               int            `json:"index"`
+	Members             []FamilyMember `json:"members"`
+	TransformationTypes []string       `json:"transformation_types"`
+	CorpusCoverage      float64        `json:"corpus_coverage"`
+	OccurrenceCoverage  float64        `json:"occurrence_coverage"`
+	DominantHub         string         `json:"dominant_hub,omitempty"`
+	StabilityScore      float64        `json:"stability_score"`
+}
+
+type EditFamilyValidation struct {
+	GraphRepresentations []GraphRepresentation `json:"graph_representations"`
+	TransitiveMerge      TransitiveMergeAudit  `json:"transitive_merge"`
+	StabilityRuns        []StabilityRun        `json:"stability_runs"`
+	ConsensusStatus      string                `json:"consensus_status"`
+	ConsensusFamilies    []ConsensusFamily     `json:"consensus_families,omitempty"`
+}
+
+// ---- Task77: cross-scale block (stages 4-10) ----
+
+type CrossScaleVariable struct {
+	Scale         string `json:"scale"`
+	Name          string `json:"name"`
+	Origin        string `json:"origin"`
+	Domain        string `json:"domain"`
+	MissingPolicy string `json:"missing_data_policy"`
+	Available     bool   `json:"available"`
+}
+
+type HeldOutResult struct {
+	Scheme          string  `json:"scheme"`
+	Folds           int     `json:"folds"`
+	BaselineLogLoss float64 `json:"baseline_log_loss"`
+	ModelLogLoss    float64 `json:"model_log_loss"`
+	Improvement     float64 `json:"improvement"`
+	ImprovementSD   float64 `json:"improvement_sd"`
+	N               int     `json:"n"`
+	Note            string  `json:"note,omitempty"`
+}
+
+type CrossScaleMetric struct {
+	MetricID                  string         `json:"metric_id"`
+	MetricVersion             string         `json:"metric_version"`
+	Status                    string         `json:"status"`
+	Hypothesis                string         `json:"hypothesis"`
+	UnitOfAnalysis            string         `json:"unit_of_analysis"`
+	Variables                 []string       `json:"variables"`
+	ConditioningVariables     []string       `json:"conditioning_variables,omitempty"`
+	Confounders               []string       `json:"confounders,omitempty"`
+	ObservedStatistic         float64        `json:"observed_statistic"`
+	EffectSize                float64        `json:"effect_size"`
+	EffectDefined             bool           `json:"effect_defined"`
+	Uncertainty               string         `json:"uncertainty"`
+	NullModel                 string         `json:"null_model"`
+	NullMean                  float64        `json:"null_mean"`
+	NullSD                    float64        `json:"null_sd"`
+	EmpiricalP                float64        `json:"empirical_p"`
+	MultipleTestingAdjustment float64        `json:"multiple_testing_adjustment"`
+	PartitionStability        []StabilityRun `json:"partition_stability,omitempty"`
+	HeldOutPerformance        *HeldOutResult `json:"held_out_performance,omitempty"`
+	Sensitivity               string         `json:"sensitivity"`
+	RedundancyClass           string         `json:"redundancy_class"`
+	Interpretation            string         `json:"interpretation"`
+	Limitations               string         `json:"limitations"`
+	N                         int            `json:"n"`
+	AdditionalNulls           []NullTest     `json:"additional_nulls,omitempty"`
+	AnalysisType              string         `json:"analysis_type"` // CONFIRMATORY or EXPLORATORY
+}
+
+type NullModelRegistryEntry struct {
+	ID                   string   `json:"id"`
+	Name                 string   `json:"name"`
+	Preserves            string   `json:"preserves"`
+	Destroys             string   `json:"destroys"`
+	TestsHypotheses      []string `json:"tests_hypotheses"`
+	RemainingConfounders string   `json:"remaining_confounders"`
+	Justification        string   `json:"justification"`
+}
+
+type RedundancyRow struct {
+	MetricA     string  `json:"metric_a"`
+	MetricB     string  `json:"metric_b"`
+	Correlation float64 `json:"correlation"`
+	N           int     `json:"n"`
+}
+
+type MetricClassification struct {
+	MetricID string `json:"metric_id"`
+	Class    string `json:"class"` // CORE/SUPPORTING/DIAGNOSTIC/REDUNDANT/UNSTABLE/DEFERRED
+	Reason   string `json:"reason"`
+}
+
+type CrossScaleResult struct {
+	VariablesAvailable    []CrossScaleVariable     `json:"variables_available"`
+	Metrics               []CrossScaleMetric       `json:"metrics"`
+	NullRegistry          []NullModelRegistryEntry `json:"null_registry"`
+	RedundancyMatrix      []RedundancyRow          `json:"redundancy_matrix"`
+	MetricClassifications []MetricClassification   `json:"metric_classifications"`
+	ConfirmatoryFindings  []string                 `json:"confirmatory_findings"`
+	ExploratoryFindings   []string                 `json:"exploratory_findings"`
+	Verdicts              []CrossScaleVerdict      `json:"verdicts"`
+}
+
+// CrossScaleVerdict is task77's final-verdict record shape: every field
+// task77 requires ("primary statistic; effect size; null comparison;
+// held-out result; partition stability; sensitivity; ограничения") is
+// present, even when its value must be a documented "not applicable"
+// rather than a number.
+type CrossScaleVerdict struct {
+	ID                 string  `json:"id"`
+	Value              string  `json:"value"`
+	PrimaryStatistic   string  `json:"primary_statistic"`
+	EffectSize         float64 `json:"effect_size"`
+	EffectDefined      bool    `json:"effect_defined"`
+	NullComparison     string  `json:"null_comparison"`
+	HeldOutResult      string  `json:"held_out_result"`
+	PartitionStability string  `json:"partition_stability"`
+	Sensitivity        string  `json:"sensitivity"`
+	Limitations        string  `json:"limitations"`
 }

@@ -56,9 +56,14 @@ func TestParseIVTFFMetadataAndInheritance(t *testing.T) {
 	}
 }
 
+// Expected output is derived from task77's audit of the real ZL3b-x7
+// canonical corpus: it contains no apostrophes, question marks, '@' or ';'
+// characters, and every position where the raw ZL3b-n.txt source has one
+// is a token boundary in the canonical output (e.g. "{c'y}" -> "c y",
+// "d?n" -> "d n", bare "@135;" -> "135" as its own token).
 func TestNormalizeForAlignment(t *testing.T) {
 	in := `<%>[cth:oto]res.{c'y}.@135;.d?n,?<!ignored><->x<$>`
-	want := "cthres c'y @135; d?n ? x"
+	want := "cthres c y 135 d n x"
 	if got := NormalizeForAlignment(in); got != want {
 		t.Fatalf("got %q want %q", got, want)
 	}

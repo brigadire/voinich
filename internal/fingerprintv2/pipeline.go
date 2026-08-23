@@ -304,7 +304,7 @@ func analyzeOne(corpus corpus, cfg Config, seed int64) (CorpusResult, rawCorpusR
 		Statistic: "LP1 rule-support Gini (type-level directed edit pairs)", Tests: lp2Tests,
 		ProductiveRules: productiveNames, ProductivityState: productivityState,
 	}
-	lp3Result := lp3(corpus, productive, observed.graph, cfg.Repetitions, rand.New(rand.NewSource(seed+4000000)))
+	lp3Result, familyGraph := lp3(corpus, productive, observed.graph, cfg.Repetitions, rand.New(rand.NewSource(seed+4000000)))
 	lp4Result := LP4Result{
 		ZoneConvention: "exactly one glyph prefix and one glyph suffix; interior glyph sequence is core; lengths <3 excluded",
 		Prefix:         AttachmentResult{NormalizedMI: observed.prefixNMI, Eligible: observed.attachmentN, Excluded: observed.excludedN, Permutation: prefixTest, GrammarTests: prefixGrammarTests},
@@ -333,8 +333,16 @@ func analyzeOne(corpus corpus, cfg Config, seed int64) (CorpusResult, rawCorpusR
 		}
 	}
 	ef4Result.Verdict, ef4Result.Reason = ef4Verdict(ef4Result.Tests, cfg, len(validModes) > 0)
-	metrics := Metrics{LP1: observed.lp1, LP2: lp2Result, LP3: lp3Result, LP4: lp4Result, EF1: observed.ef1, EF2: ef2Result, EF3: ef3Result, EF4: ef4Result}
-	return CorpusResult{Corpus: corpus.info, Metrics: metrics, Grammar: grammar}, raw, nil
+	metrics := Metrics{LP1: observed.lp1, LP2: lp2Result, LP3: lp3Result, LP4: lp4Result, EF1: observed.ef1, EF2: ef2Result, EF3: ef3Result, EF4: ef4Result, EF5: lp3Result.Locality}
+
+	families, _ := splitComponents(familyGraph.components(), 3)
+	glyphs := glyphByToken(corpus)
+	freq := frequencies(corpus)
+	editGraphValidation := runEditGraphValidation(corpus, familyGraph, families, glyphs, cfg, freq, seed+8000000)
+	crossScale := runCrossScale(corpus, cfg, familyGraph, families, glyphs, freq, runs, seed+9000000)
+	crossScale.Verdicts = crossScaleVerdicts(metrics, editGraphValidation, crossScale)
+
+	return CorpusResult{Corpus: corpus.info, Metrics: metrics, Grammar: grammar, EditGraph: &editGraphValidation, CrossScale: &crossScale}, raw, nil
 }
 
 func boolOffset(v bool) int64 {
@@ -568,11 +576,25 @@ func compactReport(f Fingerprint) string {
 	fmt.Fprintf(&b, "- LP1 support Gini: `%.6g`; top-rule share: `%.6g`\n", p.Metrics.LP1.SupportGini, p.Metrics.LP1.TopRuleShare)
 	fmt.Fprintf(&b, "- EF1 edges/isolates/giant share: `%d` / `%d` / `%.6g`\n", p.Metrics.EF1.EdgeCount, p.Metrics.EF1.IsolateCount, p.Metrics.EF1.GiantComponentShare)
 	fmt.Fprintf(&b, "- EF2 clustering/triangles/3-paths/4-cycles: `%.6g` / `%d` / `%d` / `%d`\n", p.Metrics.EF2.GlobalClustering, p.Metrics.EF2.Triangles, p.Metrics.EF2.Paths3, p.Metrics.EF2.Cycles4)
-	fmt.Fprintf(&b, "- EF3 Spearman(degree, log frequency): `%.6g`\n\n", p.Metrics.EF3.SpearmanDegreeLogFrequency)
+	fmt.Fprintf(&b, "- EF3 Spearman(degree, log frequency): `%.6g`\n", p.Metrics.EF3.SpearmanDegreeLogFrequency)
+	fmt.Fprintf(&b, "- EF5 same-line/same-page/same-regime rate: `%.6g` / %s / %s\n\n", p.Metrics.EF5.SameLineRate, floatPtrString(p.Metrics.EF5.SamePageRate), floatPtrString(p.Metrics.EF5.SameRegimeRate))
 	fmt.Fprintf(&b, "## Verdicts\n\n")
 	for _, v := range f.Verdicts {
 		fmt.Fprintf(&b, "- **%s:** `%s` — %s\n", v.ID, v.Value, v.Basis)
 	}
+	if p.CrossScale != nil {
+		fmt.Fprintf(&b, "\n## Task77 cross-scale verdicts\n\n")
+		for _, v := range p.CrossScale.Verdicts {
+			fmt.Fprintf(&b, "- **%s:** `%s` — %s\n", v.ID, v.Value, v.PrimaryStatistic)
+		}
+	}
 	fmt.Fprintf(&b, "\nRaw null distributions, per-replicate grammar diagnostics, and input checksums are in `raw_results.json`. These values describe only the configured input corpus; this report does not identify it as a canonical Voynich run.\n")
 	return b.String()
+}
+
+func floatPtrString(v *float64) string {
+	if v == nil {
+		return "n/a"
+	}
+	return fmt.Sprintf("%.6g", *v)
 }

@@ -44,7 +44,7 @@ func Align(d Document, frozen []string, hash string) (AlignmentResult, error) {
 			r.Records = append(r.Records, TokenMetadata{Position: pos, Token: token,
 				Folio: l.Folio, LocusID: l.ID, LocusType: l.Type, LineID: l.LineID,
 				ParagraphID: l.ParagraphID, ParagraphStart: l.ParagraphStart && i == 0,
-				Currier: l.Variables["C"], Hand: l.Variables["H"], Quire: l.Variables["Q"],
+				Currier: l.Variables["C"], Hand: l.Variables["H"], Quire: l.Variables["Q"], Section: l.Variables["I"],
 				IndexInLocus: i, IndexInLine: i, IndexInFolio: folioIndex})
 			pos++
 			folioIndex++
