@@ -53,6 +53,18 @@ go run ./pipelines/pipeline-orchestrate manifest \
   -generic-corpus
 ```
 
+The Phase II lexical-paradigm Fingerprint v2 block accepts an explicit YAML
+configuration and writes reproducible JSON artifacts:
+
+```bash
+go run ./cmd/fingerprint-v2-analyze -config fingerprint-v2.yaml
+```
+
+See
+[`research/phase2/fingerprint/FINGERPRINT_V2_SCHEMA.md`](research/phase2/fingerprint/FINGERPRINT_V2_SCHEMA.md)
+for the schema, null models, and output contract. This command does not
+bundle or download a canonical corpus.
+
 Canonical Voynich runs additionally require a locally obtained IVTFF source
 and an external IVTT installation. Datasets and IVTT are not bundled because
 their redistribution rights were not established. Acquisition, checksum,

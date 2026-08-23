@@ -44,12 +44,15 @@ func TestStagesMatchRepository(t *testing.T) {
 	// orchestration commands Task34/45/46/48 introduced. research/phase1/*
 	// and pipelines/pipeline-orchestrate itself live outside cmd/ entirely
 	// after Task70 and are out of scope for this scan, same as before the
-	// move.
+	// move. fingerprint-v2-analyze is a separately configured Phase II
+	// research entry point: it has no frozen Task49 stage contract and
+	// requires an explicit YAML output_dir.
 	exempt := map[string]bool{
 		"conditional-regime-pki": true,
 		"codex_prepare":          true,
 		"codex_orientation":      true,
 		"experiment-compare":     true,
+		"fingerprint-v2-analyze": true,
 	}
 	for _, e := range entries {
 		if !e.IsDir() {

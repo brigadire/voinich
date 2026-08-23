@@ -98,6 +98,13 @@ func ClassifyDistanceOne(a, b []string) (op string, position int, sourceGlyph, t
 	}
 }
 
+// ClassifyEditDistanceOne exposes the shared Task60 edit-operation
+// classification to analyses which enumerate vocabulary-wide edit edges.
+// Its result and preconditions are identical to ClassifyDistanceOne.
+func ClassifyEditDistanceOne(a, b []string) (op string, position int, sourceGlyph, targetGlyph string, ok bool) {
+	return ClassifyDistanceOne(a, b)
+}
+
 func glyphsEqual(a, b []string) bool {
 	if len(a) != len(b) {
 		return false
