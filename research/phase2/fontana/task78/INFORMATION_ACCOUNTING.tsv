@@ -1,0 +1,6 @@
+model	device_state_IS	geometry_IG	history_IH	knowledge_IK	context_IC	interactions
+F08_SERPENS	letters in occupied holes	spiral topology and hole order	none in R0	start; direction; boundary; alphabet; association	message predictability not used	IS is interpretable only with IG+IK; geometry loss converts local damage to synchronization
+F07_ROTA	angular offset	wheel positions and pointer	operation sequence only if initial state is sought	layout; zero; direction; step	unused	current selection needs state+zero; reconstructing prior state needs action history
+F10_CYLINDRUS	band offsets	band order and reading line	needed only if initial state sought	alphabet; route; coupling; step	unused	local/global error class depends on H coupling profile
+F11_ARISMETRICUM	occupied indexed cues	numbered hole layout	none	index convention and cue semantics	external query	index without convention does not identify meaning
+F12_HORALOGIUS	current temporal state and scheduled cue	period and trigger geometry	elapsed transitions establish current tick	calibration and learned cue meaning	intended task and user memory	device supplies trigger; content recovery is impossible without IK+IC

@@ -1,0 +1,15 @@
+model	operation	status	confidence	source_support	input	output	state_change	role	user_dependence
+F08_SERPENS	selection	PRESENT	MEDIUM	E/I	letter and hole	occupied hole	yes	storage	placement choice
+F08_SERPENS	spatial_placement	PRESENT	HIGH	E	ordered letters	spiral state	yes	storage	hand placement
+F08_SERPENS	ordered_traversal	PRESENT	HIGH	E	centre	letter sequence	no	retrieval	start/direction knowledge
+F08_SERPENS	association	UNCERTAIN	LOW	purpose only	cue	memory	no	possible retrieval	learned/personal convention U
+F07_ROTA	selection	PRESENT	MEDIUM	I	pointer state	selected symbol	no	retrieval	zero/layout
+F07_ROTA	independent_rotation	UNCERTAIN	LOW	wheel named	action	cyclic offset	yes	state selection	step convention
+F10_CYLINDRUS	independent_rotation	UNCERTAIN	LOW	I plus H independence	band and step	band offset	yes	alignment	movement profile
+F10_CYLINDRUS	alignment	PRESENT	MEDIUM	I	band offsets	axial row	yes	storage/retrieval	read line
+F10_CYLINDRUS	ordered_traversal	UNCERTAIN	LOW	I	aligned row	sequence	no	retrieval	route U
+F11_ARISMETRICUM	indexing	PRESENT	MEDIUM	E/I	integer	addressed hole	no	retrieval	index convention
+F11_ARISMETRICUM	spatial_placement	PRESENT	MEDIUM	E/I	cue and hole	occupied slot	yes	storage	mapping U
+F12_HORALOGIUS	signalling	PRESENT	MEDIUM	E	time condition	cue	yes	trigger	cue meaning
+F12_HORALOGIUS	association	PRESENT	MEDIUM	E/I	cue	remembered intention	no	retrieval	fully learned
+F12_HORALOGIUS	repetition	PRESENT	MEDIUM	I	periodic drive	repeated cue	yes	trigger	calibration

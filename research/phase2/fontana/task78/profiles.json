@@ -1,0 +1,118 @@
+{
+  "preregistered_rule": "compare every declared profile; do not select by outcome",
+  "profiles": [
+    {
+      "model": "F08_SERPENS",
+      "id": "R0",
+      "tier": "A",
+      "status": "invariant_core",
+      "parameters": {
+        "alphabet": "latin23",
+        "boundary": "length_in_K",
+        "capacity": 12,
+        "direction": "centre_to_edge",
+        "start": 0
+      },
+      "evidence": {
+        "capacity_alphabet_boundary": "H",
+        "spiral_holes_letters_direction": "E"
+      }
+    },
+    {
+      "model": "F08_SERPENS",
+      "id": "R1",
+      "tier": "B",
+      "status": "sensitivity_only",
+      "parameters": {
+        "alphabet": "latin23",
+        "boundary": "first_empty_hole",
+        "capacity": 12,
+        "direction": "centre_to_edge",
+        "start": 0
+      },
+      "evidence": {
+        "empty_as_stop": "H"
+      }
+    },
+    {
+      "model": "F07_ROTA",
+      "id": "R0",
+      "tier": "B",
+      "status": "invariant_core_only",
+      "parameters": {
+        "alphabet": "latin23",
+        "rings": 1,
+        "step": 1
+      },
+      "evidence": {
+        "alphabet_layout_step": "H",
+        "finite_circular_state": "I"
+      }
+    },
+    {
+      "model": "F10_CYLINDRUS",
+      "id": "R0",
+      "tier": "B",
+      "status": "bounded_reconstruction",
+      "parameters": {
+        "alphabet": "latin23",
+        "bands": 7,
+        "movement": "independent",
+        "read_line": 0
+      },
+      "evidence": {
+        "band_count_independence_read_line": "H",
+        "cylinder_bands_rotation": "I"
+      }
+    },
+    {
+      "model": "F10_CYLINDRUS",
+      "id": "R1",
+      "tier": "B",
+      "status": "sensitivity_only",
+      "parameters": {
+        "alphabet": "latin23",
+        "bands": 7,
+        "movement": "coupled",
+        "read_line": 0
+      },
+      "evidence": {
+        "coupling": "H"
+      }
+    },
+    {
+      "model": "F11_ARISMETRICUM",
+      "id": "R0",
+      "tier": "B",
+      "status": "invariant_core_only",
+      "parameters": {
+        "indices": "integers",
+        "values": "opaque_cues"
+      },
+      "evidence": {
+        "holes_numbers": "E",
+        "mapping": "U"
+      }
+    },
+    {
+      "model": "F12_HORALOGIUS",
+      "id": "R0",
+      "tier": "B",
+      "status": "invariant_core_only",
+      "parameters": {
+        "cue_ticks": [
+          0,
+          4,
+          8
+        ],
+        "period": 12
+      },
+      "evidence": {
+        "period_calibration_cues": "H",
+        "time_state_signal": "E"
+      }
+    }
+  ],
+  "schema_version": "task78-profiles-v1",
+  "seed": 780823
+}

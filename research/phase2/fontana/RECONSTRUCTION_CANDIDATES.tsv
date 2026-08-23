@@ -1,0 +1,16 @@
+machine_id	rating	source_completeness	operational_clarity	state_clarity	input_output_clarity	unsupported_assumptions	generic_predictions_after_freeze
+F01_SPECULUM	HIGH	high	high	high	high	материал; фиксация колец; маркировка радиуса	fixed-length groups; cyclic alternatives; positional constraints; state-dependent retrieval
+F02_CLAVICULAE	MEDIUM	medium	medium	medium	medium	точная геометрия трёх вариантов; маршрут чтения	discrete combinations; key-dependent output
+F03_STELLA	LOW	medium	low	low	low	движение и начальная позиция	NONE_UNTIL_SPECIFIED
+F04_SOL	LOW	medium	low	low	low	движение и начальная позиция	NONE_UNTIL_SPECIFIED
+F05_ZIRBUS	LOW	low	low	low	low	физическая реализация	NONE_UNTIL_SPECIFIED
+F06_GRADATUM	LOW	medium	low	medium	low	путь по граням/ступеням	NONE_UNTIL_SPECIFIED
+F07_ROTA	MEDIUM	medium	medium	medium	medium	алфавитная разводка; нулевая позиция	cyclic recurrence; state-dependent mapping
+F08_SERPENS	MEDIUM	high	medium	high	medium	являются ли вставки подвижными; границы сообщения	strong locality; ordered spiral traversal; sensitivity to missing positions
+F09_COLUMNA	LOW	low	low	medium	low	способ движения и чтения	NONE_UNTIL_SPECIFIED
+F10_CYLINDRUS	MEDIUM	medium	medium	medium	medium	число полос; правило поворота	hierarchical grouping; cyclic recurrence; positional constraints
+F11_ARISMETRICUM	MEDIUM	medium	medium	high	medium	соответствие чисел и содержимого	indexed locality; sparse external state; lookup dependence
+F12_HORALOGIUS	MEDIUM	high	medium	high	medium	конкретная настройка сигнала	cyclic state; event-triggered retrieval; time-dependent output
+MENTAL_LOCI	MEDIUM	high	medium	human_hidden	medium	индивидуальный набор loci и ассоциаций	ordered locality; high prior-knowledge dependence; non-unique decoding
+ARS_OBLIVIONALIS	NOT_RECONSTRUCTABLE	high	medium	human_hidden	low	модель угасания/конкуренции образов	NONE; psychological practice, not a specified automaton
+CIPHER_SCRIPT	HIGH	high	high	no_state	high	нормализация scribal errors	reversible monoalphabetic substitution; preserved word boundaries

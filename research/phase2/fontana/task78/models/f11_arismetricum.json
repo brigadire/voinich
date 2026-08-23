@@ -1,0 +1,81 @@
+{
+  "metadata": {
+    "identifier": "F11_ARISMETRICUM",
+    "schema": "fontana-validated-model-v1",
+    "seed": 780823,
+    "task": 78
+  },
+  "sources": [
+    "research/phase2/fontana/MACHINE_INVENTORY.tsv",
+    "research/phase2/fontana/RECONSTRUCTION_CANDIDATES.tsv",
+    "research/phase2/fontana/machines/F10_CYLINDRUS_F11_ARISMETRICUM.md"
+  ],
+  "reconstruction": {
+    "evidence_labels": [
+      "E",
+      "I",
+      "H",
+      "U"
+    ],
+    "target_blind": true
+  },
+  "uncertainty": [
+    "exact number-content mapping",
+    "movability",
+    "whether content is letters"
+  ],
+  "components": [
+    "body",
+    "numbered holes",
+    "inserts"
+  ],
+  "state_schema": {
+    "slots": "index to opaque cue"
+  },
+  "operations": [
+    "indexing",
+    "lookup",
+    "placement"
+  ],
+  "transitions": [
+    "place",
+    "remove",
+    "swap"
+  ],
+  "encoding": "place opaque cue at index; no text generation",
+  "retrieval": "lookup by known index and convention",
+  "knowledge_requirements": [
+    "index convention",
+    "cue meaning"
+  ],
+  "reconstruction_profiles": [
+    "R0"
+  ],
+  "experiments": [
+    "baseline",
+    "knowledge_ablation",
+    "state_corruption",
+    "state_dynamics"
+  ],
+  "results": {
+    "baseline_exact": 6,
+    "baseline_n": 6
+  },
+  "tests": [
+    "go test ./internal/fontanafamily"
+  ],
+  "verdict": {
+    "BASELINE_RECOVERY": "SUPPORTED",
+    "ERROR_PROPAGATION_CLASS": "MIXED",
+    "INDEXED_RETRIEVAL_FUNCTION": "SUPPORTED",
+    "LITERAL_STORAGE_FUNCTION": "NOT_SUPPORTED",
+    "MNEMONIC_CUE_FUNCTION": "PARTIALLY_SUPPORTED",
+    "MODEL_READY_FOR_FREEZE": "NOT_SUPPORTED",
+    "OPERATIONAL_CYCLE_VALIDATED": "PARTIALLY_SUPPORTED",
+    "PRIOR_KNOWLEDGE_DEPENDENCE": "SUPPORTED",
+    "RECONSTRUCTION_CONFIDENCE": "MEDIUM",
+    "SOURCE_SUFFICIENCY": "PARTIALLY_SUPPORTED",
+    "STATE_DAMAGE_ROBUSTNESS": "NOT_SUPPORTED",
+    "STATE_DEPENDENCE": "SUPPORTED"
+  }
+}
