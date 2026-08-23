@@ -1,0 +1,13 @@
+operation_id	operation	source_support	mechanisms	encoding_role	retrieval_role	state_dependency	ambiguity
+O01	selection	explicit/implicit	F01-F11	выбор буквы/образа/места	выбор отмеченной позиции	user-selected	начальная точка часто не указана
+O02	rotation	explicit	F01,F03,F04,F05,F07,F10,F12	выставление конфигурации	возврат/чтение конфигурации	cyclic	ошибка на один шаг меняет cue
+O03	alignment	explicit for F01	F01,F02,F03,F04,F10	буквы совмещаются по линии	чтение по договорённой линии	persistent selected state	без отмеченного радиуса возможны циклические варианты
+O04	spatial_placement	explicit	F08,F09,F11;loci/imagines	помещение букв или образов	поиск в позиции	page-local/persistent	пропуск позиции сдвигает чтение
+O05	traversal	explicit for serpent; standard for loci	F06,F08,F09,F10;loci	задаёт порядок	воспроизводит порядок	ordered	направление должно быть известно пользователю
+O06	indexing	supported	F11;lists	номер связывается с элементом	lookup по номеру	persistent	таблица не самодостаточна без соответствия
+O07	association	explicit	mental loci/images;iconographic glossary	понятие связывается с образом	образ вызывает понятие	human hidden state	не уникально без предварительного знания
+O08	substitution	capability; purpose disputed	cipher alphabet; F01/F02/F07/F10	буква заменяется знаком/смещённой буквой	обратное преобразование по ключу	key-selected	ключ обязателен
+O09	composition	explicit in alphabetic devices	F01-F11	отдельные буквы образуют слово	буквы считываются как последовательность	configuration	границы и длина могут требовать знания
+O10	repetition/meditation	explicit	mental memory	укрепляет образ	освежает cue	human state	не гарантирует точность
+O11	overlay/removal	explicit	ars oblivionalis	новый образ перекрывает старый	retrieval старого подавляется	human hidden state	может повредить locus/ассоциации
+O12	signalling	explicit	F12	настраивается событие	сигнал вызывает возврат к делу	continuous/cyclic	смысл сигнала хранится у пользователя
