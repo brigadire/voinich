@@ -1,0 +1,28 @@
+methodology: exact suffix JS plus a sequence kernel equal to the mean position-wise JS after soft projection
+pairs:
+    - token_a: x014952
+      token_b: x030834
+      sequence_length: 2
+      exact_suffix_similarity: 2.4424906541753444e-15
+      projected_suffix_similarity_full: 0.22777575150941548
+      projected_suffix_similarity_ablated: 0.29828823168029944
+      position_similarity_full:
+        - 0.2888953400357748
+        - 0.1666561629830562
+      position_similarity_ablated:
+        - 0.36096544496530303
+        - 0.23561101839529586
+    - token_a: x014952
+      token_b: x030834
+      sequence_length: 3
+      exact_suffix_similarity: 2.4424906541753444e-15
+      projected_suffix_similarity_full: 0.20955616731370189
+      projected_suffix_similarity_ablated: 0.2875789362037299
+      position_similarity_full:
+        - 0.2888953400357748
+        - 0.1666561629830562
+        - 0.17311699892227472
+      position_similarity_ablated:
+        - 0.36096544496530303
+        - 0.23561101839529586
+        - 0.26616034525059074

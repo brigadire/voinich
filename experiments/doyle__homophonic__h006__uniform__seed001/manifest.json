@@ -1,0 +1,691 @@
+{
+  "experiment_id": "39968d5f5561aa3643179944daeb0f39a59154b2eab116eb37cac2c0232bc1c1",
+  "created_at": "2026-08-21T12:56:16.807143021Z",
+  "git_commit": "82fbfc0cbfc49d91f8a1a1e76e18ba312e0df7f1",
+  "git_dirty": false,
+  "corpus_path": "/home/brigadire/devops/workdir/go/voinich/data_test/transformed/doyle__homophonic__h006__uniform__seed001.txt",
+  "corpus_sha256": "85b8e2a2ed84cbd42858479ece22956747770afcdb141dad6a25899ecbe56dce",
+  "input_mode": "generic",
+  "corpus": {
+    "path": "/home/brigadire/devops/workdir/go/voinich/data_test/transformed/doyle__homophonic__h006__uniform__seed001.txt",
+    "sha256": "85b8e2a2ed84cbd42858479ece22956747770afcdb141dad6a25899ecbe56dce"
+  },
+  "ivtff": null,
+  "go_version": "go1.26.4-X:nodwarf5",
+  "goos": "linux",
+  "goarch": "amd64",
+  "hostname": "adelie",
+  "num_cpu": 12,
+  "executor": "remote",
+  "executor_note": "structural-projection-analyze uses the recorded executor configuration; conditional-regime-analyze is NOT_APPLICABLE because generic corpora lack IVTFF metadata",
+  "workers": [
+    {
+      "kind": "remote",
+      "name": "soa-tech-sentry"
+    },
+    {
+      "kind": "remote",
+      "name": "soa-tech-gitlab02"
+    },
+    {
+      "kind": "remote",
+      "name": "soa-tech-gitlab03"
+    },
+    {
+      "kind": "remote",
+      "name": "soa-tech-gitrunner-hw"
+    },
+    {
+      "kind": "remote",
+      "name": "soa-tech-gitrunner-hw2"
+    },
+    {
+      "kind": "remote",
+      "name": "soa-tech-sentry2"
+    },
+    {
+      "kind": "remote",
+      "name": "tech-services-gitlab"
+    },
+    {
+      "kind": "remote",
+      "name": "tech-services-logger"
+    },
+    {
+      "kind": "remote",
+      "name": "tech-services-monitoring"
+    },
+    {
+      "kind": "remote",
+      "name": "tech-services-nexus"
+    }
+  ],
+  "stages": [
+    {
+      "index": 0,
+      "name": "corpus-readiness-check",
+      "source_dir": "codex_prepare",
+      "args": [
+        "-input",
+        "/home/brigadire/devops/workdir/go/voinich/data_test/transformed/doyle__homophonic__h006__uniform__seed001.txt",
+        "-check"
+      ],
+      "status": "PLANNED",
+      "working_directory": "workspace"
+    },
+    {
+      "index": 1,
+      "name": "dict-gen",
+      "source_dir": ".",
+      "args": [
+        "/home/brigadire/devops/workdir/go/voinich/data_test/transformed/doyle__homophonic__h006__uniform__seed001.txt",
+        "workdir/dataset/dictionary.yaml"
+      ],
+      "status": "PLANNED",
+      "working_directory": "workspace",
+      "artifact_input_root": "workspace/workdir",
+      "artifact_output_root": "workspace/workdir"
+    },
+    {
+      "index": 2,
+      "name": "dict-analyze",
+      "source_dir": "dict-analyze",
+      "args": [
+        "workdir/dataset/dictionary.yaml",
+        "workdir/dataset/tokens_analysis.yaml"
+      ],
+      "status": "PLANNED",
+      "working_directory": "workspace",
+      "artifact_input_root": "workspace/workdir",
+      "artifact_output_root": "workspace/workdir"
+    },
+    {
+      "index": 3,
+      "name": "structural-analyze",
+      "source_dir": "structural-analyze",
+      "args": [
+        "-dictionary",
+        "workdir/dataset/dictionary.yaml",
+        "-analysis",
+        "workdir/dataset/tokens_analysis.yaml",
+        "-output",
+        "workdir/dataset/structural_analysis.yaml"
+      ],
+      "status": "PLANNED",
+      "working_directory": "workspace",
+      "artifact_input_root": "workspace/workdir",
+      "artifact_output_root": "workspace/workdir"
+    },
+    {
+      "index": 4,
+      "name": "sequence-analyze",
+      "source_dir": "sequence-analyze",
+      "args": [
+        "-input",
+        "/home/brigadire/devops/workdir/go/voinich/data_test/transformed/doyle__homophonic__h006__uniform__seed001.txt",
+        "-output",
+        "workdir/sequence_analysis.yaml"
+      ],
+      "status": "PLANNED",
+      "working_directory": "workspace",
+      "artifact_input_root": "workspace/workdir",
+      "artifact_output_root": "workspace/workdir"
+    },
+    {
+      "index": 5,
+      "name": "begin-end-analyze",
+      "source_dir": "begin-end-analyze",
+      "args": [
+        "-executor",
+        "remote",
+        "-workers",
+        "64",
+        "-remote-listen",
+        "0.0.0.0:8443",
+        "-tls-cert",
+        "/home/brigadire/devops/workdir/go/voinich/pki//coordinator.crt",
+        "-tls-key",
+        "/home/brigadire/devops/workdir/go/voinich/pki//coordinator.key",
+        "-client-ca",
+        "/home/brigadire/devops/workdir/go/voinich/pki//ca.crt",
+        "-remote-timeout",
+        "15m",
+        "-remote-retries",
+        "5",
+        "-corpus",
+        "/home/brigadire/devops/workdir/go/voinich/data_test/transformed/doyle__homophonic__h006__uniform__seed001.txt",
+        "-dictionary",
+        "workdir/dataset/dictionary.yaml",
+        "-output-dir",
+        "workdir"
+      ],
+      "status": "PLANNED",
+      "working_directory": "workspace",
+      "artifact_input_root": "workspace/workdir",
+      "artifact_output_root": "workspace/workdir"
+    },
+    {
+      "index": 6,
+      "name": "structural-normalize",
+      "source_dir": "structural-normalize",
+      "args": [
+        "-input",
+        "/home/brigadire/devops/workdir/go/voinich/data_test/transformed/doyle__homophonic__h006__uniform__seed001.txt",
+        "-structural",
+        "workdir/dataset/structural_analysis.yaml",
+        "-output",
+        "workdir/normalized.txt",
+        "-classes",
+        "workdir/structural_classes.yaml"
+      ],
+      "status": "PLANNED",
+      "working_directory": "workspace",
+      "artifact_input_root": "workspace/workdir",
+      "artifact_output_root": "workspace/workdir"
+    },
+    {
+      "index": 7,
+      "name": "normalization-compare",
+      "source_dir": "normalization-compare",
+      "args": [
+        "-executor",
+        "remote",
+        "-workers",
+        "64",
+        "-remote-listen",
+        "0.0.0.0:8443",
+        "-tls-cert",
+        "/home/brigadire/devops/workdir/go/voinich/pki//coordinator.crt",
+        "-tls-key",
+        "/home/brigadire/devops/workdir/go/voinich/pki//coordinator.key",
+        "-client-ca",
+        "/home/brigadire/devops/workdir/go/voinich/pki//ca.crt",
+        "-remote-timeout",
+        "15m",
+        "-remote-retries",
+        "5",
+        "-input",
+        "/home/brigadire/devops/workdir/go/voinich/data_test/transformed/doyle__homophonic__h006__uniform__seed001.txt",
+        "-classes",
+        "workdir/structural_classes.yaml",
+        "-raw-analysis",
+        "workdir/sequence_analysis.yaml",
+        "-normalized-pattern",
+        "workdir/normalized_%s.txt",
+        "-analysis-pattern",
+        "workdir/sequence_analysis_%s.yaml",
+        "-sequence-analyzer",
+        "workdir/bin/sequence-analyze",
+        "-output",
+        "workdir/normalization_comparison.yaml"
+      ],
+      "status": "PLANNED",
+      "working_directory": "workspace",
+      "artifact_input_root": "workspace/workdir",
+      "artifact_output_root": "workspace/workdir"
+    },
+    {
+      "index": 8,
+      "name": "structural-validate",
+      "source_dir": "structural-validate",
+      "args": [
+        "-input",
+        "/home/brigadire/devops/workdir/go/voinich/data_test/transformed/doyle__homophonic__h006__uniform__seed001.txt",
+        "-classes",
+        "workdir/structural_classes.yaml",
+        "-output",
+        "workdir/structural_validation.yaml"
+      ],
+      "status": "PLANNED",
+      "working_directory": "workspace",
+      "artifact_input_root": "workspace/workdir",
+      "artifact_output_root": "workspace/workdir"
+    },
+    {
+      "index": 9,
+      "name": "structural-profile-stability",
+      "source_dir": "structural-profile-stability",
+      "args": [
+        "-input",
+        "/home/brigadire/devops/workdir/go/voinich/data_test/transformed/doyle__homophonic__h006__uniform__seed001.txt",
+        "-classes",
+        "workdir/structural_classes.yaml",
+        "-output",
+        "workdir/structural_profile_stability.yaml"
+      ],
+      "status": "PLANNED",
+      "working_directory": "workspace",
+      "artifact_input_root": "workspace/workdir",
+      "artifact_output_root": "workspace/workdir"
+    },
+    {
+      "index": 10,
+      "name": "structural-reliability",
+      "source_dir": "structural-reliability",
+      "args": [
+        "-input",
+        "/home/brigadire/devops/workdir/go/voinich/data_test/transformed/doyle__homophonic__h006__uniform__seed001.txt",
+        "-classes",
+        "workdir/structural_classes.yaml",
+        "-output",
+        "workdir/structural_reliability.yaml"
+      ],
+      "status": "PLANNED",
+      "working_directory": "workspace",
+      "artifact_input_root": "workspace/workdir",
+      "artifact_output_root": "workspace/workdir"
+    },
+    {
+      "index": 11,
+      "name": "soft-structural-space",
+      "source_dir": "soft-structural-space",
+      "args": [
+        "-dictionary",
+        "workdir/dataset/dictionary.yaml",
+        "-analysis",
+        "workdir/dataset/tokens_analysis.yaml",
+        "-reliability",
+        "workdir/structural_reliability.yaml",
+        "-output",
+        "workdir/soft_structural_space.yaml",
+        "-pairs-output",
+        "workdir/soft_structural_pairs.tsv"
+      ],
+      "status": "PLANNED",
+      "working_directory": "workspace",
+      "artifact_input_root": "workspace/workdir",
+      "artifact_output_root": "workspace/workdir"
+    },
+    {
+      "index": 12,
+      "name": "structural-graphemic",
+      "source_dir": "structural-graphemic",
+      "args": [
+        "-input",
+        "workdir/soft_structural_pairs.tsv",
+        "-output-dir",
+        "workdir"
+      ],
+      "status": "PLANNED",
+      "working_directory": "workspace",
+      "artifact_input_root": "workspace/workdir",
+      "artifact_output_root": "workspace/workdir"
+    },
+    {
+      "index": 13,
+      "name": "structural-pair-decompose",
+      "source_dir": "structural-pair-decompose",
+      "args": [
+        "-dictionary",
+        "workdir/dataset/dictionary.yaml",
+        "-pairs",
+        "workdir/structural_graphemic_pairs.tsv",
+        "-distant",
+        "workdir/structural_distant_top.tsv",
+        "-families",
+        "workdir/structural_distant_families.yaml"
+      ],
+      "status": "PLANNED",
+      "working_directory": "workspace",
+      "artifact_input_root": "workspace/workdir",
+      "artifact_output_root": "workspace/workdir"
+    },
+    {
+      "index": 14,
+      "name": "distance-context-analyze",
+      "source_dir": "distance-context-analyze",
+      "args": [
+        "-corpus",
+        "/home/brigadire/devops/workdir/go/voinich/data_test/transformed/doyle__homophonic__h006__uniform__seed001.txt",
+        "-distant-pairs",
+        "workdir/structural_distant_top.tsv",
+        "-families",
+        "workdir/structural_distant_families.yaml",
+        "-controls",
+        "workdir/pair_controls.tsv",
+        "-output-dir",
+        "workdir"
+      ],
+      "status": "PLANNED",
+      "working_directory": "workspace",
+      "artifact_input_root": "workspace/workdir",
+      "artifact_output_root": "workspace/workdir"
+    },
+    {
+      "index": 15,
+      "name": "local-regime-analyze",
+      "source_dir": "local-regime-analyze",
+      "args": [
+        "-quiet",
+        "-corpus",
+        "/home/brigadire/devops/workdir/go/voinich/data_test/transformed/doyle__homophonic__h006__uniform__seed001.txt",
+        "-distance-pairs",
+        "workdir/distance_context_pairs.yaml",
+        "-controls",
+        "workdir/distance_context_controls.tsv",
+        "-output-dir",
+        "workdir"
+      ],
+      "status": "PLANNED",
+      "working_directory": "workspace",
+      "artifact_input_root": "workspace/workdir",
+      "artifact_output_root": "workspace/workdir"
+    },
+    {
+      "index": 16,
+      "name": "property-trajectory-analyze",
+      "source_dir": "property-trajectory-analyze",
+      "args": [
+        "-quiet",
+        "-corpus",
+        "/home/brigadire/devops/workdir/go/voinich/data_test/transformed/doyle__homophonic__h006__uniform__seed001.txt",
+        "-structural-pairs",
+        "workdir/soft_structural_pairs.tsv",
+        "-distance-pairs",
+        "workdir/distance_context_pairs.yaml",
+        "-controls",
+        "workdir/distance_context_controls.tsv",
+        "-output-dir",
+        "workdir"
+      ],
+      "status": "PLANNED",
+      "working_directory": "workspace",
+      "artifact_input_root": "workspace/workdir",
+      "artifact_output_root": "workspace/workdir"
+    },
+    {
+      "index": 17,
+      "name": "structural-projection-analyze",
+      "source_dir": "structural-projection-analyze",
+      "args": [
+        "-quiet",
+        "-checkpoint",
+        "workdir/structural-projection-checkpoint.json",
+        "-executor",
+        "remote",
+        "-workers",
+        "64",
+        "-remote-listen",
+        "0.0.0.0:8443",
+        "-tls-cert",
+        "/home/brigadire/devops/workdir/go/voinich/pki//coordinator.crt",
+        "-tls-key",
+        "/home/brigadire/devops/workdir/go/voinich/pki//coordinator.key",
+        "-client-ca",
+        "/home/brigadire/devops/workdir/go/voinich/pki//ca.crt",
+        "-remote-timeout",
+        "15m",
+        "-remote-retries",
+        "5",
+        "-corpus",
+        "/home/brigadire/devops/workdir/go/voinich/data_test/transformed/doyle__homophonic__h006__uniform__seed001.txt",
+        "-structural-pairs",
+        "workdir/soft_structural_pairs.tsv",
+        "-distance-pairs",
+        "workdir/distance_context_pairs.yaml",
+        "-families",
+        "workdir/structural_distant_families.yaml",
+        "-output-dir",
+        "workdir"
+      ],
+      "status": "PLANNED",
+      "working_directory": "workspace",
+      "artifact_input_root": "workspace/workdir",
+      "artifact_output_root": "workspace/workdir"
+    },
+    {
+      "index": 18,
+      "name": "global-regime-analyze",
+      "source_dir": "global-regime-analyze",
+      "args": [
+        "-quiet",
+        "-corpus",
+        "/home/brigadire/devops/workdir/go/voinich/data_test/transformed/doyle__homophonic__h006__uniform__seed001.txt",
+        "-output-dir",
+        "workdir"
+      ],
+      "status": "PLANNED",
+      "working_directory": "workspace",
+      "artifact_input_root": "workspace/workdir",
+      "artifact_output_root": "workspace/workdir"
+    },
+    {
+      "index": 19,
+      "name": "metadata-validate",
+      "source_dir": "metadata-validate",
+      "args": null,
+      "status": "NOT_APPLICABLE",
+      "reason": "validates blind boundary/cluster discovery against real external manuscript ground truth (line, paragraph, folio, Currier-language, scribal-hand, quire boundaries parsed from IVTFF); a generic corpus has no independent external segmentation record to validate against, so the analysis has no referent",
+      "working_directory": "workspace",
+      "artifact_input_root": "workspace/workdir",
+      "artifact_output_root": "workspace/workdir"
+    },
+    {
+      "index": 20,
+      "name": "cluster-metadata-global",
+      "source_dir": "cluster-metadata-global",
+      "args": null,
+      "status": "NOT_APPLICABLE",
+      "reason": "performs the whole-search-space multiple-comparison-corrected test of association between real Currier-language/scribal-hand identity and blind distributional clustering; Currier and hand are Voynich-manuscript-specific external labels with no generic-corpus analogue",
+      "working_directory": "workspace",
+      "artifact_input_root": "workspace/workdir",
+      "artifact_output_root": "workspace/workdir"
+    },
+    {
+      "index": 21,
+      "name": "conditional-regime-analyze",
+      "source_dir": "conditional-regime-analyze",
+      "args": null,
+      "status": "NOT_APPLICABLE",
+      "reason": "tests whether distributional/regime structure remains after conditioning on real Currier/hand scribal metadata; the class identity is the experimental variable under test, not a partitioning device, so there is no generic corpus-only analogue of the same hypothesis",
+      "working_directory": "workspace",
+      "artifact_input_root": "workspace/workdir",
+      "artifact_output_root": "workspace/workdir"
+    },
+    {
+      "index": 22,
+      "name": "residual-diagnostic-analyze",
+      "source_dir": "residual-diagnostic-analyze",
+      "args": null,
+      "status": "NOT_APPLICABLE",
+      "reason": "diagnoses metadata association (Currier/hand/joint NMI) in conditional-regime-analyze's frozen residual clusters; without real Currier/hand truth labels there is nothing to diagnose",
+      "working_directory": "workspace",
+      "artifact_input_root": "workspace/workdir",
+      "artifact_output_root": "workspace/workdir"
+    },
+    {
+      "index": 23,
+      "name": "token-relation-validate",
+      "source_dir": "token-relation-validate",
+      "args": [
+        "-quiet",
+        "-executor",
+        "remote",
+        "-workers",
+        "64",
+        "-remote-listen",
+        "0.0.0.0:8443",
+        "-tls-cert",
+        "/home/brigadire/devops/workdir/go/voinich/pki//coordinator.crt",
+        "-tls-key",
+        "/home/brigadire/devops/workdir/go/voinich/pki//coordinator.key",
+        "-client-ca",
+        "/home/brigadire/devops/workdir/go/voinich/pki//ca.crt",
+        "-remote-timeout",
+        "15m",
+        "-remote-retries",
+        "5",
+        "-corpus",
+        "/home/brigadire/devops/workdir/go/voinich/data_test/transformed/doyle__homophonic__h006__uniform__seed001.txt",
+        "-generic-corpus",
+        "-discovery-dir",
+        "workdir",
+        "-output-dir",
+        "workdir/token-relation-validation"
+      ],
+      "status": "PLANNED",
+      "working_directory": "workspace",
+      "artifact_input_root": "workspace/workdir",
+      "artifact_output_root": "workspace/workdir"
+    },
+    {
+      "index": 24,
+      "name": "replicated-local-structure-audit",
+      "source_dir": "replicated-local-structure-audit",
+      "args": [
+        "-quiet",
+        "-executor",
+        "remote",
+        "-workers",
+        "64",
+        "-remote-listen",
+        "0.0.0.0:8443",
+        "-tls-cert",
+        "/home/brigadire/devops/workdir/go/voinich/pki//coordinator.crt",
+        "-tls-key",
+        "/home/brigadire/devops/workdir/go/voinich/pki//coordinator.key",
+        "-client-ca",
+        "/home/brigadire/devops/workdir/go/voinich/pki//ca.crt",
+        "-remote-timeout",
+        "15m",
+        "-remote-retries",
+        "5",
+        "-corpus",
+        "/home/brigadire/devops/workdir/go/voinich/data_test/transformed/doyle__homophonic__h006__uniform__seed001.txt",
+        "-generic-corpus",
+        "-relation-dir",
+        "workdir/token-relation-validation",
+        "-discovery-dir",
+        "workdir",
+        "-output-dir",
+        "workdir/replicated-local-structure"
+      ],
+      "status": "PLANNED",
+      "working_directory": "workspace",
+      "artifact_input_root": "workspace/workdir",
+      "artifact_output_root": "workspace/workdir"
+    },
+    {
+      "index": 25,
+      "name": "higher-order-sequence-validate",
+      "source_dir": "higher-order-sequence-validate",
+      "args": [
+        "-quiet",
+        "-executor",
+        "remote",
+        "-workers",
+        "64",
+        "-remote-listen",
+        "0.0.0.0:8443",
+        "-tls-cert",
+        "/home/brigadire/devops/workdir/go/voinich/pki//coordinator.crt",
+        "-tls-key",
+        "/home/brigadire/devops/workdir/go/voinich/pki//coordinator.key",
+        "-client-ca",
+        "/home/brigadire/devops/workdir/go/voinich/pki//ca.crt",
+        "-remote-timeout",
+        "15m",
+        "-remote-retries",
+        "5",
+        "-corpus",
+        "/home/brigadire/devops/workdir/go/voinich/data_test/transformed/doyle__homophonic__h006__uniform__seed001.txt",
+        "-generic-corpus",
+        "-audit-dir",
+        "workdir/replicated-local-structure",
+        "-discovery-dir",
+        "workdir",
+        "-output-dir",
+        "workdir/higher-order-sequences"
+      ],
+      "status": "PLANNED",
+      "working_directory": "workspace",
+      "artifact_input_root": "workspace/workdir",
+      "artifact_output_root": "workspace/workdir"
+    },
+    {
+      "index": 26,
+      "name": "positional-continuation-validate",
+      "source_dir": "positional-continuation-validate",
+      "args": [
+        "-quiet",
+        "-executor",
+        "remote",
+        "-workers",
+        "64",
+        "-remote-listen",
+        "0.0.0.0:8443",
+        "-tls-cert",
+        "/home/brigadire/devops/workdir/go/voinich/pki//coordinator.crt",
+        "-tls-key",
+        "/home/brigadire/devops/workdir/go/voinich/pki//coordinator.key",
+        "-client-ca",
+        "/home/brigadire/devops/workdir/go/voinich/pki//ca.crt",
+        "-remote-timeout",
+        "15m",
+        "-remote-retries",
+        "5",
+        "-corpus",
+        "/home/brigadire/devops/workdir/go/voinich/data_test/transformed/doyle__homophonic__h006__uniform__seed001.txt",
+        "-generic-corpus",
+        "-higher-order-dir",
+        "workdir/higher-order-sequences",
+        "-output-dir",
+        "workdir/positional-continuation"
+      ],
+      "status": "PLANNED",
+      "working_directory": "workspace",
+      "artifact_input_root": "workspace/workdir",
+      "artifact_output_root": "workspace/workdir"
+    },
+    {
+      "index": 27,
+      "name": "transition-network-validate",
+      "source_dir": "transition-network-validate",
+      "args": [
+        "-quiet",
+        "-executor",
+        "remote",
+        "-workers",
+        "64",
+        "-remote-listen",
+        "0.0.0.0:8443",
+        "-tls-cert",
+        "/home/brigadire/devops/workdir/go/voinich/pki//coordinator.crt",
+        "-tls-key",
+        "/home/brigadire/devops/workdir/go/voinich/pki//coordinator.key",
+        "-client-ca",
+        "/home/brigadire/devops/workdir/go/voinich/pki//ca.crt",
+        "-remote-timeout",
+        "15m",
+        "-remote-retries",
+        "5",
+        "-corpus",
+        "/home/brigadire/devops/workdir/go/voinich/data_test/transformed/doyle__homophonic__h006__uniform__seed001.txt",
+        "-generic-corpus",
+        "-output-dir",
+        "workdir/transition-network"
+      ],
+      "status": "PLANNED",
+      "working_directory": "workspace",
+      "artifact_input_root": "workspace/workdir",
+      "artifact_output_root": "workspace/workdir"
+    },
+    {
+      "index": 28,
+      "name": "vocabulary-growth-analyze",
+      "source_dir": "vocabulary-growth-analyze",
+      "args": [
+        "-input",
+        "/home/brigadire/devops/workdir/go/voinich/data_test/transformed/doyle__homophonic__h006__uniform__seed001.txt",
+        "-output-dir",
+        "workdir/vocabulary-growth"
+      ],
+      "status": "PLANNED",
+      "working_directory": "workspace",
+      "artifact_input_root": "workspace/workdir",
+      "artifact_output_root": "workspace/workdir"
+    }
+  ],
+  "isolation_version": 1,
+  "workspace": "workspace"
+}

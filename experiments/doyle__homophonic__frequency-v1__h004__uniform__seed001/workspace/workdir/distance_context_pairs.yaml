@@ -1,0 +1,114 @@
+parameters:
+    corpus: /home/brigadire/devops/workdir/go/voinich/data_test/transformed/doyle__homophonic__frequency-v1__h004__uniform__seed001.txt
+    effective_support: exp(Shannon entropy in natural-log units)
+    frequency_matching: unordered token counts within a factor of 2
+    js_similarity: 1 - Jensen-Shannon divergence / ln(2)
+    max_distance: 20
+    min_observations: 30
+    primary_mode: continuous
+    reliability: min(1, min(observations_A, observations_B) / min_observations)
+    weighted_overlap: sum_x min(P_A(x),P_B(x))
+token_count: 43713
+pair_count: 0
+right_context_baseline:
+    - distance: 1
+      pair_count: 11708
+      median: 0.05518299330211118
+      p90: 0.2244914630432835
+      p95: 0.29999408333213995
+    - distance: 2
+      pair_count: 11708
+      median: 0.10361187135141359
+      p90: 0.19361118816375167
+      p95: 0.2264060806139766
+    - distance: 3
+      pair_count: 11708
+      median: 0.11599081109133591
+      p90: 0.22295870327225775
+      p95: 0.269693123272184
+    - distance: 4
+      pair_count: 11708
+      median: 0.12272060321619671
+      p90: 0.2260900064514625
+      p95: 0.27111422014609476
+    - distance: 5
+      pair_count: 11708
+      median: 0.12086512211604639
+      p90: 0.230970618557771
+      p95: 0.26757574326107436
+    - distance: 6
+      pair_count: 11708
+      median: 0.12427664512991987
+      p90: 0.22980521887451866
+      p95: 0.27744464170802785
+    - distance: 7
+      pair_count: 11708
+      median: 0.12109322863276206
+      p90: 0.224009742792888
+      p95: 0.27516497561072606
+    - distance: 8
+      pair_count: 11708
+      median: 0.12068702633008821
+      p90: 0.2300279258448048
+      p95: 0.28229759630880424
+    - distance: 9
+      pair_count: 11708
+      median: 0.12292833976880924
+      p90: 0.22143791196816465
+      p95: 0.270211139520838
+    - distance: 10
+      pair_count: 11708
+      median: 0.11924258868213289
+      p90: 0.22522085212390364
+      p95: 0.2745609236265081
+    - distance: 11
+      pair_count: 11708
+      median: 0.12601321075037986
+      p90: 0.2263107252403096
+      p95: 0.27562998073126466
+    - distance: 12
+      pair_count: 11708
+      median: 0.12310873846726911
+      p90: 0.23038628828060148
+      p95: 0.2778678591129742
+    - distance: 13
+      pair_count: 11708
+      median: 0.12270739736469105
+      p90: 0.22477101868619542
+      p95: 0.2723918553409983
+    - distance: 14
+      pair_count: 11708
+      median: 0.12133285046008924
+      p90: 0.22380923580987866
+      p95: 0.270933151404504
+    - distance: 15
+      pair_count: 11708
+      median: 0.12503403409418878
+      p90: 0.23124927806346074
+      p95: 0.28329812040881763
+    - distance: 16
+      pair_count: 11708
+      median: 0.12448314496269697
+      p90: 0.2279697150143678
+      p95: 0.27475660843779304
+    - distance: 17
+      pair_count: 11708
+      median: 0.12257145750115761
+      p90: 0.22869175901827532
+      p95: 0.27139172972591696
+    - distance: 18
+      pair_count: 11708
+      median: 0.11730345366472605
+      p90: 0.22606019114486953
+      p95: 0.27569915461852645
+    - distance: 19
+      pair_count: 11708
+      median: 0.1258417570461181
+      p90: 0.23496974230647383
+      p95: 0.2800432270388705
+    - distance: 20
+      pair_count: 11708
+      median: 0.11595487894959422
+      p90: 0.22162624809114395
+      p95: 0.26742410046346565
+pairs: []

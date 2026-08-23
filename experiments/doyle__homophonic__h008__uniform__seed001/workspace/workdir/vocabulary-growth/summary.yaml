@@ -1,0 +1,48 @@
+final_profile:
+    dis_fraction_of_tokens: 0.07787157138608652
+    dis_fraction_of_types: 0.2778775510204082
+    dis_legomena: 1702
+    hapax: 8159
+    hapax_fraction_of_tokens: 0.1866492805343948
+    hapax_fraction_of_types: 0.6660408163265306
+    heaps_K: 2.755629716066938
+    heaps_R2: 0.9978066175395961
+    heaps_beta: 0.7969517391046385
+    singleton_to_doubleton_ratio: 4.793772032902468
+    total_tokens: 43713
+    tris_legomena: 654
+    type_token_ratio: 0.2802370004346533
+    unique_tokens: 12250
+heaps_fit:
+    k: 2.755629716066938
+    beta: 0.7969517391046385
+    r2: 0.9978066175395961
+    sse: 0.05572073075794455
+    maxabsresidual: 0.11939618568957933
+    nmin: 100
+    nmax: 43713
+    points: 10
+parameters:
+    checkpoints:
+        - 100
+        - 200
+        - 500
+        - 1000
+        - 2000
+        - 4000
+        - 8000
+        - 16000
+        - 32000
+        - 43713
+    windowsizes:
+        - 500
+        - 1000
+        - 2000
+    segmentcounts:
+        - 4
+        - 8
+    nullpermutations: 100
+    seed: 1
+    fitminn: 0
+    fitmaxn: 0
+total_tokens: 43713

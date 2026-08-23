@@ -1,0 +1,49 @@
+ExperimentID: 024758fa7ef6ebd8d0380a2c7742e00bd0394c46004a5b3370253d86652855b3
+Input mode: generic
+Corpus: /home/brigadire/devops/workdir/go/voinich/data_test/transformed/doyle__homophonic__h004__uniform__seed001.txt
+Corpus SHA256: d44a2dabd08cf969d23a2ec4e91f719eb9da85f49f966184f31aa40f745dead9
+Stage: structural-reliability
+Working directory: experiments/doyle__homophonic__h004__uniform__seed001-v1/workspace
+Inputs:
+  workdir/begin_end_candidates.yaml
+  workdir/begin_end_report.md
+  workdir/begin_end_top.tsv
+  workdir/dataset/dictionary.yaml
+  workdir/dataset/structural_analysis.yaml
+  workdir/dataset/tokens_analysis.yaml
+  workdir/normalization_comparison.yaml
+  workdir/normalized_070.txt
+  workdir/normalized_075.txt
+  workdir/normalized_080.txt
+  workdir/normalized_085.txt
+  workdir/normalized_090.txt
+  workdir/sequence_analysis.yaml
+  workdir/sequence_analysis_070.yaml
+  workdir/sequence_analysis_075.yaml
+  workdir/sequence_analysis_080.yaml
+  workdir/sequence_analysis_085.yaml
+  workdir/sequence_analysis_090.yaml
+  workdir/structural_classes.yaml
+  workdir/structural_profile_stability.yaml
+  workdir/structural_validation.yaml
+Outputs:
+  registered in artifacts.json after completion
+
+loaded corpus: lines=4462 occurrences=43713 unique_tokens=9599
+token stability min_count=10 eligible=630
+token stability min_count=20 eligible=333
+token stability min_count=40 eligible=163
+token stability min_count=80 eligible=79
+token stability min_count=160 eligible=36
+token stability min_count=320 eligible=4
+structural-reliability bootstrap 25/200
+structural-reliability bootstrap 50/200
+structural-reliability bootstrap 75/200
+structural-reliability bootstrap 100/200
+structural-reliability bootstrap 125/200
+structural-reliability bootstrap 150/200
+structural-reliability bootstrap 175/200
+structural-reliability bootstrap 200/200
+master candidate pairs=5212 bootstrap runs=200
+Structural reliability written to workdir/structural_reliability.yaml
+elapsed runtime: 25.659s

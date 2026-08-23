@@ -1,0 +1,847 @@
+parameters:
+    block_sizes:
+        - 50
+        - 100
+        - 200
+    corpus: /home/brigadire/devops/workdir/go/voinich/data_test/transformed/doyle__homophonic__h006__weighted__seed001.txt
+    gap_sweep:
+        - 10
+        - 20
+        - 30
+        - 50
+    primary_gap: 20
+    primary_radius: 100
+    radius_sweep:
+        - 50
+        - 100
+        - 200
+        - 500
+    regime_controls_k: 5
+    respect_line_boundaries: false
+    seed: 150015
+    window_sizes:
+        - 50
+        - 100
+        - 200
+        - 500
+    window_step: 10
+pairs:
+    - token_a: x014952
+      token_b: x030834
+      count_a: 149
+      count_b: 155
+      regime_sweep:
+        - radius: 50
+          gap: 10
+          side: symmetric
+          js_similarity: 0.7265403295639674
+          weighted_overlap: 0.6133546222126044
+          support_jaccard: 0.3091684434968017
+          cosine_similarity: 0.9318624630641098
+          centroid_distance_a: 0
+          centroid_distance_b: 0
+          mean_pairwise_js_distance_a: 0
+          mean_pairwise_js_distance_b: 0
+        - radius: 50
+          gap: 10
+          side: left
+          js_similarity: 0.6514881892202891
+          weighted_overlap: 0.5481911669192515
+          support_jaccard: 0.2440389294403893
+          cosine_similarity: 0.8934965811675001
+          centroid_distance_a: 0
+          centroid_distance_b: 0
+          mean_pairwise_js_distance_a: 0
+          mean_pairwise_js_distance_b: 0
+        - radius: 50
+          gap: 10
+          side: right
+          js_similarity: 0.6436373048227713
+          weighted_overlap: 0.5389846287075175
+          support_jaccard: 0.24015369836695485
+          cosine_similarity: 0.8971677090756988
+          centroid_distance_a: 0
+          centroid_distance_b: 0
+          mean_pairwise_js_distance_a: 0
+          mean_pairwise_js_distance_b: 0
+        - radius: 50
+          gap: 20
+          side: symmetric
+          js_similarity: 0.6992177992796084
+          weighted_overlap: 0.5948986072021428
+          support_jaccard: 0.2824761904761905
+          cosine_similarity: 0.9273546199005132
+          centroid_distance_a: 0
+          centroid_distance_b: 0
+          mean_pairwise_js_distance_a: 0
+          mean_pairwise_js_distance_b: 0
+        - radius: 50
+          gap: 20
+          side: left
+          js_similarity: 0.6181734199759303
+          weighted_overlap: 0.5204633037454044
+          support_jaccard: 0.2285797269822829
+          cosine_similarity: 0.8779593652677024
+          centroid_distance_a: 0
+          centroid_distance_b: 0
+          mean_pairwise_js_distance_a: 0
+          mean_pairwise_js_distance_b: 0
+        - radius: 50
+          gap: 20
+          side: right
+          js_similarity: 0.6144051677295483
+          weighted_overlap: 0.5147116980587474
+          support_jaccard: 0.22212568780770345
+          cosine_similarity: 0.877589348709113
+          centroid_distance_a: 0
+          centroid_distance_b: 0
+          mean_pairwise_js_distance_a: 0
+          mean_pairwise_js_distance_b: 0
+        - radius: 50
+          gap: 30
+          side: symmetric
+          js_similarity: 0.6494315530273768
+          weighted_overlap: 0.5508010391859768
+          support_jaccard: 0.24478914202617547
+          cosine_similarity: 0.9000977781365825
+          centroid_distance_a: 0
+          centroid_distance_b: 0
+          mean_pairwise_js_distance_a: 0
+          mean_pairwise_js_distance_b: 0
+        - radius: 50
+          gap: 30
+          side: left
+          js_similarity: 0.5671722396223218
+          weighted_overlap: 0.47462870751244746
+          support_jaccard: 0.206367472190257
+          cosine_similarity: 0.8315749583842555
+          centroid_distance_a: 0
+          centroid_distance_b: 0
+          mean_pairwise_js_distance_a: 0
+          mean_pairwise_js_distance_b: 0
+        - radius: 50
+          gap: 30
+          side: right
+          js_similarity: 0.559017613484242
+          weighted_overlap: 0.46608789781337817
+          support_jaccard: 0.19809885931558935
+          cosine_similarity: 0.8339305117995827
+          centroid_distance_a: 0
+          centroid_distance_b: 0
+          mean_pairwise_js_distance_a: 0
+          mean_pairwise_js_distance_b: 0
+        - radius: 100
+          gap: 10
+          side: symmetric
+          js_similarity: 0.818230074891165
+          weighted_overlap: 0.7004700392100278
+          support_jaccard: 0.4414026095060578
+          cosine_similarity: 0.9618138872299101
+          centroid_distance_a: 0
+          centroid_distance_b: 0
+          mean_pairwise_js_distance_a: 0
+          mean_pairwise_js_distance_b: 0
+        - radius: 100
+          gap: 10
+          side: left
+          js_similarity: 0.7470235532815321
+          weighted_overlap: 0.6362642226552219
+          support_jaccard: 0.3271469015413652
+          cosine_similarity: 0.9389478273778852
+          centroid_distance_a: 0
+          centroid_distance_b: 0
+          mean_pairwise_js_distance_a: 0
+          mean_pairwise_js_distance_b: 0
+        - radius: 100
+          gap: 10
+          side: right
+          js_similarity: 0.7414995816940065
+          weighted_overlap: 0.6314065093454623
+          support_jaccard: 0.3196192815474363
+          cosine_similarity: 0.9447954851849051
+          centroid_distance_a: 0
+          centroid_distance_b: 0
+          mean_pairwise_js_distance_a: 0
+          mean_pairwise_js_distance_b: 0
+        - radius: 100
+          gap: 20
+          side: symmetric
+          js_similarity: 0.8096497949233887
+          weighted_overlap: 0.6955201342281926
+          support_jaccard: 0.4173818445545751
+          cosine_similarity: 0.9630620320855994
+          centroid_distance_a: 0.6952995001728332
+          centroid_distance_b: 0.6983083634785293
+          mean_pairwise_js_distance_a: 0.817625512860549
+          mean_pairwise_js_distance_b: 0.8183121348464564
+        - radius: 100
+          gap: 20
+          side: left
+          js_similarity: 0.736124402003064
+          weighted_overlap: 0.6270675470881182
+          support_jaccard: 0.31361143426956956
+          cosine_similarity: 0.9388057572813059
+          centroid_distance_a: 0
+          centroid_distance_b: 0
+          mean_pairwise_js_distance_a: 0
+          mean_pairwise_js_distance_b: 0
+        - radius: 100
+          gap: 20
+          side: right
+          js_similarity: 0.7304570947630008
+          weighted_overlap: 0.6230666810998092
+          support_jaccard: 0.30203086921202277
+          cosine_similarity: 0.9432962856299743
+          centroid_distance_a: 0
+          centroid_distance_b: 0
+          mean_pairwise_js_distance_a: 0
+          mean_pairwise_js_distance_b: 0
+        - radius: 100
+          gap: 30
+          side: symmetric
+          js_similarity: 0.7989079309170003
+          weighted_overlap: 0.6878359570717134
+          support_jaccard: 0.39684156902699946
+          cosine_similarity: 0.9615807854720427
+          centroid_distance_a: 0
+          centroid_distance_b: 0
+          mean_pairwise_js_distance_a: 0
+          mean_pairwise_js_distance_b: 0
+        - radius: 100
+          gap: 30
+          side: left
+          js_similarity: 0.7236832128020125
+          weighted_overlap: 0.6160430519902172
+          support_jaccard: 0.3005162898344312
+          cosine_similarity: 0.9359695993792793
+          centroid_distance_a: 0
+          centroid_distance_b: 0
+          mean_pairwise_js_distance_a: 0
+          mean_pairwise_js_distance_b: 0
+        - radius: 100
+          gap: 30
+          side: right
+          js_similarity: 0.7170245307059951
+          weighted_overlap: 0.6120854854173674
+          support_jaccard: 0.29120111731843573
+          cosine_similarity: 0.9388520487764459
+          centroid_distance_a: 0
+          centroid_distance_b: 0
+          mean_pairwise_js_distance_a: 0
+          mean_pairwise_js_distance_b: 0
+        - radius: 100
+          gap: 50
+          side: symmetric
+          js_similarity: 0.7667889245947306
+          weighted_overlap: 0.6615644078804888
+          support_jaccard: 0.3461196682464455
+          cosine_similarity: 0.956718864370071
+          centroid_distance_a: 0
+          centroid_distance_b: 0
+          mean_pairwise_js_distance_a: 0
+          mean_pairwise_js_distance_b: 0
+        - radius: 100
+          gap: 50
+          side: left
+          js_similarity: 0.6868414065933514
+          weighted_overlap: 0.5859311539294277
+          support_jaccard: 0.2669391266939127
+          cosine_similarity: 0.9251600811601624
+          centroid_distance_a: 0
+          centroid_distance_b: 0
+          mean_pairwise_js_distance_a: 0
+          mean_pairwise_js_distance_b: 0
+        - radius: 100
+          gap: 50
+          side: right
+          js_similarity: 0.6853882976503877
+          weighted_overlap: 0.5882641264342996
+          support_jaccard: 0.26649746192893403
+          cosine_similarity: 0.9296749302977442
+          centroid_distance_a: 0
+          centroid_distance_b: 0
+          mean_pairwise_js_distance_a: 0
+          mean_pairwise_js_distance_b: 0
+        - radius: 200
+          gap: 10
+          side: symmetric
+          js_similarity: 0.8841234573317576
+          weighted_overlap: 0.7673691768268939
+          support_jaccard: 0.6188593456558268
+          cosine_similarity: 0.9782319522457005
+          centroid_distance_a: 0
+          centroid_distance_b: 0
+          mean_pairwise_js_distance_a: 0
+          mean_pairwise_js_distance_b: 0
+        - radius: 200
+          gap: 10
+          side: left
+          js_similarity: 0.8287621552771555
+          weighted_overlap: 0.7157967662173468
+          support_jaccard: 0.4619747655978701
+          cosine_similarity: 0.9674519465577234
+          centroid_distance_a: 0
+          centroid_distance_b: 0
+          mean_pairwise_js_distance_a: 0
+          mean_pairwise_js_distance_b: 0
+        - radius: 200
+          gap: 10
+          side: right
+          js_similarity: 0.8256325131932432
+          weighted_overlap: 0.7125125534684887
+          support_jaccard: 0.452217649748514
+          cosine_similarity: 0.9699521919083683
+          centroid_distance_a: 0
+          centroid_distance_b: 0
+          mean_pairwise_js_distance_a: 0
+          mean_pairwise_js_distance_b: 0
+        - radius: 200
+          gap: 20
+          side: symmetric
+          js_similarity: 0.8816025041772233
+          weighted_overlap: 0.7679958356641465
+          support_jaccard: 0.6059790732436472
+          cosine_similarity: 0.9790008909897037
+          centroid_distance_a: 0
+          centroid_distance_b: 0
+          mean_pairwise_js_distance_a: 0
+          mean_pairwise_js_distance_b: 0
+        - radius: 200
+          gap: 20
+          side: left
+          js_similarity: 0.8246393457297124
+          weighted_overlap: 0.7133913064395888
+          support_jaccard: 0.45262785764789065
+          cosine_similarity: 0.9684413909065822
+          centroid_distance_a: 0
+          centroid_distance_b: 0
+          mean_pairwise_js_distance_a: 0
+          mean_pairwise_js_distance_b: 0
+        - radius: 200
+          gap: 20
+          side: right
+          js_similarity: 0.8213322315122521
+          weighted_overlap: 0.7104533027450646
+          support_jaccard: 0.4400559245019224
+          cosine_similarity: 0.9698117801430858
+          centroid_distance_a: 0
+          centroid_distance_b: 0
+          mean_pairwise_js_distance_a: 0
+          mean_pairwise_js_distance_b: 0
+        - radius: 200
+          gap: 30
+          side: symmetric
+          js_similarity: 0.8780121006757062
+          weighted_overlap: 0.7661718157313502
+          support_jaccard: 0.5906714917571371
+          cosine_similarity: 0.9791213446585656
+          centroid_distance_a: 0
+          centroid_distance_b: 0
+          mean_pairwise_js_distance_a: 0
+          mean_pairwise_js_distance_b: 0
+        - radius: 200
+          gap: 30
+          side: left
+          js_similarity: 0.8199126452128721
+          weighted_overlap: 0.7101926823987953
+          support_jaccard: 0.4426544842510219
+          cosine_similarity: 0.968307272626599
+          centroid_distance_a: 0
+          centroid_distance_b: 0
+          mean_pairwise_js_distance_a: 0
+          mean_pairwise_js_distance_b: 0
+        - radius: 200
+          gap: 30
+          side: right
+          js_similarity: 0.8157421720002711
+          weighted_overlap: 0.7064363397094138
+          support_jaccard: 0.42785773759961937
+          cosine_similarity: 0.9692823050552032
+          centroid_distance_a: 0
+          centroid_distance_b: 0
+          mean_pairwise_js_distance_a: 0
+          mean_pairwise_js_distance_b: 0
+        - radius: 200
+          gap: 50
+          side: symmetric
+          js_similarity: 0.8680843731984462
+          weighted_overlap: 0.7582718416234169
+          support_jaccard: 0.5558187435633367
+          cosine_similarity: 0.9789412094242523
+          centroid_distance_a: 0
+          centroid_distance_b: 0
+          mean_pairwise_js_distance_a: 0
+          mean_pairwise_js_distance_b: 0
+        - radius: 200
+          gap: 50
+          side: left
+          js_similarity: 0.8074598402261809
+          weighted_overlap: 0.7009722162084414
+          support_jaccard: 0.41606850522604205
+          cosine_similarity: 0.9678324548457615
+          centroid_distance_a: 0
+          centroid_distance_b: 0
+          mean_pairwise_js_distance_a: 0
+          mean_pairwise_js_distance_b: 0
+        - radius: 200
+          gap: 50
+          side: right
+          js_similarity: 0.8039550801289983
+          weighted_overlap: 0.6964482436634435
+          support_jaccard: 0.4050125313283208
+          cosine_similarity: 0.9676863183991257
+          centroid_distance_a: 0
+          centroid_distance_b: 0
+          mean_pairwise_js_distance_a: 0
+          mean_pairwise_js_distance_b: 0
+        - radius: 500
+          gap: 10
+          side: symmetric
+          js_similarity: 0.9471681574244668
+          weighted_overlap: 0.8388604039826433
+          support_jaccard: 0.8910148189833051
+          cosine_similarity: 0.9896047370194195
+          centroid_distance_a: 0
+          centroid_distance_b: 0
+          mean_pairwise_js_distance_a: 0
+          mean_pairwise_js_distance_b: 0
+        - radius: 500
+          gap: 10
+          side: left
+          js_similarity: 0.9041359634489912
+          weighted_overlap: 0.7896813449363537
+          support_jaccard: 0.6971163150764467
+          cosine_similarity: 0.9830147905942166
+          centroid_distance_a: 0
+          centroid_distance_b: 0
+          mean_pairwise_js_distance_a: 0
+          mean_pairwise_js_distance_b: 0
+        - radius: 500
+          gap: 10
+          side: right
+          js_similarity: 0.9048135214583171
+          weighted_overlap: 0.7907788764328663
+          support_jaccard: 0.7058595641646489
+          cosine_similarity: 0.9858921050143662
+          centroid_distance_a: 0
+          centroid_distance_b: 0
+          mean_pairwise_js_distance_a: 0
+          mean_pairwise_js_distance_b: 0
+        - radius: 500
+          gap: 20
+          side: symmetric
+          js_similarity: 0.9472433193224434
+          weighted_overlap: 0.8396309613837261
+          support_jaccard: 0.8891389983117614
+          cosine_similarity: 0.9899160216711164
+          centroid_distance_a: 0
+          centroid_distance_b: 0
+          mean_pairwise_js_distance_a: 0
+          mean_pairwise_js_distance_b: 0
+        - radius: 500
+          gap: 20
+          side: left
+          js_similarity: 0.9030260786801424
+          weighted_overlap: 0.7893392222636099
+          support_jaccard: 0.6922106896886215
+          cosine_similarity: 0.983347312817344
+          centroid_distance_a: 0
+          centroid_distance_b: 0
+          mean_pairwise_js_distance_a: 0
+          mean_pairwise_js_distance_b: 0
+        - radius: 500
+          gap: 20
+          side: right
+          js_similarity: 0.90387382081306
+          weighted_overlap: 0.7905983126478302
+          support_jaccard: 0.7009218825812712
+          cosine_similarity: 0.9859722355194497
+          centroid_distance_a: 0
+          centroid_distance_b: 0
+          mean_pairwise_js_distance_a: 0
+          mean_pairwise_js_distance_b: 0
+        - radius: 500
+          gap: 30
+          side: symmetric
+          js_similarity: 0.9469348685576828
+          weighted_overlap: 0.8397627795639958
+          support_jaccard: 0.8859501031701369
+          cosine_similarity: 0.9900610853602517
+          centroid_distance_a: 0
+          centroid_distance_b: 0
+          mean_pairwise_js_distance_a: 0
+          mean_pairwise_js_distance_b: 0
+        - radius: 500
+          gap: 30
+          side: left
+          js_similarity: 0.9018334596634853
+          weighted_overlap: 0.7881838081766336
+          support_jaccard: 0.6866556516668286
+          cosine_similarity: 0.9833960410653523
+          centroid_distance_a: 0
+          centroid_distance_b: 0
+          mean_pairwise_js_distance_a: 0
+          mean_pairwise_js_distance_b: 0
+        - radius: 500
+          gap: 30
+          side: right
+          js_similarity: 0.9023515297366048
+          weighted_overlap: 0.7894512258671902
+          support_jaccard: 0.6945065629557609
+          cosine_similarity: 0.9858928828587354
+          centroid_distance_a: 0
+          centroid_distance_b: 0
+          mean_pairwise_js_distance_a: 0
+          mean_pairwise_js_distance_b: 0
+        - radius: 500
+          gap: 50
+          side: symmetric
+          js_similarity: 0.946315038421387
+          weighted_overlap: 0.8396384653999127
+          support_jaccard: 0.8786344025511161
+          cosine_similarity: 0.9903917138926318
+          centroid_distance_a: 0
+          centroid_distance_b: 0
+          mean_pairwise_js_distance_a: 0
+          mean_pairwise_js_distance_b: 0
+        - radius: 500
+          gap: 50
+          side: left
+          js_similarity: 0.8989505736432345
+          weighted_overlap: 0.7855536566424459
+          support_jaccard: 0.6749926822128988
+          cosine_similarity: 0.9835152807903614
+          centroid_distance_a: 0
+          centroid_distance_b: 0
+          mean_pairwise_js_distance_a: 0
+          mean_pairwise_js_distance_b: 0
+        - radius: 500
+          gap: 50
+          side: right
+          js_similarity: 0.8995855673793647
+          weighted_overlap: 0.786856450401471
+          support_jaccard: 0.6813122437024018
+          cosine_similarity: 0.9858235983838409
+          centroid_distance_a: 0
+          centroid_distance_b: 0
+          mean_pairwise_js_distance_a: 0
+          mean_pairwise_js_distance_b: 0
+      distance_profile:
+        - distance: 1
+          observed_js: 0.28598190002278634
+          regime_expected_js: 0.726868390902229
+          residual_excess: -0.44088649087944265
+          global_shuffle_js: 0.20162750367192916
+          line_shuffle_js: 0.22931860466108478
+          local_block_shuffle_js: 0.16449711514140922
+          retained_fraction: 0.5752011408005279
+          frequency_matched_shuffle_baseline_js: 0.20162750367192916
+          retained_effect: -0.4401713501224367
+        - distance: 2
+          observed_js: 0.16376962972880016
+          regime_expected_js: 0.7389395635113261
+          residual_excess: -0.5751699337825259
+          global_shuffle_js: 0.18043101066720912
+          line_shuffle_js: 0.18748876854980212
+          local_block_shuffle_js: 0.1816264341061423
+          retained_fraction: 1.1090361162012317
+          frequency_matched_shuffle_baseline_js: 0.18043101066720912
+          retained_effect: -0.07174816081285292
+        - distance: 3
+          observed_js: 0.1702263750905526
+          regime_expected_js: 0.73872854303768
+          residual_excess: -0.5685021679471274
+          global_shuffle_js: 0.17710630134098337
+          line_shuffle_js: 0.1762469369934273
+          local_block_shuffle_js: 0.16546648338330902
+          retained_fraction: 0.9720378718943434
+          frequency_matched_shuffle_baseline_js: 0.17710630134098337
+          retained_effect: 1.6918521411396754
+        - distance: 4
+          observed_js: 0.15058598990934868
+          regime_expected_js: 0.7463232065623333
+          residual_excess: -0.5957372166529846
+          global_shuffle_js: 0.2009644815730517
+          line_shuffle_js: 0.180182271102044
+          local_block_shuffle_js: 0.16340280725466108
+          retained_fraction: 1.0851129467822869
+          frequency_matched_shuffle_baseline_js: 0.2009644815730517
+          retained_effect: 0.7455894981757317
+        - distance: 5
+          observed_js: 0.18476343645585758
+          regime_expected_js: 0.7360540460533876
+          residual_excess: -0.5512906095975301
+          global_shuffle_js: 0.16657129609043386
+          line_shuffle_js: 0.13254371407912047
+          local_block_shuffle_js: 0.1940596647571264
+          retained_fraction: 1.0503142206033271
+          frequency_matched_shuffle_baseline_js: 0.16657129609043386
+          retained_effect: 1.5110024502085198
+        - distance: 6
+          observed_js: 0.17263574610428134
+          regime_expected_js: 0.7236895228849201
+          residual_excess: -0.5510537767806387
+          global_shuffle_js: 0.2128941692957319
+          line_shuffle_js: 0.14493574313450985
+          local_block_shuffle_js: 0.17661892070898344
+          retained_fraction: 1.0230727105746458
+          frequency_matched_shuffle_baseline_js: 0.2128941692957319
+          retained_effect: 0.9010598456437314
+        - distance: 7
+          observed_js: 0.16046710329621927
+          regime_expected_js: 0.7439949370219239
+          residual_excess: -0.5835278337257046
+          global_shuffle_js: 0.17586831944381132
+          line_shuffle_js: 0.16293001886957315
+          local_block_shuffle_js: 0.1952563644803109
+          retained_fraction: 1.2167999575581
+          frequency_matched_shuffle_baseline_js: 0.17586831944381132
+          retained_effect: -1.2588645500914462
+        - distance: 8
+          observed_js: 0.13149642548356844
+          regime_expected_js: 0.7357095946984022
+          residual_excess: -0.6042131692148338
+          global_shuffle_js: 0.19200244438524916
+          line_shuffle_js: 0.1541397389689524
+          local_block_shuffle_js: 0.18918452946779465
+          retained_fraction: 1.4387047311140395
+          frequency_matched_shuffle_baseline_js: 0.19200244438524916
+          retained_effect: 0.046572472765618204
+        - distance: 9
+          observed_js: 0.21381779487658825
+          regime_expected_js: 0.7131226979865355
+          residual_excess: -0.49930490310994724
+          global_shuffle_js: 0.2003716331924401
+          line_shuffle_js: 0.16193390175056066
+          local_block_shuffle_js: 0.17263642392921283
+          retained_fraction: 0.8073997022972547
+          frequency_matched_shuffle_baseline_js: 0.2003716331924401
+          retained_effect: -2.062685985393489
+        - distance: 10
+          observed_js: 0.1709821964405116
+          regime_expected_js: 0.7390900466392232
+          residual_excess: -0.5681078501987116
+          global_shuffle_js: 0.20956958315111052
+          line_shuffle_js: 0.14986645949587596
+          local_block_shuffle_js: 0.1894108862728495
+          retained_fraction: 1.1077813375660408
+          frequency_matched_shuffle_baseline_js: 0.20956958315111052
+          retained_effect: 0.5224167427934158
+        - distance: 11
+          observed_js: 0.20066165970549543
+          regime_expected_js: 0.7487395821018534
+          residual_excess: -0.548077922396358
+          global_shuffle_js: 0.15227590629979781
+          line_shuffle_js: 0.18271232947112892
+          local_block_shuffle_js: 0.1410503070151571
+          retained_fraction: 0.7029260458732975
+          frequency_matched_shuffle_baseline_js: 0.15227590629979781
+          retained_effect: -0.23200215961334691
+        - distance: 12
+          observed_js: 0.19554478334888592
+          regime_expected_js: 0.7333495802011254
+          residual_excess: -0.5378047968522395
+          global_shuffle_js: 0.19787862127770806
+          line_shuffle_js: 0.18111026496981586
+          local_block_shuffle_js: 0.15443141422020815
+          retained_fraction: 0.7897495989175821
+          frequency_matched_shuffle_baseline_js: 0.19787862127770806
+          retained_effect: 18.616205744598243
+        - distance: 13
+          observed_js: 0.15443666754498409
+          regime_expected_js: 0.734237369999129
+          residual_excess: -0.579800702454145
+          global_shuffle_js: 0.21985858175299444
+          line_shuffle_js: 0.1755414733888917
+          local_block_shuffle_js: 0.1907114109052859
+          retained_fraction: 1.2348842663918254
+          frequency_matched_shuffle_baseline_js: 0.21985858175299444
+          retained_effect: 0.4455261084998904
+        - distance: 14
+          observed_js: 0.18073033419750983
+          regime_expected_js: 0.7298715049269352
+          residual_excess: -0.5491411707294254
+          global_shuffle_js: 0.16018879933562324
+          line_shuffle_js: 0.16374531321398145
+          local_block_shuffle_js: 0.1961575553846734
+          retained_fraction: 1.0853604418741571
+          frequency_matched_shuffle_baseline_js: 0.16018879933562324
+          retained_effect: 1.7510257286463877
+        - distance: 15
+          observed_js: 0.1897337272186036
+          regime_expected_js: 0.7449786237851874
+          residual_excess: -0.5552448965665838
+          global_shuffle_js: 0.1513328343767134
+          line_shuffle_js: 0.19069860151300844
+          local_block_shuffle_js: 0.12910905064957123
+          retained_fraction: 0.6804749611059765
+          frequency_matched_shuffle_baseline_js: 0.1513328343767134
+          retained_effect: -0.5787309117692969
+        - distance: 16
+          observed_js: 0.1551272282171291
+          regime_expected_js: 0.7451654627621236
+          residual_excess: -0.5900382345449945
+          global_shuffle_js: 0.19287741892768284
+          line_shuffle_js: 0.1698653828935992
+          local_block_shuffle_js: 0.167463855244255
+          retained_fraction: 1.079525865116719
+          frequency_matched_shuffle_baseline_js: 0.19287741892768284
+          retained_effect: 0.6732035840105842
+        - distance: 17
+          observed_js: 0.1913262417437126
+          regime_expected_js: 0.7289894260365409
+          residual_excess: -0.5376631842928283
+          global_shuffle_js: 0.18394244160554207
+          line_shuffle_js: 0.1691722349127609
+          local_block_shuffle_js: 0.1667258959658164
+          retained_fraction: 0.8714219986046184
+          frequency_matched_shuffle_baseline_js: 0.18394244160554207
+          retained_effect: -2.331664633055924
+        - distance: 18
+          observed_js: 0.19704724670987228
+          regime_expected_js: 0.7417161630298653
+          residual_excess: -0.544668916319993
+          global_shuffle_js: 0.1586981837301591
+          line_shuffle_js: 0.1513873525770173
+          local_block_shuffle_js: 0.14906014699854128
+          retained_fraction: 0.7564690676343929
+          frequency_matched_shuffle_baseline_js: 0.1586981837301591
+          retained_effect: -0.25132391726797526
+        - distance: 19
+          observed_js: 0.1447510709718942
+          regime_expected_js: 0.7179718185096019
+          residual_excess: -0.5732207475377077
+          global_shuffle_js: 0.15297717876400085
+          line_shuffle_js: 0.18625637922052218
+          local_block_shuffle_js: 0.15551456023426166
+          retained_fraction: 1.074358615726286
+          frequency_matched_shuffle_baseline_js: 0.15297717876400085
+          retained_effect: -0.3084546828690418
+        - distance: 20
+          observed_js: 0.11161173948965541
+          regime_expected_js: 0.743187842947765
+          residual_excess: -0.6315761034581096
+          global_shuffle_js: 0.1409204679616891
+          line_shuffle_js: 0.15063989173620784
+          local_block_shuffle_js: 0.16313130354949612
+          retained_fraction: 1.4615962827513833
+          frequency_matched_shuffle_baseline_js: 0.1409204679616891
+          retained_effect: -0.7578232405749203
+      observed_1_5: 0.19106546624146908
+      observed_6_10: 0.16987985324023377
+      observed_11_20: 0.17209706991477425
+      regime_expected_1_5: 0.7373827500133912
+      regime_expected_6_10: 0.731121359846201
+      regime_expected_11_20: 0.7368207374300126
+      residual_1_5: -0.5463172837719221
+      residual_6_10: -0.5612415066059672
+      residual_11_20: -0.5647236675152384
+      regime_concentration_a: 0.0019545501891806275
+      regime_concentration_b: 0.00197566662330918
+      primary_regime_js: 0.8096497949233887
+correlations:
+    - metric: regime_js_vs_distance_js_1_5
+      "n": 1
+      pearson: 0
+      spearman: 0
+window_separation:
+    - window_size: 50
+      separation: 1
+      comparisons: 4366
+      mean_js_distance: 0.18404423723089786
+      mean_similarity: 0.8159557627691021
+    - window_size: 50
+      separation: 2
+      comparisons: 4365
+      mean_js_distance: 0.3669766999728551
+      mean_similarity: 0.6330233000271449
+    - window_size: 50
+      separation: 5
+      comparisons: 4362
+      mean_js_distance: 0.9081489228265861
+      mean_similarity: 0.0918510771734139
+    - window_size: 50
+      separation: 10
+      comparisons: 4357
+      mean_js_distance: 0.9142324090747931
+      mean_similarity: 0.08576759092520692
+    - window_size: 50
+      separation: 20
+      comparisons: 4347
+      mean_js_distance: 0.9164938483826633
+      mean_similarity: 0.08350615161733665
+    - window_size: 100
+      separation: 1
+      comparisons: 4361
+      mean_js_distance: 0.08695658527976642
+      mean_similarity: 0.9130434147202335
+    - window_size: 100
+      separation: 2
+      comparisons: 4360
+      mean_js_distance: 0.17357983987357845
+      mean_similarity: 0.8264201601264216
+    - window_size: 100
+      separation: 5
+      comparisons: 4357
+      mean_js_distance: 0.4314236542923238
+      mean_similarity: 0.5685763457076762
+    - window_size: 100
+      separation: 10
+      comparisons: 4352
+      mean_js_distance: 0.8534977947519272
+      mean_similarity: 0.14650220524807278
+    - window_size: 100
+      separation: 20
+      comparisons: 4342
+      mean_js_distance: 0.8589498492035561
+      mean_similarity: 0.1410501507964439
+    - window_size: 200
+      separation: 1
+      comparisons: 4351
+      mean_js_distance: 0.03995522645863982
+      mean_similarity: 0.9600447735413602
+    - window_size: 200
+      separation: 2
+      comparisons: 4350
+      mean_js_distance: 0.07985610143259791
+      mean_similarity: 0.9201438985674021
+    - window_size: 200
+      separation: 5
+      comparisons: 4347
+      mean_js_distance: 0.199008767703642
+      mean_similarity: 0.8009912322963579
+    - window_size: 200
+      separation: 10
+      comparisons: 4342
+      mean_js_distance: 0.3955383017920842
+      mean_similarity: 0.6044616982079158
+    - window_size: 200
+      separation: 20
+      comparisons: 4332
+      mean_js_distance: 0.7791360822063057
+      mean_similarity: 0.2208639177936943
+    - window_size: 500
+      separation: 1
+      comparisons: 4321
+      mean_js_distance: 0.013664591724435831
+      mean_similarity: 0.9863354082755642
+    - window_size: 500
+      separation: 2
+      comparisons: 4320
+      mean_js_distance: 0.02733989478101814
+      mean_similarity: 0.9726601052189818
+    - window_size: 500
+      separation: 5
+      comparisons: 4317
+      mean_js_distance: 0.06842940655446994
+      mean_similarity: 0.9315705934455301
+    - window_size: 500
+      separation: 10
+      comparisons: 4312
+      mean_js_distance: 0.13685678841309812
+      mean_similarity: 0.8631432115869019
+    - window_size: 500
+      separation: 20
+      comparisons: 4302
+      mean_js_distance: 0.27242404147011356
+      mean_similarity: 0.7275759585298864

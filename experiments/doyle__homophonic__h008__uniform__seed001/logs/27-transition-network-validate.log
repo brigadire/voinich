@@ -1,0 +1,146 @@
+ExperimentID: 23916e676516bd6ff0202955ca0be426e7f8390a474a49ff20b84b91281dba2d
+Input mode: generic
+Corpus: /home/brigadire/devops/workdir/go/voinich/data_test/transformed/doyle__homophonic__h008__uniform__seed001.txt
+Corpus SHA256: b22cd99a1f450bdad831fe3af004ff2825ed36490983b39337afe6fee7254983
+Stage: transition-network-validate
+Working directory: experiments/doyle__homophonic__h008__uniform__seed001/workspace
+Inputs:
+  workdir/begin_end_candidates.yaml
+  workdir/begin_end_report.md
+  workdir/begin_end_top.tsv
+  workdir/block_shuffle_results.yaml
+  workdir/dataset/dictionary.yaml
+  workdir/dataset/structural_analysis.yaml
+  workdir/dataset/tokens_analysis.yaml
+  workdir/distance_context_controls.tsv
+  workdir/distance_context_pairs.yaml
+  workdir/distance_context_report.md
+  workdir/distance_context_top.tsv
+  workdir/family_decomposition.yaml
+  workdir/family_distance_profiles.yaml
+  workdir/global_distributional_change_points.tsv
+  workdir/global_distributional_cluster_assignments.tsv
+  workdir/global_distributional_clustering.tsv
+  workdir/global_distributional_regimes.yaml
+  workdir/global_distributional_report.md
+  workdir/global_distributional_windows.tsv
+  workdir/graphemic_structural_families.yaml
+  workdir/higher-order-sequences/conditional_cmi.tsv
+  workdir/higher-order-sequences/conditional_context_controls.tsv
+  workdir/higher-order-sequences/conditional_context_rank.tsv
+  workdir/higher-order-sequences/conditional_dependence.tsv
+  workdir/higher-order-sequences/conditional_probability_by_block.tsv
+  workdir/higher-order-sequences/continuation_distributions.tsv
+  workdir/higher-order-sequences/continuation_entropy.tsv
+  workdir/higher-order-sequences/first_vs_second_order_lobo.tsv
+  workdir/higher-order-sequences/higher_order_candidate_inventory.tsv
+  workdir/higher-order-sequences/higher_order_cross_block.tsv
+  workdir/higher-order-sequences/higher_order_jackknife.tsv
+  workdir/higher-order-sequences/higher_order_occurrences.tsv
+  workdir/higher-order-sequences/higher_order_position.tsv
+  workdir/higher-order-sequences/higher_order_sequence_analysis.yaml
+  workdir/higher-order-sequences/higher_order_sequence_report.md
+  workdir/higher-order-sequences/higher_order_structural_family.tsv
+  workdir/higher-order-sequences/higher_order_validation.tsv
+  workdir/local_regime_changes.yaml
+  workdir/local_regime_controls.tsv
+  workdir/local_regime_pairs.yaml
+  workdir/local_regime_report.md
+  workdir/local_regime_top.tsv
+  workdir/local_regime_windows.tsv
+  workdir/normalization_comparison.yaml
+  workdir/normalized_070.txt
+  workdir/normalized_075.txt
+  workdir/normalized_080.txt
+  workdir/normalized_085.txt
+  workdir/normalized_090.txt
+  workdir/occurrence_regime_profiles.yaml
+  workdir/pair_controls.tsv
+  workdir/pair_decomposition.yaml
+  workdir/pair_decomposition_top.tsv
+  workdir/plots/global_distributional_change_profiles.svg
+  workdir/plots/global_distributional_model_selection.svg
+  workdir/plots/nonstationarity_window_js.svg
+  workdir/plots/window_similarity_by_distance.svg
+  workdir/positional-continuation/positional_continuation_analysis.yaml
+  workdir/positional-continuation/positional_continuation_report.md
+  workdir/projected_sequence_context.yaml
+  workdir/property_trajectory_controls.tsv
+  workdir/property_trajectory_pairs.yaml
+  workdir/property_trajectory_properties.tsv
+  workdir/property_trajectory_report.md
+  workdir/property_trajectory_top.tsv
+  workdir/replicated-local-structure/distance_profile_classification_audit.tsv
+  workdir/replicated-local-structure/distance_profile_jackknife.tsv
+  workdir/replicated-local-structure/distance_profile_lobo.tsv
+  workdir/replicated-local-structure/distance_profile_null_effects.tsv
+  workdir/replicated-local-structure/distance_profile_replication_status.tsv
+  workdir/replicated-local-structure/replicated_local_structure.yaml
+  workdir/replicated-local-structure/replicated_local_structure_report.md
+  workdir/replicated-local-structure/replicated_local_structure_summary.tsv
+  workdir/replicated-local-structure/sequence_null_validation.tsv
+  workdir/replicated-local-structure/sequence_replication_status.tsv
+  workdir/replicated-local-structure/strict_replicated_sequences.tsv
+  workdir/replicated-local-structure/universal_sequence_inventory.tsv
+  workdir/sequence_analysis.yaml
+  workdir/sequence_analysis_070.yaml
+  workdir/sequence_analysis_075.yaml
+  workdir/sequence_analysis_080.yaml
+  workdir/sequence_analysis_085.yaml
+  workdir/sequence_analysis_090.yaml
+  workdir/sequence_context_pairs.yaml
+  workdir/soft_structural_pairs.tsv
+  workdir/soft_structural_space.yaml
+  workdir/stable_distributional_boundaries.tsv
+  workdir/structural_classes.yaml
+  workdir/structural_distant_families.yaml
+  workdir/structural_distant_top.tsv
+  workdir/structural_graphemic_close_top.tsv
+  workdir/structural_graphemic_pairs.tsv
+  workdir/structural_graphemic_report.md
+  workdir/structural_pair_report.md
+  workdir/structural_profile_stability.yaml
+  workdir/structural_projection_controls.tsv
+  workdir/structural_projection_families.yaml
+  workdir/structural_projection_pairs.yaml
+  workdir/structural_projection_report.md
+  workdir/structural_projection_top.tsv
+  workdir/structural_reliability.yaml
+  workdir/structural_validation.yaml
+  workdir/structural_vs_graphemic.svg
+  workdir/token-relation-validation/directional_block_validation.tsv
+  workdir/token-relation-validation/directional_relation_summary.tsv
+  workdir/token-relation-validation/distance_profile_block_validation.tsv
+  workdir/token-relation-validation/distance_profile_summary.tsv
+  workdir/token-relation-validation/frozen_candidate_inventory.tsv
+  workdir/token-relation-validation/leave_one_block_out_transfer.tsv
+  workdir/token-relation-validation/metadata_transfer_matrix.tsv
+  workdir/token-relation-validation/plots/directional_cross_block_consistency.svg
+  workdir/token-relation-validation/plots/distance_profile_cross_block_stability.svg
+  workdir/token-relation-validation/plots/metadata_transfer_heatmap.svg
+  workdir/token-relation-validation/plots/relation_block_coverage.svg
+  workdir/token-relation-validation/plots/structural_pair_cross_block_stability.svg
+  workdir/token-relation-validation/relation_classification.tsv
+  workdir/token-relation-validation/relation_controls.tsv
+  workdir/token-relation-validation/rule_like_relations.tsv
+  workdir/token-relation-validation/sequence_block_recurrence.tsv
+  workdir/token-relation-validation/structural_pair_block_validation.tsv
+  workdir/token-relation-validation/structural_pair_summary.tsv
+  workdir/token-relation-validation/token_relation_validation.yaml
+  workdir/token-relation-validation/token_relation_validation_report.md
+  workdir/token_regime_profiles.yaml
+Outputs:
+  registered in artifacts.json after completion
+
+2026/08/21 15:23:28 http: TLS handshake error from 65.21.182.152:40984: EOF
+2026/08/21 15:23:32 http: TLS handshake error from 65.109.155.254:41308: EOF
+2026/08/21 15:23:33 http: TLS handshake error from 135.181.213.251:47964: EOF
+2026/08/21 15:23:33 http: TLS handshake error from 65.109.54.176:47354: EOF
+2026/08/21 15:23:33 http: TLS handshake error from 65.109.17.126:49316: EOF
+2026/08/21 15:23:33 http: TLS handshake error from 95.216.37.216:58442: EOF
+2026/08/21 15:23:33 http: TLS handshake error from 37.27.108.47:48502: EOF
+2026/08/21 15:23:33 http: TLS handshake error from 37.27.107.186:54512: EOF
+2026/08/21 15:23:33 http: TLS handshake error from 65.109.144.229:60176: EOF
+2026/08/21 15:23:33 http: TLS handshake error from 65.109.80.133:56460: EOF
+2026/08/21 15:38:25 http: TLS handshake error from 45.194.67.107:40340: client sent an HTTP request to an HTTPS server
+elapsed runtime: 16m23.033s

@@ -1,0 +1,322 @@
+parameters:
+    corpus: /home/brigadire/devops/workdir/go/voinich/data_test/transformed/doyle__homophonic__frequency-v1__h008__uniform__seed001.txt
+    max_distance: 20
+    min_reliability: 0.7
+    min_structural_similarity: 0.65
+    projection_k: 0
+    projection_mode: both
+    random_projections: 200
+    seed: 130013
+    structural_pairs: workdir/soft_structural_pairs.tsv
+    token_level_source: workdir/distance_context_pairs.yaml
+methodology:
+    ablated_future_weight: reliability-weighted mean(position_similarity, left_similarity), multiplied by mean component reliability; right-context component excluded
+    ablated_past_weight: reliability-weighted mean(position_similarity, right_similarity), multiplied by mean component reliability; left-context component excluded
+    family_projection: 'control only: family ID categories plus singleton categories for every token outside a family'
+    full_weight: raw_similarity * evidence_strength; edges below either configured threshold are zero
+    generic_smoothing: uniform smoothing to the same number of random tokens in the source token's log2 frequency bin
+    normalization: W(X,X)=1; every retained row is divided by its row sum; projected(Y)=sum_X P(X)*normalized_W(X,Y)
+    random_space: destination permutation within log2 frequency bins preserves row degree and weights approximately frequency-matched
+    sequence_kernel: arithmetic mean of position-wise projected-distribution JS similarities
+pairs: []
+parameter_sweeps:
+    - method: threshold
+      parameter: 0.5
+      mean_gain_full: 0
+      mean_gain_ablated: 0
+    - method: threshold
+      parameter: 0.6
+      mean_gain_full: 0
+      mean_gain_ablated: 0
+    - method: threshold
+      parameter: 0.65
+      mean_gain_full: 0
+      mean_gain_ablated: 0
+    - method: threshold
+      parameter: 0.7
+      mean_gain_full: 0
+      mean_gain_ablated: 0
+    - method: threshold
+      parameter: 0.75
+      mean_gain_full: 0
+      mean_gain_ablated: 0
+    - method: knn
+      parameter: 3
+      mean_gain_full: 0
+      mean_gain_ablated: 0
+    - method: knn
+      parameter: 5
+      mean_gain_full: 0
+      mean_gain_ablated: 0
+    - method: knn
+      parameter: 10
+      mean_gain_full: 0
+      mean_gain_ablated: 0
+    - method: knn
+      parameter: 20
+      mean_gain_full: 0
+      mean_gain_ablated: 0
+    - method: family_control
+      parameter: 0
+      mean_gain_full: 0
+      mean_gain_ablated: 0
+shuffled_corpus_controls:
+    - mode: global
+      mean_token_js_1_5: 0
+      mean_projected_js_1_5: 0
+      mean_gain_1_5: 0
+    - mode: line-preserving
+      mean_token_js_1_5: 0
+      mean_projected_js_1_5: 0
+      mean_gain_1_5: 0
+strongest_structural_transitions:
+    - source: x000192
+      destination: x000063
+      observed: 0.00011438506588579795
+      frequency_baseline: 1.6088016678849878e-06
+      lift: 71.09954456733897
+    - source: x000009
+      destination: x000314
+      observed: 0.00011438506588579795
+      frequency_baseline: 2.564976244080782e-06
+      lift: 44.59498061620078
+    - source: x000044
+      destination: x000093
+      observed: 0.00016013909224011713
+      frequency_baseline: 3.6111683501647416e-06
+      lift: 44.34550724637681
+    - source: x000046
+      destination: x000096
+      observed: 0.00016013909224011713
+      frequency_baseline: 3.7079895305677093e-06
+      lift: 43.18757939308398
+    - source: x000043
+      destination: x000098
+      observed: 0.00013726207906295754
+      frequency_baseline: 3.384031094516698e-06
+      lift: 40.56170739251469
+    - source: x000046
+      destination: x000075
+      observed: 0.00016013909224011713
+      frequency_baseline: 4.449587436681251e-06
+      lift: 35.98964949423665
+    - source: x000043
+      destination: x000076
+      observed: 0.00018301610541727673
+      frequency_baseline: 5.103784601566168e-06
+      lift: 35.85890073831008
+    - source: x000014
+      destination: x000136
+      observed: 0.00013726207906295754
+      frequency_baseline: 4.083237024345698e-06
+      lift: 33.61599589848757
+    - source: x000044
+      destination: x000092
+      observed: 0.00011438506588579795
+      frequency_baseline: 3.563019438829212e-06
+      lift: 32.103407755581664
+    - source: x000223
+      destination: x000005
+      observed: 0.00013726207906295754
+      frequency_baseline: 4.689285277895084e-06
+      lift: 29.271428571428572
+    - source: x000012
+      destination: x000106
+      observed: 0.00011438506588579795
+      frequency_baseline: 4.028284462495364e-06
+      lift: 28.395478757957648
+    - source: x000240
+      destination: x000000
+      observed: 0.00011438506588579795
+      frequency_baseline: 4.052358918163129e-06
+      lift: 28.226785483662667
+    - source: x000012
+      destination: x000138
+      observed: 0.00013726207906295754
+      frequency_baseline: 5.058775836622085e-06
+      lift: 27.133457479826195
+    - source: x000099
+      destination: x000041
+      observed: 0.00013726207906295754
+      frequency_baseline: 5.459667859263563e-06
+      lift: 25.141104294478527
+    - source: x000050
+      destination: x000001
+      observed: 0.0002516471449487555
+      frequency_baseline: 1.4366169740872775e-05
+      lift: 17.51664845173042
+    - source: x000022
+      destination: x000086
+      observed: 0.00011438506588579795
+      frequency_baseline: 6.6424563333754925e-06
+      lift: 17.22029624960605
+    - source: x000053
+      destination: x000004
+      observed: 0.00020589311859443632
+      frequency_baseline: 1.2548024980224614e-05
+      lift: 16.40840840840841
+    - source: x000054
+      destination: x000042
+      observed: 0.00011438506588579795
+      frequency_baseline: 8.513983582678263e-06
+      lift: 13.434964347184657
+    - source: x000056
+      destination: x000041
+      observed: 0.00011438506588579795
+      frequency_baseline: 9.383804133109248e-06
+      lift: 12.18962632459565
+    - source: x000056
+      destination: x000007
+      observed: 0.00018301610541727673
+      frequency_baseline: 1.6176987493274223e-05
+      lift: 11.313361371724362
+    - source: x000052
+      destination: x000005
+      observed: 0.00016013909224011713
+      frequency_baseline: 1.567979764796169e-05
+      lift: 10.213084112149533
+    - source: x000052
+      destination: x000006
+      observed: 0.00016013909224011713
+      frequency_baseline: 1.6463787530359774e-05
+      lift: 9.726746773475744
+    - source: x000056
+      destination: x000003
+      observed: 0.00016013909224011713
+      frequency_baseline: 1.6810250348882826e-05
+      lift: 9.526276463262764
+    - source: x000051
+      destination: x000005
+      observed: 0.00013726207906295754
+      frequency_baseline: 1.4507476328487917e-05
+      lift: 9.461471861471862
+    - source: x000023
+      destination: x000007
+      observed: 0.00020589311859443632
+      frequency_baseline: 2.191246487725327e-05
+      lift: 9.396164226516039
+    - source: x000023
+      destination: x000004
+      observed: 0.00020589311859443632
+      frequency_baseline: 2.30821694080675e-05
+      lift: 8.920007255577726
+    - source: x000050
+      destination: x000007
+      observed: 0.00011438506588579795
+      frequency_baseline: 1.3235717039951638e-05
+      lift: 8.642151047845
+    - source: x000025
+      destination: x000006
+      observed: 0.00020589311859443632
+      frequency_baseline: 2.446488053576826e-05
+      lift: 8.415864458991145
+    - source: x000054
+      destination: x000000
+      observed: 0.00011438506588579795
+      frequency_baseline: 1.3694178413102988e-05
+      lift: 8.352824275777728
+    - source: x000028
+      destination: x000042
+      observed: 0.00011438506588579795
+      frequency_baseline: 1.372662659248128e-05
+      lift: 8.333079152051242
+    - source: x000054
+      destination: x000005
+      observed: 0.00011438506588579795
+      frequency_baseline: 1.4360936163553697e-05
+      lift: 7.965014577259475
+    - source: x000028
+      destination: x000005
+      observed: 0.00018301610541727673
+      frequency_baseline: 2.315334605960698e-05
+      lift: 7.904520795660036
+    - source: x000028
+      destination: x000007
+      observed: 0.00018301610541727673
+      frequency_baseline: 2.3236036581248433e-05
+      lift: 7.876390828415695
+    - source: x000051
+      destination: x000007
+      observed: 0.00011438506588579795
+      frequency_baseline: 1.4559288743946802e-05
+      lift: 7.856500952586362
+    - source: x000054
+      destination: x000003
+      observed: 0.00011438506588579795
+      frequency_baseline: 1.4976404856277426e-05
+      lift: 7.637685211070729
+    - source: x000022
+      destination: x000002
+      observed: 0.00020589311859443632
+      frequency_baseline: 2.709422978087372e-05
+      lift: 7.599150086922928
+    - source: x000051
+      destination: x000003
+      observed: 0.00011438506588579795
+      frequency_baseline: 1.5129225313994543e-05
+      lift: 7.560536875605369
+    - source: x000021
+      destination: x000012
+      observed: 0.00011438506588579795
+      frequency_baseline: 1.5176327509866256e-05
+      lift: 7.537071522173943
+    - source: x000018
+      destination: x000012
+      observed: 0.00013726207906295754
+      frequency_baseline: 1.8455163700269457e-05
+      lift: 7.43759748177977
+    - source: x000028
+      destination: x000001
+      observed: 0.00018301610541727673
+      frequency_baseline: 2.5220609100643315e-05
+      lift: 7.256609255032165
+    - source: x000027
+      destination: x000002
+      observed: 0.00018301610541727673
+      frequency_baseline: 2.5796302605742044e-05
+      lift: 7.094664232095759
+    - source: x000022
+      destination: x000004
+      observed: 0.00018301610541727673
+      frequency_baseline: 2.587061940367297e-05
+      lift: 7.074283864703027
+    - source: x000027
+      destination: x000007
+      observed: 0.00016013909224011713
+      frequency_baseline: 2.338310010391456e-05
+      lift: 6.848497056782829
+    - source: x000026
+      destination: x000004
+      observed: 0.00018301610541727673
+      frequency_baseline: 2.7419758290120453e-05
+      lift: 6.67460681020003
+    - source: x000027
+      destination: x000004
+      observed: 0.00016013909224011713
+      frequency_baseline: 2.4631308294514983e-05
+      lift: 6.5014448410674825
+    - source: x000026
+      destination: x000002
+      observed: 0.00018301610541727673
+      frequency_baseline: 2.871663874978831e-05
+      lift: 6.373172954255514
+    - source: x000026
+      destination: x000005
+      observed: 0.00016013909224011713
+      frequency_baseline: 2.5937609193357183e-05
+      lift: 6.174011299435029
+    - source: x000023
+      destination: x000003
+      observed: 0.00013726207906295754
+      frequency_baseline: 2.2770248199850372e-05
+      lift: 6.028132757194079
+    - source: x000024
+      destination: x000001
+      observed: 0.00013726207906295754
+      frequency_baseline: 2.298587158539644e-05
+      lift: 5.971584699453552
+    - source: x000025
+      destination: x000005
+      observed: 0.00013726207906295754
+      frequency_baseline: 2.3299886224541203e-05
+      lift: 5.8911051212938

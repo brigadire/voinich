@@ -1,0 +1,5 @@
+# Frozen/generated experiment tables may encode empty trailing TSV fields.
+# Preserve their bytes and hashes; retain normal whitespace checks elsewhere.
+experiments/** -whitespace
+# Natural-corpus fixtures preserve source line endings/spacing byte-for-byte.
+data_test/*.txt -whitespace

@@ -1,0 +1,40 @@
+ExperimentID: 08a7e68001a438b7777e8c388f00da2f9202154c4fb2298536ad460f1fe95ee7
+Input mode: generic
+Corpus: /home/brigadire/devops/workdir/go/voinich/data_test/transformed/doyle__homophonic__frequency-v1__h006__uniform__seed001.txt
+Corpus SHA256: 4bc3c5b699cb6e433399c668b5cc49478f3c6d045128ca6c3a2bd0ce3a1423e5
+Stage: normalization-compare
+Working directory: experiments/doyle__homophonic__frequency-v1__h006__uniform__seed001/workspace
+Inputs:
+  workdir/begin_end_candidates.yaml
+  workdir/begin_end_report.md
+  workdir/begin_end_top.tsv
+  workdir/dataset/dictionary.yaml
+  workdir/dataset/structural_analysis.yaml
+  workdir/dataset/tokens_analysis.yaml
+  workdir/normalized_070.txt
+  workdir/normalized_075.txt
+  workdir/normalized_080.txt
+  workdir/normalized_085.txt
+  workdir/normalized_090.txt
+  workdir/sequence_analysis.yaml
+  workdir/structural_classes.yaml
+Outputs:
+  registered in artifacts.json after completion
+
+Compared threshold 070 (100 random baselines)
+2026/08/22 00:23:06 http: TLS handshake error from 65.21.182.152:51938: EOF
+Compared threshold 075 (100 random baselines)
+2026/08/22 00:23:06 http: TLS handshake error from 65.109.144.229:34946: EOF
+2026/08/22 00:23:06 http: TLS handshake error from 65.109.155.254:38448: EOF
+2026/08/22 00:23:06 http: TLS handshake error from 135.181.213.251:34952: EOF
+2026/08/22 00:23:06 http: TLS handshake error from 65.109.17.126:41572: EOF
+2026/08/22 00:23:07 http: TLS handshake error from 65.109.80.133:37350: EOF
+2026/08/22 00:23:07 http: TLS handshake error from 95.216.37.216:60774: EOF
+2026/08/22 00:23:07 http: TLS handshake error from 37.27.107.186:46344: EOF
+Compared threshold 080 (100 random baselines)
+2026/08/22 00:23:07 http: TLS handshake error from 37.27.108.47:48098: EOF
+2026/08/22 00:23:07 http: TLS handshake error from 65.109.54.176:41638: EOF
+Compared threshold 085 (100 random baselines)
+Compared threshold 090 (100 random baselines)
+Comparison written to workdir/normalization_comparison.yaml
+elapsed runtime: 16.587s

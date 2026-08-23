@@ -1,0 +1,13 @@
+record_type	token_a	token_b	control	parameter	observed_gain	control_mean	control_p95	percentile	mean_gain_full	mean_gain_ablated
+sweep			threshold	0.5					0	0
+sweep			threshold	0.6					0	0
+sweep			threshold	0.65					0	0
+sweep			threshold	0.7					0	0
+sweep			threshold	0.75					0	0
+sweep			knn	3					0	0
+sweep			knn	5					0	0
+sweep			knn	10					0	0
+sweep			knn	20					0	0
+sweep			family_control	0					0	0
+shuffle			global		0				0	
+shuffle			line-preserving		0				0	

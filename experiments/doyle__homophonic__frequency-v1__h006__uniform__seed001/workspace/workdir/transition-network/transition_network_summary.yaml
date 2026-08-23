@@ -1,0 +1,33 @@
+corpus_sha256: 4bc3c5b699cb6e433399c668b5cc49478f3c6d045128ca6c3a2bd0ce3a1423e5
+metadata_sha256: 4bc3c5b699cb6e433399c668b5cc49478f3c6d045128ca6c3a2bd0ce3a1423e5
+token_count: 43713
+unique_tokens: 10285
+eligible_tokens: 643
+secondary_eligible_tokens_count_ge_5: 1267
+physical_blocks: 64
+observed_primary_edges: 11097
+testable_edges: 4603
+fdr_significant_preferred: 10
+fdr_significant_depleted: 0
+backbone_preferred: 4
+backbone_depleted: 0
+replicated_outgoing_profiles: 2
+replicated_incoming_profiles: 1
+sequence_reconstruction:
+  edge_coverage: 0.0003604577814
+  token_coverage: 0.01244167963
+  transition_coverage: 0.000872600349
+  matched_random_transition_coverage: 0.000872600349
+mean_m0_minus_m1_log_loss: 0.1698005434
+mean_m1_minus_m2_log_loss: -0.406897655
+outcome: PROFILE_BACKBONE
+parameters:
+  min_token_count: 10
+  secondary_min_token_count: 5
+  min_block_token_count: 5
+  alpha: 0.5
+  permutations: 1000
+  refine_permutations: 10000
+  seed: 1
+preferred_topology: {nodes: 8, edges: 4, strongly_connected_components: 8, weakly_connected_components: 4, reciprocity: 0}
+depleted_topology: {nodes: 0, edges: 0, strongly_connected_components: 0, weakly_connected_components: 0, reciprocity: 0}

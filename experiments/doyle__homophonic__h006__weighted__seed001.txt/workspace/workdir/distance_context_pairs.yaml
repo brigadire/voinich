@@ -1,0 +1,1045 @@
+parameters:
+    corpus: /home/brigadire/devops/workdir/go/voinich/data_test/transformed/doyle__homophonic__h006__weighted__seed001.txt
+    effective_support: exp(Shannon entropy in natural-log units)
+    frequency_matching: unordered token counts within a factor of 2
+    js_similarity: 1 - Jensen-Shannon divergence / ln(2)
+    max_distance: 20
+    min_observations: 30
+    primary_mode: continuous
+    reliability: min(1, min(observations_A, observations_B) / min_observations)
+    weighted_overlap: sum_x min(P_A(x),P_B(x))
+token_count: 43713
+pair_count: 1
+right_context_baseline:
+    - distance: 1
+      pair_count: 13312
+      median: 0.0349718610805827
+      p90: 0.17798382189648787
+      p95: 0.2388382532754466
+    - distance: 2
+      pair_count: 13312
+      median: 0.06157503379729101
+      p90: 0.13483262637264526
+      p95: 0.1590079142675307
+    - distance: 3
+      pair_count: 13312
+      median: 0.0810975915501776
+      p90: 0.16077778290906908
+      p95: 0.18819169192491192
+    - distance: 4
+      pair_count: 13312
+      median: 0.08318891944442453
+      p90: 0.16178619707831832
+      p95: 0.19044612042693054
+    - distance: 5
+      pair_count: 13312
+      median: 0.08259869422623278
+      p90: 0.16109287729272448
+      p95: 0.18821524351912167
+    - distance: 6
+      pair_count: 13312
+      median: 0.08620848432625572
+      p90: 0.16305607502075625
+      p95: 0.19207949506553357
+    - distance: 7
+      pair_count: 13312
+      median: 0.08022419830204641
+      p90: 0.15744287220124886
+      p95: 0.18688715102210585
+    - distance: 8
+      pair_count: 13312
+      median: 0.08137086304150976
+      p90: 0.16037921198003546
+      p95: 0.18836184021482727
+    - distance: 9
+      pair_count: 13312
+      median: 0.08496351851149653
+      p90: 0.1592433759245364
+      p95: 0.18745450352465998
+    - distance: 10
+      pair_count: 13312
+      median: 0.081230171314562
+      p90: 0.15805643701861694
+      p95: 0.18697837275624374
+    - distance: 11
+      pair_count: 13312
+      median: 0.08510984557263435
+      p90: 0.1610401883015885
+      p95: 0.1884445247175469
+    - distance: 12
+      pair_count: 13312
+      median: 0.08460485670569973
+      p90: 0.16169592136651312
+      p95: 0.19189876724176336
+    - distance: 13
+      pair_count: 13312
+      median: 0.08140246518032557
+      p90: 0.15889141979773702
+      p95: 0.18897682516889514
+    - distance: 14
+      pair_count: 13312
+      median: 0.08423467298430853
+      p90: 0.15658987471197472
+      p95: 0.18325982023765874
+    - distance: 15
+      pair_count: 13312
+      median: 0.08337368747988816
+      p90: 0.16034166098132108
+      p95: 0.19145109971490815
+    - distance: 16
+      pair_count: 13312
+      median: 0.081230171314562
+      p90: 0.1582819231540007
+      p95: 0.18845478366130186
+    - distance: 17
+      pair_count: 13312
+      median: 0.07997434275016868
+      p90: 0.1561470479988446
+      p95: 0.18509100315203109
+    - distance: 18
+      pair_count: 13312
+      median: 0.0804854840134458
+      p90: 0.1599211303606629
+      p95: 0.1865101881272727
+    - distance: 19
+      pair_count: 13312
+      median: 0.08456861033108465
+      p90: 0.15978519982270334
+      p95: 0.18878490810438175
+    - distance: 20
+      pair_count: 13312
+      median: 0.08271863527596812
+      p90: 0.1575501539359072
+      p95: 0.1860636770858295
+pairs:
+    - token_a: x014952
+      token_b: x030834
+      count_a: 149
+      count_b: 155
+      right_context:
+        - distance: 1
+          js_similarity: 0.28598190002278534
+          weighted_overlap: 0.23459623295085508
+          jaccard_support_overlap: 0.11790393013100436
+          observations_a: 149
+          observations_b: 155
+          effective_support_a: 118.20210296366719
+          effective_support_b: 116.72136976213555
+          reliability: 1
+          reliable: true
+          baseline_percentile: 96.91256009615384
+        - distance: 2
+          js_similarity: 0.1637696297288005
+          weighted_overlap: 0.14297466984195717
+          jaccard_support_overlap: 0.06772908366533864
+          observations_a: 149
+          observations_b: 155
+          effective_support_a: 128.6844142559579
+          effective_support_b: 124.7617588029107
+          reliability: 1
+          reliable: true
+          baseline_percentile: 95.52283653846153
+        - distance: 3
+          js_similarity: 0.17022637509055139
+          weighted_overlap: 0.15020567222342496
+          jaccard_support_overlap: 0.07782101167315175
+          observations_a: 149
+          observations_b: 155
+          effective_support_a: 134.03362407781682
+          effective_support_b: 132.08488593058735
+          reliability: 1
+          reliable: true
+          baseline_percentile: 91.90204326923077
+        - distance: 4
+          js_similarity: 0.15058598990934846
+          weighted_overlap: 0.1298116475427582
+          jaccard_support_overlap: 0.07279693486590039
+          observations_a: 149
+          observations_b: 155
+          effective_support_a: 131.5625911136158
+          effective_support_b: 138.28925094545335
+          reliability: 1
+          reliable: true
+          baseline_percentile: 86.83143028846153
+        - distance: 5
+          js_similarity: 0.18476343645585702
+          weighted_overlap: 0.15639748863390343
+          jaccard_support_overlap: 0.07751937984496124
+          observations_a: 149
+          observations_b: 155
+          effective_support_a: 132.7923600212976
+          effective_support_b: 136.29690595842345
+          reliability: 1
+          reliable: true
+          baseline_percentile: 94.5537860576923
+        - distance: 6
+          js_similarity: 0.1726357461042809
+          weighted_overlap: 0.1432344663347045
+          jaccard_support_overlap: 0.0846774193548387
+          observations_a: 149
+          observations_b: 155
+          effective_support_a: 122.12569538870613
+          effective_support_b: 132.9796860493928
+          reliability: 1
+          reliable: true
+          baseline_percentile: 92.03725961538461
+        - distance: 7
+          js_similarity: 0.16046710329621827
+          weighted_overlap: 0.11872699718553802
+          jaccard_support_overlap: 0.06504065040650407
+          observations_a: 149
+          observations_b: 155
+          effective_support_a: 126.60038514165754
+          effective_support_b: 114.1718308768527
+          reliability: 1
+          reliable: true
+          baseline_percentile: 90.625
+        - distance: 8
+          js_similarity: 0.131496425483568
+          weighted_overlap: 0.10400519592985498
+          jaccard_support_overlap: 0.058365758754863814
+          observations_a: 149
+          observations_b: 155
+          effective_support_a: 120.42219676380275
+          effective_support_b: 137.52139057165053
+          reliability: 1
+          reliable: true
+          baseline_percentile: 80.77674278846153
+        - distance: 9
+          js_similarity: 0.21381779487658703
+          weighted_overlap: 0.17549253085083347
+          jaccard_support_overlap: 0.102880658436214
+          observations_a: 149
+          observations_b: 155
+          effective_support_a: 118.34772402702012
+          effective_support_b: 134.17436892421156
+          reliability: 1
+          reliable: true
+          baseline_percentile: 97.42337740384616
+        - distance: 10
+          js_similarity: 0.17098219644051138
+          weighted_overlap: 0.14401385581294654
+          jaccard_support_overlap: 0.07346938775510205
+          observations_a: 149
+          observations_b: 155
+          effective_support_a: 126.15657817533925
+          effective_support_b: 120.46600651188676
+          reliability: 1
+          reliable: true
+          baseline_percentile: 92.72085336538461
+        - distance: 11
+          js_similarity: 0.20066165970549477
+          weighted_overlap: 0.16258930504438188
+          jaccard_support_overlap: 0.08196721311475409
+          observations_a: 149
+          observations_b: 155
+          effective_support_a: 114.89507904290092
+          effective_support_b: 132.53153082538287
+          reliability: 1
+          reliable: true
+          baseline_percentile: 96.43179086538461
+        - distance: 12
+          js_similarity: 0.1955447833488856
+          weighted_overlap: 0.1636284910153713
+          jaccard_support_overlap: 0.0796812749003984
+          observations_a: 149
+          observations_b: 155
+          effective_support_a: 132.79236002129738
+          effective_support_b: 124.9095078546592
+          reliability: 1
+          reliable: true
+          baseline_percentile: 95.54537259615384
+        - distance: 13
+          js_similarity: 0.15443666754498298
+          weighted_overlap: 0.13033124052825287
+          jaccard_support_overlap: 0.06719367588932806
+          observations_a: 149
+          observations_b: 155
+          effective_support_a: 123.26725380395794
+          effective_support_b: 134.62807940342458
+          reliability: 1
+          reliable: true
+          baseline_percentile: 88.8671875
+        - distance: 14
+          js_similarity: 0.1807303341975095
+          weighted_overlap: 0.1569170816193981
+          jaccard_support_overlap: 0.07723577235772358
+          observations_a: 149
+          observations_b: 155
+          effective_support_a: 122.19712827557902
+          effective_support_b: 122.96430554443498
+          reliability: 1
+          reliable: true
+          baseline_percentile: 94.68900240384616
+        - distance: 15
+          js_similarity: 0.18973372721860304
+          weighted_overlap: 0.16956051093310237
+          jaccard_support_overlap: 0.09302325581395349
+          observations_a: 149
+          observations_b: 155
+          effective_support_a: 140.91013854751677
+          effective_support_b: 132.97968604939302
+          reliability: 1
+          reliable: true
+          baseline_percentile: 94.82421875
+        - distance: 16
+          js_similarity: 0.15512722821712976
+          weighted_overlap: 0.11716821822905393
+          jaccard_support_overlap: 0.06746031746031746
+          observations_a: 149
+          observations_b: 155
+          effective_support_a: 127.72441911630328
+          effective_support_b: 122.8864061583226
+          reliability: 1
+          reliable: true
+          baseline_percentile: 89.25030048076923
+        - distance: 17
+          js_similarity: 0.19132624174371238
+          weighted_overlap: 0.15613769214115608
+          jaccard_support_overlap: 0.0860655737704918
+          observations_a: 149
+          observations_b: 155
+          effective_support_a: 126.31199888785015
+          effective_support_b: 123.38010920680354
+          reliability: 1
+          reliable: true
+          baseline_percentile: 95.74068509615384
+        - distance: 18
+          js_similarity: 0.19704724670987128
+          weighted_overlap: 0.16904091794760767
+          jaccard_support_overlap: 0.0963855421686747
+          observations_a: 149
+          observations_b: 155
+          effective_support_a: 129.88727967701544
+          effective_support_b: 132.24130739204995
+          reliability: 1
+          reliable: true
+          baseline_percentile: 96.19891826923077
+        - distance: 19
+          js_similarity: 0.14475107097189466
+          weighted_overlap: 0.12310023814678504
+          jaccard_support_overlap: 0.06048387096774194
+          observations_a: 149
+          observations_b: 155
+          effective_support_a: 119.03521353553259
+          effective_support_b: 126.73539546418803
+          reliability: 1
+          reliable: true
+          baseline_percentile: 85.64453125
+        - distance: 20
+          js_similarity: 0.11161173948965641
+          weighted_overlap: 0.09162156310889803
+          jaccard_support_overlap: 0.05179282868525897
+          observations_a: 149
+          observations_b: 155
+          effective_support_a: 129.43195026002937
+          effective_support_b: 118.38316566330123
+          reliability: 1
+          reliable: true
+          baseline_percentile: 70.3876201923077
+      left_context:
+        - distance: 1
+          js_similarity: 0.4689090590672417
+          weighted_overlap: 0.3917731110630006
+          jaccard_support_overlap: 0.15789473684210525
+          observations_a: 149
+          observations_b: 155
+          effective_support_a: 60.94847280411095
+          effective_support_b: 64.90525118206929
+          reliability: 1
+          reliable: true
+        - distance: 2
+          js_similarity: 0.23677833810043158
+          weighted_overlap: 0.18943494262827446
+          jaccard_support_overlap: 0.09787234042553192
+          observations_a: 149
+          observations_b: 155
+          effective_support_a: 116.96335713440304
+          effective_support_b: 116.46576812179634
+          reliability: 1
+          reliable: true
+        - distance: 3
+          js_similarity: 0.15627631920758223
+          weighted_overlap: 0.13007144403550555
+          jaccard_support_overlap: 0.07450980392156863
+          observations_a: 149
+          observations_b: 155
+          effective_support_a: 136.07237862215268
+          effective_support_b: 123.79731890879425
+          reliability: 1
+          reliable: true
+        - distance: 4
+          js_similarity: 0.23031074566480758
+          weighted_overlap: 0.2023381684347261
+          jaccard_support_overlap: 0.08898305084745763
+          observations_a: 149
+          observations_b: 155
+          effective_support_a: 119.30698596891105
+          effective_support_b: 121.19274834776104
+          reliability: 1
+          reliable: true
+        - distance: 5
+          js_similarity: 0.1340495361204056
+          weighted_overlap: 0.10400519592985497
+          jaccard_support_overlap: 0.05078125
+          observations_a: 149
+          observations_b: 155
+          effective_support_a: 121.69757477659853
+          effective_support_b: 132.68848122584325
+          reliability: 1
+          reliable: true
+        - distance: 6
+          js_similarity: 0.2069905286373287
+          weighted_overlap: 0.1822039402468066
+          jaccard_support_overlap: 0.10569105691056911
+          observations_a: 149
+          observations_b: 155
+          effective_support_a: 127.78377029719368
+          effective_support_b: 131.95171950288346
+          reliability: 1
+          reliable: true
+        - distance: 7
+          js_similarity: 0.1851507941716939
+          weighted_overlap: 0.168521324962113
+          jaccard_support_overlap: 0.08846153846153847
+          observations_a: 149
+          observations_b: 155
+          effective_support_a: 137.0314422456133
+          effective_support_b: 138.75687589364244
+          reliability: 1
+          reliable: true
+        - distance: 8
+          js_similarity: 0.1839963434324018
+          weighted_overlap: 0.1442736523056939
+          jaccard_support_overlap: 0.076
+          observations_a: 149
+          observations_b: 155
+          effective_support_a: 131.10138876910665
+          effective_support_b: 122.69503284600427
+          reliability: 1
+          reliable: true
+        - distance: 9
+          js_similarity: 0.17350001704677898
+          weighted_overlap: 0.13059103702100022
+          jaccard_support_overlap: 0.07630522088353414
+          observations_a: 149
+          observations_b: 155
+          effective_support_a: 117.05305970698137
+          effective_support_b: 132.9796860493929
+          reliability: 1
+          reliable: true
+        - distance: 10
+          js_similarity: 0.1985820929436256
+          weighted_overlap: 0.16310889802987658
+          jaccard_support_overlap: 0.08264462809917356
+          observations_a: 149
+          observations_b: 155
+          effective_support_a: 121.27095497280067
+          effective_support_b: 123.59567647301384
+          reliability: 1
+          reliable: true
+        - distance: 11
+          js_similarity: 0.20843143768496764
+          weighted_overlap: 0.1822039402468066
+          jaccard_support_overlap: 0.099601593625498
+          observations_a: 149
+          observations_b: 155
+          effective_support_a: 131.86296513292078
+          effective_support_b: 131.79564058008526
+          reliability: 1
+          reliable: true
+        - distance: 12
+          js_similarity: 0.1718128869511638
+          weighted_overlap: 0.1429746698419571
+          jaccard_support_overlap: 0.06854838709677419
+          observations_a: 149
+          observations_b: 155
+          effective_support_a: 127.49268838008791
+          effective_support_b: 122.96430554443509
+          reliability: 1
+          reliable: true
+        - distance: 13
+          js_similarity: 0.1720781298395555
+          weighted_overlap: 0.13756224290972074
+          jaccard_support_overlap: 0.08032128514056225
+          observations_a: 149
+          observations_b: 155
+          effective_support_a: 122.68398877706518
+          effective_support_b: 131.06383641490598
+          reliability: 1
+          reliable: true
+        - distance: 14
+          js_similarity: 0.12300652648388222
+          weighted_overlap: 0.0978133795193765
+          jaccard_support_overlap: 0.05
+          observations_a: 149
+          observations_b: 155
+          effective_support_a: 130.34421090002772
+          effective_support_b: 129.61239569793995
+          reliability: 1
+          reliable: true
+        - distance: 15
+          js_similarity: 0.15037725932068413
+          weighted_overlap: 0.13007144403550555
+          jaccard_support_overlap: 0.07142857142857142
+          observations_a: 149
+          observations_b: 155
+          effective_support_a: 118.61792683498186
+          effective_support_b: 137.35872357054626
+          reliability: 1
+          reliable: true
+        - distance: 16
+          js_similarity: 0.2161423480091771
+          weighted_overlap: 0.18891534964277976
+          jaccard_support_overlap: 0.0995850622406639
+          observations_a: 149
+          observations_b: 155
+          effective_support_a: 126.31199888785004
+          effective_support_b: 120.9413250017611
+          reliability: 1
+          reliable: true
+        - distance: 17
+          js_similarity: 0.17121288569934145
+          weighted_overlap: 0.13782203940246807
+          jaccard_support_overlap: 0.07723577235772358
+          observations_a: 149
+          observations_b: 155
+          effective_support_a: 131.10138876910676
+          effective_support_b: 118.38316566330133
+          reliability: 1
+          reliable: true
+        - distance: 18
+          js_similarity: 0.1729643618344403
+          weighted_overlap: 0.14297466984195714
+          jaccard_support_overlap: 0.072
+          observations_a: 149
+          observations_b: 155
+          effective_support_a: 120.84583071611878
+          effective_support_b: 131.79564058008552
+          reliability: 1
+          reliable: true
+        - distance: 19
+          js_similarity: 0.19381642210501193
+          weighted_overlap: 0.16826152846936568
+          jaccard_support_overlap: 0.06827309236947791
+          observations_a: 149
+          observations_b: 155
+          effective_support_a: 117.32030663271127
+          effective_support_b: 132.9796860493929
+          reliability: 1
+          reliable: true
+        - distance: 20
+          js_similarity: 0.2437059790659275
+          weighted_overlap: 0.19562675903875293
+          jaccard_support_overlap: 0.11914893617021277
+          observations_a: 149
+          observations_b: 155
+          effective_support_a: 120.8458307161189
+          effective_support_b: 124.85373695649416
+          reliability: 1
+          reliable: true
+      line_bounded_right_context:
+        - distance: 1
+          js_similarity: 0.29944278421178927
+          weighted_overlap: 0.2504926108374385
+          jaccard_support_overlap: 0.12735849056603774
+          observations_a: 140
+          observations_b: 145
+          effective_support_a: 112.02794190524185
+          effective_support_b: 107.07582171787261
+          reliability: 1
+          reliable: true
+        - distance: 2
+          js_similarity: 0.13877769764905323
+          weighted_overlap: 0.12064777327935222
+          jaccard_support_overlap: 0.05855855855855856
+          observations_a: 130
+          observations_b: 133
+          effective_support_a: 111.07339956531503
+          effective_support_b: 111.97362515179206
+          reliability: 1
+          reliable: true
+        - distance: 3
+          js_similarity: 0.13011238383645973
+          weighted_overlap: 0.11463414634146343
+          jaccard_support_overlap: 0.052132701421800945
+          observations_a: 120
+          observations_b: 123
+          effective_support_a: 106.44269992541734
+          effective_support_b: 107.73760752314463
+          reliability: 1
+          reliable: true
+        - distance: 4
+          js_similarity: 0.12394589528198463
+          weighted_overlap: 0.10942760942760944
+          jaccard_support_overlap: 0.06282722513089005
+          observations_a: 108
+          observations_b: 110
+          effective_support_a: 94.07392013922143
+          effective_support_b: 102.79227295972643
+          reliability: 1
+          reliable: true
+        - distance: 5
+          js_similarity: 0.14237952458421188
+          weighted_overlap: 0.12244897959183672
+          jaccard_support_overlap: 0.06395348837209303
+          observations_a: 98
+          observations_b: 97
+          effective_support_a: 92.60878757424298
+          effective_support_b: 86.52015762766497
+          reliability: 1
+          reliable: true
+        - distance: 6
+          js_similarity: 0.09022939688439813
+          weighted_overlap: 0.0805934242181235
+          jaccard_support_overlap: 0.04
+          observations_a: 87
+          observations_b: 86
+          effective_support_a: 71.7068644725723
+          effective_support_b: 77.5982444814175
+          reliability: 1
+          reliable: true
+        - distance: 7
+          js_similarity: 0.033231139724162806
+          weighted_overlap: 0.027777777777777776
+          jaccard_support_overlap: 0.015625
+          observations_a: 72
+          observations_b: 71
+          effective_support_a: 66.66297928468472
+          effective_support_b: 56.38411911233431
+          reliability: 1
+          reliable: true
+        - distance: 8
+          js_similarity: 0.041316376962005186
+          weighted_overlap: 0.034482758620689655
+          jaccard_support_overlap: 0.018691588785046728
+          observations_a: 58
+          observations_b: 57
+          effective_support_a: 55.29263719490457
+          effective_support_b: 51.71601249597392
+          reliability: 1
+          reliable: true
+        - distance: 9
+          js_similarity: 0.06896805639530168
+          weighted_overlap: 0.06818181818181818
+          jaccard_support_overlap: 0.025
+          observations_a: 44
+          observations_b: 43
+          effective_support_a: 41.31296006911521
+          effective_support_b: 39.03590659373369
+          reliability: 1
+          reliable: true
+        - distance: 10
+          js_similarity: 0.08340512924591137
+          weighted_overlap: 0.07894736842105263
+          jaccard_support_overlap: 0.046153846153846156
+          observations_a: 38
+          observations_b: 34
+          effective_support_a: 36.638687921814835
+          effective_support_b: 30.085412927184546
+          reliability: 1
+          reliable: true
+        - distance: 11
+          js_similarity: 3.3306690738754696e-16
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 21
+          observations_b: 25
+          effective_support_a: 20.99999999999997
+          effective_support_b: 22.375626773199283
+          reliability: 0.7
+          reliable: false
+        - distance: 12
+          js_similarity: 4.440892098500626e-16
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 14
+          observations_b: 11
+          effective_support_a: 12.680131299694692
+          effective_support_b: 9.697503804956236
+          reliability: 0.36666666666666664
+          reliable: false
+        - distance: 13
+          js_similarity: 0.1679775011401976
+          weighted_overlap: 0.14285714285714285
+          jaccard_support_overlap: 0.09090909090909091
+          observations_a: 7
+          observations_b: 5
+          effective_support_a: 6.999999999999998
+          effective_support_b: 5.000000000000001
+          reliability: 0.16666666666666666
+          reliable: false
+        - distance: 14
+          js_similarity: 0
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 2
+          observations_b: 2
+          effective_support_a: 2
+          effective_support_b: 2
+          reliability: 0.06666666666666667
+          reliable: false
+        - distance: 15
+          js_similarity: 0
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 1
+          observations_b: 1
+          effective_support_a: 1
+          effective_support_b: 1
+          reliability: 0.03333333333333333
+          reliable: false
+        - distance: 16
+          js_similarity: 0
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 1
+          observations_b: 0
+          effective_support_a: 1
+          effective_support_b: 0
+          reliability: 0
+          reliable: false
+        - distance: 17
+          js_similarity: 0
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 0
+          observations_b: 0
+          effective_support_a: 0
+          effective_support_b: 0
+          reliability: 0
+          reliable: false
+        - distance: 18
+          js_similarity: 0
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 0
+          observations_b: 0
+          effective_support_a: 0
+          effective_support_b: 0
+          reliability: 0
+          reliable: false
+        - distance: 19
+          js_similarity: 0
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 0
+          observations_b: 0
+          effective_support_a: 0
+          effective_support_b: 0
+          reliability: 0
+          reliable: false
+        - distance: 20
+          js_similarity: 0
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 0
+          observations_b: 0
+          effective_support_a: 0
+          effective_support_b: 0
+          reliability: 0
+          reliable: false
+      line_bounded_left_context:
+        - distance: 1
+          js_similarity: 0.46853681227395116
+          weighted_overlap: 0.3858012942519984
+          jaccard_support_overlap: 0.15862068965517243
+          observations_a: 142
+          observations_b: 148
+          effective_support_a: 59.034394288844005
+          effective_support_b: 61.1406166430068
+          reliability: 1
+          reliable: true
+        - distance: 2
+          js_similarity: 0.2400614154218974
+          weighted_overlap: 0.19285714285714284
+          jaccard_support_overlap: 0.10106382978723404
+          observations_a: 120
+          observations_b: 126
+          effective_support_a: 93.86266735609561
+          effective_support_b: 93.34543097519378
+          reliability: 1
+          reliable: true
+        - distance: 3
+          js_similarity: 0.16135524115767608
+          weighted_overlap: 0.13458994708994707
+          jaccard_support_overlap: 0.0797872340425532
+          observations_a: 108
+          observations_b: 112
+          effective_support_a: 99.5111783926107
+          effective_support_b: 95.64310578350815
+          reliability: 1
+          reliable: true
+        - distance: 4
+          js_similarity: 0.18339541581319163
+          weighted_overlap: 0.14983485136622957
+          jaccard_support_overlap: 0.08484848484848485
+          observations_a: 97
+          observations_b: 103
+          effective_support_a: 83.17987341863139
+          effective_support_b: 88.37578926713131
+          reliability: 1
+          reliable: true
+        - distance: 5
+          js_similarity: 0.11740765944568132
+          weighted_overlap: 0.08864716179044764
+          jaccard_support_overlap: 0.050955414012738856
+          observations_a: 86
+          observations_b: 93
+          effective_support_a: 76.357411710189
+          effective_support_b: 83.31498560131003
+          reliability: 1
+          reliable: true
+        - distance: 6
+          js_similarity: 0.12172737486579799
+          weighted_overlap: 0.10290148448043183
+          jaccard_support_overlap: 0.058823529411764705
+          observations_a: 76
+          observations_b: 78
+          effective_support_a: 67.65384601217819
+          effective_support_b: 72.64734237752282
+          reliability: 1
+          reliable: true
+        - distance: 7
+          js_similarity: 0.08525437268104907
+          weighted_overlap: 0.07575757575757576
+          jaccard_support_overlap: 0.0423728813559322
+          observations_a: 60
+          observations_b: 66
+          effective_support_a: 57.29049623462506
+          effective_support_b: 64.628163418236
+          reliability: 1
+          reliable: true
+        - distance: 8
+          js_similarity: 0.043122942380999674
+          weighted_overlap: 0.03617992177314211
+          jaccard_support_overlap: 0.019230769230769232
+          observations_a: 52
+          observations_b: 59
+          effective_support_a: 52.00000000000012
+          effective_support_b: 51.99701215241822
+          reliability: 1
+          reliable: true
+        - distance: 9
+          js_similarity: 0.03167841472820676
+          weighted_overlap: 0.02564102564102564
+          jaccard_support_overlap: 0.011904761904761904
+          observations_a: 39
+          observations_b: 50
+          effective_support_a: 37.63805489609797
+          effective_support_b: 45.53040665478531
+          reliability: 1
+          reliable: true
+        - distance: 10
+          js_similarity: 0.13077075318863274
+          weighted_overlap: 0.11853832442067735
+          jaccard_support_overlap: 0.06779661016949153
+          observations_a: 33
+          observations_b: 34
+          effective_support_a: 30.340690166338987
+          effective_support_b: 31.337447791989497
+          reliability: 1
+          reliable: true
+        - distance: 11
+          js_similarity: 0
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 23
+          observations_b: 21
+          effective_support_a: 23
+          effective_support_b: 19.658472591525683
+          reliability: 0.7
+          reliable: false
+        - distance: 12
+          js_similarity: 0.07479606464035082
+          weighted_overlap: 0.0625
+          jaccard_support_overlap: 0.038461538461538464
+          observations_a: 16
+          observations_b: 11
+          effective_support_a: 15.999999999999998
+          effective_support_b: 11.000000000000002
+          reliability: 0.36666666666666664
+          reliable: false
+        - distance: 13
+          js_similarity: 0
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 8
+          observations_b: 4
+          effective_support_a: 7.999999999999998
+          effective_support_b: 4
+          reliability: 0.13333333333333333
+          reliable: false
+        - distance: 14
+          js_similarity: 0
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 4
+          observations_b: 3
+          effective_support_a: 4
+          effective_support_b: 2.9999999999999996
+          reliability: 0.1
+          reliable: false
+        - distance: 15
+          js_similarity: 0
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 1
+          observations_b: 1
+          effective_support_a: 1
+          effective_support_b: 1
+          reliability: 0.03333333333333333
+          reliable: false
+        - distance: 16
+          js_similarity: 0
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 0
+          observations_b: 1
+          effective_support_a: 0
+          effective_support_b: 1
+          reliability: 0
+          reliable: false
+        - distance: 17
+          js_similarity: 0
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 0
+          observations_b: 1
+          effective_support_a: 0
+          effective_support_b: 1
+          reliability: 0
+          reliable: false
+        - distance: 18
+          js_similarity: 0
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 0
+          observations_b: 0
+          effective_support_a: 0
+          effective_support_b: 0
+          reliability: 0
+          reliable: false
+        - distance: 19
+          js_similarity: 0
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 0
+          observations_b: 0
+          effective_support_a: 0
+          effective_support_b: 0
+          reliability: 0
+          reliable: false
+        - distance: 20
+          js_similarity: 0
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 0
+          observations_b: 0
+          effective_support_a: 0
+          effective_support_b: 0
+          reliability: 0
+          reliable: false
+      boundary_sensitivity:
+        - distance: 1
+          continuous_similarity: 0.28598190002278534
+          line_bounded_similarity: 0.29944278421178927
+          difference: -0.01346088418900393
+        - distance: 2
+          continuous_similarity: 0.1637696297288005
+          line_bounded_similarity: 0.13877769764905323
+          difference: 0.02499193207974726
+        - distance: 3
+          continuous_similarity: 0.17022637509055139
+          line_bounded_similarity: 0.13011238383645973
+          difference: 0.04011399125409165
+        - distance: 4
+          continuous_similarity: 0.15058598990934846
+          line_bounded_similarity: 0.12394589528198463
+          difference: 0.02664009462736383
+        - distance: 5
+          continuous_similarity: 0.18476343645585702
+          line_bounded_similarity: 0.14237952458421188
+          difference: 0.04238391187164514
+        - distance: 6
+          continuous_similarity: 0.1726357461042809
+          line_bounded_similarity: 0.09022939688439813
+          difference: 0.08240634921988277
+        - distance: 7
+          continuous_similarity: 0.16046710329621827
+          line_bounded_similarity: 0.033231139724162806
+          difference: 0.12723596357205547
+        - distance: 8
+          continuous_similarity: 0.131496425483568
+          line_bounded_similarity: 0.041316376962005186
+          difference: 0.0901800485215628
+        - distance: 9
+          continuous_similarity: 0.21381779487658703
+          line_bounded_similarity: 0.06896805639530168
+          difference: 0.14484973848128535
+        - distance: 10
+          continuous_similarity: 0.17098219644051138
+          line_bounded_similarity: 0.08340512924591137
+          difference: 0.08757706719460001
+        - distance: 11
+          continuous_similarity: 0.20066165970549477
+          line_bounded_similarity: 3.3306690738754696e-16
+          difference: 0.20066165970549443
+        - distance: 12
+          continuous_similarity: 0.1955447833488856
+          line_bounded_similarity: 4.440892098500626e-16
+          difference: 0.19554478334888514
+        - distance: 13
+          continuous_similarity: 0.15443666754498298
+          line_bounded_similarity: 0.1679775011401976
+          difference: -0.01354083359521463
+        - distance: 14
+          continuous_similarity: 0.1807303341975095
+          line_bounded_similarity: 0
+          difference: 0.1807303341975095
+        - distance: 15
+          continuous_similarity: 0.18973372721860304
+          line_bounded_similarity: 0
+          difference: 0.18973372721860304
+        - distance: 16
+          continuous_similarity: 0.15512722821712976
+          line_bounded_similarity: 0
+          difference: 0.15512722821712976
+        - distance: 17
+          continuous_similarity: 0.19132624174371238
+          line_bounded_similarity: 0
+          difference: 0.19132624174371238
+        - distance: 18
+          continuous_similarity: 0.19704724670987128
+          line_bounded_similarity: 0
+          difference: 0.19704724670987128
+        - distance: 19
+          continuous_similarity: 0.14475107097189466
+          line_bounded_similarity: 0
+          difference: 0.14475107097189466
+        - distance: 20
+          continuous_similarity: 0.11161173948965641
+          line_bounded_similarity: 0
+          difference: 0.11161173948965641
+      right_summary:
+        similarity_at_1: 0.28598190002278534
+        similarity_at_2: 0.1637696297288005
+        similarity_at_3: 0.17022637509055139
+        similarity_at_5: 0.18476343645585702
+        similarity_at_10: 0.17098219644051138
+        similarity_at_20: 0.11161173948965641
+        mean_1_5: 0.19106546624146853
+        mean_6_10: 0.1698798532402331
+        mean_11_20: 0.172097069914774
+        persistence_1_5_percentile: 93.14453125
+      left_summary:
+        similarity_at_1: 0.4689090590672417
+        similarity_at_2: 0.23677833810043158
+        similarity_at_3: 0.15627631920758223
+        similarity_at_5: 0.1340495361204056
+        similarity_at_10: 0.1985820929436256
+        similarity_at_20: 0.2437059790659275
+        mean_1_5: 0.24526479963209374
+        mean_6_10: 0.1896439552463658
+        mean_11_20: 0.1823548236994152
+        persistence_1_5_percentile: 0

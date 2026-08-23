@@ -1,0 +1,45 @@
+ExperimentID: 39968d5f5561aa3643179944daeb0f39a59154b2eab116eb37cac2c0232bc1c1
+Input mode: generic
+Corpus: /home/brigadire/devops/workdir/go/voinich/data_test/transformed/doyle__homophonic__h006__uniform__seed001.txt
+Corpus SHA256: 85b8e2a2ed84cbd42858479ece22956747770afcdb141dad6a25899ecbe56dce
+Stage: structural-profile-stability
+Working directory: experiments/doyle__homophonic__h006__uniform__seed001/workspace
+Inputs:
+  workdir/begin_end_candidates.yaml
+  workdir/begin_end_report.md
+  workdir/begin_end_top.tsv
+  workdir/dataset/dictionary.yaml
+  workdir/dataset/structural_analysis.yaml
+  workdir/dataset/tokens_analysis.yaml
+  workdir/normalization_comparison.yaml
+  workdir/normalized_070.txt
+  workdir/normalized_075.txt
+  workdir/normalized_080.txt
+  workdir/normalized_085.txt
+  workdir/normalized_090.txt
+  workdir/sequence_analysis.yaml
+  workdir/sequence_analysis_070.yaml
+  workdir/sequence_analysis_075.yaml
+  workdir/sequence_analysis_080.yaml
+  workdir/sequence_analysis_085.yaml
+  workdir/sequence_analysis_090.yaml
+  workdir/structural_classes.yaml
+  workdir/structural_validation.yaml
+Outputs:
+  registered in artifacts.json after completion
+
+profiles fold 1/5: TRAIN eligible=539 TEST eligible=142
+profiles fold 2/5: TRAIN eligible=542 TEST eligible=141
+profiles fold 3/5: TRAIN eligible=536 TEST eligible=136
+profiles fold 4/5: TRAIN eligible=541 TEST eligible=138
+profiles fold 5/5: TRAIN eligible=526 TEST eligible=137
+bootstrap 25/200
+bootstrap 50/200
+bootstrap 75/200
+bootstrap 100/200
+bootstrap 125/200
+bootstrap 150/200
+bootstrap 175/200
+bootstrap 200/200
+Profile stability written to workdir/structural_profile_stability.yaml
+elapsed runtime: 42.419s

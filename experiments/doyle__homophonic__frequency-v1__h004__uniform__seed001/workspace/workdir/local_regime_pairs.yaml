@@ -1,0 +1,134 @@
+parameters:
+    block_sizes:
+        - 50
+        - 100
+        - 200
+    corpus: /home/brigadire/devops/workdir/go/voinich/data_test/transformed/doyle__homophonic__frequency-v1__h004__uniform__seed001.txt
+    gap_sweep:
+        - 10
+        - 20
+        - 30
+        - 50
+    primary_gap: 20
+    primary_radius: 100
+    radius_sweep:
+        - 50
+        - 100
+        - 200
+        - 500
+    regime_controls_k: 5
+    respect_line_boundaries: false
+    seed: 150015
+    window_sizes:
+        - 50
+        - 100
+        - 200
+        - 500
+    window_step: 10
+pairs: []
+correlations:
+    - metric: regime_js_vs_distance_js_1_5
+      "n": 0
+      pearson: 0
+      spearman: 0
+window_separation:
+    - window_size: 50
+      separation: 1
+      comparisons: 4366
+      mean_js_distance: 0.17658732443268596
+      mean_similarity: 0.823412675567314
+    - window_size: 50
+      separation: 2
+      comparisons: 4365
+      mean_js_distance: 0.3517279098027562
+      mean_similarity: 0.6482720901972439
+    - window_size: 50
+      separation: 5
+      comparisons: 4362
+      mean_js_distance: 0.8683267464372121
+      mean_similarity: 0.13167325356278792
+    - window_size: 50
+      separation: 10
+      comparisons: 4357
+      mean_js_distance: 0.8773440836395173
+      mean_similarity: 0.12265591636048268
+    - window_size: 50
+      separation: 20
+      comparisons: 4347
+      mean_js_distance: 0.8833792930215884
+      mean_similarity: 0.11662070697841165
+    - window_size: 100
+      separation: 1
+      comparisons: 4361
+      mean_js_distance: 0.08158595880857629
+      mean_similarity: 0.9184140411914237
+    - window_size: 100
+      separation: 2
+      comparisons: 4360
+      mean_js_distance: 0.16283035947379057
+      mean_similarity: 0.8371696405262095
+    - window_size: 100
+      separation: 5
+      comparisons: 4357
+      mean_js_distance: 0.4044598264714468
+      mean_similarity: 0.5955401735285533
+    - window_size: 100
+      separation: 10
+      comparisons: 4352
+      mean_js_distance: 0.7978735463394946
+      mean_similarity: 0.2021264536605054
+    - window_size: 100
+      separation: 20
+      comparisons: 4342
+      mean_js_distance: 0.8087218487618626
+      mean_similarity: 0.1912781512381374
+    - window_size: 200
+      separation: 1
+      comparisons: 4351
+      mean_js_distance: 0.036474391241700946
+      mean_similarity: 0.9635256087582991
+    - window_size: 200
+      separation: 2
+      comparisons: 4350
+      mean_js_distance: 0.0729716721150511
+      mean_similarity: 0.9270283278849489
+    - window_size: 200
+      separation: 5
+      comparisons: 4347
+      mean_js_distance: 0.18224194901298227
+      mean_similarity: 0.8177580509870177
+    - window_size: 200
+      separation: 10
+      comparisons: 4342
+      mean_js_distance: 0.362427640738398
+      mean_similarity: 0.637572359261602
+    - window_size: 200
+      separation: 20
+      comparisons: 4332
+      mean_js_distance: 0.7128287762339701
+      mean_similarity: 0.2871712237660299
+    - window_size: 500
+      separation: 1
+      comparisons: 4321
+      mean_js_distance: 0.012056928070733207
+      mean_similarity: 0.9879430719292668
+    - window_size: 500
+      separation: 2
+      comparisons: 4320
+      mean_js_distance: 0.024144060312047348
+      mean_similarity: 0.9758559396879527
+    - window_size: 500
+      separation: 5
+      comparisons: 4317
+      mean_js_distance: 0.06053836512591495
+      mean_similarity: 0.9394616348740851
+    - window_size: 500
+      separation: 10
+      comparisons: 4312
+      mean_js_distance: 0.12128549814485245
+      mean_similarity: 0.8787145018551475
+    - window_size: 500
+      separation: 20
+      comparisons: 4302
+      mean_js_distance: 0.24187498241067878
+      mean_similarity: 0.7581250175893213

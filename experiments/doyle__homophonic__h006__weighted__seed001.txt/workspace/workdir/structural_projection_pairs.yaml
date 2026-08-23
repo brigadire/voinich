@@ -1,0 +1,1069 @@
+parameters:
+    corpus: /home/brigadire/devops/workdir/go/voinich/data_test/transformed/doyle__homophonic__h006__weighted__seed001.txt
+    max_distance: 20
+    min_reliability: 0.7
+    min_structural_similarity: 0.65
+    projection_k: 0
+    projection_mode: both
+    random_projections: 200
+    seed: 130013
+    structural_pairs: workdir/soft_structural_pairs.tsv
+    token_level_source: workdir/distance_context_pairs.yaml
+methodology:
+    ablated_future_weight: reliability-weighted mean(position_similarity, left_similarity), multiplied by mean component reliability; right-context component excluded
+    ablated_past_weight: reliability-weighted mean(position_similarity, right_similarity), multiplied by mean component reliability; left-context component excluded
+    family_projection: 'control only: family ID categories plus singleton categories for every token outside a family'
+    full_weight: raw_similarity * evidence_strength; edges below either configured threshold are zero
+    generic_smoothing: uniform smoothing to the same number of random tokens in the source token's log2 frequency bin
+    normalization: W(X,X)=1; every retained row is divided by its row sum; projected(Y)=sum_X P(X)*normalized_W(X,Y)
+    random_space: destination permutation within log2 frequency bins preserves row degree and weights approximately frequency-matched
+    sequence_kernel: arithmetic mean of position-wise projected-distribution JS similarities
+pairs:
+    - token_a: x014952
+      token_b: x030834
+      right_context:
+        - distance: 1
+          token_js: 0.28598190002278534
+          projected_js_full: 0.2888953400357748
+          projected_js_ablated: 0.36096544496530303
+          projected_js_family_control: 0.28598190002278556
+          gain_full: 0.0029134400129894322
+          gain_ablated: 0.07498354494251769
+          gain_family_control: 2.220446049250313e-16
+          random_projection_gain_p95: 0.008284744906366881
+          token_weighted_overlap: 0.23459623295085508
+          projected_weighted_overlap_full: 0.23459623295085508
+          projected_weighted_overlap_ablated: 0.31745551829276053
+          token_support_jaccard: 0.11790393013100436
+          projected_support_jaccard_full: 0.1206896551724138
+          projected_support_jaccard_ablated: 0.29692832764505117
+          observations_a: 149
+          observations_b: 155
+          reliability: 1
+        - distance: 2
+          token_js: 0.1637696297288005
+          projected_js_full: 0.1666561629830562
+          projected_js_ablated: 0.23561101839529586
+          projected_js_family_control: 0.16376962972880105
+          gain_full: 0.0028865332542556965
+          gain_ablated: 0.07184138866649536
+          gain_family_control: 5.551115123125783e-16
+          random_projection_gain_p95: 0.024710022502465567
+          token_weighted_overlap: 0.14297466984195717
+          projected_weighted_overlap_full: 0.15020567222342493
+          projected_weighted_overlap_ablated: 0.2068507552161314
+          token_support_jaccard: 0.06772908366533864
+          projected_support_jaccard_full: 0.06614785992217899
+          projected_support_jaccard_ablated: 0.2404692082111437
+          observations_a: 149
+          observations_b: 155
+          reliability: 1
+        - distance: 3
+          token_js: 0.17022637509055139
+          projected_js_full: 0.17311699892227472
+          projected_js_ablated: 0.26616034525059074
+          projected_js_family_control: 0.1702263750905515
+          gain_full: 0.002890623831723338
+          gain_ablated: 0.09593397016003935
+          gain_family_control: 1.1102230246251565e-16
+          random_projection_gain_p95: 0.009634390101154966
+          token_weighted_overlap: 0.15020567222342496
+          projected_weighted_overlap_full: 0.1504654687161723
+          projected_weighted_overlap_ablated: 0.2183494312549287
+          token_support_jaccard: 0.07782101167315175
+          projected_support_jaccard_full: 0.0888030888030888
+          projected_support_jaccard_ablated: 0.30538922155688625
+          observations_a: 149
+          observations_b: 155
+          reliability: 1
+        - distance: 4
+          token_js: 0.15058598990934846
+          projected_js_full: 0.15511232253907847
+          projected_js_ablated: 0.291799319007932
+          projected_js_family_control: 0.15058598990934924
+          gain_full: 0.004526332629730012
+          gain_ablated: 0.14121332909858353
+          gain_family_control: 7.771561172376096e-16
+          random_projection_gain_p95: 0.022736375850289314
+          token_weighted_overlap: 0.1298116475427582
+          projected_weighted_overlap_full: 0.136263260445984
+          projected_weighted_overlap_ablated: 0.24870187350138143
+          token_support_jaccard: 0.07279693486590039
+          projected_support_jaccard_full: 0.07518796992481203
+          projected_support_jaccard_ablated: 0.32954545454545453
+          observations_a: 149
+          observations_b: 155
+          reliability: 1
+        - distance: 5
+          token_js: 0.18476343645585702
+          projected_js_full: 0.20528138216413871
+          projected_js_ablated: 0.3061386223821424
+          projected_js_family_control: 0.19134309810817318
+          gain_full: 0.020517945708281693
+          gain_ablated: 0.12137518592628538
+          gain_family_control: 0.00657966165231616
+          random_projection_gain_p95: 0.027734413875212582
+          token_weighted_overlap: 0.15639748863390343
+          projected_weighted_overlap_full: 0.16945173097999458
+          projected_weighted_overlap_ablated: 0.23134186437571538
+          token_support_jaccard: 0.07751937984496124
+          projected_support_jaccard_full: 0.10727969348659004
+          projected_support_jaccard_ablated: 0.35294117647058826
+          observations_a: 149
+          observations_b: 155
+          reliability: 1
+        - distance: 6
+          token_js: 0.1726357461042809
+          projected_js_full: 0.19817795828411378
+          projected_js_ablated: 0.3350584528769771
+          projected_js_family_control: 0.17263574610428056
+          gain_full: 0.02554221217983288
+          gain_ablated: 0.1624227067726962
+          gain_family_control: -3.3306690738754696e-16
+          random_projection_gain_p95: 0
+          token_weighted_overlap: 0.1432344663347045
+          projected_weighted_overlap_full: 0.15425663664575098
+          projected_weighted_overlap_ablated: 0.28488910588024774
+          token_support_jaccard: 0.0846774193548387
+          projected_support_jaccard_full: 0.11155378486055777
+          projected_support_jaccard_ablated: 0.3867069486404834
+          observations_a: 149
+          observations_b: 155
+          reliability: 1
+        - distance: 7
+          token_js: 0.16046710329621827
+          projected_js_full: 0.18171747018537288
+          projected_js_ablated: 0.3188546485590391
+          projected_js_family_control: 0.16046710329621827
+          gain_full: 0.021250366889154604
+          gain_ablated: 0.15838754526282084
+          gain_family_control: 0
+          random_projection_gain_p95: 0
+          token_weighted_overlap: 0.11872699718553802
+          projected_weighted_overlap_full: 0.1386014288807101
+          projected_weighted_overlap_ablated: 0.26576602666097254
+          token_support_jaccard: 0.06504065040650407
+          projected_support_jaccard_full: 0.07258064516129033
+          projected_support_jaccard_ablated: 0.3374233128834356
+          observations_a: 149
+          observations_b: 155
+          reliability: 1
+        - distance: 8
+          token_js: 0.131496425483568
+          projected_js_full: 0.15738041433841554
+          projected_js_ablated: 0.2637804873716688
+          projected_js_family_control: 0.13400691013620258
+          gain_full: 0.02588398885484755
+          gain_ablated: 0.13228406188810082
+          gain_family_control: 0.0025104846526345925
+          random_projection_gain_p95: 0
+          token_weighted_overlap: 0.10400519592985498
+          projected_weighted_overlap_full: 0.13715613567115473
+          projected_weighted_overlap_ablated: 0.20872735056867314
+          token_support_jaccard: 0.058365758754863814
+          projected_support_jaccard_full: 0.07662835249042145
+          projected_support_jaccard_ablated: 0.3430232558139535
+          observations_a: 149
+          observations_b: 155
+          reliability: 1
+        - distance: 9
+          token_js: 0.21381779487658703
+          projected_js_full: 0.22846729734050975
+          projected_js_ablated: 0.3324007107078316
+          projected_js_family_control: 0.21381779487658736
+          gain_full: 0.014649502463922714
+          gain_ablated: 0.11858291583124458
+          gain_family_control: 3.3306690738754696e-16
+          random_projection_gain_p95: 0
+          token_weighted_overlap: 0.17549253085083347
+          projected_weighted_overlap_full: 0.1812481117294829
+          projected_weighted_overlap_ablated: 0.2756490646249934
+          token_support_jaccard: 0.102880658436214
+          projected_support_jaccard_full: 0.11836734693877551
+          projected_support_jaccard_ablated: 0.353125
+          observations_a: 149
+          observations_b: 155
+          reliability: 1
+        - distance: 10
+          token_js: 0.17098219644051138
+          projected_js_full: 0.1980674716485722
+          projected_js_ablated: 0.32375101595391387
+          projected_js_family_control: 0.1709821964405117
+          gain_full: 0.02708527520806081
+          gain_ablated: 0.1527688195134025
+          gain_family_control: 3.3306690738754696e-16
+          random_projection_gain_p95: 0
+          token_weighted_overlap: 0.14401385581294654
+          projected_weighted_overlap_full: 0.1642024206931521
+          projected_weighted_overlap_ablated: 0.2623830818567527
+          token_support_jaccard: 0.07346938775510205
+          projected_support_jaccard_full: 0.0975609756097561
+          projected_support_jaccard_ablated: 0.37797619047619047
+          observations_a: 149
+          observations_b: 155
+          reliability: 1
+        - distance: 11
+          token_js: 0.20066165970549477
+          projected_js_full: 0.21800109375254095
+          projected_js_ablated: 0.3421954848990747
+          projected_js_family_control: 0.2006616597054951
+          gain_full: 0.017339434047046187
+          gain_ablated: 0.14153382519357993
+          gain_family_control: 3.3306690738754696e-16
+          random_projection_gain_p95: 0
+          token_weighted_overlap: 0.16258930504438188
+          projected_weighted_overlap_full: 0.1876157169538191
+          projected_weighted_overlap_ablated: 0.28337872095631667
+          token_support_jaccard: 0.08196721311475409
+          projected_support_jaccard_full: 0.10121457489878542
+          projected_support_jaccard_ablated: 0.3712574850299401
+          observations_a: 149
+          observations_b: 155
+          reliability: 1
+        - distance: 12
+          token_js: 0.1955447833488856
+          projected_js_full: 0.20858339172810159
+          projected_js_ablated: 0.323682867245236
+          projected_js_family_control: 0.19554478334888514
+          gain_full: 0.013038608379215999
+          gain_ablated: 0.1281380838963504
+          gain_family_control: -4.440892098500626e-16
+          random_projection_gain_p95: 0
+          token_weighted_overlap: 0.1636284910153713
+          projected_weighted_overlap_full: 0.1745143171049228
+          projected_weighted_overlap_ablated: 0.2680079165657663
+          token_support_jaccard: 0.0796812749003984
+          projected_support_jaccard_full: 0.09448818897637795
+          projected_support_jaccard_ablated: 0.37388724035608306
+          observations_a: 149
+          observations_b: 155
+          reliability: 1
+        - distance: 13
+          token_js: 0.15443666754498298
+          projected_js_full: 0.1830559729916199
+          projected_js_ablated: 0.31829986367331453
+          projected_js_family_control: 0.15443666754498286
+          gain_full: 0.028619305446636933
+          gain_ablated: 0.16386319612833156
+          gain_family_control: -1.1102230246251565e-16
+          random_projection_gain_p95: 0
+          token_weighted_overlap: 0.13033124052825287
+          projected_weighted_overlap_full: 0.15120421393854383
+          projected_weighted_overlap_ablated: 0.25786348905495254
+          token_support_jaccard: 0.06719367588932806
+          projected_support_jaccard_full: 0.10116731517509728
+          projected_support_jaccard_ablated: 0.3875739644970414
+          observations_a: 149
+          observations_b: 155
+          reliability: 1
+        - distance: 14
+          token_js: 0.1807303341975095
+          projected_js_full: 0.19517963675892214
+          projected_js_ablated: 0.30912992314405663
+          projected_js_family_control: 0.18073033419750972
+          gain_full: 0.014449302561412636
+          gain_ablated: 0.12839958894654713
+          gain_family_control: 2.220446049250313e-16
+          random_projection_gain_p95: 0
+          token_weighted_overlap: 0.1569170816193981
+          projected_weighted_overlap_full: 0.16414808400086597
+          projected_weighted_overlap_ablated: 0.2281232253795641
+          token_support_jaccard: 0.07723577235772358
+          projected_support_jaccard_full: 0.09274193548387097
+          projected_support_jaccard_ablated: 0.3867069486404834
+          observations_a: 149
+          observations_b: 155
+          reliability: 1
+        - distance: 15
+          token_js: 0.18973372721860304
+          projected_js_full: 0.21112961057168278
+          projected_js_ablated: 0.3337064299973226
+          projected_js_family_control: 0.18973372721860315
+          gain_full: 0.021395883353079737
+          gain_ablated: 0.14397270277871954
+          gain_family_control: 1.1102230246251565e-16
+          random_projection_gain_p95: 0
+          token_weighted_overlap: 0.16956051093310237
+          projected_weighted_overlap_full: 0.189473170492198
+          projected_weighted_overlap_ablated: 0.28328519047834333
+          token_support_jaccard: 0.09302325581395349
+          projected_support_jaccard_full: 0.11196911196911197
+          projected_support_jaccard_ablated: 0.3993993993993994
+          observations_a: 149
+          observations_b: 155
+          reliability: 1
+        - distance: 16
+          token_js: 0.15512722821712976
+          projected_js_full: 0.17808983392391475
+          projected_js_ablated: 0.32345639928210956
+          projected_js_family_control: 0.15512722821712988
+          gain_full: 0.02296260570678499
+          gain_ablated: 0.1683291710649798
+          gain_family_control: 1.1102230246251565e-16
+          random_projection_gain_p95: 0
+          token_weighted_overlap: 0.11716821822905393
+          projected_weighted_overlap_full: 0.1327826063589814
+          projected_weighted_overlap_ablated: 0.265184670613048
+          token_support_jaccard: 0.06746031746031746
+          projected_support_jaccard_full: 0.08627450980392157
+          projected_support_jaccard_ablated: 0.3878787878787879
+          observations_a: 149
+          observations_b: 155
+          reliability: 1
+        - distance: 17
+          token_js: 0.19132624174371238
+          projected_js_full: 0.21006718625629373
+          projected_js_ablated: 0.31866660341386777
+          projected_js_family_control: 0.19132624174371204
+          gain_full: 0.018740944512581348
+          gain_ablated: 0.1273403616701554
+          gain_family_control: -3.3306690738754696e-16
+          random_projection_gain_p95: 0
+          token_weighted_overlap: 0.15613769214115608
+          projected_weighted_overlap_full: 0.17923992650076057
+          projected_weighted_overlap_ablated: 0.2554736836163582
+          token_support_jaccard: 0.0860655737704918
+          projected_support_jaccard_full: 0.09716599190283401
+          projected_support_jaccard_ablated: 0.37272727272727274
+          observations_a: 149
+          observations_b: 155
+          reliability: 1
+        - distance: 18
+          token_js: 0.19704724670987128
+          projected_js_full: 0.209756688822064
+          projected_js_ablated: 0.31392397048789755
+          projected_js_family_control: 0.19704724670987106
+          gain_full: 0.012709442112192715
+          gain_ablated: 0.11687672377802627
+          gain_family_control: -2.220446049250313e-16
+          random_projection_gain_p95: 0
+          token_weighted_overlap: 0.16904091794760767
+          projected_weighted_overlap_full: 0.17627192032907557
+          projected_weighted_overlap_ablated: 0.2581507381539789
+          token_support_jaccard: 0.0963855421686747
+          projected_support_jaccard_full: 0.10756972111553785
+          projected_support_jaccard_ablated: 0.3654970760233918
+          observations_a: 149
+          observations_b: 155
+          reliability: 1
+        - distance: 19
+          token_js: 0.14475107097189466
+          projected_js_full: 0.14522812130988527
+          projected_js_ablated: 0.26747703234342557
+          projected_js_family_control: 0.144751070971895
+          gain_full: 0.00047705033799061436
+          gain_ablated: 0.12272596137153091
+          gain_family_control: 3.3306690738754696e-16
+          random_projection_gain_p95: 0
+          token_weighted_overlap: 0.12310023814678504
+          projected_weighted_overlap_full: 0.12310023814678504
+          projected_weighted_overlap_ablated: 0.21906334761028323
+          token_support_jaccard: 0.06048387096774194
+          projected_support_jaccard_full: 0.06349206349206349
+          projected_support_jaccard_ablated: 0.3083832335329341
+          observations_a: 149
+          observations_b: 155
+          reliability: 1
+        - distance: 20
+          token_js: 0.11161173948965641
+          projected_js_full: 0.12902810114704188
+          projected_js_ablated: 0.2884094842123194
+          projected_js_family_control: 0.11161173948965641
+          gain_full: 0.01741636165738547
+          gain_ablated: 0.17679774472266296
+          gain_family_control: 0
+          random_projection_gain_p95: 0
+          token_weighted_overlap: 0.09162156310889803
+          projected_weighted_overlap_full: 0.10013871560813363
+          projected_weighted_overlap_ablated: 0.23833652001273908
+          token_support_jaccard: 0.05179282868525897
+          projected_support_jaccard_full: 0.07114624505928854
+          projected_support_jaccard_ablated: 0.35522388059701493
+          observations_a: 149
+          observations_b: 155
+          reliability: 1
+      left_context:
+        - distance: 1
+          token_js: 0.4689090590672417
+          projected_js_full: 0.4689090590672418
+          projected_js_ablated: 0.5880900673363656
+          projected_js_family_control: 0.4689090590672418
+          gain_full: 1.1102230246251565e-16
+          gain_ablated: 0.11918100826912392
+          gain_family_control: 1.1102230246251565e-16
+          random_projection_gain_p95: 0
+          token_weighted_overlap: 0.3917731110630006
+          projected_weighted_overlap_full: 0.39177311106300067
+          projected_weighted_overlap_ablated: 0.4923352916231596
+          token_support_jaccard: 0.15789473684210525
+          projected_support_jaccard_full: 0.15789473684210525
+          projected_support_jaccard_ablated: 0.44155844155844154
+          observations_a: 149
+          observations_b: 155
+          reliability: 1
+        - distance: 2
+          token_js: 0.23677833810043158
+          projected_js_full: 0.24287642239103768
+          projected_js_ablated: 0.3683352842313308
+          projected_js_family_control: 0.23677833810043192
+          gain_full: 0.006098084290606098
+          gain_ablated: 0.1315569461308992
+          gain_family_control: 3.3306690738754696e-16
+          random_projection_gain_p95: 0
+          token_weighted_overlap: 0.18943494262827446
+          projected_weighted_overlap_full: 0.19614635202424766
+          projected_weighted_overlap_ablated: 0.30998832435017565
+          token_support_jaccard: 0.09787234042553192
+          projected_support_jaccard_full: 0.0995850622406639
+          projected_support_jaccard_ablated: 0.3870056497175141
+          observations_a: 149
+          observations_b: 155
+          reliability: 1
+        - distance: 3
+          token_js: 0.15627631920758223
+          projected_js_full: 0.17205046713655348
+          projected_js_ablated: 0.29044380444799356
+          projected_js_family_control: 0.15627631920758256
+          gain_full: 0.01577414792897125
+          gain_ablated: 0.13416748524041133
+          gain_family_control: 3.3306690738754696e-16
+          random_projection_gain_p95: 0
+          token_weighted_overlap: 0.13007144403550555
+          projected_weighted_overlap_full: 0.13652305693873135
+          projected_weighted_overlap_ablated: 0.2335276634700457
+          token_support_jaccard: 0.07450980392156863
+          projected_support_jaccard_full: 0.09302325581395349
+          projected_support_jaccard_ablated: 0.3952254641909814
+          observations_a: 149
+          observations_b: 155
+          reliability: 1
+        - distance: 4
+          token_js: 0.23031074566480758
+          projected_js_full: 0.25118608509942764
+          projected_js_ablated: 0.3909643236543612
+          projected_js_family_control: 0.2303107456648077
+          gain_full: 0.020875339434620055
+          gain_ablated: 0.1606535779895536
+          gain_family_control: 1.1102230246251565e-16
+          random_projection_gain_p95: 0
+          token_weighted_overlap: 0.2023381684347261
+          projected_weighted_overlap_full: 0.22223047569834756
+          projected_weighted_overlap_ablated: 0.34323650720029875
+          token_support_jaccard: 0.08898305084745763
+          projected_support_jaccard_full: 0.1125
+          projected_support_jaccard_ablated: 0.4353932584269663
+          observations_a: 149
+          observations_b: 155
+          reliability: 1
+        - distance: 5
+          token_js: 0.1340495361204056
+          projected_js_full: 0.1778094804291811
+          projected_js_ablated: 0.35972496629520123
+          projected_js_family_control: 0.14062919777272176
+          gain_full: 0.0437599443087755
+          gain_ablated: 0.22567543017479563
+          gain_family_control: 0.00657966165231616
+          random_projection_gain_p95: 0
+          token_weighted_overlap: 0.10400519592985497
+          projected_weighted_overlap_full: 0.14889217088153678
+          projected_weighted_overlap_ablated: 0.29260902797886423
+          token_support_jaccard: 0.05078125
+          projected_support_jaccard_full: 0.08560311284046693
+          projected_support_jaccard_ablated: 0.4340659340659341
+          observations_a: 149
+          observations_b: 155
+          reliability: 1
+        - distance: 6
+          token_js: 0.2069905286373287
+          projected_js_full: 0.22447247680477878
+          projected_js_ablated: 0.3990747773183858
+          projected_js_family_control: 0.20699052863732836
+          gain_full: 0.01748194816745008
+          gain_ablated: 0.1920842486810571
+          gain_family_control: -3.3306690738754696e-16
+          random_projection_gain_p95: 0
+          token_weighted_overlap: 0.1822039402468066
+          projected_weighted_overlap_full: 0.19458757306776356
+          projected_weighted_overlap_ablated: 0.3361198964964122
+          token_support_jaccard: 0.10569105691056911
+          projected_support_jaccard_full: 0.116
+          projected_support_jaccard_ablated: 0.4733893557422969
+          observations_a: 149
+          observations_b: 155
+          reliability: 1
+        - distance: 7
+          token_js: 0.1851507941716939
+          projected_js_full: 0.1981672037930856
+          projected_js_ablated: 0.3472396409377094
+          projected_js_family_control: 0.18515079417169333
+          gain_full: 0.013016409621391722
+          gain_ablated: 0.16208884676601554
+          gain_family_control: -5.551115123125783e-16
+          random_projection_gain_p95: 0
+          token_weighted_overlap: 0.168521324962113
+          projected_weighted_overlap_full: 0.17660001516492335
+          projected_weighted_overlap_ablated: 0.2886382613702977
+          token_support_jaccard: 0.08846153846153847
+          projected_support_jaccard_full: 0.10646387832699619
+          projected_support_jaccard_ablated: 0.4444444444444444
+          observations_a: 149
+          observations_b: 155
+          reliability: 1
+        - distance: 8
+          token_js: 0.1839963434324018
+          projected_js_full: 0.20141647160726817
+          projected_js_ablated: 0.32548958872235856
+          projected_js_family_control: 0.18645292625817744
+          gain_full: 0.01742012817486638
+          gain_ablated: 0.14149324528995677
+          gain_family_control: 0.002456582825775655
+          random_projection_gain_p95: 0
+          token_weighted_overlap: 0.1442736523056939
+          projected_weighted_overlap_full: 0.1524718811911209
+          projected_weighted_overlap_ablated: 0.25966386638234057
+          token_support_jaccard: 0.076
+          projected_support_jaccard_full: 0.10317460317460317
+          projected_support_jaccard_ablated: 0.4327956989247312
+          observations_a: 149
+          observations_b: 155
+          reliability: 1
+        - distance: 9
+          token_js: 0.17350001704677898
+          projected_js_full: 0.17818071243195077
+          projected_js_ablated: 0.3389937458300579
+          projected_js_family_control: 0.17350001704677898
+          gain_full: 0.004680695385171796
+          gain_ablated: 0.16549372878327895
+          gain_family_control: 0
+          random_projection_gain_p95: 0
+          token_weighted_overlap: 0.13059103702100022
+          projected_weighted_overlap_full: 0.13309937470576466
+          projected_weighted_overlap_ablated: 0.2728770776614958
+          token_support_jaccard: 0.07630522088353414
+          projected_support_jaccard_full: 0.08695652173913043
+          projected_support_jaccard_ablated: 0.44324324324324327
+          observations_a: 149
+          observations_b: 155
+          reliability: 1
+        - distance: 10
+          token_js: 0.1985820929436256
+          projected_js_full: 0.218323336355429
+          projected_js_ablated: 0.37965646706535383
+          projected_js_family_control: 0.1985820929436256
+          gain_full: 0.01974124341180339
+          gain_ablated: 0.18107437412172822
+          gain_family_control: 0
+          random_projection_gain_p95: 0
+          token_weighted_overlap: 0.16310889802987658
+          projected_weighted_overlap_full: 0.1966284314428408
+          projected_weighted_overlap_ablated: 0.3188610798486589
+          token_support_jaccard: 0.08264462809917356
+          projected_support_jaccard_full: 0.0942622950819672
+          projected_support_jaccard_ablated: 0.45125348189415043
+          observations_a: 149
+          observations_b: 155
+          reliability: 1
+        - distance: 11
+          token_js: 0.20843143768496764
+          projected_js_full: 0.23193355000118032
+          projected_js_ablated: 0.37268007207024545
+          projected_js_family_control: 0.20843143768496808
+          gain_full: 0.023502112316212687
+          gain_ablated: 0.16424863438527781
+          gain_family_control: 4.440892098500626e-16
+          random_projection_gain_p95: 0
+          token_weighted_overlap: 0.1822039402468066
+          projected_weighted_overlap_full: 0.20236330503425376
+          projected_weighted_overlap_ablated: 0.31322878967062695
+          token_support_jaccard: 0.099601593625498
+          projected_support_jaccard_full: 0.12549019607843137
+          projected_support_jaccard_ablated: 0.45108695652173914
+          observations_a: 149
+          observations_b: 155
+          reliability: 1
+        - distance: 12
+          token_js: 0.1718128869511638
+          projected_js_full: 0.18213149693997643
+          projected_js_ablated: 0.33538566411286075
+          projected_js_family_control: 0.17181288695116426
+          gain_full: 0.010318609988812621
+          gain_ablated: 0.16357277716169694
+          gain_family_control: 4.440892098500626e-16
+          random_projection_gain_p95: 0
+          token_weighted_overlap: 0.1429746698419571
+          projected_weighted_overlap_full: 0.14968607923793026
+          projected_weighted_overlap_ablated: 0.2792245629282612
+          token_support_jaccard: 0.06854838709677419
+          projected_support_jaccard_full: 0.076
+          projected_support_jaccard_ablated: 0.4273972602739726
+          observations_a: 149
+          observations_b: 155
+          reliability: 1
+        - distance: 13
+          token_js: 0.1720781298395555
+          projected_js_full: 0.19251926893798
+          projected_js_ablated: 0.3826522251196105
+          projected_js_family_control: 0.17207812983955517
+          gain_full: 0.020441139098424488
+          gain_ablated: 0.210574095280055
+          gain_family_control: -3.3306690738754696e-16
+          random_projection_gain_p95: 0
+          token_weighted_overlap: 0.13756224290972074
+          projected_weighted_overlap_full: 0.1479592506920976
+          projected_weighted_overlap_ablated: 0.31075998989449155
+          token_support_jaccard: 0.08032128514056225
+          projected_support_jaccard_full: 0.10358565737051793
+          projected_support_jaccard_ablated: 0.4563380281690141
+          observations_a: 149
+          observations_b: 155
+          reliability: 1
+        - distance: 14
+          token_js: 0.12300652648388222
+          projected_js_full: 0.13173206609079224
+          projected_js_ablated: 0.3014076724893112
+          projected_js_family_control: 0.12300652648388222
+          gain_full: 0.008725539606910027
+          gain_ablated: 0.178401146005429
+          gain_family_control: 0
+          random_projection_gain_p95: 0
+          token_weighted_overlap: 0.0978133795193765
+          projected_weighted_overlap_full: 0.10936033910217914
+          projected_weighted_overlap_ablated: 0.2454887465603015
+          token_support_jaccard: 0.05
+          projected_support_jaccard_full: 0.06037735849056604
+          projected_support_jaccard_ablated: 0.39841688654353563
+          observations_a: 149
+          observations_b: 155
+          reliability: 1
+        - distance: 15
+          token_js: 0.15037725932068413
+          projected_js_full: 0.18539803744338013
+          projected_js_ablated: 0.33152437619976405
+          projected_js_family_control: 0.1503772593206839
+          gain_full: 0.035020778122695995
+          gain_ablated: 0.18114711687907992
+          gain_family_control: -2.220446049250313e-16
+          random_projection_gain_p95: 0
+          token_weighted_overlap: 0.13007144403550555
+          projected_weighted_overlap_full: 0.1459615825984719
+          projected_weighted_overlap_ablated: 0.2777323009062927
+          token_support_jaccard: 0.07142857142857142
+          projected_support_jaccard_full: 0.1062992125984252
+          projected_support_jaccard_ablated: 0.4254742547425474
+          observations_a: 149
+          observations_b: 155
+          reliability: 1
+        - distance: 16
+          token_js: 0.2161423480091771
+          projected_js_full: 0.238432779948902
+          projected_js_ablated: 0.41547689953625777
+          projected_js_family_control: 0.2161423480091771
+          gain_full: 0.02229043193972491
+          gain_ablated: 0.19933455152708068
+          gain_family_control: 0
+          random_projection_gain_p95: 0
+          token_weighted_overlap: 0.18891534964277976
+          projected_weighted_overlap_full: 0.1960321828133037
+          projected_weighted_overlap_ablated: 0.3557403645298533
+          token_support_jaccard: 0.0995850622406639
+          projected_support_jaccard_full: 0.12757201646090535
+          projected_support_jaccard_ablated: 0.4715909090909091
+          observations_a: 149
+          observations_b: 155
+          reliability: 1
+        - distance: 17
+          token_js: 0.17121288569934145
+          projected_js_full: 0.21023683228039725
+          projected_js_ablated: 0.3572430747983749
+          projected_js_family_control: 0.17121288569934123
+          gain_full: 0.03902394658105579
+          gain_ablated: 0.18603018909903346
+          gain_family_control: -2.220446049250313e-16
+          random_projection_gain_p95: 0
+          token_weighted_overlap: 0.13782203940246807
+          projected_weighted_overlap_full: 0.1652920773350218
+          projected_weighted_overlap_ablated: 0.2766611079033908
+          token_support_jaccard: 0.07723577235772358
+          projected_support_jaccard_full: 0.10080645161290322
+          projected_support_jaccard_ablated: 0.45125348189415043
+          observations_a: 149
+          observations_b: 155
+          reliability: 1
+        - distance: 18
+          token_js: 0.1729643618344403
+          projected_js_full: 0.20343404902215712
+          projected_js_ablated: 0.3362999920548857
+          projected_js_family_control: 0.1729643618344403
+          gain_full: 0.03046968718771681
+          gain_ablated: 0.1633356302204454
+          gain_family_control: 0
+          random_projection_gain_p95: 0
+          token_weighted_overlap: 0.14297466984195714
+          projected_weighted_overlap_full: 0.16539884565800714
+          projected_weighted_overlap_ablated: 0.2859407312650683
+          token_support_jaccard: 0.072
+          projected_support_jaccard_full: 0.09486166007905138
+          projected_support_jaccard_ablated: 0.4305177111716621
+          observations_a: 149
+          observations_b: 155
+          reliability: 1
+        - distance: 19
+          token_js: 0.19381642210501193
+          projected_js_full: 0.20595557001291187
+          projected_js_ablated: 0.379458226634122
+          projected_js_family_control: 0.19381642210501226
+          gain_full: 0.012139147907899939
+          gain_ablated: 0.18564180452911005
+          gain_family_control: 3.3306690738754696e-16
+          random_projection_gain_p95: 0
+          token_weighted_overlap: 0.16826152846936568
+          projected_weighted_overlap_full: 0.1744230436729556
+          projected_weighted_overlap_ablated: 0.31718901520472437
+          token_support_jaccard: 0.06827309236947791
+          projected_support_jaccard_full: 0.08695652173913043
+          projected_support_jaccard_ablated: 0.44686648501362397
+          observations_a: 149
+          observations_b: 155
+          reliability: 1
+        - distance: 20
+          token_js: 0.2437059790659275
+          projected_js_full: 0.26149989418051145
+          projected_js_ablated: 0.4077868329027401
+          projected_js_family_control: 0.2437059790659276
+          gain_full: 0.017793915114583947
+          gain_ablated: 0.1640808538368126
+          gain_family_control: 1.1102230246251565e-16
+          random_projection_gain_p95: 0
+          token_weighted_overlap: 0.19562675903875293
+          projected_weighted_overlap_full: 0.21533845515824057
+          projected_weighted_overlap_ablated: 0.347452380043911
+          token_support_jaccard: 0.11914893617021277
+          projected_support_jaccard_full: 0.14285714285714285
+          projected_support_jaccard_ablated: 0.4700854700854701
+          observations_a: 149
+          observations_b: 155
+          reliability: 1
+      summary:
+        mean_token_js_1_5: 0.19106546624146853
+        mean_projected_js_1_5: 0.19781244132886458
+        mean_ablated_projected_js_1_5: 0.29213495000025286
+        projection_gain_1_5: 0.0067469750873960345
+        gain_6_10: 0.02288226911916371
+        gain_11_20: 0.016714893811432662
+        controls:
+            observed_projection_gain: 0.0067469750873960345
+            random_gain_mean: 0.012313839147298082
+            random_gain_p95: 0.015992403935441525
+            random_gain_percentile: 0
+            smoothing_gain_mean: 0.7933582693525387
+            smoothing_gain_p95: 0.7956530134667164
+            smoothing_gain_percentile: 0
+        ablated_controls:
+            observed_projection_gain: 0.10106948375878433
+            random_gain_mean: 0.12238424862782141
+            random_gain_p95: 0.12699849219309137
+            random_gain_percentile: 0
+            smoothing_gain_mean: 0.7658085510826339
+            smoothing_gain_p95: 0.7674366025347173
+            smoothing_gain_percentile: 0
+parameter_sweeps:
+    - method: threshold
+      parameter: 0.5
+      mean_gain_full: 0.12681471080579226
+      mean_gain_ablated: 0.31015281661447125
+    - method: threshold
+      parameter: 0.6
+      mean_gain_full: 0.03377136628677555
+      mean_gain_ablated: 0.1947085309514618
+    - method: threshold
+      parameter: 0.65
+      mean_gain_full: 0.0067469750873957015
+      mean_gain_ablated: 0.10106948375878393
+    - method: threshold
+      parameter: 0.7
+      mean_gain_full: 0.0007506367291971516
+      mean_gain_ablated: 0.06096573411384558
+    - method: threshold
+      parameter: 0.75
+      mean_gain_full: 0
+      mean_gain_ablated: 0.03002449464974275
+    - method: knn
+      parameter: 3
+      mean_gain_full: 0.1490898072064574
+      mean_gain_ablated: 0.18896145124441624
+    - method: knn
+      parameter: 5
+      mean_gain_full: 0.18160996356030001
+      mean_gain_ablated: 0.22937653891150916
+    - method: knn
+      parameter: 10
+      mean_gain_full: 0.21735613611218457
+      mean_gain_ablated: 0.2706860328316135
+    - method: knn
+      parameter: 20
+      mean_gain_full: 0.2403872125798757
+      mean_gain_ablated: 0.29565799136248544
+    - method: family_control
+      parameter: 0
+      mean_gain_full: 0.001315932330463232
+      mean_gain_ablated: 0.001315932330463232
+shuffled_corpus_controls:
+    - mode: global
+      mean_token_js_1_5: 0.19755994847200514
+      mean_projected_js_1_5: 0.2172311446023532
+      mean_gain_1_5: 0.019671196130348068
+    - mode: line-preserving
+      mean_token_js_1_5: 0.14564786584877193
+      mean_projected_js_1_5: 0.1580062687091706
+      mean_gain_1_5: 0.01235840286039866
+strongest_structural_transitions:
+    - source: x008299
+      destination: x027949
+      observed: 0.00011438506588579795
+      frequency_baseline: 9.420439174342804e-08
+      lift: 1214.2222222222222
+    - source: x008298
+      destination: x027948
+      observed: 0.00013726207906295754
+      frequency_baseline: 1.2560585565790404e-07
+      lift: 1092.8000000000002
+    - source: x008298
+      destination: x027949
+      observed: 0.00011438506588579795
+      frequency_baseline: 1.1304527009211365e-07
+      lift: 1011.8518518518518
+    - source: x017640
+      destination: x017943
+      observed: 0.00011438506588579795
+      frequency_baseline: 1.2560585565790404e-07
+      lift: 910.6666666666667
+    - source: x017640
+      destination: x017940
+      observed: 0.00013726207906295754
+      frequency_baseline: 2.407445566776494e-07
+      lift: 570.1565217391304
+    - source: x018151
+      destination: x002233
+      observed: 0.00011438506588579795
+      frequency_baseline: 7.944570370362431e-07
+      lift: 143.97891963109353
+    - source: x023779
+      destination: x013060
+      observed: 0.00011438506588579795
+      frequency_baseline: 1.78046300395079e-06
+      lift: 64.24456202233979
+    - source: x028902
+      destination: x016844
+      observed: 0.00011438506588579795
+      frequency_baseline: 1.7904068008570406e-06
+      lift: 63.887752119263375
+    - source: x015474
+      destination: x028386
+      observed: 0.00011438506588579795
+      frequency_baseline: 2.000273251352122e-06
+      lift: 57.184720041862896
+    - source: x028464
+      destination: x014955
+      observed: 0.00013726207906295754
+      frequency_baseline: 2.5639295286169666e-06
+      lift: 53.53582363747703
+    - source: x030942
+      destination: x031099
+      observed: 0.00011438506588579795
+      frequency_baseline: 2.143149912162988e-06
+      lift: 53.372405372405375
+    - source: x013872
+      destination: x000954
+      observed: 0.00014922259328619005
+      frequency_baseline: 3.2020657179441447e-06
+      lift: 46.601977108076646
+    - source: x013920
+      destination: x032100
+      observed: 0.00016013909224011713
+      frequency_baseline: 3.5797668862502656e-06
+      lift: 44.734502923976606
+    - source: x013874
+      destination: x000954
+      observed: 0.0001284759667140647
+      frequency_baseline: 2.963923458033052e-06
+      lift: 43.346587229120004
+    - source: x013873
+      destination: x000954
+      observed: 0.00013408767718861778
+      frequency_baseline: 3.128844142707711e-06
+      lift: 42.855339247604036
+    - source: x000078
+      destination: x012336
+      observed: 0.00011438506588579795
+      frequency_baseline: 2.7978704347798125e-06
+      lift: 40.88290310512533
+    - source: x030943
+      destination: x012674
+      observed: 0.00011438506588579795
+      frequency_baseline: 3.158463912064379e-06
+      lift: 36.215410107705054
+    - source: x023779
+      destination: x013058
+      observed: 0.00011438506588579795
+      frequency_baseline: 3.165267562579182e-06
+      lift: 36.13756613756614
+    - source: x032101
+      destination: x001416
+      observed: 0.00011438506588579795
+      frequency_baseline: 3.2908734182370863e-06
+      lift: 34.75826972010178
+    - source: x015014
+      destination: x014953
+      observed: 0.00020589311859443632
+      frequency_baseline: 6.5430183643129854e-06
+      lift: 31.46760518317069
+    - source: x011460
+      destination: x013417
+      observed: 0.00011438506588579795
+      frequency_baseline: 3.6567004728407315e-06
+      lift: 31.280950336338915
+    - source: x030944
+      destination: x012672
+      observed: 0.00011438506588579795
+      frequency_baseline: 3.883314370756867e-06
+      lift: 29.455525606469
+    - source: x015014
+      destination: x014955
+      observed: 0.00013726207906295754
+      frequency_baseline: 4.942067062406616e-06
+      lift: 27.774224293127183
+    - source: x000079
+      destination: x016338
+      observed: 0.00011438506588579795
+      frequency_baseline: 4.253851644947684e-06
+      lift: 26.88976377952756
+    - source: x015012
+      destination: x014956
+      observed: 0.00011438506588579795
+      frequency_baseline: 4.352242898546375e-06
+      lift: 26.281866281866282
+    - source: x023778
+      destination: x013057
+      observed: 0.00011438506588579795
+      frequency_baseline: 4.72853710778818e-06
+      lift: 24.190370780298835
+    - source: x015012
+      destination: x030837
+      observed: 0.0002287701317715959
+      frequency_baseline: 9.533484444434917e-06
+      lift: 23.99648660518226
+    - source: x030164
+      destination: x028395
+      observed: 0.00013726207906295754
+      frequency_baseline: 5.765308774697796e-06
+      lift: 23.808278867102395
+    - source: x028465
+      destination: x030834
+      observed: 0.00012364049613396502
+      frequency_baseline: 5.205321051581855e-06
+      lift: 23.752712831496083
+    - source: x028902
+      destination: x024331
+      observed: 0.00011438506588579795
+      frequency_baseline: 4.88292763870102e-06
+      lift: 23.425509110396572
+    - source: x014156
+      destination: x018181
+      observed: 0.00013726207906295754
+      frequency_baseline: 5.970465005605706e-06
+      lift: 22.99018232819074
+    - source: x028903
+      destination: x002232
+      observed: 0.0002287701317715959
+      frequency_baseline: 1.0719413064938294e-05
+      lift: 21.34166585294405
+    - source: x014955
+      destination: x028387
+      observed: 0.00011438506588579795
+      frequency_baseline: 5.4622846479231025e-06
+      lift: 20.940883395611763
+    - source: x023778
+      destination: x013056
+      observed: 0.00013726207906295754
+      frequency_baseline: 6.565522746785026e-06
+      lift: 20.906496612196094
+    - source: x015012
+      destination: x014952
+      observed: 0.00025173598245733933
+      frequency_baseline: 1.2385438581137025e-05
+      lift: 20.32515690164838
+    - source: x028904
+      destination: x002234
+      observed: 0.00011438506588579795
+      frequency_baseline: 5.652263504605682e-06
+      lift: 20.237037037037037
+    - source: x028902
+      destination: x002235
+      observed: 0.00011438506588579795
+      frequency_baseline: 5.696748911817856e-06
+      lift: 20.079007808911346
+    - source: x028903
+      destination: x017216
+      observed: 0.00011438506588579795
+      frequency_baseline: 5.707739424187923e-06
+      lift: 20.0403447643499
+    - source: x013876
+      destination: x013033
+      observed: 0.00011449386201628751
+      frequency_baseline: 5.780307405188721e-06
+      lift: 19.80757319472517
+    - source: x015013
+      destination: x014954
+      observed: 0.00018581005727591292
+      frequency_baseline: 9.517053382406375e-06
+      lift: 19.52390617240933
+    - source: x013056
+      destination: x012673
+      observed: 0.00013726207906295754
+      frequency_baseline: 7.373587084850875e-06
+      lift: 18.615373695791043
+    - source: x015012
+      destination: x014954
+      observed: 0.00020181852379125116
+      frequency_baseline: 1.0955677730909665e-05
+      lift: 18.42136367537108
+    - source: x031579
+      destination: x013416
+      observed: 0.00011438506588579795
+      frequency_baseline: 6.241564310734016e-06
+      lift: 18.326345799094415
+    - source: x015014
+      destination: x014954
+      observed: 0.00013336150462903252
+      frequency_baseline: 7.359116859651442e-06
+      lift: 18.121944137105206
+    - source: x028464
+      destination: x030834
+      observed: 0.00012914838218048094
+      frequency_baseline: 7.18334305118296e-06
+      lift: 17.978868788566718
+    - source: x028904
+      destination: x002232
+      observed: 0.00016013909224011713
+      frequency_baseline: 9.067172705304949e-06
+      lift: 17.66141414141414
+    - source: x017215
+      destination: x028904
+      observed: 0.00011438506588579795
+      frequency_baseline: 6.476551932360677e-06
+      lift: 17.66141414141414
+    - source: x031578
+      destination: x000081
+      observed: 0.00018301610541727673
+      frequency_baseline: 1.0492799167022159e-05
+      lift: 17.442066936006785
+    - source: x015014
+      destination: x014952
+      observed: 0.00013944233171068083
+      frequency_baseline: 8.319511774198103e-06
+      lift: 16.760879183216414
+    - source: x028903
+      destination: x002233
+      observed: 0.00016013909224011713
+      frequency_baseline: 9.605707811438213e-06
+      lift: 16.671243325705568

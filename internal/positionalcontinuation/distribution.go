@@ -13,8 +13,7 @@ func LoadForDistribution(c Config) (sAiinOccs []SAiinOccurrence, aiinOccs []Aiin
 		if e != nil {
 			return nil, nil, e
 		}
-		FrozenS, FrozenAiin, FrozenChey = s, aiin, chey
-		FrozenSAiin = FrozenS + " " + FrozenAiin
+		setFrozenTarget(s, aiin, chey)
 	}
 	_, blocks, lineLength, _, _, err := loadCorpusAndBlocks(c.CorpusPath, c.TokenMetadataMap, c.Generic)
 	if err != nil {
@@ -50,8 +49,7 @@ func Fingerprint(c Config) (string, error) {
 		if e != nil {
 			return "", e
 		}
-		FrozenS, FrozenAiin, FrozenChey = s, aiin, chey
-		FrozenSAiin = FrozenS + " " + FrozenAiin
+		setFrozenTarget(s, aiin, chey)
 	}
 	return computeFingerprint(c, corpusSHA, metaSHA, higherOrderSHA), nil
 }

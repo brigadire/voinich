@@ -77,8 +77,7 @@ func RunAndWrite(c Config) error {
 			}
 			return fmt.Errorf("resolve generic target triple: %w", e)
 		}
-		FrozenS, FrozenAiin, FrozenChey = s, aiin, chey
-		FrozenSAiin = FrozenS + " " + FrozenAiin
+		setFrozenTarget(s, aiin, chey)
 	}
 	p.begin(1, "Loading corpus, metadata and frozen higher-order-sequences inputs")
 	tokens, blocks, lineLength, corpusSHA, metaSHA, err := loadCorpusAndBlocks(c.CorpusPath, c.TokenMetadataMap, c.Generic)

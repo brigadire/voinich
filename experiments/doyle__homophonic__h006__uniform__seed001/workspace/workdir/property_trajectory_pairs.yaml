@@ -1,0 +1,271 @@
+parameters:
+    max_distance: 20
+    min_token_frequency: 10
+    random_pairs: 1000
+    rare_token_policy: exclude from exact-distance aggregation and report excluded counts
+    seed: 140014
+    top: 28
+methodology:
+    distance: rightward exact distance in the linear corpus; shuffled controls preserve global counts
+    identity: subsequent token identities are retained for lookup only; trajectories aggregate intrinsic properties without projection or smoothing
+    interpretation: formal diagnostic only; no semantic, grammatical, morphological, page, or latent-state claims
+    normalization: heavy-tailed count/degree/unique/effective-count properties use log1p before one global eligible-token z-score; raw and normalized values are both retained
+property_groups:
+    context:
+        - predecessor_entropy
+        - successor_entropy
+        - effective_predecessor_count
+        - effective_successor_count
+        - unique_predecessor_count
+        - unique_successor_count
+        - max_predecessor_probability
+        - max_successor_probability
+        - top3_predecessor_mass
+        - top3_successor_mass
+        - top5_predecessor_mass
+        - top5_successor_mass
+    frequency:
+        - global_count
+        - log_global_count
+        - global_frequency_probability
+        - frequency_rank
+        - normalized_frequency_rank
+    graphemic:
+        - grapheme_length
+        - unique_grapheme_count
+    position:
+        - line_start_probability
+        - line_end_probability
+        - mean_position
+        - median_position
+        - normalized_mean_position
+        - positional_entropy
+        - positional_specialization
+    structural:
+        - mean_structural_similarity_to_all
+        - max_structural_similarity
+        - structural_degree_above_0_5
+        - structural_degree_above_0_6
+        - structural_degree_above_0_7
+global_normalization:
+    effective_predecessor_count:
+        mean: 3.049506700395331
+        stddev: 0.7879014583180084
+    effective_successor_count:
+        mean: 3.0525334933421844
+        stddev: 0.7414383383466989
+    frequency_rank:
+        mean: 334
+        stddev: 192.54609837646672
+    global_count:
+        mean: 3.2561043803162333
+        stddev: 0.807615785883988
+    global_frequency_probability:
+        mean: 0.0008882388810398901
+        stddev: 0.0012146851896647837
+    grapheme_length:
+        mean: 7
+        stddev: 1
+    line_end_probability:
+        mean: 0.0818488262233084
+        stddev: 0.06805317728708667
+    line_start_probability:
+        mean: 0.07574868726326256
+        stddev: 0.07844139124540796
+    log_global_count:
+        mean: 3.2561043803162333
+        stddev: 0.807615785883988
+    max_predecessor_probability:
+        mean: 0.10088250197341875
+        stddev: 0.07723600495324304
+    max_structural_similarity:
+        mean: 0.4317504376566041
+        stddev: 0.08035909649444069
+    max_successor_probability:
+        mean: 0.09310545905955199
+        stddev: 0.05257979500413457
+    mean_position:
+        mean: 6.053509114138032
+        stddev: 1.0136521417872446
+    mean_structural_similarity_to_all:
+        mean: 0.2471461336220279
+        stddev: 0.03406013633155519
+    median_position:
+        mean: 5.879310344827586
+        stddev: 1.5354552786328834
+    normalized_frequency_rank:
+        mean: 0.5007496251874063
+        stddev: 0.2886748101596204
+    normalized_mean_position:
+        mean: 0.5016033241438712
+        stddev: 0.08045276148172979
+    positional_entropy:
+        mean: 3.1412061107288847
+        stddev: 0.3891966667225276
+    positional_specialization:
+        mean: 0.05982098301638992
+        stddev: 0.03279913369172109
+    predecessor_entropy:
+        mean: 4.30796253124398
+        stddev: 1.1904882113259245
+    structural_degree_above_0_5:
+        mean: 0.37299258471367885
+        stddev: 0.790070728563766
+    structural_degree_above_0_6:
+        mean: 0.03341409116485136
+        stddev: 0.18878024946852473
+    structural_degree_above_0_7:
+        mean: 0
+        stddev: 1
+    successor_entropy:
+        mean: 4.31646947961047
+        stddev: 1.1140218678400402
+    top3_predecessor_mass:
+        mean: 0.24132370002223236
+        stddev: 0.13892419021605593
+    top3_successor_mass:
+        mean: 0.23130470724056443
+        stddev: 0.1062989791152453
+    top5_predecessor_mass:
+        mean: 0.3632827935460121
+        stddev: 0.19277631223023542
+    top5_successor_mass:
+        mean: 0.3558106112745708
+        stddev: 0.16011194598669476
+    unique_grapheme_count:
+        mean: 1.8975809259657284
+        stddev: 0.12538473138106143
+    unique_predecessor_count:
+        mean: 3.0831836945536018
+        stddev: 0.7974229287511401
+    unique_successor_count:
+        mean: 3.0871289349082587
+        stddev: 0.7644240126273572
+pairs: []
+random_frequency_matched_baseline:
+    - scope: mean_1_5
+      median: 0
+      p90: 0
+      p95: 0
+      p99: 0
+    - scope: exact_distance
+      distance: 1
+      median: 0
+      p90: 0
+      p95: 0
+      p99: 0
+    - scope: exact_distance
+      distance: 2
+      median: 0
+      p90: 0
+      p95: 0
+      p99: 0
+    - scope: exact_distance
+      distance: 3
+      median: 0
+      p90: 0
+      p95: 0
+      p99: 0
+    - scope: exact_distance
+      distance: 4
+      median: 0
+      p90: 0
+      p95: 0
+      p99: 0
+    - scope: exact_distance
+      distance: 5
+      median: 0
+      p90: 0
+      p95: 0
+      p99: 0
+    - scope: exact_distance
+      distance: 6
+      median: 0
+      p90: 0
+      p95: 0
+      p99: 0
+    - scope: exact_distance
+      distance: 7
+      median: 0
+      p90: 0
+      p95: 0
+      p99: 0
+    - scope: exact_distance
+      distance: 8
+      median: 0
+      p90: 0
+      p95: 0
+      p99: 0
+    - scope: exact_distance
+      distance: 9
+      median: 0
+      p90: 0
+      p95: 0
+      p99: 0
+    - scope: exact_distance
+      distance: 10
+      median: 0
+      p90: 0
+      p95: 0
+      p99: 0
+    - scope: exact_distance
+      distance: 11
+      median: 0
+      p90: 0
+      p95: 0
+      p99: 0
+    - scope: exact_distance
+      distance: 12
+      median: 0
+      p90: 0
+      p95: 0
+      p99: 0
+    - scope: exact_distance
+      distance: 13
+      median: 0
+      p90: 0
+      p95: 0
+      p99: 0
+    - scope: exact_distance
+      distance: 14
+      median: 0
+      p90: 0
+      p95: 0
+      p99: 0
+    - scope: exact_distance
+      distance: 15
+      median: 0
+      p90: 0
+      p95: 0
+      p99: 0
+    - scope: exact_distance
+      distance: 16
+      median: 0
+      p90: 0
+      p95: 0
+      p99: 0
+    - scope: exact_distance
+      distance: 17
+      median: 0
+      p90: 0
+      p95: 0
+      p99: 0
+    - scope: exact_distance
+      distance: 18
+      median: 0
+      p90: 0
+      p95: 0
+      p99: 0
+    - scope: exact_distance
+      distance: 19
+      median: 0
+      p90: 0
+      p95: 0
+      p99: 0
+    - scope: exact_distance
+      distance: 20
+      median: 0
+      p90: 0
+      p95: 0
+      p99: 0
+shuffled_corpus_controls: []

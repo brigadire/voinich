@@ -1,0 +1,49 @@
+ExperimentID: b5e74ffd7c57584a2b1d1a0c90c997d401582c2aa6869e58260dc3dd30dca268
+Input mode: generic
+Corpus: /home/brigadire/devops/workdir/go/voinich/data_test/transformed/doyle__homophonic__frequency-v1__h004__uniform__seed001.txt
+Corpus SHA256: 9b0b4fba404ddbf574649b9f64c515f9f0ce35113e5d6c8401b01c39ec3d77c3
+Stage: structural-reliability
+Working directory: experiments/doyle__homophonic__frequency-v1__h004__uniform__seed001/workspace
+Inputs:
+  workdir/begin_end_candidates.yaml
+  workdir/begin_end_report.md
+  workdir/begin_end_top.tsv
+  workdir/dataset/dictionary.yaml
+  workdir/dataset/structural_analysis.yaml
+  workdir/dataset/tokens_analysis.yaml
+  workdir/normalization_comparison.yaml
+  workdir/normalized_070.txt
+  workdir/normalized_075.txt
+  workdir/normalized_080.txt
+  workdir/normalized_085.txt
+  workdir/normalized_090.txt
+  workdir/sequence_analysis.yaml
+  workdir/sequence_analysis_070.yaml
+  workdir/sequence_analysis_075.yaml
+  workdir/sequence_analysis_080.yaml
+  workdir/sequence_analysis_085.yaml
+  workdir/sequence_analysis_090.yaml
+  workdir/structural_classes.yaml
+  workdir/structural_profile_stability.yaml
+  workdir/structural_validation.yaml
+Outputs:
+  registered in artifacts.json after completion
+
+loaded corpus: lines=4462 occurrences=43713 unique_tokens=8456
+token stability min_count=10 eligible=616
+token stability min_count=20 eligible=322
+token stability min_count=40 eligible=166
+token stability min_count=80 eligible=77
+token stability min_count=160 eligible=39
+token stability min_count=320 eligible=19
+structural-reliability bootstrap 25/200
+structural-reliability bootstrap 50/200
+structural-reliability bootstrap 75/200
+structural-reliability bootstrap 100/200
+structural-reliability bootstrap 125/200
+structural-reliability bootstrap 150/200
+structural-reliability bootstrap 175/200
+structural-reliability bootstrap 200/200
+master candidate pairs=5064 bootstrap runs=200
+Structural reliability written to workdir/structural_reliability.yaml
+elapsed runtime: 33.962s

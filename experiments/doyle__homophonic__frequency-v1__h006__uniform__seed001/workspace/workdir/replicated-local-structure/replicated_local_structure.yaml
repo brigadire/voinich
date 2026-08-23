@@ -1,0 +1,31 @@
+meta:
+    confirmatory: true
+    corpus_sha256: 4bc3c5b699cb6e433399c668b5cc49478f3c6d045128ca6c3a2bd0ce3a1423e5
+    permutations: 1000
+    seed: 1
+methodology:
+    fraction_above_frozen_threshold: legacy validation compares [0,1] similarity to discovery max_distance=20; retained unchanged and therefore zero
+    markov_null: first-order model trained on other blocks of the held-out joint metadata class; unavailable blocks are NA
+    profile_similarity: mean 1 - Jensen-Shannon divergence / ln(2) over non-empty token context distributions at frozen signed distances 1..20
+    sequence_primary_statistic: physical block recurrence count
+    shuffle_null: token order shuffled within physical blocks
+summary:
+    - family: distance-profile
+      frozen_candidates: 0
+      testable: 0
+      previous_universal: 0
+      fdr_significant: 0
+      robust_cross_block: 0
+      cross_currier: 0
+      cross_hand: 0
+      artifact_or_invalid: 0
+    - family: sequence
+      frozen_candidates: 197
+      testable: 197
+      previous_universal: 197
+      fdr_significant: 191
+      robust_cross_block: 0
+      cross_currier: 197
+      cross_hand: 0
+      artifact_or_invalid: 197
+main_outcome: NOTHING_REMAINS

@@ -8,6 +8,11 @@ or conclusion already published in a report.
 
 ## 1. `go.mod` and `go.sum` are not tracked in git at all
 
+**Task70b status: RESOLVED.** The existing, byte-preserved module files
+(`go.mod` SHA256 `6c37dee6...d74d9`, `go.sum` SHA256
+`e0047268...2b74d`) were removed from `.gitignore` and added to git. No
+module command, dependency change, or upgrade was performed.
+
 **Component**: repository root / build configuration.
 **Finding**: `git cat-file -e main:go.mod` fails ("path 'go.mod' exists on
 disk, but not in 'main'") and `git ls-files go.mod` returns nothing on both
@@ -29,6 +34,14 @@ or changed by this task — it's a policy call, not a path fix.
 
 ## 2. `.gitignore` doesn't reflect what's actually tracked
 
+**Task70b status: RESOLVED.** `experiments/` is now explicitly repository
+content; only compiled binaries embedded in historical experiment workspaces
+are ignored. Comments now state the legacy-archive, profile, and test-corpus
+exceptions. The three natural-corpus fixtures required by tests and Phase-I
+tools are explicitly allowlisted; the previously hidden Longfellow and
+prepared Astafiev fixtures (plus Astafiev preparation metadata) are now
+tracked. Existing tracked exceptions remain untouched.
+
 **Component**: `.gitignore`.
 **Finding**: `experiments/` is ignored, yet 587 files under it are tracked
 (force-added at some point); `*.tgz` is ignored, yet `task69.tgz` is
@@ -46,6 +59,13 @@ explicitly in a comment above each relevant `.gitignore` line, or move to
 an explicit allowlist for `experiments/`. Not changed by this task.
 
 ## 3. Task55/57 experiment directories are not git-tracked at all
+
+**Task70b status: RESOLVED.** Ten Task55 result directories and the Task57
+Phase-A directory were audited and added. All 1,698 Task55 artifact hashes,
+all ten corpus hashes, manifest/artifact identities, stage states, Task57's
+manifest/report agreement, and absence of credentials were checked. The 240
+host-compiled ELF files under `workspace/workdir/bin/` were deliberately
+excluded; they are reproducible build products, not scientific artifacts.
 
 **Component**: `experiments/doyle__homophonic__*` (Task55),
 `experiments/inverse-homophony/synthetic-validation` (Task57).
@@ -66,6 +86,13 @@ already tracked.
 
 ## 4. Task57 Phase B (canonical-Voynich application) has no located artifact
 
+**Task70b status: RESOLVED — NOT_RUN_BY_DESIGN.** Phase A records
+`gate_pass=false`; `SYNTHETIC_VALIDATION_REPORT.md` states that Voynich was
+not analyzed; Task57 §21/§36 and the frozen design require a successful gate;
+and `checkMethodFrozen` refuses Phase B without both `METHOD_FROZEN` and a
+passed manifest. `METHOD_FROZEN` is correctly absent. There is therefore no
+missing Phase-B artifact.
+
 **Component**: `research/phase1/inverse-homophony` (`voynich.go`
 implements the canonical-Voynich application described by the task spec's
 Phase B).
@@ -83,6 +110,16 @@ ambiguous. Marked UNKNOWN in `docs/audit/PROVENANCE_AUDIT.tsv`, not
 reconstructed.
 
 ## 5. Inconsistent git-commit provenance across Task58-67
+
+**Task70b status: RESOLVED for git commit; remaining legacy fields OPEN.**
+History and tree comparisons uniquely identify the final producing commits:
+Task58 `ba88b2de...` (initial artifact `a6904f0f...`, then corrected in the
+former), Task61 `1692874b...`, Task62 `9e21b01e...`, Task63 `6cf53a6d...`,
+Task66 `d485fe1c...`, and Task67 `0e8b3da2...` (measured outputs replacing the
+`553ef025...` scaffold). Each final artifact tree is byte-identical from that
+commit through Task70. `PROVENANCE_AUDIT.tsv` records these as
+`RECONSTRUCTED_VERIFIED`; historical manifests remain byte-stable. Missing
+dirty-status fields remain `LEGACY_MISSING`.
 
 **Component**: `experiments/rozanova-temerev-v1` (58),
 `experiments/character-entropy-v1` (61), `experiments/token-formation-v1`
@@ -103,6 +140,17 @@ in this pass to avoid guessing at a fact that must be exact or absent.
 
 ## 6. Task66's per-mechanism seed/config_hash claim not centrally verifiable
 
+**Task70b status: RESOLVED as NOT_RECORDED.** Exhaustive search of all 22
+artifact files and the implementation found a real deterministic contract:
+`Config.Hash()` hashes the full configuration, `Job.ID()` hashes experiment,
+corpus, config hash, seed, and evaluation set, and `RunGrid` derives each
+replicate seed from frozen base seed plus replicate index. The complete
+parameter grid is frozen in `MECHANISM_GRID.tsv`. However, grouped output
+tables discard per-job identity and record neither `seed` nor `config_hash`.
+Thus the implementation is verified and values are derivable from frozen
+code/config, but the manifest's claim that artifacts track them per mechanism
+is not true. No values were backfilled.
+
 **Component**: `experiments/mechanism-space-v1`.
 **Finding**: the top-level manifest's `worker_contract` field claims
 per-mechanism `config_hash`/`seed` tracking, but no such column was found
@@ -116,6 +164,9 @@ confirmed — may just require a deeper per-file read than this pass did).
 `seed`/`config_hash` before concluding the claim is actually unmet.
 
 ## 7. Voynich corpus and vendored `ivtt` tool have unknown licensing status
+
+**Task70b status: OPEN for Task72.** No licensing decision or corpus/vendor
+change was made.
 
 **Component**: `data/` (IVTFF transcriptions mirrored from voynich.nu),
 `ivtt/` (vendored C transliteration tool, also from voynich.nu).
@@ -174,6 +225,15 @@ extend README.md to cover Stage24-28 and point readers at
 one such pointer paragraph rather than attempting the full rewrite.
 
 ## 11. Pre-existing, unrelated data race in `internal/conditionalregime`
+
+**Task70b status: RESOLVED (TEST_HARNESS_ONLY).** Production remote workers
+are separate processes and initialize their positional-continuation state
+once. The failing test intentionally hosts two simulated workers in one Go
+process; both redundantly wrote the same package-global generic target while
+batteries read it. Target installation now uses a small synchronized,
+idempotent setter, so identical frozen targets are not rewritten. No
+ordering, RNG, occurrence, battery, or result computation changed; the
+existing local-versus-two-worker equality test remains the regression test.
 
 **Component**: `internal/positionalcontinuation.LoadForDistribution` /
 `buildBoundaryDistanceRows` (read) vs. `findSAiinOccurrences` (write) —

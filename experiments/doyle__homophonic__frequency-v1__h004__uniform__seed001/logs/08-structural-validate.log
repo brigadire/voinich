@@ -1,0 +1,36 @@
+ExperimentID: b5e74ffd7c57584a2b1d1a0c90c997d401582c2aa6869e58260dc3dd30dca268
+Input mode: generic
+Corpus: /home/brigadire/devops/workdir/go/voinich/data_test/transformed/doyle__homophonic__frequency-v1__h004__uniform__seed001.txt
+Corpus SHA256: 9b0b4fba404ddbf574649b9f64c515f9f0ce35113e5d6c8401b01c39ec3d77c3
+Stage: structural-validate
+Working directory: experiments/doyle__homophonic__frequency-v1__h004__uniform__seed001/workspace
+Inputs:
+  workdir/begin_end_candidates.yaml
+  workdir/begin_end_report.md
+  workdir/begin_end_top.tsv
+  workdir/dataset/dictionary.yaml
+  workdir/dataset/structural_analysis.yaml
+  workdir/dataset/tokens_analysis.yaml
+  workdir/normalization_comparison.yaml
+  workdir/normalized_070.txt
+  workdir/normalized_075.txt
+  workdir/normalized_080.txt
+  workdir/normalized_085.txt
+  workdir/normalized_090.txt
+  workdir/sequence_analysis.yaml
+  workdir/sequence_analysis_070.yaml
+  workdir/sequence_analysis_075.yaml
+  workdir/sequence_analysis_080.yaml
+  workdir/sequence_analysis_085.yaml
+  workdir/sequence_analysis_090.yaml
+  workdir/structural_classes.yaml
+Outputs:
+  registered in artifacts.json after completion
+
+validated fold 1/5: 9 TRAIN classes, 10.95% TEST coverage
+validated fold 2/5: 10 TRAIN classes, 13.33% TEST coverage
+validated fold 3/5: 11 TRAIN classes, 14.56% TEST coverage
+validated fold 4/5: 13 TRAIN classes, 15.63% TEST coverage
+validated fold 5/5: 10 TRAIN classes, 14.21% TEST coverage
+Validation written to workdir/structural_validation.yaml
+elapsed runtime: 53.277s

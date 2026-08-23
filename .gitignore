@@ -5,15 +5,25 @@ dataset/**
 data_work/**
 !data_work/.gitkeep
 .openmono
-go.mod
-go.sum
 bin/
 workdir/**
 !workdir/.gitkeep
 workdir.v0/
 pki/
-experiments/
+# Authoritative research artifacts under experiments/ are repository content,
+# even when generated. Historical embedded build products are not artifacts.
+experiments/**/workspace/workdir/bin/
+# Local profiling output is ignored; the few already-tracked profiles are
+# historical evidence and remain tracked.
 profiles/
+# Legacy archives stay local unless deliberately reviewed and force-added
+# (for example the already-tracked Task69 archive).
 *.tgz
-data_test/
+# Local test corpora are ignored except the repository fixtures required by
+# tests and Phase-I tooling. Other already-tracked historical files remain so.
+data_test/*
+!data_test/pg2097-2.txt
+!data_test/pg30795-mod.txt
+!data_test/astafiev-1000-culinar-receipts-prepared.txt
+!data_test/astafiev-1000-culinar-receipts-prepared.txt.prepare.json
 *.tar.gz

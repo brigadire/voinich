@@ -1,0 +1,46 @@
+methodology: Exact 2-token and 3-token suffix distributions; the anchor token is not part of the suffix.
+pairs:
+    - token_a: x014952
+      token_b: x030834
+      continuous_suffix_context:
+        - sequence_length: 2
+          js_similarity: 1.7763568394002505e-15
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 149
+          observations_b: 155
+          effective_support_a: 147.62013471847848
+          effective_support_b: 154.9999999999996
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 1.4432899320127035e-15
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 149
+          observations_b: 155
+          effective_support_a: 148.99999999999935
+          effective_support_b: 154.9999999999996
+          reliability: 1
+          reliable: true
+      line_bounded_suffix_context:
+        - sequence_length: 2
+          js_similarity: 0
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 130
+          observations_b: 133
+          effective_support_a: 128.6210710194706
+          effective_support_b: 133.00000000000105
+          reliability: 1
+          reliable: true
+        - sequence_length: 3
+          js_similarity: 2.4424906541753444e-15
+          weighted_overlap: 0
+          jaccard_support_overlap: 0
+          observations_a: 120
+          observations_b: 123
+          effective_support_a: 120.00000000000115
+          effective_support_b: 123.00000000000006
+          reliability: 1
+          reliable: true

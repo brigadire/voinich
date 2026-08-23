@@ -1,0 +1,49 @@
+ExperimentID: 23916e676516bd6ff0202955ca0be426e7f8390a474a49ff20b84b91281dba2d
+Input mode: generic
+Corpus: /home/brigadire/devops/workdir/go/voinich/data_test/transformed/doyle__homophonic__h008__uniform__seed001.txt
+Corpus SHA256: b22cd99a1f450bdad831fe3af004ff2825ed36490983b39337afe6fee7254983
+Stage: structural-reliability
+Working directory: experiments/doyle__homophonic__h008__uniform__seed001/workspace
+Inputs:
+  workdir/begin_end_candidates.yaml
+  workdir/begin_end_report.md
+  workdir/begin_end_top.tsv
+  workdir/dataset/dictionary.yaml
+  workdir/dataset/structural_analysis.yaml
+  workdir/dataset/tokens_analysis.yaml
+  workdir/normalization_comparison.yaml
+  workdir/normalized_070.txt
+  workdir/normalized_075.txt
+  workdir/normalized_080.txt
+  workdir/normalized_085.txt
+  workdir/normalized_090.txt
+  workdir/sequence_analysis.yaml
+  workdir/sequence_analysis_070.yaml
+  workdir/sequence_analysis_075.yaml
+  workdir/sequence_analysis_080.yaml
+  workdir/sequence_analysis_085.yaml
+  workdir/sequence_analysis_090.yaml
+  workdir/structural_classes.yaml
+  workdir/structural_profile_stability.yaml
+  workdir/structural_validation.yaml
+Outputs:
+  registered in artifacts.json after completion
+
+loaded corpus: lines=4462 occurrences=43713 unique_tokens=12250
+token stability min_count=10 eligible=664
+token stability min_count=20 eligible=331
+token stability min_count=40 eligible=154
+token stability min_count=80 eligible=68
+token stability min_count=160 eligible=13
+token stability min_count=320 eligible=0
+structural-reliability bootstrap 25/200
+structural-reliability bootstrap 50/200
+structural-reliability bootstrap 75/200
+structural-reliability bootstrap 100/200
+structural-reliability bootstrap 125/200
+structural-reliability bootstrap 150/200
+structural-reliability bootstrap 175/200
+structural-reliability bootstrap 200/200
+master candidate pairs=5625 bootstrap runs=200
+Structural reliability written to workdir/structural_reliability.yaml
+elapsed runtime: 26.8s

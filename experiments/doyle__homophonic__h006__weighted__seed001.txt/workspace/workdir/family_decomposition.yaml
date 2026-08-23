@@ -1,0 +1,73 @@
+families:
+    - id: 1
+      tokens:
+        - x014952
+        - x030834
+      edges:
+        - token_a: x014952
+          token_b: x030834
+          structural_similarity: 0.6858892019523802
+          reliability: 0.9008423268166316
+          normalized_graphemic_distance: 0.7142857142857143
+      structural_similarity_matrix:
+        tokens:
+            - x014952
+            - x030834
+        values:
+            - - 1
+              - 0.6858892019523802
+            - - 0.6858892019523802
+              - 1
+      reliability_matrix:
+        tokens:
+            - x014952
+            - x030834
+        values:
+            - - 1
+              - 0.9008423268166316
+            - - 0.9008423268166316
+              - 1
+      normalized_graphemic_distance_matrix:
+        tokens:
+            - x014952
+            - x030834
+        values:
+            - - 0
+              - 0.7142857142857143
+            - - 0.7142857142857143
+              - 0
+      position_similarity_matrix:
+        tokens:
+            - x014952
+            - x030834
+        values:
+            - - 1
+              - 0.9684922648817909
+            - - 0.9684922648817909
+              - 1
+      left_context_similarity_matrix:
+        tokens:
+            - x014952
+            - x030834
+        values:
+            - - 1
+              - 0.6881023532039754
+            - - 0.6881023532039754
+              - 1
+      right_context_similarity_matrix:
+        tokens:
+            - x014952
+            - x030834
+        values:
+            - - 1
+              - 0.40107298777137473
+            - - 0.40107298777137473
+              - 1
+      structural_medoid: x014952
+      mean_structural_distance:
+        x014952: 0.31411079804761977
+        x030834: 0.31411079804761977
+      peripheral_tokens:
+        - x014952
+        - x030834
+methodology: all matrices use every pair among family members; graph edges remain the input structural-distant edge list

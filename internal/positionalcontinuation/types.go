@@ -11,6 +11,7 @@ package positionalcontinuation
 import (
 	"context"
 	"io"
+	"sync"
 	"time"
 )
 
@@ -30,7 +31,23 @@ var (
 	FrozenAiin  = "aiin"
 	FrozenChey  = "chey"
 	FrozenSAiin = "s aiin"
+	frozenMu    sync.Mutex
 )
+
+// setFrozenTarget installs generic mode's deterministic target. Distributed
+// workers in production are separate processes, but the remote-worker tests
+// intentionally run several workers in one process. Avoid rewriting the
+// shared package values when those workers install the same frozen target;
+// the values are immutable for the remainder of either kind of run.
+func setFrozenTarget(s, aiin, chey string) {
+	frozenMu.Lock()
+	defer frozenMu.Unlock()
+	if FrozenS == s && FrozenAiin == aiin && FrozenChey == chey {
+		return
+	}
+	FrozenS, FrozenAiin, FrozenChey = s, aiin, chey
+	FrozenSAiin = s + " " + aiin
+}
 
 // smoothingAlpha is the fixed additive smoothing task23 section 59 requires
 // for the M1/M2/M3 model comparison - never optimized.

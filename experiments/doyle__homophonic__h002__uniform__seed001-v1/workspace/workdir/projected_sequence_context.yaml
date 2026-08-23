@@ -1,0 +1,678 @@
+methodology: exact suffix JS plus a sequence kernel equal to the mean position-wise JS after soft projection
+pairs:
+    - token_a: x004624
+      token_b: x010315
+      sequence_length: 2
+      exact_suffix_similarity: 0.0341865389253827
+      projected_suffix_similarity_full: 0.46764189627941766
+      projected_suffix_similarity_ablated: 0.6294358641760502
+      position_similarity_full:
+        - 0.45999863000276464
+        - 0.4752851625560707
+      position_similarity_ablated:
+        - 0.6603810994896983
+        - 0.5984906288624021
+    - token_a: x004624
+      token_b: x010315
+      sequence_length: 3
+      exact_suffix_similarity: 0
+      projected_suffix_similarity_full: 0.47065434132538364
+      projected_suffix_similarity_ablated: 0.6130135951039966
+      position_similarity_full:
+        - 0.45999863000276464
+        - 0.4752851625560707
+        - 0.4766792314173155
+      position_similarity_ablated:
+        - 0.6603810994896983
+        - 0.5984906288624021
+        - 0.5801690569598892
+    - token_a: x004984
+      token_b: x010279
+      sequence_length: 2
+      exact_suffix_similarity: 0.03909245995213306
+      projected_suffix_similarity_full: 0.4784319924825479
+      projected_suffix_similarity_ablated: 0.5598373642703349
+      position_similarity_full:
+        - 0.49465289483536
+        - 0.4622110901297358
+      position_similarity_ablated:
+        - 0.5709229970913268
+        - 0.548751731449343
+    - token_a: x004984
+      token_b: x010279
+      sequence_length: 3
+      exact_suffix_similarity: 0.007513700077208196
+      projected_suffix_similarity_full: 0.47052187902404596
+      projected_suffix_similarity_ablated: 0.5575886153548218
+      position_similarity_full:
+        - 0.49465289483536
+        - 0.4622110901297358
+        - 0.45470165210704205
+      position_similarity_ablated:
+        - 0.5709229970913268
+        - 0.548751731449343
+        - 0.5530911175237958
+    - token_a: x004625
+      token_b: x010314
+      sequence_length: 2
+      exact_suffix_similarity: 0.04152847926457515
+      projected_suffix_similarity_full: 0.4612125133592001
+      projected_suffix_similarity_ablated: 0.6140295489802956
+      position_similarity_full:
+        - 0.46259649346811993
+        - 0.4598285332502803
+      position_similarity_ablated:
+        - 0.6497157988675468
+        - 0.5783432990930444
+    - token_a: x004625
+      token_b: x010314
+      sequence_length: 3
+      exact_suffix_similarity: 0
+      projected_suffix_similarity_full: 0.4467475847664682
+      projected_suffix_similarity_ablated: 0.602092542447656
+      position_similarity_full:
+        - 0.46259649346811993
+        - 0.4598285332502803
+        - 0.41781772758100444
+      position_similarity_ablated:
+        - 0.6497157988675468
+        - 0.5783432990930444
+        - 0.5782185293823766
+    - token_a: x004985
+      token_b: x010279
+      sequence_length: 2
+      exact_suffix_similarity: 0.023998849194285188
+      projected_suffix_similarity_full: 0.4542365880224241
+      projected_suffix_similarity_ablated: 0.526735209057184
+      position_similarity_full:
+        - 0.5203288970154668
+        - 0.3881442790293814
+      position_similarity_ablated:
+        - 0.5740027632080478
+        - 0.47946765490632004
+    - token_a: x004985
+      token_b: x010279
+      sequence_length: 3
+      exact_suffix_similarity: 0
+      projected_suffix_similarity_full: 0.4407706971699515
+      projected_suffix_similarity_ablated: 0.52691699627114
+      position_similarity_full:
+        - 0.5203288970154668
+        - 0.3881442790293814
+        - 0.4138389154650063
+      position_similarity_ablated:
+        - 0.5740027632080478
+        - 0.47946765490632004
+        - 0.527280570699052
+    - token_a: x004719
+      token_b: x010526
+      sequence_length: 2
+      exact_suffix_similarity: 0.02034578686084132
+      projected_suffix_similarity_full: 0.4331015224851842
+      projected_suffix_similarity_ablated: 0.5410765100410018
+      position_similarity_full:
+        - 0.6314372712462211
+        - 0.2347657737241473
+      position_similarity_ablated:
+        - 0.754855826341978
+        - 0.3272971937400254
+    - token_a: x004719
+      token_b: x010526
+      sequence_length: 3
+      exact_suffix_similarity: 0
+      projected_suffix_similarity_full: 0.42485837180891384
+      projected_suffix_similarity_ablated: 0.524530232052574
+      position_similarity_full:
+        - 0.6314372712462211
+        - 0.2347657737241473
+        - 0.408372070456373
+      position_similarity_ablated:
+        - 0.754855826341978
+        - 0.3272971937400254
+        - 0.49143767607571853
+    - token_a: x004718
+      token_b: x010526
+      sequence_length: 2
+      exact_suffix_similarity: 0.012915674486411954
+      projected_suffix_similarity_full: 0.40376221052168143
+      projected_suffix_similarity_ablated: 0.5328562069173575
+      position_similarity_full:
+        - 0.5912495453098457
+        - 0.2162748757335171
+      position_similarity_ablated:
+        - 0.737322836133001
+        - 0.32838957770171384
+    - token_a: x004718
+      token_b: x010526
+      sequence_length: 3
+      exact_suffix_similarity: 6.217248937900877e-15
+      projected_suffix_similarity_full: 0.4087528589630458
+      projected_suffix_similarity_ablated: 0.52003093797469
+      position_similarity_full:
+        - 0.5912495453098457
+        - 0.2162748757335171
+        - 0.41873415584577445
+      position_similarity_ablated:
+        - 0.737322836133001
+        - 0.32838957770171384
+        - 0.4943804000893549
+    - token_a: x004719
+      token_b: x010527
+      sequence_length: 2
+      exact_suffix_similarity: 0.00785622706234601
+      projected_suffix_similarity_full: 0.40469049298423204
+      projected_suffix_similarity_ablated: 0.5170088920534344
+      position_similarity_full:
+        - 0.6068438625008532
+        - 0.20253712346761088
+      position_similarity_ablated:
+        - 0.7342971502284762
+        - 0.29972063387839243
+    - token_a: x004719
+      token_b: x010527
+      sequence_length: 3
+      exact_suffix_similarity: 0
+      projected_suffix_similarity_full: 0.4091801294528519
+      projected_suffix_similarity_ablated: 0.5143360449094939
+      position_similarity_full:
+        - 0.6068438625008532
+        - 0.20253712346761088
+        - 0.41815940239009175
+      position_similarity_ablated:
+        - 0.7342971502284762
+        - 0.29972063387839243
+        - 0.5089903506216129
+    - token_a: x009496
+      token_b: x010315
+      sequence_length: 2
+      exact_suffix_similarity: 0.00846687392990575
+      projected_suffix_similarity_full: 0.4210390154319855
+      projected_suffix_similarity_ablated: 0.5788016652628243
+      position_similarity_full:
+        - 0.5099699824473833
+        - 0.3321080484165877
+      position_similarity_ablated:
+        - 0.6674650462138849
+        - 0.49013828431176376
+    - token_a: x009496
+      token_b: x010315
+      sequence_length: 3
+      exact_suffix_similarity: 0
+      projected_suffix_similarity_full: 0.4118490380050179
+      projected_suffix_similarity_ablated: 0.5646778356801794
+      position_similarity_full:
+        - 0.5099699824473833
+        - 0.3321080484165877
+        - 0.39346908315108253
+      position_similarity_ablated:
+        - 0.6674650462138849
+        - 0.49013828431176376
+        - 0.5364301765148896
+    - token_a: x006383
+      token_b: x010054
+      sequence_length: 2
+      exact_suffix_similarity: 0.01789626745601891
+      projected_suffix_similarity_full: 0.45923745430682555
+      projected_suffix_similarity_ablated: 0.5751449450566426
+      position_similarity_full:
+        - 0.7250732515530471
+        - 0.19340165706060397
+      position_similarity_ablated:
+        - 0.8384571069906159
+        - 0.3118327831226694
+    - token_a: x006383
+      token_b: x010054
+      sequence_length: 3
+      exact_suffix_similarity: 0.010780899303899916
+      projected_suffix_similarity_full: 0.4425350017315763
+      projected_suffix_similarity_ablated: 0.5580858759392475
+      position_similarity_full:
+        - 0.7250732515530471
+        - 0.19340165706060397
+        - 0.4091300965810776
+      position_similarity_ablated:
+        - 0.8384571069906159
+        - 0.3118327831226694
+        - 0.5239677377044575
+    - token_a: x004718
+      token_b: x010054
+      sequence_length: 2
+      exact_suffix_similarity: 0.009969649599910202
+      projected_suffix_similarity_full: 0.4232462436991096
+      projected_suffix_similarity_ablated: 0.5316418482204741
+      position_similarity_full:
+        - 0.6632817805126678
+        - 0.1832107068855514
+      position_similarity_ablated:
+        - 0.7928093655053363
+        - 0.2704743309356118
+    - token_a: x004718
+      token_b: x010054
+      sequence_length: 3
+      exact_suffix_similarity: 4.440892098500626e-15
+      projected_suffix_similarity_full: 0.41607694968091985
+      projected_suffix_similarity_ablated: 0.5268071706090671
+      position_similarity_full:
+        - 0.6632817805126678
+        - 0.1832107068855514
+        - 0.40173836164454046
+      position_similarity_ablated:
+        - 0.7928093655053363
+        - 0.2704743309356118
+        - 0.5171378153862533
+    - token_a: x009497
+      token_b: x010315
+      sequence_length: 2
+      exact_suffix_similarity: 0.009479750323990732
+      projected_suffix_similarity_full: 0.46697021027308006
+      projected_suffix_similarity_ablated: 0.6016626575034598
+      position_similarity_full:
+        - 0.5674881303951023
+        - 0.36645229015105785
+      position_similarity_ablated:
+        - 0.7084103812540665
+        - 0.4949149337528531
+    - token_a: x009497
+      token_b: x010315
+      sequence_length: 3
+      exact_suffix_similarity: 0
+      projected_suffix_similarity_full: 0.4226050781956429
+      projected_suffix_similarity_ablated: 0.5580649234015456
+      position_similarity_full:
+        - 0.5674881303951023
+        - 0.36645229015105785
+        - 0.3338748140407686
+      position_similarity_ablated:
+        - 0.7084103812540665
+        - 0.4949149337528531
+        - 0.47086945519771706
+    - token_a: x006348
+      token_b: x010055
+      sequence_length: 2
+      exact_suffix_similarity: 0.012196543815166216
+      projected_suffix_similarity_full: 0.41318539488235523
+      projected_suffix_similarity_ablated: 0.5109483135110233
+      position_similarity_full:
+        - 0.6385225241261228
+        - 0.1878482656385877
+      position_similarity_ablated:
+        - 0.737560984404358
+        - 0.2843356426176886
+    - token_a: x006348
+      token_b: x010055
+      sequence_length: 3
+      exact_suffix_similarity: 3.3306690738754696e-16
+      projected_suffix_similarity_full: 0.41829449565074794
+      projected_suffix_similarity_ablated: 0.5235842960932738
+      position_similarity_full:
+        - 0.6385225241261228
+        - 0.1878482656385877
+        - 0.42851269718753326
+      position_similarity_ablated:
+        - 0.737560984404358
+        - 0.2843356426176886
+        - 0.548856261257775
+    - token_a: x004718
+      token_b: x010055
+      sequence_length: 2
+      exact_suffix_similarity: 0.010398177858309876
+      projected_suffix_similarity_full: 0.42865601537564024
+      projected_suffix_similarity_ablated: 0.5302705832167535
+      position_similarity_full:
+        - 0.6830909376379986
+        - 0.17422109311328193
+      position_similarity_ablated:
+        - 0.7912092250306586
+        - 0.26933194140284833
+    - token_a: x004718
+      token_b: x010055
+      sequence_length: 3
+      exact_suffix_similarity: 2.1094237467877974e-15
+      projected_suffix_similarity_full: 0.43210949303337004
+      projected_suffix_similarity_ablated: 0.5372024585956156
+      position_similarity_full:
+        - 0.6830909376379986
+        - 0.17422109311328193
+        - 0.4390164483488298
+      position_similarity_ablated:
+        - 0.7912092250306586
+        - 0.26933194140284833
+        - 0.5510662093533398
+    - token_a: x003821
+      token_b: x010055
+      sequence_length: 2
+      exact_suffix_similarity: 0.011927890048180845
+      projected_suffix_similarity_full: 0.41167260458909144
+      projected_suffix_similarity_ablated: 0.5467978524470334
+      position_similarity_full:
+        - 0.6056174775561921
+        - 0.21772773162199077
+      position_similarity_ablated:
+        - 0.7588051475709034
+        - 0.3347905573231633
+    - token_a: x003821
+      token_b: x010055
+      sequence_length: 3
+      exact_suffix_similarity: 0
+      projected_suffix_similarity_full: 0.36789835347428584
+      projected_suffix_similarity_ablated: 0.5184735528876739
+      position_similarity_full:
+        - 0.6056174775561921
+        - 0.21772773162199077
+        - 0.2803498512446747
+      position_similarity_ablated:
+        - 0.7588051475709034
+        - 0.3347905573231633
+        - 0.4618249537689548
+    - token_a: x006383
+      token_b: x010055
+      sequence_length: 2
+      exact_suffix_similarity: 0.03430101428554977
+      projected_suffix_similarity_full: 0.45970120686881977
+      projected_suffix_similarity_ablated: 0.5670143259853735
+      position_similarity_full:
+        - 0.7540602940145802
+        - 0.16534211972305934
+      position_similarity_ablated:
+        - 0.8349796525798969
+        - 0.29904899939084995
+    - token_a: x006383
+      token_b: x010055
+      sequence_length: 3
+      exact_suffix_similarity: 6.661338147750939e-16
+      projected_suffix_similarity_full: 0.4435449856932916
+      projected_suffix_similarity_ablated: 0.5508786106137591
+      position_similarity_full:
+        - 0.7540602940145802
+        - 0.16534211972305934
+        - 0.41123254334223536
+      position_similarity_ablated:
+        - 0.8349796525798969
+        - 0.29904899939084995
+        - 0.5186071798705304
+    - token_a: x005730
+      token_b: x010617
+      sequence_length: 2
+      exact_suffix_similarity: 0.0273788698885854
+      projected_suffix_similarity_full: 0.4383151176388708
+      projected_suffix_similarity_ablated: 0.5719874357927659
+      position_similarity_full:
+        - 0.5489755133227039
+        - 0.32765472195503775
+      position_similarity_ablated:
+        - 0.6067161831617485
+        - 0.5372586884237833
+    - token_a: x005730
+      token_b: x010617
+      sequence_length: 3
+      exact_suffix_similarity: 1.4432899320127035e-15
+      projected_suffix_similarity_full: 0.3806710307626498
+      projected_suffix_similarity_ablated: 0.5176499206699885
+      position_similarity_full:
+        - 0.5489755133227039
+        - 0.32765472195503775
+        - 0.2653828570102078
+      position_similarity_ablated:
+        - 0.6067161831617485
+        - 0.5372586884237833
+        - 0.4089748904244337
+    - token_a: x008248
+      token_b: x010617
+      sequence_length: 2
+      exact_suffix_similarity: 4.440892098500626e-16
+      projected_suffix_similarity_full: 0.36315750972662303
+      projected_suffix_similarity_ablated: 0.5283470192351221
+      position_similarity_full:
+        - 0.4822050412983374
+        - 0.24410997815490865
+      position_similarity_ablated:
+        - 0.5989743198498604
+        - 0.45771971862038374
+    - token_a: x008248
+      token_b: x010617
+      sequence_length: 3
+      exact_suffix_similarity: 4.440892098500626e-16
+      projected_suffix_similarity_full: 0.32895627925292453
+      projected_suffix_similarity_ablated: 0.4865816135554946
+      position_similarity_full:
+        - 0.4822050412983374
+        - 0.24410997815490865
+        - 0.2605538183055276
+      position_similarity_ablated:
+        - 0.5989743198498604
+        - 0.45771971862038374
+        - 0.4030508021962398
+    - token_a: x008353
+      token_b: x010617
+      sequence_length: 2
+      exact_suffix_similarity: 0.018827856258399667
+      projected_suffix_similarity_full: 0.43113410129967183
+      projected_suffix_similarity_ablated: 0.6208598346522894
+      position_similarity_full:
+        - 0.5520842990881542
+        - 0.3101839035111895
+      position_similarity_ablated:
+        - 0.6854540017693247
+        - 0.5562656675352542
+    - token_a: x008353
+      token_b: x010617
+      sequence_length: 3
+      exact_suffix_similarity: 9.992007221626409e-16
+      projected_suffix_similarity_full: 0.3839908127455148
+      projected_suffix_similarity_ablated: 0.5758027587879304
+      position_similarity_full:
+        - 0.5520842990881542
+        - 0.3101839035111895
+        - 0.2897042356372007
+      position_similarity_ablated:
+        - 0.6854540017693247
+        - 0.5562656675352542
+        - 0.48568860705921235
+    - token_a: x005731
+      token_b: x010617
+      sequence_length: 2
+      exact_suffix_similarity: 0.03894208879945671
+      projected_suffix_similarity_full: 0.4366371930419999
+      projected_suffix_similarity_ablated: 0.5547820974057591
+      position_similarity_full:
+        - 0.5366208158492702
+        - 0.3366535702347295
+      position_similarity_ablated:
+        - 0.632563420021229
+        - 0.47700077479028924
+    - token_a: x005731
+      token_b: x010617
+      sequence_length: 3
+      exact_suffix_similarity: 1.1102230246251565e-16
+      projected_suffix_similarity_full: 0.35751724269999574
+      projected_suffix_similarity_ablated: 0.508379978944476
+      position_similarity_full:
+        - 0.5366208158492702
+        - 0.3366535702347295
+        - 0.19927734201598735
+      position_similarity_ablated:
+        - 0.632563420021229
+        - 0.47700077479028924
+        - 0.4155757420219097
+    - token_a: x004929
+      token_b: x010054
+      sequence_length: 2
+      exact_suffix_similarity: 1.4432899320127035e-15
+      projected_suffix_similarity_full: 0.3507203276497833
+      projected_suffix_similarity_ablated: 0.5317646933479423
+      position_similarity_full:
+        - 0.6872106922848578
+        - 0.014229963014708802
+      position_similarity_ablated:
+        - 0.8851159835728385
+        - 0.1784134031230461
+    - token_a: x004929
+      token_b: x010054
+      sequence_length: 3
+      exact_suffix_similarity: 1.887379141862766e-15
+      projected_suffix_similarity_full: 0.34271624619972624
+      projected_suffix_similarity_ablated: 0.4804987478708922
+      position_similarity_full:
+        - 0.6872106922848578
+        - 0.014229963014708802
+        - 0.3267080832996122
+      position_similarity_ablated:
+        - 0.8851159835728385
+        - 0.1784134031230461
+        - 0.3779668569167919
+    - token_a: x005842
+      token_b: x010617
+      sequence_length: 2
+      exact_suffix_similarity: 3.3306690738754696e-16
+      projected_suffix_similarity_full: 0.3468419069165943
+      projected_suffix_similarity_ablated: 0.47634119579466727
+      position_similarity_full:
+        - 0.440682271103087
+        - 0.25300154273010156
+      position_similarity_ablated:
+        - 0.5551397916736758
+        - 0.39754259991565877
+    - token_a: x005842
+      token_b: x010617
+      sequence_length: 3
+      exact_suffix_similarity: 3.3306690738754696e-16
+      projected_suffix_similarity_full: 0.32358001167964123
+      projected_suffix_similarity_ablated: 0.47647561064951355
+      position_similarity_full:
+        - 0.440682271103087
+        - 0.25300154273010156
+        - 0.27705622120573514
+      position_similarity_ablated:
+        - 0.5551397916736758
+        - 0.39754259991565877
+        - 0.47674444035920593
+    - token_a: x008352
+      token_b: x010617
+      sequence_length: 2
+      exact_suffix_similarity: 1.5543122344752192e-15
+      projected_suffix_similarity_full: 0.3429888513005254
+      projected_suffix_similarity_ablated: 0.48946791759163183
+      position_similarity_full:
+        - 0.5175979121975032
+        - 0.16837979040354767
+      position_similarity_ablated:
+        - 0.6339534503472748
+        - 0.34498238483598886
+    - token_a: x008352
+      token_b: x010617
+      sequence_length: 3
+      exact_suffix_similarity: 1.5543122344752192e-15
+      projected_suffix_similarity_full: 0.3137366756917056
+      projected_suffix_similarity_ablated: 0.4505807371805573
+      position_similarity_full:
+        - 0.5175979121975032
+        - 0.16837979040354767
+        - 0.25523232447406596
+      position_similarity_ablated:
+        - 0.6339534503472748
+        - 0.34498238483598886
+        - 0.3728063763584082
+    - token_a: x005843
+      token_b: x010617
+      sequence_length: 2
+      exact_suffix_similarity: 0.023551690447793816
+      projected_suffix_similarity_full: 0.366066997153657
+      projected_suffix_similarity_ablated: 0.4965267677823346
+      position_similarity_full:
+        - 0.44517449273132914
+        - 0.2869595015759848
+      position_similarity_ablated:
+        - 0.545936006389512
+        - 0.44711752917515724
+    - token_a: x005843
+      token_b: x010617
+      sequence_length: 3
+      exact_suffix_similarity: 7.771561172376096e-16
+      projected_suffix_similarity_full: 0.32569429409550976
+      projected_suffix_similarity_ablated: 0.47432670461862153
+      position_similarity_full:
+        - 0.44517449273132914
+        - 0.2869595015759848
+        - 0.24494888797921532
+      position_similarity_ablated:
+        - 0.545936006389512
+        - 0.44711752917515724
+        - 0.4299265782911954
+    - token_a: x006050
+      token_b: x010484
+      sequence_length: 2
+      exact_suffix_similarity: 0
+      projected_suffix_similarity_full: 0.3764314672851658
+      projected_suffix_similarity_ablated: 0.5356343590442807
+      position_similarity_full:
+        - 0.41344499906142806
+        - 0.33941793550890353
+      position_similarity_ablated:
+        - 0.5685643800414957
+        - 0.5027043380470657
+    - token_a: x006050
+      token_b: x010484
+      sequence_length: 3
+      exact_suffix_similarity: 0
+      projected_suffix_similarity_full: 0.3201180515853484
+      projected_suffix_similarity_ablated: 0.4743471239434148
+      position_similarity_full:
+        - 0.41344499906142806
+        - 0.33941793550890353
+        - 0.20749122018571364
+      position_similarity_ablated:
+        - 0.5685643800414957
+        - 0.5027043380470657
+        - 0.3517726537416829
+    - token_a: x005730
+      token_b: x010485
+      sequence_length: 2
+      exact_suffix_similarity: 0.051751034709668575
+      projected_suffix_similarity_full: 0.37011088034284373
+      projected_suffix_similarity_ablated: 0.5378296004950203
+      position_similarity_full:
+        - 0.49988145369867065
+        - 0.2403403069870168
+      position_similarity_ablated:
+        - 0.6412406034734748
+        - 0.43441859751656586
+    - token_a: x005730
+      token_b: x010485
+      sequence_length: 3
+      exact_suffix_similarity: 0.025875517354833955
+      projected_suffix_similarity_full: 0.31420512693493624
+      projected_suffix_similarity_ablated: 0.48721040068174243
+      position_similarity_full:
+        - 0.49988145369867065
+        - 0.2403403069870168
+        - 0.2023936201191212
+      position_similarity_ablated:
+        - 0.6412406034734748
+        - 0.43441859751656586
+        - 0.3859720010551867
+    - token_a: x005843
+      token_b: x010616
+      sequence_length: 2
+      exact_suffix_similarity: 0.03505136195998715
+      projected_suffix_similarity_full: 0.3739399855675746
+      projected_suffix_similarity_ablated: 0.4865584574578639
+      position_similarity_full:
+        - 0.46222298650240734
+        - 0.2856569846327418
+      position_similarity_ablated:
+        - 0.5167404465458271
+        - 0.45637646836990076
+    - token_a: x005843
+      token_b: x010616
+      sequence_length: 3
+      exact_suffix_similarity: 4.440892098500626e-16
+      projected_suffix_similarity_full: 0.3395339219951789
+      projected_suffix_similarity_ablated: 0.47976966099861357
+      position_similarity_full:
+        - 0.46222298650240734
+        - 0.2856569846327418
+        - 0.2707217948503875
+      position_similarity_ablated:
+        - 0.5167404465458271
+        - 0.45637646836990076
+        - 0.4661920680801128

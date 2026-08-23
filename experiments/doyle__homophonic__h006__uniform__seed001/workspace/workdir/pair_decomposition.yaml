@@ -1,0 +1,9 @@
+methodology:
+    context_probabilities: full observed predecessor/successor count distributions are stored and used for metrics; common/specific/differential display lists alone are truncated
+    entropy: Shannon entropy in natural-log units; effective vocabulary is exp(entropy)
+    negative_controls: minimum deterministic match cost over log-counts, graphemic distance, reliability, and distance from corpus-median structural similarity
+    shared_absence: globally frequent context tokens absent from both distributions, reported only when each side has at least 30 context observations; absence means unobserved, not impossible
+    structural_similarity: copied unchanged from structural_graphemic_pairs.tsv; arithmetic mean of existing position, left-cosine, and right-cosine components
+    weighted_context_similarity: 1 - Jensen-Shannon divergence/base ln(2), computed over the full probability distributions
+pairs: []
+negative_controls: []
