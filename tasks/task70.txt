@@ -1,0 +1,466 @@
+Task70 — Repository Reorganization and Provenance Audit
+
+Цель
+
+Привести репозиторий Voynich research project к структуре,
+пригодной для дальнейшей разработки, воспроизводимых исследований
+и последующей публичной публикации.
+
+Основные задачи:
+
+1. отделить reusable tools/libraries от research-specific code;
+2. отделить analysis pipelines от отдельных experiments;
+3. сохранить все результаты Phase I;
+4. проверить provenance экспериментальных артефактов;
+5. устранить накопившуюся организационную неоднозначность;
+6. НЕ изменять научные алгоритмы, метрики или результаты.
+
+Task70 является repository/refactoring task, а не новым исследованием.
+
+======================================================================
+1. CRITICAL SCIENTIFIC INVARIANT
+======================================================================
+
+Запрещено изменять:
+
+    mathematical definitions;
+    statistical estimators;
+    null models;
+    randomization procedures;
+    corpus normalization;
+    fingerprints;
+    thresholds;
+    classifications;
+    experiment results;
+    scientific conclusions.
+
+Рефакторинг не должен менять результаты существующих экспериментов.
+
+Если обнаружена научная или implementation ошибка:
+
+    НЕ исправлять её скрытно.
+
+Создать запись:
+
+    docs/audit/TASK70_ISSUES.md
+
+с описанием:
+
+    affected component
+    suspected problem
+    affected experiments
+    severity
+    proposed future action.
+
+======================================================================
+2. INVENTORY FIRST
+======================================================================
+
+До перемещения файлов создать полный inventory репозитория.
+
+Классифицировать содержимое как:
+
+    REUSABLE_LIBRARY
+    REUSABLE_CLI
+    ANALYSIS_PIPELINE
+    RESEARCH_EXPERIMENT
+    EXPERIMENT_ARTIFACT
+    CORPUS/DATA
+    TEST
+    DOCUMENTATION
+    LEGACY
+    SCRATCH/TEMPORARY
+    UNKNOWN.
+
+Создать:
+
+    docs/audit/REPOSITORY_INVENTORY.tsv
+
+Поля минимум:
+
+    current_path
+    category
+    used_by
+    scientific_dependency
+    proposed_path
+    action
+    notes.
+
+======================================================================
+3. DEPENDENCY MAP
+======================================================================
+
+Перед перемещением построить dependency map:
+
+    executable -> package
+    pipeline -> executable
+    experiment -> executable
+    experiment -> corpus
+    experiment -> previous experiment artifact.
+
+Особенно проверить зависимости Tasks58–69
+и Stages1–28.
+
+Создать:
+
+    docs/audit/DEPENDENCY_MAP.md.
+
+======================================================================
+4. TARGET STRUCTURE
+======================================================================
+
+Предложить и реализовать логичную структуру примерно следующего типа:
+
+    cmd/
+        reusable CLI tools
+
+    internal/
+        reusable Go packages
+
+    pipelines/
+        reproducible analysis orchestration
+
+    research/
+        phase1/
+        phase2/
+
+    experiments/
+        immutable/frozen experiment results
+
+    corpora/
+        manifests and corpus documentation
+
+    docs/
+        methods/
+        literature/
+        phase1/
+        audit/
+        roadmap/
+
+    scripts/
+        maintenance/helper scripts
+
+Не следовать этой структуре механически,
+если существующая архитектура требует более подходящего варианта.
+
+Документировать окончательное решение в:
+
+    docs/REPOSITORY_STRUCTURE.md.
+
+======================================================================
+5. TOOLS VS RESEARCH
+======================================================================
+
+Reusable code должен быть отделён от experiment-specific orchestration.
+
+Например:
+
+    entropy estimator
+    EVA parser
+    edit-distance routines
+    null generators
+    statistics helpers
+
+могут быть reusable libraries.
+
+А:
+
+    character-entropy-v1 run
+    token-formation-v1 run
+    mechanism-space-v1 run
+
+являются research experiments.
+
+Не переносить experiment assumptions в generic libraries.
+
+======================================================================
+6. PIPELINES
+======================================================================
+
+Отдельно определить pipelines:
+
+    Stage1–28 analysis;
+    full corpus analysis;
+    experiment orchestration;
+    validation pipelines.
+
+Pipeline должен:
+
+    orchestrate tools;
+    фиксировать параметры;
+    фиксировать input/output;
+    не содержать скрытой scientific logic,
+    которую невозможно найти в reusable code.
+
+======================================================================
+7. EXPERIMENT IMMUTABILITY
+======================================================================
+
+Существующие experiment outputs считать историческими научными
+артефактами.
+
+Не пересчитывать их автоматически при реорганизации.
+
+Если путь изменяется:
+
+    обеспечить traceability старого -> нового пути.
+
+Предпочтительно сохранить canonical experiment paths,
+если их изменение не требуется.
+
+======================================================================
+8. TASK / EXPERIMENT DISTINCTION
+======================================================================
+
+Не строить публичную архитектуру исключительно вокруг Task numbers.
+
+Task — единица истории разработки.
+
+Experiment — научная единица.
+
+Сохранить mapping:
+
+    Task -> experiment(s) -> code -> report -> commit.
+
+Создать:
+
+    docs/audit/TASK_EXPERIMENT_MAP.tsv.
+
+======================================================================
+9. PROVENANCE AUDIT
+======================================================================
+
+Для каждого Phase I experiment проверить наличие:
+
+    corpus identifier;
+    corpus SHA256;
+    transcription/version;
+    git commit;
+    dirty status where available;
+    parameters/configuration;
+    random seeds;
+    design/method version;
+    report;
+    raw/intermediate artifacts where required;
+    frozen marker where applicable.
+
+Создать:
+
+    docs/audit/PROVENANCE_AUDIT.tsv.
+
+======================================================================
+10. DO NOT FABRICATE PROVENANCE
+======================================================================
+
+Если старый experiment не содержит какого-либо provenance:
+
+    UNKNOWN
+    LEGACY_MISSING
+
+а не реконструировать значение догадкой.
+
+Можно восстановить значение только если оно однозначно
+доказывается существующими artifacts/git history.
+
+Пометить reconstructed provenance отдельно.
+
+======================================================================
+11. RESULT TRACEABILITY
+======================================================================
+
+Для каждого major experiment должно быть возможно пройти цепочку:
+
+    corpus
+      ->
+    command/config
+      ->
+    implementation
+      ->
+    artifacts
+      ->
+    report
+      ->
+    conclusion.
+
+Проверить эту цепочку.
+
+======================================================================
+12. PHASE I BOUNDARY
+======================================================================
+
+Зафиксировать Phase I как завершённый набор исследований
+до и включая Task69.
+
+Не включать будущие Phase II experiments.
+
+Создать:
+
+    research/phase1/README.md
+
+с mapping научных направлений,
+но без написания полного Phase I synthesis
+(это Task71).
+
+======================================================================
+13. LEGACY MATERIAL
+======================================================================
+
+Не удалять автоматически старые/отрицательные/заменённые experiments.
+
+Классифицировать:
+
+    CURRENT
+    SUPERSEDED
+    INVALIDATED
+    NEGATIVE_RESULT
+    LEGACY
+    UNKNOWN.
+
+Особенно сохранить историю исправленных methodological bugs.
+
+======================================================================
+14. CORPUS HANDLING
+======================================================================
+
+Разделить:
+
+    source corpus
+    normalized corpus
+    generated corpus
+    experiment-specific transformed corpus.
+
+Создать:
+
+    corpora/README.md.
+
+Для каждого corpus указать:
+
+    origin
+    transcription
+    transformations
+    expected checksum
+    licensing status if known.
+
+======================================================================
+15. TESTS
+======================================================================
+
+После реорганизации должны проходить:
+
+    go build ./...
+    go vet ./...
+    go test ./...
+    go test -race ./...
+    git diff --check
+
+если environment позволяет.
+
+Существующие environment-dependent failures документировать,
+не маскировать.
+
+======================================================================
+16. REPRODUCIBILITY SMOKE TEST
+======================================================================
+
+Выбрать несколько representative experiments:
+
+    один ранний structural;
+    один Task58–61;
+    один Task62–65;
+    Task66 или Task67;
+    Task68/69 literature artifact.
+
+Проверить, что после реорганизации documented commands
+по-прежнему запускаются и находят inputs.
+
+Не перезаписывать frozen production artifacts.
+
+Использовать temporary output directory.
+
+======================================================================
+17. PATH REGRESSION
+======================================================================
+
+Проверить:
+
+    hardcoded paths;
+    scripts;
+    Makefiles;
+    shell pipelines;
+    documentation links;
+    tests;
+    manifests.
+
+Не оставлять silently broken references.
+
+======================================================================
+18. DOCUMENTATION
+======================================================================
+
+Создать минимум:
+
+    docs/REPOSITORY_STRUCTURE.md
+    docs/audit/REPOSITORY_INVENTORY.tsv
+    docs/audit/DEPENDENCY_MAP.md
+    docs/audit/TASK_EXPERIMENT_MAP.tsv
+    docs/audit/PROVENANCE_AUDIT.tsv
+    docs/audit/TASK70_ISSUES.md
+    corpora/README.md
+    research/phase1/README.md
+
+======================================================================
+19. NO PUBLIC-RELEASE CLEANUP YET
+======================================================================
+
+Task70 НЕ должен:
+
+    публиковать repository;
+    выбирать public license;
+    удалять данные из-за licensing assumptions;
+    переписывать README как public landing page;
+    менять scientific conclusions.
+
+Это Task72.
+
+Но потенциальные release blockers записать.
+
+======================================================================
+20. FINAL REPORT
+======================================================================
+
+Создать:
+
+    docs/audit/TASK70_REPORT.md
+
+с:
+
+    old architecture;
+    new architecture;
+    migration summary;
+    provenance state;
+    broken/missing provenance;
+    legacy artifacts;
+    unresolved issues;
+    reproducibility smoke-test results.
+
+======================================================================
+21. DEFINITION OF DONE
+======================================================================
+
+Task70 завершён, когда:
+
+1. repository inventory создан;
+2. dependency map создан;
+3. tools/research/pipelines/experiments разделены;
+4. Phase I boundary определена;
+5. experiment artifacts сохранены;
+6. Task -> experiment mapping создан;
+7. provenance audit выполнен;
+8. missing provenance явно маркирован;
+9. corpus organization документирована;
+10. hardcoded paths исправлены;
+11. representative reproducibility smoke tests проходят;
+12. build/vet/test/race/diff-check выполнены;
+13. scientific results не изменились;
+14. обнаруженные scientific issues документированы, а не скрытно исправлены;
+15. итоговый Task70 report создан.

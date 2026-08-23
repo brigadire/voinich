@@ -1,0 +1,879 @@
+Task69 — Focused Literature Search:
+Generative Replicability, Formal Grammar, and Plaintext-Fingerprint Dependence
+
+Цель
+
+Провести углублённый поиск литературы по трём конкретным направлениям,
+выделенным после Tasks66–68.
+
+Task69 НЕ повторяет общий literature audit Task68.
+
+Он должен ответить на три узких вопроса:
+
+G:
+    Пытался ли кто-либо построить message-free generator,
+    который многократно производит разные Voynich-like corpora
+    с устойчивым многомерным fingerprint?
+
+L:
+    Пытался ли кто-либо вывести из Voynich text внутреннюю
+    формальную lexical/morphological/grammatical system
+    без предварительного предположения о конкретном языке?
+
+C:
+    Исследовал ли кто-либо зависимость Voynich-like ciphertext
+    fingerprint от statistical/structural properties plaintext?
+
+======================================================================
+1. RELATION TO TASK68
+======================================================================
+
+Использовать Task68:
+
+    LITERATURE_CATALOG.tsv
+    CLAIMS.tsv
+    SEARCH_LOG.md
+    RESEARCH_GAPS.md
+    CANDIDATE_DISCRIMINATORS.tsv
+
+как starting point.
+
+Но выполнить новый независимый поиск.
+
+Task68 sources не считать достаточными автоматически.
+
+Расширять citation graph:
+
+    backward citations;
+    forward citations;
+    related-work sections;
+    author publication lists.
+
+======================================================================
+2. PRIMARY TRACK G — REPLICABLE MESSAGE-FREE GENERATION
+======================================================================
+
+Искать:
+
+    Voynich generator
+    Voynich generating algorithm
+    pseudo-text generator
+    gibberish generator
+    autocopying
+    self-citation
+    copy-modify
+    stochastic grammar
+    Markov Voynich
+    algorithmic Voynich text
+    hoax generation
+    pseudo-language generation
+    random walk Voynich
+    generative model Voynich.
+
+Обязательно подробно разобрать:
+
+    Schinner
+    Timm
+    Timm & Schinner
+
+и найденные ими/цитирующие их работы.
+
+======================================================================
+3. TRACK G — REQUIRED EXTRACTION
+======================================================================
+
+Для каждого generator определить:
+
+    message input required?
+    plaintext absent?
+    model architecture
+    number of free parameters
+    parameters tuned to Voynich?
+    target properties used for tuning
+    generated corpus length
+    token vocabulary mechanism
+    line/page mechanism
+    state/memory
+    stochasticity
+    seed dependence.
+
+======================================================================
+4. TRACK G — REPLICATION QUESTION
+======================================================================
+
+Особенно искать:
+
+    multiple independent generated corpora;
+    multiple random seeds;
+    replicate distributions;
+    variance across generated samples;
+    frozen generator;
+    held-out metrics;
+    out-of-sample fingerprint;
+    blind discrimination synthetic vs Voynich.
+
+Главный вопрос:
+
+    Был ли когда-либо проведён эксперимент:
+
+        freeze G(theta)
+
+        generate X1 ... XN using different seeds
+
+        verify Fingerprint(Xi) ≈ Fingerprint(V)
+
+    на широком наборе независимых метрик?
+
+Классификация:
+
+    DIRECT_PRECEDENT
+    PARTIAL_PRECEDENT
+    NO_DIRECT_PRECEDENT_FOUND.
+
+======================================================================
+5. TRACK G — MULTISCALE COVERAGE
+======================================================================
+
+Для каждой generator paper записать, воспроизводит ли она:
+
+    character entropy
+    positional glyph structure
+    token morphology
+    vocabulary growth
+    exact repetition
+    near repetition
+    edit families
+    token-order dependence
+    transition structure
+    line effects
+    page effects
+    Currier/regime effects
+    distance decay
+    local topology.
+
+Создать:
+
+    GENERATOR_METRIC_COVERAGE.tsv.
+
+======================================================================
+6. TRACK G — MODEL COMPLEXITY
+======================================================================
+
+Сравнивать не только fit.
+
+Записывать:
+
+    parameter count;
+    rule count;
+    target-specific rules;
+    corpus-specific initialization;
+    external data requirements.
+
+Искать исследования Minimum Description Length,
+algorithmic complexity или model selection для Voynich generators.
+
+======================================================================
+7. TRACK G — STRONG TEST
+======================================================================
+
+Искать работы, где:
+
+    synthetic generator
+
+сравнивался не только с Voynich,
+но также с:
+
+    natural language
+    ciphertext
+    other pseudo-text.
+
+Особенно ценить blind classifier experiments.
+
+======================================================================
+8. PRIMARY TRACK L — FORMAL / ARTIFICIAL LANGUAGE
+======================================================================
+
+Искать не только:
+
+    Voynich language
+
+но:
+
+    Voynich morphology
+    morphological segmentation
+    word grammar
+    word formation
+    paradigms
+    lexical families
+    token families
+    finite state
+    finite-state morphology
+    formal grammar
+    grammar induction
+    unsupervised morphology
+    morphological network
+    affix
+    prefix
+    suffix
+    stem
+    root
+    slot grammar
+    combinatorial grammar
+    word structure
+    syntactic classes.
+
+======================================================================
+9. TRACK L — DO NOT ASSUME NATURAL LANGUAGE
+======================================================================
+
+Особенно искать исследования, где структура выводится:
+
+    bottom-up
+
+без назначения EVA glyphs буквами
+и без предварительного выбора языка.
+
+Разделять:
+
+A.
+    "Voynich resembles language X"
+
+от
+
+B.
+    "Voynich exhibits internally recoverable formal grammar".
+
+Нас преимущественно интересует B.
+
+======================================================================
+10. TRACK L — LEXICAL FORMATION
+======================================================================
+
+Для каждой работы определить, выводятся ли:
+
+    positional glyph classes;
+    prefix-like units;
+    suffix-like units;
+    core/stem-like units;
+    token templates;
+    legal/illegal forms;
+    productive transformations.
+
+======================================================================
+11. TRACK L — PARADIGMS
+======================================================================
+
+Особенно искать evidence вида:
+
+    R1+a
+    R1+b
+    R1+c
+
+    R2+a
+    R2+b
+    R2+c.
+
+То есть повторяющиеся transformation paradigms
+для независимых lexical families.
+
+Не считать edit-distance-one cluster автоматически paradigm.
+
+======================================================================
+12. TRACK L — FAMILY RELATIONS
+======================================================================
+
+Искать методы:
+
+    edit graph
+    morphological graph
+    derivational graph
+    clustering
+    analogy detection
+    minimum edit transformation
+    distributional similarity.
+
+Определить:
+
+    существуют ли reproducible lexical families?
+
+    обладают ли family members сходными contexts?
+
+    являются ли transformations directional?
+
+======================================================================
+13. TRACK L — GRAMMAR
+======================================================================
+
+Искать попытки построить:
+
+    finite-state automaton;
+    regular grammar;
+    probabilistic grammar;
+    hidden-state grammar;
+    context-free grammar;
+    dependency-like structure;
+    sequence class grammar.
+
+Для каждой:
+
+    grammar learned from Voynich?
+    hand-designed?
+    target tuned?
+    generative?
+    held-out likelihood measured?
+    generates unseen valid forms?
+    rejects invalid forms?
+
+======================================================================
+14. TRACK L — PRODUCTIVITY
+======================================================================
+
+Ключевой вопрос:
+
+может ли inferred grammar предсказывать unseen Voynich tokens?
+
+Например:
+
+    train on 80%
+    predict legal forms in held-out 20%.
+
+Искать подобные experiments.
+
+Это сильнее простого описания известных токенов.
+
+======================================================================
+15. TRACK L — SYNTACTIC STRUCTURE
+======================================================================
+
+Искать:
+
+    token classes
+    distributional classes
+    transition classes
+    phrase structure
+    line syntax
+    word order grammar.
+
+Но учитывать Task58:
+
+    weak corrected adjacent-token dependence.
+
+Особенно интересны работы,
+где syntax исследуется выше непосредственной adjacency.
+
+======================================================================
+16. TRACK L — FORMAL LANGUAGE VS GENERATOR
+======================================================================
+
+Для каждой formal-language model спросить:
+
+    чем она отличается от stochastic generator?
+
+Если grammar только генерирует правильные формы,
+но никакой external semantic variable не требуется,
+она одновременно совместима с H_G.
+
+Отмечать:
+
+    LANGUAGE_SPECIFIC_EVIDENCE
+
+только если имеется дополнительный discriminator.
+
+======================================================================
+17. TRACK L — OUTPUT
+======================================================================
+
+Создать:
+
+    FORMAL_LANGUAGE_LITERATURE.tsv
+
+с полями:
+
+    source
+    lexical model
+    morphology
+    paradigms
+    grammar
+    productivity test
+    heldout validation
+    semantic claim
+    generator alternative tested
+    evidence strength.
+
+======================================================================
+18. PRIMARY TRACK C — PLAINTEXT DEPENDENCE
+======================================================================
+
+Главный вопрос:
+
+    Насколько fingerprint ciphertext зависит
+    от statistical structure plaintext?
+
+Искать как Voynich-specific,
+так и general cryptanalytic literature,
+если она непосредственно применима.
+
+======================================================================
+19. TRACK C — SEARCH TERMS
+======================================================================
+
+Искать:
+
+    ciphertext statistics plaintext dependence
+    plaintext statistics preserved by cipher
+    cipher entropy plaintext entropy
+    homophonic cipher plaintext statistics
+    verbose cipher statistics
+    nomenclator statistics
+    codebook ciphertext statistics
+    ciphertext language dependence
+    plaintext genre cipher statistics
+    source redundancy encryption
+    source statistics under encryption
+    format preserving encryption statistics
+    constrained plaintext cipher
+    structured plaintext encryption.
+
+Для Voynich:
+
+    Voynich plaintext dependence
+    Voynich source text
+    Voynich plaintext genre
+    Voynich recipe text
+    Voynich abbreviated plaintext
+    Voynich telegraphic
+    Voynich codebook
+    Voynich nomenclator
+    Voynich procedural notation.
+
+======================================================================
+20. TRACK C — PLAINTEXT CLASSES
+======================================================================
+
+Искать эксперименты, сравнивающие encryption одного алгоритма на:
+
+    ordinary prose;
+    different languages;
+    poetry;
+    recipes;
+    lists;
+    tables;
+    catalogues;
+    abbreviations;
+    telegraphic text;
+    procedural instructions;
+    highly repetitive text;
+    low-entropy sources;
+    formal notation.
+
+======================================================================
+21. TRACK C — CORE FUNCTION
+======================================================================
+
+Нас интересует экспериментальная функция:
+
+    F(P,E) = fingerprint(E(P)).
+
+И особенно:
+
+    ΔF_ciphertext / ΔF_plaintext.
+
+Для каждой работы определить,
+какие ciphertext properties сохраняют dependence on source:
+
+    entropy;
+    n-grams;
+    repetition;
+    token length;
+    vocabulary growth;
+    local similarity;
+    positional structure;
+    long-range dependence.
+
+======================================================================
+22. TRACK C — SAME ENCODER, DIFFERENT PLAINTEXT
+======================================================================
+
+Наиболее ценные работы:
+
+    E(P1)
+    E(P2)
+    ...
+    E(Pn)
+
+при фиксированном E.
+
+Именно они позволяют отделить:
+
+    encoder fingerprint
+
+от:
+
+    plaintext fingerprint.
+
+Отмечать как:
+
+    DIRECT_PLAINTEXT_SENSITIVITY_TEST.
+
+======================================================================
+23. TRACK C — SAME PLAINTEXT, DIFFERENT ENCODER
+======================================================================
+
+Вторичный complementary design:
+
+    E1(P)
+    E2(P)
+    ...
+    En(P).
+
+Использовать для оценки:
+
+    encoder-dominated vs source-dominated metrics.
+
+======================================================================
+24. TRACK C — CONTEXT-COMPLETION PLAINTEXT
+======================================================================
+
+Отдельно искать исторические и современные системы,
+где передаётся не полное сообщение,
+а только дополнение к shared context.
+
+Термины:
+
+    elliptical messages
+    telegraphic codes
+    codebooks
+    shorthand
+    abbreviated technical notation
+    procedural codes
+    military brevity codes
+    commercial codes
+    nomenclators
+    shared-context communication.
+
+Цель — понять статистические свойства source text,
+а не доказать историческую связь с Voynich.
+
+======================================================================
+25. TRACK C — LOW-INFORMATION PLAINTEXT
+======================================================================
+
+Особенно интересен случай:
+
+    M = K + ΔI
+
+где:
+
+    K = shared prior/context
+    ΔI = transmitted information.
+
+Искать литературу по communication with side information,
+source coding with shared context и historical code systems.
+
+Отделять mathematical analogy от historical evidence.
+
+======================================================================
+26. TRACK C — INFORMATION RATE
+======================================================================
+
+Для таких systems искать:
+
+    information per symbol;
+    redundancy;
+    source entropy;
+    conditional entropy H(M|K);
+    compressed/abbreviated message structure.
+
+Это поможет определить,
+может ли meaningful plaintext иметь
+необычно низкую source complexity до encryption.
+
+======================================================================
+27. TRACK C — VOYNICH FORWARD MODELS
+======================================================================
+
+Повторно разобрать:
+
+    Bowern–Gaskell
+    Greshko / Naibbe
+    Trithemius/Polygraphia analogues
+
+именно с новым вопросом:
+
+    насколько результат зависит от выбранного plaintext?
+
+Если authors использовали несколько languages/corpora,
+извлечь variation between them.
+
+======================================================================
+28. CROSS-TRACK PAPERS
+======================================================================
+
+Особенно выделять работы,
+относящиеся сразу к двум или трём направлениям.
+
+Например:
+
+    generator with formal grammar;
+    cipher producing artificial-word morphology;
+    formal codebook language carrying compressed information.
+
+Создать:
+
+    CROSS_TRACK_SOURCES.tsv.
+
+======================================================================
+29. GENERAL LITERATURE ALLOWED
+======================================================================
+
+В отличие от Task68,
+Task69 может включать не-Voynich literature,
+если она отвечает на механистический вопрос.
+
+Например:
+
+    statistical properties of ciphertext;
+    artificial language grammar induction;
+    pseudo-text generation;
+    source coding with side information.
+
+Но каждый такой источник маркировать:
+
+    GENERAL_MECHANISTIC_ANALOGUE
+
+и не использовать как прямое evidence о Voynich.
+
+======================================================================
+30. SOURCE QUALITY
+======================================================================
+
+Приоритет:
+
+    primary peer-reviewed
+    primary preprint with reproducibility
+    academic monograph
+    historical primary source.
+
+Forums/blogs/Wikipedia только как citation discovery.
+
+======================================================================
+31. NEGATIVE SEARCH RESULTS
+======================================================================
+
+Если direct precedent не найден,
+обязательно документировать search queries
+и citation graph.
+
+Использовать формулировку:
+
+    NO_DIRECT_PRECEDENT_FOUND
+
+а не:
+
+    NO_PREVIOUS_RESEARCH_EXISTS.
+
+======================================================================
+32. THREE PRECEDENT VERDICTS
+======================================================================
+
+В конце дать отдельно:
+
+G_PRECEDENT:
+
+    DIRECT
+    PARTIAL
+    NONE_FOUND
+
+L_PRECEDENT:
+
+    DIRECT
+    PARTIAL
+    NONE_FOUND
+
+C_PRECEDENT:
+
+    DIRECT
+    PARTIAL
+    NONE_FOUND.
+
+======================================================================
+33. MOST IMPORTANT QUESTION FOR G
+======================================================================
+
+Ответить:
+
+    Был ли ранее построен frozen message-free generator,
+    который после настройки многократно создаёт разные corpora,
+    статистически неотличимые от Voynich
+    по broad held-out multiscale fingerprint?
+
+======================================================================
+34. MOST IMPORTANT QUESTION FOR L
+======================================================================
+
+Ответить:
+
+    Существует ли опубликованная bottom-up formal grammar
+    Voynichese, которая одновременно:
+
+        объясняет word formation;
+        выявляет productive lexical paradigms;
+        предсказывает held-out forms;
+        описывает sequence grammar;
+        проверена против generator controls?
+
+======================================================================
+35. MOST IMPORTANT QUESTION FOR C
+======================================================================
+
+Ответить:
+
+    Исследовалась ли систематически чувствительность
+    Voynich-like cipher fingerprint к классу plaintext,
+    особенно к non-prose / compressed / contextual /
+    procedural source messages?
+
+======================================================================
+36. SYNTHESIS
+======================================================================
+
+Создать:
+
+    TASK69_SYNTHESIS.md
+
+с тремя независимыми разделами G/L/C.
+
+Для каждого:
+
+    what has been done
+    strongest paper
+    strongest result
+    methodological limitation
+    closest experiment to ours
+    direct precedent status
+    unresolved question.
+
+======================================================================
+37. EXPERIMENT CROSSWALK
+======================================================================
+
+Создать:
+
+    TASK69_EXPERIMENT_CROSSWALK.tsv.
+
+Сопоставить найденные работы с предлагаемыми экспериментами:
+
+G:
+    frozen multi-seed generator
+
+L:
+    grammar/family induction
+
+C:
+    plaintext-class sensitivity.
+
+Статусы:
+
+    ALREADY_DONE
+    PARTIALLY_DONE
+    METHOD_EXISTS_NOT_APPLIED_TO_VOYNICH
+    NOT_FOUND.
+
+======================================================================
+38. FINAL RECOMMENDATION
+======================================================================
+
+После literature audit определить,
+какой из трёх экспериментов имеет
+наибольшую научную новизну и discriminating power:
+
+    G
+    L
+    C.
+
+Оценивать отдельно:
+
+    novelty
+    feasibility
+    computational cost
+    discrimination H_L/H_C/H_G
+    dependence on transcription assumptions.
+
+Не выбирать направление только потому,
+что оно проще реализуется.
+
+======================================================================
+39. ARTIFACTS
+======================================================================
+
+Создать:
+
+experiments/task69-literature/
+
+    SEARCH_LOG.md
+    SOURCES.tsv
+
+    GENERATOR_LITERATURE.tsv
+    GENERATOR_METRIC_COVERAGE.tsv
+
+    FORMAL_LANGUAGE_LITERATURE.tsv
+
+    PLAINTEXT_DEPENDENCE_LITERATURE.tsv
+
+    CROSS_TRACK_SOURCES.tsv
+
+    TASK69_EXPERIMENT_CROSSWALK.tsv
+
+    bibliography.bib
+    TASK69_SYNTHESIS.md
+    RESEARCH_RECOMMENDATION.md
+
+======================================================================
+40. DEFINITION OF DONE
+======================================================================
+
+Task69 завершён, когда:
+
+1. выполнен новый focused search по G/L/C;
+
+2. Task68 citation graph расширен;
+
+3. Timm/Schinner разобраны на уровне generator mechanics;
+
+4. найдены или не найдены multi-seed replication studies;
+
+5. generator metric coverage построен;
+
+6. проведён отдельный поиск Voynich morphology/grammar;
+
+7. lexical-family/paradigm literature разобрана;
+
+8. formal grammar attempts разобраны;
+
+9. held-out productivity tests специально искались;
+
+10. generator alternatives для language models проверены;
+
+11. выполнен поиск plaintext-dependence literature;
+
+12. same-encoder/different-plaintext studies найдены или
+    документировано их отсутствие;
+
+13. non-prose plaintext classes исследованы;
+
+14. context-completion/shared-knowledge communication рассмотрено;
+
+15. Greshko/Bowern-Gaskell переоценены с точки зрения
+    plaintext sensitivity;
+
+16. general mechanistic literature использована там,
+    где Voynich literature отсутствует;
+
+17. direct/partial/no-precedent verdict дан для G/L/C;
+
+18. составлен experiment crosswalk;
+
+19. рекомендовано следующее экспериментальное направление;
+
+20. отсутствие найденной работы нигде не выдано
+    за доказательство её несуществования.

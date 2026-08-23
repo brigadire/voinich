@@ -1,0 +1,1179 @@
+Task68 — Voynich Manuscript Literature Audit:
+Evidence for Language, Encoding, and Non-Message Generation
+
+Цель
+
+Провести систематический сбор, проверку и агрегацию научной литературы,
+относящейся к фундаментальному вопросу о природе текста манускрипта Войнича:
+
+    Что представляет собой наблюдаемая символическая последовательность?
+
+Рассматривать минимум три основные гипотезы:
+
+H_L — LANGUAGE / SYMBOLIC LANGUAGE
+
+    Текст непосредственно представляет естественный или искусственный язык
+    либо систему записи языка без существенного криптографического
+    преобразования.
+
+H_C — ENCODED MESSAGE
+
+    Существует осмысленный plaintext, преобразованный некоторым
+    алгоритмом кодирования/шифрования.
+
+H_G — GENERATED NON-MESSAGE
+
+    Последовательность создана алгоритмическим, стохастическим,
+    копировально-модификационным или иным процессом, не предназначенным
+    для передачи полноценного plaintext message.
+
+Дополнительно учитывать промежуточные классы:
+
+    nomenclator/codebook systems;
+    ambiguous/lossy encoding;
+    constructed/formal language;
+    shorthand;
+    procedural notation;
+    mixed systems;
+    input-conditioned generation;
+    self-copying/autocopying;
+    pseudo-language.
+
+Задача НЕ состоит в выборе любимой гипотезы.
+
+Задача состоит в установлении:
+
+    какие наблюдения действительно существуют;
+    какие выводы из них делались;
+    насколько эти выводы логически следуют из наблюдений;
+    какие competing explanations проверялись;
+    какие не проверялись;
+    какие результаты были независимо воспроизведены;
+    какие результаты противоречат друг другу;
+    какие вопросы остаются экспериментально неразрешёнными.
+
+======================================================================
+1. PRIMARY SOURCES FIRST
+======================================================================
+
+Основной корпус должен состоять из:
+
+    peer-reviewed papers;
+    conference papers;
+    academic books/chapters;
+    dissertations;
+    preprints, если peer-reviewed версии нет;
+    официальных reproducibility repositories;
+    оригинальных исторических cryptanalytic reports, где доступны.
+
+Wikipedia, блоги, Voynich forums, Reddit, популярные статьи и пересказы
+НЕ использовать как доказательную базу.
+
+Их можно использовать только для поиска первичного источника.
+
+Для каждого утверждения найти оригинальную публикацию.
+
+======================================================================
+2. SEARCH SCOPE
+======================================================================
+
+Не ограничиваться работами со словами "Voynich cipher".
+
+Искать исследования по:
+
+    character entropy;
+    conditional entropy;
+    word/token entropy;
+    mutual information;
+    Zipf law;
+    vocabulary growth;
+    word-length distributions;
+    positional glyph restrictions;
+    word morphology;
+    edit-distance families;
+    minimal pairs;
+    repetition;
+    local repetition;
+    long-range correlations;
+    co-occurrence;
+    topic modelling;
+    clustering;
+    Currier A/B;
+    scribal hands;
+    sections;
+    labels;
+    line effects;
+    page effects;
+    information density;
+    compression;
+    predictability;
+    generative models;
+    autocopying;
+    stochastic generation;
+    substitution;
+    homophonic substitution;
+    polyalphabetic systems;
+    nomenclators;
+    verbose ciphers;
+    codebooks;
+    constructed languages;
+    information-bearing vs non-information-bearing text.
+
+======================================================================
+3. IMPORTANT KNOWN STARTING POINTS
+======================================================================
+
+Обязательно проверить и включить первичные работы, если они существуют
+и относятся к вопросу:
+
+    Currier;
+    Prescott Currier A/B analysis;
+
+    William F. Friedman /
+    Elizebeth Friedman where primary material is available;
+
+    Landini;
+
+    Stolfi;
+
+    Schinner;
+
+    Timm;
+    Timm & Schinner;
+
+    Montemurro & Zanette;
+
+    Reddy & Knight;
+
+    Bowern;
+    Lindemann & Bowern;
+
+    Greshko / Naibbe;
+
+    Rozanova & Temerev;
+
+    Averyanov;
+
+    Hermes / Polygraphia III.
+
+Этот список — starting set, а не ограничение поиска.
+
+======================================================================
+4. TIME RANGE
+======================================================================
+
+Охватить раннюю статистическую криптоаналитику и современные
+computational studies.
+
+Особое внимание:
+
+    1990–2026
+
+но включить более ранние фундаментальные исследования.
+
+======================================================================
+5. SOURCE CATALOG
+======================================================================
+
+Создать:
+
+    LITERATURE_CATALOG.tsv
+
+Минимальные поля:
+
+    source_id
+    authors
+    year
+    title
+    publication
+    DOI
+    URL
+    source_type
+    peer_reviewed
+    primary_or_secondary
+    corpus/transcription
+    code_available
+    data_available
+    reproducible
+    main_hypothesis
+    main_result
+    claimed_interpretation.
+
+======================================================================
+6. CLAIM-LEVEL DATABASE
+======================================================================
+
+Не ограничиваться summary по статье.
+
+Создать:
+
+    CLAIMS.tsv
+
+Одна строка = одно существенное утверждение.
+
+Поля минимум:
+
+    claim_id
+    source_id
+    exact_claim_summary
+    observation
+    metric
+    comparison/control
+    result
+    author_interpretation
+    supports_HL
+    supports_HC
+    supports_HG
+    alternative_explanations_tested
+    alternative_explanations_not_tested
+    replication_status
+    methodological_notes
+    confidence.
+
+======================================================================
+7. OBSERVATION != INTERPRETATION
+======================================================================
+
+Критически важно разделять:
+
+OBSERVATION:
+
+    Voynich h2 is lower than corpus X.
+
+INTERPRETATION:
+
+    therefore Voynich is encoded language.
+
+Это две разные записи.
+
+Никогда не превращать авторскую интерпретацию в установленный факт.
+
+======================================================================
+8. CLAIM STRENGTH
+======================================================================
+
+Для каждого claim классифицировать:
+
+    DIRECT_MEASUREMENT
+    STATISTICAL_INFERENCE
+    MODEL_DEPENDENT_INFERENCE
+    INTERPRETATION
+    SPECULATION.
+
+======================================================================
+9. EVIDENCE DIRECTION
+======================================================================
+
+Для каждой работы определить отдельно:
+
+    evidence_for_language
+    evidence_for_encoding
+    evidence_for_generation.
+
+Использовать:
+
+    STRONG_SUPPORT
+    MODERATE_SUPPORT
+    WEAK_SUPPORT
+    NEUTRAL
+    WEAK_CONTRADICTION
+    MODERATE_CONTRADICTION
+    STRONG_CONTRADICTION
+    NOT_TESTED.
+
+Не выводить эти оценки только из мнения автора.
+
+Оценивать experimental result относительно конкретной гипотезы.
+
+======================================================================
+10. NATURAL LANGUAGE EVIDENCE
+======================================================================
+
+Собрать все основные аргументы за H_L:
+
+например:
+
+    Zipf-like distributions;
+    entropy ranges;
+    vocabulary structure;
+    long-range correlations;
+    topic structure;
+    co-occurrence;
+    section dependence;
+    word-order effects;
+    apparent morphological regularity.
+
+Для каждого спросить:
+
+    является ли признак специфичным для языка?
+
+    воспроизводится ли он генераторами?
+
+    воспроизводится ли он cipher text?
+
+    использовались ли соответствующие controls?
+
+======================================================================
+11. CIPHER EVIDENCE
+======================================================================
+
+Собрать работы, проверяющие:
+
+    monoalphabetic substitution;
+    homophonic substitution;
+    polyalphabetic cipher;
+    transposition;
+    nomenclator/codebook;
+    verbose cipher;
+    nulls;
+    historical cipher systems;
+    modern constructed Voynich-like ciphers.
+
+Для каждого механизма:
+
+    какие свойства Voynich он воспроизводит?
+
+    какие не воспроизводит?
+
+    обратим ли он?
+
+    нужен ли внешний key/codebook?
+
+    сохраняет ли plaintext information?
+
+======================================================================
+12. GENERATED-TEXT EVIDENCE
+======================================================================
+
+Собрать модели:
+
+    random generation;
+    Markov generation;
+    copy/mutate;
+    autocopying;
+    self-citation;
+    stochastic grammar;
+    algorithmic pseudo-language;
+    stateful generators.
+
+Для каждой:
+
+    какие Voynich properties reproduced?
+
+    какие failed?
+
+    содержит ли output message?
+
+    насколько model tuned to Voynich?
+
+    tested out-of-sample?
+
+======================================================================
+13. MESSAGE-PRESENCE EVIDENCE
+======================================================================
+
+Это центральный раздел Task68.
+
+Найти работы, которые пытаются ответить не:
+
+    "похож ли Voynich на язык?"
+
+а:
+
+    "есть ли свидетельства передачи внешнего содержания?"
+
+Искать:
+
+    semantic organization;
+    topic dependence;
+    information localization;
+    long-range dependency;
+    meaningful co-occurrence;
+    latent semantic structure;
+    mutual information across scales;
+    predictability hierarchy;
+    section-specific vocabulary;
+    illustration/text association;
+    label/running-text association.
+
+======================================================================
+14. MESSAGE-PRESENCE CRITIQUE
+======================================================================
+
+Для каждого purported message-presence test спросить:
+
+    может ли structured non-message generator
+    воспроизвести этот результат?
+
+Если автор этого не проверял:
+
+    GENERATOR_CONTROL_MISSING.
+
+Это должно быть явно отражено.
+
+======================================================================
+15. REVERSIBILITY / INFORMATION LOSS
+======================================================================
+
+Особый поиск по вопросу, возникшему в Task67:
+
+    обсуждал ли кто-либо возможность,
+    что Voynich-like statistical structure связана
+    с information loss?
+
+Искать:
+
+    loss of distinctions;
+    many-to-one encoding;
+    ambiguous encoding;
+    irreversible encoding;
+    phoneme collapse;
+    codebook loss;
+    lost key;
+    lossy transcription;
+    scribal corruption;
+    synchronization errors;
+    segmentation errors.
+
+======================================================================
+16. RECOVERABILITY
+======================================================================
+
+Для каждой предложенной cipher/encoding model определить:
+
+    mathematically reversible?
+    reversible with key?
+    reversible with codebook?
+    ambiguous?
+    intrinsically lossy?
+    recoverability actually tested?
+    plaintext recovery demonstrated?
+    only statistical resemblance demonstrated?
+
+Не считать "cipher model" автоматически decryptable.
+
+======================================================================
+17. HISTORICAL CODEBOOK LOSS
+======================================================================
+
+Отдельно собрать системы типа:
+
+    Polygraphia;
+    nomenclators;
+    codebooks;
+    verbose substitution systems.
+
+Проверить различие:
+
+    information contained in ciphertext
+
+vs
+
+    information contained in ciphertext + external table.
+
+Это важно для:
+
+    C alone unrecoverable
+    but
+    (C,K) recoverable.
+
+======================================================================
+18. ERROR / DAMAGE LITERATURE
+======================================================================
+
+Найти исследования о влиянии:
+
+    scribal errors;
+    copying;
+    transcription;
+    EVA ambiguities;
+    glyph ambiguity;
+    tokenization;
+    uncertain spaces;
+    uncertain glyph identities
+
+на статистический анализ и decryptability Voynich.
+
+======================================================================
+19. TRANSCRIPTION DEPENDENCE
+======================================================================
+
+Для каждой computational paper записать:
+
+    transcription used
+
+например:
+
+    EVA
+    Currier
+    Takahashi
+    Zandbergen-Landini
+    IVTFF etc.
+
+Проверить, зависит ли результат от transcription choice.
+
+======================================================================
+20. CURRIER A/B
+======================================================================
+
+Собрать evidence относительно:
+
+    two languages;
+    two encoding regimes;
+    scribal differences;
+    chronological drift;
+    topic differences;
+    statistical regimes.
+
+Не принимать термин "language A/B" буквально.
+
+Разделять:
+
+    observed statistical clusters
+
+и:
+
+    interpretation as different languages.
+
+======================================================================
+21. SCRIBAL HANDS
+======================================================================
+
+Отдельно собрать исследования после Lisa Fagin Davis,
+где учитываются hands.
+
+Проверить:
+
+    объясняют ли hands часть Currier differences?
+
+    остаются ли differences within hand?
+
+======================================================================
+22. SECTION/TOPIC EFFECTS
+======================================================================
+
+Собрать:
+
+    section-specific vocabulary;
+    topic modelling;
+    illustration sections;
+    page clusters.
+
+Проверить confounds:
+
+    hand
+    Currier
+    section
+    folio
+    local adjacency.
+
+======================================================================
+23. LOCAL STRUCTURE
+======================================================================
+
+Искать результаты, связанные с нашими Tasks60–65:
+
+    adjacent repetition;
+    near repetition;
+    edit distance;
+    token families;
+    line dependence;
+    page dependence;
+    local drift;
+    regime/state structure;
+    distance decay.
+
+Особенно отметить независимые совпадения.
+
+======================================================================
+24. ENTROPY
+======================================================================
+
+Систематизировать:
+
+    h0/h1/h2/h3...
+    estimator definitions;
+    boundary treatment;
+    character/token level;
+    normalization;
+    corpus size correction.
+
+Не сравнивать числа из разных definitions как идентичные.
+
+======================================================================
+25. CONTROLS AUDIT
+======================================================================
+
+Для каждой computational paper создать запись:
+
+    natural_language_controls
+    cipher_controls
+    generated_text_controls
+    shuffle_null
+    matched_null
+    synthetic_positive_control
+    negative_control
+    cross-language_control.
+
+======================================================================
+26. CONTROL ADEQUACY
+======================================================================
+
+Отдельно оценить:
+
+    ADEQUATE
+    PARTIAL
+    WEAK
+    ABSENT.
+
+Например:
+
+сравнение Voynich только с English plaintext недостаточно,
+чтобы делать вывод о cipher/generator hypotheses.
+
+======================================================================
+27. OVERFITTING / TARGET TUNING
+======================================================================
+
+Для generative/cipher models определить:
+
+    параметры выбраны до сравнения с Voynich?
+
+    или tuned specifically to reproduce Voynich?
+
+Классифицировать:
+
+    BLIND
+    PARTIALLY_TUNED
+    TARGET_TUNED
+    UNKNOWN.
+
+======================================================================
+28. REPLICATION
+======================================================================
+
+Создать:
+
+    REPLICATION_MATRIX.tsv.
+
+Для каждого major result:
+
+    original source
+    independent replication
+    partial replication
+    contradiction
+    no replication.
+
+======================================================================
+29. CONTRADICTIONS
+======================================================================
+
+Создать:
+
+    CONTRADICTIONS.tsv.
+
+Примеры типа:
+
+    Paper A:
+        property X supports natural language.
+
+    Paper B:
+        generator reproduces property X.
+
+Это не обязательно numerical contradiction.
+
+Классифицировать:
+
+    EMPIRICAL
+    METHODOLOGICAL
+    INTERPRETATIONAL.
+
+======================================================================
+30. NON-DISCRIMINATING PROPERTIES
+======================================================================
+
+Создать:
+
+    NON_DISCRIMINATING_PROPERTIES.tsv.
+
+Сюда помещать свойства, которые доказанно возникают минимум в двух
+конкурирующих классах:
+
+    language
+    cipher
+    non-message generator.
+
+Например потенциально:
+
+    Zipf-like distribution.
+
+Но включать только после проверки источников.
+
+======================================================================
+31. DISCRIMINATING PROPERTIES
+======================================================================
+
+Создать:
+
+    CANDIDATE_DISCRIMINATORS.tsv.
+
+Искать признаки, для которых литература показывает существенно
+разные predictions H_L/H_C/H_G.
+
+Для каждого:
+
+    property
+    predicted_HL
+    predicted_HC
+    predicted_HG
+    evidence
+    controls
+    current_Voynich_result
+    confidence.
+
+======================================================================
+32. COMPARISON WITH OUR TASKS
+======================================================================
+
+После завершения независимого literature extraction
+сопоставить литературу с:
+
+    Task58
+    Task59
+    Task60
+    Task61
+    Task62
+    Task63
+    Task64
+    Task65
+    Task66
+    Task67.
+
+ВАЖНО:
+
+сначала закончить literature extraction.
+
+Не использовать наши результаты для отбора публикаций
+или интерпретации результатов до завершения первичного audit.
+
+======================================================================
+33. TASK CROSSWALK
+======================================================================
+
+Создать:
+
+    TASK58_67_LITERATURE_CROSSWALK.tsv.
+
+Поля:
+
+    our_task
+    our_property
+    closest_literature_source
+    literature_metric
+    methodological_match
+    result_relation
+
+где result_relation:
+
+    AGREES
+    PARTIALLY_AGREES
+    CONTRADICTS
+    NOT_COMPARABLE
+    NO_PREVIOUS_TEST_FOUND.
+
+======================================================================
+34. NOVELTY AUDIT
+======================================================================
+
+Создать:
+
+    NOVELTY_AUDIT.md.
+
+Для каждого нашего major result:
+
+    previously demonstrated;
+    similar result exists;
+    methodologically distinct extension;
+    apparently novel combination;
+    apparently novel test.
+
+Не заявлять novelty окончательно.
+
+Использовать:
+
+    "no prior test found in searched literature"
+
+вместо:
+
+    "first ever".
+
+======================================================================
+35. PARTICULAR ATTENTION — TASK67
+======================================================================
+
+Проверить, существует ли prior work, строящая связь:
+
+    Voynich statistical compatibility
+        vs
+    plaintext information retention / recoverability.
+
+Искать именно:
+
+    fingerprint/recoverability trade-off;
+    information loss under Voynich-like encoding;
+    many-to-one Voynich cipher;
+    context-assisted recovery;
+    damage-induced irreversibility.
+
+Если ничего не найдено:
+
+    NO_DIRECT_PRECEDENT_FOUND
+
+с описанием search strategy.
+
+======================================================================
+36. HYPOTHESIS EVIDENCE MATRIX
+======================================================================
+
+Создать:
+
+    HYPOTHESIS_EVIDENCE_MATRIX.tsv.
+
+Строки:
+
+    observed property.
+
+Столбцы:
+
+    H_L
+    H_C
+    H_G.
+
+Значения:
+
+    SUPPORTS
+    CONTRADICTS
+    NON_DISCRIMINATING
+    UNKNOWN.
+
+Обязательно добавить:
+
+    source_ids
+    confidence.
+
+======================================================================
+37. DO NOT VOTE BY PAPER COUNT
+======================================================================
+
+Запрещено делать:
+
+    12 papers support language
+    7 support cipher
+    therefore language wins.
+
+Одна хорошо контролируемая работа может быть информативнее
+десятка слабых исследований.
+
+======================================================================
+38. EVIDENCE WEIGHT
+======================================================================
+
+Оценивать вес результата по:
+
+    directness;
+    controls;
+    corpus adequacy;
+    estimator quality;
+    preregistration/blindness if applicable;
+    reproducibility;
+    independent replication;
+    alternative explanations tested.
+
+======================================================================
+39. CLAIMED DECIPHERMENTS
+======================================================================
+
+Не делать обзор всех claimed decipherments.
+
+Включать decipherment proposal только если:
+
+    опубликован метод;
+    transformation sufficiently specified;
+    можно проверить plaintext recovery;
+    присутствует nontrivial validation.
+
+Иначе:
+
+    OUT_OF_SCOPE_CLAIMED_DECIPHERMENT.
+
+======================================================================
+40. HISTORICAL PLAUSIBILITY
+======================================================================
+
+Не использовать historical plausibility как основной фильтр.
+
+Не отвергать механизм только потому, что:
+
+    "слишком сложен для XV века".
+
+Отдельно можно записать:
+
+    HISTORICAL_EVIDENCE_PRESENT
+    HISTORICAL_ANALOGUE_ONLY
+    NO_KNOWN_HISTORICAL_ANALOGUE.
+
+Но statistical/mechanistic evidence держать отдельно.
+
+======================================================================
+41. ACCESS FAILURES
+======================================================================
+
+Если paper недоступна полностью:
+
+не реконструировать методы по abstract.
+
+Записать:
+
+    FULL_TEXT_UNAVAILABLE.
+
+Можно сохранить abstract-level claim отдельно,
+но не использовать его для detailed methodological comparison.
+
+======================================================================
+42. QUOTATION / TRACEABILITY
+======================================================================
+
+Для ключевых выводов сохранить:
+
+    page
+    section
+    figure/table
+
+где возможно.
+
+Каждая важная запись CLAIMS.tsv должна позволять вернуться
+к месту в оригинальной публикации.
+
+======================================================================
+43. REPRODUCIBILITY REPOSITORIES
+======================================================================
+
+Если paper имеет официальный repository:
+
+сохранить:
+
+    repository URL
+    commit/tag if available
+    datasets
+    scripts
+    README claims.
+
+Не считать README заменой paper.
+
+======================================================================
+44. SEARCH LOG
+======================================================================
+
+Создать:
+
+    SEARCH_LOG.md.
+
+Записывать:
+
+    databases/search engines;
+    search strings;
+    dates;
+    citation chaining;
+    excluded source classes.
+
+Это нужно для понимания coverage.
+
+======================================================================
+45. BIBLIOGRAPHY
+======================================================================
+
+Создать:
+
+    bibliography.bib
+
+с DOI/URL и корректными bibliographic metadata.
+
+======================================================================
+46. SYNTHESIS REPORT
+======================================================================
+
+Создать:
+
+    LITERATURE_SYNTHESIS.md.
+
+Структура:
+
+1. Scope and methodology
+
+2. What is firmly established about Voynich text
+
+3. Evidence compatible with natural language
+
+4. Evidence problematic for ordinary natural language
+
+5. Evidence compatible with encoded plaintext
+
+6. Evidence problematic for ordinary cipher models
+
+7. Evidence compatible with non-message generation
+
+8. Evidence problematic for non-message generation
+
+9. Properties that do not discriminate hypotheses
+
+10. Candidate discriminating properties
+
+11. Information loss and recoverability
+
+12. Transcription and copying uncertainty
+
+13. Currier / hand / section / local-regime structure
+
+14. Contradictory findings
+
+15. Replicated findings
+
+16. Comparison with Tasks58–67
+
+17. What our experiments independently reproduce
+
+18. What our experiments contradict
+
+19. Results for which no precedent was found
+
+20. Remaining decisive questions.
+
+======================================================================
+47. FINAL QUESTION
+======================================================================
+
+Отчёт должен закончиться ответом:
+
+    Can existing literature distinguish between:
+
+        H_L — language
+        H_C — encoded message
+        H_G — structured non-message generation?
+
+Допустимые ответы:
+
+    CURRENTLY_DISTINGUISHABLE
+    PARTIALLY_DISTINGUISHABLE
+    NOT_CURRENTLY_DISTINGUISHABLE.
+
+Ответ должен следовать из evidence matrix,
+а не из мнения автора отчёта.
+
+======================================================================
+48. SECOND FINAL QUESTION
+======================================================================
+
+Если:
+
+    NOT_CURRENTLY_DISTINGUISHABLE
+или
+    PARTIALLY_DISTINGUISHABLE,
+
+определить минимальный набор новых экспериментов,
+которые имеют наибольшую вероятность разделить H_L/H_C/H_G.
+
+Не проектировать их полностью.
+
+Создать:
+
+    RESEARCH_GAPS.md
+
+с приоритетами:
+
+    HIGH
+    MEDIUM
+    LOW.
+
+======================================================================
+49. CRITICAL RULE
+======================================================================
+
+Нельзя считать:
+
+    language-like statistics
+
+доказательством языка.
+
+Нельзя считать:
+
+    cipher-compatible statistics
+
+доказательством cipher.
+
+Нельзя считать:
+
+    successful pseudo-text generator
+
+доказательством отсутствия сообщения.
+
+Во всех трёх случаях необходимо проверить competing models.
+
+======================================================================
+50. DEFINITION OF DONE
+======================================================================
+
+Task68 завершён, когда:
+
+1. выполнен systematic literature search;
+
+2. первичные источники отделены от вторичных;
+
+3. создан source catalog;
+
+4. создан claim-level dataset;
+
+5. observations отделены от interpretations;
+
+6. H_L/H_C/H_G evidence классифицировано;
+
+7. natural-language evidence разобрано;
+
+8. cipher/encoding evidence разобрано;
+
+9. generated-non-message evidence разобрано;
+
+10. message-presence tests отдельно проанализированы;
+
+11. information-loss/recoverability literature проверена;
+
+12. transcription/copying effects проверены;
+
+13. Currier/hand/section effects разобраны;
+
+14. controls каждой major computational paper проаудированы;
+
+15. replication matrix создана;
+
+16. contradictions matrix создана;
+
+17. non-discriminating properties выделены;
+
+18. candidate discriminators выделены;
+
+19. crosswalk с Tasks58–67 создан только после независимого audit;
+
+20. novelty audit создан;
+
+21. Task67-like precedent специально искался;
+
+22. hypothesis evidence matrix создана;
+
+23. bibliography создана;
+
+24. search log сохранён;
+
+25. synthesis report отвечает на главный вопрос;
+
+26. research gaps сформулированы;
+
+27. никакая гипотеза не объявлена победителем без discriminating evidence.
