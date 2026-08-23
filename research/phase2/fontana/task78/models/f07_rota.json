@@ -1,0 +1,81 @@
+{
+  "metadata": {
+    "identifier": "F07_ROTA",
+    "schema": "fontana-validated-model-v1",
+    "seed": 780823,
+    "task": 78
+  },
+  "sources": [
+    "research/phase2/fontana/MACHINE_INVENTORY.tsv",
+    "research/phase2/fontana/RECONSTRUCTION_CANDIDATES.tsv",
+    "research/phase2/fontana/machines/F07_ROTA.md"
+  ],
+  "reconstruction": {
+    "evidence_labels": [
+      "E",
+      "I",
+      "H",
+      "U"
+    ],
+    "target_blind": true
+  },
+  "uncertainty": [
+    "number of disks",
+    "alphabet layout",
+    "step rule",
+    "initial state"
+  ],
+  "components": [
+    "wheel",
+    "positions",
+    "pointer"
+  ],
+  "state_schema": {
+    "offset": "cyclic integer"
+  },
+  "operations": [
+    "rotation",
+    "selection"
+  ],
+  "transitions": [
+    "rotate(step)"
+  ],
+  "encoding": "NOT_APPLICABLE in invariant core",
+  "retrieval": "read position at pointer",
+  "knowledge_requirements": [
+    "layout",
+    "zero",
+    "direction",
+    "step"
+  ],
+  "reconstruction_profiles": [
+    "R0"
+  ],
+  "experiments": [
+    "baseline",
+    "knowledge_ablation",
+    "state_corruption",
+    "state_dynamics"
+  ],
+  "results": {
+    "baseline_exact": 23,
+    "baseline_n": 23
+  },
+  "tests": [
+    "go test ./internal/fontanafamily"
+  ],
+  "verdict": {
+    "BASELINE_RECOVERY": "PARTIALLY_SUPPORTED",
+    "ERROR_PROPAGATION_CLASS": "MIXED",
+    "INDEXED_RETRIEVAL_FUNCTION": "NOT_APPLICABLE",
+    "LITERAL_STORAGE_FUNCTION": "NOT_SUPPORTED",
+    "MNEMONIC_CUE_FUNCTION": "PARTIALLY_SUPPORTED",
+    "MODEL_READY_FOR_FREEZE": "NOT_SUPPORTED",
+    "OPERATIONAL_CYCLE_VALIDATED": "PARTIALLY_SUPPORTED",
+    "PRIOR_KNOWLEDGE_DEPENDENCE": "SUPPORTED",
+    "RECONSTRUCTION_CONFIDENCE": "MEDIUM",
+    "SOURCE_SUFFICIENCY": "PARTIALLY_SUPPORTED",
+    "STATE_DAMAGE_ROBUSTNESS": "NOT_SUPPORTED",
+    "STATE_DEPENDENCE": "SUPPORTED"
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "metadata": {
+    "identifier": "F10_CYLINDRUS",
+    "schema": "fontana-validated-model-v1",
+    "seed": 780823,
+    "task": 78
+  },
+  "sources": [
+    "research/phase2/fontana/MACHINE_INVENTORY.tsv",
+    "research/phase2/fontana/RECONSTRUCTION_CANDIDATES.tsv",
+    "research/phase2/fontana/machines/F10_CYLINDRUS_F11_ARISMETRICUM.md"
+  ],
+  "reconstruction": {
+    "evidence_labels": [
+      "E",
+      "I",
+      "H",
+      "U"
+    ],
+    "target_blind": true
+  },
+  "uncertainty": [
+    "band count",
+    "independence",
+    "step rule",
+    "route"
+  ],
+  "components": [
+    "cylinder",
+    "bands",
+    "positions",
+    "reading line"
+  ],
+  "state_schema": {
+    "offsets": "cyclic integer per band"
+  },
+  "operations": [
+    "independent_rotation",
+    "alignment",
+    "ordered_traversal"
+  ],
+  "transitions": [
+    "rotate_band",
+    "coupled_suffix_shift (R1 only)"
+  ],
+  "encoding": "align one symbol per band in H-profile R0",
+  "retrieval": "read axial line in known route",
+  "knowledge_requirements": [
+    "band order",
+    "direction",
+    "read line",
+    "movement coupling"
+  ],
+  "reconstruction_profiles": [
+    "R0",
+    "R1"
+  ],
+  "experiments": [
+    "baseline",
+    "knowledge_ablation",
+    "state_corruption",
+    "state_dynamics"
+  ],
+  "results": {
+    "baseline_exact": 3,
+    "baseline_n": 3
+  },
+  "tests": [
+    "go test ./internal/fontanafamily"
+  ],
+  "verdict": {
+    "BASELINE_RECOVERY": "PARTIALLY_SUPPORTED",
+    "ERROR_PROPAGATION_CLASS": "MIXED",
+    "INDEXED_RETRIEVAL_FUNCTION": "NOT_APPLICABLE",
+    "LITERAL_STORAGE_FUNCTION": "PARTIALLY_SUPPORTED",
+    "MNEMONIC_CUE_FUNCTION": "PARTIALLY_SUPPORTED",
+    "MODEL_READY_FOR_FREEZE": "NOT_SUPPORTED",
+    "OPERATIONAL_CYCLE_VALIDATED": "PARTIALLY_SUPPORTED",
+    "PRIOR_KNOWLEDGE_DEPENDENCE": "SUPPORTED",
+    "RECONSTRUCTION_CONFIDENCE": "MEDIUM",
+    "SOURCE_SUFFICIENCY": "PARTIALLY_SUPPORTED",
+    "STATE_DAMAGE_ROBUSTNESS": "NOT_SUPPORTED",
+    "STATE_DEPENDENCE": "SUPPORTED"
+  }
+}

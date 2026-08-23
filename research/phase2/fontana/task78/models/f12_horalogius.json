@@ -1,0 +1,83 @@
+{
+  "metadata": {
+    "identifier": "F12_HORALOGIUS",
+    "schema": "fontana-validated-model-v1",
+    "seed": 780823,
+    "task": 78
+  },
+  "sources": [
+    "research/phase2/fontana/MACHINE_INVENTORY.tsv",
+    "research/phase2/fontana/RECONSTRUCTION_CANDIDATES.tsv",
+    "research/phase2/fontana/machines/F12_HORALOGIUS.md"
+  ],
+  "reconstruction": {
+    "evidence_labels": [
+      "E",
+      "I",
+      "H",
+      "U"
+    ],
+    "target_blind": true
+  },
+  "uncertainty": [
+    "exact drive",
+    "alarm setting",
+    "signal form",
+    "human retention"
+  ],
+  "components": [
+    "time mechanism",
+    "state",
+    "signal"
+  ],
+  "state_schema": {
+    "cues": "tick to signal ID",
+    "tick": "cyclic integer"
+  },
+  "operations": [
+    "continuous_transition",
+    "signalling",
+    "association"
+  ],
+  "transitions": [
+    "advance",
+    "emit"
+  ],
+  "encoding": "schedule cue; rich remembered content is not stored",
+  "retrieval": "signal plus learned mapping cues human recall",
+  "knowledge_requirements": [
+    "calibration",
+    "cue meaning",
+    "learned association"
+  ],
+  "reconstruction_profiles": [
+    "R0"
+  ],
+  "experiments": [
+    "baseline",
+    "knowledge_ablation",
+    "state_corruption",
+    "state_dynamics"
+  ],
+  "results": {
+    "baseline_exact": 12,
+    "baseline_n": 12
+  },
+  "tests": [
+    "go test ./internal/fontanafamily"
+  ],
+  "verdict": {
+    "BASELINE_RECOVERY": "SUPPORTED",
+    "ERROR_PROPAGATION_CLASS": "MIXED",
+    "INDEXED_RETRIEVAL_FUNCTION": "NOT_APPLICABLE",
+    "LITERAL_STORAGE_FUNCTION": "NOT_SUPPORTED",
+    "MNEMONIC_CUE_FUNCTION": "PARTIALLY_SUPPORTED",
+    "MODEL_READY_FOR_FREEZE": "NOT_SUPPORTED",
+    "OPERATIONAL_CYCLE_VALIDATED": "PARTIALLY_SUPPORTED",
+    "PRIOR_KNOWLEDGE_DEPENDENCE": "SUPPORTED",
+    "RECONSTRUCTION_CONFIDENCE": "MEDIUM",
+    "SOURCE_SUFFICIENCY": "PARTIALLY_SUPPORTED",
+    "STATE_DAMAGE_ROBUSTNESS": "NOT_SUPPORTED",
+    "STATE_DEPENDENCE": "SUPPORTED"
+  }
+}
