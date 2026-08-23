@@ -1,0 +1,45 @@
+metric_id	level	status	primary_packages_or_source	depends_on	rationale
+G1	glyph	NEEDS_MINOR_EXTENSION	internal/characterentropy	none	extends existing h2 plug-in estimator to bigram/trigram distribution plus explicit coverage/unseen-mass reporting; no new data
+G2	glyph	NEEDS_MINOR_EXTENSION	internal/evaglyph	none	extends Task59's 3-bucket positional-share test to a full normalized-position curve using the same underlying position data
+G3	glyph	NEW_IMPLEMENTATION	internal/graphemic (edit-distance pairs as input)	none	glyph x glyph substitution-count matrix is a new tabulation, though it consumes an existing pairwise edit-distance computation
+G4	glyph	NEEDS_MINOR_EXTENSION	internal/characterentropy; internal/localregimetopology (regime labels)	none	same h2 estimator as G1/Task61, stratified by already-existing length and regime labels
+TF1	within-token	NEEDS_MINOR_EXTENSION	internal/tokenformation	none	extends Task62's POSITION_MARKOV_1 with a declared prefix/core/suffix zone split, same train/validation/test discipline
+TF2	within-token	NEEDS_MINOR_EXTENSION for length/position/regime strata; DEFERRED for family stratum	internal/tokenformation	LP1, LP2 (for family stratum only)	reuses Task62's evaluation harness with new disaggregation reporting; the family-conditioned stratum cannot run before lexical-paradigm families exist
+TF3	within-token/token	NEEDS_MINOR_EXTENSION	internal/tokenformation; internal/graphemic (nearest-neighbor edit distance)	none	reuses Task62's train/test split plus the existing edit-distance pipeline for near-novelty
+LP1	lexical	NEW_IMPLEMENTATION	internal/graphemic (edit distance); internal/tokenrepetition (edit-operation classification, EDIT_OPERATION_POSITION.tsv precedent)	none	type-level global rule census across all edit-distance<=1/2 pairs is new, though it reuses existing edit-distance and operation-classification building blocks
+LP2	lexical	NEW_IMPLEMENTATION	new C-GRAMMAR null generator	LP1	permutation test is new; requires building the C-GRAMMAR synthetic-null generator, which is also required by EF4 and CS1/G3
+LP3	lexical	NEW_IMPLEMENTATION	shares locality computation with EF5	LP1, LP2	graph statistics on the LP2-filtered subgraph are new; locality component is implemented once and shared with EF5, not duplicated
+LP4	lexical	NEW_IMPLEMENTATION	depends on TF1's zone convention	TF1	new contingency-table joint test; requires TF1's declared affix-boundary convention to exist first
+EF1	edit-family	NEW_IMPLEMENTATION	internal/graphemic (pairwise edit-distance data)	none	degree/component-size distribution is new analysis over already-collected pairwise distance data; low marginal cost
+EF2	edit-family	NEW_IMPLEMENTATION	internal/graphemic	EF1	clustering/motif census is new and more compute-intensive than EF1; may require a declared sampling procedure for motif counts
+EF3	edit-family	NEW_IMPLEMENTATION	internal/graphemic; baseline Stage2/3 (frequency counts)	EF1	simple correlation/regression of existing degree and frequency data; low cost
+EF4	edit-family	NEW_IMPLEMENTATION	new C-GRAMMAR generator (shared with LP2)	EF1, EF2, EF3, LP2, C-GRAMMAR generator	pure synthesis table once inputs exist, but first requires the shared C-GRAMMAR generator to be built
+EF5	edit-family	NEW_IMPLEMENTATION	shares locality computation with LP3	LP2, LP3	co-occurrence-rate statistic implemented once (with LP3) and referenced here, not duplicated
+SQ1	sequence	NEEDS_MINOR_EXTENSION	research/phase1/rozanova-temerev; internal/evaglyph	none	extends Task58's single-lag corrected MI to a lag-1..K curve with the same shuffle-correction estimator
+SQ2	sequence	NEEDS_MINOR_EXTENSION	internal/tokenrepetition	none	extends existing run-count reporting to a full distribution with a null-referenced tail probability
+SQ3	sequence	NEW_IMPLEMENTATION	internal/tokenrepetition (near-repeat event stream)	none	second-order conditional-rate test is new, but consumes the existing near-repeat event stream directly
+SQ4	sequence/cross-scale	DEFERRED	internal/evaglyph (MI estimator adapted to family-label alphabet)	LP1, LP2	family-level transition matrix cannot be built before paradigm families exist; estimator itself is a straightforward adaptation of Task58's MI machinery once labels exist
+SQ5	longer sequence	NEEDS_MINOR_EXTENSION	internal/higherorderseq	none	extends the existing frozen-candidate FDR/LOBO/jackknife machinery to a systematic (non-frozen-list) sweep; flagged compute-heavy at n=4,5
+LL1	line/local	NEW_IMPLEMENTATION	internal/lineregime (matched-pair dataset)	none	ANOVA-style joint decomposition is a new modeling/reporting layer over Task64's existing matched-pair data; no new data collection
+LL2	line/local	NEW_IMPLEMENTATION	internal/localregimetopology (regime labels); internal/metadatavalidation (locus-type sequence)	none	boundary-alignment test is new, combining two already-existing labeled sequences
+LL3	local/regime	NEEDS_MINOR_EXTENSION	internal/localregimetopology	none	extends the existing lag/cluster/change-point model to report an explicit variance-share split instead of only the qualitative topology label
+PG1	page/2D	NEEDS_MINOR_EXTENSION	internal/evaglyph; internal/tokenrepetition; internal/characterentropy	none	re-runs three existing estimators stratified by the already-parsed LocusType field; no new estimator
+PG2	page/2D	NEW_IMPLEMENTATION	internal/metadatavalidation (TokenMetadata.IndexInLine, already parsed)	none	new conditional-effect regression, but the covariate already exists in parsed form; low cost
+PG3	page/2D	NEEDS_MINOR_EXTENSION	internal/lineregime	none	extends Task64's matched-pair machinery to a new boundary type (folio boundary instead of line boundary)
+PG4	page/2D	NEEDS_MINOR_EXTENSION	internal/metadatavalidation (parser surfaces $I from Document.PageVariables onto TokenMetadata)	none	requires a small parser-level change to surface an already-generically-parsed field, then reuses the PG1 re-stratification approach
+HR1	hierarchy/cross-scale	NEW_IMPLEMENTATION for glyph/token/regime/page/section levels; DEFERRED for the lexical-family level	combines G4, EF-level, G2 scalars with existing regime/page/Currier/hand/quire labels	LP1, LP2 (for the lexical-family level of the hierarchy only)	variance-components estimation is new; can run at a coarser hierarchy immediately, full section-13 hierarchy needs lexical-family labels
+CS1	cross-scale	DEFERRED	G2 output; LP1/LP2 family labels	LP1, LP2	per-family glyph-position profile comparison needs paradigm-family labels to exist first
+CS2	cross-scale	EXISTING_REUSABLE (alias of SQ4)	=SQ4	SQ4	no separate implementation; cross-referenced
+CS3	cross-scale	EXISTING_REUSABLE (alias of TF2)	=TF2	TF2	no separate implementation; cross-referenced
+CS4	cross-scale	EXISTING_REUSABLE (alias of EF5)	=EF5	EF5	no separate implementation; cross-referenced
+CS5	cross-scale	NEW_IMPLEMENTATION	internal/tokenrepetition; PG2/PG3 covariates	PG2, PG3	new regression combining an existing event stream with two new page/2D covariates
+CS6	cross-scale	EXISTING_REUSABLE (alias of G4)	=G4	G4	no separate implementation; cross-referenced
+CS7	cross-scale	DEFERRED	LP1/LP2 family labels; internal/metadatavalidation (Currier/hand/quire)	LP1, LP2	categorical association test needs paradigm-family labels to exist first; metadata side is already available
+CS8	cross-scale	EXISTING_REUSABLE (alias of SQ4)	=SQ4	SQ4	no separate implementation; cross-referenced
+CS9	cross-scale	EXISTING_REUSABLE (alias of HR1)	=HR1	HR1	no separate implementation; cross-referenced
+CS10	cross-scale	EXISTING_REUSABLE (alias of LL2)	=LL2	LL2	no separate implementation; cross-referenced
+CP1	compression	NEW_IMPLEMENTATION	Go standard library or a single declared compressor; internal/characterentropy (stream representations)	none	low-cost application of an off-the-shelf compressor to already-prepared stream representations; new code is the reporting/interpretation layer tying it to G1/G4
+CP2	compression	NEW_IMPLEMENTATION	a declared cross-compression/NCD-style algorithm (to be selected, not yet in-repository)	none	moderate implementation cost; no equivalent estimator exists in the current internal/ packages
+CP3	compression	EXISTING_REUSABLE	TF1, TF2, SQ1, SQ5 outputs	TF1, TF2, SQ1, SQ5	pure reporting synthesis of already-specified estimators; no new computation
+IMG2D	page/2D (declined)	DATA_NOT_AVAILABLE	none	none	pixel/vector image coordinates, diagram bounding boxes and image-content labels are not present in the IVTFF transcription and are explicitly excluded from fingerprint v2 by parent task section 12 (no manual subjective image coding)
+TRANSCRIPTION_XCHECK	cross-cutting stability requirement	DATA_NOT_AVAILABLE	none	none	transcription-sensitivity stability check (FINGERPRINT_V2_CONTROLS.md section 4) requires a second in-repository transcription, which does not currently exist under DATA.md's external-data discipline
