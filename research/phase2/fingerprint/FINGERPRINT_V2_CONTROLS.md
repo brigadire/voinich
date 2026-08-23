@@ -1,7 +1,13 @@
 # Voynich Fingerprint v2 — Controls, Stability, Redundancy, Metadata Stratification
 
 Status: **DESIGN, NOT FROZEN**. Covers parent task `tasks_ph2/task73.txt`
-sections 16-20. Builds on
+sections 16-20. task77 implements its own cross-scale null registry under
+the N1-N8 naming task77 itself specifies (`FINGERPRINT_V2_NULL_REGISTRY.md`);
+those are not renamed C-IDs from this table, though several are close
+analogues (N2≈C-LINE, N4≈C-PAGE, N5≈C-REGIME, N7=C-GRAMMAR) — see that
+document's own table for the exact correspondence and task77-specific
+constructions (e.g. N5/N8 are folio-level and family-label permutations,
+not literal within-cluster token shuffles). Builds on
 [FINGERPRINT_V2_SPEC.md](FINGERPRINT_V2_SPEC.md), whose metric families
 reference the control IDs defined here.
 

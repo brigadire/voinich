@@ -14,7 +14,7 @@ EF1	edit-family	IMPLEMENTED_TASK75	internal/fingerprintv2; internal/tokenrepetit
 EF2	edit-family	IMPLEMENTED_TASK75	internal/fingerprintv2	EF1	global clustering plus exact triangle/3-path/4-cycle census and seeded degree-preserving edge-swap control are implemented
 EF3	edit-family	IMPLEMENTED_TASK75	internal/fingerprintv2	EF1	Spearman degree/log-frequency and C-FREQ frequency-label permutation control are implemented
 EF4	edit-family	IMPLEMENTED_TASK75	internal/fingerprintv2 C-GRAMMAR synthesis	EF1, EF2, EF3, LP2	consolidated grammar-bounded verdict with separately declared EF BH family is implemented
-EF5	edit-family	NEW_IMPLEMENTATION	shares locality computation with LP3	LP2, LP3	co-occurrence-rate statistic implemented once (with LP3) and referenced here, not duplicated
+EF5	edit-family	IMPLEMENTED_TASK77	internal/fingerprintv2; shares locality computation with LP3	LP2, LP3	co-occurrence-rate statistic implemented once (with LP3) and referenced here, not duplicated; extended with a C-REGIME null (Currier x Section) alongside the existing C-GLOBAL same-line/same-page comparison
 SQ1	sequence	NEEDS_MINOR_EXTENSION	research/phase1/rozanova-temerev; internal/evaglyph	none	extends Task58's single-lag corrected MI to a lag-1..K curve with the same shuffle-correction estimator
 SQ2	sequence	NEEDS_MINOR_EXTENSION	internal/tokenrepetition	none	extends existing run-count reporting to a full distribution with a null-referenced tail probability
 SQ3	sequence	NEW_IMPLEMENTATION	internal/tokenrepetition (near-repeat event stream)	none	second-order conditional-rate test is new, but consumes the existing near-repeat event stream directly

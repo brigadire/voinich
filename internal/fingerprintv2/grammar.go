@@ -190,7 +190,14 @@ func (m grammarModel) ensureAlphabet(tokens [][]string) {
 func (m grammarModel) uniqueForms(length, want int, rng *rand.Rand) ([][]string, error) {
 	forms := make([][]string, 0, want)
 	seen := map[string]bool{}
-	maxAttempts := max(1000, want*200)
+	// task77 audit: on the real corpus, some short lengths have a small
+	// alphabet with a very skewed weight distribution (e.g. one glyph
+	// observed 900 times, another observed once), so drawing the last few
+	// unique forms by chance can need far more than want*200 attempts even
+	// though every glyph has nonzero probability. want*200 (with a 1000
+	// floor) was tuned only against small fixtures and was never
+	// exercised against real skew before this audit.
+	maxAttempts := max(20000, want*5000)
 	for tries := 0; len(forms) < want && tries < maxAttempts; tries++ {
 		g, err := m.generateOne(length, rng)
 		if err != nil {

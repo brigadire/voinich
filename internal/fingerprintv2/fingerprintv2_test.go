@@ -61,7 +61,7 @@ func TestSyntheticProductiveRuleAndNegativeControl(t *testing.T) {
 	if !positive.candidates[suffixAB] {
 		t.Fatalf("productive suffix rule %q absent from %+v", suffixAB, positive.lp1.Rules)
 	}
-	families := lp3(c, positive.candidates, positive.graph, 3, rand.New(rand.NewSource(3)))
+	families, _ := lp3(c, positive.candidates, positive.graph, 3, rand.New(rand.NewSource(3)))
 	if families.ProductiveRuleCount == 0 || families.SmallFamilyCount == 0 {
 		t.Fatalf("expected productive-rule graph components, got %+v", families)
 	}
@@ -184,6 +184,11 @@ controls:
 	}
 	if !bytes.Contains(fingerprint, []byte(`"metadata_alignment": "strict IVTFF aligned"`)) {
 		t.Fatalf("strict alignment was not recorded:\n%s", fingerprint)
+	}
+	for _, key := range []string{`"ef5"`, `"edit_graph_validation"`, `"cross_scale"`, `"graph_representations"`, `"null_registry"`, `"EDIT_CROSS_SCALE_BLOCK_READY"`} {
+		if !bytes.Contains(fingerprint, []byte(key)) {
+			t.Fatalf("task77 block missing key %s:\n%s", key, fingerprint)
+		}
 	}
 }
 

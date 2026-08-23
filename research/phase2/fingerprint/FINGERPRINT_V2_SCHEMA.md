@@ -1,7 +1,10 @@
 # Fingerprint v2 lexical-paradigm artifact schema
 
 Status: **implementation schema, not a frozen research result**. It covers
-the first LP/EF block implemented by `cmd/fingerprint-v2-analyze`.
+the first LP/EF block implemented by `cmd/fingerprint-v2-analyze`, plus
+task77's edit-graph-validation and cross-scale extensions (`metrics.ef5`,
+`edit_graph_validation`, `cross_scale`), which are purely additive: every
+task75 field keeps its meaning and JSON shape unchanged.
 
 ## Configuration
 
@@ -19,6 +22,11 @@ graph_swaps: 10
 diagnostic_tolerance: 0.20
 grammar:
   modes: [structure-preserving, frequency-aware]
+cross_scale:                  # optional; task77. Omitting this section
+  folds: 5                    # still runs the block with these defaults.
+  hub_top_percent: 5
+  min_family_size: 3
+  structural_sample: 2000
 primary:
   id: corpus-id
   path: corpus.txt
@@ -99,6 +107,58 @@ frequency-label permutation. `metrics.ef4` applies a separately declared BH
 family (including EF2/EF3 controls) to C-GRAMMAR comparisons of
 giant-component share, clustering and absolute EF3 correlation, then returns
 `CONSISTENT_WITH_GRAMMAR_BOUND`, `EXCEEDS_GRAMMAR_BOUND`, or `MIXED`.
+
+`metrics.ef5` is the same `LocalityResult` structure as `metrics.lp3.
+locality` (identical computation, referenced not duplicated — task73 §5),
+extended with `same_regime_rate`/`regime_null` when both Currier and
+Section are recorded for at least one occurrence per family; the C-REGIME
+null redraws each family's regime-eligible occurrences from the pool of all
+regime-eligible corpus positions, preserving each family's regime-eligible
+occurrence count and every position's true regime label.
+
+## Task77 additions
+
+`edit_graph_validation` (task77 stage 2) has three parts:
+`graph_representations` (which of undirected/directed/frequency-weighted/
+context-weighted/distance-weighted/multilayer edge representations are
+implemented vs. deliberately deferred, and why — see
+`TASK77_REPORT.md` §2.1); `transitive_merge` (per-family diameter, average
+shortest path, indirect-pair share, mean internal edit distance,
+articulation points, bridges, core/periphery split, hub-removal giant-
+share drop, depth-limited component counts at 1/2/3 hops, and a connected-
+components-vs-label-propagation ARI/NMI/VI comparison); and
+`stability_runs` (task77 §2.3's perturbation battery: `min_rule_support`
+±1, rare-token/singleton exclusion, folio-halves corpus partition,
+preprocessing profile, transcription variant, and community-detection
+seed, each classified `GLOBAL`/`PARTITION_SPECIFIC`/`UNSTABLE`/
+`INSUFFICIENT_DATA`/`NOT_TESTABLE`). `consensus_status` is
+`CONSENSUS_FAMILIES` only when the mean ARI of testable stability runs is
+`>= 0.3`; otherwise it is `LOCAL_NEIGHBORHOOD_PROFILE_ONLY` (or
+`INSUFFICIENT_SUPPORT` with no families at all), per task77 §2.4's
+instruction not to manufacture a paradigm catalog from an unstable
+partition.
+
+`cross_scale` (task77 stages 4-10) reports: `variables_available` (the
+per-scale variable registry, each with origin/domain/missing-data policy
+and an `available` flag reflecting whether `ivtff_path` metadata was
+supplied); `metrics`, one entry per CS1-CS8 test using exactly the field
+list task77 §"Формат результатов" specifies
+(`metric_id`, `metric_version`, `status`, `hypothesis`, `unit_of_analysis`,
+`variables`, `conditioning_variables`, `confounders`, `observed_statistic`,
+`effect_size`, `uncertainty`, `null_model`, `null_mean`/`null_sd`/
+`empirical_p` from the underlying `NullTest`, `multiple_testing_adjustment`,
+`partition_stability`, `held_out_performance`, `sensitivity`,
+`redundancy_class`, `interpretation`, `limitations`); `null_registry`
+(mirrors `FINGERPRINT_V2_NULL_REGISTRY.md`); `redundancy_matrix` and
+`metric_classifications` (task77 stage 10, computed from the same-corpus
+grammar-replicate sample; see `TASK77_REPORT.md` §10); and
+`confirmatory_findings`/`exploratory_findings` (task77 stage 11's required
+split). `status` is `INCONCLUSIVE` below a 20-occurrence/pair floor,
+`NOT_APPLICABLE` when the needed metadata was never available (no
+`ivtff_path`, or too few folios), and otherwise `SUPPORTED`/`NOT_SUPPORTED`
+from the declared cross-scale BH FDR family at `alpha`. See
+`TASK77_CROSSSCALE_HYPOTHESES.md` for the full preregistered matrix and
+`TASK77_REPORT.md` for the canonical-run results and verdicts.
 
 ## C-GRAMMAR
 
