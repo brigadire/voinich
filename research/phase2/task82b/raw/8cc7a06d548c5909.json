@@ -1,0 +1,173 @@
+{
+  "job_id": "null_periodic__Longfellow__PERIODIC_TOKEN_5__phase1",
+  "kind": "operator_null_periodic",
+  "corpus_id": "Longfellow",
+  "operator_id": "PERIODIC_TOKEN_5",
+  "null_class": "PERIODIC_PHASE",
+  "seed": 0,
+  "phase": 1,
+  "period": 5,
+  "chosen_count": 6616,
+  "candidate_pool": 33077,
+  "skipped_groups": 0,
+  "degenerate": false,
+  "f2": {
+    "job_id": "null_periodic__Longfellow__PERIODIC_TOKEN_5__phase1",
+    "corpus_id": "Longfellow",
+    "sha256": "e6dd4c96e201d6e716c0e8c69be13e667082d60baefbec4e89dbb5cbb1c15c9f",
+    "tokens": 6616,
+    "types": 2056,
+    "lines": 6083,
+    "warnings": [
+      "C-GRAMMAR diagnostics exceeded the configured tolerance for at least one replicate; inspect raw_results.json before inferential interpretation."
+    ],
+    "metrics": [
+      {
+        "metric_id": "EF1_GIANT_COMPONENT_SHARE",
+        "family": "edit family",
+        "classification": "CORE",
+        "source": "DIRECT",
+        "value": 0.2440771349862259,
+        "available": true
+      },
+      {
+        "metric_id": "EF2_GLOBAL_CLUSTERING",
+        "family": "edit family",
+        "classification": "CORE",
+        "source": "DIRECT",
+        "value": 0.3484069886947585,
+        "available": true
+      },
+      {
+        "metric_id": "EF3_DEGREE_FREQUENCY_SPEARMAN",
+        "family": "edit family",
+        "classification": "CORE",
+        "source": "DIRECT",
+        "value": 0.2732884218210899,
+        "available": true
+      },
+      {
+        "metric_id": "2DL1_LAYOUT_POSITION_MI",
+        "family": "2D-LITE",
+        "classification": "CORE",
+        "source": "ASSEMBLER_PROJECTION",
+        "value": 0.018722835105563006,
+        "available": true
+      },
+      {
+        "metric_id": "BP1_BOUNDARY_TOKEN_NMI",
+        "family": "boundary",
+        "classification": "CORE",
+        "source": "ASSEMBLER_PROJECTION",
+        "value": 0.07065109299466565,
+        "available": true
+      },
+      {
+        "metric_id": "LS2_POSITIONAL_LEXICON_NMI",
+        "family": "line",
+        "classification": "CORE",
+        "source": "ASSEMBLER_PROJECTION",
+        "value": 0.07065109299466565,
+        "available": true
+      },
+      {
+        "metric_id": "LS3_BOUNDARY_LENGTH_ASYMMETRY",
+        "family": "line",
+        "classification": "CORE",
+        "source": "ASSEMBLER_PROJECTION",
+        "value": 1.7383548067393462,
+        "available": true
+      },
+      {
+        "metric_id": "EF1_ISOLATE_SHARE",
+        "family": "edit family",
+        "classification": "SUPPORTING",
+        "source": "DIRECT",
+        "value": 0.5421487603305785,
+        "available": true
+      },
+      {
+        "metric_id": "LP1_RULE_SUPPORT_GINI",
+        "family": "lexical paradigm",
+        "classification": "SUPPORTING",
+        "source": "DIRECT",
+        "value": 0.4804581841278184,
+        "available": true
+      },
+      {
+        "metric_id": "LP4_PREFIX_ATTACHMENT_NMI",
+        "family": "lexical paradigm",
+        "classification": "SUPPORTING",
+        "source": "DIRECT",
+        "value": 0.5061490579601499,
+        "available": true
+      },
+      {
+        "metric_id": "LP4_SUFFIX_ATTACHMENT_NMI",
+        "family": "lexical paradigm",
+        "classification": "SUPPORTING",
+        "source": "DIRECT",
+        "value": 0.45249477222718393,
+        "available": true
+      },
+      {
+        "metric_id": "cs2/prev-family-current-family",
+        "family": "cross-scale",
+        "classification": "SUPPORTING",
+        "source": "ASSEMBLER_PROJECTION",
+        "value": 0,
+        "available": false,
+        "missing_reason": "INCONCLUSIVE: fewer than 20 family-bearing adjacent occurrence pairs"
+      },
+      {
+        "metric_id": "LS1_LINE_LENGTH_CV",
+        "family": "line",
+        "classification": "SUPPORTING",
+        "source": "ASSEMBLER_PROJECTION",
+        "value": 0.32559168206427264,
+        "available": true
+      },
+      {
+        "metric_id": "LS4_WITHIN_LINE_EXACT_REPETITION",
+        "family": "line",
+        "classification": "SUPPORTING",
+        "source": "ASSEMBLER_PROJECTION",
+        "value": 0.0009910802775024777,
+        "available": true
+      },
+      {
+        "metric_id": "cs1/family-line-position",
+        "family": "cross-scale",
+        "classification": "SUPPORTING",
+        "source": "ASSEMBLER_PROJECTION",
+        "value": 0,
+        "available": false,
+        "missing_reason": "INCONCLUSIVE: insufficient family-bearing occurrences with line-position metadata (need line metadata from ivtff_path)"
+      },
+      {
+        "metric_id": "cs6/family-diversity-x-line-length",
+        "family": "cross-scale",
+        "classification": "SUPPORTING",
+        "source": "ASSEMBLER_PROJECTION",
+        "value": 0,
+        "available": true
+      },
+      {
+        "metric_id": "cs7/edit-distance-x-structural-distance",
+        "family": "cross-scale",
+        "classification": "SUPPORTING",
+        "source": "ASSEMBLER_PROJECTION",
+        "value": 0.01286903736443985,
+        "available": true
+      }
+    ]
+  },
+  "ax": {
+    "ax3_stream_entropy": 9.10681934584518,
+    "ax4_type_token_ratio": 0.31076178960096734,
+    "ax5_periodic_nmi_max": 0.11655673633384088,
+    "ax5_best_period": 7,
+    "ax6_line_persistence": 63.44773457010346,
+    "n": 6616
+  }
+}

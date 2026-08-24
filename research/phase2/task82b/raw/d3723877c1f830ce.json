@@ -1,0 +1,171 @@
+{
+  "job_id": "shorthand__combined__EXPANDED",
+  "kind": "shorthand_variant",
+  "corpus_id": "BDD_koeln-edd-c-119",
+  "seed": 87057,
+  "shorthand_variant": "EXPANDED",
+  "shorthand_scale": "combined",
+  "chosen_count": 7148,
+  "candidate_pool": 7150,
+  "skipped_groups": 2,
+  "degenerate": false,
+  "f2": {
+    "job_id": "shorthand__combined__EXPANDED",
+    "corpus_id": "BDD_koeln-edd-c-119",
+    "sha256": "1e223f353a42612842ad4cbb866ffd4fcd36392b792fca64134305f23548ea46",
+    "tokens": 7148,
+    "types": 2658,
+    "lines": 7148,
+    "warnings": [
+      "C-GRAMMAR diagnostics exceeded the configured tolerance for at least one replicate; inspect raw_results.json before inferential interpretation."
+    ],
+    "metrics": [
+      {
+        "metric_id": "EF1_GIANT_COMPONENT_SHARE",
+        "family": "edit family",
+        "classification": "CORE",
+        "source": "DIRECT",
+        "value": 0.029721595184349133,
+        "available": true
+      },
+      {
+        "metric_id": "EF2_GLOBAL_CLUSTERING",
+        "family": "edit family",
+        "classification": "CORE",
+        "source": "DIRECT",
+        "value": 0.37791932059447986,
+        "available": true
+      },
+      {
+        "metric_id": "EF3_DEGREE_FREQUENCY_SPEARMAN",
+        "family": "edit family",
+        "classification": "CORE",
+        "source": "DIRECT",
+        "value": 0.26520292031103976,
+        "available": true
+      },
+      {
+        "metric_id": "2DL1_LAYOUT_POSITION_MI",
+        "family": "2D-LITE",
+        "classification": "CORE",
+        "source": "ASSEMBLER_PROJECTION",
+        "value": 0,
+        "available": true
+      },
+      {
+        "metric_id": "BP1_BOUNDARY_TOKEN_NMI",
+        "family": "boundary",
+        "classification": "CORE",
+        "source": "ASSEMBLER_PROJECTION",
+        "value": 0,
+        "available": true
+      },
+      {
+        "metric_id": "LS2_POSITIONAL_LEXICON_NMI",
+        "family": "line",
+        "classification": "CORE",
+        "source": "ASSEMBLER_PROJECTION",
+        "value": 0,
+        "available": true
+      },
+      {
+        "metric_id": "LS3_BOUNDARY_LENGTH_ASYMMETRY",
+        "family": "line",
+        "classification": "CORE",
+        "source": "ASSEMBLER_PROJECTION",
+        "value": 0,
+        "available": true
+      },
+      {
+        "metric_id": "EF1_ISOLATE_SHARE",
+        "family": "edit family",
+        "classification": "SUPPORTING",
+        "source": "DIRECT",
+        "value": 0.6113619262603461,
+        "available": true
+      },
+      {
+        "metric_id": "LP1_RULE_SUPPORT_GINI",
+        "family": "lexical paradigm",
+        "classification": "SUPPORTING",
+        "source": "DIRECT",
+        "value": 0.5802527575581655,
+        "available": true
+      },
+      {
+        "metric_id": "LP4_PREFIX_ATTACHMENT_NMI",
+        "family": "lexical paradigm",
+        "classification": "SUPPORTING",
+        "source": "DIRECT",
+        "value": 0.5008914122660565,
+        "available": true
+      },
+      {
+        "metric_id": "LP4_SUFFIX_ATTACHMENT_NMI",
+        "family": "lexical paradigm",
+        "classification": "SUPPORTING",
+        "source": "DIRECT",
+        "value": 0.37413383363899916,
+        "available": true
+      },
+      {
+        "metric_id": "cs2/prev-family-current-family",
+        "family": "cross-scale",
+        "classification": "SUPPORTING",
+        "source": "ASSEMBLER_PROJECTION",
+        "value": 0,
+        "available": false,
+        "missing_reason": "INCONCLUSIVE: fewer than 20 family-bearing adjacent occurrence pairs"
+      },
+      {
+        "metric_id": "LS1_LINE_LENGTH_CV",
+        "family": "line",
+        "classification": "SUPPORTING",
+        "source": "ASSEMBLER_PROJECTION",
+        "value": 0,
+        "available": true
+      },
+      {
+        "metric_id": "LS4_WITHIN_LINE_EXACT_REPETITION",
+        "family": "line",
+        "classification": "SUPPORTING",
+        "source": "ASSEMBLER_PROJECTION",
+        "value": 0,
+        "available": true
+      },
+      {
+        "metric_id": "cs1/family-line-position",
+        "family": "cross-scale",
+        "classification": "SUPPORTING",
+        "source": "ASSEMBLER_PROJECTION",
+        "value": 0,
+        "available": false,
+        "missing_reason": "INCONCLUSIVE: insufficient family-bearing occurrences with line-position metadata (need line metadata from ivtff_path)"
+      },
+      {
+        "metric_id": "cs6/family-diversity-x-line-length",
+        "family": "cross-scale",
+        "classification": "SUPPORTING",
+        "source": "ASSEMBLER_PROJECTION",
+        "value": 0,
+        "available": true
+      },
+      {
+        "metric_id": "cs7/edit-distance-x-structural-distance",
+        "family": "cross-scale",
+        "classification": "SUPPORTING",
+        "source": "ASSEMBLER_PROJECTION",
+        "value": 0.001240525692041926,
+        "available": true
+      }
+    ]
+  },
+  "ax": {
+    "ax3_stream_entropy": 9.966759564183846,
+    "ax4_type_token_ratio": 0.3718522663682149,
+    "ax5_periodic_nmi_max": 0.12338657444001178,
+    "ax5_best_period": 7,
+    "ax6_line_persistence": 20.826640548481883,
+    "n": 7148
+  }
+}

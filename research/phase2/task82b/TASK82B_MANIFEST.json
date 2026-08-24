@@ -1,0 +1,223 @@
+{
+  "carriers": {
+    "Astafiev": "data_test/astafiev-1000-culinar-receipts-prepared.txt",
+    "Doyle": "data_test/pg2097-2.txt",
+    "Longfellow": "data_test/pg30795-mod.txt"
+  },
+  "degenerate_jobs": 35,
+  "f2_metric_ids": [
+    "EF1_GIANT_COMPONENT_SHARE",
+    "EF2_GLOBAL_CLUSTERING",
+    "EF3_DEGREE_FREQUENCY_SPEARMAN",
+    "2DL1_LAYOUT_POSITION_MI",
+    "BP1_BOUNDARY_TOKEN_NMI",
+    "LS2_POSITIONAL_LEXICON_NMI",
+    "LS3_BOUNDARY_LENGTH_ASYMMETRY",
+    "EF1_ISOLATE_SHARE",
+    "LP1_RULE_SUPPORT_GINI",
+    "LP4_PREFIX_ATTACHMENT_NMI",
+    "LP4_SUFFIX_ATTACHMENT_NMI",
+    "cs2/prev-family-current-family",
+    "LS1_LINE_LENGTH_CV",
+    "LS4_WITHIN_LINE_EXACT_REPETITION",
+    "cs1/family-line-position",
+    "cs6/family-diversity-x-line-length",
+    "cs7/edit-distance-x-structural-distance"
+  ],
+  "f2_repetitions": 5,
+  "jobs_by_kind": {
+    "carrier_baseline": 3,
+    "operator_null_periodic": 78,
+    "operator_null_random": 180,
+    "operator_null_stratified": 108,
+    "operator_output": 60,
+    "shorthand_variant": 66
+  },
+  "operator_grid": [
+    {
+      "ID": "FIRST_GLYPH_OF_TOKEN",
+      "StructuralClass": "FIRST_GLYPH_OF_TOKEN",
+      "ExtractionClass": "ACROSTIC",
+      "Provenance": "HISTORICALLY_ATTESTED",
+      "Param": 0,
+      "NullClass": "PER_GROUP",
+      "WindowSize": 0
+    },
+    {
+      "ID": "LAST_GLYPH_OF_TOKEN",
+      "StructuralClass": "LAST_GLYPH_OF_TOKEN",
+      "ExtractionClass": "TELESTIC",
+      "Provenance": "HISTORICALLY_ATTESTED",
+      "Param": 0,
+      "NullClass": "PER_GROUP",
+      "WindowSize": 0
+    },
+    {
+      "ID": "FIRST_TOKEN_OF_LINE",
+      "StructuralClass": "FIRST_TOKEN_OF_LINE",
+      "ExtractionClass": "ACROSTIC",
+      "Provenance": "HISTORICALLY_ATTESTED",
+      "Param": 0,
+      "NullClass": "PER_GROUP",
+      "WindowSize": 0
+    },
+    {
+      "ID": "LAST_TOKEN_OF_LINE",
+      "StructuralClass": "LAST_TOKEN_OF_LINE",
+      "ExtractionClass": "TELESTIC",
+      "Provenance": "HISTORICALLY_ATTESTED",
+      "Param": 0,
+      "NullClass": "PER_GROUP",
+      "WindowSize": 0
+    },
+    {
+      "ID": "FIRST_GLYPH_OF_LINE",
+      "StructuralClass": "FIRST_GLYPH_OF_LINE",
+      "ExtractionClass": "ACROSTIC",
+      "Provenance": "HISTORICALLY_ATTESTED",
+      "Param": 0,
+      "NullClass": "PER_GROUP",
+      "WindowSize": 0
+    },
+    {
+      "ID": "LAST_GLYPH_OF_LINE",
+      "StructuralClass": "LAST_GLYPH_OF_LINE",
+      "ExtractionClass": "TELESTIC",
+      "Provenance": "HISTORICALLY_ATTESTED",
+      "Param": 0,
+      "NullClass": "PER_GROUP",
+      "WindowSize": 0
+    },
+    {
+      "ID": "NTH_GLYPH_OF_TOKEN_2",
+      "StructuralClass": "NTH_GLYPH_OF_TOKEN",
+      "ExtractionClass": "POSITIONAL_EXTRACTION",
+      "Provenance": "HISTORICALLY_PLAUSIBLE",
+      "Param": 2,
+      "NullClass": "PER_GROUP",
+      "WindowSize": 0
+    },
+    {
+      "ID": "NTH_GLYPH_OF_TOKEN_3",
+      "StructuralClass": "NTH_GLYPH_OF_TOKEN",
+      "ExtractionClass": "POSITIONAL_EXTRACTION",
+      "Provenance": "HISTORICALLY_PLAUSIBLE",
+      "Param": 3,
+      "NullClass": "PER_GROUP",
+      "WindowSize": 0
+    },
+    {
+      "ID": "NTH_TOKEN_OF_LINE_2",
+      "StructuralClass": "NTH_TOKEN_OF_LINE",
+      "ExtractionClass": "POSITIONAL_EXTRACTION",
+      "Provenance": "HISTORICALLY_PLAUSIBLE",
+      "Param": 2,
+      "NullClass": "PER_GROUP",
+      "WindowSize": 0
+    },
+    {
+      "ID": "NTH_TOKEN_OF_LINE_3",
+      "StructuralClass": "NTH_TOKEN_OF_LINE",
+      "ExtractionClass": "POSITIONAL_EXTRACTION",
+      "Provenance": "HISTORICALLY_PLAUSIBLE",
+      "Param": 3,
+      "NullClass": "PER_GROUP",
+      "WindowSize": 0
+    },
+    {
+      "ID": "PERIODIC_TOKEN_2",
+      "StructuralClass": "PERIODIC_TOKEN",
+      "ExtractionClass": "PERIODIC_EXTRACTION",
+      "Provenance": "FORMAL_CONTROL",
+      "Param": 2,
+      "NullClass": "PERIODIC",
+      "WindowSize": 0
+    },
+    {
+      "ID": "PERIODIC_TOKEN_3",
+      "StructuralClass": "PERIODIC_TOKEN",
+      "ExtractionClass": "PERIODIC_EXTRACTION",
+      "Provenance": "FORMAL_CONTROL",
+      "Param": 3,
+      "NullClass": "PERIODIC",
+      "WindowSize": 0
+    },
+    {
+      "ID": "PERIODIC_TOKEN_5",
+      "StructuralClass": "PERIODIC_TOKEN",
+      "ExtractionClass": "PERIODIC_EXTRACTION",
+      "Provenance": "FORMAL_CONTROL",
+      "Param": 5,
+      "NullClass": "PERIODIC",
+      "WindowSize": 0
+    },
+    {
+      "ID": "PERIODIC_TOKEN_7",
+      "StructuralClass": "PERIODIC_TOKEN",
+      "ExtractionClass": "PERIODIC_EXTRACTION",
+      "Provenance": "FORMAL_CONTROL",
+      "Param": 7,
+      "NullClass": "PERIODIC",
+      "WindowSize": 0
+    },
+    {
+      "ID": "PERIODIC_GLYPH_2",
+      "StructuralClass": "PERIODIC_GLYPH",
+      "ExtractionClass": "PERIODIC_EXTRACTION",
+      "Provenance": "FORMAL_CONTROL",
+      "Param": 2,
+      "NullClass": "PERIODIC",
+      "WindowSize": 0
+    },
+    {
+      "ID": "PERIODIC_GLYPH_3",
+      "StructuralClass": "PERIODIC_GLYPH",
+      "ExtractionClass": "PERIODIC_EXTRACTION",
+      "Provenance": "FORMAL_CONTROL",
+      "Param": 3,
+      "NullClass": "PERIODIC",
+      "WindowSize": 0
+    },
+    {
+      "ID": "PERIODIC_GLYPH_5",
+      "StructuralClass": "PERIODIC_GLYPH",
+      "ExtractionClass": "PERIODIC_EXTRACTION",
+      "Provenance": "FORMAL_CONTROL",
+      "Param": 5,
+      "NullClass": "PERIODIC",
+      "WindowSize": 0
+    },
+    {
+      "ID": "PERIODIC_GLYPH_7",
+      "StructuralClass": "PERIODIC_GLYPH",
+      "ExtractionClass": "PERIODIC_EXTRACTION",
+      "Provenance": "FORMAL_CONTROL",
+      "Param": 7,
+      "NullClass": "PERIODIC",
+      "WindowSize": 0
+    },
+    {
+      "ID": "FIXED_OFFSET_WITHIN_GROUP_1",
+      "StructuralClass": "FIXED_OFFSET_WITHIN_GROUP",
+      "ExtractionClass": "POSITIONAL_EXTRACTION",
+      "Provenance": "FORMAL_CONTROL",
+      "Param": 1,
+      "NullClass": "PER_GROUP",
+      "WindowSize": 3
+    },
+    {
+      "ID": "FIXED_OFFSET_WITHIN_GROUP_2",
+      "StructuralClass": "FIXED_OFFSET_WITHIN_GROUP",
+      "ExtractionClass": "POSITIONAL_EXTRACTION",
+      "Provenance": "FORMAL_CONTROL",
+      "Param": 2,
+      "NullClass": "PER_GROUP",
+      "WindowSize": 3
+    }
+  ],
+  "schema_version": 1,
+  "shorthand_pairs": 7150,
+  "shorthand_source": "BDD_koeln-edd-c-119",
+  "task": "Task82b",
+  "total_jobs": 495
+}

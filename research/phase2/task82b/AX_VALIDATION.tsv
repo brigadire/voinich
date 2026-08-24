@@ -1,0 +1,9 @@
+ax_id	control	description	ax5_value	ax5_period	gate_component	result
+AX5	SYNTHETIC_POSITIVE	period-2 alternating stream (a b a b ...), n=400	1	2	positive_control_sensitivity	true
+AX5	NEGATIVE	deterministic shuffle of the same 400 symbols	0.0185461	2	null_calibration	true
+AX5	SUMMARY	positive vs negative separation	0.981454		positive_beats_negative	true
+AX5	SUMMARY	cross-corpus robustness			cross_corpus_robustness	false
+AX5	GATE	sec.50: positive-control sensitivity AND null calibration AND cross-corpus robustness			overall	PARTIAL: no cross-corpus replication of the positive control was attempted (no openly available historical-acrostic corpus was located)
+AX3	NOT_VALIDATED	no dedicated positive/negative control constructed			gate	NOT_VALIDATED
+AX4	NOT_VALIDATED	no dedicated positive/negative control constructed			gate	NOT_VALIDATED
+AX6	NOT_VALIDATED	no dedicated positive/negative control constructed			gate	NOT_VALIDATED

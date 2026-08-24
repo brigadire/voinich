@@ -61,6 +61,11 @@ func TestStagesMatchRepository(t *testing.T) {
 		"ivtff-x7-extract":        true,
 		"task79c-pf4-hr":          true,
 		"task79c-distance-pareto": true,
+		// Task82b closure tools: same class again, independent research
+		// entry points with an explicit -out flag and no frozen Task49
+		// stage contract.
+		"task82b-run":       true,
+		"task82b-aggregate": true,
 	}
 	for _, e := range entries {
 		if !e.IsDir() {

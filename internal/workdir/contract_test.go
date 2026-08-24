@@ -44,9 +44,13 @@ func TestAllPipelineCommandsUseWorkdirContract(t *testing.T) {
 		// and ivtff-x7-extract are the same class of tool, added for
 		// Task79c: each turns third-party/raw bytes into a prepared corpus
 		// file at a caller-chosen path (e.g. under data_test/), not an
-		// analysis result under ./workdir.
+		// analysis result under ./workdir. task82b-run/task82b-aggregate are
+		// the same class again, added for Task82b: independent research
+		// entry points with an explicit -out flag, no frozen Task49 stage
+		// contract, and no relation to the numbered Stage1-28 pipeline.
 		if base := filepath.Base(filepath.Dir(path)); base == "codex_prepare" || base == "codex_orientation" ||
-			base == "tei-abbr-extract" || base == "generic-glyph-filter" || base == "ivtff-x7-extract" {
+			base == "tei-abbr-extract" || base == "generic-glyph-filter" || base == "ivtff-x7-extract" ||
+			base == "task82b-run" || base == "task82b-aggregate" {
 			continue
 		}
 		parsed, err := parser.ParseFile(token.NewFileSet(), path, nil, parser.ImportsOnly)

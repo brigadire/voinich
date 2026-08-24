@@ -1,0 +1,8 @@
+ax_id	description	implemented	redundant_with_f2_metric	note
+AX1	information concentration at structural beginnings/endings	false	BP1_BOUNDARY_TOKEN_NMI, LS2_POSITIONAL_LEXICON_NMI	audited redundant with existing F2 subset, not reimplemented (sec.61)
+AX2	first-position vs internal-position distribution divergence	false	BP1_BOUNDARY_TOKEN_NMI, LS2_POSITIONAL_LEXICON_NMI	audited redundant with existing F2 subset, not reimplemented (sec.61)
+AX3	extracted-stream entropy relative to matched random extraction	true		Shannon entropy of the rendered output stream
+AX4	extracted-stream lexical coherence proxy without language-specific decoding	true		type/token ratio
+AX5	periodic-position information excess	true		max NMI(stream identity, index mod k) over k in {2,3,5,7}
+AX6	cross-line positional persistence	true		adjacent-line first-atom match rate / (1/vocab size)
+AX7	mutual information between structural position and glyph/token class	false	BP1_BOUNDARY_TOKEN_NMI, 2DL1_LAYOUT_POSITION_MI	audited redundant with existing F2 subset, not reimplemented (sec.61)
