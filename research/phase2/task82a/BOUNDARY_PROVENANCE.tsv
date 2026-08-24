@@ -1,0 +1,7 @@
+boundary	value	provenance	notes
+local_mechanism_boundary	one local Runner.Prepare application per chunk	GENERATED_BY_MECHANISM	the frozen mechanism's own UnitBoundary is preserved unchanged from Task82
+token_boundary	one token per chunk (chunk symbols joined, no separator)	ASSEMBLER_DEFINED	the frozen mechanism does not define a token concept; the assembler imposes exactly one token per local application
+line_boundary	one line per chunk (== one token)	ASSEMBLER_DEFINED	generic layout variant fixed before generation, independent of chunk content or Voynich line statistics
+page_boundary	not defined	NOT_DEFINED	no frozen mechanism defines pages/folios; no synthetic page structure is introduced (task82a.txt sec.21)
+assembly_boundary	corpus_scale chunk count for the job	ASSEMBLER_DEFINED	distinct from local_mechanism_boundary and input_boundary; not treated as a historical page/line
+input_boundary	matched literal-letter / word-token prefix length	INHERITED_FROM_INPUT	same source corpus files as Task82, truncated to a matched, scale-determined length

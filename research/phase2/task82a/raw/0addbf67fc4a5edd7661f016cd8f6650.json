@@ -1,0 +1,4271 @@
+{
+  "schema": "TASK82A_RAW_JOB_V1",
+  "implementation_version": "V1.0",
+  "freeze_version": "V1.0",
+  "job": {
+    "job_id": "0addbf67fc4a5edd7661f016cd8f6650",
+    "mechanism_id": "synthetic_indexed_lookup",
+    "mechanism_version": "v1",
+    "parameter_set_id": "f11-core-default",
+    "scaling_policy_id": "CUE_RESET_GLOBAL_V1",
+    "input_corpus_id": "Doyle",
+    "corpus_scale": "LARGE",
+    "chunks": 256,
+    "seed": 2074291777375715650,
+    "replicate": 0,
+    "ablation_control_status": "GENERIC_CONTROL"
+  },
+  "family": "GENERIC_INDEXED_LOOKUP",
+  "historical_status": "GENERIC_CONTROL",
+  "input_corpus": {
+    "id": "Doyle",
+    "path": "data_test/pg2097-2.txt",
+    "sha256": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80"
+  },
+  "local_run_count": 256,
+  "state_policy": "RESET_EACH_CHUNK",
+  "scaling_policy_id": "CUE_RESET_GLOBAL_V1",
+  "boundary_provenance": {
+    "token": "ASSEMBLER_DEFINED",
+    "line": "ASSEMBLER_DEFINED",
+    "page": "NOT_DEFINED"
+  },
+  "chunks": [
+    {
+      "index": 0,
+      "symbols": [
+        "0:C0",
+        "1:C1",
+        "2:C2",
+        "3:C3"
+      ],
+      "checksum": "753a15cfa1f0c0a2bd8968f770b2b35d764503be3f82cc45d0717de023300dd6",
+      "intended_id": "I4bfbdf7ebee257ff"
+    },
+    {
+      "index": 1,
+      "symbols": [
+        "0:C4",
+        "1:C5",
+        "2:C6",
+        "3:C7"
+      ],
+      "checksum": "c4df381e52157edbcd8f192f5d80e84e44e3e8cbc8775746757ad4ffe8273fd0",
+      "intended_id": "I7def9c79e5be6d7a"
+    },
+    {
+      "index": 2,
+      "symbols": [
+        "0:C8",
+        "1:C9",
+        "2:C10",
+        "3:C11"
+      ],
+      "checksum": "fc9ffd9868b8b63d82388fbdcb4533704587e62dddfda56d931583ad371baa8b",
+      "intended_id": "I28391d3bc64ec15c"
+    },
+    {
+      "index": 3,
+      "symbols": [
+        "0:C12",
+        "1:C13",
+        "2:C14",
+        "3:C15"
+      ],
+      "checksum": "a497c9ca58876d63bcd5e270cd5805fcbe12f3e1c99809b30ad4d45d81fa5f1c",
+      "intended_id": "I6201111b83a0cb5b"
+    },
+    {
+      "index": 4,
+      "symbols": [
+        "0:C16",
+        "1:C17",
+        "2:C18",
+        "3:C19"
+      ],
+      "checksum": "0f9520d424e9b0fe7e8d5a21847d3735193457f881916263603454030af20ca9",
+      "intended_id": "I75857a45899985be"
+    },
+    {
+      "index": 5,
+      "symbols": [
+        "0:C20",
+        "1:C21",
+        "2:C22",
+        "3:C23"
+      ],
+      "checksum": "023d10c7a26bf86dfb4428ec9c807aba62e04a690284ae45c10568b239f1297c",
+      "intended_id": "Ibbfcd4160a1e8674"
+    },
+    {
+      "index": 6,
+      "symbols": [
+        "0:C24",
+        "1:C25",
+        "2:C26",
+        "3:C27"
+      ],
+      "checksum": "612f5df2455850537342fd31fbd2d6f3fee9fd80711e192fdea1fde598e792d5",
+      "intended_id": "I018fa96a44715c90"
+    },
+    {
+      "index": 7,
+      "symbols": [
+        "0:C28",
+        "1:C29",
+        "2:C30",
+        "3:C31"
+      ],
+      "checksum": "6aa9f6e0ddda65441942023ff2e68e560f7ac5d16b795d0ba7aed6949699214d",
+      "intended_id": "I8898a08ef3f60d34"
+    },
+    {
+      "index": 8,
+      "symbols": [
+        "0:C32",
+        "1:C33",
+        "2:C34",
+        "3:C35"
+      ],
+      "checksum": "bf243c0de848e155900b82c3ed3c8f2227a36067d8996035d972e9c1c4f385d4",
+      "intended_id": "I6201111b83a0cb5b"
+    },
+    {
+      "index": 9,
+      "symbols": [
+        "0:C36",
+        "1:C37",
+        "2:C38",
+        "3:C39"
+      ],
+      "checksum": "787382a54d9c5841d447deea9175ac34efb6889bfffe683be5044fadd28db4ea",
+      "intended_id": "I360f84035942243c"
+    },
+    {
+      "index": 10,
+      "symbols": [
+        "0:C40",
+        "1:C41",
+        "2:C42",
+        "3:C43"
+      ],
+      "checksum": "ea51598ff582bd707f1fb3d11314def9b4887916755afd682397208056dc1bf5",
+      "intended_id": "Ia6b46dd0d1ae5e86"
+    },
+    {
+      "index": 11,
+      "symbols": [
+        "0:C44",
+        "1:C45",
+        "2:C46",
+        "3:C47"
+      ],
+      "checksum": "8a8260f67d6a6a8edb7c7fc8783467fbed8b223954d37da0f306a0b07d1e7a2a",
+      "intended_id": "Id8fe183f5b8e7324"
+    },
+    {
+      "index": 12,
+      "symbols": [
+        "0:C48",
+        "1:C49",
+        "2:C50",
+        "3:C51"
+      ],
+      "checksum": "b015e0e9442f1449cf1e249f221652431858b44e10f489691d22ed865c48dffc",
+      "intended_id": "Ib9776d7ddf459c9a"
+    },
+    {
+      "index": 13,
+      "symbols": [
+        "0:C52",
+        "1:C53",
+        "2:C54",
+        "3:C55"
+      ],
+      "checksum": "1538a0cfad32367de55638413a6c0af50ca2b0c4b6cf45010f406b1b1b439b50",
+      "intended_id": "Ie3c04dfa6e1192a9"
+    },
+    {
+      "index": 14,
+      "symbols": [
+        "0:C56",
+        "1:C57",
+        "2:C58",
+        "3:C59"
+      ],
+      "checksum": "fbf9464cab8f5b6a185acf7fb74429d6dd27ee468ada8bc78558227d8dde356a",
+      "intended_id": "I18681776a514487b"
+    },
+    {
+      "index": 15,
+      "symbols": [
+        "0:C60",
+        "1:C61",
+        "2:C62",
+        "3:C63"
+      ],
+      "checksum": "4092634535aae3fa5d71856e2d68f56f5e0731fd455873005c7f184a65485c3e",
+      "intended_id": "Ie3d11da4dd6ea5b4"
+    },
+    {
+      "index": 16,
+      "symbols": [
+        "0:C64",
+        "1:C65",
+        "2:C66",
+        "3:C67"
+      ],
+      "checksum": "963219793c21760ca9806344e199f2c18aa60affff77a335b34e7a46b236d09f",
+      "intended_id": "Ib9776d7ddf459c9a"
+    },
+    {
+      "index": 17,
+      "symbols": [
+        "0:C68",
+        "1:C69",
+        "2:C70",
+        "3:C71"
+      ],
+      "checksum": "e38d30288ac082d1243a120241fdf1ee1ec2a009c938d69e4a75c1d1d92c6214",
+      "intended_id": "Ie15348ae477f16c0"
+    },
+    {
+      "index": 18,
+      "symbols": [
+        "0:C72",
+        "1:C73",
+        "2:C74",
+        "3:C75"
+      ],
+      "checksum": "89e61f880460bf93d7bdbb75364ed2f27791106251a3e6d3ab302cf6ba957bd6",
+      "intended_id": "I7ef4bc34a4974515"
+    },
+    {
+      "index": 19,
+      "symbols": [
+        "0:C76",
+        "1:C77",
+        "2:C78",
+        "3:C79"
+      ],
+      "checksum": "25472c2ebe33625a0a7c375c093b8121e465f2f61c91c5f3f4094d96adc01960",
+      "intended_id": "I6b847a0ed0b2c484"
+    },
+    {
+      "index": 20,
+      "symbols": [
+        "0:C80",
+        "1:C81",
+        "2:C82",
+        "3:C83"
+      ],
+      "checksum": "96fc52cf43483c4ea257073eae5258060c1a4b4e865aaee6d526399016ba2ff7",
+      "intended_id": "Iddf7ff5ebd9d66ce"
+    },
+    {
+      "index": 21,
+      "symbols": [
+        "0:C84",
+        "1:C85",
+        "2:C86",
+        "3:C87"
+      ],
+      "checksum": "07dab2c89a2e994dfa4831faffd98a0d173c340d25119d325166ee3cdb4f8d23",
+      "intended_id": "Ifc66f021c67d064c"
+    },
+    {
+      "index": 22,
+      "symbols": [
+        "0:C88",
+        "1:C89",
+        "2:C90",
+        "3:C91"
+      ],
+      "checksum": "40ae7f720a0da4c8a8c830132c931bbcc6b4dbe02b07c83addcc6e7006c47466",
+      "intended_id": "I8b5b9db0c13db242"
+    },
+    {
+      "index": 23,
+      "symbols": [
+        "0:C92",
+        "1:C93",
+        "2:C94",
+        "3:C95"
+      ],
+      "checksum": "ac2dbe41e243e6a78c302b3209bcbdc0ac687d5643af5ecfe9bcd29303a1b5c4",
+      "intended_id": "I10c22bcf4c768b51"
+    },
+    {
+      "index": 24,
+      "symbols": [
+        "0:C96",
+        "1:C97",
+        "2:C98",
+        "3:C99"
+      ],
+      "checksum": "e340f8599c99fb400f85d55028674ba01e26b2efd14b045990b0c4a64943869a",
+      "intended_id": "Ie02a753f0c060173"
+    },
+    {
+      "index": 25,
+      "symbols": [
+        "0:C100",
+        "1:C101",
+        "2:C102",
+        "3:C103"
+      ],
+      "checksum": "5a7b307edfec21d7d91bc5ac8d6e4afe0049b6eea553a8e1374e9dab45604a6c",
+      "intended_id": "Icdc29937887188ad"
+    },
+    {
+      "index": 26,
+      "symbols": [
+        "0:C104",
+        "1:C105",
+        "2:C106",
+        "3:C107"
+      ],
+      "checksum": "bb95c86ff6e75ea538f8e5c3c752ca3dc0dcc10e018e7daef68b700e5f70b523",
+      "intended_id": "Iff69e91d6dbf7a02"
+    },
+    {
+      "index": 27,
+      "symbols": [
+        "0:C108",
+        "1:C109",
+        "2:C110",
+        "3:C111"
+      ],
+      "checksum": "09d323c2da768fe183dd1caab18226635a994bb7ad68801c1b1b6982cedfab5a",
+      "intended_id": "I2ad8a7049d7c5511"
+    },
+    {
+      "index": 28,
+      "symbols": [
+        "0:C112",
+        "1:C113",
+        "2:C114",
+        "3:C115"
+      ],
+      "checksum": "49c42bcf6957a3198ef3ec34ad5983b1b5f718f03f1b0d3490aa90106f6fea12",
+      "intended_id": "I75857a45899985be"
+    },
+    {
+      "index": 29,
+      "symbols": [
+        "0:C116",
+        "1:C117",
+        "2:C118",
+        "3:C119"
+      ],
+      "checksum": "af9e59da839230973c457cc830ef24752aac0b4ae99617f9ea497c4e8f59a683",
+      "intended_id": "Ide7d1b721a1e0632"
+    },
+    {
+      "index": 30,
+      "symbols": [
+        "0:C120",
+        "1:C121",
+        "2:C122",
+        "3:C123"
+      ],
+      "checksum": "acbecb28dcc71644faee37633f3108fbf40e5b391462f967dc7f55f2aedfa48c",
+      "intended_id": "I3f55cd5699ebc276"
+    },
+    {
+      "index": 31,
+      "symbols": [
+        "0:C124",
+        "1:C125",
+        "2:C126",
+        "3:C127"
+      ],
+      "checksum": "d12f7ba9c4b2e2b236a0d46196c5b6e04741d786a86ef44bb56d9243a84b9037",
+      "intended_id": "I6201111b83a0cb5b"
+    },
+    {
+      "index": 32,
+      "symbols": [
+        "0:C128",
+        "1:C129",
+        "2:C130",
+        "3:C131"
+      ],
+      "checksum": "2a4592c18d631efe8fa7c4a86c6cca8b7a2b1a7f042613ccc1e5bf99f7faae4c",
+      "intended_id": "I2a3b62b53ddb9f16"
+    },
+    {
+      "index": 33,
+      "symbols": [
+        "0:C132",
+        "1:C133",
+        "2:C134",
+        "3:C135"
+      ],
+      "checksum": "ae78e5a1106973a10279e48264e4f3d1d2022a6c4b89b994662ff39462b96def",
+      "intended_id": "Ib9776d7ddf459c9a"
+    },
+    {
+      "index": 34,
+      "symbols": [
+        "0:C136",
+        "1:C137",
+        "2:C138",
+        "3:C139"
+      ],
+      "checksum": "ccd5f15fe39c1551cad73ac2517d77093463b8a50afd7edefcc4f0f92c218340",
+      "intended_id": "Ie02a753f0c060173"
+    },
+    {
+      "index": 35,
+      "symbols": [
+        "0:C140",
+        "1:C141",
+        "2:C142",
+        "3:C143"
+      ],
+      "checksum": "089b013cbe3cf4d4016b687fda91532de1903faf1f3fa2d932c33b91bff2601b",
+      "intended_id": "I663ea1bfffe5038f"
+    },
+    {
+      "index": 36,
+      "symbols": [
+        "0:C144",
+        "1:C145",
+        "2:C146",
+        "3:C147"
+      ],
+      "checksum": "c70c2c54bd61e762394df06ee03e9a401f3c9b3049b4316f5192fe9237b446ac",
+      "intended_id": "Ib4c9e14061c2fd45"
+    },
+    {
+      "index": 37,
+      "symbols": [
+        "0:C148",
+        "1:C149",
+        "2:C150",
+        "3:C151"
+      ],
+      "checksum": "5ffb505d5111fb1d26d123f90713698990c3bd47607de641b184ea1a99f38367",
+      "intended_id": "Ica978112ca1bbdca"
+    },
+    {
+      "index": 38,
+      "symbols": [
+        "0:C152",
+        "1:C153",
+        "2:C154",
+        "3:C155"
+      ],
+      "checksum": "666052cf5bd31f5c842889e8b506e7b0ae9ad6a63067323b638e9ebcf0887bb1",
+      "intended_id": "If86b1f62a8554232"
+    },
+    {
+      "index": 39,
+      "symbols": [
+        "0:C156",
+        "1:C157",
+        "2:C158",
+        "3:C159"
+      ],
+      "checksum": "1799311f7253d5ed1595019072f63860d6abce9e4fd2be81378fecf739fd0df7",
+      "intended_id": "I261b09ff8d11731c"
+    },
+    {
+      "index": 40,
+      "symbols": [
+        "0:C160",
+        "1:C161",
+        "2:C162",
+        "3:C163"
+      ],
+      "checksum": "0ce9384257cb127cfd774fc60c1489dfc7440aa73505280df35e7c49b251b20e",
+      "intended_id": "Ie244f187f696561d"
+    },
+    {
+      "index": 41,
+      "symbols": [
+        "0:C164",
+        "1:C165",
+        "2:C166",
+        "3:C167"
+      ],
+      "checksum": "cb88f447b91c87486236335406b4288587e257713d031013ca64364f14742acb",
+      "intended_id": "Ib9776d7ddf459c9a"
+    },
+    {
+      "index": 42,
+      "symbols": [
+        "0:C168",
+        "1:C169",
+        "2:C170",
+        "3:C171"
+      ],
+      "checksum": "4cb9dec4a0c6a532abf356b5f14809e6f3e961b5d3db6e32701c0a54b7275ebc",
+      "intended_id": "I28391d3bc64ec15c"
+    },
+    {
+      "index": 43,
+      "symbols": [
+        "0:C172",
+        "1:C173",
+        "2:C174",
+        "3:C175"
+      ],
+      "checksum": "bb993073b38636e6b68c245f4c6bb26ebf3aa420242c0351fddd6bcd156138f4",
+      "intended_id": "Iea0890697a77af0a"
+    },
+    {
+      "index": 44,
+      "symbols": [
+        "0:C176",
+        "1:C177",
+        "2:C178",
+        "3:C179"
+      ],
+      "checksum": "4237ee0f54e9780e7f6a2c007c8d677c905af207e524e073e64c7db3f1ce603a",
+      "intended_id": "I48b676e2b107da67"
+    },
+    {
+      "index": 45,
+      "symbols": [
+        "0:C180",
+        "1:C181",
+        "2:C182",
+        "3:C183"
+      ],
+      "checksum": "bc8a24b9c7b2531953de1c620688bd6a589e9910e686820b71f632f7ad384353",
+      "intended_id": "Ic6323a2117013ed6"
+    },
+    {
+      "index": 46,
+      "symbols": [
+        "0:C184",
+        "1:C185",
+        "2:C186",
+        "3:C187"
+      ],
+      "checksum": "a861938ce7db3c19d4901d7db53711a87beb33036937747fe9e989cee4f3427e",
+      "intended_id": "Iee0874170b7f6f32"
+    },
+    {
+      "index": 47,
+      "symbols": [
+        "0:C188",
+        "1:C189",
+        "2:C190",
+        "3:C191"
+      ],
+      "checksum": "4081cc9e780afb46d0e2c83cefa7d11c01725cde3785fb77776bea6b42f4ffa4",
+      "intended_id": "If41f2c785e15ca0c"
+    },
+    {
+      "index": 48,
+      "symbols": [
+        "0:C192",
+        "1:C193",
+        "2:C194",
+        "3:C195"
+      ],
+      "checksum": "efadb5d02b53bc3537f9300df874eb5c65813b9077180b47f0fdd5a608e91a4d",
+      "intended_id": "I73c9c98668a34c54"
+    },
+    {
+      "index": 49,
+      "symbols": [
+        "0:C196",
+        "1:C197",
+        "2:C198",
+        "3:C199"
+      ],
+      "checksum": "4fb5c0326f28e78fa5f85ee2164931e741ef86c7643d346344650c12df8adff1",
+      "intended_id": "Ib9776d7ddf459c9a"
+    },
+    {
+      "index": 50,
+      "symbols": [
+        "0:C200",
+        "1:C201",
+        "2:C202",
+        "3:C203"
+      ],
+      "checksum": "9ff4d1fe8d451ba4f7876dc7d129f8775bf7e7df34f616d78671cf45d443ac99",
+      "intended_id": "Ie02a753f0c060173"
+    },
+    {
+      "index": 51,
+      "symbols": [
+        "0:C204",
+        "1:C205",
+        "2:C206",
+        "3:C207"
+      ],
+      "checksum": "b7dc9e478e0fd00085702fae47a743e20dba154bb3664148340cab5cb1f5f292",
+      "intended_id": "I1137b15c7797aa84"
+    },
+    {
+      "index": 52,
+      "symbols": [
+        "0:C208",
+        "1:C209",
+        "2:C210",
+        "3:C211"
+      ],
+      "checksum": "4ad70e3716c032a98dee2370bd17bfccb0be03b8e40e9d48528015cc432cc97d",
+      "intended_id": "Iea0890697a77af0a"
+    },
+    {
+      "index": 53,
+      "symbols": [
+        "0:C212",
+        "1:C213",
+        "2:C214",
+        "3:C215"
+      ],
+      "checksum": "6d17e08f0f7931da03a4397dd9cf040082c4032d59980120ac3d4ecc3aacc4e6",
+      "intended_id": "I47823b565d4a696e"
+    },
+    {
+      "index": 54,
+      "symbols": [
+        "0:C216",
+        "1:C217",
+        "2:C218",
+        "3:C219"
+      ],
+      "checksum": "0b8df6858e8fe19e9022db0919c4e61cc1e5ed47a4d06082aa73b0668023bca2",
+      "intended_id": "Icfd96dd92f7e0025"
+    },
+    {
+      "index": 55,
+      "symbols": [
+        "0:C220",
+        "1:C221",
+        "2:C222",
+        "3:C223"
+      ],
+      "checksum": "530d7232ccf26167669d1ee444fe84fadcc7952297130a4149e4d922beb0f301",
+      "intended_id": "I3509fd899235fb8b"
+    },
+    {
+      "index": 56,
+      "symbols": [
+        "0:C224",
+        "1:C225",
+        "2:C226",
+        "3:C227"
+      ],
+      "checksum": "4dbe9840bdc060702ae186aedcd264bd4103fe13fb67e0cd115ec19498066487",
+      "intended_id": "I1baf49facd049870"
+    },
+    {
+      "index": 57,
+      "symbols": [
+        "0:C228",
+        "1:C229",
+        "2:C230",
+        "3:C231"
+      ],
+      "checksum": "2d2fef90847e8cf1411bbe5447293bf48cdec5f46347b5c970e142794fa06b38",
+      "intended_id": "I99341d56cc288053"
+    },
+    {
+      "index": 58,
+      "symbols": [
+        "0:C232",
+        "1:C233",
+        "2:C234",
+        "3:C235"
+      ],
+      "checksum": "b17258886459aed478edcc3a916f5b3f364eee6f40cc0b256754bf6d9b5e6c46",
+      "intended_id": "I7175517a370b5cd2"
+    },
+    {
+      "index": 59,
+      "symbols": [
+        "0:C236",
+        "1:C237",
+        "2:C238",
+        "3:C239"
+      ],
+      "checksum": "6f73936e3f9bc64c0a544a04b8b231f1f2fc6546aa80561c5124ef6c4563fd86",
+      "intended_id": "Ibf9b9b72aff8e752"
+    },
+    {
+      "index": 60,
+      "symbols": [
+        "0:C240",
+        "1:C241",
+        "2:C242",
+        "3:C243"
+      ],
+      "checksum": "7bbeadf440487d3000fcfddc8cd81e2d056dcc5953a98ab16d3d576762641cd9",
+      "intended_id": "I02a67270a115da58"
+    },
+    {
+      "index": 61,
+      "symbols": [
+        "0:C244",
+        "1:C245",
+        "2:C246",
+        "3:C247"
+      ],
+      "checksum": "fae11d1531a47bd731933fb5303488f421703f2ad648eb0cbedc64ff5348d594",
+      "intended_id": "Ide7d1b721a1e0632"
+    },
+    {
+      "index": 62,
+      "symbols": [
+        "0:C248",
+        "1:C249",
+        "2:C250",
+        "3:C251"
+      ],
+      "checksum": "1ae6216e4cef9f5f69b4fe267135115d8f2b71c00b56e36113e3d74a6d6f4112",
+      "intended_id": "Ide7d1b721a1e0632"
+    },
+    {
+      "index": 63,
+      "symbols": [
+        "0:C252",
+        "1:C253",
+        "2:C254",
+        "3:C255"
+      ],
+      "checksum": "c817036f31e6d51c07608bd30dbb5da216aaca2a01d2054650f2eaa243515927",
+      "intended_id": "I9390298f3fb0c5b1"
+    },
+    {
+      "index": 64,
+      "symbols": [
+        "0:C256",
+        "1:C257",
+        "2:C258",
+        "3:C259"
+      ],
+      "checksum": "221b7d062737ba42491943b6753c1ad4adf5ba1bf081b4d5c31e00ae91e7b1c7",
+      "intended_id": "I2ad8a7049d7c5511"
+    },
+    {
+      "index": 65,
+      "symbols": [
+        "0:C260",
+        "1:C261",
+        "2:C262",
+        "3:C263"
+      ],
+      "checksum": "d2fe33c97fb08353c97742c5ecb0494d0add3ce501e212fa09c8ac15e472bfb2",
+      "intended_id": "Ic66790da5943c446"
+    },
+    {
+      "index": 66,
+      "symbols": [
+        "0:C264",
+        "1:C265",
+        "2:C266",
+        "3:C267"
+      ],
+      "checksum": "f30d7a060e845c3e382f8b19ba78f50a10b1758198643a5e34cc7c29bd816c54",
+      "intended_id": "I372f7e2fd2d01ce2"
+    },
+    {
+      "index": 67,
+      "symbols": [
+        "0:C268",
+        "1:C269",
+        "2:C270",
+        "3:C271"
+      ],
+      "checksum": "0200f65ef02408110ad3131009a00138e2a0a9899a112c75c6ec03ebf4df4491",
+      "intended_id": "Id8de499b3fc46883"
+    },
+    {
+      "index": 68,
+      "symbols": [
+        "0:C272",
+        "1:C273",
+        "2:C274",
+        "3:C275"
+      ],
+      "checksum": "058b1bee540a41b2b0855f70b12bbede7cbd9f03f876b1608a8c0fb76b6b998f",
+      "intended_id": "Ic006c7e3ab14d686"
+    },
+    {
+      "index": 69,
+      "symbols": [
+        "0:C276",
+        "1:C277",
+        "2:C278",
+        "3:C279"
+      ],
+      "checksum": "9293204c9dd5d738cb93406d910ab58b19c4eecab283d1b713c72178688fb2af",
+      "intended_id": "I372f7e2fd2d01ce2"
+    },
+    {
+      "index": 70,
+      "symbols": [
+        "0:C280",
+        "1:C281",
+        "2:C282",
+        "3:C283"
+      ],
+      "checksum": "7e43e51b36392b96c322df9e9b8c866618eaf62ef292259ab8c4bd425d3410f0",
+      "intended_id": "Ifa51fd49abf67705"
+    },
+    {
+      "index": 71,
+      "symbols": [
+        "0:C284",
+        "1:C285",
+        "2:C286",
+        "3:C287"
+      ],
+      "checksum": "4ca20a4d146c3a73ba0d3db2bda43a632199b4c8d97cd945378b5cb41cbd20ea",
+      "intended_id": "Ica978112ca1bbdca"
+    },
+    {
+      "index": 72,
+      "symbols": [
+        "0:C288",
+        "1:C289",
+        "2:C290",
+        "3:C291"
+      ],
+      "checksum": "9452d0aa8dafd67aa5f38841f9152f69410413fbd257f07cceda39fe1ad5bea0",
+      "intended_id": "I8270f2824111e04d"
+    },
+    {
+      "index": 73,
+      "symbols": [
+        "0:C292",
+        "1:C293",
+        "2:C294",
+        "3:C295"
+      ],
+      "checksum": "34dda4ac0123416a7f376a25e053a40a54348f142b06605293f23f01f821a958",
+      "intended_id": "I663ea1bfffe5038f"
+    },
+    {
+      "index": 74,
+      "symbols": [
+        "0:C296",
+        "1:C297",
+        "2:C298",
+        "3:C299"
+      ],
+      "checksum": "d2e9863c3424228eb21e9488822db5ed67ba5cdb7245f240808e1200d97cc738",
+      "intended_id": "Id888a3e4ea95d404"
+    },
+    {
+      "index": 75,
+      "symbols": [
+        "0:C300",
+        "1:C301",
+        "2:C302",
+        "3:C303"
+      ],
+      "checksum": "2b312267153967eab194005eceabd1714f603fbe07a4647c7e6d219db839634d",
+      "intended_id": "I038468518ad8122e"
+    },
+    {
+      "index": 76,
+      "symbols": [
+        "0:C304",
+        "1:C305",
+        "2:C306",
+        "3:C307"
+      ],
+      "checksum": "7ecf70f0b184da40df8397380169dabcb3b1ae62938c9e36c7b3dee9278fb660",
+      "intended_id": "I0497db517ef058cb"
+    },
+    {
+      "index": 77,
+      "symbols": [
+        "0:C308",
+        "1:C309",
+        "2:C310",
+        "3:C311"
+      ],
+      "checksum": "28758c2d90552253a823f99d1ee367715c8c5f2500bec588165539170f8a6cb1",
+      "intended_id": "I3dc260b2472062d9"
+    },
+    {
+      "index": 78,
+      "symbols": [
+        "0:C312",
+        "1:C313",
+        "2:C314",
+        "3:C315"
+      ],
+      "checksum": "5c498517a778b5a9248e8f50d8312a8ebdde60c99e64e7fe25e97680923ecaca",
+      "intended_id": "If901528b18bc7e90"
+    },
+    {
+      "index": 79,
+      "symbols": [
+        "0:C316",
+        "1:C317",
+        "2:C318",
+        "3:C319"
+      ],
+      "checksum": "9025b568ee31de2d37ecfa186fbc7117716ca74bcbbebd3741676f52ccb8fb4d",
+      "intended_id": "Ic8dee78f8c7b466c"
+    },
+    {
+      "index": 80,
+      "symbols": [
+        "0:C320",
+        "1:C321",
+        "2:C322",
+        "3:C323"
+      ],
+      "checksum": "43a6ede1d81474fcf8d3ea02d706599d96bb67e9590e92fed8b8316ddf098869",
+      "intended_id": "I372f7e2fd2d01ce2"
+    },
+    {
+      "index": 81,
+      "symbols": [
+        "0:C324",
+        "1:C325",
+        "2:C326",
+        "3:C327"
+      ],
+      "checksum": "d56ca497a82d98d9ec6bb00facd41939a48c4be39589a1a858eb3a2859a27b04",
+      "intended_id": "Ib2c5b58e7bbd03b1"
+    },
+    {
+      "index": 82,
+      "symbols": [
+        "0:C328",
+        "1:C329",
+        "2:C330",
+        "3:C331"
+      ],
+      "checksum": "14ca83c439b1b614ba4dde454d93404e5d5a7bdf4d58ef5dd81ad0ff86708eae",
+      "intended_id": "I27042f4e6eca7d0b"
+    },
+    {
+      "index": 83,
+      "symbols": [
+        "0:C332",
+        "1:C333",
+        "2:C334",
+        "3:C335"
+      ],
+      "checksum": "7dab61939f397de2c46075ff9aadc9f52e30ee02fb6d33397e43e56e31f566cf",
+      "intended_id": "Ide7d1b721a1e0632"
+    },
+    {
+      "index": 84,
+      "symbols": [
+        "0:C336",
+        "1:C337",
+        "2:C338",
+        "3:C339"
+      ],
+      "checksum": "808ce254b22367b0f48ff9239165b16b0169516ea9049a4d5da15072e62aceb4",
+      "intended_id": "I22fefa8cf4bda918"
+    },
+    {
+      "index": 85,
+      "symbols": [
+        "0:C340",
+        "1:C341",
+        "2:C342",
+        "3:C343"
+      ],
+      "checksum": "a20ba95fe6b5358c39adf17289f0ec350cc7e75790e3c4210ea38d962bb64b9f",
+      "intended_id": "I2f05d4b689d270ca"
+    },
+    {
+      "index": 86,
+      "symbols": [
+        "0:C344",
+        "1:C345",
+        "2:C346",
+        "3:C347"
+      ],
+      "checksum": "925cf976890ecc5e7ab90e66cbf3d49875b27b8ae4393a2559510b7d9a5ba903",
+      "intended_id": "I2ad8a7049d7c5511"
+    },
+    {
+      "index": 87,
+      "symbols": [
+        "0:C348",
+        "1:C349",
+        "2:C350",
+        "3:C351"
+      ],
+      "checksum": "c9a8dd17fa7e4ae1b8eab8daac9043b22c1e1e8cd460b7c4e0d001ff748018f3",
+      "intended_id": "Iaa28021970602acc"
+    },
+    {
+      "index": 88,
+      "symbols": [
+        "0:C352",
+        "1:C353",
+        "2:C354",
+        "3:C355"
+      ],
+      "checksum": "bce32adf423a88d868967c75999fdb4afa775d19181be098be893b6b0798a789",
+      "intended_id": "Ib9776d7ddf459c9a"
+    },
+    {
+      "index": 89,
+      "symbols": [
+        "0:C356",
+        "1:C357",
+        "2:C358",
+        "3:C359"
+      ],
+      "checksum": "58341d6fb0ea67a40fb979acf5978f9d72eabdcebf00813f5211529bfb91a356",
+      "intended_id": "Ic0f69e19ba252767"
+    },
+    {
+      "index": 90,
+      "symbols": [
+        "0:C360",
+        "1:C361",
+        "2:C362",
+        "3:C363"
+      ],
+      "checksum": "83303d1cbd72134d8e067e5637b0dde01e7e03c0158b9f9428fb65d5e7fc3fe7",
+      "intended_id": "I57523f642f63eabb"
+    },
+    {
+      "index": 91,
+      "symbols": [
+        "0:C364",
+        "1:C365",
+        "2:C366",
+        "3:C367"
+      ],
+      "checksum": "2710810709e531f70a880bfe7ac4558486bc141a7665e299cb3e1cc33bdcd22e",
+      "intended_id": "Icdc29937887188ad"
+    },
+    {
+      "index": 92,
+      "symbols": [
+        "0:C368",
+        "1:C369",
+        "2:C370",
+        "3:C371"
+      ],
+      "checksum": "aa969cf6e1084d12bf1b359a09dc0d21cd394f5a9a42ee51e1d630cf4306d224",
+      "intended_id": "Iab826170a2753f5c"
+    },
+    {
+      "index": 93,
+      "symbols": [
+        "0:C372",
+        "1:C373",
+        "2:C374",
+        "3:C375"
+      ],
+      "checksum": "6f4bb1572297e3c9fba0bf10b9868a982e4913bf31ad93e49c9a0156f925422e",
+      "intended_id": "I4d040d3f6466018c"
+    },
+    {
+      "index": 94,
+      "symbols": [
+        "0:C376",
+        "1:C377",
+        "2:C378",
+        "3:C379"
+      ],
+      "checksum": "84eebb1952751e0f1c488bb205d5a98d3cb00e9391139318e034b9e6883dd0ad",
+      "intended_id": "Ibb0347a468d97e98"
+    },
+    {
+      "index": 95,
+      "symbols": [
+        "0:C380",
+        "1:C381",
+        "2:C382",
+        "3:C383"
+      ],
+      "checksum": "087565553f06a98667d8fefc17fb2de7b877cc70233552cfe73e776eedcacb45",
+      "intended_id": "I6201111b83a0cb5b"
+    },
+    {
+      "index": 96,
+      "symbols": [
+        "0:C384",
+        "1:C385",
+        "2:C386",
+        "3:C387"
+      ],
+      "checksum": "c67f8db747b667b64d81c1b1ef46f09030b0cb9f6547f2d2858ea5e73c6e9a7d",
+      "intended_id": "Ifa51fd49abf67705"
+    },
+    {
+      "index": 97,
+      "symbols": [
+        "0:C388",
+        "1:C389",
+        "2:C390",
+        "3:C391"
+      ],
+      "checksum": "d64f80a8eb09a037995b57bceacb66a2dafd6380a2d22f00cfea3a7439ad184e",
+      "intended_id": "I1bf3e004fd407ccb"
+    },
+    {
+      "index": 98,
+      "symbols": [
+        "0:C392",
+        "1:C393",
+        "2:C394",
+        "3:C395"
+      ],
+      "checksum": "5b4b2915e172a64d1ed27cf39bf28f9b5431199130445fc2f3138476290bc5b0",
+      "intended_id": "Ideb72353e6998455"
+    },
+    {
+      "index": 99,
+      "symbols": [
+        "0:C396",
+        "1:C397",
+        "2:C398",
+        "3:C399"
+      ],
+      "checksum": "80632a055b6afd72b3cc8385fca65fe0e420882be24e6cf78b86dc7455c7864d",
+      "intended_id": "Iee4d988c65de860f"
+    },
+    {
+      "index": 100,
+      "symbols": [
+        "0:C400",
+        "1:C401",
+        "2:C402",
+        "3:C403"
+      ],
+      "checksum": "e228b4b5b8905424a74abc99c7a9ea92d7661d2bb590b24f43cc82532f8f091a",
+      "intended_id": "Ica978112ca1bbdca"
+    },
+    {
+      "index": 101,
+      "symbols": [
+        "0:C404",
+        "1:C405",
+        "2:C406",
+        "3:C407"
+      ],
+      "checksum": "398a7fec86a9f054184728cc43f3c3c24ce5ac35aba40fd7961bc56057428ab3",
+      "intended_id": "Icd1bb3012bcfaa0c"
+    },
+    {
+      "index": 102,
+      "symbols": [
+        "0:C408",
+        "1:C409",
+        "2:C410",
+        "3:C411"
+      ],
+      "checksum": "6a073b11fc2b056fd9fa9e26e9db2cf7d53448bfae18fa4eb9f7defde529052b",
+      "intended_id": "Ic006c7e3ab14d686"
+    },
+    {
+      "index": 103,
+      "symbols": [
+        "0:C412",
+        "1:C413",
+        "2:C414",
+        "3:C415"
+      ],
+      "checksum": "c242ab2d5c8a70aa69e060e68256251c1eccd2668d7976a43eb34a0b591f6189",
+      "intended_id": "Ibb0347a468d97e98"
+    },
+    {
+      "index": 104,
+      "symbols": [
+        "0:C416",
+        "1:C417",
+        "2:C418",
+        "3:C419"
+      ],
+      "checksum": "887c69755dc30f3f15c9d34f845d0cfeeca2abf25f28507df0c7ea014c884ab3",
+      "intended_id": "Ifa51fd49abf67705"
+    },
+    {
+      "index": 105,
+      "symbols": [
+        "0:C420",
+        "1:C421",
+        "2:C422",
+        "3:C423"
+      ],
+      "checksum": "75d2d2b20bafa69436545c396af6996653b6e05e1ba78184b50f796fb7b50e47",
+      "intended_id": "I6fa599fe7b02fec0"
+    },
+    {
+      "index": 106,
+      "symbols": [
+        "0:C424",
+        "1:C425",
+        "2:C426",
+        "3:C427"
+      ],
+      "checksum": "07b6fe46f00c241b5dc313361a7950ab21d2eebdc6504bf5ef047f488f8daa57",
+      "intended_id": "I10c22bcf4c768b51"
+    },
+    {
+      "index": 107,
+      "symbols": [
+        "0:C428",
+        "1:C429",
+        "2:C430",
+        "3:C431"
+      ],
+      "checksum": "0dea4d29111eeac2260fe6b3589b5f349b4e390a83ef3814d12526150ed00936",
+      "intended_id": "If1a583b3f5beb4d2"
+    },
+    {
+      "index": 108,
+      "symbols": [
+        "0:C432",
+        "1:C433",
+        "2:C434",
+        "3:C435"
+      ],
+      "checksum": "8d73e71de6410b5b775b5e5f8aad7f34f88220cfcf0c44142e9f09debd9bce16",
+      "intended_id": "I28391d3bc64ec15c"
+    },
+    {
+      "index": 109,
+      "symbols": [
+        "0:C436",
+        "1:C437",
+        "2:C438",
+        "3:C439"
+      ],
+      "checksum": "8861dfe1e4987d4318cc771fac1ab2365ae569a236bc0be8090f8c8dde3cebaa",
+      "intended_id": "I0695b563acde461f"
+    },
+    {
+      "index": 110,
+      "symbols": [
+        "0:C440",
+        "1:C441",
+        "2:C442",
+        "3:C443"
+      ],
+      "checksum": "ff96cb76689b96b3241ad33691ba04b5fa98a10486476d82bbdd140b012cef17",
+      "intended_id": "I853916b1dbc21e61"
+    },
+    {
+      "index": 111,
+      "symbols": [
+        "0:C444",
+        "1:C445",
+        "2:C446",
+        "3:C447"
+      ],
+      "checksum": "839c79980ed70a4649a8abac1217c05006e51a6e31c42740bc1b09b127021a22",
+      "intended_id": "Ide7d1b721a1e0632"
+    },
+    {
+      "index": 112,
+      "symbols": [
+        "0:C448",
+        "1:C449",
+        "2:C450",
+        "3:C451"
+      ],
+      "checksum": "4bdb39dc140a3a50ac69f39698da63bb2179dfb735a1bf17d504f1094a159d6a",
+      "intended_id": "If4bf9f7fcbedaba0"
+    },
+    {
+      "index": 113,
+      "symbols": [
+        "0:C452",
+        "1:C453",
+        "2:C454",
+        "3:C455"
+      ],
+      "checksum": "476595fc09cbc587a616d19d41d1b631f6880df0b6b5a97cb377b2fda039f387",
+      "intended_id": "Iae448ac86c4e8e4d"
+    },
+    {
+      "index": 114,
+      "symbols": [
+        "0:C456",
+        "1:C457",
+        "2:C458",
+        "3:C459"
+      ],
+      "checksum": "1644d63aec1f9509f74e4047c15aeb855f367db41f4b388315ef66c61566f85b",
+      "intended_id": "I948dbde67a8ef961"
+    },
+    {
+      "index": 115,
+      "symbols": [
+        "0:C460",
+        "1:C461",
+        "2:C462",
+        "3:C463"
+      ],
+      "checksum": "06ee7c0441a90bf44dcabbc1ce0c71eb517cd5e0d64361309e991ae6d068e4dd",
+      "intended_id": "I10c22bcf4c768b51"
+    },
+    {
+      "index": 116,
+      "symbols": [
+        "0:C464",
+        "1:C465",
+        "2:C466",
+        "3:C467"
+      ],
+      "checksum": "2c50bed976bc6850d5c864315a318ac1bb7d2470c59bda1499c00ce691109940",
+      "intended_id": "Ifa51fd49abf67705"
+    },
+    {
+      "index": 117,
+      "symbols": [
+        "0:C468",
+        "1:C469",
+        "2:C470",
+        "3:C471"
+      ],
+      "checksum": "87df4de0e46aea0937771d646a946fcc33a08e6d9a4ccb7ff0c66fc35945e693",
+      "intended_id": "I330a188c3038afc2"
+    },
+    {
+      "index": 118,
+      "symbols": [
+        "0:C472",
+        "1:C473",
+        "2:C474",
+        "3:C475"
+      ],
+      "checksum": "69514ece8d1ab96b7de797a5a6ec848f518377bc428789444bf3a52aff33a7a3",
+      "intended_id": "Id26b980930289c59"
+    },
+    {
+      "index": 119,
+      "symbols": [
+        "0:C476",
+        "1:C477",
+        "2:C478",
+        "3:C479"
+      ],
+      "checksum": "efe4efad7b053169330567c46ff8ca51278e1960fdfefc87598cb8859640f5e4",
+      "intended_id": "I112d857213723ac1"
+    },
+    {
+      "index": 120,
+      "symbols": [
+        "0:C480",
+        "1:C481",
+        "2:C482",
+        "3:C483"
+      ],
+      "checksum": "829728316ee5b636e23eca95bad2c7fbe6b4f01be2f9b497487f336c12aa8449",
+      "intended_id": "I400b181c87849386"
+    },
+    {
+      "index": 121,
+      "symbols": [
+        "0:C484",
+        "1:C485",
+        "2:C486",
+        "3:C487"
+      ],
+      "checksum": "3221661ab38af37dc8976b3fc3887b55bbb221e05c3a86a06444e28d7f09c6d5",
+      "intended_id": "I2c2c98e508882f26"
+    },
+    {
+      "index": 122,
+      "symbols": [
+        "0:C488",
+        "1:C489",
+        "2:C490",
+        "3:C491"
+      ],
+      "checksum": "7cc2a871e2bd57c8e94d0d1d26648dc2056e4f5cdb3dc1f05c0aa61e3355d9fa",
+      "intended_id": "Ib9776d7ddf459c9a"
+    },
+    {
+      "index": 123,
+      "symbols": [
+        "0:C492",
+        "1:C493",
+        "2:C494",
+        "3:C495"
+      ],
+      "checksum": "ade4fa21774f077b23d4a0838892ebe391043d28facb352a6be5986371e9b048",
+      "intended_id": "I3d7eb3d3dab17ee5"
+    },
+    {
+      "index": 124,
+      "symbols": [
+        "0:C496",
+        "1:C497",
+        "2:C498",
+        "3:C499"
+      ],
+      "checksum": "847e7026259b27d703e0814bda1a1aa551d7b5a2f00ded87e4d41bc8f1b3eb70",
+      "intended_id": "I9150c74c5f92d51a"
+    },
+    {
+      "index": 125,
+      "symbols": [
+        "0:C500",
+        "1:C501",
+        "2:C502",
+        "3:C503"
+      ],
+      "checksum": "95a58014418082b8a4a7fdb32a1fb7ebbe2d2d15b98af838a93fdad8f0e40372",
+      "intended_id": "I8b34dbc2c05eb4d7"
+    },
+    {
+      "index": 126,
+      "symbols": [
+        "0:C504",
+        "1:C505",
+        "2:C506",
+        "3:C507"
+      ],
+      "checksum": "30f700a82f40a38c5acb4c666261b343f4cdf2a5278e9fa77e8376a698bbf3c5",
+      "intended_id": "Ifb46c79b7eb7af17"
+    },
+    {
+      "index": 127,
+      "symbols": [
+        "0:C508",
+        "1:C509",
+        "2:C510",
+        "3:C511"
+      ],
+      "checksum": "9c7e7eaa1f3a8d6d0e1fc18fed327ea92a8e3e057982b5f51cfe40965b0ac006",
+      "intended_id": "I0895a532e404a5c9"
+    },
+    {
+      "index": 128,
+      "symbols": [
+        "0:C512",
+        "1:C513",
+        "2:C514",
+        "3:C515"
+      ],
+      "checksum": "b4d1a89de4ec9d223a70fe145d8ec31555926d753016229b0ad29d526b95f66c",
+      "intended_id": "I2744ccd10c7533bd"
+    },
+    {
+      "index": 129,
+      "symbols": [
+        "0:C516",
+        "1:C517",
+        "2:C518",
+        "3:C519"
+      ],
+      "checksum": "5b7d21fbea367336383275a41cd55cfd63eb6e6cfd54c0bbc0713d25e2a9410d",
+      "intended_id": "Ib9776d7ddf459c9a"
+    },
+    {
+      "index": 130,
+      "symbols": [
+        "0:C520",
+        "1:C521",
+        "2:C522",
+        "3:C523"
+      ],
+      "checksum": "9f637d87410c39c8f29c5ea2d84d141a71c5eba68d61ef4976208cc1d82436ef",
+      "intended_id": "I7175517a370b5cd2"
+    },
+    {
+      "index": 131,
+      "symbols": [
+        "0:C524",
+        "1:C525",
+        "2:C526",
+        "3:C527"
+      ],
+      "checksum": "774e5ead16e95bccdb3a545ed4e36e358e13e4630d7e60b2adfb8f16e69f7543",
+      "intended_id": "If44e85c4b8ea2add"
+    },
+    {
+      "index": 132,
+      "symbols": [
+        "0:C528",
+        "1:C529",
+        "2:C530",
+        "3:C531"
+      ],
+      "checksum": "7e6eb7051bdb21600585ed6f36e967bd2b2d5d3bd752a7d22128e6f5f0e939dd",
+      "intended_id": "I582967534d0f909d"
+    },
+    {
+      "index": 133,
+      "symbols": [
+        "0:C532",
+        "1:C533",
+        "2:C534",
+        "3:C535"
+      ],
+      "checksum": "ea0f4815ebf3da0e10ccffd28125d53b5b8d8b75247e0e02c3c1ef55168fafea",
+      "intended_id": "Ibfd5a8ed7357ec4d"
+    },
+    {
+      "index": 134,
+      "symbols": [
+        "0:C536",
+        "1:C537",
+        "2:C538",
+        "3:C539"
+      ],
+      "checksum": "1067279735f50249955319cfefb5c978733444f14eb6e2eb14b653e932ab71ff",
+      "intended_id": "I21af6f1260f927f5"
+    },
+    {
+      "index": 135,
+      "symbols": [
+        "0:C540",
+        "1:C541",
+        "2:C542",
+        "3:C543"
+      ],
+      "checksum": "16e1ade05afba1a6c2200e5ab99cb932b9e8825caa4a8ee525c113aed39411f2",
+      "intended_id": "Icdc29937887188ad"
+    },
+    {
+      "index": 136,
+      "symbols": [
+        "0:C544",
+        "1:C545",
+        "2:C546",
+        "3:C547"
+      ],
+      "checksum": "29092fd43e80e70ec484a4d8196c32145d98fd841e5aa22cedb4fa7c31ac86a0",
+      "intended_id": "I8f68ea0282db3790"
+    },
+    {
+      "index": 137,
+      "symbols": [
+        "0:C548",
+        "1:C549",
+        "2:C550",
+        "3:C551"
+      ],
+      "checksum": "5308f151ca6e17006cb7ec88acfb859654c25f4e6ff27473d5bbae8096094ebc",
+      "intended_id": "Ide7d1b721a1e0632"
+    },
+    {
+      "index": 138,
+      "symbols": [
+        "0:C552",
+        "1:C553",
+        "2:C554",
+        "3:C555"
+      ],
+      "checksum": "f852bdd457a3bb4aca058d1f09ace54aef5f11eae81039dc0eb84791313a2be6",
+      "intended_id": "I4975419ff5461901"
+    },
+    {
+      "index": 139,
+      "symbols": [
+        "0:C556",
+        "1:C557",
+        "2:C558",
+        "3:C559"
+      ],
+      "checksum": "90bbf6815f1579a42b318475f30dd632821740d962cb26c7bc739d37a507a802",
+      "intended_id": "Ide7d1b721a1e0632"
+    },
+    {
+      "index": 140,
+      "symbols": [
+        "0:C560",
+        "1:C561",
+        "2:C562",
+        "3:C563"
+      ],
+      "checksum": "a801e11e43b98fb4a60fd0a2c4b0a07ea863d9eba286260f60cfea21250213cf",
+      "intended_id": "I5b3975651c3cab92"
+    },
+    {
+      "index": 141,
+      "symbols": [
+        "0:C564",
+        "1:C565",
+        "2:C566",
+        "3:C567"
+      ],
+      "checksum": "c9db6f87049b9ea26360b7aaed26f93e7a5e97321740fc0d50cafc173967678e",
+      "intended_id": "Id1ffaf0265bbf7e1"
+    },
+    {
+      "index": 142,
+      "symbols": [
+        "0:C568",
+        "1:C569",
+        "2:C570",
+        "3:C571"
+      ],
+      "checksum": "ea7a1483161a2fe6769373a9c8b88fd906666f388462d9bb7c67e69b85b04420",
+      "intended_id": "Ide7d1b721a1e0632"
+    },
+    {
+      "index": 143,
+      "symbols": [
+        "0:C572",
+        "1:C573",
+        "2:C574",
+        "3:C575"
+      ],
+      "checksum": "873a35d3cd6e2149fd650a151efa2ad2f4fc9617566091a45ea2b7185557a8a7",
+      "intended_id": "I7692c3ad3540bb80"
+    },
+    {
+      "index": 144,
+      "symbols": [
+        "0:C576",
+        "1:C577",
+        "2:C578",
+        "3:C579"
+      ],
+      "checksum": "19eae28e4e8acc87defe14cff7d950db77fbf5a1efbb5166931d8f0ca1f70530",
+      "intended_id": "Ib9776d7ddf459c9a"
+    },
+    {
+      "index": 145,
+      "symbols": [
+        "0:C580",
+        "1:C581",
+        "2:C582",
+        "3:C583"
+      ],
+      "checksum": "774ad8ee53bc3b8938659fb335934c59692193a6988d35c3ab836313ac67a46b",
+      "intended_id": "Ide7d1b721a1e0632"
+    },
+    {
+      "index": 146,
+      "symbols": [
+        "0:C584",
+        "1:C585",
+        "2:C586",
+        "3:C587"
+      ],
+      "checksum": "aceb28efa607c21ebbcac3c872a1be775edc00b6f43b917bd9d322d1f4e6d3e5",
+      "intended_id": "Ie651c28bdf2be914"
+    },
+    {
+      "index": 147,
+      "symbols": [
+        "0:C588",
+        "1:C589",
+        "2:C590",
+        "3:C591"
+      ],
+      "checksum": "8d88bcf0d2bff142689550cc8220c777009fb31b847d28e32f8307385cfcea0f",
+      "intended_id": "I7242dfd44b1ebef4"
+    },
+    {
+      "index": 148,
+      "symbols": [
+        "0:C592",
+        "1:C593",
+        "2:C594",
+        "3:C595"
+      ],
+      "checksum": "8ca5b488015792cdb7ff3d2b40797249cdbfda689b636d337d45dfb967359a4a",
+      "intended_id": "Ide7d1b721a1e0632"
+    },
+    {
+      "index": 149,
+      "symbols": [
+        "0:C596",
+        "1:C597",
+        "2:C598",
+        "3:C599"
+      ],
+      "checksum": "ec751883398ef0d1bbd6a76be5b1978861d1d26e26f0862626bbcf6b1e77d95f",
+      "intended_id": "I6201111b83a0cb5b"
+    },
+    {
+      "index": 150,
+      "symbols": [
+        "0:C600",
+        "1:C601",
+        "2:C602",
+        "3:C603"
+      ],
+      "checksum": "920498a330cd41b5fef7e8f0e7565d7d374d2187df8da61b767dda5f49db481b",
+      "intended_id": "Ida7e2d4b40b63f98"
+    },
+    {
+      "index": 151,
+      "symbols": [
+        "0:C604",
+        "1:C605",
+        "2:C606",
+        "3:C607"
+      ],
+      "checksum": "5c92361a62845648f17979c2f7c4cc242f29c3325578c7902c7584084700fd3a",
+      "intended_id": "I1a1451dfcffebdbb"
+    },
+    {
+      "index": 152,
+      "symbols": [
+        "0:C608",
+        "1:C609",
+        "2:C610",
+        "3:C611"
+      ],
+      "checksum": "999099b09114d9c9f866d5237dc436a07432fcb275037bffdf8d9f1376732009",
+      "intended_id": "I81934976f85ed3e5"
+    },
+    {
+      "index": 153,
+      "symbols": [
+        "0:C612",
+        "1:C613",
+        "2:C614",
+        "3:C615"
+      ],
+      "checksum": "5dca06c3aa857b007b08c85a9b46b5c9fb1ac4e174db752b63b9a9e5221411e0",
+      "intended_id": "I28391d3bc64ec15c"
+    },
+    {
+      "index": 154,
+      "symbols": [
+        "0:C616",
+        "1:C617",
+        "2:C618",
+        "3:C619"
+      ],
+      "checksum": "87e7aa0aea51792bd6b837c75165e7069d55bb4d600209f72f7a82a912e33fab",
+      "intended_id": "Ia7e2d26e8d15814d"
+    },
+    {
+      "index": 155,
+      "symbols": [
+        "0:C620",
+        "1:C621",
+        "2:C622",
+        "3:C623"
+      ],
+      "checksum": "66a4af439431a9e50c16dffe3a80ab692186395c35bbdd38d725fd028126f244",
+      "intended_id": "Ifd963e4fd45949aa"
+    },
+    {
+      "index": 156,
+      "symbols": [
+        "0:C624",
+        "1:C625",
+        "2:C626",
+        "3:C627"
+      ],
+      "checksum": "89985ec85f238365142070ff21dea8e64e8fe0bf3f11c2fab9469993c8d1f7bc",
+      "intended_id": "I57523f642f63eabb"
+    },
+    {
+      "index": 157,
+      "symbols": [
+        "0:C628",
+        "1:C629",
+        "2:C630",
+        "3:C631"
+      ],
+      "checksum": "36f5cdd5c9fd6d5a25cfdc698aa3fc0105356226e6023f1ae4d7ddf2616f8773",
+      "intended_id": "I2744ccd10c7533bd"
+    },
+    {
+      "index": 158,
+      "symbols": [
+        "0:C632",
+        "1:C633",
+        "2:C634",
+        "3:C635"
+      ],
+      "checksum": "cdb0df8c66bd32c8adc803eda49b4d602d6fd6b0095e19b42845d902a974ff8c",
+      "intended_id": "I3a6eb0790f39ac87"
+    },
+    {
+      "index": 159,
+      "symbols": [
+        "0:C636",
+        "1:C637",
+        "2:C638",
+        "3:C639"
+      ],
+      "checksum": "6b6f110aa0629735a82d89e5b9dd3a1981a1c78a82455ea79d02e7f226187001",
+      "intended_id": "I6201111b83a0cb5b"
+    },
+    {
+      "index": 160,
+      "symbols": [
+        "0:C640",
+        "1:C641",
+        "2:C642",
+        "3:C643"
+      ],
+      "checksum": "0af4f81e42c9b6798ebebd2307c32c2ba68c3577aea4bfc8ac7966e2741ca7b1",
+      "intended_id": "I043a718774c572bd"
+    },
+    {
+      "index": 161,
+      "symbols": [
+        "0:C644",
+        "1:C645",
+        "2:C646",
+        "3:C647"
+      ],
+      "checksum": "41c0d4d466fd02e03ec058744b9e5adba18e409cccd689e5e195d539cf7a5fb1",
+      "intended_id": "I9390298f3fb0c5b1"
+    },
+    {
+      "index": 162,
+      "symbols": [
+        "0:C648",
+        "1:C649",
+        "2:C650",
+        "3:C651"
+      ],
+      "checksum": "292e58877f41c329b68d293590e00c20ddc7631133ef5cf1e62d77fcf53db871",
+      "intended_id": "I352b84777d8dd96a"
+    },
+    {
+      "index": 163,
+      "symbols": [
+        "0:C652",
+        "1:C653",
+        "2:C654",
+        "3:C655"
+      ],
+      "checksum": "308fc65763d0537f4b724885438948726ecd192a5d4f6bb5079ab5ac270e40c7",
+      "intended_id": "I582967534d0f909d"
+    },
+    {
+      "index": 164,
+      "symbols": [
+        "0:C656",
+        "1:C657",
+        "2:C658",
+        "3:C659"
+      ],
+      "checksum": "07d8bf2c6bd4f7f114859c048686cb216cbd9f801e92c9d6b79f88395f4a47ad",
+      "intended_id": "I00e13ed7af55b276"
+    },
+    {
+      "index": 165,
+      "symbols": [
+        "0:C660",
+        "1:C661",
+        "2:C662",
+        "3:C663"
+      ],
+      "checksum": "1b847d1733e058b9b02a73a3c067b052b82c217bd959ba8c8c2da379a8287d2d",
+      "intended_id": "I28391d3bc64ec15c"
+    },
+    {
+      "index": 166,
+      "symbols": [
+        "0:C664",
+        "1:C665",
+        "2:C666",
+        "3:C667"
+      ],
+      "checksum": "ab567ffa17c2f2f900398aafc0f6480aeecf3cc134eee8536960c3c46ea054b7",
+      "intended_id": "I10c22bcf4c768b51"
+    },
+    {
+      "index": 167,
+      "symbols": [
+        "0:C668",
+        "1:C669",
+        "2:C670",
+        "3:C671"
+      ],
+      "checksum": "39b757493046a91e3ca6ec963aef2aec75671bc120ebb5412c0bc302b93779e0",
+      "intended_id": "Ifa51fd49abf67705"
+    },
+    {
+      "index": 168,
+      "symbols": [
+        "0:C672",
+        "1:C673",
+        "2:C674",
+        "3:C675"
+      ],
+      "checksum": "62c664e2acb172f2f549bf8e4371a4b2b6397d33f49c359e8bf885cf57f241bd",
+      "intended_id": "Icdc29937887188ad"
+    },
+    {
+      "index": 169,
+      "symbols": [
+        "0:C676",
+        "1:C677",
+        "2:C678",
+        "3:C679"
+      ],
+      "checksum": "1aa661412237e13d0ad13a608bb890d2f37ad7e5b79be90ff4e21e05eecf13a9",
+      "intended_id": "Ie02a753f0c060173"
+    },
+    {
+      "index": 170,
+      "symbols": [
+        "0:C680",
+        "1:C681",
+        "2:C682",
+        "3:C683"
+      ],
+      "checksum": "cb893390a414737fb2e48d0d0aab6de3c610581e0aba055e0b7bd80239b80c68",
+      "intended_id": "I038468518ad8122e"
+    },
+    {
+      "index": 171,
+      "symbols": [
+        "0:C684",
+        "1:C685",
+        "2:C686",
+        "3:C687"
+      ],
+      "checksum": "876340fb50677a5544288ec378a610b2f4803284412768955b94e8fa8a7a9c3e",
+      "intended_id": "I582967534d0f909d"
+    },
+    {
+      "index": 172,
+      "symbols": [
+        "0:C688",
+        "1:C689",
+        "2:C690",
+        "3:C691"
+      ],
+      "checksum": "d189c76b22221a7636df3af698065d613d6b7e462a58782f57d0acb5f8a9d1e4",
+      "intended_id": "Ibbfcd4160a1e8674"
+    },
+    {
+      "index": 173,
+      "symbols": [
+        "0:C692",
+        "1:C693",
+        "2:C694",
+        "3:C695"
+      ],
+      "checksum": "5a86a57f930781af94f84649a8c98f5eabf1e749c1a2575b123fb568f3f58fe2",
+      "intended_id": "Ide7d1b721a1e0632"
+    },
+    {
+      "index": 174,
+      "symbols": [
+        "0:C696",
+        "1:C697",
+        "2:C698",
+        "3:C699"
+      ],
+      "checksum": "a05615944dedbf27f83ca2f71a515eed05070c21256d00b12f8fc515fbe16522",
+      "intended_id": "I6497e4b3d7bed169"
+    },
+    {
+      "index": 175,
+      "symbols": [
+        "0:C700",
+        "1:C701",
+        "2:C702",
+        "3:C703"
+      ],
+      "checksum": "c84f1510f06baee5a004238e09d6f69a23efb5ffc4e5104b68d094997847a3b9",
+      "intended_id": "Iee0874170b7f6f32"
+    },
+    {
+      "index": 176,
+      "symbols": [
+        "0:C704",
+        "1:C705",
+        "2:C706",
+        "3:C707"
+      ],
+      "checksum": "1b95172b1175e18f3b357990793b7fc9e1d22b61cbe77dd3d40536ac4c5986e3",
+      "intended_id": "Ide7d1b721a1e0632"
+    },
+    {
+      "index": 177,
+      "symbols": [
+        "0:C708",
+        "1:C709",
+        "2:C710",
+        "3:C711"
+      ],
+      "checksum": "189ae43bb26a580352c48a9dcedb3cfe27e9605915c49f43e5e1f5452e37356e",
+      "intended_id": "I582967534d0f909d"
+    },
+    {
+      "index": 178,
+      "symbols": [
+        "0:C712",
+        "1:C713",
+        "2:C714",
+        "3:C715"
+      ],
+      "checksum": "91f8414a08e9875043c745a628de91e832fb25421810d23cc9ee3100cd9ca9fc",
+      "intended_id": "I0695b563acde461f"
+    },
+    {
+      "index": 179,
+      "symbols": [
+        "0:C716",
+        "1:C717",
+        "2:C718",
+        "3:C719"
+      ],
+      "checksum": "61d0aeb4806cde1d60857791b1fb4726ba317ad7e04cac9f3f68ed79e738c0f1",
+      "intended_id": "Iaaf2320646108059"
+    },
+    {
+      "index": 180,
+      "symbols": [
+        "0:C720",
+        "1:C721",
+        "2:C722",
+        "3:C723"
+      ],
+      "checksum": "ee55ebb7e2044f120baf20a91402a42f335720a0a6c9cc7de5ef871fd0641c4d",
+      "intended_id": "I582967534d0f909d"
+    },
+    {
+      "index": 181,
+      "symbols": [
+        "0:C724",
+        "1:C725",
+        "2:C726",
+        "3:C727"
+      ],
+      "checksum": "0deee61c28d3da681ab68db793bba233e438456e23d06d55c3fb045ef4d2c594",
+      "intended_id": "I73c9c98668a34c54"
+    },
+    {
+      "index": 182,
+      "symbols": [
+        "0:C728",
+        "1:C729",
+        "2:C730",
+        "3:C731"
+      ],
+      "checksum": "cf91afde6c1d64d718dbb057cabb247945b4933116a2a4d47a8499c870ff5ad0",
+      "intended_id": "I20e95e6445b01281"
+    },
+    {
+      "index": 183,
+      "symbols": [
+        "0:C732",
+        "1:C733",
+        "2:C734",
+        "3:C735"
+      ],
+      "checksum": "d38053c5ec1cbffe2ec0adda4805f31dd255b56fb9537f5faae3ece163ec3c41",
+      "intended_id": "I372f7e2fd2d01ce2"
+    },
+    {
+      "index": 184,
+      "symbols": [
+        "0:C736",
+        "1:C737",
+        "2:C738",
+        "3:C739"
+      ],
+      "checksum": "fa3a8ce3ee8f9fc89b043bd72c49e71a05cb6054cfa8ca6d5723089f124f925f",
+      "intended_id": "Ic7985d6d17717a26"
+    },
+    {
+      "index": 185,
+      "symbols": [
+        "0:C740",
+        "1:C741",
+        "2:C742",
+        "3:C743"
+      ],
+      "checksum": "d90d240fbdcbf2e877147b51444eb7ff04a8a7bf27b3338ea2800a45890499ca",
+      "intended_id": "Idad9a79bf7094d4e"
+    },
+    {
+      "index": 186,
+      "symbols": [
+        "0:C744",
+        "1:C745",
+        "2:C746",
+        "3:C747"
+      ],
+      "checksum": "fbecfcddb9be745b3d82eb1c0516e278c4283e2dca05233c2ed1b0c391aedf1c",
+      "intended_id": "I663ea1bfffe5038f"
+    },
+    {
+      "index": 187,
+      "symbols": [
+        "0:C748",
+        "1:C749",
+        "2:C750",
+        "3:C751"
+      ],
+      "checksum": "3e89c10b88c1821e226faa058015ed5b6f4e2833b5ce7f6f782b79997c1f0017",
+      "intended_id": "I790fad4744a9da8d"
+    },
+    {
+      "index": 188,
+      "symbols": [
+        "0:C752",
+        "1:C753",
+        "2:C754",
+        "3:C755"
+      ],
+      "checksum": "f5c43870fa78b2043e425c98555e097b9ef3c9c54aee1daef2cecadc77b015aa",
+      "intended_id": "I6389dc45d0523df1"
+    },
+    {
+      "index": 189,
+      "symbols": [
+        "0:C756",
+        "1:C757",
+        "2:C758",
+        "3:C759"
+      ],
+      "checksum": "c21e772db1846ec865adacebcbea64ed9726a6c49750e7a8cd398aca398e5100",
+      "intended_id": "Ie272deecde720ffc"
+    },
+    {
+      "index": 190,
+      "symbols": [
+        "0:C760",
+        "1:C761",
+        "2:C762",
+        "3:C763"
+      ],
+      "checksum": "b4205979f80a8c3674bd75151a3da7f393a775edb5fedc4ac3e99211bf4409a2",
+      "intended_id": "Ibb0347a468d97e98"
+    },
+    {
+      "index": 191,
+      "symbols": [
+        "0:C764",
+        "1:C765",
+        "2:C766",
+        "3:C767"
+      ],
+      "checksum": "f71857be8714779432df33911694d8f05e7c3d52870d8e6b210ded61f2b130cd",
+      "intended_id": "I36e37220b9fa512b"
+    },
+    {
+      "index": 192,
+      "symbols": [
+        "0:C768",
+        "1:C769",
+        "2:C770",
+        "3:C771"
+      ],
+      "checksum": "0c3be65f522399a7c885225f5891e5adc1efc13d51d8f3243652cb7b5150093f",
+      "intended_id": "I77bc06c55d29ee3c"
+    },
+    {
+      "index": 193,
+      "symbols": [
+        "0:C772",
+        "1:C773",
+        "2:C774",
+        "3:C775"
+      ],
+      "checksum": "c4bb76629add2bf7fa988ba24653731161100671eaae2ff707e285075719647d",
+      "intended_id": "I0967115f2813a354"
+    },
+    {
+      "index": 194,
+      "symbols": [
+        "0:C776",
+        "1:C777",
+        "2:C778",
+        "3:C779"
+      ],
+      "checksum": "4395e8dcacfcd69e8f791e6c69d972e8d58f16145143a2557735724862518f34",
+      "intended_id": "Ibb0347a468d97e98"
+    },
+    {
+      "index": 195,
+      "symbols": [
+        "0:C780",
+        "1:C781",
+        "2:C782",
+        "3:C783"
+      ],
+      "checksum": "50dd2b2a317dc35dcf05a7a88b2bee6a9709aa3d987f8d175887a57c11988ff6",
+      "intended_id": "Ic478361e6869af25"
+    },
+    {
+      "index": 196,
+      "symbols": [
+        "0:C784",
+        "1:C785",
+        "2:C786",
+        "3:C787"
+      ],
+      "checksum": "027e080bab10878497f25209b20e4bb24019658886beb52f479b1a8ae2896aba",
+      "intended_id": "I6b847a0ed0b2c484"
+    },
+    {
+      "index": 197,
+      "symbols": [
+        "0:C788",
+        "1:C789",
+        "2:C790",
+        "3:C791"
+      ],
+      "checksum": "4f3100f6570c6b71e559f3f4dd5d30977f45391f47d9043db7302ed5bd41ff4c",
+      "intended_id": "I28391d3bc64ec15c"
+    },
+    {
+      "index": 198,
+      "symbols": [
+        "0:C792",
+        "1:C793",
+        "2:C794",
+        "3:C795"
+      ],
+      "checksum": "deb6539ae74320ea608a04cac81a5494edcdfe1fa0aed0bf349ddec01ffc14e7",
+      "intended_id": "I23f7c8c88742998e"
+    },
+    {
+      "index": 199,
+      "symbols": [
+        "0:C796",
+        "1:C797",
+        "2:C798",
+        "3:C799"
+      ],
+      "checksum": "447c69e1df4cc6eed99a5a8e2c628df6681bcd8e0719c2fa11da57268c0b10b8",
+      "intended_id": "Ic0d661b582e416b9"
+    },
+    {
+      "index": 200,
+      "symbols": [
+        "0:C800",
+        "1:C801",
+        "2:C802",
+        "3:C803"
+      ],
+      "checksum": "d566fd3f6fd5ef394d8572f90216c750f8c9612e601ca370a7b1f21e59a0e4c6",
+      "intended_id": "I8a452d1573b7d0eb"
+    },
+    {
+      "index": 201,
+      "symbols": [
+        "0:C804",
+        "1:C805",
+        "2:C806",
+        "3:C807"
+      ],
+      "checksum": "4666aec91f1435fc38faf0a851fcf8102726d11a6a29df8869a19d97a875dd1e",
+      "intended_id": "Ia6b46dd0d1ae5e86"
+    },
+    {
+      "index": 202,
+      "symbols": [
+        "0:C808",
+        "1:C809",
+        "2:C810",
+        "3:C811"
+      ],
+      "checksum": "1cf7083eb8e15c5ed51118cad5481bb096113f102afe6bd630659ff8cbd6bdca",
+      "intended_id": "If63d5b6b4de4fca7"
+    },
+    {
+      "index": 203,
+      "symbols": [
+        "0:C812",
+        "1:C813",
+        "2:C814",
+        "3:C815"
+      ],
+      "checksum": "8ab225e705a4abd16d55f85eed8013418bcd822c7ad0996c7c23c4432f69abe0",
+      "intended_id": "Ica978112ca1bbdca"
+    },
+    {
+      "index": 204,
+      "symbols": [
+        "0:C816",
+        "1:C817",
+        "2:C818",
+        "3:C819"
+      ],
+      "checksum": "9f22c912826ead3b7154612372105ada96b2adba610487d218b7bec84d887392",
+      "intended_id": "I40b149bf4da1c2ad"
+    },
+    {
+      "index": 205,
+      "symbols": [
+        "0:C820",
+        "1:C821",
+        "2:C822",
+        "3:C823"
+      ],
+      "checksum": "a8042c8405c2ab252dc4d09aa8a47fd6db21b3881bdfb8cf337fa1cf9a1a834f",
+      "intended_id": "I582967534d0f909d"
+    },
+    {
+      "index": 206,
+      "symbols": [
+        "0:C824",
+        "1:C825",
+        "2:C826",
+        "3:C827"
+      ],
+      "checksum": "c7a4e96808b0fb38ef88e895015c6c23d2c501c7299e47baba4a40d15699a287",
+      "intended_id": "If905b19542ed08c9"
+    },
+    {
+      "index": 207,
+      "symbols": [
+        "0:C828",
+        "1:C829",
+        "2:C830",
+        "3:C831"
+      ],
+      "checksum": "da550b67618061e3c2a2583e1431359d9511693b7220f258cbc9cf824a96b26b",
+      "intended_id": "Ibbfcd4160a1e8674"
+    },
+    {
+      "index": 208,
+      "symbols": [
+        "0:C832",
+        "1:C833",
+        "2:C834",
+        "3:C835"
+      ],
+      "checksum": "df256f0c94656961c367743485d8a98694ba707433a55c60df0cb6d579234d03",
+      "intended_id": "Ib63b99f6383ba713"
+    },
+    {
+      "index": 209,
+      "symbols": [
+        "0:C836",
+        "1:C837",
+        "2:C838",
+        "3:C839"
+      ],
+      "checksum": "2a35875df53846715254ebf626de41c1522f8643f1a08698aa89e2639b406161",
+      "intended_id": "I0c4d01e81bb3d1fd"
+    },
+    {
+      "index": 210,
+      "symbols": [
+        "0:C840",
+        "1:C841",
+        "2:C842",
+        "3:C843"
+      ],
+      "checksum": "9a522da51f24796a94df4fd33712c0a424eb67ed304cd39c30fc6a3e0fa5733d",
+      "intended_id": "I6d9c2afbbb502973"
+    },
+    {
+      "index": 211,
+      "symbols": [
+        "0:C844",
+        "1:C845",
+        "2:C846",
+        "3:C847"
+      ],
+      "checksum": "71e938d5a90e6e759077fdbc71993324e294134f43d78318fd380e46b9e906ca",
+      "intended_id": "I5dceaeceb6d8a49d"
+    },
+    {
+      "index": 212,
+      "symbols": [
+        "0:C848",
+        "1:C849",
+        "2:C850",
+        "3:C851"
+      ],
+      "checksum": "e5650711eb0b124860a8adb0d72b2e57982232ecec6dab9bef38bed76aa4b8fd",
+      "intended_id": "Ide7d1b721a1e0632"
+    },
+    {
+      "index": 213,
+      "symbols": [
+        "0:C852",
+        "1:C853",
+        "2:C854",
+        "3:C855"
+      ],
+      "checksum": "3f35f531d314ce98a3cdef90801d3cec74ac159ad89ac8ab5e8a5944c29aae31",
+      "intended_id": "I1eb79602411ef02c"
+    },
+    {
+      "index": 214,
+      "symbols": [
+        "0:C856",
+        "1:C857",
+        "2:C858",
+        "3:C859"
+      ],
+      "checksum": "2a7624e416152d49b9d72b17faf88ea00f7c5f43340675a9d3f4c3419c7e2fdc",
+      "intended_id": "I00e13ed7af55b276"
+    },
+    {
+      "index": 215,
+      "symbols": [
+        "0:C860",
+        "1:C861",
+        "2:C862",
+        "3:C863"
+      ],
+      "checksum": "245428e6bcf319679afd76341f0aa3cd5b24d4bd4be11f70de5f396f4c33f775",
+      "intended_id": "I56c884a0a94e0999"
+    },
+    {
+      "index": 216,
+      "symbols": [
+        "0:C864",
+        "1:C865",
+        "2:C866",
+        "3:C867"
+      ],
+      "checksum": "7350b8e3fc8e3f6980872fc368b977bd3086832ea040e7b6d799079f14b759f2",
+      "intended_id": "I5a7cf4ac138054a8"
+    },
+    {
+      "index": 217,
+      "symbols": [
+        "0:C868",
+        "1:C869",
+        "2:C870",
+        "3:C871"
+      ],
+      "checksum": "d22aa2d3f6759a977ae81358bde3551bbec4284ffdf0cf243fae7662dd3e79e3",
+      "intended_id": "I8e7fc0236af43df9"
+    },
+    {
+      "index": 218,
+      "symbols": [
+        "0:C872",
+        "1:C873",
+        "2:C874",
+        "3:C875"
+      ],
+      "checksum": "03772eaa25c92412e9cb29dfdbd8fc50a9d729492a97f945c1a0b2656bd1fc3e",
+      "intended_id": "Ia7e2d26e8d15814d"
+    },
+    {
+      "index": 219,
+      "symbols": [
+        "0:C876",
+        "1:C877",
+        "2:C878",
+        "3:C879"
+      ],
+      "checksum": "95ee0ef7d373fc418745241614ed6ff9b336e067352261e882e82f70027abff6",
+      "intended_id": "I09f683c032eb0ac1"
+    },
+    {
+      "index": 220,
+      "symbols": [
+        "0:C880",
+        "1:C881",
+        "2:C882",
+        "3:C883"
+      ],
+      "checksum": "1a9613d5b38e74a421c4bfcd1fc6ec3772c5d81c5fc84705fa921e4da3390d15",
+      "intended_id": "I66a424a9a958b152"
+    },
+    {
+      "index": 221,
+      "symbols": [
+        "0:C884",
+        "1:C885",
+        "2:C886",
+        "3:C887"
+      ],
+      "checksum": "a63827c113fec45e81674dc9e6afcd83346bd5458452334dd3d621633f280e70",
+      "intended_id": "I00e3bc20b2c3d01f"
+    },
+    {
+      "index": 222,
+      "symbols": [
+        "0:C888",
+        "1:C889",
+        "2:C890",
+        "3:C891"
+      ],
+      "checksum": "63d39c04d8556403c1747e07edf8101621fe2ccff94a938eb3fd08b6e84965d3",
+      "intended_id": "I663ea1bfffe5038f"
+    },
+    {
+      "index": 223,
+      "symbols": [
+        "0:C892",
+        "1:C893",
+        "2:C894",
+        "3:C895"
+      ],
+      "checksum": "7c246319067eaa3f3cc10d2a80d9a16b9f09db52e6c53e707568850dbd2cc972",
+      "intended_id": "I6dc19a16933d6807"
+    },
+    {
+      "index": 224,
+      "symbols": [
+        "0:C896",
+        "1:C897",
+        "2:C898",
+        "3:C899"
+      ],
+      "checksum": "1e452665a540b37bd5662d1e7f728945c23ff67f844ceb36198bdc3508aff08f",
+      "intended_id": "I76678e40cf8bdb8a"
+    },
+    {
+      "index": 225,
+      "symbols": [
+        "0:C900",
+        "1:C901",
+        "2:C902",
+        "3:C903"
+      ],
+      "checksum": "ea5c223aba748186830b6723afb5de046990265ba9119ad7f5d1edd327118f0a",
+      "intended_id": "Ide7d1b721a1e0632"
+    },
+    {
+      "index": 226,
+      "symbols": [
+        "0:C904",
+        "1:C905",
+        "2:C906",
+        "3:C907"
+      ],
+      "checksum": "edd8b3a30a820a6c58cc771e8fd0446f013f2e2fde962641ff92a7b37e0275bc",
+      "intended_id": "I5a7cf4ac138054a8"
+    },
+    {
+      "index": 227,
+      "symbols": [
+        "0:C908",
+        "1:C909",
+        "2:C910",
+        "3:C911"
+      ],
+      "checksum": "0fe895f7b204edb084d40aa1681e52b8e5d19c8189dc7c34d7512beedee3d78f",
+      "intended_id": "Ide7d1b721a1e0632"
+    },
+    {
+      "index": 228,
+      "symbols": [
+        "0:C912",
+        "1:C913",
+        "2:C914",
+        "3:C915"
+      ],
+      "checksum": "cae02c582482f232a7c620e6d3fe2b920c4672784e8ade07a04fe87a83a6766c",
+      "intended_id": "Ica978112ca1bbdca"
+    },
+    {
+      "index": 229,
+      "symbols": [
+        "0:C916",
+        "1:C917",
+        "2:C918",
+        "3:C919"
+      ],
+      "checksum": "255dd8cc3455a25a832f7c3c7c5ac27e6f5141f54f7a89dd710b264c9d477f3d",
+      "intended_id": "I038468518ad8122e"
+    },
+    {
+      "index": 230,
+      "symbols": [
+        "0:C920",
+        "1:C921",
+        "2:C922",
+        "3:C923"
+      ],
+      "checksum": "2d93c27e39fa456f4d83547bc408ccb3b948de125a3581ce6f816dd81fc6a68c",
+      "intended_id": "I6201111b83a0cb5b"
+    },
+    {
+      "index": 231,
+      "symbols": [
+        "0:C924",
+        "1:C925",
+        "2:C926",
+        "3:C927"
+      ],
+      "checksum": "70d7ed8b7b21c4b6d96bb5c5022f7ccdf34b1aedbdc18e718fd22dcf6ac83045",
+      "intended_id": "Iea0890697a77af0a"
+    },
+    {
+      "index": 232,
+      "symbols": [
+        "0:C928",
+        "1:C929",
+        "2:C930",
+        "3:C931"
+      ],
+      "checksum": "0e9e7a769122f68646ab8cfca6d445832927bb30bc9bd2f63b8e7fda0427a526",
+      "intended_id": "Icdc29937887188ad"
+    },
+    {
+      "index": 233,
+      "symbols": [
+        "0:C932",
+        "1:C933",
+        "2:C934",
+        "3:C935"
+      ],
+      "checksum": "639b3ba2fabe772f8dd3d085e2d3319f97824ca182e16c82eb8ef2fbac8f706b",
+      "intended_id": "Ice96cb0c79011fae"
+    },
+    {
+      "index": 234,
+      "symbols": [
+        "0:C936",
+        "1:C937",
+        "2:C938",
+        "3:C939"
+      ],
+      "checksum": "f6a8dc32565d9197791bfad9039a37c5471d1c7ed44116d75a79419d7560c199",
+      "intended_id": "Ica978112ca1bbdca"
+    },
+    {
+      "index": 235,
+      "symbols": [
+        "0:C940",
+        "1:C941",
+        "2:C942",
+        "3:C943"
+      ],
+      "checksum": "5cf8fde8c3e12cc285dada7b2f6c55d45cc6a6bb96f5bbd1952fe668a79c9156",
+      "intended_id": "I2ad8a7049d7c5511"
+    },
+    {
+      "index": 236,
+      "symbols": [
+        "0:C944",
+        "1:C945",
+        "2:C946",
+        "3:C947"
+      ],
+      "checksum": "049bce8774bf9dd0792b70c747237d9a21ccd313e8369b32f845b6beaae03bae",
+      "intended_id": "I6201111b83a0cb5b"
+    },
+    {
+      "index": 237,
+      "symbols": [
+        "0:C948",
+        "1:C949",
+        "2:C950",
+        "3:C951"
+      ],
+      "checksum": "3d12557b04658d2ec5471706f18643ae6ac32b655746f71ad433f5cbbdbae5a6",
+      "intended_id": "I254bb97b57f12e16"
+    },
+    {
+      "index": 238,
+      "symbols": [
+        "0:C952",
+        "1:C953",
+        "2:C954",
+        "3:C955"
+      ],
+      "checksum": "d743d354fec4a18c3a92692852a362f4de950be9b6db5dbd0390a032d838a101",
+      "intended_id": "I37ff20583960759d"
+    },
+    {
+      "index": 239,
+      "symbols": [
+        "0:C956",
+        "1:C957",
+        "2:C958",
+        "3:C959"
+      ],
+      "checksum": "2416c7cd59767ba6a8fcf06ad4b4c70f5b010dec5a3229d9c4ab1ad3fabfc6e2",
+      "intended_id": "Ib1d6b91b67c2afa5"
+    },
+    {
+      "index": 240,
+      "symbols": [
+        "0:C960",
+        "1:C961",
+        "2:C962",
+        "3:C963"
+      ],
+      "checksum": "036270be7da2bdcc57cbba7bfcd87ec2437fa4d4cd3ae91e2d209eb8238e40a8",
+      "intended_id": "Ib9776d7ddf459c9a"
+    },
+    {
+      "index": 241,
+      "symbols": [
+        "0:C964",
+        "1:C965",
+        "2:C966",
+        "3:C967"
+      ],
+      "checksum": "5c0388dfa205aae1f824c8c899bf696f65173aa82a6ca84f3e9af2b312e7a70e",
+      "intended_id": "I9150c74c5f92d51a"
+    },
+    {
+      "index": 242,
+      "symbols": [
+        "0:C968",
+        "1:C969",
+        "2:C970",
+        "3:C971"
+      ],
+      "checksum": "4ee6b0629457c201dd977121ec4ae8a4584d46f0e6bcb238a117b693364964df",
+      "intended_id": "Ib9776d7ddf459c9a"
+    },
+    {
+      "index": 243,
+      "symbols": [
+        "0:C972",
+        "1:C973",
+        "2:C974",
+        "3:C975"
+      ],
+      "checksum": "cafc1c705ff24d82f904c07a517a7f7a911e1b9fb885338566f3cccb1c8fadfb",
+      "intended_id": "If39592393ef0859c"
+    },
+    {
+      "index": 244,
+      "symbols": [
+        "0:C976",
+        "1:C977",
+        "2:C978",
+        "3:C979"
+      ],
+      "checksum": "28f4571b812c29e4a11d71fa5c8ce7c4e0eb2f8ed048c0f56cd7ab37c9b27997",
+      "intended_id": "I75a288c0d6898c5f"
+    },
+    {
+      "index": 245,
+      "symbols": [
+        "0:C980",
+        "1:C981",
+        "2:C982",
+        "3:C983"
+      ],
+      "checksum": "61cf4d51fc9355aec88a1ad683b30ee206e393388f9d482ce3096344f14e2c9e",
+      "intended_id": "I4813494d137e1631"
+    },
+    {
+      "index": 246,
+      "symbols": [
+        "0:C984",
+        "1:C985",
+        "2:C986",
+        "3:C987"
+      ],
+      "checksum": "62ddc08ebea6bbfcf27724dd102f1d2954c78b240de9e042c8f652b3bece5bca",
+      "intended_id": "Ic0865679368922d3"
+    },
+    {
+      "index": 247,
+      "symbols": [
+        "0:C988",
+        "1:C989",
+        "2:C990",
+        "3:C991"
+      ],
+      "checksum": "0ade607fef6dd40f3655d218deb6c59b9a726b47cdbe4912b0fae9c2a2efa20e",
+      "intended_id": "I6f15f31e41b3cffb"
+    },
+    {
+      "index": 248,
+      "symbols": [
+        "0:C992",
+        "1:C993",
+        "2:C994",
+        "3:C995"
+      ],
+      "checksum": "c6114517bf27cbc96bde3409e246243fdf8576dda2de5b8e6f6725881273ff9b",
+      "intended_id": "If4bf9f7fcbedaba0"
+    },
+    {
+      "index": 249,
+      "symbols": [
+        "0:C996",
+        "1:C997",
+        "2:C998",
+        "3:C999"
+      ],
+      "checksum": "6684213435baa3c1f1bbba1da4ca5638e9781e66bd35bf92207b7f522cffe77c",
+      "intended_id": "I9150c74c5f92d51a"
+    },
+    {
+      "index": 250,
+      "symbols": [
+        "0:C1000",
+        "1:C1001",
+        "2:C1002",
+        "3:C1003"
+      ],
+      "checksum": "b9d64d9434e5bbce0ef19a28b091163ad0abdf3d5af01644d630a30fafa564e5",
+      "intended_id": "Ib9776d7ddf459c9a"
+    },
+    {
+      "index": 251,
+      "symbols": [
+        "0:C1004",
+        "1:C1005",
+        "2:C1006",
+        "3:C1007"
+      ],
+      "checksum": "2d1eed4540ada6ac79c0cc12ca63c4df2382c944c35a9fa0d916dfcacdb10f92",
+      "intended_id": "Ib9776d7ddf459c9a"
+    },
+    {
+      "index": 252,
+      "symbols": [
+        "0:C1008",
+        "1:C1009",
+        "2:C1010",
+        "3:C1011"
+      ],
+      "checksum": "0fd7d77e4a45ace490e71fd020326bfc0ef7399ac5a1a8ba4508ad5933e61d4f",
+      "intended_id": "I372f7e2fd2d01ce2"
+    },
+    {
+      "index": 253,
+      "symbols": [
+        "0:C1012",
+        "1:C1013",
+        "2:C1014",
+        "3:C1015"
+      ],
+      "checksum": "238e0fd98a6d0e701062240751fa641d18755a88591c0a6696f5482b6d59d12f",
+      "intended_id": "I635450503029fc24"
+    },
+    {
+      "index": 254,
+      "symbols": [
+        "0:C1016",
+        "1:C1017",
+        "2:C1018",
+        "3:C1019"
+      ],
+      "checksum": "566190906d8c8b6af74032258cb55a915e44e112c5abb07b1c1ca90e41dd41c6",
+      "intended_id": "I207dcab2fa481014"
+    },
+    {
+      "index": 255,
+      "symbols": [
+        "0:C1020",
+        "1:C1021",
+        "2:C1022",
+        "3:C1023"
+      ],
+      "checksum": "d4176b1bd775dc6e334486070fd9f9dc7f5848b64732b72153f09b4e93becae8",
+      "intended_id": "I6f5657b70de5c769"
+    }
+  ],
+  "observable_document": {
+    "symbols": [
+      "0:C0",
+      "1:C1",
+      "2:C2",
+      "3:C3",
+      "0:C4",
+      "1:C5",
+      "2:C6",
+      "3:C7",
+      "0:C8",
+      "1:C9",
+      "2:C10",
+      "3:C11",
+      "0:C12",
+      "1:C13",
+      "2:C14",
+      "3:C15",
+      "0:C16",
+      "1:C17",
+      "2:C18",
+      "3:C19",
+      "0:C20",
+      "1:C21",
+      "2:C22",
+      "3:C23",
+      "0:C24",
+      "1:C25",
+      "2:C26",
+      "3:C27",
+      "0:C28",
+      "1:C29",
+      "2:C30",
+      "3:C31",
+      "0:C32",
+      "1:C33",
+      "2:C34",
+      "3:C35",
+      "0:C36",
+      "1:C37",
+      "2:C38",
+      "3:C39",
+      "0:C40",
+      "1:C41",
+      "2:C42",
+      "3:C43",
+      "0:C44",
+      "1:C45",
+      "2:C46",
+      "3:C47",
+      "0:C48",
+      "1:C49",
+      "2:C50",
+      "3:C51",
+      "0:C52",
+      "1:C53",
+      "2:C54",
+      "3:C55",
+      "0:C56",
+      "1:C57",
+      "2:C58",
+      "3:C59",
+      "0:C60",
+      "1:C61",
+      "2:C62",
+      "3:C63",
+      "0:C64",
+      "1:C65",
+      "2:C66",
+      "3:C67",
+      "0:C68",
+      "1:C69",
+      "2:C70",
+      "3:C71",
+      "0:C72",
+      "1:C73",
+      "2:C74",
+      "3:C75",
+      "0:C76",
+      "1:C77",
+      "2:C78",
+      "3:C79",
+      "0:C80",
+      "1:C81",
+      "2:C82",
+      "3:C83",
+      "0:C84",
+      "1:C85",
+      "2:C86",
+      "3:C87",
+      "0:C88",
+      "1:C89",
+      "2:C90",
+      "3:C91",
+      "0:C92",
+      "1:C93",
+      "2:C94",
+      "3:C95",
+      "0:C96",
+      "1:C97",
+      "2:C98",
+      "3:C99",
+      "0:C100",
+      "1:C101",
+      "2:C102",
+      "3:C103",
+      "0:C104",
+      "1:C105",
+      "2:C106",
+      "3:C107",
+      "0:C108",
+      "1:C109",
+      "2:C110",
+      "3:C111",
+      "0:C112",
+      "1:C113",
+      "2:C114",
+      "3:C115",
+      "0:C116",
+      "1:C117",
+      "2:C118",
+      "3:C119",
+      "0:C120",
+      "1:C121",
+      "2:C122",
+      "3:C123",
+      "0:C124",
+      "1:C125",
+      "2:C126",
+      "3:C127",
+      "0:C128",
+      "1:C129",
+      "2:C130",
+      "3:C131",
+      "0:C132",
+      "1:C133",
+      "2:C134",
+      "3:C135",
+      "0:C136",
+      "1:C137",
+      "2:C138",
+      "3:C139",
+      "0:C140",
+      "1:C141",
+      "2:C142",
+      "3:C143",
+      "0:C144",
+      "1:C145",
+      "2:C146",
+      "3:C147",
+      "0:C148",
+      "1:C149",
+      "2:C150",
+      "3:C151",
+      "0:C152",
+      "1:C153",
+      "2:C154",
+      "3:C155",
+      "0:C156",
+      "1:C157",
+      "2:C158",
+      "3:C159",
+      "0:C160",
+      "1:C161",
+      "2:C162",
+      "3:C163",
+      "0:C164",
+      "1:C165",
+      "2:C166",
+      "3:C167",
+      "0:C168",
+      "1:C169",
+      "2:C170",
+      "3:C171",
+      "0:C172",
+      "1:C173",
+      "2:C174",
+      "3:C175",
+      "0:C176",
+      "1:C177",
+      "2:C178",
+      "3:C179",
+      "0:C180",
+      "1:C181",
+      "2:C182",
+      "3:C183",
+      "0:C184",
+      "1:C185",
+      "2:C186",
+      "3:C187",
+      "0:C188",
+      "1:C189",
+      "2:C190",
+      "3:C191",
+      "0:C192",
+      "1:C193",
+      "2:C194",
+      "3:C195",
+      "0:C196",
+      "1:C197",
+      "2:C198",
+      "3:C199",
+      "0:C200",
+      "1:C201",
+      "2:C202",
+      "3:C203",
+      "0:C204",
+      "1:C205",
+      "2:C206",
+      "3:C207",
+      "0:C208",
+      "1:C209",
+      "2:C210",
+      "3:C211",
+      "0:C212",
+      "1:C213",
+      "2:C214",
+      "3:C215",
+      "0:C216",
+      "1:C217",
+      "2:C218",
+      "3:C219",
+      "0:C220",
+      "1:C221",
+      "2:C222",
+      "3:C223",
+      "0:C224",
+      "1:C225",
+      "2:C226",
+      "3:C227",
+      "0:C228",
+      "1:C229",
+      "2:C230",
+      "3:C231",
+      "0:C232",
+      "1:C233",
+      "2:C234",
+      "3:C235",
+      "0:C236",
+      "1:C237",
+      "2:C238",
+      "3:C239",
+      "0:C240",
+      "1:C241",
+      "2:C242",
+      "3:C243",
+      "0:C244",
+      "1:C245",
+      "2:C246",
+      "3:C247",
+      "0:C248",
+      "1:C249",
+      "2:C250",
+      "3:C251",
+      "0:C252",
+      "1:C253",
+      "2:C254",
+      "3:C255",
+      "0:C256",
+      "1:C257",
+      "2:C258",
+      "3:C259",
+      "0:C260",
+      "1:C261",
+      "2:C262",
+      "3:C263",
+      "0:C264",
+      "1:C265",
+      "2:C266",
+      "3:C267",
+      "0:C268",
+      "1:C269",
+      "2:C270",
+      "3:C271",
+      "0:C272",
+      "1:C273",
+      "2:C274",
+      "3:C275",
+      "0:C276",
+      "1:C277",
+      "2:C278",
+      "3:C279",
+      "0:C280",
+      "1:C281",
+      "2:C282",
+      "3:C283",
+      "0:C284",
+      "1:C285",
+      "2:C286",
+      "3:C287",
+      "0:C288",
+      "1:C289",
+      "2:C290",
+      "3:C291",
+      "0:C292",
+      "1:C293",
+      "2:C294",
+      "3:C295",
+      "0:C296",
+      "1:C297",
+      "2:C298",
+      "3:C299",
+      "0:C300",
+      "1:C301",
+      "2:C302",
+      "3:C303",
+      "0:C304",
+      "1:C305",
+      "2:C306",
+      "3:C307",
+      "0:C308",
+      "1:C309",
+      "2:C310",
+      "3:C311",
+      "0:C312",
+      "1:C313",
+      "2:C314",
+      "3:C315",
+      "0:C316",
+      "1:C317",
+      "2:C318",
+      "3:C319",
+      "0:C320",
+      "1:C321",
+      "2:C322",
+      "3:C323",
+      "0:C324",
+      "1:C325",
+      "2:C326",
+      "3:C327",
+      "0:C328",
+      "1:C329",
+      "2:C330",
+      "3:C331",
+      "0:C332",
+      "1:C333",
+      "2:C334",
+      "3:C335",
+      "0:C336",
+      "1:C337",
+      "2:C338",
+      "3:C339",
+      "0:C340",
+      "1:C341",
+      "2:C342",
+      "3:C343",
+      "0:C344",
+      "1:C345",
+      "2:C346",
+      "3:C347",
+      "0:C348",
+      "1:C349",
+      "2:C350",
+      "3:C351",
+      "0:C352",
+      "1:C353",
+      "2:C354",
+      "3:C355",
+      "0:C356",
+      "1:C357",
+      "2:C358",
+      "3:C359",
+      "0:C360",
+      "1:C361",
+      "2:C362",
+      "3:C363",
+      "0:C364",
+      "1:C365",
+      "2:C366",
+      "3:C367",
+      "0:C368",
+      "1:C369",
+      "2:C370",
+      "3:C371",
+      "0:C372",
+      "1:C373",
+      "2:C374",
+      "3:C375",
+      "0:C376",
+      "1:C377",
+      "2:C378",
+      "3:C379",
+      "0:C380",
+      "1:C381",
+      "2:C382",
+      "3:C383",
+      "0:C384",
+      "1:C385",
+      "2:C386",
+      "3:C387",
+      "0:C388",
+      "1:C389",
+      "2:C390",
+      "3:C391",
+      "0:C392",
+      "1:C393",
+      "2:C394",
+      "3:C395",
+      "0:C396",
+      "1:C397",
+      "2:C398",
+      "3:C399",
+      "0:C400",
+      "1:C401",
+      "2:C402",
+      "3:C403",
+      "0:C404",
+      "1:C405",
+      "2:C406",
+      "3:C407",
+      "0:C408",
+      "1:C409",
+      "2:C410",
+      "3:C411",
+      "0:C412",
+      "1:C413",
+      "2:C414",
+      "3:C415",
+      "0:C416",
+      "1:C417",
+      "2:C418",
+      "3:C419",
+      "0:C420",
+      "1:C421",
+      "2:C422",
+      "3:C423",
+      "0:C424",
+      "1:C425",
+      "2:C426",
+      "3:C427",
+      "0:C428",
+      "1:C429",
+      "2:C430",
+      "3:C431",
+      "0:C432",
+      "1:C433",
+      "2:C434",
+      "3:C435",
+      "0:C436",
+      "1:C437",
+      "2:C438",
+      "3:C439",
+      "0:C440",
+      "1:C441",
+      "2:C442",
+      "3:C443",
+      "0:C444",
+      "1:C445",
+      "2:C446",
+      "3:C447",
+      "0:C448",
+      "1:C449",
+      "2:C450",
+      "3:C451",
+      "0:C452",
+      "1:C453",
+      "2:C454",
+      "3:C455",
+      "0:C456",
+      "1:C457",
+      "2:C458",
+      "3:C459",
+      "0:C460",
+      "1:C461",
+      "2:C462",
+      "3:C463",
+      "0:C464",
+      "1:C465",
+      "2:C466",
+      "3:C467",
+      "0:C468",
+      "1:C469",
+      "2:C470",
+      "3:C471",
+      "0:C472",
+      "1:C473",
+      "2:C474",
+      "3:C475",
+      "0:C476",
+      "1:C477",
+      "2:C478",
+      "3:C479",
+      "0:C480",
+      "1:C481",
+      "2:C482",
+      "3:C483",
+      "0:C484",
+      "1:C485",
+      "2:C486",
+      "3:C487",
+      "0:C488",
+      "1:C489",
+      "2:C490",
+      "3:C491",
+      "0:C492",
+      "1:C493",
+      "2:C494",
+      "3:C495",
+      "0:C496",
+      "1:C497",
+      "2:C498",
+      "3:C499",
+      "0:C500",
+      "1:C501",
+      "2:C502",
+      "3:C503",
+      "0:C504",
+      "1:C505",
+      "2:C506",
+      "3:C507",
+      "0:C508",
+      "1:C509",
+      "2:C510",
+      "3:C511",
+      "0:C512",
+      "1:C513",
+      "2:C514",
+      "3:C515",
+      "0:C516",
+      "1:C517",
+      "2:C518",
+      "3:C519",
+      "0:C520",
+      "1:C521",
+      "2:C522",
+      "3:C523",
+      "0:C524",
+      "1:C525",
+      "2:C526",
+      "3:C527",
+      "0:C528",
+      "1:C529",
+      "2:C530",
+      "3:C531",
+      "0:C532",
+      "1:C533",
+      "2:C534",
+      "3:C535",
+      "0:C536",
+      "1:C537",
+      "2:C538",
+      "3:C539",
+      "0:C540",
+      "1:C541",
+      "2:C542",
+      "3:C543",
+      "0:C544",
+      "1:C545",
+      "2:C546",
+      "3:C547",
+      "0:C548",
+      "1:C549",
+      "2:C550",
+      "3:C551",
+      "0:C552",
+      "1:C553",
+      "2:C554",
+      "3:C555",
+      "0:C556",
+      "1:C557",
+      "2:C558",
+      "3:C559",
+      "0:C560",
+      "1:C561",
+      "2:C562",
+      "3:C563",
+      "0:C564",
+      "1:C565",
+      "2:C566",
+      "3:C567",
+      "0:C568",
+      "1:C569",
+      "2:C570",
+      "3:C571",
+      "0:C572",
+      "1:C573",
+      "2:C574",
+      "3:C575",
+      "0:C576",
+      "1:C577",
+      "2:C578",
+      "3:C579",
+      "0:C580",
+      "1:C581",
+      "2:C582",
+      "3:C583",
+      "0:C584",
+      "1:C585",
+      "2:C586",
+      "3:C587",
+      "0:C588",
+      "1:C589",
+      "2:C590",
+      "3:C591",
+      "0:C592",
+      "1:C593",
+      "2:C594",
+      "3:C595",
+      "0:C596",
+      "1:C597",
+      "2:C598",
+      "3:C599",
+      "0:C600",
+      "1:C601",
+      "2:C602",
+      "3:C603",
+      "0:C604",
+      "1:C605",
+      "2:C606",
+      "3:C607",
+      "0:C608",
+      "1:C609",
+      "2:C610",
+      "3:C611",
+      "0:C612",
+      "1:C613",
+      "2:C614",
+      "3:C615",
+      "0:C616",
+      "1:C617",
+      "2:C618",
+      "3:C619",
+      "0:C620",
+      "1:C621",
+      "2:C622",
+      "3:C623",
+      "0:C624",
+      "1:C625",
+      "2:C626",
+      "3:C627",
+      "0:C628",
+      "1:C629",
+      "2:C630",
+      "3:C631",
+      "0:C632",
+      "1:C633",
+      "2:C634",
+      "3:C635",
+      "0:C636",
+      "1:C637",
+      "2:C638",
+      "3:C639",
+      "0:C640",
+      "1:C641",
+      "2:C642",
+      "3:C643",
+      "0:C644",
+      "1:C645",
+      "2:C646",
+      "3:C647",
+      "0:C648",
+      "1:C649",
+      "2:C650",
+      "3:C651",
+      "0:C652",
+      "1:C653",
+      "2:C654",
+      "3:C655",
+      "0:C656",
+      "1:C657",
+      "2:C658",
+      "3:C659",
+      "0:C660",
+      "1:C661",
+      "2:C662",
+      "3:C663",
+      "0:C664",
+      "1:C665",
+      "2:C666",
+      "3:C667",
+      "0:C668",
+      "1:C669",
+      "2:C670",
+      "3:C671",
+      "0:C672",
+      "1:C673",
+      "2:C674",
+      "3:C675",
+      "0:C676",
+      "1:C677",
+      "2:C678",
+      "3:C679",
+      "0:C680",
+      "1:C681",
+      "2:C682",
+      "3:C683",
+      "0:C684",
+      "1:C685",
+      "2:C686",
+      "3:C687",
+      "0:C688",
+      "1:C689",
+      "2:C690",
+      "3:C691",
+      "0:C692",
+      "1:C693",
+      "2:C694",
+      "3:C695",
+      "0:C696",
+      "1:C697",
+      "2:C698",
+      "3:C699",
+      "0:C700",
+      "1:C701",
+      "2:C702",
+      "3:C703",
+      "0:C704",
+      "1:C705",
+      "2:C706",
+      "3:C707",
+      "0:C708",
+      "1:C709",
+      "2:C710",
+      "3:C711",
+      "0:C712",
+      "1:C713",
+      "2:C714",
+      "3:C715",
+      "0:C716",
+      "1:C717",
+      "2:C718",
+      "3:C719",
+      "0:C720",
+      "1:C721",
+      "2:C722",
+      "3:C723",
+      "0:C724",
+      "1:C725",
+      "2:C726",
+      "3:C727",
+      "0:C728",
+      "1:C729",
+      "2:C730",
+      "3:C731",
+      "0:C732",
+      "1:C733",
+      "2:C734",
+      "3:C735",
+      "0:C736",
+      "1:C737",
+      "2:C738",
+      "3:C739",
+      "0:C740",
+      "1:C741",
+      "2:C742",
+      "3:C743",
+      "0:C744",
+      "1:C745",
+      "2:C746",
+      "3:C747",
+      "0:C748",
+      "1:C749",
+      "2:C750",
+      "3:C751",
+      "0:C752",
+      "1:C753",
+      "2:C754",
+      "3:C755",
+      "0:C756",
+      "1:C757",
+      "2:C758",
+      "3:C759",
+      "0:C760",
+      "1:C761",
+      "2:C762",
+      "3:C763",
+      "0:C764",
+      "1:C765",
+      "2:C766",
+      "3:C767",
+      "0:C768",
+      "1:C769",
+      "2:C770",
+      "3:C771",
+      "0:C772",
+      "1:C773",
+      "2:C774",
+      "3:C775",
+      "0:C776",
+      "1:C777",
+      "2:C778",
+      "3:C779",
+      "0:C780",
+      "1:C781",
+      "2:C782",
+      "3:C783",
+      "0:C784",
+      "1:C785",
+      "2:C786",
+      "3:C787",
+      "0:C788",
+      "1:C789",
+      "2:C790",
+      "3:C791",
+      "0:C792",
+      "1:C793",
+      "2:C794",
+      "3:C795",
+      "0:C796",
+      "1:C797",
+      "2:C798",
+      "3:C799",
+      "0:C800",
+      "1:C801",
+      "2:C802",
+      "3:C803",
+      "0:C804",
+      "1:C805",
+      "2:C806",
+      "3:C807",
+      "0:C808",
+      "1:C809",
+      "2:C810",
+      "3:C811",
+      "0:C812",
+      "1:C813",
+      "2:C814",
+      "3:C815",
+      "0:C816",
+      "1:C817",
+      "2:C818",
+      "3:C819",
+      "0:C820",
+      "1:C821",
+      "2:C822",
+      "3:C823",
+      "0:C824",
+      "1:C825",
+      "2:C826",
+      "3:C827",
+      "0:C828",
+      "1:C829",
+      "2:C830",
+      "3:C831",
+      "0:C832",
+      "1:C833",
+      "2:C834",
+      "3:C835",
+      "0:C836",
+      "1:C837",
+      "2:C838",
+      "3:C839",
+      "0:C840",
+      "1:C841",
+      "2:C842",
+      "3:C843",
+      "0:C844",
+      "1:C845",
+      "2:C846",
+      "3:C847",
+      "0:C848",
+      "1:C849",
+      "2:C850",
+      "3:C851",
+      "0:C852",
+      "1:C853",
+      "2:C854",
+      "3:C855",
+      "0:C856",
+      "1:C857",
+      "2:C858",
+      "3:C859",
+      "0:C860",
+      "1:C861",
+      "2:C862",
+      "3:C863",
+      "0:C864",
+      "1:C865",
+      "2:C866",
+      "3:C867",
+      "0:C868",
+      "1:C869",
+      "2:C870",
+      "3:C871",
+      "0:C872",
+      "1:C873",
+      "2:C874",
+      "3:C875",
+      "0:C876",
+      "1:C877",
+      "2:C878",
+      "3:C879",
+      "0:C880",
+      "1:C881",
+      "2:C882",
+      "3:C883",
+      "0:C884",
+      "1:C885",
+      "2:C886",
+      "3:C887",
+      "0:C888",
+      "1:C889",
+      "2:C890",
+      "3:C891",
+      "0:C892",
+      "1:C893",
+      "2:C894",
+      "3:C895",
+      "0:C896",
+      "1:C897",
+      "2:C898",
+      "3:C899",
+      "0:C900",
+      "1:C901",
+      "2:C902",
+      "3:C903",
+      "0:C904",
+      "1:C905",
+      "2:C906",
+      "3:C907",
+      "0:C908",
+      "1:C909",
+      "2:C910",
+      "3:C911",
+      "0:C912",
+      "1:C913",
+      "2:C914",
+      "3:C915",
+      "0:C916",
+      "1:C917",
+      "2:C918",
+      "3:C919",
+      "0:C920",
+      "1:C921",
+      "2:C922",
+      "3:C923",
+      "0:C924",
+      "1:C925",
+      "2:C926",
+      "3:C927",
+      "0:C928",
+      "1:C929",
+      "2:C930",
+      "3:C931",
+      "0:C932",
+      "1:C933",
+      "2:C934",
+      "3:C935",
+      "0:C936",
+      "1:C937",
+      "2:C938",
+      "3:C939",
+      "0:C940",
+      "1:C941",
+      "2:C942",
+      "3:C943",
+      "0:C944",
+      "1:C945",
+      "2:C946",
+      "3:C947",
+      "0:C948",
+      "1:C949",
+      "2:C950",
+      "3:C951",
+      "0:C952",
+      "1:C953",
+      "2:C954",
+      "3:C955",
+      "0:C956",
+      "1:C957",
+      "2:C958",
+      "3:C959",
+      "0:C960",
+      "1:C961",
+      "2:C962",
+      "3:C963",
+      "0:C964",
+      "1:C965",
+      "2:C966",
+      "3:C967",
+      "0:C968",
+      "1:C969",
+      "2:C970",
+      "3:C971",
+      "0:C972",
+      "1:C973",
+      "2:C974",
+      "3:C975",
+      "0:C976",
+      "1:C977",
+      "2:C978",
+      "3:C979",
+      "0:C980",
+      "1:C981",
+      "2:C982",
+      "3:C983",
+      "0:C984",
+      "1:C985",
+      "2:C986",
+      "3:C987",
+      "0:C988",
+      "1:C989",
+      "2:C990",
+      "3:C991",
+      "0:C992",
+      "1:C993",
+      "2:C994",
+      "3:C995",
+      "0:C996",
+      "1:C997",
+      "2:C998",
+      "3:C999",
+      "0:C1000",
+      "1:C1001",
+      "2:C1002",
+      "3:C1003",
+      "0:C1004",
+      "1:C1005",
+      "2:C1006",
+      "3:C1007",
+      "0:C1008",
+      "1:C1009",
+      "2:C1010",
+      "3:C1011",
+      "0:C1012",
+      "1:C1013",
+      "2:C1014",
+      "3:C1015",
+      "0:C1016",
+      "1:C1017",
+      "2:C1018",
+      "3:C1019",
+      "0:C1020",
+      "1:C1021",
+      "2:C1022",
+      "3:C1023"
+    ],
+    "token_boundary": "GENERATED_BY_MECHANISM",
+    "line_boundary": "GENERATED_BY_MECHANISM",
+    "unit_boundary": "GENERATED_BY_MECHANISM",
+    "metadata": {
+      "family": "GENERIC_INDEXED_LOOKUP",
+      "line_boundary_provenance": "ASSEMBLER_DEFINED",
+      "page_boundary_provenance": "NOT_DEFINED",
+      "token_boundary_provenance": "ASSEMBLER_DEFINED"
+    }
+  },
+  "local_recoveries": [
+    {
+      "chunk_index": 0,
+      "recovery_score_by_condition": {
+        "R0_FULL_KNOWLEDGE": 1,
+        "R1_NO_CONTEXT": 0.5,
+        "R2_NO_CONVENTION": 0,
+        "R6_OBSERVABLE_ONLY": 0
+      },
+      "recovery_class_by_condition": {
+        "R0_FULL_KNOWLEDGE": "EXACT",
+        "R1_NO_CONTEXT": "AMBIGUITY_SET",
+        "R2_NO_CONVENTION": "CUE_ONLY",
+        "R3_NO_PATH_GEOMETRY": "NOT_APPLICABLE",
+        "R4_NO_HISTORY": "NOT_APPLICABLE",
+        "R5_NO_INTERNAL_MEMORY": "NOT_APPLICABLE",
+        "R6_OBSERVABLE_ONLY": "CUE_ONLY"
+      },
+      "ambiguity_cardinality_by_condition": {
+        "R0_FULL_KNOWLEDGE": 0,
+        "R1_NO_CONTEXT": 2,
+        "R2_NO_CONVENTION": 0,
+        "R3_NO_PATH_GEOMETRY": 0,
+        "R4_NO_HISTORY": 0,
+        "R5_NO_INTERNAL_MEMORY": 0,
+        "R6_OBSERVABLE_ONLY": 0
+      }
+    },
+    {
+      "chunk_index": 32,
+      "recovery_score_by_condition": {
+        "R0_FULL_KNOWLEDGE": 1,
+        "R1_NO_CONTEXT": 0.5,
+        "R2_NO_CONVENTION": 0,
+        "R6_OBSERVABLE_ONLY": 0
+      },
+      "recovery_class_by_condition": {
+        "R0_FULL_KNOWLEDGE": "EXACT",
+        "R1_NO_CONTEXT": "AMBIGUITY_SET",
+        "R2_NO_CONVENTION": "CUE_ONLY",
+        "R3_NO_PATH_GEOMETRY": "NOT_APPLICABLE",
+        "R4_NO_HISTORY": "NOT_APPLICABLE",
+        "R5_NO_INTERNAL_MEMORY": "NOT_APPLICABLE",
+        "R6_OBSERVABLE_ONLY": "CUE_ONLY"
+      },
+      "ambiguity_cardinality_by_condition": {
+        "R0_FULL_KNOWLEDGE": 0,
+        "R1_NO_CONTEXT": 2,
+        "R2_NO_CONVENTION": 0,
+        "R3_NO_PATH_GEOMETRY": 0,
+        "R4_NO_HISTORY": 0,
+        "R5_NO_INTERNAL_MEMORY": 0,
+        "R6_OBSERVABLE_ONLY": 0
+      }
+    },
+    {
+      "chunk_index": 64,
+      "recovery_score_by_condition": {
+        "R0_FULL_KNOWLEDGE": 1,
+        "R1_NO_CONTEXT": 0.5,
+        "R2_NO_CONVENTION": 0,
+        "R6_OBSERVABLE_ONLY": 0
+      },
+      "recovery_class_by_condition": {
+        "R0_FULL_KNOWLEDGE": "EXACT",
+        "R1_NO_CONTEXT": "AMBIGUITY_SET",
+        "R2_NO_CONVENTION": "CUE_ONLY",
+        "R3_NO_PATH_GEOMETRY": "NOT_APPLICABLE",
+        "R4_NO_HISTORY": "NOT_APPLICABLE",
+        "R5_NO_INTERNAL_MEMORY": "NOT_APPLICABLE",
+        "R6_OBSERVABLE_ONLY": "CUE_ONLY"
+      },
+      "ambiguity_cardinality_by_condition": {
+        "R0_FULL_KNOWLEDGE": 0,
+        "R1_NO_CONTEXT": 2,
+        "R2_NO_CONVENTION": 0,
+        "R3_NO_PATH_GEOMETRY": 0,
+        "R4_NO_HISTORY": 0,
+        "R5_NO_INTERNAL_MEMORY": 0,
+        "R6_OBSERVABLE_ONLY": 0
+      }
+    },
+    {
+      "chunk_index": 96,
+      "recovery_score_by_condition": {
+        "R0_FULL_KNOWLEDGE": 1,
+        "R1_NO_CONTEXT": 0.5,
+        "R2_NO_CONVENTION": 0,
+        "R6_OBSERVABLE_ONLY": 0
+      },
+      "recovery_class_by_condition": {
+        "R0_FULL_KNOWLEDGE": "EXACT",
+        "R1_NO_CONTEXT": "AMBIGUITY_SET",
+        "R2_NO_CONVENTION": "CUE_ONLY",
+        "R3_NO_PATH_GEOMETRY": "NOT_APPLICABLE",
+        "R4_NO_HISTORY": "NOT_APPLICABLE",
+        "R5_NO_INTERNAL_MEMORY": "NOT_APPLICABLE",
+        "R6_OBSERVABLE_ONLY": "CUE_ONLY"
+      },
+      "ambiguity_cardinality_by_condition": {
+        "R0_FULL_KNOWLEDGE": 0,
+        "R1_NO_CONTEXT": 2,
+        "R2_NO_CONVENTION": 0,
+        "R3_NO_PATH_GEOMETRY": 0,
+        "R4_NO_HISTORY": 0,
+        "R5_NO_INTERNAL_MEMORY": 0,
+        "R6_OBSERVABLE_ONLY": 0
+      }
+    },
+    {
+      "chunk_index": 128,
+      "recovery_score_by_condition": {
+        "R0_FULL_KNOWLEDGE": 1,
+        "R1_NO_CONTEXT": 0.5,
+        "R2_NO_CONVENTION": 0,
+        "R6_OBSERVABLE_ONLY": 0
+      },
+      "recovery_class_by_condition": {
+        "R0_FULL_KNOWLEDGE": "EXACT",
+        "R1_NO_CONTEXT": "AMBIGUITY_SET",
+        "R2_NO_CONVENTION": "CUE_ONLY",
+        "R3_NO_PATH_GEOMETRY": "NOT_APPLICABLE",
+        "R4_NO_HISTORY": "NOT_APPLICABLE",
+        "R5_NO_INTERNAL_MEMORY": "NOT_APPLICABLE",
+        "R6_OBSERVABLE_ONLY": "CUE_ONLY"
+      },
+      "ambiguity_cardinality_by_condition": {
+        "R0_FULL_KNOWLEDGE": 0,
+        "R1_NO_CONTEXT": 2,
+        "R2_NO_CONVENTION": 0,
+        "R3_NO_PATH_GEOMETRY": 0,
+        "R4_NO_HISTORY": 0,
+        "R5_NO_INTERNAL_MEMORY": 0,
+        "R6_OBSERVABLE_ONLY": 0
+      }
+    },
+    {
+      "chunk_index": 160,
+      "recovery_score_by_condition": {
+        "R0_FULL_KNOWLEDGE": 1,
+        "R1_NO_CONTEXT": 0.5,
+        "R2_NO_CONVENTION": 0,
+        "R6_OBSERVABLE_ONLY": 0
+      },
+      "recovery_class_by_condition": {
+        "R0_FULL_KNOWLEDGE": "EXACT",
+        "R1_NO_CONTEXT": "AMBIGUITY_SET",
+        "R2_NO_CONVENTION": "CUE_ONLY",
+        "R3_NO_PATH_GEOMETRY": "NOT_APPLICABLE",
+        "R4_NO_HISTORY": "NOT_APPLICABLE",
+        "R5_NO_INTERNAL_MEMORY": "NOT_APPLICABLE",
+        "R6_OBSERVABLE_ONLY": "CUE_ONLY"
+      },
+      "ambiguity_cardinality_by_condition": {
+        "R0_FULL_KNOWLEDGE": 0,
+        "R1_NO_CONTEXT": 2,
+        "R2_NO_CONVENTION": 0,
+        "R3_NO_PATH_GEOMETRY": 0,
+        "R4_NO_HISTORY": 0,
+        "R5_NO_INTERNAL_MEMORY": 0,
+        "R6_OBSERVABLE_ONLY": 0
+      }
+    },
+    {
+      "chunk_index": 192,
+      "recovery_score_by_condition": {
+        "R0_FULL_KNOWLEDGE": 1,
+        "R1_NO_CONTEXT": 0.5,
+        "R2_NO_CONVENTION": 0,
+        "R6_OBSERVABLE_ONLY": 0
+      },
+      "recovery_class_by_condition": {
+        "R0_FULL_KNOWLEDGE": "EXACT",
+        "R1_NO_CONTEXT": "AMBIGUITY_SET",
+        "R2_NO_CONVENTION": "CUE_ONLY",
+        "R3_NO_PATH_GEOMETRY": "NOT_APPLICABLE",
+        "R4_NO_HISTORY": "NOT_APPLICABLE",
+        "R5_NO_INTERNAL_MEMORY": "NOT_APPLICABLE",
+        "R6_OBSERVABLE_ONLY": "CUE_ONLY"
+      },
+      "ambiguity_cardinality_by_condition": {
+        "R0_FULL_KNOWLEDGE": 0,
+        "R1_NO_CONTEXT": 2,
+        "R2_NO_CONVENTION": 0,
+        "R3_NO_PATH_GEOMETRY": 0,
+        "R4_NO_HISTORY": 0,
+        "R5_NO_INTERNAL_MEMORY": 0,
+        "R6_OBSERVABLE_ONLY": 0
+      }
+    },
+    {
+      "chunk_index": 224,
+      "recovery_score_by_condition": {
+        "R0_FULL_KNOWLEDGE": 1,
+        "R1_NO_CONTEXT": 0.5,
+        "R2_NO_CONVENTION": 0,
+        "R6_OBSERVABLE_ONLY": 0
+      },
+      "recovery_class_by_condition": {
+        "R0_FULL_KNOWLEDGE": "EXACT",
+        "R1_NO_CONTEXT": "AMBIGUITY_SET",
+        "R2_NO_CONVENTION": "CUE_ONLY",
+        "R3_NO_PATH_GEOMETRY": "NOT_APPLICABLE",
+        "R4_NO_HISTORY": "NOT_APPLICABLE",
+        "R5_NO_INTERNAL_MEMORY": "NOT_APPLICABLE",
+        "R6_OBSERVABLE_ONLY": "CUE_ONLY"
+      },
+      "ambiguity_cardinality_by_condition": {
+        "R0_FULL_KNOWLEDGE": 0,
+        "R1_NO_CONTEXT": 2,
+        "R2_NO_CONVENTION": 0,
+        "R3_NO_PATH_GEOMETRY": 0,
+        "R4_NO_HISTORY": 0,
+        "R5_NO_INTERNAL_MEMORY": 0,
+        "R6_OBSERVABLE_ONLY": 0
+      }
+    }
+  ],
+  "local_collisions": null,
+  "f2": {
+    "corpus_file_sha256": "3256e8254387695aa294cdcdcfc71afdb4d8078cfd9611a9a2573c8265977941",
+    "corpus_file_path": "research/phase2/task82a/raw/f2corpus/0addbf67fc4a5edd7661f016cd8f6650.txt",
+    "metrics": [
+      {
+        "metric_id": "EF1_GIANT_COMPONENT_SHARE",
+        "metric_version": "fingerprint-v2-lexical-paradigms-v1",
+        "family": "edit family",
+        "final_classification": "CORE",
+        "value": 0.25,
+        "available": true,
+        "boundary_provenance": "ASSEMBLER_DEFINED"
+      },
+      {
+        "metric_id": "EF1_ISOLATE_SHARE",
+        "metric_version": "fingerprint-v2-lexical-paradigms-v1",
+        "family": "edit family",
+        "final_classification": "SUPPORTING",
+        "value": 0,
+        "available": true,
+        "boundary_provenance": "ASSEMBLER_DEFINED"
+      },
+      {
+        "metric_id": "EF2_GLOBAL_CLUSTERING",
+        "metric_version": "fingerprint-v2-lexical-paradigms-v1",
+        "family": "edit family",
+        "final_classification": "CORE",
+        "value": 0.3988931902621528,
+        "available": true,
+        "boundary_provenance": "ASSEMBLER_DEFINED"
+      },
+      {
+        "metric_id": "EF3_DEGREE_FREQUENCY_SPEARMAN",
+        "metric_version": "fingerprint-v2-lexical-paradigms-v1",
+        "family": "edit family",
+        "final_classification": "CORE",
+        "value": 0,
+        "available": true,
+        "boundary_provenance": "ASSEMBLER_DEFINED"
+      },
+      {
+        "metric_id": "LP1_RULE_SUPPORT_GINI",
+        "metric_version": "fingerprint-v2-lexical-paradigms-v1",
+        "family": "lexical paradigm",
+        "final_classification": "SUPPORTING",
+        "value": 0.15429885182565162,
+        "available": true,
+        "boundary_provenance": "ASSEMBLER_DEFINED"
+      },
+      {
+        "metric_id": "LP4_PREFIX_ATTACHMENT_NMI",
+        "metric_version": "fingerprint-v2-lexical-paradigms-v1",
+        "family": "lexical paradigm",
+        "final_classification": "SUPPORTING",
+        "value": 0.006664780814179983,
+        "available": true,
+        "boundary_provenance": "ASSEMBLER_DEFINED"
+      },
+      {
+        "metric_id": "LP4_SUFFIX_ATTACHMENT_NMI",
+        "metric_version": "fingerprint-v2-lexical-paradigms-v1",
+        "family": "lexical paradigm",
+        "final_classification": "SUPPORTING",
+        "value": 0.0010289267747320319,
+        "available": true,
+        "boundary_provenance": "ASSEMBLER_DEFINED"
+      },
+      {
+        "metric_id": "cs1/family-line-position",
+        "metric_version": "fingerprint-v2-lexical-paradigms-v1",
+        "family": "cross-scale",
+        "final_classification": "SUPPORTING",
+        "value": 0,
+        "available": false,
+        "missing_reason": "INCONCLUSIVE: insufficient family-bearing occurrences with line-position metadata (need line metadata from ivtff_path)",
+        "boundary_provenance": "ASSEMBLER_DEFINED"
+      },
+      {
+        "metric_id": "cs2/prev-family-current-family",
+        "metric_version": "fingerprint-v2-lexical-paradigms-v1",
+        "family": "cross-scale",
+        "final_classification": "SUPPORTING",
+        "value": 0,
+        "available": false,
+        "missing_reason": "INCONCLUSIVE: fewer than 20 family-bearing adjacent occurrence pairs",
+        "boundary_provenance": "ASSEMBLER_DEFINED"
+      },
+      {
+        "metric_id": "cs3/family-locus-type",
+        "metric_version": "fingerprint-v2-lexical-paradigms-v1",
+        "family": "cross-scale",
+        "final_classification": "SUPPORTING",
+        "value": 0,
+        "available": false,
+        "missing_reason": "NOT_APPLICABLE: requires ivtff_path locus-type metadata; unavailable or below the 20-occurrence floor for this corpus",
+        "boundary_provenance": "ASSEMBLER_DEFINED"
+      },
+      {
+        "metric_id": "cs4/family-currier",
+        "metric_version": "fingerprint-v2-lexical-paradigms-v1",
+        "family": "cross-scale",
+        "final_classification": "SUPPORTING",
+        "value": 0,
+        "available": false,
+        "missing_reason": "NOT_APPLICABLE: requires ivtff_path Currier metadata and \u003e=4 folios; unavailable or below the 20-occurrence floor",
+        "boundary_provenance": "ASSEMBLER_DEFINED"
+      },
+      {
+        "metric_id": "cs4/family-section",
+        "metric_version": "fingerprint-v2-lexical-paradigms-v1",
+        "family": "cross-scale",
+        "final_classification": "SUPPORTING",
+        "value": 0,
+        "available": false,
+        "missing_reason": "NOT_APPLICABLE: requires ivtff_path section metadata and \u003e=4 folios; unavailable or below the 20-occurrence floor",
+        "boundary_provenance": "ASSEMBLER_DEFINED"
+      },
+      {
+        "metric_id": "cs5/local-adjacency-x-regime",
+        "metric_version": "fingerprint-v2-lexical-paradigms-v1",
+        "family": "cross-scale",
+        "final_classification": "SUPPORTING",
+        "value": 0,
+        "available": false,
+        "missing_reason": "NOT_APPLICABLE: requires \u003e=2 sufficiently sampled Currier x section strata",
+        "boundary_provenance": "ASSEMBLER_DEFINED"
+      },
+      {
+        "metric_id": "cs6/family-diversity-x-line-length",
+        "metric_version": "fingerprint-v2-lexical-paradigms-v1",
+        "family": "cross-scale",
+        "final_classification": "SUPPORTING",
+        "value": 0,
+        "available": true,
+        "verdict": "NOT_SUPPORTED",
+        "boundary_provenance": "ASSEMBLER_DEFINED"
+      },
+      {
+        "metric_id": "cs7/edit-distance-x-structural-distance",
+        "metric_version": "fingerprint-v2-lexical-paradigms-v1",
+        "family": "cross-scale",
+        "final_classification": "SUPPORTING",
+        "value": 0.19104486307714713,
+        "available": true,
+        "verdict": "NOT_SUPPORTED",
+        "boundary_provenance": "ASSEMBLER_DEFINED"
+      }
+    ]
+  },
+  "metrics": {
+    "observable_symbol_count": 1024,
+    "observable_token_count": 1024,
+    "distinct_observable_symbols": 1024,
+    "distinct_observable_tokens": 1024,
+    "symbol_entropy_plugin_bits": 10,
+    "conditional_symbol_entropy_plugin_bits": 0,
+    "token_entropy_plugin_bits": 10,
+    "adjacent_symbol_repetition_rate": 0,
+    "adjacent_token_repetition_rate": 0
+  },
+  "observable_checksum": "cc84826806a0ccca12e0ef255601f96184f2d8cffb4d7ff06c73857b09422d15",
+  "warnings": null,
+  "runtime_ns": 0,
+  "software_version": "task82a-analyze/V1.0"
+}

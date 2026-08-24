@@ -1,0 +1,993 @@
+{
+  "schema": "TASK82A_RAW_JOB_V1",
+  "implementation_version": "V1.0",
+  "freeze_version": "V1.0",
+  "job": {
+    "job_id": "00f620bcecafaaeb32c9bb20dea02d55",
+    "mechanism_id": "synthetic_cyclic_state",
+    "mechanism_version": "v1",
+    "parameter_set_id": "f12-cycle-default",
+    "scaling_policy_id": "CUE_RESET_GLOBAL_V1",
+    "input_corpus_id": "Longfellow",
+    "corpus_scale": "SMALL",
+    "chunks": 64,
+    "seed": 6620088476981832450,
+    "replicate": 0,
+    "ablation_control_status": "GENERIC_CONTROL"
+  },
+  "family": "GENERIC_CYCLIC_STATE",
+  "historical_status": "GENERIC_CONTROL",
+  "input_corpus": {
+    "id": "Longfellow",
+    "path": "data_test/pg30795-mod.txt",
+    "sha256": "95bdc2940f56a69e28ac912245d40a601ae329fc42aeec489a3557fc7416c398"
+  },
+  "local_run_count": 64,
+  "state_policy": "RESET_EACH_CHUNK",
+  "scaling_policy_id": "CUE_RESET_GLOBAL_V1",
+  "boundary_provenance": {
+    "token": "ASSEMBLER_DEFINED",
+    "line": "ASSEMBLER_DEFINED",
+    "page": "NOT_DEFINED"
+  },
+  "chunks": [
+    {
+      "index": 0,
+      "symbols": [
+        "C0"
+      ],
+      "checksum": "f9c9da0cdb72554e39533077edf07d7f475bb06ed7589f7d8ce9d767333e2d70",
+      "intended_id": "If86b1f62a8554232"
+    },
+    {
+      "index": 1,
+      "symbols": [
+        "C4"
+      ],
+      "checksum": "569be1abdcab509a9dd600efdde72cc3f255fdc9636a77a897c62ac5ab641968",
+      "intended_id": "If109f448a636f197"
+    },
+    {
+      "index": 2,
+      "symbols": [
+        "C8"
+      ],
+      "checksum": "cc6e88c5a16bb1198488fe8b436104f2e298e8a3fc13de32f3f0ab156adbd999",
+      "intended_id": "Ib808e156d18d1cec"
+    },
+    {
+      "index": 3,
+      "symbols": [
+        "C12"
+      ],
+      "checksum": "8956842b76426d1b7465a83badc5540a82779d50f3a59529bcadaf07e2e2a2ec",
+      "intended_id": "I0695b563acde461f"
+    },
+    {
+      "index": 4,
+      "symbols": [
+        "C16"
+      ],
+      "checksum": "ad468842d890bf422fd49e667f9a2ddab740657d9a5b757acf607d42f35ffa34",
+      "intended_id": "Ib9776d7ddf459c9a"
+    },
+    {
+      "index": 5,
+      "symbols": [
+        "C20"
+      ],
+      "checksum": "72cf14a58d970b3a8914a75a4082dda3832fd689a8ae925b49c5b6ac0b94eba7",
+      "intended_id": "I872f0076c7e4835f"
+    },
+    {
+      "index": 6,
+      "symbols": [
+        "C24"
+      ],
+      "checksum": "69d2e01ea4e45996a77523692881e0652534ef3417ae9d95ef0745482c4a8bcc",
+      "intended_id": "I506c65c53828b641"
+    },
+    {
+      "index": 7,
+      "symbols": [
+        "C28"
+      ],
+      "checksum": "d8cf88469d87eaa9c7bcea88762f561569c35a53ad97b4a79719e8e4a539c4c1",
+      "intended_id": "I04d588cb41b8022d"
+    },
+    {
+      "index": 8,
+      "symbols": [
+        "C32"
+      ],
+      "checksum": "7bbc2729b2d2f990147cd678d2acbebbbcb33ef58554b4fa365511e707dd0d3f",
+      "intended_id": "Ib9776d7ddf459c9a"
+    },
+    {
+      "index": 9,
+      "symbols": [
+        "C36"
+      ],
+      "checksum": "df03c1361273b470f835e31bcfaf8b7c1f9faa93e62e307321963bb4bca09e2d",
+      "intended_id": "Icfa5b483895333db"
+    },
+    {
+      "index": 10,
+      "symbols": [
+        "C40"
+      ],
+      "checksum": "e5348a73edb117639584bc08eeb80bf5e5cc82da79a4ae652e649a4cabc8f910",
+      "intended_id": "I8dba6bdfdceaf274"
+    },
+    {
+      "index": 11,
+      "symbols": [
+        "C44"
+      ],
+      "checksum": "efdd2387752f1badea3025aa737ad1ed71439e0a86a6c5aa909a303a2aaedc6b",
+      "intended_id": "I46f7468b4180a07a"
+    },
+    {
+      "index": 12,
+      "symbols": [
+        "C48"
+      ],
+      "checksum": "b5ac0d67b3f8fff35e64df80bb3d962cfbc99f0a50eed5dd71676d596de013eb",
+      "intended_id": "I582967534d0f909d"
+    },
+    {
+      "index": 13,
+      "symbols": [
+        "C52"
+      ],
+      "checksum": "594adb33890e1e8a9d1eb13c7785d0fc833ffd670e94c378a0134022a9593fb3",
+      "intended_id": "If86b1f62a8554232"
+    },
+    {
+      "index": 14,
+      "symbols": [
+        "C56"
+      ],
+      "checksum": "24e134c064948e038ed254da859ac2434c29314656cad477472f80bf24108459",
+      "intended_id": "I879915cfdc2cb485"
+    },
+    {
+      "index": 15,
+      "symbols": [
+        "C60"
+      ],
+      "checksum": "f9a54507d89273ccfb25be652f4bb0baf95c09369faca95a507190f08c5fa5b4",
+      "intended_id": "I212136de72bb0811"
+    },
+    {
+      "index": 16,
+      "symbols": [
+        "C64"
+      ],
+      "checksum": "c180dc070758ed94dcedb97111b43ca25ce6cf445f07451f474bc9100f9bf83a",
+      "intended_id": "I75857a45899985be"
+    },
+    {
+      "index": 17,
+      "symbols": [
+        "C68"
+      ],
+      "checksum": "3e13cd770ba80cb91cd6c6a9d30b6e6dcab62b9be9aff4d6fb3b137bf01d568a",
+      "intended_id": "I28391d3bc64ec15c"
+    },
+    {
+      "index": 18,
+      "symbols": [
+        "C72"
+      ],
+      "checksum": "885d03af04aa1848d8108a4a14bafff20e82710f058cc7fa204c6ac7a0ccb7fa",
+      "intended_id": "Ib9776d7ddf459c9a"
+    },
+    {
+      "index": 19,
+      "symbols": [
+        "C76"
+      ],
+      "checksum": "89c32e7e435593d1368c227b89674a9ebac4af41462689bc67821110ebdf4ef4",
+      "intended_id": "I0c63235989579d1c"
+    },
+    {
+      "index": 20,
+      "symbols": [
+        "C80"
+      ],
+      "checksum": "11cbca0c5cb8a9db737d87f0dc47a40b9cc3bec8084e4f1ccd0365f82b6e63da",
+      "intended_id": "I28391d3bc64ec15c"
+    },
+    {
+      "index": 21,
+      "symbols": [
+        "C84"
+      ],
+      "checksum": "b6cf1944e7676e4c75647d45bce1a2b72b6244c4a493fd13edea4d096087802a",
+      "intended_id": "Ib9776d7ddf459c9a"
+    },
+    {
+      "index": 22,
+      "symbols": [
+        "C88"
+      ],
+      "checksum": "e309246c929fd433cb59b70f4d0609f89581cc6eb715819b2c5b91979ecc6255",
+      "intended_id": "I410594b2e8015076"
+    },
+    {
+      "index": 23,
+      "symbols": [
+        "C92"
+      ],
+      "checksum": "20bda21c001b9998a23cbe8d4c3a9ccc0b40c5cf11d80b219f361552f6bdd6a8",
+      "intended_id": "Ib9776d7ddf459c9a"
+    },
+    {
+      "index": 24,
+      "symbols": [
+        "C96"
+      ],
+      "checksum": "e1eca1166f47c59b3e337885473cea446cebf8528893348a1fdfcaa4da53545b",
+      "intended_id": "Ib9776d7ddf459c9a"
+    },
+    {
+      "index": 25,
+      "symbols": [
+        "C100"
+      ],
+      "checksum": "9c85489c051a63bfc91ee17040c5d8f46ba394ccd78cf86de9c78d03fe4cad23",
+      "intended_id": "Ide7d1b721a1e0632"
+    },
+    {
+      "index": 26,
+      "symbols": [
+        "C104"
+      ],
+      "checksum": "c05afb435d2f8c4a5f77b7a87e09b7b425701df6e7f67b50f1f912f0d44cb84c",
+      "intended_id": "Ide7d1b721a1e0632"
+    },
+    {
+      "index": 27,
+      "symbols": [
+        "C108"
+      ],
+      "checksum": "b2d4fce0a7198acc386898702a7554503a1f4a1cdb5321d318643c9b0ea27e92",
+      "intended_id": "Ib9776d7ddf459c9a"
+    },
+    {
+      "index": 28,
+      "symbols": [
+        "C112"
+      ],
+      "checksum": "46ddfb428891a5b9a159f50578eee0aff53bfb76fec1f199ee166b630e3cd7b0",
+      "intended_id": "Ib9776d7ddf459c9a"
+    },
+    {
+      "index": 29,
+      "symbols": [
+        "C116"
+      ],
+      "checksum": "7896fa2ebdb582fe41bee7baf447d0b4cb91435a492247731b28a84cd149fbc5",
+      "intended_id": "I92d74bb8bddbbb9c"
+    },
+    {
+      "index": 30,
+      "symbols": [
+        "C120"
+      ],
+      "checksum": "d01e26c3d865901ad4cf6648237dff6972f7aef979a1ed07812c2bf439554787",
+      "intended_id": "Ib48111c10c65fc11"
+    },
+    {
+      "index": 31,
+      "symbols": [
+        "C124"
+      ],
+      "checksum": "15b38769ec0892b6c04ed7f40fd27e501eda832520f57742e0d62b7889a857fd",
+      "intended_id": "I9780daa5e89d610e"
+    },
+    {
+      "index": 32,
+      "symbols": [
+        "C128"
+      ],
+      "checksum": "4c0fd4f94df2380fd2daeb2c9f255b84b3b387b95cf7f9783ecd6a16d4ceab44",
+      "intended_id": "I28ae5a9b5f4f66a3"
+    },
+    {
+      "index": 33,
+      "symbols": [
+        "C132"
+      ],
+      "checksum": "a84b0c37554e906627b512c2f930107ba3e798293246d984a9f9d87912eeaf64",
+      "intended_id": "I6201111b83a0cb5b"
+    },
+    {
+      "index": 34,
+      "symbols": [
+        "C136"
+      ],
+      "checksum": "6cf09aee968ba49f88f8ca5564f80f2b0862155c206cb690619ad94c8ff14cf9",
+      "intended_id": "I0db52f4076c08251"
+    },
+    {
+      "index": 35,
+      "symbols": [
+        "C140"
+      ],
+      "checksum": "2421e851c208559f025c8a9ba451925f6890a67c7f77b53612a9adc58e601904",
+      "intended_id": "Ibb0347a468d97e98"
+    },
+    {
+      "index": 36,
+      "symbols": [
+        "C144"
+      ],
+      "checksum": "904a5f679b0226aa48a35533bc5e6af64f188922ea41caa3c5010ef3bc4c9be5",
+      "intended_id": "I28391d3bc64ec15c"
+    },
+    {
+      "index": 37,
+      "symbols": [
+        "C148"
+      ],
+      "checksum": "576f8ea8f3219225f00b43777bda64c5bc6c1d4bba01313d9040c6c414651dbb",
+      "intended_id": "Ib9776d7ddf459c9a"
+    },
+    {
+      "index": 38,
+      "symbols": [
+        "C152"
+      ],
+      "checksum": "c13eabb83d969f06ae7e811eeffe98dd32445dd24e9e71f6171bc768aab70522",
+      "intended_id": "I71da248c60491347"
+    },
+    {
+      "index": 39,
+      "symbols": [
+        "C156"
+      ],
+      "checksum": "ff63fd26c4ecd32fa0efc147aa8d20db7c0f0478f06b585b25f0e29e535fc8b3",
+      "intended_id": "I28391d3bc64ec15c"
+    },
+    {
+      "index": 40,
+      "symbols": [
+        "C160"
+      ],
+      "checksum": "c0aa016eabc9d4513bb0a11f86b50109df96e4d98f82186b78f0b935f650578b",
+      "intended_id": "Ib9776d7ddf459c9a"
+    },
+    {
+      "index": 41,
+      "symbols": [
+        "C164"
+      ],
+      "checksum": "4e767328305dc1c67bb9ab13465d202b68597e265b4e0339c50063989027077f",
+      "intended_id": "Ie73b48f750be9535"
+    },
+    {
+      "index": 42,
+      "symbols": [
+        "C168"
+      ],
+      "checksum": "03f60fb7de9d0dd197d9c54a1e8377ed7185af53cba09cda032f2da25099613e",
+      "intended_id": "If28d18c311d2ddfe"
+    },
+    {
+      "index": 43,
+      "symbols": [
+        "C172"
+      ],
+      "checksum": "57d3c28ad391012d3b4a99c643c1bf776e175c0cc2146abe0e4bad4297cef792",
+      "intended_id": "I582967534d0f909d"
+    },
+    {
+      "index": 44,
+      "symbols": [
+        "C176"
+      ],
+      "checksum": "6df029377895ccf8c14a89612fa52f96774bd23fd089a8e95dc200073610f824",
+      "intended_id": "Ib9776d7ddf459c9a"
+    },
+    {
+      "index": 45,
+      "symbols": [
+        "C180"
+      ],
+      "checksum": "62cad21d34c9bcc9a828645df7de1d7832bb880e24264159d3679c4af00878da",
+      "intended_id": "Ie14c0387e5c67466"
+    },
+    {
+      "index": 46,
+      "symbols": [
+        "C184"
+      ],
+      "checksum": "fc7c25ba6b168269b12967ac08f7d13f4940b5f75a756122f2eb702707733d57",
+      "intended_id": "I9b6ed356b8921b8e"
+    },
+    {
+      "index": 47,
+      "symbols": [
+        "C188"
+      ],
+      "checksum": "ae17a88ec69b2b7b8dd5bb837d05ecb61b1e74d64a2e59f327fb5a265e5cfe72",
+      "intended_id": "Ib9776d7ddf459c9a"
+    },
+    {
+      "index": 48,
+      "symbols": [
+        "C192"
+      ],
+      "checksum": "e85428e4a67df97647565865019fc9c6dd3a721a93bfe15393de1a7fb851a664",
+      "intended_id": "Ic2d37dd0575766e4"
+    },
+    {
+      "index": 49,
+      "symbols": [
+        "C196"
+      ],
+      "checksum": "a363e8ea7968d67de8e8c796375cdef8cd37065ec2005adb4fc0a1bc396b6b23",
+      "intended_id": "I8bf140db34c3fc03"
+    },
+    {
+      "index": 50,
+      "symbols": [
+        "C200"
+      ],
+      "checksum": "3d8e904a3c2e7c9401dc46665a1a87082a003b7bacda56a75065aa519bba1d68",
+      "intended_id": "Ib9776d7ddf459c9a"
+    },
+    {
+      "index": 51,
+      "symbols": [
+        "C204"
+      ],
+      "checksum": "9fdf759451dc41ad67b1fb4f75d77fa3cc302ab4bee7ed1185202090bec954c5",
+      "intended_id": "I935f68319d4f227e"
+    },
+    {
+      "index": 52,
+      "symbols": [
+        "C208"
+      ],
+      "checksum": "19de36eaefb807c1665e649e9054741f5199397fc63dd5c15dbbba27ef395f0c",
+      "intended_id": "If86b1f62a8554232"
+    },
+    {
+      "index": 53,
+      "symbols": [
+        "C212"
+      ],
+      "checksum": "878f6f58f8574e89bb26ca8957842ce87bf0b04d72be4587b12e440191fe7fce",
+      "intended_id": "I6ed0337140bd32b4"
+    },
+    {
+      "index": 54,
+      "symbols": [
+        "C216"
+      ],
+      "checksum": "1f2bfe3e8ed6d0bd6fd309be2afa4ff9b805aa269f77c06e500fbba1844b22d8",
+      "intended_id": "I79adb2a2fce5c6ba"
+    },
+    {
+      "index": 55,
+      "symbols": [
+        "C220"
+      ],
+      "checksum": "1be6a0923df55e38e63ac93dbdaf71fb4ca42a090bdcf3afa92f6331fc501c87",
+      "intended_id": "Ide7d1b721a1e0632"
+    },
+    {
+      "index": 56,
+      "symbols": [
+        "C224"
+      ],
+      "checksum": "a9ab475ca80a572f4606602085b77239868211290bb76a973ed2d97973f60c1e",
+      "intended_id": "Icd798a3c6e7b260f"
+    },
+    {
+      "index": 57,
+      "symbols": [
+        "C228"
+      ],
+      "checksum": "7c29411096e372b3619d190837396e96c98af83c7e7b4a96ca611009f8d339d0",
+      "intended_id": "Idba36bffa5cab0f9"
+    },
+    {
+      "index": 58,
+      "symbols": [
+        "C232"
+      ],
+      "checksum": "d60b61010f57167f90b9c0cbbd44bf7c608c6b2ded8d84107fee617a1267a582",
+      "intended_id": "Ib9776d7ddf459c9a"
+    },
+    {
+      "index": 59,
+      "symbols": [
+        "C236"
+      ],
+      "checksum": "0f596f0c99b9ad78523db2c3dc45fe292f9cbb979bace5fb8835a5780fae83f3",
+      "intended_id": "I582967534d0f909d"
+    },
+    {
+      "index": 60,
+      "symbols": [
+        "C240"
+      ],
+      "checksum": "7912dbfeadc7bf955056bfec6bdc4dd946cdf22fd68db23c9613b32814aeee1c",
+      "intended_id": "I5a9b9fc8e986cc2f"
+    },
+    {
+      "index": 61,
+      "symbols": [
+        "C244"
+      ],
+      "checksum": "3302e97ad4cea3a5bc3eb4f00dbacdf1a079d5000471e982142369f22c56dd6e",
+      "intended_id": "I54c0bcab0e733437"
+    },
+    {
+      "index": 62,
+      "symbols": [
+        "C248"
+      ],
+      "checksum": "99e0295174527b1952a792b3e8dc357e59492adc00940dbd1c54b2c1d69b3f96",
+      "intended_id": "I92d74bb8bddbbb9c"
+    },
+    {
+      "index": 63,
+      "symbols": [
+        "C252"
+      ],
+      "checksum": "1c9be466b9bbaf14224aaea75b3a09667a5a0b8b0b7b58271f0e49cc9d7cb96a",
+      "intended_id": "Ib9776d7ddf459c9a"
+    }
+  ],
+  "observable_document": {
+    "symbols": [
+      "C0",
+      "C4",
+      "C8",
+      "C12",
+      "C16",
+      "C20",
+      "C24",
+      "C28",
+      "C32",
+      "C36",
+      "C40",
+      "C44",
+      "C48",
+      "C52",
+      "C56",
+      "C60",
+      "C64",
+      "C68",
+      "C72",
+      "C76",
+      "C80",
+      "C84",
+      "C88",
+      "C92",
+      "C96",
+      "C100",
+      "C104",
+      "C108",
+      "C112",
+      "C116",
+      "C120",
+      "C124",
+      "C128",
+      "C132",
+      "C136",
+      "C140",
+      "C144",
+      "C148",
+      "C152",
+      "C156",
+      "C160",
+      "C164",
+      "C168",
+      "C172",
+      "C176",
+      "C180",
+      "C184",
+      "C188",
+      "C192",
+      "C196",
+      "C200",
+      "C204",
+      "C208",
+      "C212",
+      "C216",
+      "C220",
+      "C224",
+      "C228",
+      "C232",
+      "C236",
+      "C240",
+      "C244",
+      "C248",
+      "C252"
+    ],
+    "token_boundary": "GENERATED_BY_MECHANISM",
+    "line_boundary": "GENERATED_BY_MECHANISM",
+    "unit_boundary": "GENERATED_BY_MECHANISM",
+    "metadata": {
+      "family": "GENERIC_CYCLIC_STATE",
+      "line_boundary_provenance": "ASSEMBLER_DEFINED",
+      "page_boundary_provenance": "NOT_DEFINED",
+      "token_boundary_provenance": "ASSEMBLER_DEFINED"
+    }
+  },
+  "local_recoveries": [
+    {
+      "chunk_index": 0,
+      "recovery_score_by_condition": {
+        "R0_FULL_KNOWLEDGE": 0,
+        "R6_OBSERVABLE_ONLY": 0
+      },
+      "recovery_class_by_condition": {
+        "R0_FULL_KNOWLEDGE": "CUE_ONLY",
+        "R1_NO_CONTEXT": "NOT_APPLICABLE",
+        "R2_NO_CONVENTION": "NOT_APPLICABLE",
+        "R3_NO_PATH_GEOMETRY": "NOT_APPLICABLE",
+        "R4_NO_HISTORY": "NOT_APPLICABLE",
+        "R5_NO_INTERNAL_MEMORY": "NOT_APPLICABLE",
+        "R6_OBSERVABLE_ONLY": "CUE_ONLY"
+      },
+      "ambiguity_cardinality_by_condition": {
+        "R0_FULL_KNOWLEDGE": 0,
+        "R1_NO_CONTEXT": 0,
+        "R2_NO_CONVENTION": 0,
+        "R3_NO_PATH_GEOMETRY": 0,
+        "R4_NO_HISTORY": 0,
+        "R5_NO_INTERNAL_MEMORY": 0,
+        "R6_OBSERVABLE_ONLY": 0
+      }
+    },
+    {
+      "chunk_index": 8,
+      "recovery_score_by_condition": {
+        "R0_FULL_KNOWLEDGE": 0,
+        "R6_OBSERVABLE_ONLY": 0
+      },
+      "recovery_class_by_condition": {
+        "R0_FULL_KNOWLEDGE": "CUE_ONLY",
+        "R1_NO_CONTEXT": "NOT_APPLICABLE",
+        "R2_NO_CONVENTION": "NOT_APPLICABLE",
+        "R3_NO_PATH_GEOMETRY": "NOT_APPLICABLE",
+        "R4_NO_HISTORY": "NOT_APPLICABLE",
+        "R5_NO_INTERNAL_MEMORY": "NOT_APPLICABLE",
+        "R6_OBSERVABLE_ONLY": "CUE_ONLY"
+      },
+      "ambiguity_cardinality_by_condition": {
+        "R0_FULL_KNOWLEDGE": 0,
+        "R1_NO_CONTEXT": 0,
+        "R2_NO_CONVENTION": 0,
+        "R3_NO_PATH_GEOMETRY": 0,
+        "R4_NO_HISTORY": 0,
+        "R5_NO_INTERNAL_MEMORY": 0,
+        "R6_OBSERVABLE_ONLY": 0
+      }
+    },
+    {
+      "chunk_index": 16,
+      "recovery_score_by_condition": {
+        "R0_FULL_KNOWLEDGE": 0,
+        "R6_OBSERVABLE_ONLY": 0
+      },
+      "recovery_class_by_condition": {
+        "R0_FULL_KNOWLEDGE": "CUE_ONLY",
+        "R1_NO_CONTEXT": "NOT_APPLICABLE",
+        "R2_NO_CONVENTION": "NOT_APPLICABLE",
+        "R3_NO_PATH_GEOMETRY": "NOT_APPLICABLE",
+        "R4_NO_HISTORY": "NOT_APPLICABLE",
+        "R5_NO_INTERNAL_MEMORY": "NOT_APPLICABLE",
+        "R6_OBSERVABLE_ONLY": "CUE_ONLY"
+      },
+      "ambiguity_cardinality_by_condition": {
+        "R0_FULL_KNOWLEDGE": 0,
+        "R1_NO_CONTEXT": 0,
+        "R2_NO_CONVENTION": 0,
+        "R3_NO_PATH_GEOMETRY": 0,
+        "R4_NO_HISTORY": 0,
+        "R5_NO_INTERNAL_MEMORY": 0,
+        "R6_OBSERVABLE_ONLY": 0
+      }
+    },
+    {
+      "chunk_index": 24,
+      "recovery_score_by_condition": {
+        "R0_FULL_KNOWLEDGE": 0,
+        "R6_OBSERVABLE_ONLY": 0
+      },
+      "recovery_class_by_condition": {
+        "R0_FULL_KNOWLEDGE": "CUE_ONLY",
+        "R1_NO_CONTEXT": "NOT_APPLICABLE",
+        "R2_NO_CONVENTION": "NOT_APPLICABLE",
+        "R3_NO_PATH_GEOMETRY": "NOT_APPLICABLE",
+        "R4_NO_HISTORY": "NOT_APPLICABLE",
+        "R5_NO_INTERNAL_MEMORY": "NOT_APPLICABLE",
+        "R6_OBSERVABLE_ONLY": "CUE_ONLY"
+      },
+      "ambiguity_cardinality_by_condition": {
+        "R0_FULL_KNOWLEDGE": 0,
+        "R1_NO_CONTEXT": 0,
+        "R2_NO_CONVENTION": 0,
+        "R3_NO_PATH_GEOMETRY": 0,
+        "R4_NO_HISTORY": 0,
+        "R5_NO_INTERNAL_MEMORY": 0,
+        "R6_OBSERVABLE_ONLY": 0
+      }
+    },
+    {
+      "chunk_index": 32,
+      "recovery_score_by_condition": {
+        "R0_FULL_KNOWLEDGE": 0,
+        "R6_OBSERVABLE_ONLY": 0
+      },
+      "recovery_class_by_condition": {
+        "R0_FULL_KNOWLEDGE": "CUE_ONLY",
+        "R1_NO_CONTEXT": "NOT_APPLICABLE",
+        "R2_NO_CONVENTION": "NOT_APPLICABLE",
+        "R3_NO_PATH_GEOMETRY": "NOT_APPLICABLE",
+        "R4_NO_HISTORY": "NOT_APPLICABLE",
+        "R5_NO_INTERNAL_MEMORY": "NOT_APPLICABLE",
+        "R6_OBSERVABLE_ONLY": "CUE_ONLY"
+      },
+      "ambiguity_cardinality_by_condition": {
+        "R0_FULL_KNOWLEDGE": 0,
+        "R1_NO_CONTEXT": 0,
+        "R2_NO_CONVENTION": 0,
+        "R3_NO_PATH_GEOMETRY": 0,
+        "R4_NO_HISTORY": 0,
+        "R5_NO_INTERNAL_MEMORY": 0,
+        "R6_OBSERVABLE_ONLY": 0
+      }
+    },
+    {
+      "chunk_index": 40,
+      "recovery_score_by_condition": {
+        "R0_FULL_KNOWLEDGE": 0,
+        "R6_OBSERVABLE_ONLY": 0
+      },
+      "recovery_class_by_condition": {
+        "R0_FULL_KNOWLEDGE": "CUE_ONLY",
+        "R1_NO_CONTEXT": "NOT_APPLICABLE",
+        "R2_NO_CONVENTION": "NOT_APPLICABLE",
+        "R3_NO_PATH_GEOMETRY": "NOT_APPLICABLE",
+        "R4_NO_HISTORY": "NOT_APPLICABLE",
+        "R5_NO_INTERNAL_MEMORY": "NOT_APPLICABLE",
+        "R6_OBSERVABLE_ONLY": "CUE_ONLY"
+      },
+      "ambiguity_cardinality_by_condition": {
+        "R0_FULL_KNOWLEDGE": 0,
+        "R1_NO_CONTEXT": 0,
+        "R2_NO_CONVENTION": 0,
+        "R3_NO_PATH_GEOMETRY": 0,
+        "R4_NO_HISTORY": 0,
+        "R5_NO_INTERNAL_MEMORY": 0,
+        "R6_OBSERVABLE_ONLY": 0
+      }
+    },
+    {
+      "chunk_index": 48,
+      "recovery_score_by_condition": {
+        "R0_FULL_KNOWLEDGE": 0,
+        "R6_OBSERVABLE_ONLY": 0
+      },
+      "recovery_class_by_condition": {
+        "R0_FULL_KNOWLEDGE": "CUE_ONLY",
+        "R1_NO_CONTEXT": "NOT_APPLICABLE",
+        "R2_NO_CONVENTION": "NOT_APPLICABLE",
+        "R3_NO_PATH_GEOMETRY": "NOT_APPLICABLE",
+        "R4_NO_HISTORY": "NOT_APPLICABLE",
+        "R5_NO_INTERNAL_MEMORY": "NOT_APPLICABLE",
+        "R6_OBSERVABLE_ONLY": "CUE_ONLY"
+      },
+      "ambiguity_cardinality_by_condition": {
+        "R0_FULL_KNOWLEDGE": 0,
+        "R1_NO_CONTEXT": 0,
+        "R2_NO_CONVENTION": 0,
+        "R3_NO_PATH_GEOMETRY": 0,
+        "R4_NO_HISTORY": 0,
+        "R5_NO_INTERNAL_MEMORY": 0,
+        "R6_OBSERVABLE_ONLY": 0
+      }
+    },
+    {
+      "chunk_index": 56,
+      "recovery_score_by_condition": {
+        "R0_FULL_KNOWLEDGE": 0,
+        "R6_OBSERVABLE_ONLY": 0
+      },
+      "recovery_class_by_condition": {
+        "R0_FULL_KNOWLEDGE": "CUE_ONLY",
+        "R1_NO_CONTEXT": "NOT_APPLICABLE",
+        "R2_NO_CONVENTION": "NOT_APPLICABLE",
+        "R3_NO_PATH_GEOMETRY": "NOT_APPLICABLE",
+        "R4_NO_HISTORY": "NOT_APPLICABLE",
+        "R5_NO_INTERNAL_MEMORY": "NOT_APPLICABLE",
+        "R6_OBSERVABLE_ONLY": "CUE_ONLY"
+      },
+      "ambiguity_cardinality_by_condition": {
+        "R0_FULL_KNOWLEDGE": 0,
+        "R1_NO_CONTEXT": 0,
+        "R2_NO_CONVENTION": 0,
+        "R3_NO_PATH_GEOMETRY": 0,
+        "R4_NO_HISTORY": 0,
+        "R5_NO_INTERNAL_MEMORY": 0,
+        "R6_OBSERVABLE_ONLY": 0
+      }
+    }
+  ],
+  "local_collisions": null,
+  "f2": {
+    "corpus_file_sha256": "f3357dae8c75da3d7f3b89d1858b1287a1536ae3441cc383b3ac111b21d19a26",
+    "corpus_file_path": "research/phase2/task82a/raw/f2corpus/00f620bcecafaaeb32c9bb20dea02d55.txt",
+    "metrics": [
+      {
+        "metric_id": "EF1_GIANT_COMPONENT_SHARE",
+        "metric_version": "fingerprint-v2-lexical-paradigms-v1",
+        "family": "edit family",
+        "final_classification": "CORE",
+        "value": 1,
+        "available": true,
+        "boundary_provenance": "ASSEMBLER_DEFINED"
+      },
+      {
+        "metric_id": "EF1_ISOLATE_SHARE",
+        "metric_version": "fingerprint-v2-lexical-paradigms-v1",
+        "family": "edit family",
+        "final_classification": "SUPPORTING",
+        "value": 0,
+        "available": true,
+        "boundary_provenance": "ASSEMBLER_DEFINED"
+      },
+      {
+        "metric_id": "EF2_GLOBAL_CLUSTERING",
+        "metric_version": "fingerprint-v2-lexical-paradigms-v1",
+        "family": "edit family",
+        "final_classification": "CORE",
+        "value": 0.35102533172496986,
+        "available": true,
+        "boundary_provenance": "ASSEMBLER_DEFINED"
+      },
+      {
+        "metric_id": "EF3_DEGREE_FREQUENCY_SPEARMAN",
+        "metric_version": "fingerprint-v2-lexical-paradigms-v1",
+        "family": "edit family",
+        "final_classification": "CORE",
+        "value": 0,
+        "available": true,
+        "boundary_provenance": "ASSEMBLER_DEFINED"
+      },
+      {
+        "metric_id": "LP1_RULE_SUPPORT_GINI",
+        "metric_version": "fingerprint-v2-lexical-paradigms-v1",
+        "family": "lexical paradigm",
+        "final_classification": "SUPPORTING",
+        "value": 0.39007560742861336,
+        "available": true,
+        "boundary_provenance": "ASSEMBLER_DEFINED"
+      },
+      {
+        "metric_id": "LP4_PREFIX_ATTACHMENT_NMI",
+        "metric_version": "fingerprint-v2-lexical-paradigms-v1",
+        "family": "lexical paradigm",
+        "final_classification": "SUPPORTING",
+        "value": 0,
+        "available": true,
+        "boundary_provenance": "ASSEMBLER_DEFINED"
+      },
+      {
+        "metric_id": "LP4_SUFFIX_ATTACHMENT_NMI",
+        "metric_version": "fingerprint-v2-lexical-paradigms-v1",
+        "family": "lexical paradigm",
+        "final_classification": "SUPPORTING",
+        "value": 0.28667464885660227,
+        "available": true,
+        "boundary_provenance": "ASSEMBLER_DEFINED"
+      },
+      {
+        "metric_id": "cs1/family-line-position",
+        "metric_version": "fingerprint-v2-lexical-paradigms-v1",
+        "family": "cross-scale",
+        "final_classification": "SUPPORTING",
+        "value": 0,
+        "available": false,
+        "missing_reason": "INCONCLUSIVE: insufficient family-bearing occurrences with line-position metadata (need line metadata from ivtff_path)",
+        "boundary_provenance": "ASSEMBLER_DEFINED"
+      },
+      {
+        "metric_id": "cs2/prev-family-current-family",
+        "metric_version": "fingerprint-v2-lexical-paradigms-v1",
+        "family": "cross-scale",
+        "final_classification": "SUPPORTING",
+        "value": 0,
+        "available": false,
+        "missing_reason": "INCONCLUSIVE: fewer than 20 family-bearing adjacent occurrence pairs",
+        "boundary_provenance": "ASSEMBLER_DEFINED"
+      },
+      {
+        "metric_id": "cs3/family-locus-type",
+        "metric_version": "fingerprint-v2-lexical-paradigms-v1",
+        "family": "cross-scale",
+        "final_classification": "SUPPORTING",
+        "value": 0,
+        "available": false,
+        "missing_reason": "NOT_APPLICABLE: requires ivtff_path locus-type metadata; unavailable or below the 20-occurrence floor for this corpus",
+        "boundary_provenance": "ASSEMBLER_DEFINED"
+      },
+      {
+        "metric_id": "cs4/family-currier",
+        "metric_version": "fingerprint-v2-lexical-paradigms-v1",
+        "family": "cross-scale",
+        "final_classification": "SUPPORTING",
+        "value": 0,
+        "available": false,
+        "missing_reason": "NOT_APPLICABLE: requires ivtff_path Currier metadata and \u003e=4 folios; unavailable or below the 20-occurrence floor",
+        "boundary_provenance": "ASSEMBLER_DEFINED"
+      },
+      {
+        "metric_id": "cs4/family-section",
+        "metric_version": "fingerprint-v2-lexical-paradigms-v1",
+        "family": "cross-scale",
+        "final_classification": "SUPPORTING",
+        "value": 0,
+        "available": false,
+        "missing_reason": "NOT_APPLICABLE: requires ivtff_path section metadata and \u003e=4 folios; unavailable or below the 20-occurrence floor",
+        "boundary_provenance": "ASSEMBLER_DEFINED"
+      },
+      {
+        "metric_id": "cs5/local-adjacency-x-regime",
+        "metric_version": "fingerprint-v2-lexical-paradigms-v1",
+        "family": "cross-scale",
+        "final_classification": "SUPPORTING",
+        "value": 0,
+        "available": false,
+        "missing_reason": "NOT_APPLICABLE: requires \u003e=2 sufficiently sampled Currier x section strata",
+        "boundary_provenance": "ASSEMBLER_DEFINED"
+      },
+      {
+        "metric_id": "cs6/family-diversity-x-line-length",
+        "metric_version": "fingerprint-v2-lexical-paradigms-v1",
+        "family": "cross-scale",
+        "final_classification": "SUPPORTING",
+        "value": 0,
+        "available": true,
+        "verdict": "NOT_SUPPORTED",
+        "boundary_provenance": "ASSEMBLER_DEFINED"
+      },
+      {
+        "metric_id": "cs7/edit-distance-x-structural-distance",
+        "metric_version": "fingerprint-v2-lexical-paradigms-v1",
+        "family": "cross-scale",
+        "final_classification": "SUPPORTING",
+        "value": 0.36606543552510357,
+        "available": true,
+        "verdict": "NOT_SUPPORTED",
+        "boundary_provenance": "ASSEMBLER_DEFINED"
+      }
+    ]
+  },
+  "metrics": {
+    "observable_symbol_count": 64,
+    "observable_token_count": 64,
+    "distinct_observable_symbols": 64,
+    "distinct_observable_tokens": 64,
+    "symbol_entropy_plugin_bits": 6,
+    "conditional_symbol_entropy_plugin_bits": 0,
+    "token_entropy_plugin_bits": 6,
+    "adjacent_symbol_repetition_rate": 0,
+    "adjacent_token_repetition_rate": 0
+  },
+  "observable_checksum": "3fd6ffa47fbeda457026bad1e67e85b3567f73b5707decbc5737d27081003d92",
+  "warnings": [
+    "C-GRAMMAR diagnostics exceeded the configured tolerance for at least one replicate; inspect raw_results.json before inferential interpretation."
+  ],
+  "runtime_ns": 0,
+  "software_version": "task82a-analyze/V1.0"
+}

@@ -1,0 +1,1391 @@
+{
+  "schema": "TASK82A_RAW_JOB_V1",
+  "implementation_version": "V1.0",
+  "freeze_version": "V1.0",
+  "job": {
+    "job_id": "591ed11d6108f5991d1bc3c7b873f674",
+    "mechanism_id": "synthetic_indexed_lookup",
+    "mechanism_version": "v1",
+    "parameter_set_id": "f11-core-default",
+    "scaling_policy_id": "CUE_RESET_GLOBAL_V1",
+    "input_corpus_id": "Astafiev",
+    "corpus_scale": "SMALL",
+    "chunks": 64,
+    "seed": 11302277739251700865,
+    "replicate": 0,
+    "ablation_control_status": "GENERIC_CONTROL"
+  },
+  "family": "GENERIC_INDEXED_LOOKUP",
+  "historical_status": "GENERIC_CONTROL",
+  "input_corpus": {
+    "id": "Astafiev",
+    "path": "data_test/astafiev-1000-culinar-receipts-utf8.txt",
+    "sha256": "550dc8eccbc3f4192abec83fbc738b352512d437adc5759b38229719f786980a"
+  },
+  "local_run_count": 64,
+  "state_policy": "RESET_EACH_CHUNK",
+  "scaling_policy_id": "CUE_RESET_GLOBAL_V1",
+  "boundary_provenance": {
+    "token": "ASSEMBLER_DEFINED",
+    "line": "ASSEMBLER_DEFINED",
+    "page": "NOT_DEFINED"
+  },
+  "chunks": [
+    {
+      "index": 0,
+      "symbols": [
+        "0:C0",
+        "1:C1",
+        "2:C2",
+        "3:C3"
+      ],
+      "checksum": "753a15cfa1f0c0a2bd8968f770b2b35d764503be3f82cc45d0717de023300dd6",
+      "intended_id": "Ie5c27f3468520f32"
+    },
+    {
+      "index": 1,
+      "symbols": [
+        "0:C4",
+        "1:C5",
+        "2:C6",
+        "3:C7"
+      ],
+      "checksum": "c4df381e52157edbcd8f192f5d80e84e44e3e8cbc8775746757ad4ffe8273fd0",
+      "intended_id": "Ib8012cb642c887a0"
+    },
+    {
+      "index": 2,
+      "symbols": [
+        "0:C8",
+        "1:C9",
+        "2:C10",
+        "3:C11"
+      ],
+      "checksum": "fc9ffd9868b8b63d82388fbdcb4533704587e62dddfda56d931583ad371baa8b",
+      "intended_id": "Id0ada6436bd0ff52"
+    },
+    {
+      "index": 3,
+      "symbols": [
+        "0:C12",
+        "1:C13",
+        "2:C14",
+        "3:C15"
+      ],
+      "checksum": "a497c9ca58876d63bcd5e270cd5805fcbe12f3e1c99809b30ad4d45d81fa5f1c",
+      "intended_id": "Iec78b0ae2e234f90"
+    },
+    {
+      "index": 4,
+      "symbols": [
+        "0:C16",
+        "1:C17",
+        "2:C18",
+        "3:C19"
+      ],
+      "checksum": "0f9520d424e9b0fe7e8d5a21847d3735193457f881916263603454030af20ca9",
+      "intended_id": "I695b9685757ab1a5"
+    },
+    {
+      "index": 5,
+      "symbols": [
+        "0:C20",
+        "1:C21",
+        "2:C22",
+        "3:C23"
+      ],
+      "checksum": "023d10c7a26bf86dfb4428ec9c807aba62e04a690284ae45c10568b239f1297c",
+      "intended_id": "I66a41ebc6b474e92"
+    },
+    {
+      "index": 6,
+      "symbols": [
+        "0:C24",
+        "1:C25",
+        "2:C26",
+        "3:C27"
+      ],
+      "checksum": "612f5df2455850537342fd31fbd2d6f3fee9fd80711e192fdea1fde598e792d5",
+      "intended_id": "I6664a5d21b3b0b94"
+    },
+    {
+      "index": 7,
+      "symbols": [
+        "0:C28",
+        "1:C29",
+        "2:C30",
+        "3:C31"
+      ],
+      "checksum": "6aa9f6e0ddda65441942023ff2e68e560f7ac5d16b795d0ba7aed6949699214d",
+      "intended_id": "Idb33bbc7544a004d"
+    },
+    {
+      "index": 8,
+      "symbols": [
+        "0:C32",
+        "1:C33",
+        "2:C34",
+        "3:C35"
+      ],
+      "checksum": "bf243c0de848e155900b82c3ed3c8f2227a36067d8996035d972e9c1c4f385d4",
+      "intended_id": "Ib2c25ee4e266e5e6"
+    },
+    {
+      "index": 9,
+      "symbols": [
+        "0:C36",
+        "1:C37",
+        "2:C38",
+        "3:C39"
+      ],
+      "checksum": "787382a54d9c5841d447deea9175ac34efb6889bfffe683be5044fadd28db4ea",
+      "intended_id": "I7c3f4312ce5c3f25"
+    },
+    {
+      "index": 10,
+      "symbols": [
+        "0:C40",
+        "1:C41",
+        "2:C42",
+        "3:C43"
+      ],
+      "checksum": "ea51598ff582bd707f1fb3d11314def9b4887916755afd682397208056dc1bf5",
+      "intended_id": "I9d1e07f671b51c72"
+    },
+    {
+      "index": 11,
+      "symbols": [
+        "0:C44",
+        "1:C45",
+        "2:C46",
+        "3:C47"
+      ],
+      "checksum": "8a8260f67d6a6a8edb7c7fc8783467fbed8b223954d37da0f306a0b07d1e7a2a",
+      "intended_id": "Ieead37caf818d0fa"
+    },
+    {
+      "index": 12,
+      "symbols": [
+        "0:C48",
+        "1:C49",
+        "2:C50",
+        "3:C51"
+      ],
+      "checksum": "b015e0e9442f1449cf1e249f221652431858b44e10f489691d22ed865c48dffc",
+      "intended_id": "I7c3f4312ce5c3f25"
+    },
+    {
+      "index": 13,
+      "symbols": [
+        "0:C52",
+        "1:C53",
+        "2:C54",
+        "3:C55"
+      ],
+      "checksum": "1538a0cfad32367de55638413a6c0af50ca2b0c4b6cf45010f406b1b1b439b50",
+      "intended_id": "Ic8124ad7c5031eff"
+    },
+    {
+      "index": 14,
+      "symbols": [
+        "0:C56",
+        "1:C57",
+        "2:C58",
+        "3:C59"
+      ],
+      "checksum": "fbf9464cab8f5b6a185acf7fb74429d6dd27ee468ada8bc78558227d8dde356a",
+      "intended_id": "I62a0a8fd3c31c022"
+    },
+    {
+      "index": 15,
+      "symbols": [
+        "0:C60",
+        "1:C61",
+        "2:C62",
+        "3:C63"
+      ],
+      "checksum": "4092634535aae3fa5d71856e2d68f56f5e0731fd455873005c7f184a65485c3e",
+      "intended_id": "I0940401102b8a3fe"
+    },
+    {
+      "index": 16,
+      "symbols": [
+        "0:C64",
+        "1:C65",
+        "2:C66",
+        "3:C67"
+      ],
+      "checksum": "963219793c21760ca9806344e199f2c18aa60affff77a335b34e7a46b236d09f",
+      "intended_id": "I29dc2ee083fef6b3"
+    },
+    {
+      "index": 17,
+      "symbols": [
+        "0:C68",
+        "1:C69",
+        "2:C70",
+        "3:C71"
+      ],
+      "checksum": "e38d30288ac082d1243a120241fdf1ee1ec2a009c938d69e4a75c1d1d92c6214",
+      "intended_id": "Ic3089753a24678fe"
+    },
+    {
+      "index": 18,
+      "symbols": [
+        "0:C72",
+        "1:C73",
+        "2:C74",
+        "3:C75"
+      ],
+      "checksum": "89e61f880460bf93d7bdbb75364ed2f27791106251a3e6d3ab302cf6ba957bd6",
+      "intended_id": "Ib8012cb642c887a0"
+    },
+    {
+      "index": 19,
+      "symbols": [
+        "0:C76",
+        "1:C77",
+        "2:C78",
+        "3:C79"
+      ],
+      "checksum": "25472c2ebe33625a0a7c375c093b8121e465f2f61c91c5f3f4094d96adc01960",
+      "intended_id": "Ieead37caf818d0fa"
+    },
+    {
+      "index": 20,
+      "symbols": [
+        "0:C80",
+        "1:C81",
+        "2:C82",
+        "3:C83"
+      ],
+      "checksum": "96fc52cf43483c4ea257073eae5258060c1a4b4e865aaee6d526399016ba2ff7",
+      "intended_id": "I801cad85a7c5bf97"
+    },
+    {
+      "index": 21,
+      "symbols": [
+        "0:C84",
+        "1:C85",
+        "2:C86",
+        "3:C87"
+      ],
+      "checksum": "07dab2c89a2e994dfa4831faffd98a0d173c340d25119d325166ee3cdb4f8d23",
+      "intended_id": "Ie4b972337827b5a0"
+    },
+    {
+      "index": 22,
+      "symbols": [
+        "0:C88",
+        "1:C89",
+        "2:C90",
+        "3:C91"
+      ],
+      "checksum": "40ae7f720a0da4c8a8c830132c931bbcc6b4dbe02b07c83addcc6e7006c47466",
+      "intended_id": "I29dc2ee083fef6b3"
+    },
+    {
+      "index": 23,
+      "symbols": [
+        "0:C92",
+        "1:C93",
+        "2:C94",
+        "3:C95"
+      ],
+      "checksum": "ac2dbe41e243e6a78c302b3209bcbdc0ac687d5643af5ecfe9bcd29303a1b5c4",
+      "intended_id": "Ibe937f6289912b00"
+    },
+    {
+      "index": 24,
+      "symbols": [
+        "0:C96",
+        "1:C97",
+        "2:C98",
+        "3:C99"
+      ],
+      "checksum": "e340f8599c99fb400f85d55028674ba01e26b2efd14b045990b0c4a64943869a",
+      "intended_id": "Ib93f5f12db6b7f12"
+    },
+    {
+      "index": 25,
+      "symbols": [
+        "0:C100",
+        "1:C101",
+        "2:C102",
+        "3:C103"
+      ],
+      "checksum": "5a7b307edfec21d7d91bc5ac8d6e4afe0049b6eea553a8e1374e9dab45604a6c",
+      "intended_id": "I53934f31f2c8d53d"
+    },
+    {
+      "index": 26,
+      "symbols": [
+        "0:C104",
+        "1:C105",
+        "2:C106",
+        "3:C107"
+      ],
+      "checksum": "bb95c86ff6e75ea538f8e5c3c752ca3dc0dcc10e018e7daef68b700e5f70b523",
+      "intended_id": "I0c5874d1253a145b"
+    },
+    {
+      "index": 27,
+      "symbols": [
+        "0:C108",
+        "1:C109",
+        "2:C110",
+        "3:C111"
+      ],
+      "checksum": "09d323c2da768fe183dd1caab18226635a994bb7ad68801c1b1b6982cedfab5a",
+      "intended_id": "I996f71b38d93acc3"
+    },
+    {
+      "index": 28,
+      "symbols": [
+        "0:C112",
+        "1:C113",
+        "2:C114",
+        "3:C115"
+      ],
+      "checksum": "49c42bcf6957a3198ef3ec34ad5983b1b5f718f03f1b0d3490aa90106f6fea12",
+      "intended_id": "I55dfd37582f955bb"
+    },
+    {
+      "index": 29,
+      "symbols": [
+        "0:C116",
+        "1:C117",
+        "2:C118",
+        "3:C119"
+      ],
+      "checksum": "af9e59da839230973c457cc830ef24752aac0b4ae99617f9ea497c4e8f59a683",
+      "intended_id": "Ic3089753a24678fe"
+    },
+    {
+      "index": 30,
+      "symbols": [
+        "0:C120",
+        "1:C121",
+        "2:C122",
+        "3:C123"
+      ],
+      "checksum": "acbecb28dcc71644faee37633f3108fbf40e5b391462f967dc7f55f2aedfa48c",
+      "intended_id": "Ife329e705b84e7b2"
+    },
+    {
+      "index": 31,
+      "symbols": [
+        "0:C124",
+        "1:C125",
+        "2:C126",
+        "3:C127"
+      ],
+      "checksum": "d12f7ba9c4b2e2b236a0d46196c5b6e04741d786a86ef44bb56d9243a84b9037",
+      "intended_id": "I3d23eaaf6dc6f575"
+    },
+    {
+      "index": 32,
+      "symbols": [
+        "0:C128",
+        "1:C129",
+        "2:C130",
+        "3:C131"
+      ],
+      "checksum": "2a4592c18d631efe8fa7c4a86c6cca8b7a2b1a7f042613ccc1e5bf99f7faae4c",
+      "intended_id": "Ieead37caf818d0fa"
+    },
+    {
+      "index": 33,
+      "symbols": [
+        "0:C132",
+        "1:C133",
+        "2:C134",
+        "3:C135"
+      ],
+      "checksum": "ae78e5a1106973a10279e48264e4f3d1d2022a6c4b89b994662ff39462b96def",
+      "intended_id": "Id92ec5f0079245d3"
+    },
+    {
+      "index": 34,
+      "symbols": [
+        "0:C136",
+        "1:C137",
+        "2:C138",
+        "3:C139"
+      ],
+      "checksum": "ccd5f15fe39c1551cad73ac2517d77093463b8a50afd7edefcc4f0f92c218340",
+      "intended_id": "Ic48d627d83365f7f"
+    },
+    {
+      "index": 35,
+      "symbols": [
+        "0:C140",
+        "1:C141",
+        "2:C142",
+        "3:C143"
+      ],
+      "checksum": "089b013cbe3cf4d4016b687fda91532de1903faf1f3fa2d932c33b91bff2601b",
+      "intended_id": "If0c3ebbaf8ad4f0d"
+    },
+    {
+      "index": 36,
+      "symbols": [
+        "0:C144",
+        "1:C145",
+        "2:C146",
+        "3:C147"
+      ],
+      "checksum": "c70c2c54bd61e762394df06ee03e9a401f3c9b3049b4316f5192fe9237b446ac",
+      "intended_id": "I61d61688942365c0"
+    },
+    {
+      "index": 37,
+      "symbols": [
+        "0:C148",
+        "1:C149",
+        "2:C150",
+        "3:C151"
+      ],
+      "checksum": "5ffb505d5111fb1d26d123f90713698990c3bd47607de641b184ea1a99f38367",
+      "intended_id": "If369410106408b6e"
+    },
+    {
+      "index": 38,
+      "symbols": [
+        "0:C152",
+        "1:C153",
+        "2:C154",
+        "3:C155"
+      ],
+      "checksum": "666052cf5bd31f5c842889e8b506e7b0ae9ad6a63067323b638e9ebcf0887bb1",
+      "intended_id": "Iab5b367d9cfcea17"
+    },
+    {
+      "index": 39,
+      "symbols": [
+        "0:C156",
+        "1:C157",
+        "2:C158",
+        "3:C159"
+      ],
+      "checksum": "1799311f7253d5ed1595019072f63860d6abce9e4fd2be81378fecf739fd0df7",
+      "intended_id": "I8514891c41c9d418"
+    },
+    {
+      "index": 40,
+      "symbols": [
+        "0:C160",
+        "1:C161",
+        "2:C162",
+        "3:C163"
+      ],
+      "checksum": "0ce9384257cb127cfd774fc60c1489dfc7440aa73505280df35e7c49b251b20e",
+      "intended_id": "I34c6fbb62da8ce5c"
+    },
+    {
+      "index": 41,
+      "symbols": [
+        "0:C164",
+        "1:C165",
+        "2:C166",
+        "3:C167"
+      ],
+      "checksum": "cb88f447b91c87486236335406b4288587e257713d031013ca64364f14742acb",
+      "intended_id": "I79bfb8e30f70eff9"
+    },
+    {
+      "index": 42,
+      "symbols": [
+        "0:C168",
+        "1:C169",
+        "2:C170",
+        "3:C171"
+      ],
+      "checksum": "4cb9dec4a0c6a532abf356b5f14809e6f3e961b5d3db6e32701c0a54b7275ebc",
+      "intended_id": "I7977493d1a0baae6"
+    },
+    {
+      "index": 43,
+      "symbols": [
+        "0:C172",
+        "1:C173",
+        "2:C174",
+        "3:C175"
+      ],
+      "checksum": "bb993073b38636e6b68c245f4c6bb26ebf3aa420242c0351fddd6bcd156138f4",
+      "intended_id": "Ia123df83927509d3"
+    },
+    {
+      "index": 44,
+      "symbols": [
+        "0:C176",
+        "1:C177",
+        "2:C178",
+        "3:C179"
+      ],
+      "checksum": "4237ee0f54e9780e7f6a2c007c8d677c905af207e524e073e64c7db3f1ce603a",
+      "intended_id": "I0c1c3fc239fb638e"
+    },
+    {
+      "index": 45,
+      "symbols": [
+        "0:C180",
+        "1:C181",
+        "2:C182",
+        "3:C183"
+      ],
+      "checksum": "bc8a24b9c7b2531953de1c620688bd6a589e9910e686820b71f632f7ad384353",
+      "intended_id": "I6f2d0ae2c26535cb"
+    },
+    {
+      "index": 46,
+      "symbols": [
+        "0:C184",
+        "1:C185",
+        "2:C186",
+        "3:C187"
+      ],
+      "checksum": "a861938ce7db3c19d4901d7db53711a87beb33036937747fe9e989cee4f3427e",
+      "intended_id": "Ib8012cb642c887a0"
+    },
+    {
+      "index": 47,
+      "symbols": [
+        "0:C188",
+        "1:C189",
+        "2:C190",
+        "3:C191"
+      ],
+      "checksum": "4081cc9e780afb46d0e2c83cefa7d11c01725cde3785fb77776bea6b42f4ffa4",
+      "intended_id": "I6b505d269f319627"
+    },
+    {
+      "index": 48,
+      "symbols": [
+        "0:C192",
+        "1:C193",
+        "2:C194",
+        "3:C195"
+      ],
+      "checksum": "efadb5d02b53bc3537f9300df874eb5c65813b9077180b47f0fdd5a608e91a4d",
+      "intended_id": "Icec3946b5d35169b"
+    },
+    {
+      "index": 49,
+      "symbols": [
+        "0:C196",
+        "1:C197",
+        "2:C198",
+        "3:C199"
+      ],
+      "checksum": "4fb5c0326f28e78fa5f85ee2164931e741ef86c7643d346344650c12df8adff1",
+      "intended_id": "I678b6f04b98b2ef3"
+    },
+    {
+      "index": 50,
+      "symbols": [
+        "0:C200",
+        "1:C201",
+        "2:C202",
+        "3:C203"
+      ],
+      "checksum": "9ff4d1fe8d451ba4f7876dc7d129f8775bf7e7df34f616d78671cf45d443ac99",
+      "intended_id": "I187c6db555663a87"
+    },
+    {
+      "index": 51,
+      "symbols": [
+        "0:C204",
+        "1:C205",
+        "2:C206",
+        "3:C207"
+      ],
+      "checksum": "b7dc9e478e0fd00085702fae47a743e20dba154bb3664148340cab5cb1f5f292",
+      "intended_id": "I0e0cc2a2ba545a3c"
+    },
+    {
+      "index": 52,
+      "symbols": [
+        "0:C208",
+        "1:C209",
+        "2:C210",
+        "3:C211"
+      ],
+      "checksum": "4ad70e3716c032a98dee2370bd17bfccb0be03b8e40e9d48528015cc432cc97d",
+      "intended_id": "Ife329e705b84e7b2"
+    },
+    {
+      "index": 53,
+      "symbols": [
+        "0:C212",
+        "1:C213",
+        "2:C214",
+        "3:C215"
+      ],
+      "checksum": "6d17e08f0f7931da03a4397dd9cf040082c4032d59980120ac3d4ecc3aacc4e6",
+      "intended_id": "I7287e7588dbd28d0"
+    },
+    {
+      "index": 54,
+      "symbols": [
+        "0:C216",
+        "1:C217",
+        "2:C218",
+        "3:C219"
+      ],
+      "checksum": "0b8df6858e8fe19e9022db0919c4e61cc1e5ed47a4d06082aa73b0668023bca2",
+      "intended_id": "Idcdced0f50fc0387"
+    },
+    {
+      "index": 55,
+      "symbols": [
+        "0:C220",
+        "1:C221",
+        "2:C222",
+        "3:C223"
+      ],
+      "checksum": "530d7232ccf26167669d1ee444fe84fadcc7952297130a4149e4d922beb0f301",
+      "intended_id": "I83d84ee0e19ca100"
+    },
+    {
+      "index": 56,
+      "symbols": [
+        "0:C224",
+        "1:C225",
+        "2:C226",
+        "3:C227"
+      ],
+      "checksum": "4dbe9840bdc060702ae186aedcd264bd4103fe13fb67e0cd115ec19498066487",
+      "intended_id": "I66ccd407f7d57636"
+    },
+    {
+      "index": 57,
+      "symbols": [
+        "0:C228",
+        "1:C229",
+        "2:C230",
+        "3:C231"
+      ],
+      "checksum": "2d2fef90847e8cf1411bbe5447293bf48cdec5f46347b5c970e142794fa06b38",
+      "intended_id": "Ice8286c3ae13c1b3"
+    },
+    {
+      "index": 58,
+      "symbols": [
+        "0:C232",
+        "1:C233",
+        "2:C234",
+        "3:C235"
+      ],
+      "checksum": "b17258886459aed478edcc3a916f5b3f364eee6f40cc0b256754bf6d9b5e6c46",
+      "intended_id": "I7575772fe4334505"
+    },
+    {
+      "index": 59,
+      "symbols": [
+        "0:C236",
+        "1:C237",
+        "2:C238",
+        "3:C239"
+      ],
+      "checksum": "6f73936e3f9bc64c0a544a04b8b231f1f2fc6546aa80561c5124ef6c4563fd86",
+      "intended_id": "I322b8f8a9f2281c6"
+    },
+    {
+      "index": 60,
+      "symbols": [
+        "0:C240",
+        "1:C241",
+        "2:C242",
+        "3:C243"
+      ],
+      "checksum": "7bbeadf440487d3000fcfddc8cd81e2d056dcc5953a98ab16d3d576762641cd9",
+      "intended_id": "I134a9c51cce0aa5f"
+    },
+    {
+      "index": 61,
+      "symbols": [
+        "0:C244",
+        "1:C245",
+        "2:C246",
+        "3:C247"
+      ],
+      "checksum": "fae11d1531a47bd731933fb5303488f421703f2ad648eb0cbedc64ff5348d594",
+      "intended_id": "I5a131e9c293500c3"
+    },
+    {
+      "index": 62,
+      "symbols": [
+        "0:C248",
+        "1:C249",
+        "2:C250",
+        "3:C251"
+      ],
+      "checksum": "1ae6216e4cef9f5f69b4fe267135115d8f2b71c00b56e36113e3d74a6d6f4112",
+      "intended_id": "I3a361231e194ddd8"
+    },
+    {
+      "index": 63,
+      "symbols": [
+        "0:C252",
+        "1:C253",
+        "2:C254",
+        "3:C255"
+      ],
+      "checksum": "c817036f31e6d51c07608bd30dbb5da216aaca2a01d2054650f2eaa243515927",
+      "intended_id": "I16361e3bc7847144"
+    }
+  ],
+  "observable_document": {
+    "symbols": [
+      "0:C0",
+      "1:C1",
+      "2:C2",
+      "3:C3",
+      "0:C4",
+      "1:C5",
+      "2:C6",
+      "3:C7",
+      "0:C8",
+      "1:C9",
+      "2:C10",
+      "3:C11",
+      "0:C12",
+      "1:C13",
+      "2:C14",
+      "3:C15",
+      "0:C16",
+      "1:C17",
+      "2:C18",
+      "3:C19",
+      "0:C20",
+      "1:C21",
+      "2:C22",
+      "3:C23",
+      "0:C24",
+      "1:C25",
+      "2:C26",
+      "3:C27",
+      "0:C28",
+      "1:C29",
+      "2:C30",
+      "3:C31",
+      "0:C32",
+      "1:C33",
+      "2:C34",
+      "3:C35",
+      "0:C36",
+      "1:C37",
+      "2:C38",
+      "3:C39",
+      "0:C40",
+      "1:C41",
+      "2:C42",
+      "3:C43",
+      "0:C44",
+      "1:C45",
+      "2:C46",
+      "3:C47",
+      "0:C48",
+      "1:C49",
+      "2:C50",
+      "3:C51",
+      "0:C52",
+      "1:C53",
+      "2:C54",
+      "3:C55",
+      "0:C56",
+      "1:C57",
+      "2:C58",
+      "3:C59",
+      "0:C60",
+      "1:C61",
+      "2:C62",
+      "3:C63",
+      "0:C64",
+      "1:C65",
+      "2:C66",
+      "3:C67",
+      "0:C68",
+      "1:C69",
+      "2:C70",
+      "3:C71",
+      "0:C72",
+      "1:C73",
+      "2:C74",
+      "3:C75",
+      "0:C76",
+      "1:C77",
+      "2:C78",
+      "3:C79",
+      "0:C80",
+      "1:C81",
+      "2:C82",
+      "3:C83",
+      "0:C84",
+      "1:C85",
+      "2:C86",
+      "3:C87",
+      "0:C88",
+      "1:C89",
+      "2:C90",
+      "3:C91",
+      "0:C92",
+      "1:C93",
+      "2:C94",
+      "3:C95",
+      "0:C96",
+      "1:C97",
+      "2:C98",
+      "3:C99",
+      "0:C100",
+      "1:C101",
+      "2:C102",
+      "3:C103",
+      "0:C104",
+      "1:C105",
+      "2:C106",
+      "3:C107",
+      "0:C108",
+      "1:C109",
+      "2:C110",
+      "3:C111",
+      "0:C112",
+      "1:C113",
+      "2:C114",
+      "3:C115",
+      "0:C116",
+      "1:C117",
+      "2:C118",
+      "3:C119",
+      "0:C120",
+      "1:C121",
+      "2:C122",
+      "3:C123",
+      "0:C124",
+      "1:C125",
+      "2:C126",
+      "3:C127",
+      "0:C128",
+      "1:C129",
+      "2:C130",
+      "3:C131",
+      "0:C132",
+      "1:C133",
+      "2:C134",
+      "3:C135",
+      "0:C136",
+      "1:C137",
+      "2:C138",
+      "3:C139",
+      "0:C140",
+      "1:C141",
+      "2:C142",
+      "3:C143",
+      "0:C144",
+      "1:C145",
+      "2:C146",
+      "3:C147",
+      "0:C148",
+      "1:C149",
+      "2:C150",
+      "3:C151",
+      "0:C152",
+      "1:C153",
+      "2:C154",
+      "3:C155",
+      "0:C156",
+      "1:C157",
+      "2:C158",
+      "3:C159",
+      "0:C160",
+      "1:C161",
+      "2:C162",
+      "3:C163",
+      "0:C164",
+      "1:C165",
+      "2:C166",
+      "3:C167",
+      "0:C168",
+      "1:C169",
+      "2:C170",
+      "3:C171",
+      "0:C172",
+      "1:C173",
+      "2:C174",
+      "3:C175",
+      "0:C176",
+      "1:C177",
+      "2:C178",
+      "3:C179",
+      "0:C180",
+      "1:C181",
+      "2:C182",
+      "3:C183",
+      "0:C184",
+      "1:C185",
+      "2:C186",
+      "3:C187",
+      "0:C188",
+      "1:C189",
+      "2:C190",
+      "3:C191",
+      "0:C192",
+      "1:C193",
+      "2:C194",
+      "3:C195",
+      "0:C196",
+      "1:C197",
+      "2:C198",
+      "3:C199",
+      "0:C200",
+      "1:C201",
+      "2:C202",
+      "3:C203",
+      "0:C204",
+      "1:C205",
+      "2:C206",
+      "3:C207",
+      "0:C208",
+      "1:C209",
+      "2:C210",
+      "3:C211",
+      "0:C212",
+      "1:C213",
+      "2:C214",
+      "3:C215",
+      "0:C216",
+      "1:C217",
+      "2:C218",
+      "3:C219",
+      "0:C220",
+      "1:C221",
+      "2:C222",
+      "3:C223",
+      "0:C224",
+      "1:C225",
+      "2:C226",
+      "3:C227",
+      "0:C228",
+      "1:C229",
+      "2:C230",
+      "3:C231",
+      "0:C232",
+      "1:C233",
+      "2:C234",
+      "3:C235",
+      "0:C236",
+      "1:C237",
+      "2:C238",
+      "3:C239",
+      "0:C240",
+      "1:C241",
+      "2:C242",
+      "3:C243",
+      "0:C244",
+      "1:C245",
+      "2:C246",
+      "3:C247",
+      "0:C248",
+      "1:C249",
+      "2:C250",
+      "3:C251",
+      "0:C252",
+      "1:C253",
+      "2:C254",
+      "3:C255"
+    ],
+    "token_boundary": "GENERATED_BY_MECHANISM",
+    "line_boundary": "GENERATED_BY_MECHANISM",
+    "unit_boundary": "GENERATED_BY_MECHANISM",
+    "metadata": {
+      "family": "GENERIC_INDEXED_LOOKUP",
+      "line_boundary_provenance": "ASSEMBLER_DEFINED",
+      "page_boundary_provenance": "NOT_DEFINED",
+      "token_boundary_provenance": "ASSEMBLER_DEFINED"
+    }
+  },
+  "local_recoveries": [
+    {
+      "chunk_index": 0,
+      "recovery_score_by_condition": {
+        "R0_FULL_KNOWLEDGE": 1,
+        "R1_NO_CONTEXT": 0.5,
+        "R2_NO_CONVENTION": 0,
+        "R6_OBSERVABLE_ONLY": 0
+      },
+      "recovery_class_by_condition": {
+        "R0_FULL_KNOWLEDGE": "EXACT",
+        "R1_NO_CONTEXT": "AMBIGUITY_SET",
+        "R2_NO_CONVENTION": "CUE_ONLY",
+        "R3_NO_PATH_GEOMETRY": "NOT_APPLICABLE",
+        "R4_NO_HISTORY": "NOT_APPLICABLE",
+        "R5_NO_INTERNAL_MEMORY": "NOT_APPLICABLE",
+        "R6_OBSERVABLE_ONLY": "CUE_ONLY"
+      },
+      "ambiguity_cardinality_by_condition": {
+        "R0_FULL_KNOWLEDGE": 0,
+        "R1_NO_CONTEXT": 2,
+        "R2_NO_CONVENTION": 0,
+        "R3_NO_PATH_GEOMETRY": 0,
+        "R4_NO_HISTORY": 0,
+        "R5_NO_INTERNAL_MEMORY": 0,
+        "R6_OBSERVABLE_ONLY": 0
+      }
+    },
+    {
+      "chunk_index": 8,
+      "recovery_score_by_condition": {
+        "R0_FULL_KNOWLEDGE": 1,
+        "R1_NO_CONTEXT": 0.5,
+        "R2_NO_CONVENTION": 0,
+        "R6_OBSERVABLE_ONLY": 0
+      },
+      "recovery_class_by_condition": {
+        "R0_FULL_KNOWLEDGE": "EXACT",
+        "R1_NO_CONTEXT": "AMBIGUITY_SET",
+        "R2_NO_CONVENTION": "CUE_ONLY",
+        "R3_NO_PATH_GEOMETRY": "NOT_APPLICABLE",
+        "R4_NO_HISTORY": "NOT_APPLICABLE",
+        "R5_NO_INTERNAL_MEMORY": "NOT_APPLICABLE",
+        "R6_OBSERVABLE_ONLY": "CUE_ONLY"
+      },
+      "ambiguity_cardinality_by_condition": {
+        "R0_FULL_KNOWLEDGE": 0,
+        "R1_NO_CONTEXT": 2,
+        "R2_NO_CONVENTION": 0,
+        "R3_NO_PATH_GEOMETRY": 0,
+        "R4_NO_HISTORY": 0,
+        "R5_NO_INTERNAL_MEMORY": 0,
+        "R6_OBSERVABLE_ONLY": 0
+      }
+    },
+    {
+      "chunk_index": 16,
+      "recovery_score_by_condition": {
+        "R0_FULL_KNOWLEDGE": 1,
+        "R1_NO_CONTEXT": 0.5,
+        "R2_NO_CONVENTION": 0,
+        "R6_OBSERVABLE_ONLY": 0
+      },
+      "recovery_class_by_condition": {
+        "R0_FULL_KNOWLEDGE": "EXACT",
+        "R1_NO_CONTEXT": "AMBIGUITY_SET",
+        "R2_NO_CONVENTION": "CUE_ONLY",
+        "R3_NO_PATH_GEOMETRY": "NOT_APPLICABLE",
+        "R4_NO_HISTORY": "NOT_APPLICABLE",
+        "R5_NO_INTERNAL_MEMORY": "NOT_APPLICABLE",
+        "R6_OBSERVABLE_ONLY": "CUE_ONLY"
+      },
+      "ambiguity_cardinality_by_condition": {
+        "R0_FULL_KNOWLEDGE": 0,
+        "R1_NO_CONTEXT": 2,
+        "R2_NO_CONVENTION": 0,
+        "R3_NO_PATH_GEOMETRY": 0,
+        "R4_NO_HISTORY": 0,
+        "R5_NO_INTERNAL_MEMORY": 0,
+        "R6_OBSERVABLE_ONLY": 0
+      }
+    },
+    {
+      "chunk_index": 24,
+      "recovery_score_by_condition": {
+        "R0_FULL_KNOWLEDGE": 1,
+        "R1_NO_CONTEXT": 0.5,
+        "R2_NO_CONVENTION": 0,
+        "R6_OBSERVABLE_ONLY": 0
+      },
+      "recovery_class_by_condition": {
+        "R0_FULL_KNOWLEDGE": "EXACT",
+        "R1_NO_CONTEXT": "AMBIGUITY_SET",
+        "R2_NO_CONVENTION": "CUE_ONLY",
+        "R3_NO_PATH_GEOMETRY": "NOT_APPLICABLE",
+        "R4_NO_HISTORY": "NOT_APPLICABLE",
+        "R5_NO_INTERNAL_MEMORY": "NOT_APPLICABLE",
+        "R6_OBSERVABLE_ONLY": "CUE_ONLY"
+      },
+      "ambiguity_cardinality_by_condition": {
+        "R0_FULL_KNOWLEDGE": 0,
+        "R1_NO_CONTEXT": 2,
+        "R2_NO_CONVENTION": 0,
+        "R3_NO_PATH_GEOMETRY": 0,
+        "R4_NO_HISTORY": 0,
+        "R5_NO_INTERNAL_MEMORY": 0,
+        "R6_OBSERVABLE_ONLY": 0
+      }
+    },
+    {
+      "chunk_index": 32,
+      "recovery_score_by_condition": {
+        "R0_FULL_KNOWLEDGE": 1,
+        "R1_NO_CONTEXT": 0.5,
+        "R2_NO_CONVENTION": 0,
+        "R6_OBSERVABLE_ONLY": 0
+      },
+      "recovery_class_by_condition": {
+        "R0_FULL_KNOWLEDGE": "EXACT",
+        "R1_NO_CONTEXT": "AMBIGUITY_SET",
+        "R2_NO_CONVENTION": "CUE_ONLY",
+        "R3_NO_PATH_GEOMETRY": "NOT_APPLICABLE",
+        "R4_NO_HISTORY": "NOT_APPLICABLE",
+        "R5_NO_INTERNAL_MEMORY": "NOT_APPLICABLE",
+        "R6_OBSERVABLE_ONLY": "CUE_ONLY"
+      },
+      "ambiguity_cardinality_by_condition": {
+        "R0_FULL_KNOWLEDGE": 0,
+        "R1_NO_CONTEXT": 2,
+        "R2_NO_CONVENTION": 0,
+        "R3_NO_PATH_GEOMETRY": 0,
+        "R4_NO_HISTORY": 0,
+        "R5_NO_INTERNAL_MEMORY": 0,
+        "R6_OBSERVABLE_ONLY": 0
+      }
+    },
+    {
+      "chunk_index": 40,
+      "recovery_score_by_condition": {
+        "R0_FULL_KNOWLEDGE": 1,
+        "R1_NO_CONTEXT": 0.5,
+        "R2_NO_CONVENTION": 0,
+        "R6_OBSERVABLE_ONLY": 0
+      },
+      "recovery_class_by_condition": {
+        "R0_FULL_KNOWLEDGE": "EXACT",
+        "R1_NO_CONTEXT": "AMBIGUITY_SET",
+        "R2_NO_CONVENTION": "CUE_ONLY",
+        "R3_NO_PATH_GEOMETRY": "NOT_APPLICABLE",
+        "R4_NO_HISTORY": "NOT_APPLICABLE",
+        "R5_NO_INTERNAL_MEMORY": "NOT_APPLICABLE",
+        "R6_OBSERVABLE_ONLY": "CUE_ONLY"
+      },
+      "ambiguity_cardinality_by_condition": {
+        "R0_FULL_KNOWLEDGE": 0,
+        "R1_NO_CONTEXT": 2,
+        "R2_NO_CONVENTION": 0,
+        "R3_NO_PATH_GEOMETRY": 0,
+        "R4_NO_HISTORY": 0,
+        "R5_NO_INTERNAL_MEMORY": 0,
+        "R6_OBSERVABLE_ONLY": 0
+      }
+    },
+    {
+      "chunk_index": 48,
+      "recovery_score_by_condition": {
+        "R0_FULL_KNOWLEDGE": 1,
+        "R1_NO_CONTEXT": 0.5,
+        "R2_NO_CONVENTION": 0,
+        "R6_OBSERVABLE_ONLY": 0
+      },
+      "recovery_class_by_condition": {
+        "R0_FULL_KNOWLEDGE": "EXACT",
+        "R1_NO_CONTEXT": "AMBIGUITY_SET",
+        "R2_NO_CONVENTION": "CUE_ONLY",
+        "R3_NO_PATH_GEOMETRY": "NOT_APPLICABLE",
+        "R4_NO_HISTORY": "NOT_APPLICABLE",
+        "R5_NO_INTERNAL_MEMORY": "NOT_APPLICABLE",
+        "R6_OBSERVABLE_ONLY": "CUE_ONLY"
+      },
+      "ambiguity_cardinality_by_condition": {
+        "R0_FULL_KNOWLEDGE": 0,
+        "R1_NO_CONTEXT": 2,
+        "R2_NO_CONVENTION": 0,
+        "R3_NO_PATH_GEOMETRY": 0,
+        "R4_NO_HISTORY": 0,
+        "R5_NO_INTERNAL_MEMORY": 0,
+        "R6_OBSERVABLE_ONLY": 0
+      }
+    },
+    {
+      "chunk_index": 56,
+      "recovery_score_by_condition": {
+        "R0_FULL_KNOWLEDGE": 1,
+        "R1_NO_CONTEXT": 0.5,
+        "R2_NO_CONVENTION": 0,
+        "R6_OBSERVABLE_ONLY": 0
+      },
+      "recovery_class_by_condition": {
+        "R0_FULL_KNOWLEDGE": "EXACT",
+        "R1_NO_CONTEXT": "AMBIGUITY_SET",
+        "R2_NO_CONVENTION": "CUE_ONLY",
+        "R3_NO_PATH_GEOMETRY": "NOT_APPLICABLE",
+        "R4_NO_HISTORY": "NOT_APPLICABLE",
+        "R5_NO_INTERNAL_MEMORY": "NOT_APPLICABLE",
+        "R6_OBSERVABLE_ONLY": "CUE_ONLY"
+      },
+      "ambiguity_cardinality_by_condition": {
+        "R0_FULL_KNOWLEDGE": 0,
+        "R1_NO_CONTEXT": 2,
+        "R2_NO_CONVENTION": 0,
+        "R3_NO_PATH_GEOMETRY": 0,
+        "R4_NO_HISTORY": 0,
+        "R5_NO_INTERNAL_MEMORY": 0,
+        "R6_OBSERVABLE_ONLY": 0
+      }
+    }
+  ],
+  "local_collisions": null,
+  "f2": {
+    "corpus_file_sha256": "fdd43ba14c95edd83a06679721fc1c908cdc058d3c4c11bd26729aebd5724ce5",
+    "corpus_file_path": "research/phase2/task82a/raw/f2corpus/591ed11d6108f5991d1bc3c7b873f674.txt",
+    "metrics": [
+      {
+        "metric_id": "EF1_GIANT_COMPONENT_SHARE",
+        "metric_version": "fingerprint-v2-lexical-paradigms-v1",
+        "family": "edit family",
+        "final_classification": "CORE",
+        "value": 0.25,
+        "available": true,
+        "boundary_provenance": "ASSEMBLER_DEFINED"
+      },
+      {
+        "metric_id": "EF1_ISOLATE_SHARE",
+        "metric_version": "fingerprint-v2-lexical-paradigms-v1",
+        "family": "edit family",
+        "final_classification": "SUPPORTING",
+        "value": 0,
+        "available": true,
+        "boundary_provenance": "ASSEMBLER_DEFINED"
+      },
+      {
+        "metric_id": "EF2_GLOBAL_CLUSTERING",
+        "metric_version": "fingerprint-v2-lexical-paradigms-v1",
+        "family": "edit family",
+        "final_classification": "CORE",
+        "value": 0.34426973087390383,
+        "available": true,
+        "boundary_provenance": "ASSEMBLER_DEFINED"
+      },
+      {
+        "metric_id": "EF3_DEGREE_FREQUENCY_SPEARMAN",
+        "metric_version": "fingerprint-v2-lexical-paradigms-v1",
+        "family": "edit family",
+        "final_classification": "CORE",
+        "value": 0,
+        "available": true,
+        "boundary_provenance": "ASSEMBLER_DEFINED"
+      },
+      {
+        "metric_id": "LP1_RULE_SUPPORT_GINI",
+        "metric_version": "fingerprint-v2-lexical-paradigms-v1",
+        "family": "lexical paradigm",
+        "final_classification": "SUPPORTING",
+        "value": 0.32953495534339394,
+        "available": true,
+        "boundary_provenance": "ASSEMBLER_DEFINED"
+      },
+      {
+        "metric_id": "LP4_PREFIX_ATTACHMENT_NMI",
+        "metric_version": "fingerprint-v2-lexical-paradigms-v1",
+        "family": "lexical paradigm",
+        "final_classification": "SUPPORTING",
+        "value": 0.009046136857740144,
+        "available": true,
+        "boundary_provenance": "ASSEMBLER_DEFINED"
+      },
+      {
+        "metric_id": "LP4_SUFFIX_ATTACHMENT_NMI",
+        "metric_version": "fingerprint-v2-lexical-paradigms-v1",
+        "family": "lexical paradigm",
+        "final_classification": "SUPPORTING",
+        "value": 0.004242919394495816,
+        "available": true,
+        "boundary_provenance": "ASSEMBLER_DEFINED"
+      },
+      {
+        "metric_id": "cs1/family-line-position",
+        "metric_version": "fingerprint-v2-lexical-paradigms-v1",
+        "family": "cross-scale",
+        "final_classification": "SUPPORTING",
+        "value": 0,
+        "available": false,
+        "missing_reason": "INCONCLUSIVE: insufficient family-bearing occurrences with line-position metadata (need line metadata from ivtff_path)",
+        "boundary_provenance": "ASSEMBLER_DEFINED"
+      },
+      {
+        "metric_id": "cs2/prev-family-current-family",
+        "metric_version": "fingerprint-v2-lexical-paradigms-v1",
+        "family": "cross-scale",
+        "final_classification": "SUPPORTING",
+        "value": 0,
+        "available": false,
+        "missing_reason": "INCONCLUSIVE: fewer than 20 family-bearing adjacent occurrence pairs",
+        "boundary_provenance": "ASSEMBLER_DEFINED"
+      },
+      {
+        "metric_id": "cs3/family-locus-type",
+        "metric_version": "fingerprint-v2-lexical-paradigms-v1",
+        "family": "cross-scale",
+        "final_classification": "SUPPORTING",
+        "value": 0,
+        "available": false,
+        "missing_reason": "NOT_APPLICABLE: requires ivtff_path locus-type metadata; unavailable or below the 20-occurrence floor for this corpus",
+        "boundary_provenance": "ASSEMBLER_DEFINED"
+      },
+      {
+        "metric_id": "cs4/family-currier",
+        "metric_version": "fingerprint-v2-lexical-paradigms-v1",
+        "family": "cross-scale",
+        "final_classification": "SUPPORTING",
+        "value": 0,
+        "available": false,
+        "missing_reason": "NOT_APPLICABLE: requires ivtff_path Currier metadata and \u003e=4 folios; unavailable or below the 20-occurrence floor",
+        "boundary_provenance": "ASSEMBLER_DEFINED"
+      },
+      {
+        "metric_id": "cs4/family-section",
+        "metric_version": "fingerprint-v2-lexical-paradigms-v1",
+        "family": "cross-scale",
+        "final_classification": "SUPPORTING",
+        "value": 0,
+        "available": false,
+        "missing_reason": "NOT_APPLICABLE: requires ivtff_path section metadata and \u003e=4 folios; unavailable or below the 20-occurrence floor",
+        "boundary_provenance": "ASSEMBLER_DEFINED"
+      },
+      {
+        "metric_id": "cs5/local-adjacency-x-regime",
+        "metric_version": "fingerprint-v2-lexical-paradigms-v1",
+        "family": "cross-scale",
+        "final_classification": "SUPPORTING",
+        "value": 0,
+        "available": false,
+        "missing_reason": "NOT_APPLICABLE: requires \u003e=2 sufficiently sampled Currier x section strata",
+        "boundary_provenance": "ASSEMBLER_DEFINED"
+      },
+      {
+        "metric_id": "cs6/family-diversity-x-line-length",
+        "metric_version": "fingerprint-v2-lexical-paradigms-v1",
+        "family": "cross-scale",
+        "final_classification": "SUPPORTING",
+        "value": 0,
+        "available": true,
+        "verdict": "NOT_SUPPORTED",
+        "boundary_provenance": "ASSEMBLER_DEFINED"
+      },
+      {
+        "metric_id": "cs7/edit-distance-x-structural-distance",
+        "metric_version": "fingerprint-v2-lexical-paradigms-v1",
+        "family": "cross-scale",
+        "final_classification": "SUPPORTING",
+        "value": 0.35865657763902387,
+        "available": true,
+        "verdict": "NOT_SUPPORTED",
+        "boundary_provenance": "ASSEMBLER_DEFINED"
+      }
+    ]
+  },
+  "metrics": {
+    "observable_symbol_count": 256,
+    "observable_token_count": 256,
+    "distinct_observable_symbols": 256,
+    "distinct_observable_tokens": 256,
+    "symbol_entropy_plugin_bits": 8,
+    "conditional_symbol_entropy_plugin_bits": 0,
+    "token_entropy_plugin_bits": 8,
+    "adjacent_symbol_repetition_rate": 0,
+    "adjacent_token_repetition_rate": 0
+  },
+  "observable_checksum": "aa62e43c2667616cde430442088d09181387f0e122a95458b49a10be14bbfe37",
+  "warnings": null,
+  "runtime_ns": 0,
+  "software_version": "task82a-analyze/V1.0"
+}

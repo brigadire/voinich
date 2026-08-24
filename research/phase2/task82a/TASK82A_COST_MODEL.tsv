@@ -1,0 +1,12 @@
+component	jobs	est_seconds_per_job	est_total_seconds	est_total_cpu_hours	est_ram_mb_per_job	est_output_storage_kb_per_job	notes
+f2_extraction:LITERAL_RESET_V1:SMALL	36	0.440	15.8	0.0044	50	3.2	measured via f2_timing_test.go on synthetic non-Voynich tokens; Repetitions=30 (reduced from the canonical 1000 for cost, see TASK82A_DESIGN.md)
+f2_extraction:LITERAL_RESET_V1:MEDIUM	36	1.310	47.2	0.0131	50	6.4	measured via f2_timing_test.go on synthetic non-Voynich tokens; Repetitions=30 (reduced from the canonical 1000 for cost, see TASK82A_DESIGN.md)
+f2_extraction:LITERAL_RESET_V1:LARGE	36	3.300	118.8	0.0330	50	12.8	measured via f2_timing_test.go on synthetic non-Voynich tokens; Repetitions=30 (reduced from the canonical 1000 for cost, see TASK82A_DESIGN.md)
+f2_extraction:CUE_RESET_LOCAL_V1:SMALL	60	0.040	2.4	0.0007	50	3.2	measured via f2_timing_test.go on synthetic non-Voynich tokens; Repetitions=30 (reduced from the canonical 1000 for cost, see TASK82A_DESIGN.md)
+f2_extraction:CUE_RESET_LOCAL_V1:MEDIUM	60	0.090	5.4	0.0015	50	6.4	measured via f2_timing_test.go on synthetic non-Voynich tokens; Repetitions=30 (reduced from the canonical 1000 for cost, see TASK82A_DESIGN.md)
+f2_extraction:CUE_RESET_LOCAL_V1:LARGE	60	0.180	10.8	0.0030	50	12.8	measured via f2_timing_test.go on synthetic non-Voynich tokens; Repetitions=30 (reduced from the canonical 1000 for cost, see TASK82A_DESIGN.md)
+f2_extraction:CUE_RESET_GLOBAL_V1:SMALL	60	3.300	198.0	0.0550	50	3.2	measured via f2_timing_test.go on synthetic non-Voynich tokens; Repetitions=30 (reduced from the canonical 1000 for cost, see TASK82A_DESIGN.md)
+f2_extraction:CUE_RESET_GLOBAL_V1:MEDIUM	60	9.850	591.0	0.1642	50	6.4	measured via f2_timing_test.go on synthetic non-Voynich tokens; Repetitions=30 (reduced from the canonical 1000 for cost, see TASK82A_DESIGN.md)
+f2_extraction:CUE_RESET_GLOBAL_V1:LARGE	60	29.400	1764.0	0.4900	50	12.8	measured via f2_timing_test.go on synthetic non-Voynich tokens; Repetitions=30 (reduced from the canonical 1000 for cost, see TASK82A_DESIGN.md)
+assembly_and_recovery_sampling	468	0.0100	4.7	0.001300	20	0.0	mnemonicspace.Runner.Prepare/Recover calls only, no synthetic-corpus generation
+TOTAL	468		2758.1	0.77		3494.4	single-threaded estimate; distributed/sharded execution (-shard-index/-shard-count) available if needed (task82a.txt sec.32)

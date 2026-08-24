@@ -1,0 +1,12 @@
+policy_id	axis	value	applies_to_surface	included	reason
+LITERAL_RESET_V1	state_policy	RESET_EACH_CHUNK	LITERAL	true	only state policy type-valid under frozen mnemonicspace.Runner.Prepare (no prior-state argument)
+LITERAL_RESET_V1	cue_namespace	NOT_APPLICABLE	LITERAL	true	literal mechanisms have no cue namespace axis
+CUE_RESET_LOCAL_V1	state_policy	RESET_EACH_CHUNK	CUE	true	only state policy type-valid under frozen mnemonicspace.Runner.Prepare
+CUE_RESET_LOCAL_V1	cue_namespace	LOCAL_NAMESPACE	CUE	true	cue labels C0..C(capacity-1) reused every chunk (matches Task82 convention)
+CUE_RESET_GLOBAL_V1	state_policy	RESET_EACH_CHUNK	CUE	true	only state policy type-valid under frozen mnemonicspace.Runner.Prepare
+CUE_RESET_GLOBAL_V1	cue_namespace	GLOBAL_NAMESPACE	CUE	true	cue labels are globally, deterministically indexed and never repeat across chunks
+ANY	state_policy	CONTINUE_STATE	LITERAL,CUE	false	NOT_TYPE_VALID: mnemonicspace.Runner.Prepare takes no prior-state argument; continuation would require changing a frozen mechanism's Prepare contract (task82a.txt sec.6 forbids this) -- GENERIC_SCALING_POLICY finding, not a historical claim (sec.12)
+ANY	convention_policy	CONVENTION_GLOBAL	LITERAL,CUE	true	single deterministic convention/association scheme reused for every sampled recovery test
+ANY	convention_policy	CONVENTION_PER_BLOCK	LITERAL,CUE	false	preregistered but excluded from the main manifest for computational cost (TASK82A_COST_MODEL.tsv); GENERIC_SCALING_POLICY, not run
+ANY	path_policy	PATH_PER_CHUNK_RESTART	LITERAL(geometry-carrier),CUE	true	geometry path re-derived fresh per chunk, consistent with RESET_EACH_CHUNK
+ANY	path_policy	PATH_REUSED_GLOBAL	LITERAL(geometry-carrier)	false	would contradict RESET_EACH_CHUNK state policy; preregistered but excluded, not run
