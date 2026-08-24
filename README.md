@@ -65,6 +65,10 @@ See
 for the schema, null models, and output contract. This command does not
 bundle or download a canonical corpus.
 
+The page/hierarchy/stability extension and its freeze decision are documented
+in
+[`research/phase2/fingerprint/TASK79_REPORT.md`](research/phase2/fingerprint/TASK79_REPORT.md).
+
 Canonical Voynich runs additionally require a locally obtained IVTFF source
 and an external IVTT installation. Datasets and IVTT are not bundled because
 their redistribution rights were not established. Acquisition, checksum,

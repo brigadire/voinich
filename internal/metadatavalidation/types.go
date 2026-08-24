@@ -37,6 +37,7 @@ type TokenMetadata struct {
 	ParagraphID                                       int
 	ParagraphStart                                    bool
 	Currier, Hand, Quire, Section                     string
+	Variables                                         map[string]string
 }
 
 type AlignmentResult struct {

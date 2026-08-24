@@ -3,6 +3,7 @@ package fingerprintv2
 import (
 	"fmt"
 	"sort"
+	"strconv"
 	"strings"
 
 	"zcore.dev/voinich/internal/evaglyph"
@@ -21,14 +22,21 @@ type tokenRecord struct {
 	// callers must check corpus.info.MetadataAlignment before relying on
 	// them.
 	LineID         string
+	LocusID        string
 	IndexInLine    int
+	IndexInLocus   int
+	IndexInFolio   int
 	LineLength     int
 	LocusType      string
+	ParagraphID    int
 	ParagraphStart bool
 	FolioSide      string
 	Section        string
 	Currier        string
 	Hand           string
+	Quire          string
+	IVTFFI         string
+	IVTFFX         string
 }
 
 type corpus struct {
@@ -81,28 +89,36 @@ func loadCorpus(c CorpusConfig) (corpus, error) {
 		alignment = "strict IVTFF aligned"
 	}
 	lineLength := map[int]int{}
-	if haveMeta {
-		for i := range tokens {
-			lineLength[lines[i]]++
-		}
+	linePosition := map[int]int{}
+	for i := range tokens {
+		lineLength[lines[i]]++
 	}
 	for i, token := range tokens {
 		glyphs := glyphsFor(token, mode)
 		if len(glyphs) == 0 {
 			return corpus{}, fmt.Errorf("corpus %q token %d has no glyphs after %s preprocessing", c.ID, i, mode)
 		}
-		rec := tokenRecord{Token: glyphKey(glyphs), Glyph: glyphs, Line: lines[i], Page: pages[i]}
+		rec := tokenRecord{Token: glyphKey(glyphs), Glyph: glyphs, Line: lines[i], Page: pages[i],
+			LineID: "line:" + strconv.Itoa(lines[i]), IndexInLine: linePosition[lines[i]], LineLength: lineLength[lines[i]]}
+		linePosition[lines[i]]++
 		if haveMeta {
 			m := meta[i]
 			rec.LineID = m.Folio + "\x00" + m.LineID
+			rec.LocusID = m.Folio + "\x00" + m.LocusID
 			rec.IndexInLine = m.IndexInLine
+			rec.IndexInLocus = m.IndexInLocus
+			rec.IndexInFolio = m.IndexInFolio
 			rec.LineLength = lineLength[lines[i]]
 			rec.LocusType = m.LocusType
+			rec.ParagraphID = m.ParagraphID
 			rec.ParagraphStart = m.ParagraphStart
 			rec.FolioSide = folioSide(m.Folio)
 			rec.Section = m.Section
 			rec.Currier = m.Currier
 			rec.Hand = m.Hand
+			rec.Quire = m.Quire
+			rec.IVTFFI = m.Variables["I"]
+			rec.IVTFFX = m.Variables["X"]
 		}
 		out.records[i] = rec
 	}
@@ -169,8 +185,9 @@ func generatedCorpus(source corpus, glyphs [][]string) corpus {
 			Token: glyphKey(g), Glyph: append([]string(nil), g...),
 			Line: src.Line, Page: src.Page,
 			LineID: src.LineID, IndexInLine: src.IndexInLine, LineLength: src.LineLength,
-			LocusType: src.LocusType, ParagraphStart: src.ParagraphStart, FolioSide: src.FolioSide,
-			Section: src.Section, Currier: src.Currier, Hand: src.Hand,
+			LocusID: src.LocusID, IndexInLocus: src.IndexInLocus, IndexInFolio: src.IndexInFolio,
+			LocusType: src.LocusType, ParagraphID: src.ParagraphID, ParagraphStart: src.ParagraphStart, FolioSide: src.FolioSide,
+			Section: src.Section, Currier: src.Currier, Hand: src.Hand, Quire: src.Quire, IVTFFI: src.IVTFFI, IVTFFX: src.IVTFFX,
 		}
 	}
 	out.info.ID = source.info.ID + ":c-grammar"

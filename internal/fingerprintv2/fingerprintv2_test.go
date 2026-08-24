@@ -151,6 +151,10 @@ seed: 19
 repetitions: 3
 min_rule_support: 2
 graph_swaps: 2
+task79:
+  enabled: true
+  permutations: 20
+  bootstrap_replicates: 20
 grammar:
   modes: [structure-preserving, frequency-aware]
 primary:
@@ -173,7 +177,7 @@ controls:
 	if output, err := command.CombinedOutput(); err != nil {
 		t.Fatalf("command failed: %v\n%s", err, output)
 	}
-	for _, name := range []string{"fingerprint.json", "raw_results.json", "config.yaml", "warnings.json", "errors.json", "report.md"} {
+	for _, name := range []string{"fingerprint.json", "raw_results.json", "config.yaml", "warnings.json", "errors.json", "report.md", "occurrence_metadata.jsonl", "metric_registry.json", "freeze_manifest.json", "negative_evidence_registry.json"} {
 		if _, err := os.Stat(filepath.Join(outputDir, name)); err != nil {
 			t.Fatalf("missing %s: %v", name, err)
 		}
@@ -185,7 +189,7 @@ controls:
 	if !bytes.Contains(fingerprint, []byte(`"metadata_alignment": "strict IVTFF aligned"`)) {
 		t.Fatalf("strict alignment was not recorded:\n%s", fingerprint)
 	}
-	for _, key := range []string{`"ef5"`, `"edit_graph_validation"`, `"cross_scale"`, `"graph_representations"`, `"null_registry"`, `"EDIT_CROSS_SCALE_BLOCK_READY"`} {
+	for _, key := range []string{`"ef5"`, `"edit_graph_validation"`, `"cross_scale"`, `"graph_representations"`, `"null_registry"`, `"EDIT_CROSS_SCALE_BLOCK_READY"`, `"task79"`, `"FINGERPRINT_V2_CANDIDATE"`, `"TASK79_B_REQUIRED"`} {
 		if !bytes.Contains(fingerprint, []byte(key)) {
 			t.Fatalf("task77 block missing key %s:\n%s", key, fingerprint)
 		}
@@ -197,6 +201,14 @@ func TestRunFileRejectsDeclaredInvalidNumericParameters(t *testing.T) {
 	path := writeFixture(t, dir, "invalid.yaml", "output_dir: output\nprimary:\n  path: corpus.txt\nrepetitions: -1\n")
 	if _, err := RunFile(path); err == nil {
 		t.Fatal("RunFile accepted a declared negative repetitions value")
+	}
+}
+
+func TestRunFileRejectsInvalidTask79Parameters(t *testing.T) {
+	dir := fixtureDir(t)
+	path := writeFixture(t, dir, "invalid-task79.yaml", "output_dir: output\nprimary:\n  path: corpus.txt\ntask79:\n  enabled: true\n  permutations: 0\n")
+	if _, err := RunFile(path); err == nil {
+		t.Fatal("RunFile accepted zero task79 permutations")
 	}
 }
 

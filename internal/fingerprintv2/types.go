@@ -35,6 +35,35 @@ type Config struct {
 	// types; task75's own LP/EF fields and existing configs are otherwise
 	// untouched.
 	CrossScale *CrossScaleConfig `yaml:"cross_scale,omitempty" json:"cross_scale,omitempty"`
+	Task79     *Task79Config     `yaml:"task79,omitempty" json:"task79,omitempty"`
+}
+
+// Task79Config enables the page/hierarchy/freeze-readiness extension.  It is
+// opt-in so task75/task77 configurations retain byte-for-byte semantics.
+type Task79Config struct {
+	Enabled             bool     `yaml:"enabled" json:"enabled"`
+	Permutations        int      `yaml:"permutations" json:"permutations"`
+	BootstrapReplicates int      `yaml:"bootstrap_replicates" json:"bootstrap_replicates"`
+	MinGroupSize        int      `yaml:"min_group_size" json:"min_group_size"`
+	ChangePointPenalty  float64  `yaml:"change_point_penalty" json:"change_point_penalty"`
+	AuditArtifacts      []string `yaml:"audit_artifacts,omitempty" json:"audit_artifacts,omitempty"`
+	CorrectionLayer     string   `yaml:"correction_layer,omitempty" json:"correction_layer,omitempty"`
+}
+
+func (c Task79Config) normalized() Task79Config {
+	if c.Permutations <= 0 {
+		c.Permutations = 200
+	}
+	if c.BootstrapReplicates <= 0 {
+		c.BootstrapReplicates = 200
+	}
+	if c.MinGroupSize <= 0 {
+		c.MinGroupSize = 5
+	}
+	if c.ChangePointPenalty <= 0 {
+		c.ChangePointPenalty = 2.0
+	}
+	return c
 }
 
 type CrossScaleConfig struct {
@@ -125,6 +154,10 @@ func (c Config) normalized() (Config, error) {
 	}
 	normalizedCrossScale := c.CrossScale.normalized()
 	c.CrossScale = &normalizedCrossScale
+	if c.Task79 != nil {
+		n := c.Task79.normalized()
+		c.Task79 = &n
+	}
 	for i := range c.Controls {
 		if c.Controls[i].Name == "" {
 			return c, fmt.Errorf("controls[%d].name is required", i)
@@ -347,6 +380,7 @@ type CorpusResult struct {
 	Grammar    *GrammarSummary       `json:"grammar,omitempty"`
 	EditGraph  *EditFamilyValidation `json:"edit_graph_validation,omitempty"`
 	CrossScale *CrossScaleResult     `json:"cross_scale,omitempty"`
+	Task79     *Task79Result         `json:"task79,omitempty"`
 }
 
 type Verdict struct {

@@ -45,6 +45,7 @@ func Align(d Document, frozen []string, hash string) (AlignmentResult, error) {
 				Folio: l.Folio, LocusID: l.ID, LocusType: l.Type, LineID: l.LineID,
 				ParagraphID: l.ParagraphID, ParagraphStart: l.ParagraphStart && i == 0,
 				Currier: l.Variables["C"], Hand: l.Variables["H"], Quire: l.Variables["Q"], Section: l.Variables["I"],
+				Variables:    cloneStrings(l.Variables),
 				IndexInLocus: i, IndexInLine: i, IndexInFolio: folioIndex})
 			pos++
 			folioIndex++

@@ -76,6 +76,24 @@ func validateDeclaredNumericConfig(data []byte) error {
 			return fmt.Errorf("%s must be a finite positive number%s when declared", key, map[bool]string{true: " below 1"}[key == "alpha"])
 		}
 	}
+	if section, ok := raw["task79"].(map[string]any); ok {
+		for _, key := range []string{"permutations", "bootstrap_replicates", "min_group_size"} {
+			value, present := section[key]
+			if !present {
+				continue
+			}
+			number, valid := yamlNumber(value)
+			if !valid || math.IsNaN(number) || math.IsInf(number, 0) || number <= 0 || math.Trunc(number) != number {
+				return fmt.Errorf("task79.%s must be a positive integer when declared", key)
+			}
+		}
+		if value, present := section["change_point_penalty"]; present {
+			number, valid := yamlNumber(value)
+			if !valid || math.IsNaN(number) || math.IsInf(number, 0) || number <= 0 {
+				return fmt.Errorf("task79.change_point_penalty must be a finite positive number when declared")
+			}
+		}
+	}
 	return nil
 }
 
@@ -125,6 +143,9 @@ func runAndWrite(c Config, configCopy []byte) (Fingerprint, error) {
 	fingerprint, raw, err := runWithRaw(c)
 	if err != nil {
 		return Fingerprint{}, err
+	}
+	if fingerprint.Primary.Task79 != nil {
+		fingerprint.Primary.Task79.FreezeManifest.ConfigSHA256 = bytesSHA256(configCopy)
 	}
 	if err := writeArtifacts(c.OutputDir, configCopy, fingerprint, raw); err != nil {
 		return Fingerprint{}, err
@@ -177,6 +198,9 @@ func runWithRaw(c Config) (Fingerprint, []rawCorpusResult, error) {
 		raw = append(raw, controlRaw)
 	}
 	f.Verdicts = verdicts(f)
+	if c.Task79 != nil && c.Task79.Enabled && f.Primary.Task79 != nil {
+		finalizeTask79Discrimination(&f)
+	}
 	return f, raw, nil
 }
 
@@ -342,7 +366,12 @@ func analyzeOne(corpus corpus, cfg Config, seed int64) (CorpusResult, rawCorpusR
 	crossScale := runCrossScale(corpus, cfg, familyGraph, families, glyphs, freq, runs, seed+9000000)
 	crossScale.Verdicts = crossScaleVerdicts(metrics, editGraphValidation, crossScale)
 
-	return CorpusResult{Corpus: corpus.info, Metrics: metrics, Grammar: grammar, EditGraph: &editGraphValidation, CrossScale: &crossScale}, raw, nil
+	result := CorpusResult{Corpus: corpus.info, Metrics: metrics, Grammar: grammar, EditGraph: &editGraphValidation, CrossScale: &crossScale}
+	if cfg.Task79 != nil && cfg.Task79.Enabled {
+		t79 := runTask79(corpus, cfg, result, seed+10000000)
+		result.Task79 = &t79
+	}
+	return result, raw, nil
 }
 
 func boolOffset(v bool) int64 {
@@ -561,6 +590,39 @@ func writeArtifacts(dir string, configCopy []byte, fingerprint Fingerprint, raw 
 	if err := writeJSON("errors.json", fingerprint.Errors); err != nil {
 		return err
 	}
+	if fingerprint.Primary.Task79 != nil {
+		t := fingerprint.Primary.Task79
+		for name, value := range map[string]any{
+			"task75_task77_audit.json":        t.InputAudit,
+			"ivtff_metadata_audit.json":       t.MetadataAudit,
+			"line_profiles.json":              t.LineProfiles,
+			"metric_registry.json":            t.Metrics,
+			"hierarchical_null_registry.json": t.NullRegistry,
+			"stability_matrix.json":           t.StabilityMatrix,
+			"redundancy_matrix.json":          t.RedundancyMatrix,
+			"coverage_audit.json":             t.CoverageAudit,
+			"negative_evidence_registry.json": t.NegativeEvidence,
+			"discriminative_validation.json":  t.Discriminative,
+			"segmentation.json":               t.Segmentation,
+			"fingerprint_v2_candidate.json":   fingerprint,
+			"freeze_manifest.json":            t.FreezeManifest,
+			"task79_verdicts.json":            t.Verdicts,
+		} {
+			if err := writeJSON(name, value); err != nil {
+				return err
+			}
+		}
+		var occurrence bytes.Buffer
+		encoder := json.NewEncoder(&occurrence)
+		for _, row := range t.Occurrences {
+			if err := encoder.Encode(row); err != nil {
+				return fmt.Errorf("encode occurrence metadata: %w", err)
+			}
+		}
+		if err := os.WriteFile(filepath.Join(dir, "occurrence_metadata.jsonl"), occurrence.Bytes(), 0644); err != nil {
+			return fmt.Errorf("write occurrence metadata: %w", err)
+		}
+	}
 	if err := os.WriteFile(filepath.Join(dir, "report.md"), []byte(compactReport(fingerprint)), 0644); err != nil {
 		return fmt.Errorf("write report: %w", err)
 	}
@@ -586,6 +648,13 @@ func compactReport(f Fingerprint) string {
 		fmt.Fprintf(&b, "\n## Task77 cross-scale verdicts\n\n")
 		for _, v := range p.CrossScale.Verdicts {
 			fmt.Fprintf(&b, "- **%s:** `%s` — %s\n", v.ID, v.Value, v.PrimaryStatistic)
+		}
+	}
+	if p.Task79 != nil {
+		fmt.Fprintf(&b, "\n## Task79 page/hierarchy freeze gate\n\n")
+		fmt.Fprintf(&b, "- Candidate: `%s`\n- Freeze status: `%s`\n- Lines/loci/folios: `%d` / `%d` / `%d`\n", p.Task79.FreezeManifest.CandidateID, p.Task79.FreezeManifest.Status, p.Task79.MetadataAudit.Lines, p.Task79.MetadataAudit.Loci, p.Task79.MetadataAudit.Folios)
+		for _, v := range p.Task79.Verdicts {
+			fmt.Fprintf(&b, "- **%s:** `%s` — %s\n", v.ID, v.Value, v.PrimaryEvidence)
 		}
 	}
 	fmt.Fprintf(&b, "\nRaw null distributions, per-replicate grammar diagnostics, and input checksums are in `raw_results.json`. These values describe only the configured input corpus; this report does not identify it as a canonical Voynich run.\n")

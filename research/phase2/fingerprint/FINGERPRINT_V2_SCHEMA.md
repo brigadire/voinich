@@ -191,3 +191,34 @@ The implementation does not infer morphemes, language, cipher rules or a
 Voynich interpretation from graph components. A result belongs to the
 configured corpus only; no canonical-Voynich result is represented unless a
 provenanced canonical input is actually supplied.
+
+## Task79 page/hierarchy candidate
+
+When `task79.enabled` is true, every corpus result adds `task79` with version
+`fingerprint-v2-page-hierarchy-v1`.  The primary result is also split into
+reviewable artifacts.  `occurrence_metadata.jsonl` is the occurrence-level
+line/locus/folio/section table; `line_profiles.json` contains LS5 profiles;
+the audit, null, metric, stability, redundancy, coverage, negative-evidence,
+discrimination, segmentation, verdict and freeze-manifest records each have
+their own JSON file.
+
+`metric_registry.json` uses the freeze-candidate contract: `metric_id`,
+`metric_version`, `family`, `definition`, `unit_of_analysis`, `inputs`,
+`parameters`, `observed_value`, `uncertainty`, `null_models`, `effect_size`,
+`p_value`, `q_value`, `partition_stability`, `transcription_stability`,
+`parameter_sensitivity`, `redundancy_class`, `coverage_role`,
+`comparison_eligibility`, `negative_evidence_status`,
+`implementation_version`, `status`, and `limitations`.  It combines inherited
+task75/task77 summaries with Task79 LS/BP/LC/PF/2D-LITE/HR summaries; inherited
+estimators are referenced, not recomputed under altered definitions.
+
+The HN1-HN8 registry records what every hierarchical permutation/bootstrap
+preserves and destroys.  `ABSENCE_OF_EVIDENCE` is used for a non-significant
+test unless an equivalence margin and sensitivity analysis justify the
+stronger `EVIDENCE_OF_ABSENCE`.  `2D-LITE` never denotes scan geometry.
+
+`fingerprint_v2_candidate.json` is the complete outer fingerprint, while
+`freeze_manifest.json` binds the corpus/config checksums, seed, metric
+versions, candidate core/supporting sets, missing-data and comparison rules,
+prohibited claims and the formal gate.  A status other than `FROZEN` must not
+create a `FINGERPRINT_V2_FROZEN` marker.

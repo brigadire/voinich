@@ -1,0 +1,16 @@
+version: task79-metadata-corrections-v1
+source_policy: frozen_inputs_are_never_modified
+source_ivtff: data/ZL3b-n.txt
+corrections: []
+audited_assertions:
+  - id: f116r.37
+    expected_folio: f116r
+    expected_locus: f116r.37
+    action: VERIFIED_PRESENT_NO_PATCH
+    rationale: >-
+      The known discrepancy was checked explicitly.  The current ZL3b-n source
+      contains f116r.37 and strict token alignment retains all of its
+      occurrences, so applying a historical repair would corrupt this version.
+missing_data_policy: >-
+  Missing categorical metadata are retained in occurrence_metadata.jsonl and
+  excluded from inferential contrasts; counts are reported by the metadata audit.
