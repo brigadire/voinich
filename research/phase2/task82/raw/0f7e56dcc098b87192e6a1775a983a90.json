@@ -1,0 +1,116 @@
+{
+  "schema": "TASK82_RAW_JOB_V1",
+  "implementation_version": "V1.1",
+  "freeze_version": "V1.1",
+  "job": {
+    "job_id": "0f7e56dcc098b87192e6a1775a983a90",
+    "mechanism_id": "synthetic_indexed_lookup",
+    "parameter_set_id": "f11-core-default",
+    "input_corpus_id": "Astafiev",
+    "seed": 9218434623437828756,
+    "replicate": 1,
+    "recovery_condition": "R1_NO_CONTEXT"
+  },
+  "mechanism_version": "v1",
+  "family": "GENERIC_INDEXED_LOOKUP",
+  "historical_status": "GENERIC_CONTROL",
+  "ablation_control_status": "ABLATION_OF:m_restricted_rotation_index:no_rotation",
+  "input_M": {
+    "corpus_id": "Astafiev",
+    "item_ids": [
+      "Ie5c27f3468520f32",
+      "Iff6ba2e6b01f8d45",
+      "Ic921ed9360e7b141",
+      "I974d6c14655cef3e"
+    ],
+    "symbols": [
+      "Z",
+      "G",
+      "P",
+      "I",
+      "Z",
+      "Q",
+      "F",
+      "P"
+    ],
+    "count": 4
+  },
+  "carrier_accounting": {
+    "E_external_state": "present; checksum only",
+    "G_geometry": "absent",
+    "H_history": "absent",
+    "K_convention": "present; values withheld",
+    "I_internal_memory": "absent",
+    "C_context": "present; values withheld"
+  },
+  "observable_document_X": {
+    "symbols": [
+      "0:C0",
+      "1:C1",
+      "2:C2",
+      "3:C3"
+    ],
+    "token_boundary": "NOT_DEFINED",
+    "line_boundary": "NOT_DEFINED",
+    "unit_boundary": "GENERATED_BY_MECHANISM",
+    "metadata": {
+      "family": "GENERIC_INDEXED_LOOKUP"
+    }
+  },
+  "information_trace": [
+    {
+      "carrier": "E",
+      "effect": "SELECT",
+      "detail": "indexing exposes an occupied slot"
+    },
+    {
+      "carrier": "K",
+      "effect": "ADD_CONTEXT",
+      "detail": "cue meaning is external to the device"
+    },
+    {
+      "carrier": "E",
+      "effect": "AMBIGUATE",
+      "detail": "visible cue is not plaintext by itself"
+    }
+  ],
+  "retrieval_result": {
+    "Class": "AMBIGUITY_SET",
+    "Value": "",
+    "Cue": "C0",
+    "Candidates": [
+      "ALT_Iff6ba2e6b01f8d45",
+      "Ie5c27f3468520f32"
+    ],
+    "UsedCarriers": [
+      "E",
+      "K",
+      "C"
+    ],
+    "Detail": "cue convention remains many-to-one"
+  },
+  "metrics": {
+    "input_count": 4,
+    "observable_symbol_count": 4,
+    "observable_unit_count": 4,
+    "expansion_ratio": 1,
+    "distinct_observable_symbols": 4,
+    "distinct_observable_units": 4,
+    "symbol_entropy_plugin_bits": 2,
+    "conditional_symbol_entropy_plugin_bits": 0,
+    "adjacent_repetition_rate": 0,
+    "information_retained_count_proxy": 4,
+    "information_lost_count_proxy": 0,
+    "exact_match": false,
+    "recovery_fraction": 0.5,
+    "ambiguity_cardinality": 2,
+    "candidate_set_entropy_bits": 1,
+    "h_m_given_x_ambiguity_proxy_bits": 1
+  },
+  "input_checksum": "550dc8eccbc3f4192abec83fbc738b352512d437adc5759b38229719f786980a",
+  "observable_checksum": "753a15cfa1f0c0a2bd8968f770b2b35d764503be3f82cc45d0717de023300dd6",
+  "external_state_checksum": "f21b8c8cfd78f80da724e0101d08a56a2a39073f3e706fc70096a7b900ec9017",
+  "warnings": [],
+  "runtime_ns": 0,
+  "software_version": "task82-blind/V1.1"
+}

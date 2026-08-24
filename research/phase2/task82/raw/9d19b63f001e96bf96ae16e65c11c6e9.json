@@ -1,0 +1,146 @@
+{
+  "schema": "TASK82_RAW_JOB_V1",
+  "implementation_version": "V1.1",
+  "freeze_version": "V1.1",
+  "job": {
+    "job_id": "9d19b63f001e96bf96ae16e65c11c6e9",
+    "mechanism_id": "negative_randomized_convention",
+    "parameter_set_id": "f01-core-bounded",
+    "input_corpus_id": "Astafiev",
+    "seed": 5730665295962308518,
+    "replicate": 1,
+    "recovery_condition": "R6_OBSERVABLE_ONLY"
+  },
+  "mechanism_version": "v1",
+  "family": "NEGATIVE_RANDOMIZED_CONVENTION",
+  "historical_status": "GENERIC_CONTROL",
+  "ablation_control_status": "ABLATION_OF:f01_speculum_core:no_convention,ABLATION_OF:f01_speculum_profile_latin23_r12:no_convention",
+  "input_M": {
+    "corpus_id": "Astafiev",
+    "item_ids": [
+      "Ie5c27f3468520f32",
+      "Iff6ba2e6b01f8d45",
+      "Ic921ed9360e7b141",
+      "I974d6c14655cef3e"
+    ],
+    "symbols": [
+      "Z",
+      "G",
+      "P",
+      "I",
+      "Z",
+      "Q",
+      "F",
+      "P"
+    ],
+    "count": 8
+  },
+  "carrier_accounting": {
+    "E_external_state": "present; checksum only",
+    "G_geometry": "absent",
+    "H_history": "absent",
+    "K_convention": "present; values withheld",
+    "I_internal_memory": "absent",
+    "C_context": "absent"
+  },
+  "observable_document_X": {
+    "symbols": [
+      "Z",
+      "G",
+      "P",
+      "I",
+      "Z",
+      "Q",
+      "F",
+      "P",
+      "Y",
+      "H",
+      "Z",
+      "G"
+    ],
+    "token_boundary": "NOT_DEFINED",
+    "line_boundary": "NOT_DEFINED",
+    "unit_boundary": "GENERATED_BY_MECHANISM",
+    "metadata": {
+      "family": "NEGATIVE_RANDOMIZED_CONVENTION"
+    }
+  },
+  "information_trace": [
+    {
+      "carrier": "M",
+      "effect": "PRESERVE",
+      "detail": "input sequence stored as ring offsets"
+    },
+    {
+      "carrier": "E",
+      "effect": "REORDER",
+      "detail": "visible letters depend on ring orientation"
+    },
+    {
+      "carrier": "K",
+      "effect": "ADD_CONTEXT",
+      "detail": "message length and reading convention are external"
+    }
+  ],
+  "retrieval_result": {
+    "Class": "AMBIGUITY_SET",
+    "Value": "",
+    "Cue": "",
+    "Candidates": [
+      "G",
+      "GZ",
+      "GZH",
+      "GZHY",
+      "GZHYP",
+      "GZHYPF",
+      "GZHYPFQ",
+      "GZHYPFQZ",
+      "GZHYPFQZI",
+      "GZHYPFQZIP",
+      "GZHYPFQZIPG",
+      "GZHYPFQZIPGZ",
+      "Z",
+      "ZG",
+      "ZGP",
+      "ZGPI",
+      "ZGPIZ",
+      "ZGPIZQ",
+      "ZGPIZQF",
+      "ZGPIZQFP",
+      "ZGPIZQFPY",
+      "ZGPIZQFPYH",
+      "ZGPIZQFPYHZ",
+      "ZGPIZQFPYHZG"
+    ],
+    "UsedCarriers": [
+      "E"
+    ],
+    "Detail": "convention withheld; multiple F01 candidates remain"
+  },
+  "metrics": {
+    "input_count": 8,
+    "observable_symbol_count": 12,
+    "observable_unit_count": 12,
+    "expansion_ratio": 1.5,
+    "distinct_observable_symbols": 8,
+    "distinct_observable_units": 8,
+    "symbol_entropy_plugin_bits": 2.8553885422075336,
+    "conditional_symbol_entropy_plugin_bits": 0.432262500196679,
+    "adjacent_repetition_rate": 0,
+    "information_retained_count_proxy": 8,
+    "information_lost_count_proxy": 0,
+    "exact_match": false,
+    "recovery_fraction": 0.041666666666666664,
+    "ambiguity_cardinality": 24,
+    "candidate_set_entropy_bits": 4.584962500721156,
+    "h_m_given_x_ambiguity_proxy_bits": 4.584962500721156
+  },
+  "input_checksum": "550dc8eccbc3f4192abec83fbc738b352512d437adc5759b38229719f786980a",
+  "observable_checksum": "8dffc6e89529aa2af0ba1f38973bb013f17f854b76affe96f24707398f43dfba",
+  "external_state_checksum": "cd08f12d0b3c25320da75b54e091c684fbd3745d0e721889b537ad55ce115167",
+  "warnings": [
+    "FROZEN_CONDITION_SPECIFIC_SEED: R0-R6 contrast is not a paired generated state"
+  ],
+  "runtime_ns": 0,
+  "software_version": "task82-blind/V1.1"
+}

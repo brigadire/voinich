@@ -1,0 +1,63 @@
+{
+  "aggregation_version": "V1.1",
+  "blind_manifest_checksum": "2ce3d0d9508518ceda0203a9eebce234e667fa5f0cd4e12a190fac7fa2861883",
+  "completed_job_count": 672,
+  "corpora": [
+    {
+      "id": "Doyle",
+      "path": "data_test/pg2097-2.txt",
+      "sha256": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80",
+      "bytes": 222572,
+      "unicode_letters": 178005,
+      "preprocessing": "first Unicode letters -\u003e upper(codepoint mod Latin23); first Unicode whitespace-delimited words -\u003e SHA-256 item IDs"
+    },
+    {
+      "id": "Longfellow",
+      "path": "data_test/pg30795-mod.txt",
+      "sha256": "95bdc2940f56a69e28ac912245d40a601ae329fc42aeec489a3557fc7416c398",
+      "bytes": 231030,
+      "unicode_letters": 149327,
+      "preprocessing": "first Unicode letters -\u003e upper(codepoint mod Latin23); first Unicode whitespace-delimited words -\u003e SHA-256 item IDs"
+    },
+    {
+      "id": "Astafiev",
+      "path": "data_test/astafiev-1000-culinar-receipts-utf8.txt",
+      "sha256": "550dc8eccbc3f4192abec83fbc738b352512d437adc5759b38229719f786980a",
+      "bytes": 985459,
+      "unicode_letters": 432491,
+      "preprocessing": "first Unicode letters -\u003e upper(codepoint mod Latin23); first Unicode whitespace-delimited words -\u003e SHA-256 item IDs"
+    }
+  ],
+  "failed_scientific_job_count": 0,
+  "firewall_attestations": {
+    "notation_control": true,
+    "voynich": true
+  },
+  "git_commit_at_execution": "e51588a9cf3d5ae94bd535ca55e6263202ff590d",
+  "output_artifact_checksums": {
+    "ABLATION_RESULTS.tsv": "e6c4770c6208a3393345792557d05727af6863a08de366616b6285afae0572d9",
+    "BUG_AUDIT.tsv": "ef5d9979e90893ae9999928882cf156663e72298e69b91612743edf988201057",
+    "CARRIER_NECESSITY.tsv": "ac559cd293c03c62ff0f3a8cd69018752e7d74b96f3485cee48f16eedbca32ae",
+    "COLLISIONS.tsv": "6a3972458e73931f1f2e39a8efd3754fec83411ca4883c35d05d2385a8df8ed9",
+    "CONTROL_VALIDATION.tsv": "b1e313c7643da572acc5ef48346b5350ffafe4e03daa2d33170db3b81bd1fe83",
+    "CROSS_CORPUS_STABILITY.tsv": "cdda7d5dc67bf3339d57b80ee34a3d717de6dd420b65da71ba35397be1db6d63",
+    "FAMILY_SUMMARY.tsv": "251bd3ab144f669ae3446de4159776000eb0a09ed87e6bc5793a0fbe385e18bc",
+    "INFORMATION_ACCOUNTING.tsv": "e9434cdcd01cd29d4c0eb68ecb7ab6a8ee658e4220c24e268a89345e04f7058c",
+    "KNOWLEDGE_DEPENDENCE.tsv": "591a08296373b0db95acc64cd8df2611eca29a421ff697349f131c5ec48e6bcd",
+    "MECHANISM_SUMMARY.tsv": "0cf7f19c712e8ae6cdd956eadeb79009cfd6bd5b446f5c02f9379f7a297461f5",
+    "PARAMETER_SENSITIVITY.tsv": "b5d7a263df631b8875f1ec72365eeb6161ba610bb0fc502ce1765bc2f12772d4",
+    "RECOVERY_RESULTS.tsv": "cc3ea440b068690367284896874bf580ad4c316c06dbb19e08355963b01b49c2",
+    "TASK82_DESIGN.md": "eb2449e8e2dd82c21c734f844f34dfc22b7f6d806696603d50d0e7c52943a85b",
+    "TASK82_DESIGN_FROZEN": "094ad70b97b50eb1ad2e955ba13775158df93235e9e6a94c189743bbd457b6b0",
+    "TASK82_JOB_LEDGER.tsv": "2bf02df00a8f2219dc18f01d121cea1169ff818db1b7de158a35d36c338d2a85",
+    "TASK82_REPORT.md": "082607ae2e5a3795449794ee0380aac81cfdbbbafafb306b96c523f5825047e0",
+    "TRANSFORMATION_METRICS.tsv": "c17d8989663de869d25886070defecc4f445ef65c474d4ea80ec790d595ef523"
+  },
+  "raw_f2_vector_checksum": null,
+  "schema": "TASK82_BLIND_RESULTS_MANIFEST_V1",
+  "seed_policy": "frozen Task81 SHA-256 derivation",
+  "task81_freeze_checksum": "514869fb3ee7fd3c6294d0820ba2b32443e36b78114a491e8b53ac467009daa7",
+  "task81_freeze_version": "V1.1",
+  "unresolved_implementation_failures": 0,
+  "version": "V1.1"
+}

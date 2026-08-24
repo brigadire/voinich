@@ -1,0 +1,109 @@
+{
+  "schema": "TASK82_RAW_JOB_V1",
+  "implementation_version": "V1.1",
+  "freeze_version": "V1.1",
+  "job": {
+    "job_id": "9c2c997969f568e935b3b54f6c8de569",
+    "mechanism_id": "f11_arismetricum_core",
+    "parameter_set_id": "f11-core-default",
+    "input_corpus_id": "Astafiev",
+    "seed": 15464095419477364625,
+    "replicate": 0,
+    "recovery_condition": "R3_NO_PATH_GEOMETRY"
+  },
+  "mechanism_version": "v1",
+  "family": "F11_INDEXED_OPAQUE_CUE",
+  "historical_status": "F-EXACT",
+  "ablation_control_status": "FULL_MECHANISM",
+  "input_M": {
+    "corpus_id": "Astafiev",
+    "item_ids": [
+      "Ie5c27f3468520f32",
+      "Iff6ba2e6b01f8d45",
+      "Ic921ed9360e7b141",
+      "I974d6c14655cef3e"
+    ],
+    "symbols": [
+      "Z",
+      "G",
+      "P",
+      "I",
+      "Z",
+      "Q",
+      "F",
+      "P"
+    ],
+    "count": 4
+  },
+  "carrier_accounting": {
+    "E_external_state": "present; checksum only",
+    "G_geometry": "absent",
+    "H_history": "absent",
+    "K_convention": "present; values withheld",
+    "I_internal_memory": "absent",
+    "C_context": "present; values withheld"
+  },
+  "observable_document_X": {
+    "symbols": [
+      "0:C0",
+      "1:C1",
+      "2:C2",
+      "3:C3"
+    ],
+    "token_boundary": "NOT_DEFINED",
+    "line_boundary": "NOT_DEFINED",
+    "unit_boundary": "GENERATED_BY_MECHANISM",
+    "metadata": {
+      "family": "F11_INDEXED_OPAQUE_CUE"
+    }
+  },
+  "information_trace": [
+    {
+      "carrier": "E",
+      "effect": "SELECT",
+      "detail": "indexing exposes an occupied slot"
+    },
+    {
+      "carrier": "K",
+      "effect": "ADD_CONTEXT",
+      "detail": "cue meaning is external to the device"
+    },
+    {
+      "carrier": "E",
+      "effect": "AMBIGUATE",
+      "detail": "visible cue is not plaintext by itself"
+    }
+  ],
+  "retrieval_result": {
+    "Class": "NOT_APPLICABLE",
+    "Value": "",
+    "Cue": "",
+    "Candidates": null,
+    "UsedCarriers": null,
+    "Detail": "f11_arismetricum_core does not use carrier G"
+  },
+  "metrics": {
+    "input_count": 4,
+    "observable_symbol_count": 4,
+    "observable_unit_count": 4,
+    "expansion_ratio": 1,
+    "distinct_observable_symbols": 4,
+    "distinct_observable_units": 4,
+    "symbol_entropy_plugin_bits": 2,
+    "conditional_symbol_entropy_plugin_bits": 0,
+    "adjacent_repetition_rate": 0,
+    "information_retained_count_proxy": 4,
+    "information_lost_count_proxy": 0,
+    "exact_match": false,
+    "recovery_fraction": 0,
+    "ambiguity_cardinality": 0,
+    "candidate_set_entropy_bits": 0,
+    "h_m_given_x_ambiguity_proxy_bits": 0
+  },
+  "input_checksum": "550dc8eccbc3f4192abec83fbc738b352512d437adc5759b38229719f786980a",
+  "observable_checksum": "5f9e37d00484aec4ce4f056bdc52ed5cd7240c8c202dc88ac483f01bdd8077cb",
+  "external_state_checksum": "f21b8c8cfd78f80da724e0101d08a56a2a39073f3e706fc70096a7b900ec9017",
+  "warnings": [],
+  "runtime_ns": 0,
+  "software_version": "task82-blind/V1.1"
+}

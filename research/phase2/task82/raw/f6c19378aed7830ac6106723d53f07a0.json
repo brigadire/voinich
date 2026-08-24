@@ -1,0 +1,119 @@
+{
+  "schema": "TASK82_RAW_JOB_V1",
+  "implementation_version": "V1.1",
+  "freeze_version": "V1.1",
+  "job": {
+    "job_id": "f6c19378aed7830ac6106723d53f07a0",
+    "mechanism_id": "negative_randomized_convention",
+    "parameter_set_id": "f01-core-bounded",
+    "input_corpus_id": "Astafiev",
+    "seed": 11051345207702120773,
+    "replicate": 1,
+    "recovery_condition": "R4_NO_HISTORY"
+  },
+  "mechanism_version": "v1",
+  "family": "NEGATIVE_RANDOMIZED_CONVENTION",
+  "historical_status": "GENERIC_CONTROL",
+  "ablation_control_status": "ABLATION_OF:f01_speculum_core:no_convention,ABLATION_OF:f01_speculum_profile_latin23_r12:no_convention",
+  "input_M": {
+    "corpus_id": "Astafiev",
+    "item_ids": [
+      "Ie5c27f3468520f32",
+      "Iff6ba2e6b01f8d45",
+      "Ic921ed9360e7b141",
+      "I974d6c14655cef3e"
+    ],
+    "symbols": [
+      "Z",
+      "G",
+      "P",
+      "I",
+      "Z",
+      "Q",
+      "F",
+      "P"
+    ],
+    "count": 8
+  },
+  "carrier_accounting": {
+    "E_external_state": "present; checksum only",
+    "G_geometry": "absent",
+    "H_history": "absent",
+    "K_convention": "present; values withheld",
+    "I_internal_memory": "absent",
+    "C_context": "absent"
+  },
+  "observable_document_X": {
+    "symbols": [
+      "Z",
+      "G",
+      "P",
+      "I",
+      "Z",
+      "Q",
+      "F",
+      "P",
+      "N",
+      "B",
+      "N",
+      "D"
+    ],
+    "token_boundary": "NOT_DEFINED",
+    "line_boundary": "NOT_DEFINED",
+    "unit_boundary": "GENERATED_BY_MECHANISM",
+    "metadata": {
+      "family": "NEGATIVE_RANDOMIZED_CONVENTION"
+    }
+  },
+  "information_trace": [
+    {
+      "carrier": "M",
+      "effect": "PRESERVE",
+      "detail": "input sequence stored as ring offsets"
+    },
+    {
+      "carrier": "E",
+      "effect": "REORDER",
+      "detail": "visible letters depend on ring orientation"
+    },
+    {
+      "carrier": "K",
+      "effect": "ADD_CONTEXT",
+      "detail": "message length and reading convention are external"
+    }
+  ],
+  "retrieval_result": {
+    "Class": "NOT_APPLICABLE",
+    "Value": "",
+    "Cue": "",
+    "Candidates": null,
+    "UsedCarriers": null,
+    "Detail": "negative_randomized_convention does not use carrier H"
+  },
+  "metrics": {
+    "input_count": 8,
+    "observable_symbol_count": 12,
+    "observable_unit_count": 12,
+    "expansion_ratio": 1.5,
+    "distinct_observable_symbols": 9,
+    "distinct_observable_units": 9,
+    "symbol_entropy_plugin_bits": 3.084962500721156,
+    "conditional_symbol_entropy_plugin_bits": 0.5454545454545455,
+    "adjacent_repetition_rate": 0,
+    "information_retained_count_proxy": 8,
+    "information_lost_count_proxy": 0,
+    "exact_match": false,
+    "recovery_fraction": 0,
+    "ambiguity_cardinality": 0,
+    "candidate_set_entropy_bits": 0,
+    "h_m_given_x_ambiguity_proxy_bits": 0
+  },
+  "input_checksum": "550dc8eccbc3f4192abec83fbc738b352512d437adc5759b38229719f786980a",
+  "observable_checksum": "6271507f1ef955b4528deb052874e32d3e8557c8a7ed758fd5a29c21c47f9f4a",
+  "external_state_checksum": "bf558561c006fc01fb2bf99af03bd60507b1d95a4f655f7470273f0d45661c05",
+  "warnings": [
+    "FROZEN_CONDITION_SPECIFIC_SEED: R0-R6 contrast is not a paired generated state"
+  ],
+  "runtime_ns": 0,
+  "software_version": "task82-blind/V1.1"
+}

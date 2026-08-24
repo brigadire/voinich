@@ -1,0 +1,119 @@
+{
+  "schema": "TASK82_RAW_JOB_V1",
+  "implementation_version": "V1.1",
+  "freeze_version": "V1.1",
+  "job": {
+    "job_id": "fb1967253c3e82a3914d1299e32576fb",
+    "mechanism_id": "f08_serpens_core",
+    "parameter_set_id": "f08-centre-edge-small",
+    "input_corpus_id": "Longfellow",
+    "seed": 13503129390962538571,
+    "replicate": 0,
+    "recovery_condition": "R0_FULL_KNOWLEDGE"
+  },
+  "mechanism_version": "v1",
+  "family": "F08_ORDERED_POSITIONAL_STORAGE",
+  "historical_status": "F-EXACT",
+  "ablation_control_status": "FULL_MECHANISM",
+  "input_M": {
+    "corpus_id": "Longfellow",
+    "item_ids": [
+      "If86b1f62a8554232",
+      "Ibb0347a468d97e98",
+      "I2f2fc7f2e9ce13b0",
+      "I2744ccd10c7533bd"
+    ],
+    "symbols": [
+      "P",
+      "N",
+      "V",
+      "C",
+      "R",
+      "I",
+      "G",
+      "V"
+    ],
+    "count": 8
+  },
+  "carrier_accounting": {
+    "E_external_state": "present; checksum only",
+    "G_geometry": "present; values withheld",
+    "H_history": "absent",
+    "K_convention": "present; values withheld",
+    "I_internal_memory": "absent",
+    "C_context": "present; values withheld"
+  },
+  "observable_document_X": {
+    "symbols": [
+      "P",
+      "N",
+      "V",
+      "C",
+      "R",
+      "I",
+      "G",
+      "V",
+      "?",
+      "?"
+    ],
+    "token_boundary": "NOT_DEFINED",
+    "line_boundary": "NOT_DEFINED",
+    "unit_boundary": "GENERATED_BY_MECHANISM",
+    "metadata": {
+      "family": "F08_ORDERED_POSITIONAL_STORAGE"
+    }
+  },
+  "information_trace": [
+    {
+      "carrier": "M",
+      "effect": "COMBINE",
+      "detail": "symbols occupy explicit positions"
+    },
+    {
+      "carrier": "G",
+      "effect": "REORDER",
+      "detail": "path knowledge orders visible positions"
+    },
+    {
+      "carrier": "K",
+      "effect": "ADD_CONTEXT",
+      "detail": "message boundary remains external"
+    }
+  ],
+  "retrieval_result": {
+    "Class": "EXACT",
+    "Value": "PNVCRIGV",
+    "Cue": "",
+    "Candidates": null,
+    "UsedCarriers": [
+      "E",
+      "G",
+      "K"
+    ],
+    "Detail": "declared F08 path supplied"
+  },
+  "metrics": {
+    "input_count": 8,
+    "observable_symbol_count": 10,
+    "observable_unit_count": 10,
+    "expansion_ratio": 1.25,
+    "distinct_observable_symbols": 8,
+    "distinct_observable_units": 8,
+    "symbol_entropy_plugin_bits": 2.9219280948873623,
+    "conditional_symbol_entropy_plugin_bits": 0.2222222222222222,
+    "adjacent_repetition_rate": 0.1111111111111111,
+    "information_retained_count_proxy": 8,
+    "information_lost_count_proxy": 0,
+    "exact_match": true,
+    "recovery_fraction": 1,
+    "ambiguity_cardinality": 0,
+    "candidate_set_entropy_bits": 0,
+    "h_m_given_x_ambiguity_proxy_bits": 0
+  },
+  "input_checksum": "95bdc2940f56a69e28ac912245d40a601ae329fc42aeec489a3557fc7416c398",
+  "observable_checksum": "d653decc281054c43f3a02699386f648721c4cedcd2e06f2483d5a14d443a716",
+  "external_state_checksum": "1d1845b4afa5ab7aea036e20406b7025e902420e96d9c6bfa2e4b7fc2d7ef72a",
+  "warnings": [],
+  "runtime_ns": 0,
+  "software_version": "task82-blind/V1.1"
+}

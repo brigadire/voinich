@@ -1,0 +1,124 @@
+{
+  "schema": "TASK82_RAW_JOB_V1",
+  "implementation_version": "V1.1",
+  "freeze_version": "V1.1",
+  "job": {
+    "job_id": "f033afcabbc83883f88a38675360742f",
+    "mechanism_id": "synthetic_literal_storage",
+    "parameter_set_id": "f08-centre-edge-small",
+    "input_corpus_id": "Doyle",
+    "seed": 13378479546616168872,
+    "replicate": 0,
+    "recovery_condition": "R3_NO_PATH_GEOMETRY"
+  },
+  "mechanism_version": "v1",
+  "family": "GENERIC_LITERAL_STORAGE",
+  "historical_status": "GENERIC_CONTROL",
+  "ablation_control_status": "ABLATION_OF:f01_speculum_core:no_rotation,ABLATION_OF:f01_speculum_profile_latin23_r12:no_rotation,ABLATION_OF:f08_serpens_core:no_state_persistence,ABLATION_OF:m_restricted_storage_associate:no_association,ABLATION_OF:synthetic_ambiguous:no_association",
+  "input_M": {
+    "corpus_id": "Doyle",
+    "item_ids": [
+      "I4bfbdf7ebee257ff",
+      "Iffd0aee5edcfef72",
+      "Ie0a6230e370d20de",
+      "I73c9c98668a34c54"
+    ],
+    "symbols": [
+      "A",
+      "N",
+      "K",
+      "Z",
+      "R",
+      "V",
+      "H",
+      "Q"
+    ],
+    "count": 8
+  },
+  "carrier_accounting": {
+    "E_external_state": "present; checksum only",
+    "G_geometry": "present; values withheld",
+    "H_history": "absent",
+    "K_convention": "present; values withheld",
+    "I_internal_memory": "absent",
+    "C_context": "absent"
+  },
+  "observable_document_X": {
+    "symbols": [
+      "A",
+      "N",
+      "K",
+      "Z",
+      "R",
+      "V",
+      "H",
+      "Q",
+      "?",
+      "?"
+    ],
+    "token_boundary": "NOT_DEFINED",
+    "line_boundary": "NOT_DEFINED",
+    "unit_boundary": "GENERATED_BY_MECHANISM",
+    "metadata": {
+      "family": "GENERIC_LITERAL_STORAGE"
+    }
+  },
+  "information_trace": [
+    {
+      "carrier": "M",
+      "effect": "COMBINE",
+      "detail": "symbols occupy explicit positions"
+    },
+    {
+      "carrier": "G",
+      "effect": "REORDER",
+      "detail": "path knowledge orders visible positions"
+    },
+    {
+      "carrier": "K",
+      "effect": "ADD_CONTEXT",
+      "detail": "message boundary remains external"
+    }
+  ],
+  "retrieval_result": {
+    "Class": "AMBIGUITY_SET",
+    "Value": "",
+    "Cue": "",
+    "Candidates": [
+      "??QHVRZK",
+      "?QHVRZKN",
+      "ANKZRVHQ",
+      "KZRVHQ??",
+      "NKZRVHQ?",
+      "QHVRZKNA"
+    ],
+    "UsedCarriers": [
+      "E"
+    ],
+    "Detail": "path or boundary withheld"
+  },
+  "metrics": {
+    "input_count": 8,
+    "observable_symbol_count": 10,
+    "observable_unit_count": 10,
+    "expansion_ratio": 1.25,
+    "distinct_observable_symbols": 9,
+    "distinct_observable_units": 9,
+    "symbol_entropy_plugin_bits": 3.121928094887362,
+    "conditional_symbol_entropy_plugin_bits": 0,
+    "adjacent_repetition_rate": 0.1111111111111111,
+    "information_retained_count_proxy": 8,
+    "information_lost_count_proxy": 0,
+    "exact_match": false,
+    "recovery_fraction": 0.16666666666666666,
+    "ambiguity_cardinality": 6,
+    "candidate_set_entropy_bits": 2.584962500721156,
+    "h_m_given_x_ambiguity_proxy_bits": 2.584962500721156
+  },
+  "input_checksum": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80",
+  "observable_checksum": "aaf5bd795bb12c1a81390d0cba76f2d07ef50c36be610cd9276cda679e8a0778",
+  "external_state_checksum": "1eae8d8cba42b7f99777d7017cf035ad5c7826a3f6a6156028c1c9001839b3f4",
+  "warnings": [],
+  "runtime_ns": 0,
+  "software_version": "task82-blind/V1.1"
+}

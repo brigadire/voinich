@@ -1,0 +1,104 @@
+{
+  "schema": "TASK82_RAW_JOB_V1",
+  "implementation_version": "V1.1",
+  "freeze_version": "V1.1",
+  "job": {
+    "job_id": "237971349688c82dd189862242aa5ee9",
+    "mechanism_id": "m_restricted_storage_associate",
+    "parameter_set_id": "storage-associate-small",
+    "input_corpus_id": "Astafiev",
+    "seed": 15577601452672623444,
+    "replicate": 0,
+    "recovery_condition": "R4_NO_HISTORY"
+  },
+  "mechanism_version": "v1.1",
+  "family": "M_RESTRICTED_STORAGE_ASSOCIATION",
+  "historical_status": "M-RESTRICTED",
+  "ablation_control_status": "FULL_MECHANISM",
+  "input_M": {
+    "corpus_id": "Astafiev",
+    "item_ids": [
+      "Ie5c27f3468520f32",
+      "Iff6ba2e6b01f8d45",
+      "Ic921ed9360e7b141",
+      "I974d6c14655cef3e"
+    ],
+    "symbols": [
+      "Z",
+      "G",
+      "P",
+      "I",
+      "Z",
+      "Q",
+      "F",
+      "P"
+    ],
+    "count": 4
+  },
+  "carrier_accounting": {
+    "E_external_state": "present; checksum only",
+    "G_geometry": "absent",
+    "H_history": "absent",
+    "K_convention": "absent",
+    "I_internal_memory": "present; values withheld",
+    "C_context": "present; values withheld"
+  },
+  "observable_document_X": {
+    "symbols": [
+      "C0",
+      "C1",
+      "C2",
+      "C3"
+    ],
+    "token_boundary": "NOT_DEFINED",
+    "line_boundary": "NOT_DEFINED",
+    "unit_boundary": "GENERATED_BY_MECHANISM",
+    "metadata": {
+      "family": "M_RESTRICTED_STORAGE_ASSOCIATION"
+    }
+  },
+  "information_trace": [
+    {
+      "carrier": "E",
+      "effect": "COMBINE",
+      "detail": "cue identifiers occupy explicit positions"
+    },
+    {
+      "carrier": "I",
+      "effect": "RECALL_TRIGGER",
+      "detail": "retrieval remains outside the visible store"
+    }
+  ],
+  "retrieval_result": {
+    "Class": "NOT_APPLICABLE",
+    "Value": "",
+    "Cue": "",
+    "Candidates": null,
+    "UsedCarriers": null,
+    "Detail": "m_restricted_storage_associate does not use carrier H"
+  },
+  "metrics": {
+    "input_count": 4,
+    "observable_symbol_count": 4,
+    "observable_unit_count": 4,
+    "expansion_ratio": 1,
+    "distinct_observable_symbols": 4,
+    "distinct_observable_units": 4,
+    "symbol_entropy_plugin_bits": 2,
+    "conditional_symbol_entropy_plugin_bits": 0,
+    "adjacent_repetition_rate": 0,
+    "information_retained_count_proxy": 4,
+    "information_lost_count_proxy": 0,
+    "exact_match": false,
+    "recovery_fraction": 0,
+    "ambiguity_cardinality": 0,
+    "candidate_set_entropy_bits": 0,
+    "h_m_given_x_ambiguity_proxy_bits": 0
+  },
+  "input_checksum": "550dc8eccbc3f4192abec83fbc738b352512d437adc5759b38229719f786980a",
+  "observable_checksum": "fc96b28b101a452737e691170d074f14321202dab8474e8230df9d7af616d1e1",
+  "external_state_checksum": "1327266d7b26e9bd8ee50120724542d2baee188ad1ecd60cd10f56efc0ea31bf",
+  "warnings": [],
+  "runtime_ns": 0,
+  "software_version": "task82-blind/V1.1"
+}

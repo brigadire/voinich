@@ -1,0 +1,119 @@
+{
+  "schema": "TASK82_RAW_JOB_V1",
+  "implementation_version": "V1.1",
+  "freeze_version": "V1.1",
+  "job": {
+    "job_id": "eefb4973b7b45c2bd541432e7045ca7e",
+    "mechanism_id": "f01_speculum_core",
+    "parameter_set_id": "f01-core-bounded",
+    "input_corpus_id": "Longfellow",
+    "seed": 6020724465539902430,
+    "replicate": 0,
+    "recovery_condition": "R5_NO_INTERNAL_MEMORY"
+  },
+  "mechanism_version": "v1",
+  "family": "F01_LITERAL_ROTATIONAL_STORAGE",
+  "historical_status": "F-EXACT",
+  "ablation_control_status": "FULL_MECHANISM",
+  "input_M": {
+    "corpus_id": "Longfellow",
+    "item_ids": [
+      "If86b1f62a8554232",
+      "Ibb0347a468d97e98",
+      "I2f2fc7f2e9ce13b0",
+      "I2744ccd10c7533bd"
+    ],
+    "symbols": [
+      "P",
+      "N",
+      "V",
+      "C",
+      "R",
+      "I",
+      "G",
+      "V"
+    ],
+    "count": 8
+  },
+  "carrier_accounting": {
+    "E_external_state": "present; checksum only",
+    "G_geometry": "absent",
+    "H_history": "absent",
+    "K_convention": "present; values withheld",
+    "I_internal_memory": "absent",
+    "C_context": "present; values withheld"
+  },
+  "observable_document_X": {
+    "symbols": [
+      "P",
+      "N",
+      "V",
+      "C",
+      "R",
+      "I",
+      "G",
+      "V",
+      "E",
+      "H",
+      "P",
+      "M"
+    ],
+    "token_boundary": "NOT_DEFINED",
+    "line_boundary": "NOT_DEFINED",
+    "unit_boundary": "GENERATED_BY_MECHANISM",
+    "metadata": {
+      "family": "F01_LITERAL_ROTATIONAL_STORAGE"
+    }
+  },
+  "information_trace": [
+    {
+      "carrier": "M",
+      "effect": "PRESERVE",
+      "detail": "input sequence stored as ring offsets"
+    },
+    {
+      "carrier": "E",
+      "effect": "REORDER",
+      "detail": "visible letters depend on ring orientation"
+    },
+    {
+      "carrier": "K",
+      "effect": "ADD_CONTEXT",
+      "detail": "message length and reading convention are external"
+    }
+  ],
+  "retrieval_result": {
+    "Class": "NOT_APPLICABLE",
+    "Value": "",
+    "Cue": "",
+    "Candidates": null,
+    "UsedCarriers": null,
+    "Detail": "f01_speculum_core does not use carrier I"
+  },
+  "metrics": {
+    "input_count": 8,
+    "observable_symbol_count": 12,
+    "observable_unit_count": 12,
+    "expansion_ratio": 1.5,
+    "distinct_observable_symbols": 10,
+    "distinct_observable_units": 10,
+    "symbol_entropy_plugin_bits": 3.251629167387823,
+    "conditional_symbol_entropy_plugin_bits": 0.36363636363636365,
+    "adjacent_repetition_rate": 0,
+    "information_retained_count_proxy": 8,
+    "information_lost_count_proxy": 0,
+    "exact_match": false,
+    "recovery_fraction": 0,
+    "ambiguity_cardinality": 0,
+    "candidate_set_entropy_bits": 0,
+    "h_m_given_x_ambiguity_proxy_bits": 0
+  },
+  "input_checksum": "95bdc2940f56a69e28ac912245d40a601ae329fc42aeec489a3557fc7416c398",
+  "observable_checksum": "e7ce4c43d6f4177a0c250e9c219123c4dd87291ae3d82cbf96be58bbb1949752",
+  "external_state_checksum": "b942c0a571cbff4b30120dc0897337742b3e0d421763d63ed36485cab7217555",
+  "warnings": [
+    "FROZEN_CONDITION_SPECIFIC_SEED: R0-R6 contrast is not a paired generated state"
+  ],
+  "runtime_ns": 0,
+  "software_version": "task82-blind/V1.1"
+}

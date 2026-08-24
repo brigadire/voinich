@@ -1,0 +1,115 @@
+{
+  "schema": "TASK82_RAW_JOB_V1",
+  "implementation_version": "V1.1",
+  "freeze_version": "V1.1",
+  "job": {
+    "job_id": "41d82056e4a5cef7f81cb844e8840f15",
+    "mechanism_id": "synthetic_literal_storage",
+    "parameter_set_id": "f08-centre-edge-small",
+    "input_corpus_id": "Astafiev",
+    "seed": 17229050726958681649,
+    "replicate": 1,
+    "recovery_condition": "R5_NO_INTERNAL_MEMORY"
+  },
+  "mechanism_version": "v1",
+  "family": "GENERIC_LITERAL_STORAGE",
+  "historical_status": "GENERIC_CONTROL",
+  "ablation_control_status": "ABLATION_OF:f01_speculum_core:no_rotation,ABLATION_OF:f01_speculum_profile_latin23_r12:no_rotation,ABLATION_OF:f08_serpens_core:no_state_persistence,ABLATION_OF:m_restricted_storage_associate:no_association,ABLATION_OF:synthetic_ambiguous:no_association",
+  "input_M": {
+    "corpus_id": "Astafiev",
+    "item_ids": [
+      "Ie5c27f3468520f32",
+      "Iff6ba2e6b01f8d45",
+      "Ic921ed9360e7b141",
+      "I974d6c14655cef3e"
+    ],
+    "symbols": [
+      "Z",
+      "G",
+      "P",
+      "I",
+      "Z",
+      "Q",
+      "F",
+      "P"
+    ],
+    "count": 8
+  },
+  "carrier_accounting": {
+    "E_external_state": "present; checksum only",
+    "G_geometry": "present; values withheld",
+    "H_history": "absent",
+    "K_convention": "present; values withheld",
+    "I_internal_memory": "absent",
+    "C_context": "absent"
+  },
+  "observable_document_X": {
+    "symbols": [
+      "Z",
+      "G",
+      "P",
+      "I",
+      "Z",
+      "Q",
+      "F",
+      "P",
+      "?",
+      "?"
+    ],
+    "token_boundary": "NOT_DEFINED",
+    "line_boundary": "NOT_DEFINED",
+    "unit_boundary": "GENERATED_BY_MECHANISM",
+    "metadata": {
+      "family": "GENERIC_LITERAL_STORAGE"
+    }
+  },
+  "information_trace": [
+    {
+      "carrier": "M",
+      "effect": "COMBINE",
+      "detail": "symbols occupy explicit positions"
+    },
+    {
+      "carrier": "G",
+      "effect": "REORDER",
+      "detail": "path knowledge orders visible positions"
+    },
+    {
+      "carrier": "K",
+      "effect": "ADD_CONTEXT",
+      "detail": "message boundary remains external"
+    }
+  ],
+  "retrieval_result": {
+    "Class": "NOT_APPLICABLE",
+    "Value": "",
+    "Cue": "",
+    "Candidates": null,
+    "UsedCarriers": null,
+    "Detail": "synthetic_literal_storage does not use carrier I"
+  },
+  "metrics": {
+    "input_count": 8,
+    "observable_symbol_count": 10,
+    "observable_unit_count": 10,
+    "expansion_ratio": 1.25,
+    "distinct_observable_symbols": 7,
+    "distinct_observable_units": 7,
+    "symbol_entropy_plugin_bits": 2.7219280948873625,
+    "conditional_symbol_entropy_plugin_bits": 0.4444444444444444,
+    "adjacent_repetition_rate": 0.1111111111111111,
+    "information_retained_count_proxy": 8,
+    "information_lost_count_proxy": 0,
+    "exact_match": false,
+    "recovery_fraction": 0,
+    "ambiguity_cardinality": 0,
+    "candidate_set_entropy_bits": 0,
+    "h_m_given_x_ambiguity_proxy_bits": 0
+  },
+  "input_checksum": "550dc8eccbc3f4192abec83fbc738b352512d437adc5759b38229719f786980a",
+  "observable_checksum": "34efadd050d63bc56bdce8c396908b5e699bb137c428cdb0cecd157a01c3e0e4",
+  "external_state_checksum": "75fb981e3fb2ccd9aca72f83a1ba23d93665361de5a1a53e6a3459208f5baea0",
+  "warnings": [],
+  "runtime_ns": 0,
+  "software_version": "task82-blind/V1.1"
+}

@@ -1,0 +1,146 @@
+{
+  "schema": "TASK82_RAW_JOB_V1",
+  "implementation_version": "V1.1",
+  "freeze_version": "V1.1",
+  "job": {
+    "job_id": "33f7dcdd4e7991dc44bff9520a86814c",
+    "mechanism_id": "negative_randomized_convention",
+    "parameter_set_id": "f01-core-bounded",
+    "input_corpus_id": "Doyle",
+    "seed": 13555360803201642338,
+    "replicate": 1,
+    "recovery_condition": "R2_NO_CONVENTION"
+  },
+  "mechanism_version": "v1",
+  "family": "NEGATIVE_RANDOMIZED_CONVENTION",
+  "historical_status": "GENERIC_CONTROL",
+  "ablation_control_status": "ABLATION_OF:f01_speculum_core:no_convention,ABLATION_OF:f01_speculum_profile_latin23_r12:no_convention",
+  "input_M": {
+    "corpus_id": "Doyle",
+    "item_ids": [
+      "I4bfbdf7ebee257ff",
+      "Iffd0aee5edcfef72",
+      "Ie0a6230e370d20de",
+      "I73c9c98668a34c54"
+    ],
+    "symbols": [
+      "A",
+      "N",
+      "K",
+      "Z",
+      "R",
+      "V",
+      "H",
+      "Q"
+    ],
+    "count": 8
+  },
+  "carrier_accounting": {
+    "E_external_state": "present; checksum only",
+    "G_geometry": "absent",
+    "H_history": "absent",
+    "K_convention": "present; values withheld",
+    "I_internal_memory": "absent",
+    "C_context": "absent"
+  },
+  "observable_document_X": {
+    "symbols": [
+      "A",
+      "N",
+      "K",
+      "Z",
+      "R",
+      "V",
+      "H",
+      "Q",
+      "X",
+      "N",
+      "I",
+      "Y"
+    ],
+    "token_boundary": "NOT_DEFINED",
+    "line_boundary": "NOT_DEFINED",
+    "unit_boundary": "GENERATED_BY_MECHANISM",
+    "metadata": {
+      "family": "NEGATIVE_RANDOMIZED_CONVENTION"
+    }
+  },
+  "information_trace": [
+    {
+      "carrier": "M",
+      "effect": "PRESERVE",
+      "detail": "input sequence stored as ring offsets"
+    },
+    {
+      "carrier": "E",
+      "effect": "REORDER",
+      "detail": "visible letters depend on ring orientation"
+    },
+    {
+      "carrier": "K",
+      "effect": "ADD_CONTEXT",
+      "detail": "message length and reading convention are external"
+    }
+  ],
+  "retrieval_result": {
+    "Class": "AMBIGUITY_SET",
+    "Value": "",
+    "Cue": "",
+    "Candidates": [
+      "A",
+      "AN",
+      "ANK",
+      "ANKZ",
+      "ANKZR",
+      "ANKZRV",
+      "ANKZRVH",
+      "ANKZRVHQ",
+      "ANKZRVHQX",
+      "ANKZRVHQXN",
+      "ANKZRVHQXNI",
+      "ANKZRVHQXNIY",
+      "Y",
+      "YI",
+      "YIN",
+      "YINX",
+      "YINXQ",
+      "YINXQH",
+      "YINXQHV",
+      "YINXQHVR",
+      "YINXQHVRZ",
+      "YINXQHVRZK",
+      "YINXQHVRZKN",
+      "YINXQHVRZKNA"
+    ],
+    "UsedCarriers": [
+      "E"
+    ],
+    "Detail": "convention withheld; multiple F01 candidates remain"
+  },
+  "metrics": {
+    "input_count": 8,
+    "observable_symbol_count": 12,
+    "observable_unit_count": 12,
+    "expansion_ratio": 1.5,
+    "distinct_observable_symbols": 11,
+    "distinct_observable_units": 11,
+    "symbol_entropy_plugin_bits": 3.418295834054489,
+    "conditional_symbol_entropy_plugin_bits": 0.18181818181818182,
+    "adjacent_repetition_rate": 0,
+    "information_retained_count_proxy": 8,
+    "information_lost_count_proxy": 0,
+    "exact_match": false,
+    "recovery_fraction": 0.041666666666666664,
+    "ambiguity_cardinality": 24,
+    "candidate_set_entropy_bits": 4.584962500721156,
+    "h_m_given_x_ambiguity_proxy_bits": 4.584962500721156
+  },
+  "input_checksum": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80",
+  "observable_checksum": "67e570f64e6814d2e76ac2152a5fb110a58b4f26964aaa8501b43fc894222b97",
+  "external_state_checksum": "c1d4d77ef0ca5633e9fac8cc087fd354481f8c88dfb841cc2ecaa32e38d5e30b",
+  "warnings": [
+    "FROZEN_CONDITION_SPECIFIC_SEED: R0-R6 contrast is not a paired generated state"
+  ],
+  "runtime_ns": 0,
+  "software_version": "task82-blind/V1.1"
+}

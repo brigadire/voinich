@@ -1,0 +1,119 @@
+{
+  "schema": "TASK82_RAW_JOB_V1",
+  "implementation_version": "V1.1",
+  "freeze_version": "V1.1",
+  "job": {
+    "job_id": "70e2325761b13b1e85381f4980956de0",
+    "mechanism_id": "f01_speculum_profile_latin23_r12",
+    "parameter_set_id": "f01-profile-latin23-r12",
+    "input_corpus_id": "Doyle",
+    "seed": 5010513203303451318,
+    "replicate": 1,
+    "recovery_condition": "R2_NO_CONVENTION"
+  },
+  "mechanism_version": "v1",
+  "family": "F01_LITERAL_ROTATIONAL_STORAGE",
+  "historical_status": "F-PROFILE",
+  "ablation_control_status": "FULL_MECHANISM",
+  "input_M": {
+    "corpus_id": "Doyle",
+    "item_ids": [
+      "I4bfbdf7ebee257ff",
+      "Iffd0aee5edcfef72",
+      "Ie0a6230e370d20de",
+      "I73c9c98668a34c54"
+    ],
+    "symbols": [
+      "A",
+      "N",
+      "K",
+      "Z",
+      "R",
+      "V",
+      "H",
+      "Q"
+    ],
+    "count": 8
+  },
+  "carrier_accounting": {
+    "E_external_state": "present; checksum only",
+    "G_geometry": "absent",
+    "H_history": "absent",
+    "K_convention": "present; values withheld",
+    "I_internal_memory": "absent",
+    "C_context": "present; values withheld"
+  },
+  "observable_document_X": {
+    "symbols": [
+      "A",
+      "N",
+      "K",
+      "Z",
+      "R",
+      "V",
+      "H",
+      "Q",
+      "Q",
+      "V",
+      "D",
+      "S"
+    ],
+    "token_boundary": "NOT_DEFINED",
+    "line_boundary": "NOT_DEFINED",
+    "unit_boundary": "GENERATED_BY_MECHANISM",
+    "metadata": {
+      "family": "F01_LITERAL_ROTATIONAL_STORAGE"
+    }
+  },
+  "information_trace": [
+    {
+      "carrier": "M",
+      "effect": "PRESERVE",
+      "detail": "input sequence stored as ring offsets"
+    },
+    {
+      "carrier": "E",
+      "effect": "REORDER",
+      "detail": "visible letters depend on ring orientation"
+    },
+    {
+      "carrier": "K",
+      "effect": "ADD_CONTEXT",
+      "detail": "message length and reading convention are external"
+    }
+  ],
+  "retrieval_result": {
+    "Class": "NO_RECOVERY",
+    "Value": "",
+    "Cue": "",
+    "Candidates": null,
+    "UsedCarriers": null,
+    "Detail": "no compatible F01 candidates"
+  },
+  "metrics": {
+    "input_count": 8,
+    "observable_symbol_count": 12,
+    "observable_unit_count": 12,
+    "expansion_ratio": 1.5,
+    "distinct_observable_symbols": 10,
+    "distinct_observable_units": 10,
+    "symbol_entropy_plugin_bits": 3.2516291673878226,
+    "conditional_symbol_entropy_plugin_bits": 0.36363636363636365,
+    "adjacent_repetition_rate": 0.09090909090909091,
+    "information_retained_count_proxy": 8,
+    "information_lost_count_proxy": 0,
+    "exact_match": false,
+    "recovery_fraction": 0,
+    "ambiguity_cardinality": 0,
+    "candidate_set_entropy_bits": 0,
+    "h_m_given_x_ambiguity_proxy_bits": 0
+  },
+  "input_checksum": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80",
+  "observable_checksum": "2dcbacd4791ea77cde291c1c5e1ab7ab0215b6a55cf5b91d01d05d2b1c28183b",
+  "external_state_checksum": "d80faef88ccbaf9a8b17efcda654132e873eff439bd6c02d9e284aa8e08efa87",
+  "warnings": [
+    "FROZEN_CONDITION_SPECIFIC_SEED: R0-R6 contrast is not a paired generated state"
+  ],
+  "runtime_ns": 0,
+  "software_version": "task82-blind/V1.1"
+}

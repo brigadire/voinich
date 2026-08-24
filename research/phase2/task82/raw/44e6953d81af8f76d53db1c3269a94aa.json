@@ -1,0 +1,106 @@
+{
+  "schema": "TASK82_RAW_JOB_V1",
+  "implementation_version": "V1.1",
+  "freeze_version": "V1.1",
+  "job": {
+    "job_id": "44e6953d81af8f76d53db1c3269a94aa",
+    "mechanism_id": "synthetic_cyclic_state",
+    "parameter_set_id": "f12-cycle-default",
+    "input_corpus_id": "Astafiev",
+    "seed": 3375636395713834691,
+    "replicate": 1,
+    "recovery_condition": "R1_NO_CONTEXT"
+  },
+  "mechanism_version": "v1",
+  "family": "GENERIC_CYCLIC_STATE",
+  "historical_status": "GENERIC_CONTROL",
+  "ablation_control_status": "ABLATION_OF:f12_horalogius_core:no_association",
+  "input_M": {
+    "corpus_id": "Astafiev",
+    "item_ids": [
+      "Ie5c27f3468520f32",
+      "Iff6ba2e6b01f8d45",
+      "Ic921ed9360e7b141",
+      "I974d6c14655cef3e"
+    ],
+    "symbols": [
+      "Z",
+      "G",
+      "P",
+      "I",
+      "Z",
+      "Q",
+      "F",
+      "P"
+    ],
+    "count": 4
+  },
+  "carrier_accounting": {
+    "E_external_state": "present; checksum only",
+    "G_geometry": "absent",
+    "H_history": "absent",
+    "K_convention": "absent",
+    "I_internal_memory": "absent",
+    "C_context": "absent"
+  },
+  "observable_document_X": {
+    "symbols": [
+      "C0"
+    ],
+    "token_boundary": "GENERATED_BY_MECHANISM",
+    "line_boundary": "NOT_DEFINED",
+    "unit_boundary": "GENERATED_BY_MECHANISM",
+    "metadata": {
+      "family": "GENERIC_CYCLIC_STATE"
+    }
+  },
+  "information_trace": [
+    {
+      "carrier": "E",
+      "effect": "SIGNAL",
+      "detail": "temporal state emits opaque cues"
+    },
+    {
+      "carrier": "I",
+      "effect": "RECALL_TRIGGER",
+      "detail": "association is external to observable state"
+    },
+    {
+      "carrier": "E",
+      "effect": "AMBIGUATE",
+      "detail": "cue-only without internal mapping"
+    }
+  ],
+  "retrieval_result": {
+    "Class": "NOT_APPLICABLE",
+    "Value": "",
+    "Cue": "",
+    "Candidates": null,
+    "UsedCarriers": null,
+    "Detail": "synthetic_cyclic_state does not use carrier C"
+  },
+  "metrics": {
+    "input_count": 4,
+    "observable_symbol_count": 1,
+    "observable_unit_count": 1,
+    "expansion_ratio": 0.25,
+    "distinct_observable_symbols": 1,
+    "distinct_observable_units": 1,
+    "symbol_entropy_plugin_bits": 0,
+    "conditional_symbol_entropy_plugin_bits": 0,
+    "adjacent_repetition_rate": 0,
+    "information_retained_count_proxy": 1,
+    "information_lost_count_proxy": 3,
+    "exact_match": false,
+    "recovery_fraction": 0,
+    "ambiguity_cardinality": 0,
+    "candidate_set_entropy_bits": 0,
+    "h_m_given_x_ambiguity_proxy_bits": 0
+  },
+  "input_checksum": "550dc8eccbc3f4192abec83fbc738b352512d437adc5759b38229719f786980a",
+  "observable_checksum": "f9c9da0cdb72554e39533077edf07d7f475bb06ed7589f7d8ce9d767333e2d70",
+  "external_state_checksum": "89d0450784814f31075c67925c4f0d768f9bbb20b2538738bf4dc7a84d71cbc9",
+  "warnings": [],
+  "runtime_ns": 0,
+  "software_version": "task82-blind/V1.1"
+}

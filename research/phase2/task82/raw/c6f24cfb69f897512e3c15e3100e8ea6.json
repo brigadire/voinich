@@ -1,0 +1,145 @@
+{
+  "schema": "TASK82_RAW_JOB_V1",
+  "implementation_version": "V1.1",
+  "freeze_version": "V1.1",
+  "job": {
+    "job_id": "c6f24cfb69f897512e3c15e3100e8ea6",
+    "mechanism_id": "f01_speculum_core",
+    "parameter_set_id": "f01-core-bounded",
+    "input_corpus_id": "Longfellow",
+    "seed": 17891194574791937106,
+    "replicate": 0,
+    "recovery_condition": "R6_OBSERVABLE_ONLY"
+  },
+  "mechanism_version": "v1",
+  "family": "F01_LITERAL_ROTATIONAL_STORAGE",
+  "historical_status": "F-EXACT",
+  "ablation_control_status": "FULL_MECHANISM",
+  "input_M": {
+    "corpus_id": "Longfellow",
+    "item_ids": [
+      "If86b1f62a8554232",
+      "Ibb0347a468d97e98",
+      "I2f2fc7f2e9ce13b0",
+      "I2744ccd10c7533bd"
+    ],
+    "symbols": [
+      "P",
+      "N",
+      "V",
+      "C",
+      "R",
+      "I",
+      "G",
+      "V"
+    ],
+    "count": 8
+  },
+  "carrier_accounting": {
+    "E_external_state": "present; checksum only",
+    "G_geometry": "absent",
+    "H_history": "absent",
+    "K_convention": "present; values withheld",
+    "I_internal_memory": "absent",
+    "C_context": "present; values withheld"
+  },
+  "observable_document_X": {
+    "symbols": [
+      "P",
+      "N",
+      "V",
+      "C",
+      "R",
+      "I",
+      "G",
+      "V",
+      "L",
+      "I",
+      "G",
+      "P"
+    ],
+    "token_boundary": "NOT_DEFINED",
+    "line_boundary": "NOT_DEFINED",
+    "unit_boundary": "GENERATED_BY_MECHANISM",
+    "metadata": {
+      "family": "F01_LITERAL_ROTATIONAL_STORAGE"
+    }
+  },
+  "information_trace": [
+    {
+      "carrier": "M",
+      "effect": "PRESERVE",
+      "detail": "input sequence stored as ring offsets"
+    },
+    {
+      "carrier": "E",
+      "effect": "REORDER",
+      "detail": "visible letters depend on ring orientation"
+    },
+    {
+      "carrier": "K",
+      "effect": "ADD_CONTEXT",
+      "detail": "message length and reading convention are external"
+    }
+  ],
+  "retrieval_result": {
+    "Class": "AMBIGUITY_SET",
+    "Value": "",
+    "Cue": "",
+    "Candidates": [
+      "P",
+      "PG",
+      "PGI",
+      "PGIL",
+      "PGILV",
+      "PGILVG",
+      "PGILVGI",
+      "PGILVGIR",
+      "PGILVGIRC",
+      "PGILVGIRCV",
+      "PGILVGIRCVN",
+      "PGILVGIRCVNP",
+      "PN",
+      "PNV",
+      "PNVC",
+      "PNVCR",
+      "PNVCRI",
+      "PNVCRIG",
+      "PNVCRIGV",
+      "PNVCRIGVL",
+      "PNVCRIGVLI",
+      "PNVCRIGVLIG",
+      "PNVCRIGVLIGP"
+    ],
+    "UsedCarriers": [
+      "E"
+    ],
+    "Detail": "convention withheld; multiple F01 candidates remain"
+  },
+  "metrics": {
+    "input_count": 8,
+    "observable_symbol_count": 12,
+    "observable_unit_count": 12,
+    "expansion_ratio": 1.5,
+    "distinct_observable_symbols": 8,
+    "distinct_observable_units": 8,
+    "symbol_entropy_plugin_bits": 2.9182958340544896,
+    "conditional_symbol_entropy_plugin_bits": 0.36363636363636365,
+    "adjacent_repetition_rate": 0,
+    "information_retained_count_proxy": 8,
+    "information_lost_count_proxy": 0,
+    "exact_match": false,
+    "recovery_fraction": 0.043478260869565216,
+    "ambiguity_cardinality": 23,
+    "candidate_set_entropy_bits": 4.523561956057013,
+    "h_m_given_x_ambiguity_proxy_bits": 4.523561956057013
+  },
+  "input_checksum": "95bdc2940f56a69e28ac912245d40a601ae329fc42aeec489a3557fc7416c398",
+  "observable_checksum": "829884c3816cc75426ea0a10346c8b10e5088abbfecc66304988cfcf139511d9",
+  "external_state_checksum": "2c439f7a87ba311facb32d923f99c4bc3e6849ac445b3ac38ecdcb7525f6f853",
+  "warnings": [
+    "FROZEN_CONDITION_SPECIFIC_SEED: R0-R6 contrast is not a paired generated state"
+  ],
+  "runtime_ns": 0,
+  "software_version": "task82-blind/V1.1"
+}

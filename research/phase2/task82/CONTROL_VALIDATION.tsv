@@ -1,0 +1,10 @@
+mechanism_id	control_type	expected_behavior	observed_r0_exact_rate	observed_r0_mean_recovery	observed_ambiguity_rate	validation
+negative_randomized_convention	NEGATIVE_RANDOMIZED_CONVENTION	wrong specific knowledge does not recover intended input	0.000000	0.000000	0.000000	SUPPORTED
+negative_randomized_cue_association	NEGATIVE_RANDOMIZED_CUE_ASSOCIATION	wrong specific knowledge does not recover intended input	0.000000	0.000000	0.000000	SUPPORTED
+negative_randomized_index_mapping	NEGATIVE_RANDOMIZED_INDEX_MAPPING	wrong specific knowledge does not recover intended input	0.000000	0.000000	0.000000	SUPPORTED
+negative_randomized_path	NEGATIVE_RANDOMIZED_PATH	wrong specific knowledge does not recover intended input	0.000000	0.166667	1.000000	SUPPORTED
+synthetic_ambiguous	GENERIC_AMBIGUOUS	context-restored exact R0; ambiguity without context	1.000000	1.000000	0.000000	SUPPORTED
+synthetic_cue_based	GENERIC_CUE_BASED	generic control follows frozen relation	1.000000	1.000000	0.000000	SUPPORTED
+synthetic_cyclic_state	GENERIC_CYCLIC_STATE	cue-only signal without undeclared association knowledge	0.000000	0.000000	0.000000	SUPPORTED
+synthetic_indexed_lookup	GENERIC_INDEXED_LOOKUP	generic control follows frozen relation	1.000000	1.000000	0.000000	SUPPORTED
+synthetic_literal_storage	GENERIC_LITERAL_STORAGE	literal R0 exact	1.000000	1.000000	0.000000	SUPPORTED

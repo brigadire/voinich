@@ -1,0 +1,106 @@
+{
+  "schema": "TASK82_RAW_JOB_V1",
+  "implementation_version": "V1.1",
+  "freeze_version": "V1.1",
+  "job": {
+    "job_id": "511aab2e7c762d7c54eba7ee02460941",
+    "mechanism_id": "f12_horalogius_core",
+    "parameter_set_id": "f12-cycle-default",
+    "input_corpus_id": "Longfellow",
+    "seed": 18326177138095151739,
+    "replicate": 1,
+    "recovery_condition": "R4_NO_HISTORY"
+  },
+  "mechanism_version": "v1",
+  "family": "F12_TEMPORAL_ASSOCIATIVE_CUE",
+  "historical_status": "F-EXACT",
+  "ablation_control_status": "FULL_MECHANISM",
+  "input_M": {
+    "corpus_id": "Longfellow",
+    "item_ids": [
+      "If86b1f62a8554232",
+      "Ibb0347a468d97e98",
+      "I2f2fc7f2e9ce13b0",
+      "I2744ccd10c7533bd"
+    ],
+    "symbols": [
+      "P",
+      "N",
+      "V",
+      "C",
+      "R",
+      "I",
+      "G",
+      "V"
+    ],
+    "count": 4
+  },
+  "carrier_accounting": {
+    "E_external_state": "present; checksum only",
+    "G_geometry": "absent",
+    "H_history": "absent",
+    "K_convention": "absent",
+    "I_internal_memory": "present; values withheld",
+    "C_context": "present; values withheld"
+  },
+  "observable_document_X": {
+    "symbols": [
+      "C0"
+    ],
+    "token_boundary": "GENERATED_BY_MECHANISM",
+    "line_boundary": "NOT_DEFINED",
+    "unit_boundary": "GENERATED_BY_MECHANISM",
+    "metadata": {
+      "family": "F12_TEMPORAL_ASSOCIATIVE_CUE"
+    }
+  },
+  "information_trace": [
+    {
+      "carrier": "E",
+      "effect": "SIGNAL",
+      "detail": "temporal state emits opaque cues"
+    },
+    {
+      "carrier": "I",
+      "effect": "RECALL_TRIGGER",
+      "detail": "association is external to observable state"
+    },
+    {
+      "carrier": "E",
+      "effect": "AMBIGUATE",
+      "detail": "cue-only without internal mapping"
+    }
+  ],
+  "retrieval_result": {
+    "Class": "NOT_APPLICABLE",
+    "Value": "",
+    "Cue": "",
+    "Candidates": null,
+    "UsedCarriers": null,
+    "Detail": "f12_horalogius_core does not use carrier H"
+  },
+  "metrics": {
+    "input_count": 4,
+    "observable_symbol_count": 1,
+    "observable_unit_count": 1,
+    "expansion_ratio": 0.25,
+    "distinct_observable_symbols": 1,
+    "distinct_observable_units": 1,
+    "symbol_entropy_plugin_bits": 0,
+    "conditional_symbol_entropy_plugin_bits": 0,
+    "adjacent_repetition_rate": 0,
+    "information_retained_count_proxy": 1,
+    "information_lost_count_proxy": 3,
+    "exact_match": false,
+    "recovery_fraction": 0,
+    "ambiguity_cardinality": 0,
+    "candidate_set_entropy_bits": 0,
+    "h_m_given_x_ambiguity_proxy_bits": 0
+  },
+  "input_checksum": "95bdc2940f56a69e28ac912245d40a601ae329fc42aeec489a3557fc7416c398",
+  "observable_checksum": "d510ff86073ab1d4823ade3eeffff4c20b3786909966218aa5a83e37d319bc82",
+  "external_state_checksum": "89d0450784814f31075c67925c4f0d768f9bbb20b2538738bf4dc7a84d71cbc9",
+  "warnings": [],
+  "runtime_ns": 0,
+  "software_version": "task82-blind/V1.1"
+}

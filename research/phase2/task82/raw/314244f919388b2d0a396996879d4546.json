@@ -1,0 +1,107 @@
+{
+  "schema": "TASK82_RAW_JOB_V1",
+  "implementation_version": "V1.1",
+  "freeze_version": "V1.1",
+  "job": {
+    "job_id": "314244f919388b2d0a396996879d4546",
+    "mechanism_id": "m_restricted_rotation_index",
+    "parameter_set_id": "rotation-index-small",
+    "input_corpus_id": "Doyle",
+    "seed": 10206715388261713917,
+    "replicate": 1,
+    "recovery_condition": "R0_FULL_KNOWLEDGE"
+  },
+  "mechanism_version": "v1",
+  "family": "M_RESTRICTED_ROTATION_INDEX",
+  "historical_status": "M-RESTRICTED",
+  "ablation_control_status": "FULL_MECHANISM",
+  "input_M": {
+    "corpus_id": "Doyle",
+    "item_ids": [
+      "I4bfbdf7ebee257ff",
+      "Iffd0aee5edcfef72",
+      "Ie0a6230e370d20de",
+      "I73c9c98668a34c54"
+    ],
+    "symbols": [
+      "A",
+      "N",
+      "K",
+      "Z",
+      "R",
+      "V",
+      "H",
+      "Q"
+    ],
+    "count": 4
+  },
+  "carrier_accounting": {
+    "E_external_state": "present; checksum only",
+    "G_geometry": "absent",
+    "H_history": "absent",
+    "K_convention": "present; values withheld",
+    "I_internal_memory": "absent",
+    "C_context": "present; values withheld"
+  },
+  "observable_document_X": {
+    "symbols": [
+      "C3",
+      "C0",
+      "C1",
+      "C2"
+    ],
+    "token_boundary": "NOT_DEFINED",
+    "line_boundary": "NOT_DEFINED",
+    "unit_boundary": "GENERATED_BY_MECHANISM",
+    "metadata": {
+      "family": "M_RESTRICTED_ROTATION_INDEX"
+    }
+  },
+  "information_trace": [
+    {
+      "carrier": "E",
+      "effect": "REORDER",
+      "detail": "rotation changes the visible index-to-cue alignment"
+    },
+    {
+      "carrier": "K",
+      "effect": "ADD_CONTEXT",
+      "detail": "cue meaning remains external"
+    }
+  ],
+  "retrieval_result": {
+    "Class": "EXACT",
+    "Value": "I4bfbdf7ebee257ff",
+    "Cue": "C0",
+    "Candidates": null,
+    "UsedCarriers": [
+      "E",
+      "K"
+    ],
+    "Detail": "M-restricted rotation+index with cue map"
+  },
+  "metrics": {
+    "input_count": 4,
+    "observable_symbol_count": 4,
+    "observable_unit_count": 4,
+    "expansion_ratio": 1,
+    "distinct_observable_symbols": 4,
+    "distinct_observable_units": 4,
+    "symbol_entropy_plugin_bits": 2,
+    "conditional_symbol_entropy_plugin_bits": 0,
+    "adjacent_repetition_rate": 0,
+    "information_retained_count_proxy": 4,
+    "information_lost_count_proxy": 0,
+    "exact_match": true,
+    "recovery_fraction": 1,
+    "ambiguity_cardinality": 0,
+    "candidate_set_entropy_bits": 0,
+    "h_m_given_x_ambiguity_proxy_bits": 0
+  },
+  "input_checksum": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80",
+  "observable_checksum": "8587671c55454d46d709cdece69ef2852972f47627d215d87f11f84107685e08",
+  "external_state_checksum": "3a958d37174a893d1de8ecf79d120dd3e88698800b0cdc5df67fc7c6aecace38",
+  "warnings": [],
+  "runtime_ns": 0,
+  "software_version": "task82-blind/V1.1"
+}
