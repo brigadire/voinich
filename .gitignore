@@ -70,4 +70,15 @@ experiments/voynich-token-glyph-reverse-v1/
 experiments/voynich-token-revers-v1/
 experiments/voynich-v2/
 experiments/voynich-v3/
+# These three controls-portfolio-out files exceed GitHub's 100MB per-file
+# push limit (each corpus/control in that run gets its own full LP/EF
+# fingerprint object, not just the lightweight discriminative comparison).
+# Byte-reproducible from experiments/fingerprint-v2-task79c-v1/
+# controls-portfolio.yaml at the recorded commit/seed; every derived
+# summary (discriminative_validation.json, metric_registry.json,
+# stability_matrix.json, redundancy_matrix.json, report.md,
+# task79_verdicts.json) is committed and unaffected by this exclusion.
+experiments/fingerprint-v2-task79c-v1/controls-portfolio-out/raw_results.json
+experiments/fingerprint-v2-task79c-v1/controls-portfolio-out/fingerprint.json
+experiments/fingerprint-v2-task79c-v1/controls-portfolio-out/fingerprint_v2_candidate.json
 *.tar.gz

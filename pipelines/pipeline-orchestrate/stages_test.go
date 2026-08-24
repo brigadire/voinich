@@ -53,6 +53,14 @@ func TestStagesMatchRepository(t *testing.T) {
 		"codex_orientation":      true,
 		"experiment-compare":     true,
 		"fingerprint-v2-analyze": true,
+		// Task79c closure tools: separately configured Phase II research
+		// entry points with explicit, caller-chosen output paths, same as
+		// fingerprint-v2-analyze; none has a frozen Task49 stage contract.
+		"tei-abbr-extract":        true,
+		"generic-glyph-filter":    true,
+		"ivtff-x7-extract":        true,
+		"task79c-pf4-hr":          true,
+		"task79c-distance-pareto": true,
 	}
 	for _, e := range entries {
 		if !e.IsDir() {

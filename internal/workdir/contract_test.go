@@ -40,8 +40,13 @@ func TestAllPipelineCommandsUseWorkdirContract(t *testing.T) {
 		// generators, not pipeline stages: their outputs are new corpora
 		// the caller places wherever it likes (e.g. alongside
 		// data_test/*.txt), never generated analysis artifacts under the
-		// shared ./workdir contract.
-		if base := filepath.Base(filepath.Dir(path)); base == "codex_prepare" || base == "codex_orientation" {
+		// shared ./workdir contract. tei-abbr-extract, generic-glyph-filter
+		// and ivtff-x7-extract are the same class of tool, added for
+		// Task79c: each turns third-party/raw bytes into a prepared corpus
+		// file at a caller-chosen path (e.g. under data_test/), not an
+		// analysis result under ./workdir.
+		if base := filepath.Base(filepath.Dir(path)); base == "codex_prepare" || base == "codex_orientation" ||
+			base == "tei-abbr-extract" || base == "generic-glyph-filter" || base == "ivtff-x7-extract" {
 			continue
 		}
 		parsed, err := parser.ParseFile(token.NewFileSet(), path, nil, parser.ImportsOnly)

@@ -1,0 +1,115 @@
+{
+  "candidate_id": "FINGERPRINT_V2_CANDIDATE",
+  "status": "FROZEN",
+  "fingerprint_version": "fingerprint-v2-page-hierarchy-v1",
+  "task79c_version": "fingerprint-v2-task79c-closure-v1",
+  "implementation_commit": "d568e54bc7a57c87b4ab0096fb5e89550c9b9c09",
+  "canonical_corpus": {
+    "id": "voynich-zl3b-eva",
+    "raw_ivtff_path": "data/ZL3b-n.txt",
+    "raw_ivtff_sha256": "bf5b6d4ac1e3a51b1847a9c388318d609020441ccd56984c901c32b09beccafc",
+    "prepared_path": "data_work/ZL3b-x7.canonical.txt",
+    "prepared_sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692",
+    "token_count": 39380
+  },
+  "alternate_transcription": {
+    "id": "voynich-it2a-eva",
+    "raw_ivtff_path": "data/IT2a-n.txt",
+    "raw_ivtff_sha256": "7f27a8b0feed8f6de0a99900df6bf912dd1d295c38e5f830bac8b41c3f536fb5",
+    "prepared_path": "data_work/IT2a-x7.canonical.txt",
+    "prepared_sha256": "3fb9531a11d896b5227e54c8d119cc13986eb69e48e1a5ab72b1a1ba64b5b4c0",
+    "token_count": 37945,
+    "provenance": "Takeshi Takahashi's transliteration via Jorge Stolfi's 1999 interlinear file, distributed by voynich.nu in IVTFF 2.0",
+    "purpose": "Task79c Gate A/C: cross-transcription stability of the 13 CORE metrics; see TRANSCRIPTION_STABILITY.tsv"
+  },
+  "configs": {
+    "canonical_task79": {
+      "path": "experiments/fingerprint-v2-task79-v1/canonical.yaml",
+      "sha256": "0c3c571d260fac8e4b4f337cf1ab42f1f21f923ed8480eaf4ea32f68b17042e7"
+    },
+    "task79c_transcription_it": {
+      "path": "experiments/fingerprint-v2-task79c-v1/transcription-it.yaml",
+      "sha256": "f263e444dc676063780107ddc61ce1ed0247c60c684534d6a3dc8462764b5bc1"
+    },
+    "task79c_controls_portfolio": {
+      "path": "experiments/fingerprint-v2-task79c-v1/controls-portfolio.yaml",
+      "sha256": "d6c4cc872a689f01307de1ec5d773327bfc5bcc1340bc8c74b32d1228b9d1cbc"
+    }
+  },
+  "metric_version": "task79-v1",
+  "seeds": {
+    "task79_and_task79c_permutations_bootstrap_and_replicates": 20260824,
+    "hr3_hr5_folio_fold_assignment": 40260824
+  },
+  "core_metrics": [
+    "2DL1_LAYOUT_POSITION_MI", "BP1_BOUNDARY_TOKEN_NMI", "EF1_GIANT_COMPONENT_SHARE",
+    "EF2_GLOBAL_CLUSTERING", "EF3_DEGREE_FREQUENCY_SPEARMAN", "HR1_FOLIO_VARIANCE_SHARE",
+    "HR1_SECTION_VARIANCE_SHARE", "LC1_LOCUS_TYPE_NMI", "LC2_LABEL_TEXT_NMI",
+    "LS2_POSITIONAL_LEXICON_NMI", "LS3_BOUNDARY_LENGTH_ASYMMETRY", "PF2_FOLIO_COHERENCE",
+    "PF5_WITHIN_FOLIO_PROGRESSION"
+  ],
+  "supporting_metrics": [
+    "EF1_ISOLATE_SHARE", "HR1_LOCUS_VARIANCE_SHARE", "HR6_CURRIER_SECTION_NMI",
+    "LC5_IVTFF_I_NMI", "LC5_IVTFF_X_NMI", "LP1_RULE_SUPPORT_GINI",
+    "LP4_PREFIX_ATTACHMENT_NMI", "LP4_SUFFIX_ATTACHMENT_NMI", "LS1_LINE_LENGTH_CV",
+    "LS4_WITHIN_LINE_EXACT_REPETITION", "PF3_ADJACENT_FOLIO_CONTINUITY",
+    "PF4_RECTO_VERSO_COHERENCE", "cs1/family-line-position",
+    "cs2/prev-family-current-family", "cs3/family-locus-type", "cs4/family-currier",
+    "cs4/family-section", "cs5/local-adjacency-x-regime",
+    "cs6/family-diversity-x-line-length", "cs7/edit-distance-x-structural-distance"
+  ],
+  "quarantined_for_v2_1": "see F2_V2_1_CANDIDATES.md; none admitted to CORE/SUPPORTING",
+  "weights": "family-balanced aggregation only (mean of family-level standardized distances); no independent per-metric weight, per FINGERPRINT_V2_DISTANCE.md section 3",
+  "distance_definitions": {
+    "spec": "FINGERPRINT_V2_DISTANCE.md section 2, unmodified",
+    "methods_exercised": [
+      "standardized per-metric difference (discriminative_validation.json)",
+      "family-level standardized distance",
+      "family-balanced distance",
+      "common-core distance (lexical paradigm, edit family, line, boundary, 2D-LITE)",
+      "pairwise-available distance (metadata-dependent families reported UNAVAILABLE for non-IVTFF controls, never imputed)"
+    ]
+  },
+  "pareto_definition": {
+    "implementation": "internal/mechanismspace.ParetoFront / Dominates (frozen Task66 code, unmodified)",
+    "input": "per-family closeness = 1/(1+family_standardized_distance)",
+    "purpose": "dominance relationships among held-out controls only; no classifier or ranking"
+  },
+  "null_versions": {
+    "core_metric_nulls": "HN1-HN8, unchanged from Task79 (FINGERPRINT_V2_NULL_REGISTRY.md)",
+    "pf4_leaf_paired_null": "new for Task79c, PF4_LEAF_NULL.md; corrects PF4's prior inadequate HN4-based null per TASK79_B_SCOPE.md item 4; does not alter PF4's metric definition",
+    "hr3_hr5_out_of_sample": "new for Task79c, TASK79C_DESIGN.md sections 9-10; folio-block 5-fold CV, method-of-moments partial pooling"
+  },
+  "missing_data_semantics": "Explicit missing class for descriptive exports; exclude missing metadata from inferential contrasts and report N (unchanged from Task79). Metadata-dependent families (locus/folio/hierarchy/cross-scale) are UNAVAILABLE, not imputed, for non-IVTFF controls (Doyle, BDD, msdos).",
+  "stability_criteria": {
+    "folio_half": "unchanged from Task79 (ROBUST / ROBUST_WITH_LIMITATIONS)",
+    "parameter_sensitivity": "unchanged from Task79",
+    "cross_transcription": "STABLE (<=1 canonical null SD, sign+status agree) / DIRECTION_STABLE (sign+status agree, >1 SD) / VERDICT_STABLE (status agrees, sign disagrees) / UNSTABLE (status disagrees) / NOT_TESTABLE, fixed in TASK79C_DESIGN.md section 2 before comparison; result: 13/13 CORE metrics STABLE or DIRECTION_STABLE, 0 UNSTABLE, 0 NOT_TESTABLE (TRANSCRIPTION_STABILITY.tsv)"
+  },
+  "control_portfolio": [
+    {
+      "class": "NATURAL_PROSE",
+      "corpus_id": "doyle-sign-of-four",
+      "source": "Task79 canonical.yaml (reused unchanged)"
+    },
+    {
+      "class": "SHORTHAND_OR_ABBREVIATION",
+      "corpus_id": "bdd-koeln-edd-c-119-full",
+      "source": "Burchards Dekret Digital, koeln-edd-c-119, CC BY 4.0; see CONTROL_PROVENANCE.tsv"
+    },
+    {
+      "class": "TABLE_OR_PROCEDURAL",
+      "corpus_id": "msdos2.0",
+      "source": "MS-DOS 2.0 assembly source, full corpus + 5 matched replicates; see CONTROL_PROVENANCE.tsv"
+    }
+  ],
+  "prohibited_post_freeze_changes": [
+    "adding a new primary metric family to CORE/SUPPORTING without a new fingerprint version",
+    "changing any CORE/SUPPORTING metric's definition, bins, thresholds, or null family",
+    "changing family weighting after seeing a Task81-83 comparison result",
+    "retiring the LC3/LC4_NOT_IDENTIFIABLE limitation without an objectively independent locus-level data source",
+    "promoting a quarantined F2_V2_1_CANDIDATES.md entry because it discriminates well on Voynich or a Fontana-derived model",
+    "using any Fontana branch (Task76/78/80, F01/F08/F11/F12, F07/F10) output to justify any of the above"
+  ],
+  "decision_basis": "All Task79b-required gates (second transcription, historical notation control, table/procedural control, distance/Pareto interface exercise, corrected PF4 leaf-paired null, HR3/HR5 out-of-sample validation) completed with real data and sound estimators; see TASK79C_REPORT.md for full detail and TASK79C_DESIGN.md for the pre-registered design."
+}

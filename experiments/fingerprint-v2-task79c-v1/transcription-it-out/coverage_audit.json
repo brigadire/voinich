@@ -1,0 +1,159 @@
+[
+  {
+    "explanation_class": "natural-language-like process",
+    "sensitive_metrics": [
+      "LS1",
+      "LS2",
+      "PF2",
+      "HR1"
+    ],
+    "uncovered_properties": "historical multilingual controls are limited",
+    "controls": "Phase I natural-language plus configured controls",
+    "negative_conclusion": "Only metric-sensitive structural predictions can support negative conclusions.",
+    "required_work": "no critical pre-experiment metric gap",
+    "critical_before_experiment": false
+  },
+  {
+    "explanation_class": "constrained token grammar",
+    "sensitive_metrics": [
+      "LP1-LP4",
+      "EF1-EF5",
+      "2DL1"
+    ],
+    "uncovered_properties": "page-aware C-GRAMMAR is not defined",
+    "controls": "Phase I natural-language plus configured controls",
+    "negative_conclusion": "Only metric-sensitive structural predictions can support negative conclusions.",
+    "required_work": "no critical pre-experiment metric gap",
+    "critical_before_experiment": false
+  },
+  {
+    "explanation_class": "copy-with-modification",
+    "sensitive_metrics": [
+      "LS4",
+      "LP/EF",
+      "PF2"
+    ],
+    "uncovered_properties": "no aligned copying ground truth",
+    "controls": "Phase I natural-language plus configured controls",
+    "negative_conclusion": "Only metric-sensitive structural predictions can support negative conclusions.",
+    "required_work": "no critical pre-experiment metric gap",
+    "critical_before_experiment": false
+  },
+  {
+    "explanation_class": "stochastic procedural generator",
+    "sensitive_metrics": [
+      "LS1",
+      "LS4",
+      "HR1"
+    ],
+    "uncovered_properties": "synthetic process portfolio incomplete",
+    "controls": "Phase I natural-language plus configured controls",
+    "negative_conclusion": "Only metric-sensitive structural predictions can support negative conclusions.",
+    "required_work": "task79-b: acquire/preregister an external positive control",
+    "critical_before_experiment": true
+  },
+  {
+    "explanation_class": "table/index",
+    "sensitive_metrics": [
+      "LC1",
+      "LC2",
+      "PF2",
+      "HR1"
+    ],
+    "uncovered_properties": "no historical table control",
+    "controls": "Phase I natural-language plus configured controls",
+    "negative_conclusion": "Only metric-sensitive structural predictions can support negative conclusions.",
+    "required_work": "task79-b: acquire/preregister an external positive control",
+    "critical_before_experiment": true
+  },
+  {
+    "explanation_class": "cipher-like transformation",
+    "sensitive_metrics": [
+      "Phase I entropy",
+      "LP4",
+      "LS2"
+    ],
+    "uncovered_properties": "cipher family coverage is incomplete",
+    "controls": "Phase I natural-language plus configured controls",
+    "negative_conclusion": "Only metric-sensitive structural predictions can support negative conclusions.",
+    "required_work": "no critical pre-experiment metric gap",
+    "critical_before_experiment": false
+  },
+  {
+    "explanation_class": "abbreviation/shorthand-like token construction",
+    "sensitive_metrics": [
+      "LP/EF",
+      "LS2",
+      "BP1"
+    ],
+    "uncovered_properties": "aligned abbreviation positive control required",
+    "controls": "Phase I natural-language plus configured controls",
+    "negative_conclusion": "Only metric-sensitive structural predictions can support negative conclusions.",
+    "required_work": "task79-b: acquire/preregister an external positive control",
+    "critical_before_experiment": true
+  },
+  {
+    "explanation_class": "line-boundary projection",
+    "sensitive_metrics": [
+      "BP1",
+      "LS2"
+    ],
+    "uncovered_properties": "periodicity family is exploratory",
+    "controls": "Phase I natural-language plus configured controls",
+    "negative_conclusion": "Only metric-sensitive structural predictions can support negative conclusions.",
+    "required_work": "no critical pre-experiment metric gap",
+    "critical_before_experiment": false
+  },
+  {
+    "explanation_class": "acrostic-compatible organization",
+    "sensitive_metrics": [
+      "BP1",
+      "LS2"
+    ],
+    "uncovered_properties": "tests structure only, never plaintext",
+    "controls": "Phase I natural-language plus configured controls",
+    "negative_conclusion": "Only metric-sensitive structural predictions can support negative conclusions.",
+    "required_work": "no critical pre-experiment metric gap",
+    "critical_before_experiment": false
+  },
+  {
+    "explanation_class": "external-memory mechanism",
+    "sensitive_metrics": [
+      "HR1",
+      "LC1",
+      "PF2"
+    ],
+    "uncovered_properties": "semantic retrieval is outside corpus-only observability",
+    "controls": "Phase I natural-language plus configured controls",
+    "negative_conclusion": "Only metric-sensitive structural predictions can support negative conclusions.",
+    "required_work": "task79-b: acquire/preregister an external positive control",
+    "critical_before_experiment": true
+  },
+  {
+    "explanation_class": "mnemonic cue system",
+    "sensitive_metrics": [
+      "LC2",
+      "BP1",
+      "HR1"
+    ],
+    "uncovered_properties": "no positive control",
+    "controls": "Phase I natural-language plus configured controls",
+    "negative_conclusion": "Only metric-sensitive structural predictions can support negative conclusions.",
+    "required_work": "task79-b: acquire/preregister an external positive control",
+    "critical_before_experiment": true
+  },
+  {
+    "explanation_class": "mixed architecture",
+    "sensitive_metrics": [
+      "LC1",
+      "PF2",
+      "HR1",
+      "segmentation"
+    ],
+    "uncovered_properties": "model class is broad",
+    "controls": "Phase I natural-language plus configured controls",
+    "negative_conclusion": "Only metric-sensitive structural predictions can support negative conclusions.",
+    "required_work": "no critical pre-experiment metric gap",
+    "critical_before_experiment": false
+  }
+]

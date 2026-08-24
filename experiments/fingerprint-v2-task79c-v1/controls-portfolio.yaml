@@ -1,0 +1,63 @@
+version: fingerprint-v2-lexical-paradigms-v1
+output_dir: experiments/fingerprint-v2-task79c-v1/controls-portfolio-out
+seed: 20260824
+repetitions: 100
+min_rule_support: 3
+alpha: 0.05
+graph_swaps: 10
+diagnostic_tolerance: 0.20
+grammar:
+  modes: [structure-preserving, frequency-aware]
+cross_scale:
+  folds: 5
+  hub_top_percent: 5
+  min_family_size: 3
+  structural_sample: 2000
+task79:
+  enabled: true
+  permutations: 1000
+  bootstrap_replicates: 1000
+  min_group_size: 5
+  change_point_penalty: 2.0
+  correction_layer: research/phase2/fingerprint/TASK79_METADATA_CORRECTIONS_V1.yaml
+primary:
+  id: voynich-zl3b-eva
+  path: data_work/ZL3b-x7.canonical.txt
+  glyph_mode: eva
+  ivtff_path: data/ZL3b-n.txt
+controls:
+  - name: procedural-msdos-full
+    corpus:
+      id: msdos2.0-full
+      path: data_test/matched-replicates/filtered/msdos2.0-full.txt
+      glyph_mode: natural
+  - name: procedural-msdos-rep0
+    corpus:
+      id: msdos2.0-rep0
+      path: data_test/matched-replicates/filtered/msdos2.0-rep0.txt
+      glyph_mode: natural
+  - name: procedural-msdos-rep1
+    corpus:
+      id: msdos2.0-rep1
+      path: data_test/matched-replicates/filtered/msdos2.0-rep1.txt
+      glyph_mode: natural
+  - name: procedural-msdos-rep2
+    corpus:
+      id: msdos2.0-rep2
+      path: data_test/matched-replicates/filtered/msdos2.0-rep2.txt
+      glyph_mode: natural
+  - name: procedural-msdos-rep3
+    corpus:
+      id: msdos2.0-rep3
+      path: data_test/matched-replicates/filtered/msdos2.0-rep3.txt
+      glyph_mode: natural
+  - name: procedural-msdos-rep4-exhausted
+    corpus:
+      id: msdos2.0-rep4
+      path: data_test/matched-replicates/filtered/msdos2.0-rep4.txt
+      glyph_mode: natural
+  - name: shorthand-bdd-koeln-full
+    corpus:
+      id: bdd-koeln-edd-c-119-full
+      path: data_test/matched-replicates/filtered/bdd-koeln-edd-c-119-full.txt
+      glyph_mode: natural
