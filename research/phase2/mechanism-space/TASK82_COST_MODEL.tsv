@@ -1,0 +1,11 @@
+dimension	value	basis
+mechanisms	16	frozen registry
+parameter_points	16	one frozen point per registry mechanism
+corpora	3	Doyle, Longfellow, Astafiev
+replicates	2	precommitted seed replicates
+recovery_conditions	7	R0-R6; runner records NOT_APPLICABLE where unused
+jobs	672	mechanisms x parameter points x corpora x replicates x recovery conditions
+cpu_hours	0.20	planning estimate at 2 seconds/job plus 2x overhead
+peak_ram_mb	256	one independent job plus F2 adapter buffer
+artifact_volume_mb	64	JSON checkpoint/document/recovery metadata budget
+distributed_execution	required-ready	jobs have deterministic independent identities and checkpoint bindings

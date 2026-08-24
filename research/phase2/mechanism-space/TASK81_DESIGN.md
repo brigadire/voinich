@@ -1,0 +1,9 @@
+# Task81: Blind mnemonic mechanism space
+
+**Freeze version:** V1. This space is built solely from the Task80 frozen operation algebra and model freeze. No Voynich text, F2 values, BDD result, notation-control result, target optimization, or target-oriented visual selection was used.
+
+The composition bound is four operations. The registry contains 16 runnable mechanisms: separate F01 literal rotational storage, F08 ordered positional storage, F11 indexed opaque cues, and F12 temporal associative cues; two M-RESTRICTED counterfactuals; five generic controls; and four negative controls. F07 and F10 remain reference-only and excluded models are not restored. There are no M-EXTENDED families because the frozen primitives cover the required experimental boundary cases. The registry deliberately does not enumerate arbitrary operation strings: its finite admissible set is the 16 canonical mechanisms plus 12 named ablations; all other raw sequences up to the four-operation bound are excluded unless independently entered as a future V2 candidate.
+
+All runs retain distinct M (input), E (external state), G (geometry/path), H (history), K (convention), I (internal memory), and C (context) carriers. Composition validation checks Task80 input/output types, state effects, prior knowledge, provenance status, and forbidden compositions. Observable documents derive only from visible state or observation streams.
+
+The finite grid is recorded in the parameter registry. Historical profiles are distinguished from source-bounded and generic/control values. Minimal ablations are frozen in the registry and resolve to named controls rather than silently changing historical semantics. Structural, operational, observational, and retrieval equivalence are separate: equivalent_to only records the frozen observational/control relation, so equivalent entries are not independent models.

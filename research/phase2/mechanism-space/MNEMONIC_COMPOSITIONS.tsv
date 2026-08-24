@@ -1,0 +1,18 @@
+composition_id	operations	type_valid	historical_status	canonical_mechanism	equivalent_to	inclusion_or_exclusion_reason
+f01_speculum_core	rotate+align+traverse+compose	true	F-EXACT	f01_speculum_core		bounded depth <= 4; provenance and type validation passed
+f01_speculum_profile_latin23_r12	rotate+align+traverse+compose	true	F-PROFILE	f01_speculum_profile_latin23_r12		bounded depth <= 4; provenance and type validation passed
+f08_serpens_core	place+traverse+compose	true	F-EXACT	f08_serpens_core		bounded depth <= 4; provenance and type validation passed
+f11_arismetricum_core	place+index+select	true	F-EXACT	f11_arismetricum_core		bounded depth <= 4; provenance and type validation passed
+f12_horalogius_core	repeat+repeat+signal+associate	true	F-EXACT	f12_horalogius_core		bounded depth <= 4; provenance and type validation passed
+m_restricted_rotation_index	rotate+index+select	true	M-RESTRICTED	m_restricted_rotation_index		bounded depth <= 4; provenance and type validation passed
+m_restricted_storage_associate	place+select+associate	true	M-RESTRICTED	m_restricted_storage_associate		bounded depth <= 4; provenance and type validation passed
+synthetic_literal_storage	place+traverse+compose	true	GENERIC_CONTROL	synthetic_literal_storage	f08_serpens_core	bounded depth <= 4; provenance and type validation passed
+synthetic_cyclic_state	repeat+repeat+signal	true	GENERIC_CONTROL	synthetic_cyclic_state	f12_horalogius_core	bounded depth <= 4; provenance and type validation passed
+synthetic_indexed_lookup	place+index+select	true	GENERIC_CONTROL	synthetic_indexed_lookup	f11_arismetricum_core	bounded depth <= 4; provenance and type validation passed
+synthetic_cue_based	repeat+repeat+signal+associate	true	GENERIC_CONTROL	synthetic_cue_based	f12_horalogius_core	bounded depth <= 4; provenance and type validation passed
+synthetic_ambiguous	place+select+associate	true	GENERIC_CONTROL	synthetic_ambiguous	m_restricted_storage_associate	bounded depth <= 4; provenance and type validation passed
+negative_randomized_convention	rotate+align+traverse+compose	true	GENERIC_CONTROL	negative_randomized_convention	f01_speculum_core	bounded depth <= 4; provenance and type validation passed
+negative_randomized_path	place+traverse+compose	true	GENERIC_CONTROL	negative_randomized_path	f08_serpens_core	bounded depth <= 4; provenance and type validation passed
+negative_randomized_cue_association	repeat+repeat+signal+associate	true	GENERIC_CONTROL	negative_randomized_cue_association	f12_horalogius_core	bounded depth <= 4; provenance and type validation passed
+negative_randomized_index_mapping	place+index+select	true	GENERIC_CONTROL	negative_randomized_index_mapping	f11_arismetricum_core	bounded depth <= 4; provenance and type validation passed
+synthetic_invalid_signal	signal	false	FORBIDDEN			missing required ExternalState; rejected by validator

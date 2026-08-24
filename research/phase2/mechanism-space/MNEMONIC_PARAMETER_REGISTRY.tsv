@@ -1,0 +1,17 @@
+mechanism_id	parameter_set_id	parameter	value_or_grid	provenance_class	source_or_rationale	frozen
+f01_speculum_core	f01-core-bounded	configuration	Deterministic bounded F01 core parameters for validation runs.	HISTORICAL_BOUNDED	Task80 frozen model/core; numeric uncertainty remains explicitly bounded	true
+f01_speculum_profile_latin23_r12	f01-profile-latin23-r12	configuration	Task80 frozen Latin23/R12 profile.	HISTORICAL_FROZEN	Task80 frozen model/core; numeric uncertainty remains explicitly bounded	true
+f08_serpens_core	f08-centre-edge-small	configuration	Small deterministic positional grid.	GENERIC_GRID	Task80 frozen model/core; numeric uncertainty remains explicitly bounded	true
+f11_arismetricum_core	f11-core-default	configuration	Core indexed cue lookup without frozen cue semantics.	HISTORICAL_FROZEN	Task80 frozen model/core; numeric uncertainty remains explicitly bounded	true
+f12_horalogius_core	f12-cycle-default	configuration	Deterministic small temporal cue cycle.	GENERIC_GRID	Task80 frozen model/core; numeric uncertainty remains explicitly bounded	true
+m_restricted_rotation_index	rotation-index-small	configuration	Minimal counterfactual rotation plus indexing boundary case.	CONTROL_ONLY	Task80 G-ALLOWED counterfactual; no Fontana provenance claim	true
+m_restricted_storage_associate	storage-associate-small	configuration	Minimal explicit storage plus association boundary case.	CONTROL_ONLY	Task80 G-ALLOWED counterfactual; no Fontana provenance claim	true
+synthetic_literal_storage	f08-centre-edge-small	configuration	Small deterministic positional grid.	GENERIC_GRID	target-independent control grid	true
+synthetic_cyclic_state	f12-cycle-default	configuration	Deterministic small temporal cue cycle.	GENERIC_GRID	target-independent control grid	true
+synthetic_indexed_lookup	f11-core-default	configuration	Core indexed cue lookup without frozen cue semantics.	HISTORICAL_FROZEN	target-independent control grid	true
+synthetic_cue_based	f12-cycle-default	configuration	Deterministic small temporal cue cycle.	GENERIC_GRID	target-independent control grid	true
+synthetic_ambiguous	storage-associate-small	configuration	Minimal explicit storage plus association boundary case.	CONTROL_ONLY	target-independent control grid	true
+negative_randomized_convention	f01-core-bounded	configuration	Deterministic bounded F01 core parameters for validation runs.	HISTORICAL_BOUNDED	target-independent control grid	true
+negative_randomized_path	f08-centre-edge-small	configuration	Small deterministic positional grid.	GENERIC_GRID	target-independent control grid	true
+negative_randomized_cue_association	f12-cycle-default	configuration	Deterministic small temporal cue cycle.	GENERIC_GRID	target-independent control grid	true
+negative_randomized_index_mapping	f11-core-default	configuration	Core indexed cue lookup without frozen cue semantics.	HISTORICAL_FROZEN	target-independent control grid	true

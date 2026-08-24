@@ -1,0 +1,2254 @@
+[
+  {
+    "ID": "f01_speculum_core",
+    "Version": "v1",
+    "Family": "F01_LITERAL_ROTATIONAL_STORAGE",
+    "Status": "F-EXACT",
+    "Provenance": [
+      "FONTANA_MODELS_FROZEN_V1",
+      "FONTANA_OPERATION_ALGEBRA_V1"
+    ],
+    "SourceModels": [
+      "F01_SPECULUM_CORE"
+    ],
+    "Encoding": [
+      {
+        "Operation": "rotate",
+        "Inputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          },
+          {
+            "Name": "step",
+            "Type": "Step"
+          },
+          {
+            "Name": "orientation",
+            "Type": "Orientation"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          }
+        ],
+        "Note": "iterated per symbol position"
+      }
+    ],
+    "Retrieval": [
+      {
+        "Operation": "align",
+        "Inputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          },
+          {
+            "Name": "alignment",
+            "Type": "Alignment"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "obs",
+            "Type": "Observation"
+          }
+        ],
+        "Note": ""
+      },
+      {
+        "Operation": "traverse",
+        "Inputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          },
+          {
+            "Name": "path",
+            "Type": "Path"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "seq",
+            "Type": "SymbolSequence"
+          }
+        ],
+        "Note": ""
+      },
+      {
+        "Operation": "compose",
+        "Inputs": [
+          {
+            "Name": "seq",
+            "Type": "SymbolSequence"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "item",
+            "Type": "RetrievedItem"
+          }
+        ],
+        "Note": ""
+      }
+    ],
+    "StateSchema": "independent ring orientations only",
+    "InputSchema": "SymbolSequence",
+    "Initialization": "all unused rings receive deterministic filler offsets from seed",
+    "TransitionRules": [
+      "each symbol rotates exactly one ring",
+      "unused rings remain observable but semantically inert"
+    ],
+    "ObservationRule": "serialize visible letters at the marked radius in physical ring order",
+    "Serialization": {
+      "SymbolSource": "visible letters at marked radius",
+      "TokenBoundary": "NOT_DEFINED",
+      "LineBoundary": "NOT_DEFINED",
+      "UnitBoundary": "GENERATED_BY_MECHANISM",
+      "ExcludesHiddenState": true
+    },
+    "RetrievalRelation": {
+      "Kind": "EXACT_WITH_CONVENTION",
+      "SupportsContext": true,
+      "SupportsAmbiguity": true
+    },
+    "Carriers": {
+      "Encode": [
+        "M",
+        "K"
+      ],
+      "Retrieve": [
+        "E",
+        "K",
+        "C"
+      ]
+    },
+    "ExpectedReversibility": "exact with convention only",
+    "AmbiguitySemantics": "without convention, multiple prefixes/orders remain compatible",
+    "ErrorSemantics": [
+      "state_corruption",
+      "convention_corruption"
+    ],
+    "Parameters": [
+      {
+        "ID": "f01-core-bounded",
+        "Origin": "HISTORICAL_BOUNDED",
+        "Frozen": true,
+        "Description": "Deterministic bounded F01 core parameters for validation runs.",
+        "F01": {
+          "NumRings": 12,
+          "Alphabet": "ABCDEFGHIKLMNOPQRSTVXYZ",
+          "ReadRadius": 5,
+          "Order": "INNER_TO_OUTER",
+          "RingIdentityMarked": false
+        },
+        "F08": null,
+        "F11": null,
+        "F12": null,
+        "Rotation": null,
+        "Storage": null
+      }
+    ],
+    "SurfaceRole": "LITERAL_SEQUENCE",
+    "EquivalentTo": "",
+    "ablations": [
+      "no_rotation:synthetic_literal_storage",
+      "no_convention:negative_randomized_convention"
+    ]
+  },
+  {
+    "ID": "f01_speculum_profile_latin23_r12",
+    "Version": "v1",
+    "Family": "F01_LITERAL_ROTATIONAL_STORAGE",
+    "Status": "F-PROFILE",
+    "Provenance": [
+      "FONTANA_MODELS_FROZEN_V1",
+      "FONTANA_OPERATION_ALGEBRA_V1"
+    ],
+    "SourceModels": [
+      "F01_SPECULUM_PROFILE_LATIN23_R12"
+    ],
+    "Encoding": [
+      {
+        "Operation": "rotate",
+        "Inputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          },
+          {
+            "Name": "step",
+            "Type": "Step"
+          },
+          {
+            "Name": "orientation",
+            "Type": "Orientation"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          }
+        ],
+        "Note": "iterated per symbol position"
+      }
+    ],
+    "Retrieval": [
+      {
+        "Operation": "align",
+        "Inputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          },
+          {
+            "Name": "alignment",
+            "Type": "Alignment"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "obs",
+            "Type": "Observation"
+          }
+        ],
+        "Note": ""
+      },
+      {
+        "Operation": "traverse",
+        "Inputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          },
+          {
+            "Name": "path",
+            "Type": "Path"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "seq",
+            "Type": "SymbolSequence"
+          }
+        ],
+        "Note": ""
+      },
+      {
+        "Operation": "compose",
+        "Inputs": [
+          {
+            "Name": "seq",
+            "Type": "SymbolSequence"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "item",
+            "Type": "RetrievedItem"
+          }
+        ],
+        "Note": ""
+      }
+    ],
+    "StateSchema": "12 offsets modulo 23",
+    "InputSchema": "SymbolSequence",
+    "Initialization": "profile-frozen Latin23/R12 encoding",
+    "TransitionRules": [
+      "one symbol per ring",
+      "inner-to-outer order"
+    ],
+    "ObservationRule": "serialize visible letters at the marked radius in physical ring order",
+    "Serialization": {
+      "SymbolSource": "visible letters at marked radius",
+      "TokenBoundary": "NOT_DEFINED",
+      "LineBoundary": "NOT_DEFINED",
+      "UnitBoundary": "GENERATED_BY_MECHANISM",
+      "ExcludesHiddenState": true
+    },
+    "RetrievalRelation": {
+      "Kind": "EXACT_WITH_CONVENTION",
+      "SupportsContext": true,
+      "SupportsAmbiguity": true
+    },
+    "Carriers": {
+      "Encode": [
+        "M",
+        "K"
+      ],
+      "Retrieve": [
+        "E",
+        "K",
+        "C"
+      ]
+    },
+    "ExpectedReversibility": "exact with profile convention",
+    "AmbiguitySemantics": "same as invariant core but under frozen profile values",
+    "ErrorSemantics": [
+      "state_corruption",
+      "convention_corruption"
+    ],
+    "Parameters": [
+      {
+        "ID": "f01-profile-latin23-r12",
+        "Origin": "HISTORICAL_FROZEN",
+        "Frozen": true,
+        "Description": "Task80 frozen Latin23/R12 profile.",
+        "F01": {
+          "NumRings": 12,
+          "Alphabet": "ABCDEFGHIKLMNOPQRSTVXYZ",
+          "ReadRadius": 5,
+          "Order": "INNER_TO_OUTER",
+          "RingIdentityMarked": false
+        },
+        "F08": null,
+        "F11": null,
+        "F12": null,
+        "Rotation": null,
+        "Storage": null
+      }
+    ],
+    "SurfaceRole": "LITERAL_SEQUENCE",
+    "EquivalentTo": "",
+    "ablations": [
+      "no_rotation:synthetic_literal_storage",
+      "no_convention:negative_randomized_convention"
+    ]
+  },
+  {
+    "ID": "f08_serpens_core",
+    "Version": "v1",
+    "Family": "F08_ORDERED_POSITIONAL_STORAGE",
+    "Status": "F-EXACT",
+    "Provenance": [
+      "FONTANA_MODELS_FROZEN_V1",
+      "FONTANA_OPERATION_ALGEBRA_V1"
+    ],
+    "SourceModels": [
+      "F08_SERPENS_CORE"
+    ],
+    "Encoding": [
+      {
+        "Operation": "place",
+        "Inputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          },
+          {
+            "Name": "position",
+            "Type": "Position"
+          },
+          {
+            "Name": "symbol",
+            "Type": "Symbol"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          }
+        ],
+        "Note": "iterated across the declared path"
+      }
+    ],
+    "Retrieval": [
+      {
+        "Operation": "traverse",
+        "Inputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          },
+          {
+            "Name": "path",
+            "Type": "Path"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "seq",
+            "Type": "SymbolSequence"
+          }
+        ],
+        "Note": ""
+      },
+      {
+        "Operation": "compose",
+        "Inputs": [
+          {
+            "Name": "seq",
+            "Type": "SymbolSequence"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "item",
+            "Type": "RetrievedItem"
+          }
+        ],
+        "Note": ""
+      }
+    ],
+    "StateSchema": "ordered nullable symbols",
+    "InputSchema": "SymbolSequence",
+    "Initialization": "empty positional grid",
+    "TransitionRules": [
+      "path is declared separately from state",
+      "message length remains convention, not hidden metadata"
+    ],
+    "ObservationRule": "serialize visible symbols by physical position only",
+    "Serialization": {
+      "SymbolSource": "physical slot contents",
+      "TokenBoundary": "NOT_DEFINED",
+      "LineBoundary": "NOT_DEFINED",
+      "UnitBoundary": "GENERATED_BY_MECHANISM",
+      "ExcludesHiddenState": true
+    },
+    "RetrievalRelation": {
+      "Kind": "EXACT_WITH_CONVENTION",
+      "SupportsContext": true,
+      "SupportsAmbiguity": true
+    },
+    "Carriers": {
+      "Encode": [
+        "M",
+        "G",
+        "K"
+      ],
+      "Retrieve": [
+        "E",
+        "G",
+        "K",
+        "C"
+      ]
+    },
+    "ExpectedReversibility": "exact on declared path only",
+    "AmbiguitySemantics": "unknown path or length yields finite traversal candidates",
+    "ErrorSemantics": [
+      "state_corruption",
+      "boundary_corruption",
+      "convention_corruption"
+    ],
+    "Parameters": [
+      {
+        "ID": "f08-centre-edge-small",
+        "Origin": "GENERIC_GRID",
+        "Frozen": true,
+        "Description": "Small deterministic positional grid.",
+        "F01": null,
+        "F08": {
+          "Capacity": 10,
+          "Start": 0,
+          "Direction": "FORWARD",
+          "EmptyMarker": "?",
+          "Alphabet": "ABCDEFGHIKLMNOPQRSTVXYZ"
+        },
+        "F11": null,
+        "F12": null,
+        "Rotation": null,
+        "Storage": null
+      }
+    ],
+    "SurfaceRole": "LITERAL_SEQUENCE",
+    "EquivalentTo": "",
+    "ablations": [
+      "no_path:negative_randomized_path",
+      "no_state_persistence:synthetic_literal_storage"
+    ]
+  },
+  {
+    "ID": "f11_arismetricum_core",
+    "Version": "v1",
+    "Family": "F11_INDEXED_OPAQUE_CUE",
+    "Status": "F-EXACT",
+    "Provenance": [
+      "FONTANA_MODELS_FROZEN_V1",
+      "FONTANA_OPERATION_ALGEBRA_V1"
+    ],
+    "SourceModels": [
+      "F11_ARISMETRICUM_CORE"
+    ],
+    "Encoding": [
+      {
+        "Operation": "place",
+        "Inputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          },
+          {
+            "Name": "position",
+            "Type": "Position"
+          },
+          {
+            "Name": "symbol",
+            "Type": "Symbol"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          }
+        ],
+        "Note": "opaque cue placement"
+      }
+    ],
+    "Retrieval": [
+      {
+        "Operation": "index",
+        "Inputs": [
+          {
+            "Name": "index",
+            "Type": "Index"
+          },
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "position",
+            "Type": "Position"
+          }
+        ],
+        "Note": ""
+      },
+      {
+        "Operation": "select",
+        "Inputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          },
+          {
+            "Name": "position",
+            "Type": "Position"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "cue_symbol",
+            "Type": "Symbol"
+          }
+        ],
+        "Note": "Symbol carrier is interpreted as opaque cue identifier"
+      }
+    ],
+    "StateSchema": "finite partial map from index to opaque cue",
+    "InputSchema": "cue-addressable item set",
+    "Initialization": "empty indexed lookup surface",
+    "TransitionRules": [
+      "index resolves address only",
+      "cue meaning remains outside external state"
+    ],
+    "ObservationRule": "serialize occupied slots as visible cue-bearing cells",
+    "Serialization": {
+      "SymbolSource": "sorted visible cue cells",
+      "TokenBoundary": "NOT_DEFINED",
+      "LineBoundary": "NOT_DEFINED",
+      "UnitBoundary": "GENERATED_BY_MECHANISM",
+      "ExcludesHiddenState": true
+    },
+    "RetrievalRelation": {
+      "Kind": "CUE_ONLY",
+      "SupportsContext": true,
+      "SupportsAmbiguity": true
+    },
+    "Carriers": {
+      "Encode": [
+        "M"
+      ],
+      "Retrieve": [
+        "E",
+        "K",
+        "C"
+      ]
+    },
+    "ExpectedReversibility": "cue-only unless an explicit cue convention is supplied",
+    "AmbiguitySemantics": "one cue may map to multiple retrieved items until convention/context narrows it",
+    "ErrorSemantics": [
+      "state_corruption",
+      "convention_corruption"
+    ],
+    "Parameters": [
+      {
+        "ID": "f11-core-default",
+        "Origin": "HISTORICAL_FROZEN",
+        "Frozen": true,
+        "Description": "Core indexed cue lookup without frozen cue semantics.",
+        "F01": null,
+        "F08": null,
+        "F11": {},
+        "F12": null,
+        "Rotation": null,
+        "Storage": null
+      }
+    ],
+    "SurfaceRole": "OPAQUE_CUE",
+    "EquivalentTo": "",
+    "ablations": [
+      "no_index:synthetic_cue_based",
+      "randomized_index:negative_randomized_index_mapping"
+    ]
+  },
+  {
+    "ID": "f12_horalogius_core",
+    "Version": "v1",
+    "Family": "F12_TEMPORAL_ASSOCIATIVE_CUE",
+    "Status": "F-EXACT",
+    "Provenance": [
+      "FONTANA_MODELS_FROZEN_V1",
+      "FONTANA_OPERATION_ALGEBRA_V1"
+    ],
+    "SourceModels": [
+      "F12_HORALOGIUS_CORE"
+    ],
+    "Encoding": [
+      {
+        "Operation": "repeat",
+        "Inputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          },
+          {
+            "Name": "step",
+            "Type": "Step"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          }
+        ],
+        "Note": ""
+      }
+    ],
+    "Retrieval": [
+      {
+        "Operation": "repeat",
+        "Inputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          },
+          {
+            "Name": "step",
+            "Type": "Step"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          }
+        ],
+        "Note": ""
+      },
+      {
+        "Operation": "signal",
+        "Inputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "cue",
+            "Type": "Cue"
+          }
+        ],
+        "Note": ""
+      },
+      {
+        "Operation": "associate",
+        "Inputs": [
+          {
+            "Name": "cue",
+            "Type": "Cue"
+          },
+          {
+            "Name": "memory",
+            "Type": "InternalMemoryState"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "item",
+            "Type": "RetrievedItem"
+          }
+        ],
+        "Note": ""
+      }
+    ],
+    "StateSchema": "cyclic tick and cue schedule",
+    "InputSchema": "cue-addressable item set",
+    "Initialization": "cyclic temporal state at a declared initial tick",
+    "TransitionRules": [
+      "advance by fixed steps",
+      "signal only emitted at configured ticks"
+    ],
+    "ObservationRule": "serialize emitted cue identifiers only",
+    "Serialization": {
+      "SymbolSource": "emitted cues",
+      "TokenBoundary": "GENERATED_BY_MECHANISM",
+      "LineBoundary": "NOT_DEFINED",
+      "UnitBoundary": "GENERATED_BY_MECHANISM",
+      "ExcludesHiddenState": true
+    },
+    "RetrievalRelation": {
+      "Kind": "CUE_ONLY",
+      "SupportsContext": true,
+      "SupportsAmbiguity": true
+    },
+    "Carriers": {
+      "Encode": [
+        "M"
+      ],
+      "Retrieve": [
+        "E",
+        "I",
+        "C"
+      ]
+    },
+    "ExpectedReversibility": "cue-only without learned internal association",
+    "AmbiguitySemantics": "one cue may keep multiple candidate associations until context narrows them",
+    "ErrorSemantics": [
+      "state_corruption",
+      "convention_corruption"
+    ],
+    "Parameters": [
+      {
+        "ID": "f12-cycle-default",
+        "Origin": "GENERIC_GRID",
+        "Frozen": true,
+        "Description": "Deterministic small temporal cue cycle.",
+        "F01": null,
+        "F08": null,
+        "F11": null,
+        "F12": {
+          "Period": 4,
+          "InitialTick": 0,
+          "AdvanceSteps": 1
+        },
+        "Rotation": null,
+        "Storage": null
+      }
+    ],
+    "SurfaceRole": "OPAQUE_CUE",
+    "EquivalentTo": "",
+    "ablations": [
+      "no_association:synthetic_cyclic_state",
+      "randomized_association:negative_randomized_cue_association"
+    ]
+  },
+  {
+    "ID": "m_restricted_rotation_index",
+    "Version": "v1",
+    "Family": "M_RESTRICTED_ROTATION_INDEX",
+    "Status": "M-RESTRICTED",
+    "Provenance": [
+      "counterfactual_index_after_rotation"
+    ],
+    "SourceModels": null,
+    "Encoding": [
+      {
+        "Operation": "rotate",
+        "Inputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          },
+          {
+            "Name": "step",
+            "Type": "Step"
+          },
+          {
+            "Name": "orientation",
+            "Type": "Orientation"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          }
+        ],
+        "Note": ""
+      }
+    ],
+    "Retrieval": [
+      {
+        "Operation": "index",
+        "Inputs": [
+          {
+            "Name": "index",
+            "Type": "Index"
+          },
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "position",
+            "Type": "Position"
+          }
+        ],
+        "Note": ""
+      },
+      {
+        "Operation": "select",
+        "Inputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          },
+          {
+            "Name": "position",
+            "Type": "Position"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "cue_symbol",
+            "Type": "Symbol"
+          }
+        ],
+        "Note": "type-valid unattested boundary case"
+      }
+    ],
+    "StateSchema": "rotated indexed cue ring",
+    "InputSchema": "cue-addressable item set",
+    "Initialization": "opaque cues on a cyclic indexed carrier",
+    "TransitionRules": [
+      "rotation reorders visible cue positions",
+      "index resolves into rotated topology"
+    ],
+    "ObservationRule": "serialize rotated cue ring",
+    "Serialization": {
+      "SymbolSource": "rotated visible cues",
+      "TokenBoundary": "NOT_DEFINED",
+      "LineBoundary": "NOT_DEFINED",
+      "UnitBoundary": "GENERATED_BY_MECHANISM",
+      "ExcludesHiddenState": true
+    },
+    "RetrievalRelation": {
+      "Kind": "CUE_ONLY",
+      "SupportsContext": true,
+      "SupportsAmbiguity": true
+    },
+    "Carriers": {
+      "Encode": [
+        "M"
+      ],
+      "Retrieve": [
+        "E",
+        "K",
+        "C"
+      ]
+    },
+    "ExpectedReversibility": "not a Fontana claim; cue meaning remains external",
+    "AmbiguitySemantics": "same cue-to-item ambiguity semantics as indexed cue models",
+    "ErrorSemantics": [
+      "state_corruption",
+      "convention_corruption"
+    ],
+    "Parameters": [
+      {
+        "ID": "rotation-index-small",
+        "Origin": "CONTROL_ONLY",
+        "Frozen": true,
+        "Description": "Minimal counterfactual rotation plus indexing boundary case.",
+        "F01": null,
+        "F08": null,
+        "F11": null,
+        "F12": null,
+        "Rotation": {
+          "Offset": 1
+        },
+        "Storage": null
+      }
+    ],
+    "SurfaceRole": "OPAQUE_CUE",
+    "EquivalentTo": "",
+    "ablations": [
+      "no_rotation:synthetic_indexed_lookup"
+    ]
+  },
+  {
+    "ID": "m_restricted_storage_associate",
+    "Version": "v1",
+    "Family": "M_RESTRICTED_STORAGE_ASSOCIATION",
+    "Status": "M-RESTRICTED",
+    "Provenance": [
+      "counterfactual_association_on_literal_store"
+    ],
+    "SourceModels": null,
+    "Encoding": [
+      {
+        "Operation": "place",
+        "Inputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          },
+          {
+            "Name": "position",
+            "Type": "Position"
+          },
+          {
+            "Name": "symbol",
+            "Type": "Symbol"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          }
+        ],
+        "Note": "cue identifiers stored explicitly"
+      }
+    ],
+    "Retrieval": [
+      {
+        "Operation": "select",
+        "Inputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          },
+          {
+            "Name": "position",
+            "Type": "Position"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "cue_symbol",
+            "Type": "Symbol"
+          }
+        ],
+        "Note": "selected Symbol is treated as an opaque cue identifier"
+      },
+      {
+        "Operation": "associate",
+        "Inputs": [
+          {
+            "Name": "cue",
+            "Type": "Cue"
+          },
+          {
+            "Name": "memory",
+            "Type": "InternalMemoryState"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "item",
+            "Type": "RetrievedItem"
+          }
+        ],
+        "Note": ""
+      }
+    ],
+    "StateSchema": "explicit positional storage of cue identifiers",
+    "InputSchema": "cue-addressable item set",
+    "Initialization": "empty explicit storage array",
+    "TransitionRules": [
+      "opaque cue identifiers are visible",
+      "retrieval still requires internal association"
+    ],
+    "ObservationRule": "serialize stored cue identifiers by physical position",
+    "Serialization": {
+      "SymbolSource": "stored cue identifiers",
+      "TokenBoundary": "NOT_DEFINED",
+      "LineBoundary": "NOT_DEFINED",
+      "UnitBoundary": "GENERATED_BY_MECHANISM",
+      "ExcludesHiddenState": true
+    },
+    "RetrievalRelation": {
+      "Kind": "CUE_ONLY",
+      "SupportsContext": true,
+      "SupportsAmbiguity": true
+    },
+    "Carriers": {
+      "Encode": [
+        "M"
+      ],
+      "Retrieve": [
+        "E",
+        "I",
+        "C"
+      ]
+    },
+    "ExpectedReversibility": "cue-only without internal association",
+    "AmbiguitySemantics": "same cue may retain multiple candidate intentions",
+    "ErrorSemantics": [
+      "state_corruption",
+      "convention_corruption"
+    ],
+    "Parameters": [
+      {
+        "ID": "storage-associate-small",
+        "Origin": "CONTROL_ONLY",
+        "Frozen": true,
+        "Description": "Minimal explicit storage plus association boundary case.",
+        "F01": null,
+        "F08": null,
+        "F11": null,
+        "F12": null,
+        "Rotation": null,
+        "Storage": {
+          "Capacity": 4
+        }
+      }
+    ],
+    "SurfaceRole": "OPAQUE_CUE",
+    "EquivalentTo": "",
+    "ablations": [
+      "no_association:synthetic_literal_storage"
+    ]
+  },
+  {
+    "ID": "synthetic_literal_storage",
+    "Version": "v1",
+    "Family": "GENERIC_LITERAL_STORAGE",
+    "Status": "GENERIC_CONTROL",
+    "Provenance": [
+      "synthetic_literal_storage"
+    ],
+    "SourceModels": null,
+    "Encoding": [
+      {
+        "Operation": "place",
+        "Inputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          },
+          {
+            "Name": "position",
+            "Type": "Position"
+          },
+          {
+            "Name": "symbol",
+            "Type": "Symbol"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          }
+        ],
+        "Note": ""
+      }
+    ],
+    "Retrieval": [
+      {
+        "Operation": "traverse",
+        "Inputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          },
+          {
+            "Name": "path",
+            "Type": "Path"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "seq",
+            "Type": "SymbolSequence"
+          }
+        ],
+        "Note": ""
+      },
+      {
+        "Operation": "compose",
+        "Inputs": [
+          {
+            "Name": "seq",
+            "Type": "SymbolSequence"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "item",
+            "Type": "RetrievedItem"
+          }
+        ],
+        "Note": ""
+      }
+    ],
+    "StateSchema": "synthetic positional literal store",
+    "InputSchema": "SymbolSequence",
+    "Initialization": "empty synthetic store",
+    "TransitionRules": [
+      "literal storage control"
+    ],
+    "ObservationRule": "serialize physical slot contents",
+    "Serialization": {
+      "SymbolSource": "synthetic slot contents",
+      "TokenBoundary": "NOT_DEFINED",
+      "LineBoundary": "NOT_DEFINED",
+      "UnitBoundary": "GENERATED_BY_MECHANISM",
+      "ExcludesHiddenState": true
+    },
+    "RetrievalRelation": {
+      "Kind": "EXACT_WITH_CONVENTION",
+      "SupportsContext": false,
+      "SupportsAmbiguity": true
+    },
+    "Carriers": {
+      "Encode": [
+        "M",
+        "G",
+        "K"
+      ],
+      "Retrieve": [
+        "E",
+        "G",
+        "K"
+      ]
+    },
+    "ExpectedReversibility": "exact literal control",
+    "AmbiguitySemantics": "same as simple positional traversal",
+    "ErrorSemantics": [
+      "state_corruption"
+    ],
+    "Parameters": [
+      {
+        "ID": "f08-centre-edge-small",
+        "Origin": "GENERIC_GRID",
+        "Frozen": true,
+        "Description": "Small deterministic positional grid.",
+        "F01": null,
+        "F08": {
+          "Capacity": 10,
+          "Start": 0,
+          "Direction": "FORWARD",
+          "EmptyMarker": "?",
+          "Alphabet": "ABCDEFGHIKLMNOPQRSTVXYZ"
+        },
+        "F11": null,
+        "F12": null,
+        "Rotation": null,
+        "Storage": null
+      }
+    ],
+    "SurfaceRole": "LITERAL_SEQUENCE",
+    "EquivalentTo": "f08_serpens_core",
+    "ablations": null
+  },
+  {
+    "ID": "synthetic_cyclic_state",
+    "Version": "v1",
+    "Family": "GENERIC_CYCLIC_STATE",
+    "Status": "GENERIC_CONTROL",
+    "Provenance": [
+      "synthetic_cyclic_state"
+    ],
+    "SourceModels": null,
+    "Encoding": [
+      {
+        "Operation": "repeat",
+        "Inputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          },
+          {
+            "Name": "step",
+            "Type": "Step"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          }
+        ],
+        "Note": ""
+      }
+    ],
+    "Retrieval": [
+      {
+        "Operation": "repeat",
+        "Inputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          },
+          {
+            "Name": "step",
+            "Type": "Step"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          }
+        ],
+        "Note": ""
+      },
+      {
+        "Operation": "signal",
+        "Inputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "cue",
+            "Type": "Cue"
+          }
+        ],
+        "Note": ""
+      }
+    ],
+    "StateSchema": "synthetic periodic cue emitter",
+    "InputSchema": "cue-addressable item set",
+    "Initialization": "synthetic cue schedule",
+    "TransitionRules": [
+      "cue emission only"
+    ],
+    "ObservationRule": "serialize emitted cues",
+    "Serialization": {
+      "SymbolSource": "emitted cues",
+      "TokenBoundary": "GENERATED_BY_MECHANISM",
+      "LineBoundary": "NOT_DEFINED",
+      "UnitBoundary": "GENERATED_BY_MECHANISM",
+      "ExcludesHiddenState": true
+    },
+    "RetrievalRelation": {
+      "Kind": "CUE_ONLY",
+      "SupportsContext": false,
+      "SupportsAmbiguity": false
+    },
+    "Carriers": {
+      "Encode": [
+        "M"
+      ],
+      "Retrieve": [
+        "E"
+      ]
+    },
+    "ExpectedReversibility": "cue-only cyclic control",
+    "AmbiguitySemantics": "no literal recovery",
+    "ErrorSemantics": [
+      "state_corruption"
+    ],
+    "Parameters": [
+      {
+        "ID": "f12-cycle-default",
+        "Origin": "GENERIC_GRID",
+        "Frozen": true,
+        "Description": "Deterministic small temporal cue cycle.",
+        "F01": null,
+        "F08": null,
+        "F11": null,
+        "F12": {
+          "Period": 4,
+          "InitialTick": 0,
+          "AdvanceSteps": 1
+        },
+        "Rotation": null,
+        "Storage": null
+      }
+    ],
+    "SurfaceRole": "OPAQUE_CUE",
+    "EquivalentTo": "f12_horalogius_core",
+    "ablations": null
+  },
+  {
+    "ID": "synthetic_indexed_lookup",
+    "Version": "v1",
+    "Family": "GENERIC_INDEXED_LOOKUP",
+    "Status": "GENERIC_CONTROL",
+    "Provenance": [
+      "synthetic_indexed_lookup"
+    ],
+    "SourceModels": null,
+    "Encoding": [
+      {
+        "Operation": "place",
+        "Inputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          },
+          {
+            "Name": "position",
+            "Type": "Position"
+          },
+          {
+            "Name": "symbol",
+            "Type": "Symbol"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          }
+        ],
+        "Note": ""
+      }
+    ],
+    "Retrieval": [
+      {
+        "Operation": "index",
+        "Inputs": [
+          {
+            "Name": "index",
+            "Type": "Index"
+          },
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "position",
+            "Type": "Position"
+          }
+        ],
+        "Note": ""
+      },
+      {
+        "Operation": "select",
+        "Inputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          },
+          {
+            "Name": "position",
+            "Type": "Position"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "cue_symbol",
+            "Type": "Symbol"
+          }
+        ],
+        "Note": ""
+      }
+    ],
+    "StateSchema": "synthetic indexed cue store",
+    "InputSchema": "cue-addressable item set",
+    "Initialization": "empty indexed cue surface",
+    "TransitionRules": [
+      "cue meanings remain outside state"
+    ],
+    "ObservationRule": "serialize indexed cue slots",
+    "Serialization": {
+      "SymbolSource": "indexed visible cues",
+      "TokenBoundary": "NOT_DEFINED",
+      "LineBoundary": "NOT_DEFINED",
+      "UnitBoundary": "GENERATED_BY_MECHANISM",
+      "ExcludesHiddenState": true
+    },
+    "RetrievalRelation": {
+      "Kind": "CUE_ONLY",
+      "SupportsContext": true,
+      "SupportsAmbiguity": true
+    },
+    "Carriers": {
+      "Encode": [
+        "M"
+      ],
+      "Retrieve": [
+        "E",
+        "K",
+        "C"
+      ]
+    },
+    "ExpectedReversibility": "exact only with explicit cue map",
+    "AmbiguitySemantics": "cue ambiguity is observable and measurable",
+    "ErrorSemantics": [
+      "state_corruption",
+      "convention_corruption"
+    ],
+    "Parameters": [
+      {
+        "ID": "f11-core-default",
+        "Origin": "HISTORICAL_FROZEN",
+        "Frozen": true,
+        "Description": "Core indexed cue lookup without frozen cue semantics.",
+        "F01": null,
+        "F08": null,
+        "F11": {},
+        "F12": null,
+        "Rotation": null,
+        "Storage": null
+      }
+    ],
+    "SurfaceRole": "OPAQUE_CUE",
+    "EquivalentTo": "f11_arismetricum_core",
+    "ablations": null
+  },
+  {
+    "ID": "synthetic_cue_based",
+    "Version": "v1",
+    "Family": "GENERIC_CUE_BASED",
+    "Status": "GENERIC_CONTROL",
+    "Provenance": [
+      "synthetic_cue_based"
+    ],
+    "SourceModels": null,
+    "Encoding": [
+      {
+        "Operation": "repeat",
+        "Inputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          },
+          {
+            "Name": "step",
+            "Type": "Step"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          }
+        ],
+        "Note": ""
+      }
+    ],
+    "Retrieval": [
+      {
+        "Operation": "repeat",
+        "Inputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          },
+          {
+            "Name": "step",
+            "Type": "Step"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          }
+        ],
+        "Note": ""
+      },
+      {
+        "Operation": "signal",
+        "Inputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "cue",
+            "Type": "Cue"
+          }
+        ],
+        "Note": ""
+      },
+      {
+        "Operation": "associate",
+        "Inputs": [
+          {
+            "Name": "cue",
+            "Type": "Cue"
+          },
+          {
+            "Name": "memory",
+            "Type": "InternalMemoryState"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "item",
+            "Type": "RetrievedItem"
+          }
+        ],
+        "Note": ""
+      }
+    ],
+    "StateSchema": "synthetic cue-to-memory control",
+    "InputSchema": "cue-addressable item set",
+    "Initialization": "synthetic cue schedule",
+    "TransitionRules": [
+      "cue emission plus association"
+    ],
+    "ObservationRule": "serialize emitted cues only",
+    "Serialization": {
+      "SymbolSource": "emitted cues",
+      "TokenBoundary": "GENERATED_BY_MECHANISM",
+      "LineBoundary": "NOT_DEFINED",
+      "UnitBoundary": "GENERATED_BY_MECHANISM",
+      "ExcludesHiddenState": true
+    },
+    "RetrievalRelation": {
+      "Kind": "CUE_ONLY",
+      "SupportsContext": true,
+      "SupportsAmbiguity": true
+    },
+    "Carriers": {
+      "Encode": [
+        "M"
+      ],
+      "Retrieve": [
+        "E",
+        "I",
+        "C"
+      ]
+    },
+    "ExpectedReversibility": "cue-only unless internal memory is supplied",
+    "AmbiguitySemantics": "multiple candidate associations remain explicit",
+    "ErrorSemantics": [
+      "state_corruption",
+      "convention_corruption"
+    ],
+    "Parameters": [
+      {
+        "ID": "f12-cycle-default",
+        "Origin": "GENERIC_GRID",
+        "Frozen": true,
+        "Description": "Deterministic small temporal cue cycle.",
+        "F01": null,
+        "F08": null,
+        "F11": null,
+        "F12": {
+          "Period": 4,
+          "InitialTick": 0,
+          "AdvanceSteps": 1
+        },
+        "Rotation": null,
+        "Storage": null
+      }
+    ],
+    "SurfaceRole": "OPAQUE_CUE",
+    "EquivalentTo": "f12_horalogius_core",
+    "ablations": null
+  },
+  {
+    "ID": "synthetic_ambiguous",
+    "Version": "v1",
+    "Family": "GENERIC_AMBIGUOUS",
+    "Status": "GENERIC_CONTROL",
+    "Provenance": [
+      "synthetic_ambiguous"
+    ],
+    "SourceModels": null,
+    "Encoding": [
+      {
+        "Operation": "place",
+        "Inputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          },
+          {
+            "Name": "position",
+            "Type": "Position"
+          },
+          {
+            "Name": "symbol",
+            "Type": "Symbol"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          }
+        ],
+        "Note": ""
+      }
+    ],
+    "Retrieval": [
+      {
+        "Operation": "select",
+        "Inputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          },
+          {
+            "Name": "position",
+            "Type": "Position"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "cue_symbol",
+            "Type": "Symbol"
+          }
+        ],
+        "Note": ""
+      },
+      {
+        "Operation": "associate",
+        "Inputs": [
+          {
+            "Name": "cue",
+            "Type": "Cue"
+          },
+          {
+            "Name": "memory",
+            "Type": "InternalMemoryState"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "item",
+            "Type": "RetrievedItem"
+          }
+        ],
+        "Note": ""
+      }
+    ],
+    "StateSchema": "synthetic ambiguous cue storage",
+    "InputSchema": "cue-addressable item set",
+    "Initialization": "single visible cue can point to multiple candidate items",
+    "TransitionRules": [
+      "visible state and hidden intention remain separate"
+    ],
+    "ObservationRule": "serialize visible cue identifiers only",
+    "Serialization": {
+      "SymbolSource": "visible cues",
+      "TokenBoundary": "NOT_DEFINED",
+      "LineBoundary": "NOT_DEFINED",
+      "UnitBoundary": "GENERATED_BY_MECHANISM",
+      "ExcludesHiddenState": true
+    },
+    "RetrievalRelation": {
+      "Kind": "AMBIGUOUS",
+      "SupportsContext": true,
+      "SupportsAmbiguity": true
+    },
+    "Carriers": {
+      "Encode": [
+        "M"
+      ],
+      "Retrieve": [
+        "E",
+        "I",
+        "C"
+      ]
+    },
+    "ExpectedReversibility": "explicitly many-to-one",
+    "AmbiguitySemantics": "ambiguity set is primary output until context narrows it",
+    "ErrorSemantics": [
+      "convention_corruption"
+    ],
+    "Parameters": [
+      {
+        "ID": "storage-associate-small",
+        "Origin": "CONTROL_ONLY",
+        "Frozen": true,
+        "Description": "Minimal explicit storage plus association boundary case.",
+        "F01": null,
+        "F08": null,
+        "F11": null,
+        "F12": null,
+        "Rotation": null,
+        "Storage": {
+          "Capacity": 4
+        }
+      }
+    ],
+    "SurfaceRole": "OPAQUE_CUE",
+    "EquivalentTo": "m_restricted_storage_associate",
+    "ablations": [
+      "no_association:synthetic_literal_storage"
+    ]
+  },
+  {
+    "ID": "negative_randomized_convention",
+    "Version": "v1",
+    "Family": "NEGATIVE_RANDOMIZED_CONVENTION",
+    "Status": "GENERIC_CONTROL",
+    "Provenance": [
+      "randomized convention control"
+    ],
+    "SourceModels": [
+      "F01_SPECULUM_CORE"
+    ],
+    "Encoding": [
+      {
+        "Operation": "rotate",
+        "Inputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          },
+          {
+            "Name": "step",
+            "Type": "Step"
+          },
+          {
+            "Name": "orientation",
+            "Type": "Orientation"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          }
+        ],
+        "Note": ""
+      }
+    ],
+    "Retrieval": [
+      {
+        "Operation": "align",
+        "Inputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          },
+          {
+            "Name": "alignment",
+            "Type": "Alignment"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "obs",
+            "Type": "Observation"
+          }
+        ],
+        "Note": ""
+      },
+      {
+        "Operation": "traverse",
+        "Inputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          },
+          {
+            "Name": "path",
+            "Type": "Path"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "seq",
+            "Type": "SymbolSequence"
+          }
+        ],
+        "Note": ""
+      },
+      {
+        "Operation": "compose",
+        "Inputs": [
+          {
+            "Name": "seq",
+            "Type": "SymbolSequence"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "item",
+            "Type": "RetrievedItem"
+          }
+        ],
+        "Note": ""
+      }
+    ],
+    "StateSchema": "same F01 state; degraded by wrong convention",
+    "InputSchema": "SymbolSequence",
+    "Initialization": "same as F01",
+    "TransitionRules": [
+      "negative control uses wrong convention at retrieval"
+    ],
+    "ObservationRule": "same visible letters as F01",
+    "Serialization": {
+      "SymbolSource": "visible letters at marked radius",
+      "TokenBoundary": "NOT_DEFINED",
+      "LineBoundary": "NOT_DEFINED",
+      "UnitBoundary": "GENERATED_BY_MECHANISM",
+      "ExcludesHiddenState": true
+    },
+    "RetrievalRelation": {
+      "Kind": "AMBIGUOUS",
+      "SupportsContext": false,
+      "SupportsAmbiguity": true
+    },
+    "Carriers": {
+      "Encode": [
+        "M",
+        "K"
+      ],
+      "Retrieve": [
+        "E",
+        "K"
+      ]
+    },
+    "ExpectedReversibility": "should lose exact recovery under wrong convention",
+    "AmbiguitySemantics": "wrong convention broadens candidate set",
+    "ErrorSemantics": [
+      "convention_corruption"
+    ],
+    "Parameters": [
+      {
+        "ID": "f01-core-bounded",
+        "Origin": "HISTORICAL_BOUNDED",
+        "Frozen": true,
+        "Description": "Deterministic bounded F01 core parameters for validation runs.",
+        "F01": {
+          "NumRings": 12,
+          "Alphabet": "ABCDEFGHIKLMNOPQRSTVXYZ",
+          "ReadRadius": 5,
+          "Order": "INNER_TO_OUTER",
+          "RingIdentityMarked": false
+        },
+        "F08": null,
+        "F11": null,
+        "F12": null,
+        "Rotation": null,
+        "Storage": null
+      }
+    ],
+    "SurfaceRole": "LITERAL_SEQUENCE",
+    "EquivalentTo": "f01_speculum_core",
+    "ablations": null
+  },
+  {
+    "ID": "negative_randomized_path",
+    "Version": "v1",
+    "Family": "NEGATIVE_RANDOMIZED_PATH",
+    "Status": "GENERIC_CONTROL",
+    "Provenance": [
+      "randomized path control"
+    ],
+    "SourceModels": [
+      "F08_SERPENS_CORE"
+    ],
+    "Encoding": [
+      {
+        "Operation": "place",
+        "Inputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          },
+          {
+            "Name": "position",
+            "Type": "Position"
+          },
+          {
+            "Name": "symbol",
+            "Type": "Symbol"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          }
+        ],
+        "Note": ""
+      }
+    ],
+    "Retrieval": [
+      {
+        "Operation": "traverse",
+        "Inputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          },
+          {
+            "Name": "path",
+            "Type": "Path"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "seq",
+            "Type": "SymbolSequence"
+          }
+        ],
+        "Note": ""
+      },
+      {
+        "Operation": "compose",
+        "Inputs": [
+          {
+            "Name": "seq",
+            "Type": "SymbolSequence"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "item",
+            "Type": "RetrievedItem"
+          }
+        ],
+        "Note": ""
+      }
+    ],
+    "StateSchema": "same F08 state; retrieval with wrong path knowledge",
+    "InputSchema": "SymbolSequence",
+    "Initialization": "same as F08",
+    "TransitionRules": [
+      "negative control removes path knowledge"
+    ],
+    "ObservationRule": "same visible slots as F08",
+    "Serialization": {
+      "SymbolSource": "physical slot contents",
+      "TokenBoundary": "NOT_DEFINED",
+      "LineBoundary": "NOT_DEFINED",
+      "UnitBoundary": "GENERATED_BY_MECHANISM",
+      "ExcludesHiddenState": true
+    },
+    "RetrievalRelation": {
+      "Kind": "AMBIGUOUS",
+      "SupportsContext": false,
+      "SupportsAmbiguity": true
+    },
+    "Carriers": {
+      "Encode": [
+        "M",
+        "G",
+        "K"
+      ],
+      "Retrieve": [
+        "E",
+        "G",
+        "K"
+      ]
+    },
+    "ExpectedReversibility": "should lose exact recovery without path knowledge",
+    "AmbiguitySemantics": "compatible traversals stay explicit",
+    "ErrorSemantics": [
+      "boundary_corruption"
+    ],
+    "Parameters": [
+      {
+        "ID": "f08-centre-edge-small",
+        "Origin": "GENERIC_GRID",
+        "Frozen": true,
+        "Description": "Small deterministic positional grid.",
+        "F01": null,
+        "F08": {
+          "Capacity": 10,
+          "Start": 0,
+          "Direction": "FORWARD",
+          "EmptyMarker": "?",
+          "Alphabet": "ABCDEFGHIKLMNOPQRSTVXYZ"
+        },
+        "F11": null,
+        "F12": null,
+        "Rotation": null,
+        "Storage": null
+      }
+    ],
+    "SurfaceRole": "LITERAL_SEQUENCE",
+    "EquivalentTo": "f08_serpens_core",
+    "ablations": null
+  },
+  {
+    "ID": "negative_randomized_cue_association",
+    "Version": "v1",
+    "Family": "NEGATIVE_RANDOMIZED_CUE_ASSOCIATION",
+    "Status": "GENERIC_CONTROL",
+    "Provenance": [
+      "randomized cue association control"
+    ],
+    "SourceModels": [
+      "F12_HORALOGIUS_CORE"
+    ],
+    "Encoding": [
+      {
+        "Operation": "repeat",
+        "Inputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          },
+          {
+            "Name": "step",
+            "Type": "Step"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          }
+        ],
+        "Note": ""
+      }
+    ],
+    "Retrieval": [
+      {
+        "Operation": "repeat",
+        "Inputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          },
+          {
+            "Name": "step",
+            "Type": "Step"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          }
+        ],
+        "Note": ""
+      },
+      {
+        "Operation": "signal",
+        "Inputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "cue",
+            "Type": "Cue"
+          }
+        ],
+        "Note": ""
+      },
+      {
+        "Operation": "associate",
+        "Inputs": [
+          {
+            "Name": "cue",
+            "Type": "Cue"
+          },
+          {
+            "Name": "memory",
+            "Type": "InternalMemoryState"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "item",
+            "Type": "RetrievedItem"
+          }
+        ],
+        "Note": ""
+      }
+    ],
+    "StateSchema": "same F12 state; degraded by wrong association map",
+    "InputSchema": "cue-addressable item set",
+    "Initialization": "same as F12",
+    "TransitionRules": [
+      "negative control supplies wrong memory mapping"
+    ],
+    "ObservationRule": "same emitted cue as F12",
+    "Serialization": {
+      "SymbolSource": "emitted cues",
+      "TokenBoundary": "GENERATED_BY_MECHANISM",
+      "LineBoundary": "NOT_DEFINED",
+      "UnitBoundary": "GENERATED_BY_MECHANISM",
+      "ExcludesHiddenState": true
+    },
+    "RetrievalRelation": {
+      "Kind": "CUE_ONLY",
+      "SupportsContext": false,
+      "SupportsAmbiguity": false
+    },
+    "Carriers": {
+      "Encode": [
+        "M"
+      ],
+      "Retrieve": [
+        "E",
+        "I"
+      ]
+    },
+    "ExpectedReversibility": "wrong association should not recover the intended item",
+    "AmbiguitySemantics": "unlearned cue remains cue-only",
+    "ErrorSemantics": [
+      "convention_corruption"
+    ],
+    "Parameters": [
+      {
+        "ID": "f12-cycle-default",
+        "Origin": "GENERIC_GRID",
+        "Frozen": true,
+        "Description": "Deterministic small temporal cue cycle.",
+        "F01": null,
+        "F08": null,
+        "F11": null,
+        "F12": {
+          "Period": 4,
+          "InitialTick": 0,
+          "AdvanceSteps": 1
+        },
+        "Rotation": null,
+        "Storage": null
+      }
+    ],
+    "SurfaceRole": "OPAQUE_CUE",
+    "EquivalentTo": "f12_horalogius_core",
+    "ablations": null
+  },
+  {
+    "ID": "negative_randomized_index_mapping",
+    "Version": "v1",
+    "Family": "NEGATIVE_RANDOMIZED_INDEX_MAPPING",
+    "Status": "GENERIC_CONTROL",
+    "Provenance": [
+      "randomized index mapping control"
+    ],
+    "SourceModels": [
+      "F11_ARISMETRICUM_CORE"
+    ],
+    "Encoding": [
+      {
+        "Operation": "place",
+        "Inputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          },
+          {
+            "Name": "position",
+            "Type": "Position"
+          },
+          {
+            "Name": "symbol",
+            "Type": "Symbol"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          }
+        ],
+        "Note": ""
+      }
+    ],
+    "Retrieval": [
+      {
+        "Operation": "index",
+        "Inputs": [
+          {
+            "Name": "index",
+            "Type": "Index"
+          },
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "position",
+            "Type": "Position"
+          }
+        ],
+        "Note": ""
+      },
+      {
+        "Operation": "select",
+        "Inputs": [
+          {
+            "Name": "state",
+            "Type": "ExternalState"
+          },
+          {
+            "Name": "position",
+            "Type": "Position"
+          }
+        ],
+        "Outputs": [
+          {
+            "Name": "cue_symbol",
+            "Type": "Symbol"
+          }
+        ],
+        "Note": ""
+      }
+    ],
+    "StateSchema": "same F11 state; degraded by wrong cue mapping",
+    "InputSchema": "cue-addressable item set",
+    "Initialization": "same as F11",
+    "TransitionRules": [
+      "negative control supplies non-matching cue map"
+    ],
+    "ObservationRule": "same visible cue slots as F11",
+    "Serialization": {
+      "SymbolSource": "sorted visible cue cells",
+      "TokenBoundary": "NOT_DEFINED",
+      "LineBoundary": "NOT_DEFINED",
+      "UnitBoundary": "GENERATED_BY_MECHANISM",
+      "ExcludesHiddenState": true
+    },
+    "RetrievalRelation": {
+      "Kind": "CUE_ONLY",
+      "SupportsContext": false,
+      "SupportsAmbiguity": false
+    },
+    "Carriers": {
+      "Encode": [
+        "M"
+      ],
+      "Retrieve": [
+        "E",
+        "K"
+      ]
+    },
+    "ExpectedReversibility": "wrong cue mapping should not recover intended item",
+    "AmbiguitySemantics": "falls back to cue-only",
+    "ErrorSemantics": [
+      "convention_corruption"
+    ],
+    "Parameters": [
+      {
+        "ID": "f11-core-default",
+        "Origin": "HISTORICAL_FROZEN",
+        "Frozen": true,
+        "Description": "Core indexed cue lookup without frozen cue semantics.",
+        "F01": null,
+        "F08": null,
+        "F11": {},
+        "F12": null,
+        "Rotation": null,
+        "Storage": null
+      }
+    ],
+    "SurfaceRole": "OPAQUE_CUE",
+    "EquivalentTo": "f11_arismetricum_core",
+    "ablations": null
+  }
+]
