@@ -2,7 +2,7 @@
 
 **Historical mechanisms:** F01 core/profile (literal rotational), F08 core (ordered positional), F11 core (indexed opaque cue), and F12 core (temporal associative cue) are separate. F01/F08 are exact only with their declared convention/path; F11 is cue-only without cue convention; F12 is cue-only without formal internal association. F07/F10 are reference-only.
 
-**Generalized space:** M-RESTRICTED rotation-plus-index and explicit-storage-plus-association are type-valid unattested boundaries with explicit cue conversion. No M-EXTENDED primitive was necessary. Generic literal, cyclic, indexed, cue, and ambiguous controls plus randomized convention/path/cue-association/index-mapping nulls are frozen. Historical status is held in every registry entry and controls never claim Fontana use.
+**Generalized space:** M-RESTRICTED rotation-plus-index and explicit-storage-plus-association are type-valid unattested boundaries. Storage association records an explicit zero-effect Symbol-to-Cue carrier interpretation between select and associate; the type validator requires it. No M-EXTENDED primitive was necessary. Generic literal, cyclic, indexed, cue, and ambiguous controls plus randomized convention/path/cue-association/index-mapping nulls are frozen. Historical status is held in every registry entry and controls never claim Fontana use.
 
 **Information and recovery:** M/E/G/H/K/I/C are separated; opaque cue and literal surface roles are explicit. Many-to-one collisions are reported by observable-document checksum, and context narrows candidate sets formally. Internal memory is only a known/unavailable association map, with no psychological claim. Contracts define serializable hidden-state-free observations and R0-R6 recovery.
 

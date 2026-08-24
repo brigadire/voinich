@@ -75,6 +75,9 @@ func ValidateMechanism(authority Authority, spec MechanismSpec) error {
 			}
 		}
 	}
+	if err := validateCueConversions(spec); err != nil {
+		return err
+	}
 	if err := validateFamilyShape(spec); err != nil {
 		return err
 	}
@@ -84,6 +87,48 @@ func ValidateMechanism(authority Authority, spec MechanismSpec) error {
 		}
 		if !param.Frozen {
 			return fmt.Errorf("parameter set %s must be frozen", param.ID)
+		}
+	}
+	return nil
+}
+
+func validateCueConversions(spec MechanismSpec) error {
+	outputs := map[string]DomainType{}
+	associateCueInputs := map[string]bool{}
+	for _, step := range append(append([]OperationInvocation{}, spec.Encoding...), spec.Retrieval...) {
+		for _, output := range step.Outputs {
+			outputs[output.Name] = output.Type
+		}
+		if step.Operation == "associate" {
+			for _, input := range step.Inputs {
+				if input.Type == TypeCue {
+					associateCueInputs[input.Name] = true
+				}
+			}
+		}
+	}
+	conversions := map[string]CueConversion{}
+	for _, conversion := range spec.CueConversions {
+		if conversion.InputName == "" || conversion.OutputName == "" || conversion.Rule == "" {
+			return fmt.Errorf("incomplete cue conversion")
+		}
+		if conversion.From != TypeSymbol || conversion.To != TypeCue {
+			return fmt.Errorf("cue conversion %s must be Symbol -> Cue", conversion.OutputName)
+		}
+		if outputs[conversion.InputName] != TypeSymbol {
+			return fmt.Errorf("cue conversion %s has no Symbol producer %s", conversion.OutputName, conversion.InputName)
+		}
+		if _, exists := conversions[conversion.OutputName]; exists {
+			return fmt.Errorf("duplicate cue conversion output %s", conversion.OutputName)
+		}
+		conversions[conversion.OutputName] = conversion
+	}
+	for cueName := range associateCueInputs {
+		if outputs[cueName] == TypeCue {
+			continue
+		}
+		if _, ok := conversions[cueName]; !ok {
+			return fmt.Errorf("associate cue input %s has no Cue producer or declared Symbol -> Cue conversion", cueName)
 		}
 	}
 	return nil

@@ -17,7 +17,7 @@ import (
 
 const (
 	masterSeed = uint64(81024001)
-	version    = "V1"
+	version    = "V1.1"
 )
 
 type registryEntry struct {
@@ -98,6 +98,7 @@ func main() {
 	}
 	freeze := map[string]any{
 		"version":                        version,
+		"implementation_correction":      "V1.1: explicit validated Symbol -> Cue interpretation for storage-association mechanisms; no mechanism semantic change",
 		"git_commit":                     gitCommit(),
 		"task80_algebra_checksum":        authority.AlgebraSHA256,
 		"task80_model_freeze_checksum":   authority.FrozenSHA256,
@@ -116,7 +117,7 @@ func main() {
 	if err := writeJSON(filepath.Join(out, "MNEMONIC_MECHANISM_SPACE_FROZEN.json"), freeze); err != nil {
 		log.Fatal(err)
 	}
-	if err := writeFile(filepath.Join(out, "TASK81_DESIGN_FROZEN"), "TASK81_DESIGN_FROZEN V1\n"); err != nil {
+	if err := writeFile(filepath.Join(out, "TASK81_DESIGN_FROZEN"), "TASK81_DESIGN_FROZEN V1.1\n"); err != nil {
 		log.Fatal(err)
 	}
 	fmt.Printf("wrote %d mechanisms and %d target-blind Task82 jobs to %s\n", len(specs), len(jobs.Jobs), out)
@@ -251,7 +252,7 @@ The finite grid is recorded in the parameter registry. Historical profiles are d
 
 Recovery is R(E, G, H, K, I, C); M is never available to a retriever. A request declares R0 full knowledge, R1 no context, R2 no convention, R3 no path/geometry, R4 no history, R5 no internal memory, or R6 observable only. Removing an unused carrier returns NOT_APPLICABLE.
 
-Results are EXACT, PARTIAL, AMBIGUITY_SET, CUE_ONLY, NO_RECOVERY, and NOT_APPLICABLE. A cue is not plaintext: F11 requires a supplied cue convention and F12 requires a supplied InternalMemoryState association map. Multiple candidates remain an ordered ambiguity set; context filters that set rather than selecting a hidden correct answer. Observable collisions are grouped by document checksum and retain all distinct intended items.
+Results are EXACT, PARTIAL, AMBIGUITY_SET, CUE_ONLY, NO_RECOVERY, and NOT_APPLICABLE. A cue is not plaintext: F11 requires a supplied cue convention and F12 requires a supplied InternalMemoryState association map. For storage-association mechanisms, select produces Symbol and a registry-declared, zero-effect OPAQUE_IDENTIFIER Symbol-to-Cue interpretation is required before associate; the validator rejects an omitted or malformed conversion. Multiple candidates remain an ordered ambiguity set; context filters that set rather than selecting a hidden correct answer. Observable collisions are grouped by document checksum and retain all distinct intended items.
 
 Task82 metrics are exact recovery rate, symbol/item recovery, ambiguity cardinality, candidate-set entropy when meaningful, retained/lost information from the trace, and carrier-dependence by recovery condition. Error classes reserved for Task82 are substitution, deletion, insertion, transposition, boundary corruption, state corruption, and convention corruption. Error locality is determined by the affected state cell versus an entire carrier; this freeze does not run a primary corruption experiment.
 `,
@@ -265,7 +266,7 @@ Only externally visible symbols or observations may be serialized. InternalMemor
 
 **Historical mechanisms:** F01 core/profile (literal rotational), F08 core (ordered positional), F11 core (indexed opaque cue), and F12 core (temporal associative cue) are separate. F01/F08 are exact only with their declared convention/path; F11 is cue-only without cue convention; F12 is cue-only without formal internal association. F07/F10 are reference-only.
 
-**Generalized space:** M-RESTRICTED rotation-plus-index and explicit-storage-plus-association are type-valid unattested boundaries with explicit cue conversion. No M-EXTENDED primitive was necessary. Generic literal, cyclic, indexed, cue, and ambiguous controls plus randomized convention/path/cue-association/index-mapping nulls are frozen. Historical status is held in every registry entry and controls never claim Fontana use.
+**Generalized space:** M-RESTRICTED rotation-plus-index and explicit-storage-plus-association are type-valid unattested boundaries. Storage association records an explicit zero-effect Symbol-to-Cue carrier interpretation between select and associate; the type validator requires it. No M-EXTENDED primitive was necessary. Generic literal, cyclic, indexed, cue, and ambiguous controls plus randomized convention/path/cue-association/index-mapping nulls are frozen. Historical status is held in every registry entry and controls never claim Fontana use.
 
 **Information and recovery:** M/E/G/H/K/I/C are separated; opaque cue and literal surface roles are explicit. Many-to-one collisions are reported by observable-document checksum, and context narrows candidate sets formally. Internal memory is only a known/unavailable association map, with no psychological claim. Contracts define serializable hidden-state-free observations and R0-R6 recovery.
 

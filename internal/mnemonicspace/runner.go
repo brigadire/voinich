@@ -385,10 +385,11 @@ func recoverStorageAssociate(prepared PreparedRun, request RetrievalRequest, env
 	if request.TargetPosition == nil {
 		return RecoveryResult{Class: ResultNoRecovery, Detail: "missing target position"}, nil
 	}
-	cue, ok := prepared.State.StorageAssociate.Slots[*request.TargetPosition]
+	storedCue, ok := prepared.State.StorageAssociate.Slots[*request.TargetPosition]
 	if !ok {
 		return RecoveryResult{Class: ResultNoRecovery, Detail: "no cue at requested position"}, nil
 	}
+	cue := InterpretOpaqueCue(Symbol(storedCue))
 	if env.InternalMemory == nil || len(env.InternalMemory.Associations[cue]) == 0 {
 		return RecoveryResult{Class: ResultCueOnly, Cue: cue, UsedCarriers: []Carrier{CarrierExternalState}, Detail: "stored cue lacks internal association"}, nil
 	}
@@ -400,6 +401,12 @@ func recoverStorageAssociate(prepared PreparedRun, request RetrievalRequest, env
 		return RecoveryResult{Class: ResultNoRecovery, Cue: cue, Detail: "context rejected all candidates"}, nil
 	}
 	return RecoveryResult{Class: ResultAmbiguitySet, Cue: cue, Candidates: sortCandidates(candidates), UsedCarriers: []Carrier{CarrierExternalState, CarrierInternal, CarrierContext}, Detail: "stored cue remains ambiguous"}, nil
+}
+
+// InterpretOpaqueCue performs the registry-declared, zero-effect
+// Symbol -> Cue interpretation for M-RESTRICTED explicit cue storage.
+func InterpretOpaqueCue(symbol Symbol) Cue {
+	return Cue(symbol)
 }
 
 func pruneEnvironment(condition RecoveryCondition, env RecoveryEnvironment) RecoveryEnvironment {

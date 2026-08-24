@@ -95,6 +95,7 @@
         "Note": ""
       }
     ],
+    "CueConversions": null,
     "StateSchema": "independent ring orientations only",
     "InputSchema": "SymbolSequence",
     "Initialization": "all unused rings receive deterministic filler offsets from seed",
@@ -255,6 +256,7 @@
         "Note": ""
       }
     ],
+    "CueConversions": null,
     "StateSchema": "12 offsets modulo 23",
     "InputSchema": "SymbolSequence",
     "Initialization": "profile-frozen Latin23/R12 encoding",
@@ -395,6 +397,7 @@
         "Note": ""
       }
     ],
+    "CueConversions": null,
     "StateSchema": "ordered nullable symbols",
     "InputSchema": "SymbolSequence",
     "Initialization": "empty positional grid",
@@ -542,6 +545,7 @@
         "Note": "Symbol carrier is interpreted as opaque cue identifier"
       }
     ],
+    "CueConversions": null,
     "StateSchema": "finite partial map from index to opaque cue",
     "InputSchema": "cue-addressable item set",
     "Initialization": "empty indexed lookup surface",
@@ -691,6 +695,7 @@
         "Note": ""
       }
     ],
+    "CueConversions": null,
     "StateSchema": "cyclic tick and cue schedule",
     "InputSchema": "cue-addressable item set",
     "Initialization": "cyclic temporal state at a declared initial tick",
@@ -829,6 +834,7 @@
         "Note": "type-valid unattested boundary case"
       }
     ],
+    "CueConversions": null,
     "StateSchema": "rotated indexed cue ring",
     "InputSchema": "cue-addressable item set",
     "Initialization": "opaque cues on a cyclic indexed carrier",
@@ -889,7 +895,7 @@
   },
   {
     "ID": "m_restricted_storage_associate",
-    "Version": "v1",
+    "Version": "v1.1",
     "Family": "M_RESTRICTED_STORAGE_ASSOCIATION",
     "Status": "M-RESTRICTED",
     "Provenance": [
@@ -941,7 +947,7 @@
             "Type": "Symbol"
           }
         ],
-        "Note": "selected Symbol is treated as an opaque cue identifier"
+        "Note": "select yields an opaque Symbol identifier"
       },
       {
         "Operation": "associate",
@@ -962,6 +968,15 @@
           }
         ],
         "Note": ""
+      }
+    ],
+    "CueConversions": [
+      {
+        "InputName": "cue_symbol",
+        "OutputName": "cue",
+        "From": "Symbol",
+        "To": "Cue",
+        "Rule": "OPAQUE_IDENTIFIER: identity representation-level cue interpretation; no state or information effect"
       }
     ],
     "StateSchema": "explicit positional storage of cue identifiers",
@@ -1095,6 +1110,7 @@
         "Note": ""
       }
     ],
+    "CueConversions": null,
     "StateSchema": "synthetic positional literal store",
     "InputSchema": "SymbolSequence",
     "Initialization": "empty synthetic store",
@@ -1224,6 +1240,7 @@
         "Note": ""
       }
     ],
+    "CueConversions": null,
     "StateSchema": "synthetic periodic cue emitter",
     "InputSchema": "cue-addressable item set",
     "Initialization": "synthetic cue schedule",
@@ -1355,6 +1372,7 @@
         "Note": ""
       }
     ],
+    "CueConversions": null,
     "StateSchema": "synthetic indexed cue store",
     "InputSchema": "cue-addressable item set",
     "Initialization": "empty indexed cue surface",
@@ -1497,6 +1515,7 @@
         "Note": ""
       }
     ],
+    "CueConversions": null,
     "StateSchema": "synthetic cue-to-memory control",
     "InputSchema": "cue-addressable item set",
     "Initialization": "synthetic cue schedule",
@@ -1556,7 +1575,7 @@
   },
   {
     "ID": "synthetic_ambiguous",
-    "Version": "v1",
+    "Version": "v1.1",
     "Family": "GENERIC_AMBIGUOUS",
     "Status": "GENERIC_CONTROL",
     "Provenance": [
@@ -1629,6 +1648,15 @@
           }
         ],
         "Note": ""
+      }
+    ],
+    "CueConversions": [
+      {
+        "InputName": "cue_symbol",
+        "OutputName": "cue",
+        "From": "Symbol",
+        "To": "Cue",
+        "Rule": "OPAQUE_IDENTIFIER: identity representation-level cue interpretation; no state or information effect"
       }
     ],
     "StateSchema": "synthetic ambiguous cue storage",
@@ -1782,6 +1810,7 @@
         "Note": ""
       }
     ],
+    "CueConversions": null,
     "StateSchema": "same F01 state; degraded by wrong convention",
     "InputSchema": "SymbolSequence",
     "Initialization": "same as F01",
@@ -1915,6 +1944,7 @@
         "Note": ""
       }
     ],
+    "CueConversions": null,
     "StateSchema": "same F08 state; retrieval with wrong path knowledge",
     "InputSchema": "SymbolSequence",
     "Initialization": "same as F08",
@@ -2066,6 +2096,7 @@
         "Note": ""
       }
     ],
+    "CueConversions": null,
     "StateSchema": "same F12 state; degraded by wrong association map",
     "InputSchema": "cue-addressable item set",
     "Initialization": "same as F12",
@@ -2200,6 +2231,7 @@
         "Note": ""
       }
     ],
+    "CueConversions": null,
     "StateSchema": "same F11 state; degraded by wrong cue mapping",
     "InputSchema": "cue-addressable item set",
     "Initialization": "same as F11",

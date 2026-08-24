@@ -175,6 +175,17 @@ type OperationInvocation struct {
 	Note      string
 }
 
+// CueConversion is a declared representation-level interpretation, not a
+// Task80 primitive: an opaque Symbol identifier selected from storage is
+// retyped as a Cue before association. It has no state or information effect.
+type CueConversion struct {
+	InputName  string
+	OutputName string
+	From       DomainType
+	To         DomainType
+	Rule       string
+}
+
 type CarrierRequirements struct {
 	Encode   []Carrier
 	Retrieve []Carrier
@@ -260,6 +271,7 @@ type MechanismSpec struct {
 	SourceModels          []string
 	Encoding              []OperationInvocation
 	Retrieval             []OperationInvocation
+	CueConversions        []CueConversion
 	StateSchema           string
 	InputSchema           string
 	Initialization        string

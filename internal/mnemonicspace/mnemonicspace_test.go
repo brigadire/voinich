@@ -78,6 +78,25 @@ func TestInvalidMechanismRejected(t *testing.T) {
 	}
 }
 
+func TestCueConversionIsExplicitAndValidated(t *testing.T) {
+	authority := loadAuthority(t)
+	spec := lookupSpec(t, "m_restricted_storage_associate")
+	if len(spec.CueConversions) != 1 {
+		t.Fatalf("cue conversions = %#v", spec.CueConversions)
+	}
+	conversion := spec.CueConversions[0]
+	if conversion.From != TypeSymbol || conversion.To != TypeCue || conversion.Rule == "" {
+		t.Fatalf("invalid cue conversion = %#v", conversion)
+	}
+	if InterpretOpaqueCue("owl") != "owl" {
+		t.Fatal("opaque cue interpretation is not representation-preserving")
+	}
+	spec.CueConversions = nil
+	if err := ValidateMechanism(authority, spec); err == nil {
+		t.Fatal("accepted storage association without its required Symbol -> Cue conversion")
+	}
+}
+
 func TestHistoricalRecoveryPaths(t *testing.T) {
 	runner := Runner{}
 	f01 := lookupSpec(t, "f01_speculum_profile_latin23_r12")
