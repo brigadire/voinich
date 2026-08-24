@@ -50,7 +50,7 @@ func TestAllPipelineCommandsUseWorkdirContract(t *testing.T) {
 		// contract, and no relation to the numbered Stage1-28 pipeline.
 		if base := filepath.Base(filepath.Dir(path)); base == "codex_prepare" || base == "codex_orientation" ||
 			base == "tei-abbr-extract" || base == "generic-glyph-filter" || base == "ivtff-x7-extract" ||
-			base == "task82b-run" || base == "task82b-aggregate" {
+			base == "task82b-run" || base == "task82b-aggregate" || base == "fingerprint-v2-verify" {
 			continue
 		}
 		parsed, err := parser.ParseFile(token.NewFileSet(), path, nil, parser.ImportsOnly)

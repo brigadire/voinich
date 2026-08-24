@@ -1,0 +1,7 @@
+# Additional provenance findings
+
+The Task79c report contains one prose-level producer-description inconsistency: it calls the IT preparation an audited `ivtt -x7` binary conversion, while the frozen design, source, and regeneration evidence establish the Go-native `ivtff-x7-extract` implementation audited against x7 semantics. This does not alter bytes or science, but the corrected refreeze records the actual producer explicitly.
+
+The preparation sidecar records Git HEAD `d568e54…`; the small extractor command was committed in the later Task79c closure commit `6f185579…`, while its parser/normalizer dependency already existed at `d568e54…`. Historical diff confirms parser and `codex_prepare` semantics did not change. Both facts are retained rather than collapsing working-tree state into a misleading single commit claim.
+
+Full historical IT regeneration with the frozen seed did not reproduce several numeric Monte Carlo fields. Status and verdict files were identical, and deterministic corpus statistics were equal, but e.g. `HR1_LOCUS_VARIANCE_SHARE` p changed from `0.835165` to `0.394605` and `cs7` p from `0.871287` to `0.851485`. Code inspection finds unsorted Go-map iteration inside seeded statistical paths (notably `byBin` in `cs7Test`, and map-collected hierarchy groups), so a fixed PRNG seed does not fix the order in which random draws are consumed. This is independent of the IT manifest typo and blocks the strict Task83a manifest-only gate.

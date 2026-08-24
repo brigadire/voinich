@@ -53,6 +53,7 @@ func TestStagesMatchRepository(t *testing.T) {
 		"codex_orientation":      true,
 		"experiment-compare":     true,
 		"fingerprint-v2-analyze": true,
+		"fingerprint-v2-verify":  true,
 		// Task79c closure tools: separately configured Phase II research
 		// entry points with explicit, caller-chosen output paths, same as
 		// fingerprint-v2-analyze; none has a frozen Task49 stage contract.
