@@ -1,0 +1,3 @@
+# Task83 handoff V2
+
+The frozen portfolio is ready for a partial, target-blind direct comparison under `TASK83_COMPARISON_CONTRACT.md`. Direct edit-family CORE metrics and direct lexical/cross-scale SUPPORTING projections are retained subject to per-cell availability. Assembler-only 2D-lite, boundary, line, and cross-scale metrics are segregated and are not target-comparison inputs. Folio, hierarchy, locus, and manuscript-metadata families remain explicitly unavailable. All mechanisms and policies remain in the handoff, including degenerate conditions; `MECHANISM_COMPARISON_ELIGIBILITY_V2.tsv` supplies technical eligibility only.
