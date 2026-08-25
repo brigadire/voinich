@@ -1,0 +1,20 @@
+check_id	artifact_or_requirement	expected	observed	status
+P01	data_work/ZL3b-x7.canonical.txt SHA-256	f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692	f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692	PASS
+P02	data_work/IT2a-x7.canonical.txt SHA-256	10286ee7e11ad974e9d0f884e3b0df1b588745a4b77ad428a638a5ff63946a8b	10286ee7e11ad974e9d0f884e3b0df1b588745a4b77ad428a638a5ff63946a8b	PASS
+P03	data/ZL3b-n.txt SHA-256	bf5b6d4ac1e3a51b1847a9c388318d609020441ccd56984c901c32b09beccafc	bf5b6d4ac1e3a51b1847a9c388318d609020441ccd56984c901c32b09beccafc	PASS
+P04	data/IT2a-n.txt SHA-256	7f27a8b0feed8f6de0a99900df6bf912dd1d295c38e5f830bac8b41c3f536fb5	7f27a8b0feed8f6de0a99900df6bf912dd1d295c38e5f830bac8b41c3f536fb5	PASS
+P05	GRAMMAR_CORPUS_SPLIT.tsv SHA-256	639969bd91daaf362df49afa4fc12c3f5289cea4200cbb71d5f743d5c5bff551	639969bd91daaf362df49afa4fc12c3f5289cea4200cbb71d5f743d5c5bff551	PASS
+P06	GRAMMAR_CORPUS_SPLIT_MANIFEST.json SHA-256	80b49086623f53968a0c925c3a6780a82d35b9c118747a9ab6f90fe7ce03719a	80b49086623f53968a0c925c3a6780a82d35b9c118747a9ab6f90fe7ce03719a	PASS
+P07	GRAMMAR_CORPUS_SPLIT_FROZEN	present	present	PASS
+P08	GRAMMAR_EXPERIMENT_CONTRACT_FROZEN	present	present	PASS
+B01	M0/M1 smoothing grid	finite numeric grid	method names only	BLOCKING_GAP
+B02	M2 hyperparameter space and induction	finite numeric grid and unique algorithm	parameter names and algorithm family only	BLOCKING_GAP
+B03	M3/M4 hyperparameter space and induction	finite numeric grid and unique algorithm	parameter names and algorithm family only	BLOCKING_GAP
+B04	M5 hyperparameter space and component induction	finite numeric grid and unique algorithm	parameter names and algorithm family only	BLOCKING_GAP
+B05	MFC0-MFC2 concrete generators	fully frozen instances	families/examples only	BLOCKING_GAP
+B06	seed convergence and scale stopping	numeric tolerance and checkpoints	no numeric tolerance/checkpoints	BLOCKING_GAP
+B07	cross-transcription stability	numeric tolerance	no numeric tolerance	BLOCKING_GAP
+B08	failure detection thresholds	numeric thresholds	no numeric thresholds	BLOCKING_GAP
+B09	negative-token construction	deterministic sampler and class definition	qualitative best-effort rule	BLOCKING_GAP
+B10	PM5 predictive calibration	bucket edges and exact error functional	informal metric description	BLOCKING_GAP
+
