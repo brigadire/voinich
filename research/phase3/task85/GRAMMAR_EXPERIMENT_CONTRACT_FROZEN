@@ -1,0 +1,9 @@
+GRAMMAR_EXPERIMENT_CONTRACT_FROZEN
+version=task85-v1
+git_commit=d523ae7d438d1c46559d2c33586fb372d965fef7
+results_manifest_sha256=0d894d9e12631f691bf94b9fa88260b04373c8c5470b1980848e157b59366021
+verifier_command=go build ./... && go vet ./... && go test ./... && go test -race ./... && git diff --check
+verifier_result=EXIT_0_AUTHORITATIVE
+task86_ready=SUPPORTED
+scope=Task85 Line A grammar experimental design, baselines, and validation contract only; no grammar was fit, no HELDOUT content was read for a selection decision, no Voynich mechanism/message verdict is implied
+after_freeze_policy=this contract is not changed post hoc to fit any Task86-89 result (task85 sections 15-16, 49)
