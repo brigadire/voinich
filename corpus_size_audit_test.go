@@ -22,7 +22,8 @@ func TestNoVoynichCorpusSizeInAlgorithmicSources(t *testing.T) {
 	}
 	skipDirs := map[string]bool{
 		".git": true, "data": true, "data_work": true, "experiments": true,
-		"profiles": true, "tasks": true, "workdir": true,
+		"profiles": true, "tasks": true, "workdir": true, "artifacts": true,
+		".task83b-bin": true, ".task83b-runs": true,
 	}
 
 	err := filepath.WalkDir(".", func(path string, entry fs.DirEntry, walkErr error) error {

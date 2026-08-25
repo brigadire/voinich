@@ -354,7 +354,8 @@ func boundaryLengthAsymmetry(c corpus) float64 {
 		by[r.Line] = append(by[r.Line], r)
 	}
 	a, b := []float64{}, []float64{}
-	for _, rs := range by {
+	for _, line := range orderedIntKeys(by) {
+		rs := by[line]
 		if len(rs) < 2 {
 			continue
 		}
@@ -371,7 +372,8 @@ func swappedLineBoundaries(c corpus, rng *rand.Rand) corpus {
 	for i, r := range out.records {
 		by[r.Line] = append(by[r.Line], i)
 	}
-	for _, idx := range by {
+	for _, line := range orderedIntKeys(by) {
+		idx := by[line]
 		if len(idx) > 1 && rng.Intn(2) == 1 {
 			i, j := idx[0], idx[len(idx)-1]
 			out.records[i].Token, out.records[j].Token = out.records[j].Token, out.records[i].Token
@@ -501,7 +503,8 @@ func varianceShare(ls []LineProfile, level string) float64 {
 		total += d * d
 	}
 	between := 0.0
-	for k, s := range sum {
+	for _, k := range orderedKeys(sum) {
+		s := sum[k]
 		m := s / float64(n[k])
 		between += float64(n[k]) * (m - overall) * (m - overall)
 	}
@@ -568,7 +571,8 @@ func rectoVersoCoherence(ls []LineProfile) float64 {
 		}
 	}
 	paired := []float64{}
-	for _, s := range by {
+	for _, leaf := range orderedKeys(by) {
+		s := by[leaf]
 		if s["r"] != "" && s["v"] != "" {
 			paired = append(paired, 1/(1+distance(v[s["r"]], v[s["v"]])))
 		}
@@ -581,7 +585,8 @@ func folioProgression(ls []LineProfile) float64 {
 		by[l.Folio] = append(by[l.Folio], l)
 	}
 	var vals []float64
-	for _, xs := range by {
+	for _, folio := range orderedKeys(by) {
+		xs := by[folio]
 		if len(xs) < 3 {
 			continue
 		}

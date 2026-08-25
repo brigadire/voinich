@@ -1,0 +1,101 @@
+[
+  {
+    "id": "HN1",
+    "name": "Within-line permutation",
+    "preserves": "line token multiset, length, metadata",
+    "destroys": "order and identity-slot association",
+    "tests_hypotheses": [
+      "LS2",
+      "LS3",
+      "LS4",
+      "2D-LITE"
+    ],
+    "remaining_confounders": "boundary slots remain fixed",
+    "justification": "direct positional null"
+  },
+  {
+    "id": "HN2",
+    "name": "Line reassignment within folio",
+    "preserves": "folio composition and line profiles",
+    "destroys": "locus membership",
+    "tests_hypotheses": [
+      "LC1",
+      "LC3",
+      "LC4"
+    ],
+    "remaining_confounders": "folio confounding remains",
+    "justification": "tests locus increment"
+  },
+  {
+    "id": "HN3",
+    "name": "Locus reassignment within section",
+    "preserves": "section composition and locus sizes",
+    "destroys": "folio organization",
+    "tests_hypotheses": [
+      "PF2",
+      "PF3"
+    ],
+    "remaining_confounders": "section regime remains",
+    "justification": "tests folio increment"
+  },
+  {
+    "id": "HN4",
+    "name": "Folio reassignment within Currier/section",
+    "preserves": "section/Currier composition and folio sizes",
+    "destroys": "folio identity",
+    "tests_hypotheses": [
+      "PF2",
+      "PF4",
+      "HR1"
+    ],
+    "remaining_confounders": "document order not tested",
+    "justification": "matched folio null"
+  },
+  {
+    "id": "HN5",
+    "name": "Boundary-preserving token shuffle",
+    "preserves": "line lengths and boundary slots",
+    "destroys": "token-boundary identity",
+    "tests_hypotheses": [
+      "BP1"
+    ],
+    "remaining_confounders": "boundary marginal remains",
+    "justification": "boundary-specific null"
+  },
+  {
+    "id": "HN6",
+    "name": "Metadata-label permutation",
+    "preserves": "group sizes and observations",
+    "destroys": "metadata association",
+    "tests_hypotheses": [
+      "LC1",
+      "LC2",
+      "HR1",
+      "HR6"
+    ],
+    "remaining_confounders": "nested labels require restricted permutation",
+    "justification": "association null"
+  },
+  {
+    "id": "HN7",
+    "name": "Hierarchical bootstrap",
+    "preserves": "folio/locus nesting",
+    "destroys": "sampling idiosyncrasy",
+    "tests_hypotheses": [
+      "all task79 metrics"
+    ],
+    "remaining_confounders": "only observed hierarchy is resampled",
+    "justification": "uncertainty"
+  },
+  {
+    "id": "HN8",
+    "name": "C-GRAMMAR-derived controls",
+    "preserves": "validated token-formation marginals",
+    "destroys": "higher organization",
+    "tests_hypotheses": [
+      "eligible boundary/token metrics"
+    ],
+    "remaining_confounders": "original C-GRAMMAR has no learned page generator",
+    "justification": "only used where model preserves relevant marginals"
+  }
+]

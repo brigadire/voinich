@@ -1,0 +1,1118 @@
+[
+  {
+    "metric_id": "2DL1_LAYOUT_POSITION_MI",
+    "metric_version": "task79-v1",
+    "family": "2D-LITE",
+    "definition": "NMI(glyph-length class, normalized line-position class)",
+    "unit_of_analysis": "token",
+    "inputs": [
+      "token identity",
+      "IVTFF metadata"
+    ],
+    "parameters": {
+      "permutations": 1000
+    },
+    "observed_value": 0.0047065461186923665,
+    "uncertainty": "permutation null: mean 0.00135884, SD 0.000193337, n=1000",
+    "null_models": [
+      "HN1"
+    ],
+    "effect_size": 17.315415266687236,
+    "p_value": 0.000999000999000999,
+    "q_value": 0.0013063859217705373,
+    "partition_stability": "ROBUST",
+    "transcription_stability": "INSUFFICIENT_DATA: one aligned transcription",
+    "parameter_sensitivity": "ROBUST_WITH_LIMITATIONS: fixed preregistered categories; threshold-free statistic",
+    "redundancy_class": "CORE",
+    "coverage_role": [
+      "positional extraction",
+      "stochastic procedural generator"
+    ],
+    "comparison_eligibility": "CORPUS_COMPARABLE",
+    "negative_evidence_status": "ABSENCE_OF_EVIDENCE",
+    "implementation_version": "fingerprint-v2-page-hierarchy-v1",
+    "status": "SUPPORTED",
+    "limitations": "2D-LITE uses order/categories only; it is not physical geometry."
+  },
+  {
+    "metric_id": "BP1_BOUNDARY_TOKEN_NMI",
+    "metric_version": "task79-v1",
+    "family": "boundary",
+    "definition": "NMI(token identity, initial/interior/final boundary class)",
+    "unit_of_analysis": "token",
+    "inputs": [
+      "token identity",
+      "IVTFF metadata"
+    ],
+    "parameters": {
+      "permutations": 1000
+    },
+    "observed_value": 0.0842192025308322,
+    "uncertainty": "permutation null: mean 0.048001, SD 0.000416952, n=1000",
+    "null_models": [
+      "HN5"
+    ],
+    "effect_size": 86.86414917884142,
+    "p_value": 0.000999000999000999,
+    "q_value": 0.0013063859217705373,
+    "partition_stability": "ROBUST",
+    "transcription_stability": "INSUFFICIENT_DATA: one aligned transcription",
+    "parameter_sensitivity": "ROBUST_WITH_LIMITATIONS: fixed preregistered categories; threshold-free statistic",
+    "redundancy_class": "CORE",
+    "coverage_role": [
+      "line-boundary projection",
+      "acrostic-compatible organization"
+    ],
+    "comparison_eligibility": "CORPUS_COMPARABLE",
+    "negative_evidence_status": "ABSENCE_OF_EVIDENCE",
+    "implementation_version": "fingerprint-v2-page-hierarchy-v1",
+    "status": "SUPPORTED",
+    "limitations": "Detects boundary specialization, not plaintext or a reading direction."
+  },
+  {
+    "metric_id": "EF1_GIANT_COMPONENT_SHARE",
+    "metric_version": "lp-ef-v1",
+    "family": "edit family",
+    "definition": "Share of vocabulary types in the largest edit component",
+    "unit_of_analysis": "corpus summary",
+    "inputs": [
+      "frozen token corpus"
+    ],
+    "parameters": {},
+    "observed_value": 0.86691738444741,
+    "uncertainty": "see task75/task77 null distributions in raw_results.json",
+    "null_models": [
+      "task75/task77 registered nulls"
+    ],
+    "effect_size": 0,
+    "p_value": 0,
+    "q_value": 0,
+    "partition_stability": "ROBUST_WITH_LIMITATIONS",
+    "transcription_stability": "INSUFFICIENT_DATA: one aligned transcription",
+    "parameter_sensitivity": "see task75/task77 audit",
+    "redundancy_class": "CORE",
+    "coverage_role": [
+      "constrained token grammar",
+      "copy-with-modification"
+    ],
+    "comparison_eligibility": "CORPUS_COMPARABLE",
+    "negative_evidence_status": "see source block",
+    "implementation_version": "fingerprint-v2-lexical-paradigms-v1",
+    "status": "CONSISTENT_WITH_GRAMMAR_BOUND",
+    "limitations": "Inherited without changing the task75/task77 estimator or null."
+  },
+  {
+    "metric_id": "EF1_ISOLATE_SHARE",
+    "metric_version": "lp-ef-v1",
+    "family": "edit family",
+    "definition": "Share of isolated vocabulary types in edit graph",
+    "unit_of_analysis": "corpus summary",
+    "inputs": [
+      "frozen token corpus"
+    ],
+    "parameters": {},
+    "observed_value": 0.11500667232803591,
+    "uncertainty": "see task75/task77 null distributions in raw_results.json",
+    "null_models": [
+      "task75/task77 registered nulls"
+    ],
+    "effect_size": 0,
+    "p_value": 0,
+    "q_value": 0,
+    "partition_stability": "ROBUST_WITH_LIMITATIONS",
+    "transcription_stability": "INSUFFICIENT_DATA: one aligned transcription",
+    "parameter_sensitivity": "see task75/task77 audit",
+    "redundancy_class": "SUPPORTING",
+    "coverage_role": [
+      "constrained token grammar",
+      "copy-with-modification"
+    ],
+    "comparison_eligibility": "CORPUS_COMPARABLE",
+    "negative_evidence_status": "see source block",
+    "implementation_version": "fingerprint-v2-lexical-paradigms-v1",
+    "status": "REPRODUCED",
+    "limitations": "Inherited without changing the task75/task77 estimator or null."
+  },
+  {
+    "metric_id": "EF2_GLOBAL_CLUSTERING",
+    "metric_version": "lp-ef-v1",
+    "family": "edit family",
+    "definition": "Global edit-graph clustering coefficient",
+    "unit_of_analysis": "corpus summary",
+    "inputs": [
+      "frozen token corpus"
+    ],
+    "parameters": {},
+    "observed_value": 0.28727033544141856,
+    "uncertainty": "see task75/task77 null distributions in raw_results.json",
+    "null_models": [
+      "task75/task77 registered nulls"
+    ],
+    "effect_size": 0,
+    "p_value": 0,
+    "q_value": 0,
+    "partition_stability": "ROBUST_WITH_LIMITATIONS",
+    "transcription_stability": "INSUFFICIENT_DATA: one aligned transcription",
+    "parameter_sensitivity": "see task75/task77 audit",
+    "redundancy_class": "CORE",
+    "coverage_role": [
+      "constrained token grammar",
+      "copy-with-modification"
+    ],
+    "comparison_eligibility": "CORPUS_COMPARABLE",
+    "negative_evidence_status": "see source block",
+    "implementation_version": "fingerprint-v2-lexical-paradigms-v1",
+    "status": "REPRODUCED",
+    "limitations": "Inherited without changing the task75/task77 estimator or null."
+  },
+  {
+    "metric_id": "EF3_DEGREE_FREQUENCY_SPEARMAN",
+    "metric_version": "lp-ef-v1",
+    "family": "edit family",
+    "definition": "Spearman correlation of edit degree and log frequency",
+    "unit_of_analysis": "corpus summary",
+    "inputs": [
+      "frozen token corpus"
+    ],
+    "parameters": {},
+    "observed_value": 0.6390073569610333,
+    "uncertainty": "see task75/task77 null distributions in raw_results.json",
+    "null_models": [
+      "task75/task77 registered nulls"
+    ],
+    "effect_size": 0,
+    "p_value": 0,
+    "q_value": 0,
+    "partition_stability": "ROBUST_WITH_LIMITATIONS",
+    "transcription_stability": "INSUFFICIENT_DATA: one aligned transcription",
+    "parameter_sensitivity": "see task75/task77 audit",
+    "redundancy_class": "CORE",
+    "coverage_role": [
+      "constrained token grammar",
+      "copy-with-modification"
+    ],
+    "comparison_eligibility": "CORPUS_COMPARABLE",
+    "negative_evidence_status": "see source block",
+    "implementation_version": "fingerprint-v2-lexical-paradigms-v1",
+    "status": "REPRODUCED",
+    "limitations": "Inherited without changing the task75/task77 estimator or null."
+  },
+  {
+    "metric_id": "HR1_FOLIO_VARIANCE_SHARE",
+    "metric_version": "task79-v1",
+    "family": "hierarchy",
+    "definition": "Between-folio share of line-length variance",
+    "unit_of_analysis": "line",
+    "inputs": [
+      "line token count",
+      "folio"
+    ],
+    "parameters": {
+      "permutations": 1000
+    },
+    "observed_value": 0.2732690627194134,
+    "uncertainty": "permutation null: mean 0.0421272, SD 0.00416596, n=1000",
+    "null_models": [
+      "HN6"
+    ],
+    "effect_size": 55.48341237510394,
+    "p_value": 0.000999000999000999,
+    "q_value": 0.0013063859217705373,
+    "partition_stability": "ROBUST",
+    "transcription_stability": "INSUFFICIENT_DATA: one aligned transcription",
+    "parameter_sensitivity": "ROBUST_WITH_LIMITATIONS: fixed preregistered categories; threshold-free statistic",
+    "redundancy_class": "CORE",
+    "coverage_role": [
+      "mixed architecture",
+      "table/index",
+      "natural-language-like process"
+    ],
+    "comparison_eligibility": "CORPUS_COMPARABLE",
+    "negative_evidence_status": "ABSENCE_OF_EVIDENCE",
+    "implementation_version": "fingerprint-v2-page-hierarchy-v1",
+    "status": "SUPPORTED",
+    "limitations": "Method-of-moments variance share is a robust descriptive decomposition, not a causal random-effects model."
+  },
+  {
+    "metric_id": "HR1_LOCUS_VARIANCE_SHARE",
+    "metric_version": "task79-v1",
+    "family": "hierarchy",
+    "definition": "Between-locus share of line-length variance",
+    "unit_of_analysis": "line",
+    "inputs": [
+      "line token count",
+      "locus"
+    ],
+    "parameters": {
+      "permutations": 1000
+    },
+    "observed_value": 0.9999999999999868,
+    "uncertainty": "permutation null: mean 1, SD 8.46698e-15, n=1000",
+    "null_models": [
+      "HN6"
+    ],
+    "effect_size": -1.3768004787656432,
+    "p_value": 0.8571428571428571,
+    "q_value": 0.9714285714285714,
+    "partition_stability": "ROBUST",
+    "transcription_stability": "INSUFFICIENT_DATA: one aligned transcription",
+    "parameter_sensitivity": "ROBUST_WITH_LIMITATIONS: fixed preregistered categories; threshold-free statistic",
+    "redundancy_class": "SUPPORTING",
+    "coverage_role": [
+      "mixed architecture",
+      "table/index",
+      "natural-language-like process"
+    ],
+    "comparison_eligibility": "CORPUS_COMPARABLE",
+    "negative_evidence_status": "ABSENCE_OF_EVIDENCE",
+    "implementation_version": "fingerprint-v2-page-hierarchy-v1",
+    "status": "NOT_SUPPORTED",
+    "limitations": "Method-of-moments variance share is a robust descriptive decomposition, not a causal random-effects model."
+  },
+  {
+    "metric_id": "HR1_SECTION_VARIANCE_SHARE",
+    "metric_version": "task79-v1",
+    "family": "hierarchy",
+    "definition": "Between-section share of line-length variance",
+    "unit_of_analysis": "line",
+    "inputs": [
+      "line token count",
+      "section"
+    ],
+    "parameters": {
+      "permutations": 1000
+    },
+    "observed_value": 0.125258999464879,
+    "uncertainty": "permutation null: mean 0.00131102, SD 0.000715374, n=1000",
+    "null_models": [
+      "HN6"
+    ],
+    "effect_size": 173.26320706067057,
+    "p_value": 0.000999000999000999,
+    "q_value": 0.0013063859217705373,
+    "partition_stability": "ROBUST",
+    "transcription_stability": "INSUFFICIENT_DATA: one aligned transcription",
+    "parameter_sensitivity": "ROBUST_WITH_LIMITATIONS: fixed preregistered categories; threshold-free statistic",
+    "redundancy_class": "CORE",
+    "coverage_role": [
+      "mixed architecture",
+      "table/index",
+      "natural-language-like process"
+    ],
+    "comparison_eligibility": "CORPUS_COMPARABLE",
+    "negative_evidence_status": "ABSENCE_OF_EVIDENCE",
+    "implementation_version": "fingerprint-v2-page-hierarchy-v1",
+    "status": "SUPPORTED",
+    "limitations": "Method-of-moments variance share is a robust descriptive decomposition, not a causal random-effects model."
+  },
+  {
+    "metric_id": "HR6_CURRIER_SECTION_NMI",
+    "metric_version": "task79-v1",
+    "family": "hierarchy",
+    "definition": "NMI for Currier/section metadata association with token length/regime class",
+    "unit_of_analysis": "token",
+    "inputs": [
+      "token identity",
+      "IVTFF metadata"
+    ],
+    "parameters": {
+      "permutations": 1000
+    },
+    "observed_value": 0.6486213916664976,
+    "uncertainty": "permutation null: mean 0.457389, SD 0.000504824, n=1000",
+    "null_models": [
+      "HN6"
+    ],
+    "effect_size": 378.8102864841548,
+    "p_value": 0.000999000999000999,
+    "q_value": 0.0013063859217705373,
+    "partition_stability": "ROBUST",
+    "transcription_stability": "INSUFFICIENT_DATA: one aligned transcription",
+    "parameter_sensitivity": "ROBUST_WITH_LIMITATIONS: fixed preregistered categories; threshold-free statistic",
+    "redundancy_class": "SUPPORTING",
+    "coverage_role": [
+      "mixed architecture",
+      "table/index"
+    ],
+    "comparison_eligibility": "VOYNICH_ONLY_CONTEXT",
+    "negative_evidence_status": "ABSENCE_OF_EVIDENCE",
+    "implementation_version": "fingerprint-v2-page-hierarchy-v1",
+    "status": "SUPPORTED",
+    "limitations": "Metadata classes are interpreted categorically only; association does not assign semantics."
+  },
+  {
+    "metric_id": "LC1_LOCUS_TYPE_NMI",
+    "metric_version": "task79-v1",
+    "family": "locus",
+    "definition": "NMI(token length class, documented locus type)",
+    "unit_of_analysis": "token",
+    "inputs": [
+      "token identity",
+      "IVTFF metadata"
+    ],
+    "parameters": {
+      "permutations": 1000
+    },
+    "observed_value": 0.00758835324337621,
+    "uncertainty": "permutation null: mean 0.00346391, SD 0.000176273, n=1000",
+    "null_models": [
+      "HN2"
+    ],
+    "effect_size": 23.398056690558388,
+    "p_value": 0.000999000999000999,
+    "q_value": 0.0013063859217705373,
+    "partition_stability": "ROBUST",
+    "transcription_stability": "INSUFFICIENT_DATA: one aligned transcription",
+    "parameter_sensitivity": "ROBUST_WITH_LIMITATIONS: fixed preregistered categories; threshold-free statistic",
+    "redundancy_class": "CORE",
+    "coverage_role": [
+      "table/index",
+      "mixed architecture"
+    ],
+    "comparison_eligibility": "CORPUS_COMPARABLE",
+    "negative_evidence_status": "ABSENCE_OF_EVIDENCE",
+    "implementation_version": "fingerprint-v2-page-hierarchy-v1",
+    "status": "SUPPORTED",
+    "limitations": "Locus type is documentary metadata and has unequal group sizes."
+  },
+  {
+    "metric_id": "LC2_LABEL_TEXT_NMI",
+    "metric_version": "task79-v1",
+    "family": "locus",
+    "definition": "NMI(token length class, label versus running text), conditional on folio",
+    "unit_of_analysis": "token",
+    "inputs": [
+      "token identity",
+      "IVTFF metadata"
+    ],
+    "parameters": {
+      "permutations": 1000
+    },
+    "observed_value": 0.004848558921710926,
+    "uncertainty": "permutation null: mean 0.000654377, SD 0.000164118, n=1000",
+    "null_models": [
+      "HN6"
+    ],
+    "effect_size": 25.55595757352107,
+    "p_value": 0.000999000999000999,
+    "q_value": 0.0013063859217705373,
+    "partition_stability": "ROBUST",
+    "transcription_stability": "INSUFFICIENT_DATA: one aligned transcription",
+    "parameter_sensitivity": "ROBUST_WITH_LIMITATIONS: fixed preregistered categories; threshold-free statistic",
+    "redundancy_class": "CORE",
+    "coverage_role": [
+      "table/index",
+      "mnemonic cue system"
+    ],
+    "comparison_eligibility": "CORPUS_COMPARABLE",
+    "negative_evidence_status": "ABSENCE_OF_EVIDENCE",
+    "implementation_version": "fingerprint-v2-page-hierarchy-v1",
+    "status": "SUPPORTED",
+    "limitations": "Label status derives only from documented locus codes; sparse labels reduce power."
+  },
+  {
+    "metric_id": "LC5_IVTFF_I_NMI",
+    "metric_version": "task79-v1",
+    "family": "locus",
+    "definition": "NMI for $I metadata association with token length/regime class",
+    "unit_of_analysis": "token",
+    "inputs": [
+      "token identity",
+      "IVTFF metadata"
+    ],
+    "parameters": {
+      "permutations": 1000
+    },
+    "observed_value": 0.008452027927173294,
+    "uncertainty": "permutation null: mean 0.00567555, SD 0.000210487, n=1000",
+    "null_models": [
+      "HN6"
+    ],
+    "effect_size": 13.190699497265674,
+    "p_value": 0.000999000999000999,
+    "q_value": 0.0013063859217705373,
+    "partition_stability": "ROBUST",
+    "transcription_stability": "INSUFFICIENT_DATA: one aligned transcription",
+    "parameter_sensitivity": "ROBUST_WITH_LIMITATIONS: fixed preregistered categories; threshold-free statistic",
+    "redundancy_class": "SUPPORTING",
+    "coverage_role": [
+      "mixed architecture",
+      "table/index"
+    ],
+    "comparison_eligibility": "VOYNICH_ONLY_CONTEXT",
+    "negative_evidence_status": "ABSENCE_OF_EVIDENCE",
+    "implementation_version": "fingerprint-v2-page-hierarchy-v1",
+    "status": "SUPPORTED",
+    "limitations": "Metadata classes are interpreted categorically only; association does not assign semantics."
+  },
+  {
+    "metric_id": "LC5_IVTFF_X_NMI",
+    "metric_version": "task79-v1",
+    "family": "locus",
+    "definition": "NMI for $X metadata association with token length/regime class",
+    "unit_of_analysis": "token",
+    "inputs": [
+      "token identity",
+      "IVTFF metadata"
+    ],
+    "parameters": {
+      "permutations": 1000
+    },
+    "observed_value": 0.028287444669020206,
+    "uncertainty": "permutation null: mean 0.0207021, SD 0.00120065, n=1000",
+    "null_models": [
+      "HN6"
+    ],
+    "effect_size": 6.317719619566439,
+    "p_value": 0.000999000999000999,
+    "q_value": 0.0013063859217705373,
+    "partition_stability": "ROBUST",
+    "transcription_stability": "INSUFFICIENT_DATA: one aligned transcription",
+    "parameter_sensitivity": "ROBUST_WITH_LIMITATIONS: fixed preregistered categories; threshold-free statistic",
+    "redundancy_class": "SUPPORTING",
+    "coverage_role": [
+      "mixed architecture",
+      "table/index"
+    ],
+    "comparison_eligibility": "VOYNICH_ONLY_CONTEXT",
+    "negative_evidence_status": "ABSENCE_OF_EVIDENCE",
+    "implementation_version": "fingerprint-v2-page-hierarchy-v1",
+    "status": "SUPPORTED",
+    "limitations": "Metadata classes are interpreted categorically only; association does not assign semantics."
+  },
+  {
+    "metric_id": "LP1_RULE_SUPPORT_GINI",
+    "metric_version": "lp-ef-v1",
+    "family": "lexical paradigm",
+    "definition": "Concentration of directed edit-rule support",
+    "unit_of_analysis": "corpus summary",
+    "inputs": [
+      "frozen token corpus"
+    ],
+    "parameters": {},
+    "observed_value": 0.7897985063935362,
+    "uncertainty": "see task75/task77 null distributions in raw_results.json",
+    "null_models": [
+      "task75/task77 registered nulls"
+    ],
+    "effect_size": 0,
+    "p_value": 0,
+    "q_value": 0,
+    "partition_stability": "ROBUST_WITH_LIMITATIONS",
+    "transcription_stability": "INSUFFICIENT_DATA: one aligned transcription",
+    "parameter_sensitivity": "see task75/task77 audit",
+    "redundancy_class": "SUPPORTING",
+    "coverage_role": [
+      "constrained token grammar",
+      "copy-with-modification"
+    ],
+    "comparison_eligibility": "CORPUS_COMPARABLE",
+    "negative_evidence_status": "see source block",
+    "implementation_version": "fingerprint-v2-lexical-paradigms-v1",
+    "status": "NOT_SUPPORTED",
+    "limitations": "Inherited without changing the task75/task77 estimator or null."
+  },
+  {
+    "metric_id": "LP4_PREFIX_ATTACHMENT_NMI",
+    "metric_version": "lp-ef-v1",
+    "family": "lexical paradigm",
+    "definition": "Prefix-to-core normalized mutual information",
+    "unit_of_analysis": "corpus summary",
+    "inputs": [
+      "frozen token corpus"
+    ],
+    "parameters": {},
+    "observed_value": 0.31594941148608136,
+    "uncertainty": "see task75/task77 null distributions in raw_results.json",
+    "null_models": [
+      "task75/task77 registered nulls"
+    ],
+    "effect_size": 0,
+    "p_value": 0,
+    "q_value": 0,
+    "partition_stability": "ROBUST_WITH_LIMITATIONS",
+    "transcription_stability": "INSUFFICIENT_DATA: one aligned transcription",
+    "parameter_sensitivity": "see task75/task77 audit",
+    "redundancy_class": "SUPPORTING",
+    "coverage_role": [
+      "constrained token grammar",
+      "copy-with-modification"
+    ],
+    "comparison_eligibility": "CORPUS_COMPARABLE",
+    "negative_evidence_status": "see source block",
+    "implementation_version": "fingerprint-v2-lexical-paradigms-v1",
+    "status": "REPRODUCED",
+    "limitations": "Inherited without changing the task75/task77 estimator or null."
+  },
+  {
+    "metric_id": "LP4_SUFFIX_ATTACHMENT_NMI",
+    "metric_version": "lp-ef-v1",
+    "family": "lexical paradigm",
+    "definition": "Suffix-to-core normalized mutual information",
+    "unit_of_analysis": "corpus summary",
+    "inputs": [
+      "frozen token corpus"
+    ],
+    "parameters": {},
+    "observed_value": 0.2767056272695942,
+    "uncertainty": "see task75/task77 null distributions in raw_results.json",
+    "null_models": [
+      "task75/task77 registered nulls"
+    ],
+    "effect_size": 0,
+    "p_value": 0,
+    "q_value": 0,
+    "partition_stability": "ROBUST_WITH_LIMITATIONS",
+    "transcription_stability": "INSUFFICIENT_DATA: one aligned transcription",
+    "parameter_sensitivity": "see task75/task77 audit",
+    "redundancy_class": "SUPPORTING",
+    "coverage_role": [
+      "constrained token grammar",
+      "copy-with-modification"
+    ],
+    "comparison_eligibility": "CORPUS_COMPARABLE",
+    "negative_evidence_status": "see source block",
+    "implementation_version": "fingerprint-v2-lexical-paradigms-v1",
+    "status": "REPRODUCED",
+    "limitations": "Inherited without changing the task75/task77 estimator or null."
+  },
+  {
+    "metric_id": "LS1_LINE_LENGTH_CV",
+    "metric_version": "task79-v1",
+    "family": "line",
+    "definition": "SD/mean of tokens per non-empty physical/logical IVTFF line",
+    "unit_of_analysis": "line",
+    "inputs": [
+      "line_id",
+      "token_count"
+    ],
+    "parameters": {
+      "hierarchical_bootstrap_replicates": 1000
+    },
+    "observed_value": 0.7065352454294129,
+    "uncertainty": "95% folio-bootstrap interval [0.612218, 0.810571]",
+    "null_models": [
+      "HN7"
+    ],
+    "effect_size": 0,
+    "p_value": 0,
+    "q_value": 0,
+    "partition_stability": "ROBUST_WITH_LIMITATIONS",
+    "transcription_stability": "INSUFFICIENT_DATA: one aligned transcription",
+    "parameter_sensitivity": "ROBUST",
+    "redundancy_class": "SUPPORTING",
+    "coverage_role": [
+      "table/index",
+      "stochastic procedural generator"
+    ],
+    "comparison_eligibility": "CORPUS_COMPARABLE",
+    "negative_evidence_status": "NOT_TESTED",
+    "implementation_version": "fingerprint-v2-page-hierarchy-v1",
+    "status": "DESCRIPTIVE",
+    "limitations": "Line breaks in IVTFF are transcription metadata, not measured scan coordinates."
+  },
+  {
+    "metric_id": "LS2_POSITIONAL_LEXICON_NMI",
+    "metric_version": "task79-v1",
+    "family": "line",
+    "definition": "NMI(token identity, fixed five-class line position)",
+    "unit_of_analysis": "token",
+    "inputs": [
+      "token identity",
+      "IVTFF metadata"
+    ],
+    "parameters": {
+      "permutations": 1000
+    },
+    "observed_value": 0.11058892444477356,
+    "uncertainty": "permutation null: mean 0.0791302, SD 0.000410827, n=1000",
+    "null_models": [
+      "HN1"
+    ],
+    "effect_size": 76.57415894676521,
+    "p_value": 0.000999000999000999,
+    "q_value": 0.0013063859217705373,
+    "partition_stability": "ROBUST",
+    "transcription_stability": "INSUFFICIENT_DATA: one aligned transcription",
+    "parameter_sensitivity": "ROBUST_WITH_LIMITATIONS: fixed preregistered categories; threshold-free statistic",
+    "redundancy_class": "CORE",
+    "coverage_role": [
+      "line-boundary projection",
+      "acrostic-compatible organization",
+      "constrained token grammar"
+    ],
+    "comparison_eligibility": "CORPUS_COMPARABLE",
+    "negative_evidence_status": "ABSENCE_OF_EVIDENCE",
+    "implementation_version": "fingerprint-v2-page-hierarchy-v1",
+    "status": "SUPPORTED",
+    "limitations": "High-cardinality token identity can inflate raw NMI; inference relies on within-line permutation."
+  },
+  {
+    "metric_id": "LS3_BOUNDARY_LENGTH_ASYMMETRY",
+    "metric_version": "task79-v1",
+    "family": "line",
+    "definition": "Absolute mean glyph-length difference between first and final tokens",
+    "unit_of_analysis": "line boundary",
+    "inputs": [
+      "glyph length",
+      "line boundary"
+    ],
+    "parameters": {
+      "permutations": 1000
+    },
+    "observed_value": 0.3606483565961276,
+    "uncertainty": "permutation null: mean 0.0252584, SD 0.01906, n=1000",
+    "null_models": [
+      "HN5"
+    ],
+    "effect_size": 17.596557421428706,
+    "p_value": 0.000999000999000999,
+    "q_value": 0.0013063859217705373,
+    "partition_stability": "ROBUST",
+    "transcription_stability": "INSUFFICIENT_DATA: one aligned transcription",
+    "parameter_sensitivity": "ROBUST_WITH_LIMITATIONS: fixed preregistered categories; threshold-free statistic",
+    "redundancy_class": "CORE",
+    "coverage_role": [
+      "line-boundary projection",
+      "acrostic-compatible organization"
+    ],
+    "comparison_eligibility": "CORPUS_COMPARABLE",
+    "negative_evidence_status": "ABSENCE_OF_EVIDENCE",
+    "implementation_version": "fingerprint-v2-page-hierarchy-v1",
+    "status": "SUPPORTED",
+    "limitations": "Length asymmetry is one boundary projection and has no semantic interpretation."
+  },
+  {
+    "metric_id": "LS4_WITHIN_LINE_EXACT_REPETITION",
+    "metric_version": "task79-v1",
+    "family": "line",
+    "definition": "Adjacent exact-token repetition rate within lines",
+    "unit_of_analysis": "within-line transition",
+    "inputs": [
+      "token",
+      "line_id"
+    ],
+    "parameters": {
+      "permutations": 1000
+    },
+    "observed_value": 0.009118988086483306,
+    "uncertainty": "permutation null: mean 0.00889443, SD 0.00046254, n=1000",
+    "null_models": [
+      "HN1"
+    ],
+    "effect_size": 0.48549877975695205,
+    "p_value": 0.32867132867132864,
+    "q_value": 0.399100899100899,
+    "partition_stability": "ROBUST",
+    "transcription_stability": "INSUFFICIENT_DATA: one aligned transcription",
+    "parameter_sensitivity": "ROBUST_WITH_LIMITATIONS: fixed preregistered categories; threshold-free statistic",
+    "redundancy_class": "SUPPORTING",
+    "coverage_role": [
+      "copy-with-modification",
+      "stochastic procedural generator"
+    ],
+    "comparison_eligibility": "CORPUS_COMPARABLE",
+    "negative_evidence_status": "ABSENCE_OF_EVIDENCE",
+    "implementation_version": "fingerprint-v2-page-hierarchy-v1",
+    "status": "NOT_SUPPORTED",
+    "limitations": "Only immediate recurrence is primary; longer recurrence distances remain diagnostic."
+  },
+  {
+    "metric_id": "PF2_FOLIO_COHERENCE",
+    "metric_version": "task79-v1",
+    "family": "folio",
+    "definition": "Difference between mean across-folio and within-folio standardized line-profile distance",
+    "unit_of_analysis": "line pair",
+    "inputs": [
+      "line profile",
+      "folio",
+      "section"
+    ],
+    "parameters": {
+      "permutations": 1000
+    },
+    "observed_value": 0.17303959526080231,
+    "uncertainty": "permutation null: mean 0.032996, SD 0.00495547, n=1000",
+    "null_models": [
+      "HN4"
+    ],
+    "effect_size": 28.26038499317828,
+    "p_value": 0.000999000999000999,
+    "q_value": 0.0013063859217705373,
+    "partition_stability": "ROBUST",
+    "transcription_stability": "INSUFFICIENT_DATA: one aligned transcription",
+    "parameter_sensitivity": "ROBUST_WITH_LIMITATIONS: fixed preregistered categories; threshold-free statistic",
+    "redundancy_class": "CORE",
+    "coverage_role": [
+      "mixed architecture",
+      "table/index",
+      "natural-language-like process"
+    ],
+    "comparison_eligibility": "CORPUS_COMPARABLE",
+    "negative_evidence_status": "ABSENCE_OF_EVIDENCE",
+    "implementation_version": "fingerprint-v2-page-hierarchy-v1",
+    "status": "SUPPORTED",
+    "limitations": "IVTFF folio order is documentary; this statistic does not assume historical order."
+  },
+  {
+    "metric_id": "PF3_ADJACENT_FOLIO_CONTINUITY",
+    "metric_version": "task79-v1",
+    "family": "folio",
+    "definition": "Mean adjacent-folio vocabulary-profile similarity",
+    "unit_of_analysis": "folio",
+    "inputs": [
+      "line profile",
+      "folio order/side"
+    ],
+    "parameters": {
+      "permutations": 1000
+    },
+    "observed_value": 0.4928098505572079,
+    "uncertainty": "permutation null: mean 0.562756, SD 0.0135005, n=1000",
+    "null_models": [
+      "HN4"
+    ],
+    "effect_size": -5.181023661323255,
+    "p_value": 1,
+    "q_value": 1,
+    "partition_stability": "ROBUST",
+    "transcription_stability": "INSUFFICIENT_DATA: one aligned transcription",
+    "parameter_sensitivity": "ROBUST_WITH_LIMITATIONS: fixed preregistered categories; threshold-free statistic",
+    "redundancy_class": "SUPPORTING",
+    "coverage_role": [
+      "mixed architecture",
+      "table/index"
+    ],
+    "comparison_eligibility": "CORPUS_COMPARABLE",
+    "negative_evidence_status": "ABSENCE_OF_EVIDENCE",
+    "implementation_version": "fingerprint-v2-page-hierarchy-v1",
+    "status": "NOT_SUPPORTED",
+    "limitations": "Folio order is documentary and is not assumed to be original historical order."
+  },
+  {
+    "metric_id": "PF4_RECTO_VERSO_COHERENCE",
+    "metric_version": "task79-v1",
+    "family": "folio",
+    "definition": "Same-leaf recto/verso profile similarity advantage",
+    "unit_of_analysis": "folio",
+    "inputs": [
+      "line profile",
+      "folio order/side"
+    ],
+    "parameters": {
+      "permutations": 1000
+    },
+    "observed_value": 0.5191969681525126,
+    "uncertainty": "permutation null: mean 0.573592, SD 0.0183263, n=1000",
+    "null_models": [
+      "HN4"
+    ],
+    "effect_size": -2.968154497992048,
+    "p_value": 0.998001998001998,
+    "q_value": 1,
+    "partition_stability": "ROBUST_WITH_LIMITATIONS",
+    "transcription_stability": "INSUFFICIENT_DATA: one aligned transcription",
+    "parameter_sensitivity": "ROBUST_WITH_LIMITATIONS: fixed preregistered categories; threshold-free statistic",
+    "redundancy_class": "SUPPORTING",
+    "coverage_role": [
+      "mixed architecture",
+      "table/index"
+    ],
+    "comparison_eligibility": "CORPUS_COMPARABLE",
+    "negative_evidence_status": "ABSENCE_OF_EVIDENCE",
+    "implementation_version": "fingerprint-v2-page-hierarchy-v1",
+    "status": "NOT_SUPPORTED",
+    "limitations": "Folio order is documentary and is not assumed to be original historical order."
+  },
+  {
+    "metric_id": "PF5_WITHIN_FOLIO_PROGRESSION",
+    "metric_version": "task79-v1",
+    "family": "folio",
+    "definition": "Mean absolute correlation of local line order with line length",
+    "unit_of_analysis": "folio",
+    "inputs": [
+      "line profile",
+      "folio order/side"
+    ],
+    "parameters": {
+      "permutations": 1000
+    },
+    "observed_value": 0.3637001412018395,
+    "uncertainty": "permutation null: mean 0.213159, SD 0.0102255, n=1000",
+    "null_models": [
+      "HN3"
+    ],
+    "effect_size": 14.72218153682185,
+    "p_value": 0.000999000999000999,
+    "q_value": 0.0013063859217705373,
+    "partition_stability": "ROBUST",
+    "transcription_stability": "INSUFFICIENT_DATA: one aligned transcription",
+    "parameter_sensitivity": "ROBUST_WITH_LIMITATIONS: fixed preregistered categories; threshold-free statistic",
+    "redundancy_class": "CORE",
+    "coverage_role": [
+      "mixed architecture",
+      "table/index"
+    ],
+    "comparison_eligibility": "CORPUS_COMPARABLE",
+    "negative_evidence_status": "ABSENCE_OF_EVIDENCE",
+    "implementation_version": "fingerprint-v2-page-hierarchy-v1",
+    "status": "SUPPORTED",
+    "limitations": "Folio order is documentary and is not assumed to be original historical order."
+  },
+  {
+    "metric_id": "cs1/family-line-position",
+    "metric_version": "lp-ef-v1",
+    "family": "cross-scale",
+    "definition": "P(edit family | line position) != P(edit family)",
+    "unit_of_analysis": "corpus summary",
+    "inputs": [
+      "frozen token corpus"
+    ],
+    "parameters": {},
+    "observed_value": 0,
+    "uncertainty": "",
+    "null_models": [
+      ""
+    ],
+    "effect_size": 0,
+    "p_value": 0,
+    "q_value": 0,
+    "partition_stability": "ROBUST_WITH_LIMITATIONS",
+    "transcription_stability": "INSUFFICIENT_DATA: one aligned transcription",
+    "parameter_sensitivity": "see task75/task77 audit",
+    "redundancy_class": "SUPPORTING",
+    "coverage_role": [
+      "constrained token grammar",
+      "copy-with-modification"
+    ],
+    "comparison_eligibility": "CORPUS_COMPARABLE",
+    "negative_evidence_status": "see source block",
+    "implementation_version": "fingerprint-v2-lexical-paradigms-v1",
+    "status": "INCONCLUSIVE",
+    "limitations": "insufficient family-bearing occurrences with line-position metadata (need line metadata from ivtff_path)"
+  },
+  {
+    "metric_id": "cs2/prev-family-current-family",
+    "metric_version": "lp-ef-v1",
+    "family": "cross-scale",
+    "definition": "P(current family | previous-token family) != P(current family)",
+    "unit_of_analysis": "corpus summary",
+    "inputs": [
+      "frozen token corpus"
+    ],
+    "parameters": {},
+    "observed_value": 0,
+    "uncertainty": "",
+    "null_models": [
+      ""
+    ],
+    "effect_size": 0,
+    "p_value": 0,
+    "q_value": 0,
+    "partition_stability": "ROBUST_WITH_LIMITATIONS",
+    "transcription_stability": "INSUFFICIENT_DATA: one aligned transcription",
+    "parameter_sensitivity": "see task75/task77 audit",
+    "redundancy_class": "SUPPORTING",
+    "coverage_role": [
+      "constrained token grammar",
+      "copy-with-modification"
+    ],
+    "comparison_eligibility": "CORPUS_COMPARABLE",
+    "negative_evidence_status": "see source block",
+    "implementation_version": "fingerprint-v2-lexical-paradigms-v1",
+    "status": "INCONCLUSIVE",
+    "limitations": "fewer than 20 family-bearing adjacent occurrence pairs"
+  },
+  {
+    "metric_id": "cs3/family-locus-type",
+    "metric_version": "lp-ef-v1",
+    "family": "cross-scale",
+    "definition": "P(edit family | locus type) != P(edit family)",
+    "unit_of_analysis": "corpus summary",
+    "inputs": [
+      "frozen token corpus"
+    ],
+    "parameters": {},
+    "observed_value": 0,
+    "uncertainty": "empirical permutation null, 100 replicates",
+    "null_models": [
+      "N4 within-folio shuffle"
+    ],
+    "effect_size": 0,
+    "p_value": 1,
+    "q_value": 1,
+    "partition_stability": "ROBUST_WITH_LIMITATIONS",
+    "transcription_stability": "INSUFFICIENT_DATA: one aligned transcription",
+    "parameter_sensitivity": "see task75/task77 audit",
+    "redundancy_class": "SUPPORTING",
+    "coverage_role": [
+      "constrained token grammar",
+      "copy-with-modification"
+    ],
+    "comparison_eligibility": "CORPUS_COMPARABLE",
+    "negative_evidence_status": "see source block",
+    "implementation_version": "fingerprint-v2-lexical-paradigms-v1",
+    "status": "NOT_SUPPORTED",
+    "limitations": "Locus-type codes beyond TEXT/LABEL are pooled into SPECIAL for statistical power; see report for the individual code counts."
+  },
+  {
+    "metric_id": "cs4/family-currier",
+    "metric_version": "lp-ef-v1",
+    "family": "cross-scale",
+    "definition": "P(edit family | Currier language) != P(edit family)",
+    "unit_of_analysis": "corpus summary",
+    "inputs": [
+      "frozen token corpus"
+    ],
+    "parameters": {},
+    "observed_value": 0,
+    "uncertainty": "",
+    "null_models": [
+      ""
+    ],
+    "effect_size": 0,
+    "p_value": 0,
+    "q_value": 0,
+    "partition_stability": "ROBUST_WITH_LIMITATIONS",
+    "transcription_stability": "INSUFFICIENT_DATA: one aligned transcription",
+    "parameter_sensitivity": "see task75/task77 audit",
+    "redundancy_class": "SUPPORTING",
+    "coverage_role": [
+      "constrained token grammar",
+      "copy-with-modification"
+    ],
+    "comparison_eligibility": "CORPUS_COMPARABLE",
+    "negative_evidence_status": "see source block",
+    "implementation_version": "fingerprint-v2-lexical-paradigms-v1",
+    "status": "NOT_APPLICABLE",
+    "limitations": "requires ivtff_path Currier metadata and \u003e=4 folios; unavailable or below the 20-occurrence floor"
+  },
+  {
+    "metric_id": "cs4/family-section",
+    "metric_version": "lp-ef-v1",
+    "family": "cross-scale",
+    "definition": "P(edit family | section) != P(edit family)",
+    "unit_of_analysis": "corpus summary",
+    "inputs": [
+      "frozen token corpus"
+    ],
+    "parameters": {},
+    "observed_value": 0,
+    "uncertainty": "",
+    "null_models": [
+      ""
+    ],
+    "effect_size": 0,
+    "p_value": 0,
+    "q_value": 0,
+    "partition_stability": "ROBUST_WITH_LIMITATIONS",
+    "transcription_stability": "INSUFFICIENT_DATA: one aligned transcription",
+    "parameter_sensitivity": "see task75/task77 audit",
+    "redundancy_class": "SUPPORTING",
+    "coverage_role": [
+      "constrained token grammar",
+      "copy-with-modification"
+    ],
+    "comparison_eligibility": "CORPUS_COMPARABLE",
+    "negative_evidence_status": "see source block",
+    "implementation_version": "fingerprint-v2-lexical-paradigms-v1",
+    "status": "NOT_APPLICABLE",
+    "limitations": "requires ivtff_path section metadata and \u003e=4 folios; unavailable or below the 20-occurrence floor"
+  },
+  {
+    "metric_id": "cs5/local-adjacency-x-regime",
+    "metric_version": "lp-ef-v1",
+    "family": "cross-scale",
+    "definition": "same-family adjacency rate differs across regimes",
+    "unit_of_analysis": "corpus summary",
+    "inputs": [
+      "frozen token corpus"
+    ],
+    "parameters": {},
+    "observed_value": 0,
+    "uncertainty": "",
+    "null_models": [
+      ""
+    ],
+    "effect_size": 0,
+    "p_value": 0,
+    "q_value": 0,
+    "partition_stability": "ROBUST_WITH_LIMITATIONS",
+    "transcription_stability": "INSUFFICIENT_DATA: one aligned transcription",
+    "parameter_sensitivity": "see task75/task77 audit",
+    "redundancy_class": "SUPPORTING",
+    "coverage_role": [
+      "constrained token grammar",
+      "copy-with-modification"
+    ],
+    "comparison_eligibility": "CORPUS_COMPARABLE",
+    "negative_evidence_status": "see source block",
+    "implementation_version": "fingerprint-v2-lexical-paradigms-v1",
+    "status": "NOT_APPLICABLE",
+    "limitations": "requires \u003e=2 sufficiently sampled Currier x section strata"
+  },
+  {
+    "metric_id": "cs6/family-diversity-x-line-length",
+    "metric_version": "lp-ef-v1",
+    "family": "cross-scale",
+    "definition": "line-level family-composition entropy correlates with line length beyond a line-length-preserving global token shuffle",
+    "unit_of_analysis": "corpus summary",
+    "inputs": [
+      "frozen token corpus"
+    ],
+    "parameters": {},
+    "observed_value": 0,
+    "uncertainty": "empirical permutation null, 100 replicates",
+    "null_models": [
+      "N1 global token shuffle (fixed line-length sequence)"
+    ],
+    "effect_size": 0,
+    "p_value": 1,
+    "q_value": 1,
+    "partition_stability": "ROBUST_WITH_LIMITATIONS",
+    "transcription_stability": "INSUFFICIENT_DATA: one aligned transcription",
+    "parameter_sensitivity": "see task75/task77 audit",
+    "redundancy_class": "SUPPORTING",
+    "coverage_role": [
+      "constrained token grammar",
+      "copy-with-modification"
+    ],
+    "comparison_eligibility": "CORPUS_COMPARABLE",
+    "negative_evidence_status": "see source block",
+    "implementation_version": "fingerprint-v2-lexical-paradigms-v1",
+    "status": "NOT_SUPPORTED",
+    "limitations": "Family composition is measured over {NONE plus each family}, so most of a typical line's entropy budget reflects the large NONE category."
+  },
+  {
+    "metric_id": "cs7/edit-distance-x-structural-distance",
+    "metric_version": "lp-ef-v1",
+    "family": "cross-scale",
+    "definition": "raw glyph edit distance between two vocabulary types correlates with the minimum distance (in lines) between their occurrences, beyond a frequency-bin-matched permutation",
+    "unit_of_analysis": "corpus summary",
+    "inputs": [
+      "frozen token corpus"
+    ],
+    "parameters": {},
+    "observed_value": 0.015539304337922236,
+    "uncertainty": "empirical permutation null, 100 replicates",
+    "null_models": [
+      "N6 frequency-bin-matched structural-distance permutation"
+    ],
+    "effect_size": -0.12824502693855008,
+    "p_value": 0.5148514851485149,
+    "q_value": 1,
+    "partition_stability": "ROBUST_WITH_LIMITATIONS",
+    "transcription_stability": "INSUFFICIENT_DATA: one aligned transcription",
+    "parameter_sensitivity": "see task75/task77 audit",
+    "redundancy_class": "SUPPORTING",
+    "coverage_role": [
+      "constrained token grammar",
+      "copy-with-modification"
+    ],
+    "comparison_eligibility": "CORPUS_COMPARABLE",
+    "negative_evidence_status": "see source block",
+    "implementation_version": "fingerprint-v2-lexical-paradigms-v1",
+    "status": "NOT_SUPPORTED",
+    "limitations": "Sampled, not exhaustive, over vocabulary pairs; occurrence lists are capped at 50 per token for cost."
+  }
+]

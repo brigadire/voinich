@@ -1,0 +1,3878 @@
+{
+  "schema_version": 1,
+  "version": "FINGERPRINT_V2.1_DETERMINISTIC_SCIENTIFIC_REFREEZE",
+  "status": "AUTHORITATIVE",
+  "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+  "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+  "historical_unresolved_metadata": {
+    "authority": "HISTORICAL_UNRESOLVED_METADATA",
+    "sha256": "3fb9531a11d896b5227e54c8d119cc13986eb69e48e1a5ab72b1a1ba64b5b4c0",
+    "status": "NON_AUTHORITATIVE"
+  },
+  "artifacts": [
+    {
+      "id": "zl_raw",
+      "path": "data/ZL3b-n.txt",
+      "sha256": "bf5b6d4ac1e3a51b1847a9c388318d609020441ccd56984c901c32b09beccafc",
+      "kind": "raw",
+      "producer": "external IVTFF source",
+      "producer_git_commit": ""
+    },
+    {
+      "id": "it_raw",
+      "path": "data/IT2a-n.txt",
+      "sha256": "7f27a8b0feed8f6de0a99900df6bf912dd1d295c38e5f830bac8b41c3f536fb5",
+      "kind": "raw",
+      "producer": "external IVTFF source",
+      "producer_git_commit": ""
+    },
+    {
+      "id": "doyle",
+      "path": "data_test/pg2097-2.txt",
+      "sha256": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80",
+      "kind": "raw",
+      "producer": "frozen control corpus",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4"
+    },
+    {
+      "id": "bdd",
+      "path": "data_test/matched-replicates/filtered/bdd-koeln-edd-c-119-full.txt",
+      "sha256": "fa928a8d44f2e6799c3c4fd1416a739bba36d3d02400a1f4620659bd801957ba",
+      "kind": "raw",
+      "producer": "Task79c frozen control preparation",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4"
+    },
+    {
+      "id": "msdos_full",
+      "path": "data_test/matched-replicates/filtered/msdos2.0-full.txt",
+      "sha256": "1c152d8ad703be3bf631db0bab0728722df49200ab9dee6e6c17793849276993",
+      "kind": "raw",
+      "producer": "Task79c frozen control preparation",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4"
+    },
+    {
+      "id": "msdos_rep0",
+      "path": "data_test/matched-replicates/filtered/msdos2.0-rep0.txt",
+      "sha256": "92710671e936cf1baf28158c4b788afc95efe5fa35d8c06ee0d69248b9b91b75",
+      "kind": "raw",
+      "producer": "Task79c frozen control preparation",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4"
+    },
+    {
+      "id": "msdos_rep1",
+      "path": "data_test/matched-replicates/filtered/msdos2.0-rep1.txt",
+      "sha256": "dda29bbf29d38a4c7e9d129039bc78e2f46999dcefbc318e1c6410b5b534ced2",
+      "kind": "raw",
+      "producer": "Task79c frozen control preparation",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4"
+    },
+    {
+      "id": "msdos_rep2",
+      "path": "data_test/matched-replicates/filtered/msdos2.0-rep2.txt",
+      "sha256": "4da5adf28620979fa61bfc300b3fc8306be04208760d0bbd7baca6ba52501003",
+      "kind": "raw",
+      "producer": "Task79c frozen control preparation",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4"
+    },
+    {
+      "id": "msdos_rep3",
+      "path": "data_test/matched-replicates/filtered/msdos2.0-rep3.txt",
+      "sha256": "eb6f70c2c6b16cbbaa83a0c780928269e7dd0322c05e0ec31c33f8996f80aa5f",
+      "kind": "raw",
+      "producer": "Task79c frozen control preparation",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4"
+    },
+    {
+      "id": "msdos_rep4",
+      "path": "data_test/matched-replicates/filtered/msdos2.0-rep4.txt",
+      "sha256": "edb67bc58b1d7f562d8dbf4beeb11dc1331a977cc939768743ac5caf8b617f88",
+      "kind": "raw",
+      "producer": "Task79c frozen control preparation",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4"
+    },
+    {
+      "id": "old_registry",
+      "path": "research/phase2/fingerprint/F2_METRIC_REGISTRY_FINAL.tsv",
+      "sha256": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "kind": "raw",
+      "producer": "Task79c scientific definition freeze",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4"
+    },
+    {
+      "id": "old_zl_metrics",
+      "path": "experiments/fingerprint-v2-task79-v1/canonical-out/metric_registry.json",
+      "sha256": "96e43816a8896fd25ac733788c3d23c99facc772e3039fe0ad60492a3444592f",
+      "kind": "raw",
+      "producer": "Task79 historical baseline",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4"
+    },
+    {
+      "id": "old_it_metrics",
+      "path": "experiments/fingerprint-v2-task79c-v1/transcription-it-out/metric_registry.json",
+      "sha256": "e50fbe0fd79c220fd4324ebea0f838605df51bac48fa261c3e914e6366d3cdcf",
+      "kind": "raw",
+      "producer": "Task79c historical baseline",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4"
+    },
+    {
+      "id": "old_pf4_hr",
+      "path": "experiments/fingerprint-v2-task79c-v1/pf4-hr-out/pf4_hierarchy_result.json",
+      "sha256": "76e7d8587d959e261bc3b3be197c3d0033ead4f50770bfc9cdbe759555284c1d",
+      "kind": "raw",
+      "producer": "Task79c historical baseline",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4"
+    },
+    {
+      "id": "old_distance",
+      "path": "experiments/fingerprint-v2-task79c-v1/distance-pareto-out/full_portfolio_distance_pareto.json",
+      "sha256": "186fd948485f48f806afbf4bc74aa717caa933e84dac47cb695af5669fe84924",
+      "kind": "raw",
+      "producer": "Task79c historical baseline",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4"
+    },
+    {
+      "id": "old_stability",
+      "path": "research/phase2/fingerprint/TRANSCRIPTION_STABILITY.tsv",
+      "sha256": "264704981106fcc46c81b25c76a7777f0ada0ca26783d417e06756adf9068ad6",
+      "kind": "raw",
+      "producer": "Task79c historical baseline",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4"
+    },
+    {
+      "id": "canonical_config_source",
+      "path": "experiments/fingerprint-v2-task79-v1/canonical.yaml",
+      "sha256": "0c3c571d260fac8e4b4f337cf1ab42f1f21f923ed8480eaf4ea32f68b17042e7",
+      "kind": "raw",
+      "producer": "Task79 frozen config",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4"
+    },
+    {
+      "id": "it_config_source",
+      "path": "experiments/fingerprint-v2-task79c-v1/transcription-it.yaml",
+      "sha256": "f263e444dc676063780107ddc61ce1ed0247c60c684534d6a3dc8462764b5bc1",
+      "kind": "raw",
+      "producer": "Task79c frozen config",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4"
+    },
+    {
+      "id": "controls_config_source",
+      "path": "experiments/fingerprint-v2-task79c-v1/controls-portfolio.yaml",
+      "sha256": "d6c4cc872a689f01307de1ec5d773327bfc5bcc1340bc8c74b32d1228b9d1cbc",
+      "kind": "raw",
+      "producer": "Task79c frozen config",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4"
+    },
+    {
+      "id": "task83b_specification",
+      "path": "tasks_ph2/task83b.txt",
+      "sha256": "eadf343d0f809279d69cb20635da93f1e9f37424df2d77471c86c44d15362cbf",
+      "kind": "raw",
+      "producer": "Task83b task specification",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4"
+    },
+    {
+      "id": "task81_freeze",
+      "path": "research/phase2/mechanism-space/TASK81_DESIGN_FROZEN",
+      "sha256": "51cde7b0d3fb24760170631bbab503b507426024f5a10c19c36e549c3ab6e5bb",
+      "kind": "raw",
+      "producer": "Task81 blind freeze",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4"
+    },
+    {
+      "id": "task82_manifest",
+      "path": "research/phase2/task82/TASK82_BLIND_RESULTS_MANIFEST.json",
+      "sha256": "6458e619bed8b5e2dc135804d30f18ab667ec2b3ab118ce7cd4abd93c29d0df5",
+      "kind": "raw",
+      "producer": "Task82 blind freeze",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4"
+    },
+    {
+      "id": "task82a_manifest",
+      "path": "research/phase2/task82a/TASK82A_BLIND_MANIFEST.json",
+      "sha256": "018992b905bdf8d587d3a2ee90ddaa7722aa37188f9a5c83bb837dbc65b92462",
+      "kind": "raw",
+      "producer": "Task82a blind freeze",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4"
+    },
+    {
+      "id": "task82a1_contract",
+      "path": "research/phase2/task82a1/TASK83_COMPARISON_CONTRACT.md",
+      "sha256": "31d06df1842119205f6f25940c8f879239944b05f34b54f8bfc2c27706f7ea23",
+      "kind": "raw",
+      "producer": "Task82a.1 target-blind comparison contract",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4"
+    },
+    {
+      "id": "task82b_manifest",
+      "path": "research/phase2/task82b/TASK82B_MANIFEST.json",
+      "sha256": "34d43b9c29b72e9a5a0b5cb6810abeb196512b98aa8eaa28faaa29eea9528d54",
+      "kind": "raw",
+      "producer": "Task82b blind freeze",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4"
+    },
+    {
+      "id": "source_01",
+      "path": "cmd/ivtff-x7-extract/main.go",
+      "sha256": "9acb39d4e0e07473d8e6b98799986d4e873f1f8f411eb1665425c7fced90eedd",
+      "kind": "raw",
+      "producer": "Task83b producer source",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4"
+    },
+    {
+      "id": "source_02",
+      "path": "cmd/codex_prepare/main.go",
+      "sha256": "8e40914942a4ba92d2f2860c9cbe66a1efa105930e5ad3faddfed756872f564b",
+      "kind": "raw",
+      "producer": "Task83b producer source",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4"
+    },
+    {
+      "id": "source_03",
+      "path": "internal/corpusprep/corpusprep.go",
+      "sha256": "60f05fd751673324999cc6d58ca15447fa0ac7e960b3246060910f1a91a2355a",
+      "kind": "raw",
+      "producer": "Task83b producer source",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4"
+    },
+    {
+      "id": "source_04",
+      "path": "internal/metadatavalidation/alignment.go",
+      "sha256": "e68e363308a4712d0620506e7e1daeb556e52a3ce48a52036e501942d09a2f59",
+      "kind": "raw",
+      "producer": "Task83b producer source",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4"
+    },
+    {
+      "id": "source_05",
+      "path": "internal/metadatavalidation/parser.go",
+      "sha256": "679cab97dda5ff8fcce218609d318c0a5cc85ec510964bfd17dbacc072319cfa",
+      "kind": "raw",
+      "producer": "Task83b producer source",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4"
+    },
+    {
+      "id": "source_06",
+      "path": "internal/metadatavalidation/run.go",
+      "sha256": "013a015092fe3dd2f6a19e9a11e6d71ea9bd68d1edeed4f7d15f5d8918b4b17a",
+      "kind": "raw",
+      "producer": "Task83b producer source",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4"
+    },
+    {
+      "id": "source_07",
+      "path": "internal/metadatavalidation/types.go",
+      "sha256": "10e109a59949bfecf1203b74635041a1642338111bcf63c0160d2f4caff36bea",
+      "kind": "raw",
+      "producer": "Task83b producer source",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4"
+    },
+    {
+      "id": "source_08",
+      "path": "internal/metadatavalidation/validation.go",
+      "sha256": "c820a6d156a312a9a8db033ef53d5180809ba42fb828a80f1a4195943b31d69d",
+      "kind": "raw",
+      "producer": "Task83b producer source",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4"
+    },
+    {
+      "id": "source_09",
+      "path": "internal/metadatavalidation/write.go",
+      "sha256": "f3ebfc7013f99af8c4bb7d595f2f0118dc3a6e8fb0ebfaba4cda7abdce196169",
+      "kind": "raw",
+      "producer": "Task83b producer source",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4"
+    },
+    {
+      "id": "source_10",
+      "path": "internal/fingerprintv2/crossscale.go",
+      "sha256": "8ca7f60cf76352b7b76d945513f4ff4213f291337ccb53f2641757cac7ab7489",
+      "kind": "raw",
+      "producer": "Task83b producer source",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4"
+    },
+    {
+      "id": "source_11",
+      "path": "internal/fingerprintv2/graphalgo.go",
+      "sha256": "51e0b78be3acb4c568c7cd36c701569cdf551c3a3ac54a46d408524f7756a480",
+      "kind": "raw",
+      "producer": "Task83b producer source",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4"
+    },
+    {
+      "id": "source_12",
+      "path": "internal/fingerprintv2/stats.go",
+      "sha256": "717af575dfc41ef0fba90490b963777e8711f2837cf4c2295438d4877160934d",
+      "kind": "raw",
+      "producer": "Task83b producer source",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4"
+    },
+    {
+      "id": "source_13",
+      "path": "internal/fingerprintv2/task79.go",
+      "sha256": "4e41073260535eef2fe742a2d889541bc91a234b9252540c9c9c19247725d019",
+      "kind": "raw",
+      "producer": "Task83b producer source",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4"
+    },
+    {
+      "id": "source_14",
+      "path": "internal/fingerprintv2/task79c_hierarchy.go",
+      "sha256": "8670bb14f2047383b042666d99055063529139cf2124d1087f5747204d493b85",
+      "kind": "raw",
+      "producer": "Task83b producer source",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4"
+    },
+    {
+      "id": "source_15",
+      "path": "internal/fingerprintv2/task79c_pf4.go",
+      "sha256": "e5866f8ca73d597018b6015b2e06968ba2ed699276cd10bb88a79929db6af21a",
+      "kind": "raw",
+      "producer": "Task83b producer source",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4"
+    },
+    {
+      "id": "source_16",
+      "path": "internal/fingerprintv2/task79c_run.go",
+      "sha256": "6ba7317182d209ac3beda34786e5384a2a6b5a2aa36521267d7584c339b0d8a7",
+      "kind": "raw",
+      "producer": "Task83b producer source",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4"
+    },
+    {
+      "id": "source_17",
+      "path": "internal/fingerprintv2/determinism_test.go",
+      "sha256": "0ab4f97aa41a1e81204c13a7ba5e22cf106c04c82860ba202ae41f2400e05b27",
+      "kind": "raw",
+      "producer": "Task83b producer source",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4"
+    },
+    {
+      "id": "source_18",
+      "path": "internal/mechanismspace/progress.go",
+      "sha256": "2ee03c1022dc40e96ffbf57ab280512104f236edb8f34521dbb70cb30e81007d",
+      "kind": "raw",
+      "producer": "Task83b producer source",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4"
+    },
+    {
+      "id": "source_19",
+      "path": "internal/mechanismspace/progress_test.go",
+      "sha256": "2e9770738c72d019f190eff748942e480e07cba130261ea8ec7828cba850eacd",
+      "kind": "raw",
+      "producer": "Task83b producer source",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4"
+    },
+    {
+      "id": "source_20",
+      "path": "cmd/fingerprint-v2-analyze/main.go",
+      "sha256": "95e412946cabdaf9584f65d3905c2f88db8c0de7395eb3ccdf31717e102379e3",
+      "kind": "raw",
+      "producer": "Task83b producer source",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4"
+    },
+    {
+      "id": "source_21",
+      "path": "cmd/task79c-pf4-hr/main.go",
+      "sha256": "4da99ec7e47c021c3a2fcb02434235c9d47b162f5dfe09eb010f4761e8203632",
+      "kind": "raw",
+      "producer": "Task83b producer source",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4"
+    },
+    {
+      "id": "source_22",
+      "path": "cmd/task79c-distance-pareto/main.go",
+      "sha256": "665cdf933bfcc5adbef99108eae119a74d9720663afaa00b9a701705a7076454",
+      "kind": "raw",
+      "producer": "Task83b producer source",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4"
+    },
+    {
+      "id": "source_23",
+      "path": "research/phase2/task83b-analyze/main.go",
+      "sha256": "66ced0c74edd3f6a856361b6d5dfb05b9fdc59bf051e63c45b7e4ed1d132f6e7",
+      "kind": "raw",
+      "producer": "Task83b producer source",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4"
+    },
+    {
+      "id": "source_24",
+      "path": "research/phase2/task83b-analyze/freeze.go",
+      "sha256": "47c7427198a16fb242d8f277c0cec769ec020155211f34f941ad009772b143c4",
+      "kind": "raw",
+      "producer": "Task83b producer source",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4"
+    },
+    {
+      "id": "source_bundle",
+      "path": "research/phase2/task83b/SOURCE_PROVENANCE.tsv",
+      "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e",
+      "kind": "generated",
+      "producer": "task83b-analyze",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4",
+      "producer_arguments": [
+        "deterministic generation from bound parent artifacts"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "source_01",
+          "sha256": "9acb39d4e0e07473d8e6b98799986d4e873f1f8f411eb1665425c7fced90eedd"
+        },
+        {
+          "id": "source_02",
+          "sha256": "8e40914942a4ba92d2f2860c9cbe66a1efa105930e5ad3faddfed756872f564b"
+        },
+        {
+          "id": "source_03",
+          "sha256": "60f05fd751673324999cc6d58ca15447fa0ac7e960b3246060910f1a91a2355a"
+        },
+        {
+          "id": "source_04",
+          "sha256": "e68e363308a4712d0620506e7e1daeb556e52a3ce48a52036e501942d09a2f59"
+        },
+        {
+          "id": "source_05",
+          "sha256": "679cab97dda5ff8fcce218609d318c0a5cc85ec510964bfd17dbacc072319cfa"
+        },
+        {
+          "id": "source_06",
+          "sha256": "013a015092fe3dd2f6a19e9a11e6d71ea9bd68d1edeed4f7d15f5d8918b4b17a"
+        },
+        {
+          "id": "source_07",
+          "sha256": "10e109a59949bfecf1203b74635041a1642338111bcf63c0160d2f4caff36bea"
+        },
+        {
+          "id": "source_08",
+          "sha256": "c820a6d156a312a9a8db033ef53d5180809ba42fb828a80f1a4195943b31d69d"
+        },
+        {
+          "id": "source_09",
+          "sha256": "f3ebfc7013f99af8c4bb7d595f2f0118dc3a6e8fb0ebfaba4cda7abdce196169"
+        },
+        {
+          "id": "source_10",
+          "sha256": "8ca7f60cf76352b7b76d945513f4ff4213f291337ccb53f2641757cac7ab7489"
+        },
+        {
+          "id": "source_11",
+          "sha256": "51e0b78be3acb4c568c7cd36c701569cdf551c3a3ac54a46d408524f7756a480"
+        },
+        {
+          "id": "source_12",
+          "sha256": "717af575dfc41ef0fba90490b963777e8711f2837cf4c2295438d4877160934d"
+        },
+        {
+          "id": "source_13",
+          "sha256": "4e41073260535eef2fe742a2d889541bc91a234b9252540c9c9c19247725d019"
+        },
+        {
+          "id": "source_14",
+          "sha256": "8670bb14f2047383b042666d99055063529139cf2124d1087f5747204d493b85"
+        },
+        {
+          "id": "source_15",
+          "sha256": "e5866f8ca73d597018b6015b2e06968ba2ed699276cd10bb88a79929db6af21a"
+        },
+        {
+          "id": "source_16",
+          "sha256": "6ba7317182d209ac3beda34786e5384a2a6b5a2aa36521267d7584c339b0d8a7"
+        },
+        {
+          "id": "source_17",
+          "sha256": "0ab4f97aa41a1e81204c13a7ba5e22cf106c04c82860ba202ae41f2400e05b27"
+        },
+        {
+          "id": "source_18",
+          "sha256": "2ee03c1022dc40e96ffbf57ab280512104f236edb8f34521dbb70cb30e81007d"
+        },
+        {
+          "id": "source_19",
+          "sha256": "2e9770738c72d019f190eff748942e480e07cba130261ea8ec7828cba850eacd"
+        },
+        {
+          "id": "source_20",
+          "sha256": "95e412946cabdaf9584f65d3905c2f88db8c0de7395eb3ccdf31717e102379e3"
+        },
+        {
+          "id": "source_21",
+          "sha256": "4da99ec7e47c021c3a2fcb02434235c9d47b162f5dfe09eb010f4761e8203632"
+        },
+        {
+          "id": "source_22",
+          "sha256": "665cdf933bfcc5adbef99108eae119a74d9720663afaa00b9a701705a7076454"
+        },
+        {
+          "id": "source_23",
+          "sha256": "66ced0c74edd3f6a856361b6d5dfb05b9fdc59bf051e63c45b7e4ed1d132f6e7"
+        },
+        {
+          "id": "source_24",
+          "sha256": "47c7427198a16fb242d8f277c0cec769ec020155211f34f941ad009772b143c4"
+        }
+      ]
+    },
+    {
+      "id": "zl_extracted",
+      "path": "research/phase2/task83b/artifacts/prepared/ZL3b-x7.txt",
+      "sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692",
+      "kind": "generated",
+      "producer": "ivtff-x7-extract",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4",
+      "producer_arguments": [
+        "-input",
+        "bound raw parent",
+        "-output",
+        "bound extracted artifact"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "zl_raw",
+          "sha256": "bf5b6d4ac1e3a51b1847a9c388318d609020441ccd56984c901c32b09beccafc"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "zl_prepared",
+      "path": "research/phase2/task83b/artifacts/prepared/ZL3b-x7.canonical.txt",
+      "sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692",
+      "kind": "generated",
+      "producer": "codex_prepare",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4",
+      "producer_arguments": [
+        "prepare",
+        "-encoding",
+        "utf-8",
+        "-case",
+        "preserve",
+        "-line-policy",
+        "preserve"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "zl_extracted",
+          "sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "zl_prepare_metadata",
+      "path": "research/phase2/task83b/artifacts/prepared/ZL3b-x7.canonical.txt.prepare.json",
+      "sha256": "86f2570837dc9b86a66ea30c7b2163e338fec6fbc2da35c163c9698e15d04e15",
+      "kind": "generated",
+      "producer": "codex_prepare",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4",
+      "producer_arguments": [
+        "prepare",
+        "-encoding",
+        "utf-8",
+        "-case",
+        "preserve",
+        "-line-policy",
+        "preserve"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "zl_extracted",
+          "sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692"
+        },
+        {
+          "id": "zl_prepared",
+          "sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ],
+      "embedded_bindings": [
+        {
+          "json_path": "input_sha256",
+          "parent_id": "zl_extracted"
+        },
+        {
+          "json_path": "output_sha256",
+          "parent_id": "zl_prepared"
+        }
+      ]
+    },
+    {
+      "id": "it_extracted",
+      "path": "research/phase2/task83b/artifacts/prepared/IT2a-x7.txt",
+      "sha256": "10286ee7e11ad974e9d0f884e3b0df1b588745a4b77ad428a638a5ff63946a8b",
+      "kind": "generated",
+      "producer": "ivtff-x7-extract",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "-input",
+        "bound raw parent",
+        "-output",
+        "bound extracted artifact"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "it_raw",
+          "sha256": "7f27a8b0feed8f6de0a99900df6bf912dd1d295c38e5f830bac8b41c3f536fb5"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "it_prepared",
+      "path": "research/phase2/task83b/artifacts/prepared/IT2a-x7.canonical.txt",
+      "sha256": "10286ee7e11ad974e9d0f884e3b0df1b588745a4b77ad428a638a5ff63946a8b",
+      "kind": "generated",
+      "producer": "codex_prepare",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "prepare",
+        "-encoding",
+        "utf-8",
+        "-case",
+        "preserve",
+        "-line-policy",
+        "preserve"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "it_extracted",
+          "sha256": "10286ee7e11ad974e9d0f884e3b0df1b588745a4b77ad428a638a5ff63946a8b"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "it_prepare_metadata",
+      "path": "research/phase2/task83b/artifacts/prepared/IT2a-x7.canonical.txt.prepare.json",
+      "sha256": "8462577475c47c5492ad5425d4edadd25b3d9c7babbee1a75e1edb350ee5302a",
+      "kind": "generated",
+      "producer": "codex_prepare",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "prepare",
+        "-encoding",
+        "utf-8",
+        "-case",
+        "preserve",
+        "-line-policy",
+        "preserve"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "it_extracted",
+          "sha256": "10286ee7e11ad974e9d0f884e3b0df1b588745a4b77ad428a638a5ff63946a8b"
+        },
+        {
+          "id": "it_prepared",
+          "sha256": "10286ee7e11ad974e9d0f884e3b0df1b588745a4b77ad428a638a5ff63946a8b"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ],
+      "embedded_bindings": [
+        {
+          "json_path": "input_sha256",
+          "parent_id": "it_extracted"
+        },
+        {
+          "json_path": "output_sha256",
+          "parent_id": "it_prepared"
+        }
+      ]
+    },
+    {
+      "id": "zl_config",
+      "path": "research/phase2/task83b/artifacts/configs/zl.yaml",
+      "sha256": "09277e7a0ea9693ea1156835da6ceeb198ffbfb688a4e75d6903cf02f666b0b0",
+      "kind": "generated",
+      "producer": "Task83b output-path canonicalization",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "deterministic generation from bound parent artifacts"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "canonical_config_source",
+          "sha256": "0c3c571d260fac8e4b4f337cf1ab42f1f21f923ed8480eaf4ea32f68b17042e7"
+        }
+      ]
+    },
+    {
+      "id": "it_config",
+      "path": "research/phase2/task83b/artifacts/configs/it.yaml",
+      "sha256": "6aa5d62cf21a1607b396fbaff74b4cbddd16cf45248bec9b313c04d89e64894f",
+      "kind": "generated",
+      "producer": "Task83b output-path canonicalization",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "deterministic generation from bound parent artifacts"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "it_config_source",
+          "sha256": "f263e444dc676063780107ddc61ce1ed0247c60c684534d6a3dc8462764b5bc1"
+        }
+      ]
+    },
+    {
+      "id": "controls_config",
+      "path": "research/phase2/task83b/artifacts/configs/controls.yaml",
+      "sha256": "e93334ab787518d2c84baeb1c579cf0d634a610755d678ca31c2502babb6a2c6",
+      "kind": "generated",
+      "producer": "Task83b output-path canonicalization",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "deterministic generation from bound parent artifacts"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "controls_config_source",
+          "sha256": "d6c4cc872a689f01307de1ec5d773327bfc5bcc1340bc8c74b32d1228b9d1cbc"
+        }
+      ]
+    },
+    {
+      "id": "artifact_zl_config_yaml",
+      "path": "research/phase2/task83b/artifacts/zl/config.yaml",
+      "sha256": "09277e7a0ea9693ea1156835da6ceeb198ffbfb688a4e75d6903cf02f666b0b0",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "zl_prepared",
+          "sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692"
+        },
+        {
+          "id": "zl_config",
+          "sha256": "09277e7a0ea9693ea1156835da6ceeb198ffbfb688a4e75d6903cf02f666b0b0"
+        },
+        {
+          "id": "doyle",
+          "sha256": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_zl_coverage_audit_json",
+      "path": "research/phase2/task83b/artifacts/zl/coverage_audit.json",
+      "sha256": "6c86261622116c1ed80d79aef8caf1df2ea9f4fcaafd50f987036813c537a23e",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "zl_prepared",
+          "sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692"
+        },
+        {
+          "id": "zl_config",
+          "sha256": "09277e7a0ea9693ea1156835da6ceeb198ffbfb688a4e75d6903cf02f666b0b0"
+        },
+        {
+          "id": "doyle",
+          "sha256": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_zl_discriminative_validation_json",
+      "path": "research/phase2/task83b/artifacts/zl/discriminative_validation.json",
+      "sha256": "08c22baf40f42d3ec093176a38d2200af1a1e2553cb5b6ec5adfaeac88ae0dcb",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "zl_prepared",
+          "sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692"
+        },
+        {
+          "id": "zl_config",
+          "sha256": "09277e7a0ea9693ea1156835da6ceeb198ffbfb688a4e75d6903cf02f666b0b0"
+        },
+        {
+          "id": "doyle",
+          "sha256": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_zl_errors_json",
+      "path": "research/phase2/task83b/artifacts/zl/errors.json",
+      "sha256": "38e0b9de817f645c4bec37c0d4a3e58baecccb040f5718dc069a72c7385a0bed",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "zl_prepared",
+          "sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692"
+        },
+        {
+          "id": "zl_config",
+          "sha256": "09277e7a0ea9693ea1156835da6ceeb198ffbfb688a4e75d6903cf02f666b0b0"
+        },
+        {
+          "id": "doyle",
+          "sha256": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_zl_fingerprint_json",
+      "path": "research/phase2/task83b/artifacts/zl/fingerprint.json",
+      "sha256": "1661c21b080734f5313c3152814eee5b374b6565c5b3bad8c3c45aa3a9bfd847",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "zl_prepared",
+          "sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692"
+        },
+        {
+          "id": "zl_config",
+          "sha256": "09277e7a0ea9693ea1156835da6ceeb198ffbfb688a4e75d6903cf02f666b0b0"
+        },
+        {
+          "id": "doyle",
+          "sha256": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ],
+      "embedded_bindings": [
+        {
+          "json_path": "primary.corpus.sha256",
+          "parent_id": "zl_prepared"
+        },
+        {
+          "json_path": "controls.0.corpus.sha256",
+          "parent_id": "doyle"
+        }
+      ]
+    },
+    {
+      "id": "artifact_zl_fingerprint_v2_candidate_json",
+      "path": "research/phase2/task83b/artifacts/zl/fingerprint_v2_candidate.json",
+      "sha256": "1661c21b080734f5313c3152814eee5b374b6565c5b3bad8c3c45aa3a9bfd847",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "zl_prepared",
+          "sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692"
+        },
+        {
+          "id": "zl_config",
+          "sha256": "09277e7a0ea9693ea1156835da6ceeb198ffbfb688a4e75d6903cf02f666b0b0"
+        },
+        {
+          "id": "doyle",
+          "sha256": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_zl_freeze_manifest_json",
+      "path": "research/phase2/task83b/artifacts/zl/freeze_manifest.json",
+      "sha256": "a59383def7cd9485424e1fad8ac5d715b9c44400b99c01cba3b4db660d630fd0",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "zl_prepared",
+          "sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692"
+        },
+        {
+          "id": "zl_config",
+          "sha256": "09277e7a0ea9693ea1156835da6ceeb198ffbfb688a4e75d6903cf02f666b0b0"
+        },
+        {
+          "id": "doyle",
+          "sha256": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ],
+      "embedded_bindings": [
+        {
+          "json_path": "corpus_sha256",
+          "parent_id": "zl_prepared"
+        }
+      ]
+    },
+    {
+      "id": "artifact_zl_hierarchical_null_registry_json",
+      "path": "research/phase2/task83b/artifacts/zl/hierarchical_null_registry.json",
+      "sha256": "3b21bb4e9a02f491bf88be1cbb10e837308151fb64c0341801882c190cd3c3df",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "zl_prepared",
+          "sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692"
+        },
+        {
+          "id": "zl_config",
+          "sha256": "09277e7a0ea9693ea1156835da6ceeb198ffbfb688a4e75d6903cf02f666b0b0"
+        },
+        {
+          "id": "doyle",
+          "sha256": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_zl_ivtff_metadata_audit_json",
+      "path": "research/phase2/task83b/artifacts/zl/ivtff_metadata_audit.json",
+      "sha256": "a77fa46a325bf46d31e7eb2d1117aad190d366e51f4df94835143bb3c0f8d198",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "zl_prepared",
+          "sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692"
+        },
+        {
+          "id": "zl_config",
+          "sha256": "09277e7a0ea9693ea1156835da6ceeb198ffbfb688a4e75d6903cf02f666b0b0"
+        },
+        {
+          "id": "doyle",
+          "sha256": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_zl_line_profiles_json",
+      "path": "research/phase2/task83b/artifacts/zl/line_profiles.json",
+      "sha256": "6beea7346702b5bdec0f9cddb9c66337318d02b078f0a312e3560dce0ac6dce1",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "zl_prepared",
+          "sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692"
+        },
+        {
+          "id": "zl_config",
+          "sha256": "09277e7a0ea9693ea1156835da6ceeb198ffbfb688a4e75d6903cf02f666b0b0"
+        },
+        {
+          "id": "doyle",
+          "sha256": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_zl_metric_registry_json",
+      "path": "research/phase2/task83b/artifacts/zl/metric_registry.json",
+      "sha256": "61cb0a6cd3353f00234f7651f4d32e4161fb4df8ebac049b466597e3ed28db8e",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "zl_prepared",
+          "sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692"
+        },
+        {
+          "id": "zl_config",
+          "sha256": "09277e7a0ea9693ea1156835da6ceeb198ffbfb688a4e75d6903cf02f666b0b0"
+        },
+        {
+          "id": "doyle",
+          "sha256": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_zl_negative_evidence_registry_json",
+      "path": "research/phase2/task83b/artifacts/zl/negative_evidence_registry.json",
+      "sha256": "5699a89f64a2f8d67f5919cc39ec3958a75861dc1a214c4ca63378591e63f415",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "zl_prepared",
+          "sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692"
+        },
+        {
+          "id": "zl_config",
+          "sha256": "09277e7a0ea9693ea1156835da6ceeb198ffbfb688a4e75d6903cf02f666b0b0"
+        },
+        {
+          "id": "doyle",
+          "sha256": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_zl_occurrence_metadata_jsonl",
+      "path": "research/phase2/task83b/artifacts/zl/occurrence_metadata.jsonl",
+      "sha256": "ba0342e15d8c468ec4e9f741e97cdb4a11938fe1f0ae3ac4338b73aaf1bd773a",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "zl_prepared",
+          "sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692"
+        },
+        {
+          "id": "zl_config",
+          "sha256": "09277e7a0ea9693ea1156835da6ceeb198ffbfb688a4e75d6903cf02f666b0b0"
+        },
+        {
+          "id": "doyle",
+          "sha256": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_zl_raw_results_json",
+      "path": "research/phase2/task83b/artifacts/zl/raw_results.json",
+      "sha256": "154b7613c9dcf1722cc40cd5c0c9208afb11b1100a34cdfcf3a433f04bd5a81e",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "zl_prepared",
+          "sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692"
+        },
+        {
+          "id": "zl_config",
+          "sha256": "09277e7a0ea9693ea1156835da6ceeb198ffbfb688a4e75d6903cf02f666b0b0"
+        },
+        {
+          "id": "doyle",
+          "sha256": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ],
+      "embedded_bindings": [
+        {
+          "json_path": "fingerprint.primary.corpus.sha256",
+          "parent_id": "zl_prepared"
+        },
+        {
+          "json_path": "fingerprint.controls.0.corpus.sha256",
+          "parent_id": "doyle"
+        }
+      ]
+    },
+    {
+      "id": "artifact_zl_redundancy_matrix_json",
+      "path": "research/phase2/task83b/artifacts/zl/redundancy_matrix.json",
+      "sha256": "c494ba359c8b36158d23ef04a18047c2b56e1e7a363e8351338f503430d5e6fc",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "zl_prepared",
+          "sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692"
+        },
+        {
+          "id": "zl_config",
+          "sha256": "09277e7a0ea9693ea1156835da6ceeb198ffbfb688a4e75d6903cf02f666b0b0"
+        },
+        {
+          "id": "doyle",
+          "sha256": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_zl_report_md",
+      "path": "research/phase2/task83b/artifacts/zl/report.md",
+      "sha256": "bc1cc27ccb31a7207af3a1f728a919508aba1dd43fea2739f2d45b9276f2494a",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "zl_prepared",
+          "sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692"
+        },
+        {
+          "id": "zl_config",
+          "sha256": "09277e7a0ea9693ea1156835da6ceeb198ffbfb688a4e75d6903cf02f666b0b0"
+        },
+        {
+          "id": "doyle",
+          "sha256": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_zl_segmentation_json",
+      "path": "research/phase2/task83b/artifacts/zl/segmentation.json",
+      "sha256": "28712ed6882eb0856f966740f504e2aff981ad7ec0235bc14452a6349ab61594",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "zl_prepared",
+          "sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692"
+        },
+        {
+          "id": "zl_config",
+          "sha256": "09277e7a0ea9693ea1156835da6ceeb198ffbfb688a4e75d6903cf02f666b0b0"
+        },
+        {
+          "id": "doyle",
+          "sha256": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_zl_stability_matrix_json",
+      "path": "research/phase2/task83b/artifacts/zl/stability_matrix.json",
+      "sha256": "e20faf90a4c0881639752979c9e352f6284c95655a9b4d8cdf09cbd719b88e4f",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "zl_prepared",
+          "sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692"
+        },
+        {
+          "id": "zl_config",
+          "sha256": "09277e7a0ea9693ea1156835da6ceeb198ffbfb688a4e75d6903cf02f666b0b0"
+        },
+        {
+          "id": "doyle",
+          "sha256": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_zl_task75_task77_audit_json",
+      "path": "research/phase2/task83b/artifacts/zl/task75_task77_audit.json",
+      "sha256": "99d26e26491034e49d5d13e8f3facf55c453590576c74a574dad54c546bbcbef",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "zl_prepared",
+          "sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692"
+        },
+        {
+          "id": "zl_config",
+          "sha256": "09277e7a0ea9693ea1156835da6ceeb198ffbfb688a4e75d6903cf02f666b0b0"
+        },
+        {
+          "id": "doyle",
+          "sha256": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_zl_task79_verdicts_json",
+      "path": "research/phase2/task83b/artifacts/zl/task79_verdicts.json",
+      "sha256": "d5daa430be909068afe12bb6b11bde3ceeda0a3e25bcb243936cdd59e7b7a8a8",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "zl_prepared",
+          "sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692"
+        },
+        {
+          "id": "zl_config",
+          "sha256": "09277e7a0ea9693ea1156835da6ceeb198ffbfb688a4e75d6903cf02f666b0b0"
+        },
+        {
+          "id": "doyle",
+          "sha256": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_zl_warnings_json",
+      "path": "research/phase2/task83b/artifacts/zl/warnings.json",
+      "sha256": "006c1afa3b400dd3a2ef29736d6255b9fcf3c68faa40f95d364b40f8cc9d5b4a",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "zl_prepared",
+          "sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692"
+        },
+        {
+          "id": "zl_config",
+          "sha256": "09277e7a0ea9693ea1156835da6ceeb198ffbfb688a4e75d6903cf02f666b0b0"
+        },
+        {
+          "id": "doyle",
+          "sha256": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_it_config_yaml",
+      "path": "research/phase2/task83b/artifacts/it/config.yaml",
+      "sha256": "6aa5d62cf21a1607b396fbaff74b4cbddd16cf45248bec9b313c04d89e64894f",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "it_prepared",
+          "sha256": "10286ee7e11ad974e9d0f884e3b0df1b588745a4b77ad428a638a5ff63946a8b"
+        },
+        {
+          "id": "it_config",
+          "sha256": "6aa5d62cf21a1607b396fbaff74b4cbddd16cf45248bec9b313c04d89e64894f"
+        },
+        {
+          "id": "doyle",
+          "sha256": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_it_coverage_audit_json",
+      "path": "research/phase2/task83b/artifacts/it/coverage_audit.json",
+      "sha256": "6c86261622116c1ed80d79aef8caf1df2ea9f4fcaafd50f987036813c537a23e",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "it_prepared",
+          "sha256": "10286ee7e11ad974e9d0f884e3b0df1b588745a4b77ad428a638a5ff63946a8b"
+        },
+        {
+          "id": "it_config",
+          "sha256": "6aa5d62cf21a1607b396fbaff74b4cbddd16cf45248bec9b313c04d89e64894f"
+        },
+        {
+          "id": "doyle",
+          "sha256": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_it_discriminative_validation_json",
+      "path": "research/phase2/task83b/artifacts/it/discriminative_validation.json",
+      "sha256": "e2100e85c6ed617351d03b0026c15128d5d1a9bec38df2f3f749c750761af32d",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "it_prepared",
+          "sha256": "10286ee7e11ad974e9d0f884e3b0df1b588745a4b77ad428a638a5ff63946a8b"
+        },
+        {
+          "id": "it_config",
+          "sha256": "6aa5d62cf21a1607b396fbaff74b4cbddd16cf45248bec9b313c04d89e64894f"
+        },
+        {
+          "id": "doyle",
+          "sha256": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_it_errors_json",
+      "path": "research/phase2/task83b/artifacts/it/errors.json",
+      "sha256": "38e0b9de817f645c4bec37c0d4a3e58baecccb040f5718dc069a72c7385a0bed",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "it_prepared",
+          "sha256": "10286ee7e11ad974e9d0f884e3b0df1b588745a4b77ad428a638a5ff63946a8b"
+        },
+        {
+          "id": "it_config",
+          "sha256": "6aa5d62cf21a1607b396fbaff74b4cbddd16cf45248bec9b313c04d89e64894f"
+        },
+        {
+          "id": "doyle",
+          "sha256": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_it_fingerprint_json",
+      "path": "research/phase2/task83b/artifacts/it/fingerprint.json",
+      "sha256": "ab0de85fb01f4f7aef8acfdf5a8489facd4cb3ce73f9c07321812c7252df8bf4",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "it_prepared",
+          "sha256": "10286ee7e11ad974e9d0f884e3b0df1b588745a4b77ad428a638a5ff63946a8b"
+        },
+        {
+          "id": "it_config",
+          "sha256": "6aa5d62cf21a1607b396fbaff74b4cbddd16cf45248bec9b313c04d89e64894f"
+        },
+        {
+          "id": "doyle",
+          "sha256": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ],
+      "embedded_bindings": [
+        {
+          "json_path": "primary.corpus.sha256",
+          "parent_id": "it_prepared"
+        },
+        {
+          "json_path": "controls.0.corpus.sha256",
+          "parent_id": "doyle"
+        }
+      ]
+    },
+    {
+      "id": "artifact_it_fingerprint_v2_candidate_json",
+      "path": "research/phase2/task83b/artifacts/it/fingerprint_v2_candidate.json",
+      "sha256": "ab0de85fb01f4f7aef8acfdf5a8489facd4cb3ce73f9c07321812c7252df8bf4",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "it_prepared",
+          "sha256": "10286ee7e11ad974e9d0f884e3b0df1b588745a4b77ad428a638a5ff63946a8b"
+        },
+        {
+          "id": "it_config",
+          "sha256": "6aa5d62cf21a1607b396fbaff74b4cbddd16cf45248bec9b313c04d89e64894f"
+        },
+        {
+          "id": "doyle",
+          "sha256": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_it_freeze_manifest_json",
+      "path": "research/phase2/task83b/artifacts/it/freeze_manifest.json",
+      "sha256": "3575497cbef8bef7375f3c699ad6e83f7fe4b8256ebc8f5065b3509422eb4afb",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "it_prepared",
+          "sha256": "10286ee7e11ad974e9d0f884e3b0df1b588745a4b77ad428a638a5ff63946a8b"
+        },
+        {
+          "id": "it_config",
+          "sha256": "6aa5d62cf21a1607b396fbaff74b4cbddd16cf45248bec9b313c04d89e64894f"
+        },
+        {
+          "id": "doyle",
+          "sha256": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ],
+      "embedded_bindings": [
+        {
+          "json_path": "corpus_sha256",
+          "parent_id": "it_prepared"
+        }
+      ]
+    },
+    {
+      "id": "artifact_it_hierarchical_null_registry_json",
+      "path": "research/phase2/task83b/artifacts/it/hierarchical_null_registry.json",
+      "sha256": "3b21bb4e9a02f491bf88be1cbb10e837308151fb64c0341801882c190cd3c3df",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "it_prepared",
+          "sha256": "10286ee7e11ad974e9d0f884e3b0df1b588745a4b77ad428a638a5ff63946a8b"
+        },
+        {
+          "id": "it_config",
+          "sha256": "6aa5d62cf21a1607b396fbaff74b4cbddd16cf45248bec9b313c04d89e64894f"
+        },
+        {
+          "id": "doyle",
+          "sha256": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_it_ivtff_metadata_audit_json",
+      "path": "research/phase2/task83b/artifacts/it/ivtff_metadata_audit.json",
+      "sha256": "206eb9245aeee295cb3fc4a60ce91902cf015e25c55164881cc9c8791eaa3165",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "it_prepared",
+          "sha256": "10286ee7e11ad974e9d0f884e3b0df1b588745a4b77ad428a638a5ff63946a8b"
+        },
+        {
+          "id": "it_config",
+          "sha256": "6aa5d62cf21a1607b396fbaff74b4cbddd16cf45248bec9b313c04d89e64894f"
+        },
+        {
+          "id": "doyle",
+          "sha256": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_it_line_profiles_json",
+      "path": "research/phase2/task83b/artifacts/it/line_profiles.json",
+      "sha256": "45b08afa1e728723dc0c958947522f1e9bb1916efb08caab79b32d7d2af12eb7",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "it_prepared",
+          "sha256": "10286ee7e11ad974e9d0f884e3b0df1b588745a4b77ad428a638a5ff63946a8b"
+        },
+        {
+          "id": "it_config",
+          "sha256": "6aa5d62cf21a1607b396fbaff74b4cbddd16cf45248bec9b313c04d89e64894f"
+        },
+        {
+          "id": "doyle",
+          "sha256": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_it_metric_registry_json",
+      "path": "research/phase2/task83b/artifacts/it/metric_registry.json",
+      "sha256": "92b6a0e8ee69a8bee78e42628e5357db0003cf959355f5651fcba31a862eccc3",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "it_prepared",
+          "sha256": "10286ee7e11ad974e9d0f884e3b0df1b588745a4b77ad428a638a5ff63946a8b"
+        },
+        {
+          "id": "it_config",
+          "sha256": "6aa5d62cf21a1607b396fbaff74b4cbddd16cf45248bec9b313c04d89e64894f"
+        },
+        {
+          "id": "doyle",
+          "sha256": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_it_negative_evidence_registry_json",
+      "path": "research/phase2/task83b/artifacts/it/negative_evidence_registry.json",
+      "sha256": "deadb44edca5f0fb5756499401934864185e8b256ce345e8ecd888c920ab1e6a",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "it_prepared",
+          "sha256": "10286ee7e11ad974e9d0f884e3b0df1b588745a4b77ad428a638a5ff63946a8b"
+        },
+        {
+          "id": "it_config",
+          "sha256": "6aa5d62cf21a1607b396fbaff74b4cbddd16cf45248bec9b313c04d89e64894f"
+        },
+        {
+          "id": "doyle",
+          "sha256": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_it_occurrence_metadata_jsonl",
+      "path": "research/phase2/task83b/artifacts/it/occurrence_metadata.jsonl",
+      "sha256": "3f7136d6f40f70d802c4784653753f11e9985d72cff1c9b51642e07d64f59d2b",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "it_prepared",
+          "sha256": "10286ee7e11ad974e9d0f884e3b0df1b588745a4b77ad428a638a5ff63946a8b"
+        },
+        {
+          "id": "it_config",
+          "sha256": "6aa5d62cf21a1607b396fbaff74b4cbddd16cf45248bec9b313c04d89e64894f"
+        },
+        {
+          "id": "doyle",
+          "sha256": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_it_raw_results_json",
+      "path": "research/phase2/task83b/artifacts/it/raw_results.json",
+      "sha256": "fd250307afa90ce355b22fa03c15ead237cec2f3ac12e322afb96e080ebb86b5",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "it_prepared",
+          "sha256": "10286ee7e11ad974e9d0f884e3b0df1b588745a4b77ad428a638a5ff63946a8b"
+        },
+        {
+          "id": "it_config",
+          "sha256": "6aa5d62cf21a1607b396fbaff74b4cbddd16cf45248bec9b313c04d89e64894f"
+        },
+        {
+          "id": "doyle",
+          "sha256": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ],
+      "embedded_bindings": [
+        {
+          "json_path": "fingerprint.primary.corpus.sha256",
+          "parent_id": "it_prepared"
+        },
+        {
+          "json_path": "fingerprint.controls.0.corpus.sha256",
+          "parent_id": "doyle"
+        }
+      ]
+    },
+    {
+      "id": "artifact_it_redundancy_matrix_json",
+      "path": "research/phase2/task83b/artifacts/it/redundancy_matrix.json",
+      "sha256": "0dcd1ad38a73b9edffc9dd4ec1632e75785be7c8efa1919c4d7700e48cfbcb9b",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "it_prepared",
+          "sha256": "10286ee7e11ad974e9d0f884e3b0df1b588745a4b77ad428a638a5ff63946a8b"
+        },
+        {
+          "id": "it_config",
+          "sha256": "6aa5d62cf21a1607b396fbaff74b4cbddd16cf45248bec9b313c04d89e64894f"
+        },
+        {
+          "id": "doyle",
+          "sha256": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_it_report_md",
+      "path": "research/phase2/task83b/artifacts/it/report.md",
+      "sha256": "ef989479d513146e03238523c5ed52bec6e8dbddef9f23377d123670737d68a9",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "it_prepared",
+          "sha256": "10286ee7e11ad974e9d0f884e3b0df1b588745a4b77ad428a638a5ff63946a8b"
+        },
+        {
+          "id": "it_config",
+          "sha256": "6aa5d62cf21a1607b396fbaff74b4cbddd16cf45248bec9b313c04d89e64894f"
+        },
+        {
+          "id": "doyle",
+          "sha256": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_it_segmentation_json",
+      "path": "research/phase2/task83b/artifacts/it/segmentation.json",
+      "sha256": "a89487053bf07a05e1ef1e1ad1ec5d8ee8b075b29f2861d09c694b4ef68b5a7f",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "it_prepared",
+          "sha256": "10286ee7e11ad974e9d0f884e3b0df1b588745a4b77ad428a638a5ff63946a8b"
+        },
+        {
+          "id": "it_config",
+          "sha256": "6aa5d62cf21a1607b396fbaff74b4cbddd16cf45248bec9b313c04d89e64894f"
+        },
+        {
+          "id": "doyle",
+          "sha256": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_it_stability_matrix_json",
+      "path": "research/phase2/task83b/artifacts/it/stability_matrix.json",
+      "sha256": "e20faf90a4c0881639752979c9e352f6284c95655a9b4d8cdf09cbd719b88e4f",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "it_prepared",
+          "sha256": "10286ee7e11ad974e9d0f884e3b0df1b588745a4b77ad428a638a5ff63946a8b"
+        },
+        {
+          "id": "it_config",
+          "sha256": "6aa5d62cf21a1607b396fbaff74b4cbddd16cf45248bec9b313c04d89e64894f"
+        },
+        {
+          "id": "doyle",
+          "sha256": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_it_task75_task77_audit_json",
+      "path": "research/phase2/task83b/artifacts/it/task75_task77_audit.json",
+      "sha256": "5f6f296a771a94a7fa7b0a00f60a3ef9610793a3735be48a7163727f0c38a502",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "it_prepared",
+          "sha256": "10286ee7e11ad974e9d0f884e3b0df1b588745a4b77ad428a638a5ff63946a8b"
+        },
+        {
+          "id": "it_config",
+          "sha256": "6aa5d62cf21a1607b396fbaff74b4cbddd16cf45248bec9b313c04d89e64894f"
+        },
+        {
+          "id": "doyle",
+          "sha256": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_it_task79_verdicts_json",
+      "path": "research/phase2/task83b/artifacts/it/task79_verdicts.json",
+      "sha256": "2d7a6201daa3f1e75e56dddd56b20216a04a56022b9e53d931f7430768886db7",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "it_prepared",
+          "sha256": "10286ee7e11ad974e9d0f884e3b0df1b588745a4b77ad428a638a5ff63946a8b"
+        },
+        {
+          "id": "it_config",
+          "sha256": "6aa5d62cf21a1607b396fbaff74b4cbddd16cf45248bec9b313c04d89e64894f"
+        },
+        {
+          "id": "doyle",
+          "sha256": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_it_warnings_json",
+      "path": "research/phase2/task83b/artifacts/it/warnings.json",
+      "sha256": "006c1afa3b400dd3a2ef29736d6255b9fcf3c68faa40f95d364b40f8cc9d5b4a",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "it_prepared",
+          "sha256": "10286ee7e11ad974e9d0f884e3b0df1b588745a4b77ad428a638a5ff63946a8b"
+        },
+        {
+          "id": "it_config",
+          "sha256": "6aa5d62cf21a1607b396fbaff74b4cbddd16cf45248bec9b313c04d89e64894f"
+        },
+        {
+          "id": "doyle",
+          "sha256": "0b260c8ae9ee7dcfd8c334e174b32ec433d37792ecfa783137b0bd38a956cc80"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_controls_config_yaml",
+      "path": "research/phase2/task83b/artifacts/controls/config.yaml",
+      "sha256": "e93334ab787518d2c84baeb1c579cf0d634a610755d678ca31c2502babb6a2c6",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "zl_prepared",
+          "sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692"
+        },
+        {
+          "id": "controls_config",
+          "sha256": "e93334ab787518d2c84baeb1c579cf0d634a610755d678ca31c2502babb6a2c6"
+        },
+        {
+          "id": "bdd",
+          "sha256": "fa928a8d44f2e6799c3c4fd1416a739bba36d3d02400a1f4620659bd801957ba"
+        },
+        {
+          "id": "msdos_full",
+          "sha256": "1c152d8ad703be3bf631db0bab0728722df49200ab9dee6e6c17793849276993"
+        },
+        {
+          "id": "msdos_rep0",
+          "sha256": "92710671e936cf1baf28158c4b788afc95efe5fa35d8c06ee0d69248b9b91b75"
+        },
+        {
+          "id": "msdos_rep1",
+          "sha256": "dda29bbf29d38a4c7e9d129039bc78e2f46999dcefbc318e1c6410b5b534ced2"
+        },
+        {
+          "id": "msdos_rep2",
+          "sha256": "4da5adf28620979fa61bfc300b3fc8306be04208760d0bbd7baca6ba52501003"
+        },
+        {
+          "id": "msdos_rep3",
+          "sha256": "eb6f70c2c6b16cbbaa83a0c780928269e7dd0322c05e0ec31c33f8996f80aa5f"
+        },
+        {
+          "id": "msdos_rep4",
+          "sha256": "edb67bc58b1d7f562d8dbf4beeb11dc1331a977cc939768743ac5caf8b617f88"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_controls_coverage_audit_json",
+      "path": "research/phase2/task83b/artifacts/controls/coverage_audit.json",
+      "sha256": "6c86261622116c1ed80d79aef8caf1df2ea9f4fcaafd50f987036813c537a23e",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "zl_prepared",
+          "sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692"
+        },
+        {
+          "id": "controls_config",
+          "sha256": "e93334ab787518d2c84baeb1c579cf0d634a610755d678ca31c2502babb6a2c6"
+        },
+        {
+          "id": "bdd",
+          "sha256": "fa928a8d44f2e6799c3c4fd1416a739bba36d3d02400a1f4620659bd801957ba"
+        },
+        {
+          "id": "msdos_full",
+          "sha256": "1c152d8ad703be3bf631db0bab0728722df49200ab9dee6e6c17793849276993"
+        },
+        {
+          "id": "msdos_rep0",
+          "sha256": "92710671e936cf1baf28158c4b788afc95efe5fa35d8c06ee0d69248b9b91b75"
+        },
+        {
+          "id": "msdos_rep1",
+          "sha256": "dda29bbf29d38a4c7e9d129039bc78e2f46999dcefbc318e1c6410b5b534ced2"
+        },
+        {
+          "id": "msdos_rep2",
+          "sha256": "4da5adf28620979fa61bfc300b3fc8306be04208760d0bbd7baca6ba52501003"
+        },
+        {
+          "id": "msdos_rep3",
+          "sha256": "eb6f70c2c6b16cbbaa83a0c780928269e7dd0322c05e0ec31c33f8996f80aa5f"
+        },
+        {
+          "id": "msdos_rep4",
+          "sha256": "edb67bc58b1d7f562d8dbf4beeb11dc1331a977cc939768743ac5caf8b617f88"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_controls_discriminative_validation_json",
+      "path": "research/phase2/task83b/artifacts/controls/discriminative_validation.json",
+      "sha256": "a67336d535ccff4378978364fe6ceefda69b8e63ec5559cfc0ae04df8cff5751",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "zl_prepared",
+          "sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692"
+        },
+        {
+          "id": "controls_config",
+          "sha256": "e93334ab787518d2c84baeb1c579cf0d634a610755d678ca31c2502babb6a2c6"
+        },
+        {
+          "id": "bdd",
+          "sha256": "fa928a8d44f2e6799c3c4fd1416a739bba36d3d02400a1f4620659bd801957ba"
+        },
+        {
+          "id": "msdos_full",
+          "sha256": "1c152d8ad703be3bf631db0bab0728722df49200ab9dee6e6c17793849276993"
+        },
+        {
+          "id": "msdos_rep0",
+          "sha256": "92710671e936cf1baf28158c4b788afc95efe5fa35d8c06ee0d69248b9b91b75"
+        },
+        {
+          "id": "msdos_rep1",
+          "sha256": "dda29bbf29d38a4c7e9d129039bc78e2f46999dcefbc318e1c6410b5b534ced2"
+        },
+        {
+          "id": "msdos_rep2",
+          "sha256": "4da5adf28620979fa61bfc300b3fc8306be04208760d0bbd7baca6ba52501003"
+        },
+        {
+          "id": "msdos_rep3",
+          "sha256": "eb6f70c2c6b16cbbaa83a0c780928269e7dd0322c05e0ec31c33f8996f80aa5f"
+        },
+        {
+          "id": "msdos_rep4",
+          "sha256": "edb67bc58b1d7f562d8dbf4beeb11dc1331a977cc939768743ac5caf8b617f88"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_controls_errors_json",
+      "path": "research/phase2/task83b/artifacts/controls/errors.json",
+      "sha256": "38e0b9de817f645c4bec37c0d4a3e58baecccb040f5718dc069a72c7385a0bed",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "zl_prepared",
+          "sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692"
+        },
+        {
+          "id": "controls_config",
+          "sha256": "e93334ab787518d2c84baeb1c579cf0d634a610755d678ca31c2502babb6a2c6"
+        },
+        {
+          "id": "bdd",
+          "sha256": "fa928a8d44f2e6799c3c4fd1416a739bba36d3d02400a1f4620659bd801957ba"
+        },
+        {
+          "id": "msdos_full",
+          "sha256": "1c152d8ad703be3bf631db0bab0728722df49200ab9dee6e6c17793849276993"
+        },
+        {
+          "id": "msdos_rep0",
+          "sha256": "92710671e936cf1baf28158c4b788afc95efe5fa35d8c06ee0d69248b9b91b75"
+        },
+        {
+          "id": "msdos_rep1",
+          "sha256": "dda29bbf29d38a4c7e9d129039bc78e2f46999dcefbc318e1c6410b5b534ced2"
+        },
+        {
+          "id": "msdos_rep2",
+          "sha256": "4da5adf28620979fa61bfc300b3fc8306be04208760d0bbd7baca6ba52501003"
+        },
+        {
+          "id": "msdos_rep3",
+          "sha256": "eb6f70c2c6b16cbbaa83a0c780928269e7dd0322c05e0ec31c33f8996f80aa5f"
+        },
+        {
+          "id": "msdos_rep4",
+          "sha256": "edb67bc58b1d7f562d8dbf4beeb11dc1331a977cc939768743ac5caf8b617f88"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_controls_fingerprint_json",
+      "path": "research/phase2/task83b/artifacts/controls/fingerprint.json",
+      "sha256": "894a3b4f450077bfd1a5774c3a130b69468d27fbb92df07eb17649a5623703a5",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "zl_prepared",
+          "sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692"
+        },
+        {
+          "id": "controls_config",
+          "sha256": "e93334ab787518d2c84baeb1c579cf0d634a610755d678ca31c2502babb6a2c6"
+        },
+        {
+          "id": "bdd",
+          "sha256": "fa928a8d44f2e6799c3c4fd1416a739bba36d3d02400a1f4620659bd801957ba"
+        },
+        {
+          "id": "msdos_full",
+          "sha256": "1c152d8ad703be3bf631db0bab0728722df49200ab9dee6e6c17793849276993"
+        },
+        {
+          "id": "msdos_rep0",
+          "sha256": "92710671e936cf1baf28158c4b788afc95efe5fa35d8c06ee0d69248b9b91b75"
+        },
+        {
+          "id": "msdos_rep1",
+          "sha256": "dda29bbf29d38a4c7e9d129039bc78e2f46999dcefbc318e1c6410b5b534ced2"
+        },
+        {
+          "id": "msdos_rep2",
+          "sha256": "4da5adf28620979fa61bfc300b3fc8306be04208760d0bbd7baca6ba52501003"
+        },
+        {
+          "id": "msdos_rep3",
+          "sha256": "eb6f70c2c6b16cbbaa83a0c780928269e7dd0322c05e0ec31c33f8996f80aa5f"
+        },
+        {
+          "id": "msdos_rep4",
+          "sha256": "edb67bc58b1d7f562d8dbf4beeb11dc1331a977cc939768743ac5caf8b617f88"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ],
+      "embedded_bindings": [
+        {
+          "json_path": "primary.corpus.sha256",
+          "parent_id": "zl_prepared"
+        },
+        {
+          "json_path": "controls.0.corpus.sha256",
+          "parent_id": "msdos_full"
+        },
+        {
+          "json_path": "controls.1.corpus.sha256",
+          "parent_id": "msdos_rep0"
+        },
+        {
+          "json_path": "controls.2.corpus.sha256",
+          "parent_id": "msdos_rep1"
+        },
+        {
+          "json_path": "controls.3.corpus.sha256",
+          "parent_id": "msdos_rep2"
+        },
+        {
+          "json_path": "controls.4.corpus.sha256",
+          "parent_id": "msdos_rep3"
+        },
+        {
+          "json_path": "controls.5.corpus.sha256",
+          "parent_id": "msdos_rep4"
+        },
+        {
+          "json_path": "controls.6.corpus.sha256",
+          "parent_id": "bdd"
+        }
+      ]
+    },
+    {
+      "id": "artifact_controls_fingerprint_v2_candidate_json",
+      "path": "research/phase2/task83b/artifacts/controls/fingerprint_v2_candidate.json",
+      "sha256": "894a3b4f450077bfd1a5774c3a130b69468d27fbb92df07eb17649a5623703a5",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "zl_prepared",
+          "sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692"
+        },
+        {
+          "id": "controls_config",
+          "sha256": "e93334ab787518d2c84baeb1c579cf0d634a610755d678ca31c2502babb6a2c6"
+        },
+        {
+          "id": "bdd",
+          "sha256": "fa928a8d44f2e6799c3c4fd1416a739bba36d3d02400a1f4620659bd801957ba"
+        },
+        {
+          "id": "msdos_full",
+          "sha256": "1c152d8ad703be3bf631db0bab0728722df49200ab9dee6e6c17793849276993"
+        },
+        {
+          "id": "msdos_rep0",
+          "sha256": "92710671e936cf1baf28158c4b788afc95efe5fa35d8c06ee0d69248b9b91b75"
+        },
+        {
+          "id": "msdos_rep1",
+          "sha256": "dda29bbf29d38a4c7e9d129039bc78e2f46999dcefbc318e1c6410b5b534ced2"
+        },
+        {
+          "id": "msdos_rep2",
+          "sha256": "4da5adf28620979fa61bfc300b3fc8306be04208760d0bbd7baca6ba52501003"
+        },
+        {
+          "id": "msdos_rep3",
+          "sha256": "eb6f70c2c6b16cbbaa83a0c780928269e7dd0322c05e0ec31c33f8996f80aa5f"
+        },
+        {
+          "id": "msdos_rep4",
+          "sha256": "edb67bc58b1d7f562d8dbf4beeb11dc1331a977cc939768743ac5caf8b617f88"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_controls_freeze_manifest_json",
+      "path": "research/phase2/task83b/artifacts/controls/freeze_manifest.json",
+      "sha256": "718ac7c25409f3286c5d9d88cddbc68eb0d3547b1ed4aab9f2360aef1bf8a669",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "zl_prepared",
+          "sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692"
+        },
+        {
+          "id": "controls_config",
+          "sha256": "e93334ab787518d2c84baeb1c579cf0d634a610755d678ca31c2502babb6a2c6"
+        },
+        {
+          "id": "bdd",
+          "sha256": "fa928a8d44f2e6799c3c4fd1416a739bba36d3d02400a1f4620659bd801957ba"
+        },
+        {
+          "id": "msdos_full",
+          "sha256": "1c152d8ad703be3bf631db0bab0728722df49200ab9dee6e6c17793849276993"
+        },
+        {
+          "id": "msdos_rep0",
+          "sha256": "92710671e936cf1baf28158c4b788afc95efe5fa35d8c06ee0d69248b9b91b75"
+        },
+        {
+          "id": "msdos_rep1",
+          "sha256": "dda29bbf29d38a4c7e9d129039bc78e2f46999dcefbc318e1c6410b5b534ced2"
+        },
+        {
+          "id": "msdos_rep2",
+          "sha256": "4da5adf28620979fa61bfc300b3fc8306be04208760d0bbd7baca6ba52501003"
+        },
+        {
+          "id": "msdos_rep3",
+          "sha256": "eb6f70c2c6b16cbbaa83a0c780928269e7dd0322c05e0ec31c33f8996f80aa5f"
+        },
+        {
+          "id": "msdos_rep4",
+          "sha256": "edb67bc58b1d7f562d8dbf4beeb11dc1331a977cc939768743ac5caf8b617f88"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ],
+      "embedded_bindings": [
+        {
+          "json_path": "corpus_sha256",
+          "parent_id": "zl_prepared"
+        }
+      ]
+    },
+    {
+      "id": "artifact_controls_hierarchical_null_registry_json",
+      "path": "research/phase2/task83b/artifacts/controls/hierarchical_null_registry.json",
+      "sha256": "3b21bb4e9a02f491bf88be1cbb10e837308151fb64c0341801882c190cd3c3df",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "zl_prepared",
+          "sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692"
+        },
+        {
+          "id": "controls_config",
+          "sha256": "e93334ab787518d2c84baeb1c579cf0d634a610755d678ca31c2502babb6a2c6"
+        },
+        {
+          "id": "bdd",
+          "sha256": "fa928a8d44f2e6799c3c4fd1416a739bba36d3d02400a1f4620659bd801957ba"
+        },
+        {
+          "id": "msdos_full",
+          "sha256": "1c152d8ad703be3bf631db0bab0728722df49200ab9dee6e6c17793849276993"
+        },
+        {
+          "id": "msdos_rep0",
+          "sha256": "92710671e936cf1baf28158c4b788afc95efe5fa35d8c06ee0d69248b9b91b75"
+        },
+        {
+          "id": "msdos_rep1",
+          "sha256": "dda29bbf29d38a4c7e9d129039bc78e2f46999dcefbc318e1c6410b5b534ced2"
+        },
+        {
+          "id": "msdos_rep2",
+          "sha256": "4da5adf28620979fa61bfc300b3fc8306be04208760d0bbd7baca6ba52501003"
+        },
+        {
+          "id": "msdos_rep3",
+          "sha256": "eb6f70c2c6b16cbbaa83a0c780928269e7dd0322c05e0ec31c33f8996f80aa5f"
+        },
+        {
+          "id": "msdos_rep4",
+          "sha256": "edb67bc58b1d7f562d8dbf4beeb11dc1331a977cc939768743ac5caf8b617f88"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_controls_ivtff_metadata_audit_json",
+      "path": "research/phase2/task83b/artifacts/controls/ivtff_metadata_audit.json",
+      "sha256": "a77fa46a325bf46d31e7eb2d1117aad190d366e51f4df94835143bb3c0f8d198",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "zl_prepared",
+          "sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692"
+        },
+        {
+          "id": "controls_config",
+          "sha256": "e93334ab787518d2c84baeb1c579cf0d634a610755d678ca31c2502babb6a2c6"
+        },
+        {
+          "id": "bdd",
+          "sha256": "fa928a8d44f2e6799c3c4fd1416a739bba36d3d02400a1f4620659bd801957ba"
+        },
+        {
+          "id": "msdos_full",
+          "sha256": "1c152d8ad703be3bf631db0bab0728722df49200ab9dee6e6c17793849276993"
+        },
+        {
+          "id": "msdos_rep0",
+          "sha256": "92710671e936cf1baf28158c4b788afc95efe5fa35d8c06ee0d69248b9b91b75"
+        },
+        {
+          "id": "msdos_rep1",
+          "sha256": "dda29bbf29d38a4c7e9d129039bc78e2f46999dcefbc318e1c6410b5b534ced2"
+        },
+        {
+          "id": "msdos_rep2",
+          "sha256": "4da5adf28620979fa61bfc300b3fc8306be04208760d0bbd7baca6ba52501003"
+        },
+        {
+          "id": "msdos_rep3",
+          "sha256": "eb6f70c2c6b16cbbaa83a0c780928269e7dd0322c05e0ec31c33f8996f80aa5f"
+        },
+        {
+          "id": "msdos_rep4",
+          "sha256": "edb67bc58b1d7f562d8dbf4beeb11dc1331a977cc939768743ac5caf8b617f88"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_controls_line_profiles_json",
+      "path": "research/phase2/task83b/artifacts/controls/line_profiles.json",
+      "sha256": "6beea7346702b5bdec0f9cddb9c66337318d02b078f0a312e3560dce0ac6dce1",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "zl_prepared",
+          "sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692"
+        },
+        {
+          "id": "controls_config",
+          "sha256": "e93334ab787518d2c84baeb1c579cf0d634a610755d678ca31c2502babb6a2c6"
+        },
+        {
+          "id": "bdd",
+          "sha256": "fa928a8d44f2e6799c3c4fd1416a739bba36d3d02400a1f4620659bd801957ba"
+        },
+        {
+          "id": "msdos_full",
+          "sha256": "1c152d8ad703be3bf631db0bab0728722df49200ab9dee6e6c17793849276993"
+        },
+        {
+          "id": "msdos_rep0",
+          "sha256": "92710671e936cf1baf28158c4b788afc95efe5fa35d8c06ee0d69248b9b91b75"
+        },
+        {
+          "id": "msdos_rep1",
+          "sha256": "dda29bbf29d38a4c7e9d129039bc78e2f46999dcefbc318e1c6410b5b534ced2"
+        },
+        {
+          "id": "msdos_rep2",
+          "sha256": "4da5adf28620979fa61bfc300b3fc8306be04208760d0bbd7baca6ba52501003"
+        },
+        {
+          "id": "msdos_rep3",
+          "sha256": "eb6f70c2c6b16cbbaa83a0c780928269e7dd0322c05e0ec31c33f8996f80aa5f"
+        },
+        {
+          "id": "msdos_rep4",
+          "sha256": "edb67bc58b1d7f562d8dbf4beeb11dc1331a977cc939768743ac5caf8b617f88"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_controls_metric_registry_json",
+      "path": "research/phase2/task83b/artifacts/controls/metric_registry.json",
+      "sha256": "61cb0a6cd3353f00234f7651f4d32e4161fb4df8ebac049b466597e3ed28db8e",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "zl_prepared",
+          "sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692"
+        },
+        {
+          "id": "controls_config",
+          "sha256": "e93334ab787518d2c84baeb1c579cf0d634a610755d678ca31c2502babb6a2c6"
+        },
+        {
+          "id": "bdd",
+          "sha256": "fa928a8d44f2e6799c3c4fd1416a739bba36d3d02400a1f4620659bd801957ba"
+        },
+        {
+          "id": "msdos_full",
+          "sha256": "1c152d8ad703be3bf631db0bab0728722df49200ab9dee6e6c17793849276993"
+        },
+        {
+          "id": "msdos_rep0",
+          "sha256": "92710671e936cf1baf28158c4b788afc95efe5fa35d8c06ee0d69248b9b91b75"
+        },
+        {
+          "id": "msdos_rep1",
+          "sha256": "dda29bbf29d38a4c7e9d129039bc78e2f46999dcefbc318e1c6410b5b534ced2"
+        },
+        {
+          "id": "msdos_rep2",
+          "sha256": "4da5adf28620979fa61bfc300b3fc8306be04208760d0bbd7baca6ba52501003"
+        },
+        {
+          "id": "msdos_rep3",
+          "sha256": "eb6f70c2c6b16cbbaa83a0c780928269e7dd0322c05e0ec31c33f8996f80aa5f"
+        },
+        {
+          "id": "msdos_rep4",
+          "sha256": "edb67bc58b1d7f562d8dbf4beeb11dc1331a977cc939768743ac5caf8b617f88"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_controls_negative_evidence_registry_json",
+      "path": "research/phase2/task83b/artifacts/controls/negative_evidence_registry.json",
+      "sha256": "5699a89f64a2f8d67f5919cc39ec3958a75861dc1a214c4ca63378591e63f415",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "zl_prepared",
+          "sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692"
+        },
+        {
+          "id": "controls_config",
+          "sha256": "e93334ab787518d2c84baeb1c579cf0d634a610755d678ca31c2502babb6a2c6"
+        },
+        {
+          "id": "bdd",
+          "sha256": "fa928a8d44f2e6799c3c4fd1416a739bba36d3d02400a1f4620659bd801957ba"
+        },
+        {
+          "id": "msdos_full",
+          "sha256": "1c152d8ad703be3bf631db0bab0728722df49200ab9dee6e6c17793849276993"
+        },
+        {
+          "id": "msdos_rep0",
+          "sha256": "92710671e936cf1baf28158c4b788afc95efe5fa35d8c06ee0d69248b9b91b75"
+        },
+        {
+          "id": "msdos_rep1",
+          "sha256": "dda29bbf29d38a4c7e9d129039bc78e2f46999dcefbc318e1c6410b5b534ced2"
+        },
+        {
+          "id": "msdos_rep2",
+          "sha256": "4da5adf28620979fa61bfc300b3fc8306be04208760d0bbd7baca6ba52501003"
+        },
+        {
+          "id": "msdos_rep3",
+          "sha256": "eb6f70c2c6b16cbbaa83a0c780928269e7dd0322c05e0ec31c33f8996f80aa5f"
+        },
+        {
+          "id": "msdos_rep4",
+          "sha256": "edb67bc58b1d7f562d8dbf4beeb11dc1331a977cc939768743ac5caf8b617f88"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_controls_occurrence_metadata_jsonl",
+      "path": "research/phase2/task83b/artifacts/controls/occurrence_metadata.jsonl",
+      "sha256": "ba0342e15d8c468ec4e9f741e97cdb4a11938fe1f0ae3ac4338b73aaf1bd773a",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "zl_prepared",
+          "sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692"
+        },
+        {
+          "id": "controls_config",
+          "sha256": "e93334ab787518d2c84baeb1c579cf0d634a610755d678ca31c2502babb6a2c6"
+        },
+        {
+          "id": "bdd",
+          "sha256": "fa928a8d44f2e6799c3c4fd1416a739bba36d3d02400a1f4620659bd801957ba"
+        },
+        {
+          "id": "msdos_full",
+          "sha256": "1c152d8ad703be3bf631db0bab0728722df49200ab9dee6e6c17793849276993"
+        },
+        {
+          "id": "msdos_rep0",
+          "sha256": "92710671e936cf1baf28158c4b788afc95efe5fa35d8c06ee0d69248b9b91b75"
+        },
+        {
+          "id": "msdos_rep1",
+          "sha256": "dda29bbf29d38a4c7e9d129039bc78e2f46999dcefbc318e1c6410b5b534ced2"
+        },
+        {
+          "id": "msdos_rep2",
+          "sha256": "4da5adf28620979fa61bfc300b3fc8306be04208760d0bbd7baca6ba52501003"
+        },
+        {
+          "id": "msdos_rep3",
+          "sha256": "eb6f70c2c6b16cbbaa83a0c780928269e7dd0322c05e0ec31c33f8996f80aa5f"
+        },
+        {
+          "id": "msdos_rep4",
+          "sha256": "edb67bc58b1d7f562d8dbf4beeb11dc1331a977cc939768743ac5caf8b617f88"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_controls_raw_results_json",
+      "path": "research/phase2/task83b/artifacts/controls/raw_results.json",
+      "sha256": "8d73b5d87d5ca31ab34e7f1b3be7b71ad79d8094478638a251139eafe6888d37",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "zl_prepared",
+          "sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692"
+        },
+        {
+          "id": "controls_config",
+          "sha256": "e93334ab787518d2c84baeb1c579cf0d634a610755d678ca31c2502babb6a2c6"
+        },
+        {
+          "id": "bdd",
+          "sha256": "fa928a8d44f2e6799c3c4fd1416a739bba36d3d02400a1f4620659bd801957ba"
+        },
+        {
+          "id": "msdos_full",
+          "sha256": "1c152d8ad703be3bf631db0bab0728722df49200ab9dee6e6c17793849276993"
+        },
+        {
+          "id": "msdos_rep0",
+          "sha256": "92710671e936cf1baf28158c4b788afc95efe5fa35d8c06ee0d69248b9b91b75"
+        },
+        {
+          "id": "msdos_rep1",
+          "sha256": "dda29bbf29d38a4c7e9d129039bc78e2f46999dcefbc318e1c6410b5b534ced2"
+        },
+        {
+          "id": "msdos_rep2",
+          "sha256": "4da5adf28620979fa61bfc300b3fc8306be04208760d0bbd7baca6ba52501003"
+        },
+        {
+          "id": "msdos_rep3",
+          "sha256": "eb6f70c2c6b16cbbaa83a0c780928269e7dd0322c05e0ec31c33f8996f80aa5f"
+        },
+        {
+          "id": "msdos_rep4",
+          "sha256": "edb67bc58b1d7f562d8dbf4beeb11dc1331a977cc939768743ac5caf8b617f88"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ],
+      "embedded_bindings": [
+        {
+          "json_path": "fingerprint.primary.corpus.sha256",
+          "parent_id": "zl_prepared"
+        },
+        {
+          "json_path": "fingerprint.controls.0.corpus.sha256",
+          "parent_id": "msdos_full"
+        },
+        {
+          "json_path": "fingerprint.controls.1.corpus.sha256",
+          "parent_id": "msdos_rep0"
+        },
+        {
+          "json_path": "fingerprint.controls.2.corpus.sha256",
+          "parent_id": "msdos_rep1"
+        },
+        {
+          "json_path": "fingerprint.controls.3.corpus.sha256",
+          "parent_id": "msdos_rep2"
+        },
+        {
+          "json_path": "fingerprint.controls.4.corpus.sha256",
+          "parent_id": "msdos_rep3"
+        },
+        {
+          "json_path": "fingerprint.controls.5.corpus.sha256",
+          "parent_id": "msdos_rep4"
+        },
+        {
+          "json_path": "fingerprint.controls.6.corpus.sha256",
+          "parent_id": "bdd"
+        }
+      ]
+    },
+    {
+      "id": "artifact_controls_redundancy_matrix_json",
+      "path": "research/phase2/task83b/artifacts/controls/redundancy_matrix.json",
+      "sha256": "c494ba359c8b36158d23ef04a18047c2b56e1e7a363e8351338f503430d5e6fc",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "zl_prepared",
+          "sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692"
+        },
+        {
+          "id": "controls_config",
+          "sha256": "e93334ab787518d2c84baeb1c579cf0d634a610755d678ca31c2502babb6a2c6"
+        },
+        {
+          "id": "bdd",
+          "sha256": "fa928a8d44f2e6799c3c4fd1416a739bba36d3d02400a1f4620659bd801957ba"
+        },
+        {
+          "id": "msdos_full",
+          "sha256": "1c152d8ad703be3bf631db0bab0728722df49200ab9dee6e6c17793849276993"
+        },
+        {
+          "id": "msdos_rep0",
+          "sha256": "92710671e936cf1baf28158c4b788afc95efe5fa35d8c06ee0d69248b9b91b75"
+        },
+        {
+          "id": "msdos_rep1",
+          "sha256": "dda29bbf29d38a4c7e9d129039bc78e2f46999dcefbc318e1c6410b5b534ced2"
+        },
+        {
+          "id": "msdos_rep2",
+          "sha256": "4da5adf28620979fa61bfc300b3fc8306be04208760d0bbd7baca6ba52501003"
+        },
+        {
+          "id": "msdos_rep3",
+          "sha256": "eb6f70c2c6b16cbbaa83a0c780928269e7dd0322c05e0ec31c33f8996f80aa5f"
+        },
+        {
+          "id": "msdos_rep4",
+          "sha256": "edb67bc58b1d7f562d8dbf4beeb11dc1331a977cc939768743ac5caf8b617f88"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_controls_report_md",
+      "path": "research/phase2/task83b/artifacts/controls/report.md",
+      "sha256": "1c15b0870c68a5c74682bf994d9e9f39734cb28506752c07a8c0a114fee54ad7",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "zl_prepared",
+          "sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692"
+        },
+        {
+          "id": "controls_config",
+          "sha256": "e93334ab787518d2c84baeb1c579cf0d634a610755d678ca31c2502babb6a2c6"
+        },
+        {
+          "id": "bdd",
+          "sha256": "fa928a8d44f2e6799c3c4fd1416a739bba36d3d02400a1f4620659bd801957ba"
+        },
+        {
+          "id": "msdos_full",
+          "sha256": "1c152d8ad703be3bf631db0bab0728722df49200ab9dee6e6c17793849276993"
+        },
+        {
+          "id": "msdos_rep0",
+          "sha256": "92710671e936cf1baf28158c4b788afc95efe5fa35d8c06ee0d69248b9b91b75"
+        },
+        {
+          "id": "msdos_rep1",
+          "sha256": "dda29bbf29d38a4c7e9d129039bc78e2f46999dcefbc318e1c6410b5b534ced2"
+        },
+        {
+          "id": "msdos_rep2",
+          "sha256": "4da5adf28620979fa61bfc300b3fc8306be04208760d0bbd7baca6ba52501003"
+        },
+        {
+          "id": "msdos_rep3",
+          "sha256": "eb6f70c2c6b16cbbaa83a0c780928269e7dd0322c05e0ec31c33f8996f80aa5f"
+        },
+        {
+          "id": "msdos_rep4",
+          "sha256": "edb67bc58b1d7f562d8dbf4beeb11dc1331a977cc939768743ac5caf8b617f88"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_controls_segmentation_json",
+      "path": "research/phase2/task83b/artifacts/controls/segmentation.json",
+      "sha256": "28712ed6882eb0856f966740f504e2aff981ad7ec0235bc14452a6349ab61594",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "zl_prepared",
+          "sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692"
+        },
+        {
+          "id": "controls_config",
+          "sha256": "e93334ab787518d2c84baeb1c579cf0d634a610755d678ca31c2502babb6a2c6"
+        },
+        {
+          "id": "bdd",
+          "sha256": "fa928a8d44f2e6799c3c4fd1416a739bba36d3d02400a1f4620659bd801957ba"
+        },
+        {
+          "id": "msdos_full",
+          "sha256": "1c152d8ad703be3bf631db0bab0728722df49200ab9dee6e6c17793849276993"
+        },
+        {
+          "id": "msdos_rep0",
+          "sha256": "92710671e936cf1baf28158c4b788afc95efe5fa35d8c06ee0d69248b9b91b75"
+        },
+        {
+          "id": "msdos_rep1",
+          "sha256": "dda29bbf29d38a4c7e9d129039bc78e2f46999dcefbc318e1c6410b5b534ced2"
+        },
+        {
+          "id": "msdos_rep2",
+          "sha256": "4da5adf28620979fa61bfc300b3fc8306be04208760d0bbd7baca6ba52501003"
+        },
+        {
+          "id": "msdos_rep3",
+          "sha256": "eb6f70c2c6b16cbbaa83a0c780928269e7dd0322c05e0ec31c33f8996f80aa5f"
+        },
+        {
+          "id": "msdos_rep4",
+          "sha256": "edb67bc58b1d7f562d8dbf4beeb11dc1331a977cc939768743ac5caf8b617f88"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_controls_stability_matrix_json",
+      "path": "research/phase2/task83b/artifacts/controls/stability_matrix.json",
+      "sha256": "e20faf90a4c0881639752979c9e352f6284c95655a9b4d8cdf09cbd719b88e4f",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "zl_prepared",
+          "sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692"
+        },
+        {
+          "id": "controls_config",
+          "sha256": "e93334ab787518d2c84baeb1c579cf0d634a610755d678ca31c2502babb6a2c6"
+        },
+        {
+          "id": "bdd",
+          "sha256": "fa928a8d44f2e6799c3c4fd1416a739bba36d3d02400a1f4620659bd801957ba"
+        },
+        {
+          "id": "msdos_full",
+          "sha256": "1c152d8ad703be3bf631db0bab0728722df49200ab9dee6e6c17793849276993"
+        },
+        {
+          "id": "msdos_rep0",
+          "sha256": "92710671e936cf1baf28158c4b788afc95efe5fa35d8c06ee0d69248b9b91b75"
+        },
+        {
+          "id": "msdos_rep1",
+          "sha256": "dda29bbf29d38a4c7e9d129039bc78e2f46999dcefbc318e1c6410b5b534ced2"
+        },
+        {
+          "id": "msdos_rep2",
+          "sha256": "4da5adf28620979fa61bfc300b3fc8306be04208760d0bbd7baca6ba52501003"
+        },
+        {
+          "id": "msdos_rep3",
+          "sha256": "eb6f70c2c6b16cbbaa83a0c780928269e7dd0322c05e0ec31c33f8996f80aa5f"
+        },
+        {
+          "id": "msdos_rep4",
+          "sha256": "edb67bc58b1d7f562d8dbf4beeb11dc1331a977cc939768743ac5caf8b617f88"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_controls_task75_task77_audit_json",
+      "path": "research/phase2/task83b/artifacts/controls/task75_task77_audit.json",
+      "sha256": "6b37a74039932ad6d297d1b4ec84263987bf109cc0de95e54911b16dc8f5cf5c",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "zl_prepared",
+          "sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692"
+        },
+        {
+          "id": "controls_config",
+          "sha256": "e93334ab787518d2c84baeb1c579cf0d634a610755d678ca31c2502babb6a2c6"
+        },
+        {
+          "id": "bdd",
+          "sha256": "fa928a8d44f2e6799c3c4fd1416a739bba36d3d02400a1f4620659bd801957ba"
+        },
+        {
+          "id": "msdos_full",
+          "sha256": "1c152d8ad703be3bf631db0bab0728722df49200ab9dee6e6c17793849276993"
+        },
+        {
+          "id": "msdos_rep0",
+          "sha256": "92710671e936cf1baf28158c4b788afc95efe5fa35d8c06ee0d69248b9b91b75"
+        },
+        {
+          "id": "msdos_rep1",
+          "sha256": "dda29bbf29d38a4c7e9d129039bc78e2f46999dcefbc318e1c6410b5b534ced2"
+        },
+        {
+          "id": "msdos_rep2",
+          "sha256": "4da5adf28620979fa61bfc300b3fc8306be04208760d0bbd7baca6ba52501003"
+        },
+        {
+          "id": "msdos_rep3",
+          "sha256": "eb6f70c2c6b16cbbaa83a0c780928269e7dd0322c05e0ec31c33f8996f80aa5f"
+        },
+        {
+          "id": "msdos_rep4",
+          "sha256": "edb67bc58b1d7f562d8dbf4beeb11dc1331a977cc939768743ac5caf8b617f88"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_controls_task79_verdicts_json",
+      "path": "research/phase2/task83b/artifacts/controls/task79_verdicts.json",
+      "sha256": "d5daa430be909068afe12bb6b11bde3ceeda0a3e25bcb243936cdd59e7b7a8a8",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "zl_prepared",
+          "sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692"
+        },
+        {
+          "id": "controls_config",
+          "sha256": "e93334ab787518d2c84baeb1c579cf0d634a610755d678ca31c2502babb6a2c6"
+        },
+        {
+          "id": "bdd",
+          "sha256": "fa928a8d44f2e6799c3c4fd1416a739bba36d3d02400a1f4620659bd801957ba"
+        },
+        {
+          "id": "msdos_full",
+          "sha256": "1c152d8ad703be3bf631db0bab0728722df49200ab9dee6e6c17793849276993"
+        },
+        {
+          "id": "msdos_rep0",
+          "sha256": "92710671e936cf1baf28158c4b788afc95efe5fa35d8c06ee0d69248b9b91b75"
+        },
+        {
+          "id": "msdos_rep1",
+          "sha256": "dda29bbf29d38a4c7e9d129039bc78e2f46999dcefbc318e1c6410b5b534ced2"
+        },
+        {
+          "id": "msdos_rep2",
+          "sha256": "4da5adf28620979fa61bfc300b3fc8306be04208760d0bbd7baca6ba52501003"
+        },
+        {
+          "id": "msdos_rep3",
+          "sha256": "eb6f70c2c6b16cbbaa83a0c780928269e7dd0322c05e0ec31c33f8996f80aa5f"
+        },
+        {
+          "id": "msdos_rep4",
+          "sha256": "edb67bc58b1d7f562d8dbf4beeb11dc1331a977cc939768743ac5caf8b617f88"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "artifact_controls_warnings_json",
+      "path": "research/phase2/task83b/artifacts/controls/warnings.json",
+      "sha256": "006c1afa3b400dd3a2ef29736d6255b9fcf3c68faa40f95d364b40f8cc9d5b4a",
+      "kind": "normative",
+      "producer": "fingerprint-v2-analyze",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "-config",
+        "bound configuration parent"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "zl_prepared",
+          "sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692"
+        },
+        {
+          "id": "controls_config",
+          "sha256": "e93334ab787518d2c84baeb1c579cf0d634a610755d678ca31c2502babb6a2c6"
+        },
+        {
+          "id": "bdd",
+          "sha256": "fa928a8d44f2e6799c3c4fd1416a739bba36d3d02400a1f4620659bd801957ba"
+        },
+        {
+          "id": "msdos_full",
+          "sha256": "1c152d8ad703be3bf631db0bab0728722df49200ab9dee6e6c17793849276993"
+        },
+        {
+          "id": "msdos_rep0",
+          "sha256": "92710671e936cf1baf28158c4b788afc95efe5fa35d8c06ee0d69248b9b91b75"
+        },
+        {
+          "id": "msdos_rep1",
+          "sha256": "dda29bbf29d38a4c7e9d129039bc78e2f46999dcefbc318e1c6410b5b534ced2"
+        },
+        {
+          "id": "msdos_rep2",
+          "sha256": "4da5adf28620979fa61bfc300b3fc8306be04208760d0bbd7baca6ba52501003"
+        },
+        {
+          "id": "msdos_rep3",
+          "sha256": "eb6f70c2c6b16cbbaa83a0c780928269e7dd0322c05e0ec31c33f8996f80aa5f"
+        },
+        {
+          "id": "msdos_rep4",
+          "sha256": "edb67bc58b1d7f562d8dbf4beeb11dc1331a977cc939768743ac5caf8b617f88"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "pf4_hierarchy",
+      "path": "research/phase2/task83b/artifacts/pf4_hierarchy_result.json",
+      "sha256": "3ce00b6287a3983a4b6bb73a651110cf3af67894ed967095453edc1992448199",
+      "kind": "normative",
+      "producer": "task79c-pf4-hr",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "-pf4-permutations",
+        "1000",
+        "-pf4-seed",
+        "20260824",
+        "-hr-folds",
+        "5",
+        "-hr-seed",
+        "40260824",
+        "-hr-min-group-size",
+        "5"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "artifact_zl_line_profiles_json",
+          "sha256": "6beea7346702b5bdec0f9cddb9c66337318d02b078f0a312e3560dce0ac6dce1"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "combined_discriminative",
+      "path": "research/phase2/task83b/artifacts/combined_discriminative_validation.json",
+      "sha256": "4d7bcf6417b6b3568a1d5bfb6a614083d8509b11f5280c88e32752bdc995f332",
+      "kind": "normative",
+      "producer": "Task83b deterministic concatenation",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "deterministic generation from bound parent artifacts"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "artifact_zl_discriminative_validation_json",
+          "sha256": "08c22baf40f42d3ec093176a38d2200af1a1e2553cb5b6ec5adfaeac88ae0dcb"
+        },
+        {
+          "id": "artifact_controls_discriminative_validation_json",
+          "sha256": "a67336d535ccff4378978364fe6ceefda69b8e63ec5559cfc0ae04df8cff5751"
+        }
+      ]
+    },
+    {
+      "id": "distance_pareto",
+      "path": "research/phase2/task83b/artifacts/full_portfolio_distance_pareto.json",
+      "sha256": "8ff1de222646380413fb423979df8e1b94952332f3f18b89da0f0f3471849d93",
+      "kind": "normative",
+      "producer": "task79c-distance-pareto",
+      "producer_git_commit": "16b0b1a8160159e3310bfadb6f43aa2dba0af7bb",
+      "producer_arguments": [
+        "-discriminative",
+        "combined_discriminative",
+        "-registry",
+        "artifact_zl_metric_registry_json"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "combined_discriminative",
+          "sha256": "4d7bcf6417b6b3568a1d5bfb6a614083d8509b11f5280c88e32752bdc995f332"
+        },
+        {
+          "id": "artifact_zl_metric_registry_json",
+          "sha256": "61cb0a6cd3353f00234f7651f4d32e4161fb4df8ebac049b466597e3ed28db8e"
+        },
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "refrozen_registry",
+      "path": "research/phase2/task83b/F2_METRIC_REGISTRY_REFROZEN.tsv",
+      "sha256": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "kind": "normative",
+      "producer": "task83b-analyze byte-preserving refreeze",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4",
+      "producer_arguments": [
+        "deterministic generation from bound parent artifacts"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "old_registry",
+          "sha256": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035"
+        }
+      ]
+    },
+    {
+      "id": "multirun_audit",
+      "path": "research/phase2/task83b/MULTIRUN_REPRODUCIBILITY.tsv",
+      "sha256": "2b0102f9abd517a1151cc16c4260c17c7a8bd566e82e89684c4b95fb1c88ad27",
+      "kind": "normative",
+      "producer": "task83b-analyze",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4",
+      "producer_arguments": [
+        "deterministic generation from bound parent artifacts"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "effect_audit",
+      "path": "research/phase2/task83b/F2_DETERMINISTIC_EFFECT_AUDIT.tsv",
+      "sha256": "98dae69996b2f4976f1543126e659bd7dc14edc984163f19a14dbbc29415a169",
+      "kind": "normative",
+      "producer": "task83b-analyze",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4",
+      "producer_arguments": [
+        "deterministic generation from bound parent artifacts"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "old_zl_metrics",
+          "sha256": "96e43816a8896fd25ac733788c3d23c99facc772e3039fe0ad60492a3444592f"
+        },
+        {
+          "id": "old_it_metrics",
+          "sha256": "e50fbe0fd79c220fd4324ebea0f838605df51bac48fa261c3e914e6366d3cdcf"
+        },
+        {
+          "id": "artifact_zl_metric_registry_json",
+          "sha256": "61cb0a6cd3353f00234f7651f4d32e4161fb4df8ebac049b466597e3ed28db8e"
+        },
+        {
+          "id": "artifact_it_metric_registry_json",
+          "sha256": "92b6a0e8ee69a8bee78e42628e5357db0003cf959355f5651fcba31a862eccc3"
+        }
+      ]
+    },
+    {
+      "id": "monte_carlo_audit",
+      "path": "research/phase2/task83b/MONTE_CARLO_REFREEZE_AUDIT.tsv",
+      "sha256": "47465a5ed5b1faa238456e890440dc19797bd2fdf89432cd28edc5ee796a5315",
+      "kind": "normative",
+      "producer": "task83b-analyze",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4",
+      "producer_arguments": [
+        "deterministic generation from bound parent artifacts"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "old_zl_metrics",
+          "sha256": "96e43816a8896fd25ac733788c3d23c99facc772e3039fe0ad60492a3444592f"
+        },
+        {
+          "id": "old_it_metrics",
+          "sha256": "e50fbe0fd79c220fd4324ebea0f838605df51bac48fa261c3e914e6366d3cdcf"
+        },
+        {
+          "id": "artifact_zl_metric_registry_json",
+          "sha256": "61cb0a6cd3353f00234f7651f4d32e4161fb4df8ebac049b466597e3ed28db8e"
+        },
+        {
+          "id": "artifact_it_metric_registry_json",
+          "sha256": "92b6a0e8ee69a8bee78e42628e5357db0003cf959355f5651fcba31a862eccc3"
+        }
+      ]
+    },
+    {
+      "id": "registry_equivalence",
+      "path": "research/phase2/task83b/F2_REGISTRY_SEMANTIC_EQUIVALENCE.tsv",
+      "sha256": "f9a606036616f1d3161a4f84076ab665bd4a165b1552c28cc40d1dc0091d6dfb",
+      "kind": "normative",
+      "producer": "task83b-analyze",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4",
+      "producer_arguments": [
+        "deterministic generation from bound parent artifacts"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "old_registry",
+          "sha256": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035"
+        },
+        {
+          "id": "refrozen_registry",
+          "sha256": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035"
+        }
+      ]
+    },
+    {
+      "id": "transcription_revalidation",
+      "path": "research/phase2/task83b/CROSS_TRANSCRIPTION_REVALIDATION.tsv",
+      "sha256": "dd659f39656ee3d21c5ce25929a390d96eedf7322c65a15b8c354ee56716dce4",
+      "kind": "normative",
+      "producer": "task83b-analyze",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4",
+      "producer_arguments": [
+        "deterministic generation from bound parent artifacts"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "old_stability",
+          "sha256": "264704981106fcc46c81b25c76a7777f0ada0ca26783d417e06756adf9068ad6"
+        },
+        {
+          "id": "artifact_zl_metric_registry_json",
+          "sha256": "61cb0a6cd3353f00234f7651f4d32e4161fb4df8ebac049b466597e3ed28db8e"
+        },
+        {
+          "id": "artifact_it_metric_registry_json",
+          "sha256": "92b6a0e8ee69a8bee78e42628e5357db0003cf959355f5651fcba31a862eccc3"
+        }
+      ]
+    },
+    {
+      "id": "pf4_revalidation",
+      "path": "research/phase2/task83b/PF4_REVALIDATION.tsv",
+      "sha256": "d46a05406b0d9cebe46ad96f77e106c6ca746dec165ef545ebcf1156f9adf6e4",
+      "kind": "normative",
+      "producer": "task83b-analyze",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4",
+      "producer_arguments": [
+        "deterministic generation from bound parent artifacts"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "old_pf4_hr",
+          "sha256": "76e7d8587d959e261bc3b3be197c3d0033ead4f50770bfc9cdbe759555284c1d"
+        },
+        {
+          "id": "pf4_hierarchy",
+          "sha256": "3ce00b6287a3983a4b6bb73a651110cf3af67894ed967095453edc1992448199"
+        }
+      ]
+    },
+    {
+      "id": "hierarchy_revalidation",
+      "path": "research/phase2/task83b/HIERARCHY_REVALIDATION.tsv",
+      "sha256": "ea7252a980e00f4c4fd5f71c689ea915824736a22a609c8ab9faa59392568c87",
+      "kind": "normative",
+      "producer": "task83b-analyze",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4",
+      "producer_arguments": [
+        "deterministic generation from bound parent artifacts"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "old_pf4_hr",
+          "sha256": "76e7d8587d959e261bc3b3be197c3d0033ead4f50770bfc9cdbe759555284c1d"
+        },
+        {
+          "id": "pf4_hierarchy",
+          "sha256": "3ce00b6287a3983a4b6bb73a651110cf3af67894ed967095453edc1992448199"
+        }
+      ]
+    },
+    {
+      "id": "control_revalidation",
+      "path": "research/phase2/task83b/CONTROL_ORDERING_REVALIDATION.tsv",
+      "sha256": "95558ffca2adbf2e6f796f147926a528365f8ad6763ffc35fe177166b54ae028",
+      "kind": "normative",
+      "producer": "task83b-analyze",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4",
+      "producer_arguments": [
+        "deterministic generation from bound parent artifacts"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "old_distance",
+          "sha256": "186fd948485f48f806afbf4bc74aa717caa933e84dac47cb695af5669fe84924"
+        },
+        {
+          "id": "distance_pareto",
+          "sha256": "8ff1de222646380413fb423979df8e1b94952332f3f18b89da0f0f3471849d93"
+        }
+      ]
+    },
+    {
+      "id": "verdict_stability",
+      "path": "research/phase2/task83b/TASK79C_DETERMINISTIC_VERDICT_STABILITY.tsv",
+      "sha256": "cb94aa29ed04c2220ab98405a4bdb80b34fda98a8ebd5b7b9b376ec0b521977b",
+      "kind": "normative",
+      "producer": "task83b-analyze",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4",
+      "producer_arguments": [
+        "deterministic generation from bound parent artifacts"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "transcription_revalidation",
+          "sha256": "dd659f39656ee3d21c5ce25929a390d96eedf7322c65a15b8c354ee56716dce4"
+        },
+        {
+          "id": "pf4_revalidation",
+          "sha256": "d46a05406b0d9cebe46ad96f77e106c6ca746dec165ef545ebcf1156f9adf6e4"
+        },
+        {
+          "id": "hierarchy_revalidation",
+          "sha256": "ea7252a980e00f4c4fd5f71c689ea915824736a22a609c8ab9faa59392568c87"
+        },
+        {
+          "id": "control_revalidation",
+          "sha256": "95558ffca2adbf2e6f796f147926a528365f8ad6763ffc35fe177166b54ae028"
+        },
+        {
+          "id": "effect_audit",
+          "sha256": "98dae69996b2f4976f1543126e659bd7dc14edc984163f19a14dbbc29415a169"
+        }
+      ]
+    },
+    {
+      "id": "defect_registry",
+      "path": "research/phase2/task83b/DETERMINISM_DEFECT_REGISTRY.tsv",
+      "sha256": "b0ab2b4978f1883eb05657477a97314a3726c55eceff049a720e1acbdbdf2f77",
+      "kind": "normative",
+      "producer": "task83b-analyze",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4",
+      "producer_arguments": [
+        "deterministic generation from bound parent artifacts"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        }
+      ]
+    },
+    {
+      "id": "semantics_audit",
+      "path": "research/phase2/task83b/SCIENTIFIC_SEMANTICS_AUDIT.tsv",
+      "sha256": "9a8ccb267b047e1794b2608ca25153ca0b976d88ec88250f43f246374247b968",
+      "kind": "normative",
+      "producer": "task83b-analyze",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4",
+      "producer_arguments": [
+        "deterministic generation from bound parent artifacts"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "defect_registry",
+          "sha256": "b0ab2b4978f1883eb05657477a97314a3726c55eceff049a720e1acbdbdf2f77"
+        },
+        {
+          "id": "old_registry",
+          "sha256": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035"
+        }
+      ]
+    },
+    {
+      "id": "prng_contract",
+      "path": "research/phase2/task83b/PRNG_DETERMINISM_CONTRACT.md",
+      "sha256": "356cffbefd064e7501c3e2dfe79408cb51b9b0349417002763592b67f3ac9a17",
+      "kind": "normative",
+      "producer": "task83b-analyze",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4",
+      "producer_arguments": [
+        "deterministic generation from bound parent artifacts"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "source_bundle",
+          "sha256": "138239ca7cc022a03220aef330bce1aeef84141bcb255643a4b8dd19c8d2745e"
+        },
+        {
+          "id": "old_registry",
+          "sha256": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035"
+        }
+      ]
+    },
+    {
+      "id": "task83b_design",
+      "path": "research/phase2/task83b/TASK83B_DESIGN.md",
+      "sha256": "30e4c87572db4b5ea60d7ea7cd0e68f56265ee4cea7f53d72f86f4ddce5de4ce",
+      "kind": "normative",
+      "producer": "task83b-analyze",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4",
+      "producer_arguments": [
+        "deterministic generation from bound parent artifacts"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "task83b_specification",
+          "sha256": "eadf343d0f809279d69cb20635da93f1e9f37424df2d77471c86c44d15362cbf"
+        },
+        {
+          "id": "old_registry",
+          "sha256": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035"
+        }
+      ]
+    },
+    {
+      "id": "downstream_impact",
+      "path": "research/phase2/task83b/DOWNSTREAM_FREEZE_IMPACT.tsv",
+      "sha256": "8ffd49a8fda59d090ad8926957b4d9ceaa838effff592a62d4735918966f70ac",
+      "kind": "normative",
+      "producer": "task83b-analyze",
+      "producer_git_commit": "c7aca5c6b554de6771b5e10a55da5f0e4a56c5e4",
+      "producer_arguments": [
+        "deterministic generation from bound parent artifacts"
+      ],
+      "seed_contract_identifier": "FINGERPRINT_V2.1_PRNG_CONTRACT",
+      "metric_registry_checksum": "7803afb24d5fd525eeeaae4aa6fec91263969aa49c85c92128adee9453389035",
+      "parents": [
+        {
+          "id": "task81_freeze",
+          "sha256": "51cde7b0d3fb24760170631bbab503b507426024f5a10c19c36e549c3ab6e5bb"
+        },
+        {
+          "id": "task82_manifest",
+          "sha256": "6458e619bed8b5e2dc135804d30f18ab667ec2b3ab118ce7cd4abd93c29d0df5"
+        },
+        {
+          "id": "task82a_manifest",
+          "sha256": "018992b905bdf8d587d3a2ee90ddaa7722aa37188f9a5c83bb837dbc65b92462"
+        },
+        {
+          "id": "task82a1_contract",
+          "sha256": "31d06df1842119205f6f25940c8f879239944b05f34b54f8bfc2c27706f7ea23"
+        },
+        {
+          "id": "task82b_manifest",
+          "sha256": "34d43b9c29b72e9a5a0b5cb6810abeb196512b98aa8eaa28faaa29eea9528d54"
+        }
+      ]
+    }
+  ]
+}

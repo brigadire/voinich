@@ -103,7 +103,13 @@ func medianF(v []float64) float64 {
 // progress (section 36).
 func Dominates(a, b map[string]float64) bool {
 	strictlyBetter := false
-	for family, av := range a {
+	families := make([]string, 0, len(a))
+	for family := range a {
+		families = append(families, family)
+	}
+	sort.Strings(families)
+	for _, family := range families {
+		av := a[family]
 		bv, ok := b[family]
 		if !ok {
 			continue

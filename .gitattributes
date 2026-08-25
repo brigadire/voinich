@@ -3,3 +3,7 @@
 experiments/** -whitespace
 # Natural-corpus fixtures preserve source line endings/spacing byte-for-byte.
 data_test/*.txt -whitespace
+# Task83b frozen JSON artifacts exceed GitHub's regular object size limit.
+research/phase2/task83b/artifacts/controls/fingerprint.json filter=lfs diff=lfs merge=lfs -text
+research/phase2/task83b/artifacts/controls/fingerprint_v2_candidate.json filter=lfs diff=lfs merge=lfs -text
+research/phase2/task83b/artifacts/controls/raw_results.json filter=lfs diff=lfs merge=lfs -text

@@ -336,15 +336,19 @@ func clusterAgreement(a, b []string) (ari, nmi, vi float64) {
 	}
 	sumComb := func(v int) float64 { return float64(v*(v-1)) / 2 }
 	sumIJ, sumI, sumJ := 0.0, 0.0, 0.0
-	for _, row := range contingency {
-		for _, v := range row {
+	for _, rowKey := range orderedKeys(contingency) {
+		row := contingency[rowKey]
+		for _, colKey := range orderedKeys(row) {
+			v := row[colKey]
 			sumIJ += sumComb(v)
 		}
 	}
-	for _, v := range rowTotal {
+	for _, key := range orderedKeys(rowTotal) {
+		v := rowTotal[key]
 		sumI += sumComb(v)
 	}
-	for _, v := range colTotal {
+	for _, key := range orderedKeys(colTotal) {
+		v := colTotal[key]
 		sumJ += sumComb(v)
 	}
 	total := sumComb(n)

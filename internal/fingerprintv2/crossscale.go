@@ -318,7 +318,8 @@ func cs2Test(c corpus, familyOf map[string]int, zoneOf map[string]string, repeti
 	nullFam, nullZone := make([]float64, repetitions), make([]float64, repetitions)
 	for r := 0; r < repetitions; r++ {
 		shuffled := map[int][]int{}
-		for lid, seq := range lines {
+		for _, lid := range lineIDs {
+			seq := lines[lid]
 			perm := rng.Perm(len(seq))
 			out := make([]int, len(seq))
 			for i, p := range perm {
@@ -581,6 +582,46 @@ func minLineDistance(a, b []int) int {
 	return best
 }
 
+func cs7PartialSpearman(editDist []float64, byBin map[int][]int, structOf func(i int) float64) (float64, int) {
+	sum, n := 0.0, 0
+	for _, bin := range orderedIntKeys(byBin) {
+		idxs := byBin[bin]
+		if len(idxs) < 5 {
+			continue
+		}
+		ex, sx, names := make([]float64, len(idxs)), make([]float64, len(idxs)), make([]string, len(idxs))
+		for j, i := range idxs {
+			ex[j], sx[j], names[j] = editDist[i], structOf(i), strconv.Itoa(i)
+		}
+		sum += spearman(ex, sx, names) * float64(len(idxs))
+		n += len(idxs)
+	}
+	return sum, n
+}
+
+func cs7PermutationNull(editDist, structDist []float64, byBin map[int][]int, repetitions int, rng *rand.Rand) []float64 {
+	null := make([]float64, repetitions)
+	for r := range null {
+		shuffled := append([]float64(nil), structDist...)
+		for _, bin := range orderedIntKeys(byBin) {
+			idxs := byBin[bin]
+			perm := rng.Perm(len(idxs))
+			orig := make([]float64, len(idxs))
+			for j, i := range idxs {
+				orig[j] = structDist[i]
+			}
+			for j, i := range idxs {
+				shuffled[i] = orig[perm[j]]
+			}
+		}
+		s, nn := cs7PartialSpearman(editDist, byBin, func(i int) float64 { return shuffled[i] })
+		if nn > 0 {
+			null[r] = math.Abs(s / float64(nn))
+		}
+	}
+	return null
+}
+
 func cs7Test(c corpus, glyphs map[string][]string, freq map[string]int, sampleSize, repetitions int, rng *rand.Rand) (NullTest, int, bool) {
 	vocab := vocabulary(c)
 	if len(vocab) < 20 {
@@ -627,44 +668,12 @@ func cs7Test(c corpus, glyphs map[string][]string, freq map[string]int, sampleSi
 		structDist[i] = float64(minLineDistance(occLines[p.a], occLines[p.b]))
 		byBin[p.bin] = append(byBin[p.bin], i)
 	}
-	partialSpearman := func(structOf func(i int) float64) (float64, int) {
-		sum, n := 0.0, 0
-		for _, idxs := range byBin {
-			if len(idxs) < 5 {
-				continue
-			}
-			ex, sx, names := make([]float64, len(idxs)), make([]float64, len(idxs)), make([]string, len(idxs))
-			for j, i := range idxs {
-				ex[j], sx[j], names[j] = editDist[i], structOf(i), strconv.Itoa(i)
-			}
-			sum += spearman(ex, sx, names) * float64(len(idxs))
-			n += len(idxs)
-		}
-		return sum, n
-	}
-	sum, n := partialSpearman(func(i int) float64 { return structDist[i] })
+	sum, n := cs7PartialSpearman(editDist, byBin, func(i int) float64 { return structDist[i] })
 	if n == 0 {
 		return NullTest{}, len(pairs), false
 	}
 	observed := math.Abs(sum / float64(n))
-	null := make([]float64, repetitions)
-	for r := range null {
-		shuffled := append([]float64(nil), structDist...)
-		for _, idxs := range byBin {
-			perm := rng.Perm(len(idxs))
-			orig := make([]float64, len(idxs))
-			for j, i := range idxs {
-				orig[j] = structDist[i]
-			}
-			for j, i := range idxs {
-				shuffled[i] = orig[perm[j]]
-			}
-		}
-		s, nn := partialSpearman(func(i int) float64 { return shuffled[i] })
-		if nn > 0 {
-			null[r] = math.Abs(s / float64(nn))
-		}
-	}
+	null := cs7PermutationNull(editDist, structDist, byBin, repetitions, rng)
 	return nullTest("cs7/edit-distance-x-structural-distance", "N6 frequency-bin-matched structural-distance permutation", observed, null), len(pairs), true
 }
 

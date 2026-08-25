@@ -119,7 +119,8 @@ func betweenWithinVariance(values []float64, group []string) (between, within fl
 		d := v - gm
 		withinSS += d * d
 	}
-	for g, m := range groupMean {
+	for _, g := range orderedKeys(groupMean) {
+		m := groupMean[g]
 		d := m - grand
 		betweenSS += float64(n[g]) * d * d
 	}

@@ -14,6 +14,15 @@ func orderedKeys[T any](m map[string]T) []string {
 	return out
 }
 
+func orderedIntKeys[T any](m map[int]T) []int {
+	out := make([]int, 0, len(m))
+	for k := range m {
+		out = append(out, k)
+	}
+	sort.Ints(out)
+	return out
+}
+
 func mean(x []float64) float64 {
 	if len(x) == 0 {
 		return 0

@@ -1,0 +1,178 @@
+[
+  {
+    "id": "INPUT_RESULTS_REPRODUCED",
+    "value": "PARTIALLY_SUPPORTED",
+    "primary_evidence": "task75/task77 audit includes one NOT_TESTABLE transcription block",
+    "null_comparison": "permutation/bootstrap nulls in metric registry",
+    "stability": "see stability_matrix",
+    "held_out_result": "grouped/partitioned result in metric registry",
+    "limitations": "single transcription; 2D-LITE is not scan geometry",
+    "freeze_impact": "prevents full freeze",
+    "effect_size": 0
+  },
+  {
+    "id": "METADATA_INTEGRITY_ACCEPTABLE",
+    "value": "SUPPORTED",
+    "primary_evidence": "39380 tokens, 5385 lines, 5385 loci, 227 folios; nesting violations=0",
+    "null_comparison": "permutation/bootstrap nulls in metric registry",
+    "stability": "see stability_matrix",
+    "held_out_result": "grouped/partitioned result in metric registry",
+    "limitations": "single transcription; 2D-LITE is not scan geometry",
+    "freeze_impact": "required for page metrics",
+    "effect_size": 0
+  },
+  {
+    "id": "LINE_STRUCTURE_SUPPORTED",
+    "value": "SUPPORTED",
+    "primary_evidence": "LS registry",
+    "null_comparison": "permutation/bootstrap nulls in metric registry",
+    "stability": "see stability_matrix",
+    "held_out_result": "grouped/partitioned result in metric registry",
+    "limitations": "single transcription; 2D-LITE is not scan geometry",
+    "freeze_impact": "core candidate",
+    "effect_size": 0
+  },
+  {
+    "id": "BOUNDARY_STRUCTURE_SUPPORTED",
+    "value": "SUPPORTED",
+    "primary_evidence": "BP registry",
+    "null_comparison": "permutation/bootstrap nulls in metric registry",
+    "stability": "see stability_matrix",
+    "held_out_result": "grouped/partitioned result in metric registry",
+    "limitations": "single transcription; 2D-LITE is not scan geometry",
+    "freeze_impact": "does not imply acrostic",
+    "effect_size": 0
+  },
+  {
+    "id": "LOCUS_STRUCTURE_SUPPORTED",
+    "value": "SUPPORTED",
+    "primary_evidence": "LC registry",
+    "null_comparison": "permutation/bootstrap nulls in metric registry",
+    "stability": "see stability_matrix",
+    "held_out_result": "grouped/partitioned result in metric registry",
+    "limitations": "single transcription; 2D-LITE is not scan geometry",
+    "freeze_impact": "core candidate",
+    "effect_size": 0
+  },
+  {
+    "id": "FOLIO_STRUCTURE_SUPPORTED",
+    "value": "SUPPORTED",
+    "primary_evidence": "PF registry",
+    "null_comparison": "permutation/bootstrap nulls in metric registry",
+    "stability": "see stability_matrix",
+    "held_out_result": "grouped/partitioned result in metric registry",
+    "limitations": "single transcription; 2D-LITE is not scan geometry",
+    "freeze_impact": "core candidate",
+    "effect_size": 0
+  },
+  {
+    "id": "RECTO_VERSO_DEPENDENCE_SUPPORTED",
+    "value": "INCONCLUSIVE",
+    "primary_evidence": "PF4 lacks adequately matched independent physical-leaf controls",
+    "null_comparison": "permutation/bootstrap nulls in metric registry",
+    "stability": "see stability_matrix",
+    "held_out_result": "grouped/partitioned result in metric registry",
+    "limitations": "single transcription; 2D-LITE is not scan geometry",
+    "freeze_impact": "unfrozen extension",
+    "effect_size": 0
+  },
+  {
+    "id": "HIERARCHICAL_ORGANIZATION_SUPPORTED",
+    "value": "SUPPORTED",
+    "primary_evidence": "variance-share metrics",
+    "null_comparison": "permutation/bootstrap nulls in metric registry",
+    "stability": "see stability_matrix",
+    "held_out_result": "grouped/partitioned result in metric registry",
+    "limitations": "single transcription; 2D-LITE is not scan geometry",
+    "freeze_impact": "core candidate",
+    "effect_size": 0
+  },
+  {
+    "id": "HIERARCHICAL_MODEL_OUTPERFORMS_FLAT",
+    "value": "INCONCLUSIVE",
+    "primary_evidence": "predictive hierarchy is not promoted without multi-corpus held-out validation",
+    "null_comparison": "permutation/bootstrap nulls in metric registry",
+    "stability": "see stability_matrix",
+    "held_out_result": "grouped/partitioned result in metric registry",
+    "limitations": "single transcription; 2D-LITE is not scan geometry",
+    "freeze_impact": "prevents full freeze",
+    "effect_size": 0
+  },
+  {
+    "id": "UNANNOTATED_CHANGE_POINTS_SUPPORTED",
+    "value": "PARTIALLY_SUPPORTED",
+    "primary_evidence": "penalized folio-profile distance peaks",
+    "null_comparison": "permutation/bootstrap nulls in metric registry",
+    "stability": "see stability_matrix",
+    "held_out_result": "grouped/partitioned result in metric registry",
+    "limitations": "single transcription; 2D-LITE is not scan geometry",
+    "freeze_impact": "exploratory only",
+    "effect_size": 0
+  },
+  {
+    "id": "CORE_METRICS_STABLE",
+    "value": "PARTIALLY_SUPPORTED",
+    "primary_evidence": "folio splits pass for retained metrics; transcription unavailable",
+    "null_comparison": "permutation/bootstrap nulls in metric registry",
+    "stability": "see stability_matrix",
+    "held_out_result": "grouped/partitioned result in metric registry",
+    "limitations": "single transcription; 2D-LITE is not scan geometry",
+    "freeze_impact": "prevents full freeze",
+    "effect_size": 0
+  },
+  {
+    "id": "CORE_METRICS_NONREDUNDANT",
+    "value": "PARTIALLY_SUPPORTED",
+    "primary_evidence": "line-profile correlation matrix emitted",
+    "null_comparison": "permutation/bootstrap nulls in metric registry",
+    "stability": "see stability_matrix",
+    "held_out_result": "grouped/partitioned result in metric registry",
+    "limitations": "single transcription; 2D-LITE is not scan geometry",
+    "freeze_impact": "candidate selection only",
+    "effect_size": 0
+  },
+  {
+    "id": "NEGATIVE_EVIDENCE_REGISTERED",
+    "value": "SUPPORTED",
+    "primary_evidence": "explicit registry with sensitivity and controls",
+    "null_comparison": "permutation/bootstrap nulls in metric registry",
+    "stability": "see stability_matrix",
+    "held_out_result": "grouped/partitioned result in metric registry",
+    "limitations": "single transcription; 2D-LITE is not scan geometry",
+    "freeze_impact": "required gate passed",
+    "effect_size": 0
+  },
+  {
+    "id": "ALTERNATIVE_EXPLANATION_COVERAGE_ACCEPTABLE",
+    "value": "NOT_SUPPORTED",
+    "primary_evidence": "historical notation/table/procedural positive controls missing",
+    "null_comparison": "permutation/bootstrap nulls in metric registry",
+    "stability": "see stability_matrix",
+    "held_out_result": "grouped/partitioned result in metric registry",
+    "limitations": "single transcription; 2D-LITE is not scan geometry",
+    "freeze_impact": "task79-b required",
+    "effect_size": 0
+  },
+  {
+    "id": "MODEL_COMPARISON_INTERFACE_READY",
+    "value": "PARTIALLY_SUPPORTED",
+    "primary_evidence": "machine-readable schema exists; frozen distance portfolio does not",
+    "null_comparison": "permutation/bootstrap nulls in metric registry",
+    "stability": "see stability_matrix",
+    "held_out_result": "grouped/partitioned result in metric registry",
+    "limitations": "single transcription; 2D-LITE is not scan geometry",
+    "freeze_impact": "task79-b required",
+    "effect_size": 0
+  },
+  {
+    "id": "FINGERPRINT_V2_FREEZE_STATUS",
+    "value": "TASK79_B_REQUIRED",
+    "primary_evidence": "critical coverage and transcription gaps",
+    "null_comparison": "permutation/bootstrap nulls in metric registry",
+    "stability": "see stability_matrix",
+    "held_out_result": "grouped/partitioned result in metric registry",
+    "limitations": "single transcription; 2D-LITE is not scan geometry",
+    "freeze_impact": "do not freeze",
+    "effect_size": 0
+  }
+]

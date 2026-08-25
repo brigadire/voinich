@@ -1,0 +1,63 @@
+{
+  "candidate_id": "FINGERPRINT_V2_CANDIDATE",
+  "status": "TASK79_B_REQUIRED",
+  "corpus_sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692",
+  "config_sha256": "09277e7a0ea9693ea1156835da6ceeb198ffbfb688a4e75d6903cf02f666b0b0",
+  "code_version": "fingerprint-v2-page-hierarchy-v1",
+  "metric_version": "task79-v1",
+  "seeds": [
+    20260824,
+    30260824
+  ],
+  "core_metrics": [
+    "2DL1_LAYOUT_POSITION_MI",
+    "BP1_BOUNDARY_TOKEN_NMI",
+    "EF1_GIANT_COMPONENT_SHARE",
+    "EF2_GLOBAL_CLUSTERING",
+    "EF3_DEGREE_FREQUENCY_SPEARMAN",
+    "HR1_FOLIO_VARIANCE_SHARE",
+    "HR1_SECTION_VARIANCE_SHARE",
+    "LC1_LOCUS_TYPE_NMI",
+    "LC2_LABEL_TEXT_NMI",
+    "LS2_POSITIONAL_LEXICON_NMI",
+    "LS3_BOUNDARY_LENGTH_ASYMMETRY",
+    "PF2_FOLIO_COHERENCE",
+    "PF5_WITHIN_FOLIO_PROGRESSION"
+  ],
+  "supporting_metrics": [
+    "EF1_ISOLATE_SHARE",
+    "HR1_LOCUS_VARIANCE_SHARE",
+    "HR6_CURRIER_SECTION_NMI",
+    "LC5_IVTFF_I_NMI",
+    "LC5_IVTFF_X_NMI",
+    "LP1_RULE_SUPPORT_GINI",
+    "LP4_PREFIX_ATTACHMENT_NMI",
+    "LP4_SUFFIX_ATTACHMENT_NMI",
+    "LS1_LINE_LENGTH_CV",
+    "LS4_WITHIN_LINE_EXACT_REPETITION",
+    "PF3_ADJACENT_FOLIO_CONTINUITY",
+    "PF4_RECTO_VERSO_COHERENCE",
+    "cs1/family-line-position",
+    "cs2/prev-family-current-family",
+    "cs3/family-locus-type",
+    "cs4/family-currier",
+    "cs4/family-section",
+    "cs5/local-adjacency-x-regime",
+    "cs6/family-diversity-x-line-length",
+    "cs7/edit-distance-x-structural-distance"
+  ],
+  "unfrozen_extensions": [
+    "visual 2D coordinates",
+    "alternative transcription sensitivity",
+    "historical shorthand/abbreviation positive controls"
+  ],
+  "prohibited_claims": [
+    "boundary structure implies an acrostic",
+    "IVTFF order is exact scan geometry",
+    "a detected regime is a topic, language, cipher, or encoding stage",
+    "fingerprint evidence decrypts the manuscript"
+  ],
+  "missing_data_policy": "Explicit missing class for descriptive exports; exclude missing metadata from inferential contrasts and report N.",
+  "comparison_rules": "No post-hoc metrics, thresholds, weights or null changes after candidate creation; VOYNICH_ONLY_CONTEXT metrics cannot enter corpus distance.",
+  "decision_basis": "Page/hierarchy blocks are implemented, but a second aligned transcription and historical notation controls are unavailable; task79-b is required before freeze."
+}

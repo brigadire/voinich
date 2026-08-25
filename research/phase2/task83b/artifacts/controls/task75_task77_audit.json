@@ -1,0 +1,38 @@
+[
+  {
+    "block": "corpus checksum",
+    "status": "REPRODUCED",
+    "evidence": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692",
+    "limitation": "local bytes only"
+  },
+  {
+    "block": "LP1-LP4 / EF1-EF5",
+    "status": "REPRODUCED",
+    "evidence": "computed in the same pipeline invocation",
+    "limitation": "shared nulls imply dependent evidence"
+  },
+  {
+    "block": "C-GRAMMAR",
+    "status": "REPRODUCED",
+    "evidence": "per-replicate diagnostics serialized; the validation outcome itself need not be positive",
+    "limitation": "mode-specific validation applies"
+  },
+  {
+    "block": "consensus edit families",
+    "status": "REPRODUCED",
+    "evidence": "edit graph validation serialized",
+    "limitation": "empty LP2-gated catalog is a substantive outcome"
+  },
+  {
+    "block": "cross-scale metrics",
+    "status": "REPRODUCED",
+    "evidence": "same run and seeds",
+    "limitation": "some family metrics can be inapplicable"
+  },
+  {
+    "block": "transcription cross-check",
+    "status": "NOT_TESTABLE",
+    "evidence": "only one aligned transcription available",
+    "limitation": "excluded from freeze-ready claims"
+  }
+]

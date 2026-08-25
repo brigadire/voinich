@@ -1,0 +1,90 @@
+[
+  {
+    "metric_id": "HR1_LOCUS_VARIANCE_SHARE",
+    "tested_hypothesis": "Between-locus share of line-length variance",
+    "status": "ABSENCE_OF_EVIDENCE",
+    "sensitivity": "matched permutation test",
+    "detectable_effect_threshold": "empirical resolution 1/(1000+1)",
+    "confidence_interval": "permutation null: mean 1, SD 8.46698e-15, n=1000",
+    "controls": "HN6",
+    "partitions": "ROBUST",
+    "limitations": "Method-of-moments variance share is a robust descriptive decomposition, not a causal random-effects model."
+  },
+  {
+    "metric_id": "LP1_RULE_SUPPORT_GINI",
+    "tested_hypothesis": "Concentration of directed edit-rule support",
+    "status": "see source block",
+    "sensitivity": "matched permutation test",
+    "detectable_effect_threshold": "empirical resolution 1/(1000+1)",
+    "confidence_interval": "see task75/task77 null distributions in raw_results.json",
+    "controls": "task75/task77 registered nulls",
+    "partitions": "ROBUST_WITH_LIMITATIONS",
+    "limitations": "Inherited without changing the task75/task77 estimator or null."
+  },
+  {
+    "metric_id": "LS4_WITHIN_LINE_EXACT_REPETITION",
+    "tested_hypothesis": "Adjacent exact-token repetition rate within lines",
+    "status": "ABSENCE_OF_EVIDENCE",
+    "sensitivity": "matched permutation test",
+    "detectable_effect_threshold": "empirical resolution 1/(1000+1)",
+    "confidence_interval": "permutation null: mean 0.00889443, SD 0.00046254, n=1000",
+    "controls": "HN1",
+    "partitions": "ROBUST",
+    "limitations": "Only immediate recurrence is primary; longer recurrence distances remain diagnostic."
+  },
+  {
+    "metric_id": "PF3_ADJACENT_FOLIO_CONTINUITY",
+    "tested_hypothesis": "Mean adjacent-folio vocabulary-profile similarity",
+    "status": "ABSENCE_OF_EVIDENCE",
+    "sensitivity": "matched permutation test",
+    "detectable_effect_threshold": "empirical resolution 1/(1000+1)",
+    "confidence_interval": "permutation null: mean 0.562756, SD 0.0135005, n=1000",
+    "controls": "HN4",
+    "partitions": "ROBUST",
+    "limitations": "Folio order is documentary and is not assumed to be original historical order."
+  },
+  {
+    "metric_id": "PF4_RECTO_VERSO_COHERENCE",
+    "tested_hypothesis": "Same-leaf recto/verso profile similarity advantage",
+    "status": "ABSENCE_OF_EVIDENCE",
+    "sensitivity": "matched permutation test",
+    "detectable_effect_threshold": "empirical resolution 1/(1000+1)",
+    "confidence_interval": "permutation null: mean 0.573592, SD 0.0183263, n=1000",
+    "controls": "HN4",
+    "partitions": "ROBUST_WITH_LIMITATIONS",
+    "limitations": "Folio order is documentary and is not assumed to be original historical order."
+  },
+  {
+    "metric_id": "cs3/family-locus-type",
+    "tested_hypothesis": "P(edit family | locus type) != P(edit family)",
+    "status": "see source block",
+    "sensitivity": "matched permutation test",
+    "detectable_effect_threshold": "empirical resolution 1/(1000+1)",
+    "confidence_interval": "empirical permutation null, 100 replicates",
+    "controls": "N4 within-folio shuffle",
+    "partitions": "ROBUST_WITH_LIMITATIONS",
+    "limitations": "Locus-type codes beyond TEXT/LABEL are pooled into SPECIAL for statistical power; see report for the individual code counts."
+  },
+  {
+    "metric_id": "cs6/family-diversity-x-line-length",
+    "tested_hypothesis": "line-level family-composition entropy correlates with line length beyond a line-length-preserving global token shuffle",
+    "status": "see source block",
+    "sensitivity": "matched permutation test",
+    "detectable_effect_threshold": "empirical resolution 1/(1000+1)",
+    "confidence_interval": "empirical permutation null, 100 replicates",
+    "controls": "N1 global token shuffle (fixed line-length sequence)",
+    "partitions": "ROBUST_WITH_LIMITATIONS",
+    "limitations": "Family composition is measured over {NONE plus each family}, so most of a typical line's entropy budget reflects the large NONE category."
+  },
+  {
+    "metric_id": "cs7/edit-distance-x-structural-distance",
+    "tested_hypothesis": "raw glyph edit distance between two vocabulary types correlates with the minimum distance (in lines) between their occurrences, beyond a frequency-bin-matched permutation",
+    "status": "see source block",
+    "sensitivity": "matched permutation test",
+    "detectable_effect_threshold": "empirical resolution 1/(1000+1)",
+    "confidence_interval": "empirical permutation null, 100 replicates",
+    "controls": "N6 frequency-bin-matched structural-distance permutation",
+    "partitions": "ROBUST_WITH_LIMITATIONS",
+    "limitations": "Sampled, not exhaustive, over vocabulary pairs; occurrence lists are capped at 50 per token for cost."
+  }
+]

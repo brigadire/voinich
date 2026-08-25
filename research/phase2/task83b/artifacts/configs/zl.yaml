@@ -1,0 +1,36 @@
+version: fingerprint-v2-lexical-paradigms-v1
+output_dir: out/zl
+seed: 20260824
+repetitions: 100
+min_rule_support: 3
+alpha: 0.05
+graph_swaps: 10
+diagnostic_tolerance: 0.20
+grammar:
+  modes: [structure-preserving, frequency-aware]
+cross_scale:
+  folds: 5
+  hub_top_percent: 5
+  min_family_size: 3
+  structural_sample: 2000
+task79:
+  enabled: true
+  permutations: 1000
+  bootstrap_replicates: 1000
+  min_group_size: 5
+  change_point_penalty: 2.0
+  correction_layer: research/phase2/fingerprint/TASK79_METADATA_CORRECTIONS_V1.yaml
+  audit_artifacts:
+    - experiments/fingerprint-v2-cross-scale-v1/canonical-out/fingerprint.json
+    - experiments/fingerprint-v2-cross-scale-v1/canonical-out/raw_results.json
+primary:
+  id: voynich-zl3b-eva
+  path: data_work/ZL3b-x7.canonical.txt
+  glyph_mode: eva
+  ivtff_path: data/ZL3b-n.txt
+controls:
+  - name: english-prose-doyle
+    corpus:
+      id: doyle-sign-of-four
+      path: data_test/pg2097-2.txt
+      glyph_mode: natural
