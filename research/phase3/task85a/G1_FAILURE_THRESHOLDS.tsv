@@ -1,0 +1,11 @@
+failure_class	quantity	functional	threshold	action	basis
+NUMERICALLY_UNSTABLE	probability normalization	absolute difference from 1	1e-12	retain row and exclude	float64 numerical convention
+NUMERICALLY_UNSTABLE	undefined score fraction	undefined events divided by scored events	0	retain row and exclude	complete scoring requirement
+NUMERICALLY_UNSTABLE	replicate variation	coefficient of variation at replicate 32	0.25	retain row and exclude	target-blind feasibility bound
+NUMERICALLY_UNSTABLE	generation convergence	two consecutive checkpoint comparisons	1e-4 absolute plus 0.01 relative by replicate 32	retain row and exclude	predeclared precision
+COMPLEXITY_UNBOUNDED	complexity growth	Theil-Sen log-log point slope and bootstrap lower 95 percent endpoint	point greater than 1.10 and lower endpoint greater than 1.00	mark UNBOUNDED and exclude	linear growth boundary
+MEMORIZATION_DOMINATED	overfitting and code ratio	PM2 development-to-heldout gap plus Complexity divided by N_dev*log2(alphabet_size+2)	gap greater than MFC q0.95 and ratio at least 0.90	mark UNBOUNDED and exclude	inherited total complexity principle
+TRAINING_FAILED	induction operations	merge or induction operation count	100000	retain row and exclude	compute bound
+NON_GENERATIVE	TOKEN length	generated glyph count before EOS	64 without valid termination	retain row and exclude	bounded generation
+HELDOUT_DEGENERATE	zero probability or baseline gain	any HELDOUT zero or strict gain gate	one zero or no gain beyond MFC threshold	retain negative result	inherited failure meaning
+STRUCTURAL_VALIDATION_FAILED	G1 families	family gates	edit below 3 of 4 or lexical below 2 of 3	retain negative result	inherited family principle

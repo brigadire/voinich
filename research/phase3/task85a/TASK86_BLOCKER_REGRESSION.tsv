@@ -1,0 +1,11 @@
+blocker_group	original_blocker	v1_1_artifact	exact_section_or_key	executable	regression_status
+B01	M0/M1 smoothing grid absent	G1_EXECUTABLE_CONTRACT.json	models.M0;models.M1	TRUE	RESOLVED
+B02	M2 algorithm and grid absent	G1_EXECUTABLE_CONTRACT.json;M2_HYPERPARAMETER_GRID.tsv	models.M2	TRUE	RESOLVED
+B03	M3/M4 induction and M3 generation absent	G1_EXECUTABLE_CONTRACT.json;M4_HYPERPARAMETER_GRID.tsv	models.M3;models.M4	TRUE	RESOLVED
+B04	M5 components and grid absent	G1_EXECUTABLE_CONTRACT.json;M5_HYPERPARAMETER_GRID.tsv	models.M5	TRUE	RESOLVED
+B05	MFC instances and null spread absent	G1_CALIBRATION_CONTRACT.md	calibration	TRUE	RESOLVED
+B06	convergence checkpoints and scale absent	G1_STABILITY_CONTRACT.md	generation	TRUE	RESOLVED
+B07	transcription tolerance absent	G1_TRANSCRIPTION_STABILITY_CONTRACT.md	cross-transcription stability contract	TRUE	RESOLVED
+B08	failure thresholds absent	G1_FAILURE_THRESHOLDS.tsv	all rows	TRUE	RESOLVED
+B09	negative sampler and frequency class absent	NEGATIVE_TOKEN_PROTOCOL.md;PM6_DISCRIMINATION_SPEC.md	Population and matching;Sampler	TRUE	RESOLVED
+B10	PM5 buckets and functional absent	PM5_CALIBRATION_SPEC.md	entire functional	TRUE	RESOLVED

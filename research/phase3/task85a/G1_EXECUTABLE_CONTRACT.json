@@ -1,0 +1,168 @@
+{
+  "schema": "G1_EXECUTABLE_CONTRACT_V1_1",
+  "contract_version": "task85-v1.1",
+  "parent_version": "task85-v1",
+  "experiment_namespace": "voinich.phase3.task86r.g1.v1.1",
+  "scientific_scope": "G1_TOKEN_FORMATION_ONLY",
+  "corpora": {
+    "transcriptions": ["IT2a", "ZL3b"],
+    "partitions": ["DEVELOPMENT", "VALIDATION", "HELDOUT"],
+    "split": "research/phase3/task85/GRAMMAR_CORPUS_SPLIT.tsv",
+    "split_sha256": "639969bd91daaf362df49afa4fc12c3f5289cea4200cbb71d5f743d5c5bff551",
+    "split_manifest": "research/phase3/task85/GRAMMAR_CORPUS_SPLIT_MANIFEST.json",
+    "split_manifest_sha256": "80b49086623f53968a0c925c3a6780a82d35b9c118747a9ab6f90fe7ce03719a"
+  },
+  "ordering": {
+    "unicode": "UTF-8 code-point ascending",
+    "floating_point_accumulation": "sort all keys first; accumulate float64 left-to-right",
+    "serialization": "UTF-8, LF, JSON object keys lexicographically sorted, no insignificant trailing whitespace",
+    "candidate_enumeration": "model rank M0..M5, then lexicographic tuple of parameter values in registry column order"
+  },
+  "seed": {
+    "version": "SHA256-U64LE-v1",
+    "fields": ["experiment_namespace", "model_class", "candidate_id", "corpus_id", "transcription", "partition", "scale", "replicate_index"],
+    "encoding": "UTF-8 NFC fields joined by one byte 0x1f; decimal integers have no sign or leading zero",
+    "conversion": "SHA-256 digest bytes 0..7 interpreted unsigned little-endian uint64",
+    "prng": "PCG-XSL-RR-128/64 with 128-bit state; seed is uint64 expanded by SplitMix64 twice",
+    "sampling": "sorted outcomes; half-open cumulative intervals; one uint64 mapped to [0,1) by the high 53 bits divided by 2^53"
+  },
+  "models": {
+    "M0": {
+      "algorithm": "token categorical additive-v1",
+      "unit": "TOKEN",
+      "parameters": {"alpha": [0.1, 0.5, 1.0]},
+      "estimator": "P(t)=(count(t)+alpha)/(N+alpha*(V+1)); P(UNK)=alpha/(N+alpha*(V+1))",
+      "bos_eos": "not applicable between IID TOKEN draws; corpus stops at requested TOKEN count",
+      "unseen": "all unseen TOKEN strings share P(UNK); no post-fit lexicon insertion",
+      "generation": "draw observed TOKEN types plus UNK; an UNK draw emits the literal reserved token <UNK>; a drawn observed TOKEN longer than 64 glyphs is NON_GENERATIVE",
+      "generative": true
+    },
+    "M1": {
+      "algorithm": "fixed-order glyph Markov additive-backoff-v1",
+      "unit": "GLYPH",
+      "parameters": {"order": [1, 2, 3, 4, 5, 6], "alpha": [0.01, 0.1, 0.5]},
+      "estimator": "for history h of length order-1, P(x|h)=(c(h,x)+alpha*P(x|suffix(h)))/(c(h)+alpha), recursively; depth 0 uses (c(x)+alpha)/(C+alpha*(A+1))",
+      "bos_eos": "prepend order-1 distinct BOS symbols; EOS is one predicted outcome and never a history glyph",
+      "unseen": "drop the oldest history glyph until a realized context; unseen glyph maps to UNK_GLYPH at depth 0",
+      "generation": "draw until EOS; if EOS absent by 64 glyphs, force EOS and flag GENERATION_TRUNCATED",
+      "generative": true
+    },
+    "M2": {
+      "algorithm": "PPM-C variable-order Markov-v1",
+      "unit": "GLYPH",
+      "parameters": {"max_depth": [2, 4, 6], "min_context_count": [1, 2, 4]},
+      "estimator": "retain suffix contexts with count>=min_context_count; in a realized context h with T distinct continuations and total C, seen x has c(h,x)/(C+T), escape has T/(C+T); exclusion backoff removes symbols already seen at h; depth -1 is uniform over alphabet plus EOS and UNK_GLYPH",
+      "pruning": "discard contexts below min_context_count; retain all others through max_depth",
+      "bos_eos": "prepend max_depth BOS symbols; EOS is a continuation",
+      "unseen": "escape repeatedly to a suffix; depth -1 supplies nonzero mass",
+      "generation": "inverse-CDF at deepest retained suffix; escape recursively; stop at EOS or force EOS at 64 glyphs and flag",
+      "tie_break": "context and continuation code-point order",
+      "generative": true
+    },
+    "M3": {
+      "algorithm": "deterministic greedy JS state-merging DFA-v1",
+      "unit": "GLYPH",
+      "parameters": {"merge_js_threshold": [0.0, 0.05, 0.1], "max_states": [64, 128, 256]},
+      "initial": "prefix-tree acceptor over DEVELOPMENT TOKENs; transition and EOS counts retained only for merge diagnostics",
+      "merge": "candidate unordered state pairs sorted by (shortest access string left,right); merge first pair whose Jensen-Shannon divergence between additive-0.5 next-symbol distributions is <=threshold; recursively merge same-label targets; reject if recursive closure merges accept/nonaccept states; repeat to fixed point or max_states",
+      "acceptance": "start at root, consume each glyph through the unique labeled edge, then require accepting state",
+      "failure": "if fixed point has more than max_states, TRAINING_FAILED",
+      "generation": "at each state choose uniformly among sorted outgoing glyph edges plus EOS when accepting; stop on EOS; at 64 glyphs force EOS if accepting else NON_GENERATIVE",
+      "unseen_scoring": "accepted TOKEN probability is product of uniform branch probabilities; rejected TOKEN gets probability 0 and status HELDOUT_DEGENERATE",
+      "tie_break": "shortest access string, then code-point order",
+      "generative": true
+    },
+    "M4": {
+      "algorithm": "shared-M3-topology probabilistic finite-state-v1",
+      "unit": "GLYPH",
+      "parameters": {"merge_js_threshold": [0.0, 0.05, 0.1], "max_states": [64, 128, 256], "alpha": [0.01, 0.1, 0.5]},
+      "topology": "exact M3 algorithm and parameters merge_js_threshold,max_states on the same DEVELOPMENT input",
+      "estimator": "on fixed topology, replay DEVELOPMENT paths; for each state and enabled outgoing glyph/EOS, P=(count+alpha)/(total+alpha*K); no EM and no topology pruning beyond M3",
+      "failure": "inherit M3 TRAINING_FAILED; normalization error >1e-12 is NUMERICALLY_UNSTABLE",
+      "generation": "inverse-CDF over sorted enabled glyph/EOS transitions; force EOS at 64 glyphs only if accepting, otherwise NON_GENERATIVE",
+      "unseen_scoring": "missing topology edge gives probability 0 and HELDOUT_DEGENERATE",
+      "tie_break": "code-point order",
+      "generative": true
+    },
+    "M5": {
+      "algorithm": "frequent-substring deterministic slot grammar-v1",
+      "unit": "COMPONENT",
+      "parameters": {"slot_count": [2, 3, 4], "min_support": [2, 5, 10], "inventory_cap": [64, 128]},
+      "components": "enumerate all within-TOKEN substrings of length 1..3; support is number of distinct DEVELOPMENT TOKEN types containing the substring; retain support>=min_support; sort by support descending, length descending, code-point ascending; keep first inventory_cap; append every single glyph not retained, in code-point order",
+      "segmentation": "dynamic programming chooses an exact segmentation with 1..slot_count components minimizing component count, then maximizing left-to-right component lengths lexicographically, then minimizing component strings lexicographically; no overlap; if none, create LEXICAL_EXCEPTION equal to the full TOKEN",
+      "rules": "a rule is the component-count plus vector of component length classes; retain rules with occurrence support>=min_support, sorted support descending then serialized rule ascending; other segmented TOKENs become STRUCTURAL_EXCEPTIONs",
+      "slots": "per (rule,slot), inventory contains observed components sorted count descending then code-point ascending, truncated to inventory_cap; a truncated training form becomes LEXICAL_EXCEPTION",
+      "estimator": "additive alpha=0.5 fixed for rule choice and every slot inventory; exception table uses empirical additive-0.5 choice and is mixed with productive rules by their observed occurrence counts",
+      "generation": "draw exception-vs-rule, then rule, then each slot component by inverse-CDF; concatenate; reject empty output; stop after one TOKEN",
+      "unseen_scoring": "sum probabilities of all retained rules producing the form; zero when neither rules nor frozen exception table produces it",
+      "complexity": "all retained component entries contribute LexiconCost; all exceptions contribute ExceptionCost; rules and probability parameters contribute StructureCost under Task85",
+      "tie_break": "the ordering rules above",
+      "generative": true
+    }
+  },
+  "candidate_counts": {"M0": 3, "M1": 18, "M2": 9, "M3": 9, "M4": 27, "M5": 18, "total": 84},
+  "calibration": {
+    "population_count_per_generator": 16,
+    "token_counts": {"DEVELOPMENT": 20000, "VALIDATION": 5000, "HELDOUT": 5000},
+    "alphabet": ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l"],
+    "MFC0": "iid glyphs uniform over 12; length L=min(12,1+Geometric(p=0.25))",
+    "MFC1": "order-2 Markov: initial uniform; P(next=(index+1) mod 12)=0.55, same=0.20, remaining ten each=0.025; EOS hazard 0.20 after glyph 1, forced at 12",
+    "MFC2": "six-state PFSA: start 0, accept states 2,4,5; each state has three glyph-labeled edges to (s+1)%6,(s+2)%6,(2s+1)%6 with probabilities 0.50,0.30,0.20 and labels alphabet indices (2s)%12,(2s+1)%12,(2s+2)%12; accepting states choose EOS with probability 0.25 before renormalized edge choice; EOS is forced after glyph 12 from every state",
+    "quantities": ["predictive-improvement null", "train-to-heldout overfitting gap", "structural absolute-distance variation", "seed variation"],
+    "null_spread": "nearest-rank q0.95 of absolute deviations from the sample median over the 16 independent populations; nearest-rank index ceil(0.95*n), one-based; nonfinite inputs invalidate calibration",
+    "threshold_rule": "MFC0, MFC1, and MFC2 are applicable to every G1 metric; use the maximum of their generator-specific q0.95 values; no human override"
+  },
+  "generation": {
+    "scales": [0.5, 1.0, 2.0],
+    "token_count_formula": "max(1, round-half-up(scale * compared partition TOKEN count))",
+    "primary_scale": 1.0,
+    "replicate_checkpoints": [4, 8, 16, 32],
+    "minimum_replicates": 8,
+    "maximum_replicates": 32,
+    "convergence": "at checkpoint r>=8 compare each metric's median over replicates 0..r-1 with its preceding checkpoint median; converged when abs(delta)<=1e-4+0.01*max(abs(current),abs(previous)) for every applicable metric at all three scales for two consecutive checkpoint comparisons; otherwise run through 32 and mark NON_CONVERGED"
+  },
+  "metrics": {
+    "PM1": "sum negative log2 observed-unit probability; any zero gives +Inf and HELDOUT_DEGENERATE",
+    "PM2": "PM1 divided by scored glyphs including one EOS per TOKEN for M1-M5, and by TOKENs for M0",
+    "PM3": "2^PM2; compare only identical scoring units",
+    "PM4": "arithmetic mean whole-TOKEN probability over HELDOUT TOKEN occurrences absent as types from DEVELOPMENT",
+    "PM5": "top-label ECE defined by PM5_CALIBRATION_SPEC.md",
+    "PM6": "occurrence-weighted ROC AUC defined by PM6_DISCRIMINATION_SPEC.md",
+    "structural": ["EF1_GIANT_COMPONENT_SHARE", "EF1_ISOLATE_SHARE", "EF2_GLOBAL_CLUSTERING", "EF3_DEGREE_FREQUENCY_SPEARMAN", "LP1_RULE_SUPPORT_GINI", "LP4_PREFIX_ATTACHMENT_NMI", "LP4_SUFFIX_ATTACHMENT_NMI"]
+  },
+  "thresholds": {
+    "probability_normalization_abs_error": 1e-12,
+    "undefined_score_fraction": 0.0,
+    "run_variation_cv": 0.25,
+    "max_token_glyphs": 64,
+    "complexity_growth_point_slope": 1.1,
+    "complexity_growth_lower_ci": 1.0,
+    "memorization_complexity_ratio": 0.9,
+    "transcription_relative_effect": 0.2,
+    "minimality_abs_bits": 1.0,
+    "minimality_relative": 1e-6,
+    "auc_neutral": 0.5
+  },
+  "gates": {
+    "predictive": "PM1,PM2 lower; PM4,PM6 higher; PM5 lower than B1 and applicable B2 by more than the MFC threshold on both transcriptions; PM3 is reporting-only; all five required; direction must agree and relative-effect difference <=0.20 for TRANSCRIPTION_STABLE or is DIRECTION_STABLE otherwise",
+    "structural_metric": "at matched scale, abs(median_generated-heldout)<=maximum applicable MFC structural-distance threshold",
+    "edit_family": "at least 3 of its 4 metrics pass",
+    "lexical_paradigm_family": "at least 2 of its 3 metrics pass",
+    "structural_overall": "both G1 families pass on both transcriptions and are at least DIRECTION_STABLE",
+    "minimality": "among candidates passing both gates and no failure, minimize Task85 Complexity separately per transcription; an equivalence set satisfies abs(delta)<=max(1 bit,1e-6*min complexity); prefer lower model rank then candidate_id; both transcriptions must select the same model class",
+    "representational_gain": "child passes both adequacy gates and has total description length Complexity+PM1 lower than parent by more than the MFC q0.95 improvement threshold on both transcriptions, with no structural-family regression; compare M3 and M4 independently against M2 and the better adequate one against M5",
+    "token_formation_depth": "selected M0=>FREQUENCY_ONLY; M1=>LOCAL_MARKOV; M2=>VARIABLE_MEMORY; M3 or M4=>FINITE_STATE; M5=>EXPLICIT_RULE_SYSTEM; no adequate candidate, transcription class disagreement, or unsupported required ladder edge=>NOT_IDENTIFIABLE",
+    "explicit_rule_required": "SUPPORTED iff an M5 candidate passes both gates and every adequate M0-M4 candidate is beaten by M5 under representational_gain; NOT_SUPPORTED iff some M0-M4 candidate passes both gates and no M5 beats it; otherwise INCONCLUSIVE"
+  },
+  "failure": {
+    "NUMERICALLY_UNSTABLE": "any NaN/Inf other than PM1/PM2 +Inf from an explicit zero, any probability normalization absolute error>1e-12, undefined-score fraction>0, convergence not reached by 32, or replicate CV>0.25 at r=32",
+    "COMPLEXITY_UNBOUNDED": "at nested sorted-leaf DEVELOPMENT fractions 0.25,0.50,0.75,1.00, Theil-Sen slope of log2 Complexity vs log2 scored units >1.10 and lower endpoint of a deterministic 1000-resample percentile 95% bootstrap CI >1.00",
+    "MEMORIZATION_DOMINATED": "DEVELOPMENT-to-HELDOUT PM2 gap exceeds the maximum MFC q0.95 gap and Complexity/(N_dev*log2(alphabet_size+2))>=0.90; Complexity includes StructureCost+LexiconCost+ExceptionCost",
+    "TRAINING_FAILED": "algorithm error, M3/M4 state-cap fixed-point failure, or 100000 merge/induction operations",
+    "NON_GENERATIVE": "a requested TOKEN cannot terminate within 64 glyphs under the frozen rule",
+    "HELDOUT_DEGENERATE": "zero probability for any HELDOUT scored occurrence or no strict frozen-threshold improvement over B1",
+    "STRUCTURAL_VALIDATION_FAILED": "PredictiveAdequacy passes and StructuralAdequacy fails"
+  },
+  "preflight": ["CONTRACT_COMPLETE", "ALL_GRIDS_FINITE", "ALL_THRESHOLDS_DEFINED", "ALL_GATES_EXECUTABLE", "NEGATIVE_PROTOCOL_COMPLETE", "PM5_COMPLETE", "PM6_COMPLETE", "SEED_CONTRACT_COMPLETE", "TASK86_BLOCKERS_RESOLVED"],
+  "forbidden": ["fit Voynich in Task85a", "read Voynich token frequencies for tuning", "score DEVELOPMENT", "score VALIDATION", "open HELDOUT", "add a candidate in Task86R", "change a threshold after MFC"]
+}
