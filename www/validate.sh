@@ -28,6 +28,11 @@ grep -q '"BEST_SUPPORTED_CLASS": "INCONCLUSIVE"' "$site_dir/artifacts/RELEASE_MA
 grep -q '"MECHANISM_IDENTIFICATION_FROM_F2": "NOT_IDENTIFIABLE"' "$site_dir/artifacts/RELEASE_MANIFEST.json" || fail=1
 grep -q 'BEST_SUPPORTED_CLASS = INCONCLUSIVE' "$site_dir/index.html" || fail=1
 grep -q 'MECHANISM_IDENTIFICATION_FROM_F2 = NOT_IDENTIFIABLE' "$site_dir/phase-2/index.html" || fail=1
+grep -q 'Why Doyle appears here' "$site_dir/phase-1/index.html" || fail=1
+grep -q 'Why external memory was considered' "$site_dir/transition/index.html" || fail=1
+grep -q 'Why Fontana was used' "$site_dir/transition/index.html" || fail=1
+grep -q 'Mechanism classes were tested. None was identified.' "$site_dir/phase-2/index.html" || fail=1
+grep -q 'does not generalize to all possible external-memory systems' "$site_dir/phase-2/index.html" || fail=1
 
 if find "$site_dir" -type f \( -name '*.key' -o -name '*.pem' -o -name '*.crt' \) | grep -q .; then
   printf 'private key/certificate-like file found in publication root\n' >&2
