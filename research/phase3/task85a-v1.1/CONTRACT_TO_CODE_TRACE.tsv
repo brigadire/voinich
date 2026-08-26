@@ -1,0 +1,32 @@
+contract_key	source_file	function	runtime_value	status
+seed.derivation	research/phase3/task86r-analyze/prng.go	SeedFields.Seed	SHA256 first 8 bytes U64LE	MATCH
+seed.prng	research/phase3/task86r-analyze/prng.go	NewPRNG/Uint64	PCG multiplier 2360.../4385...; increment 5851.../1405...; warm-up 1	POST_FREEZE_COMPLETION
+seed.sampling	research/phase3/task86r-analyze/prng.go	Float64/DrawIndex	high 53 bits; half-open CDF	MATCH
+models.grid	research/phase3/task86r-analyze/candidates.go	loadCandidateGrid	84 frozen rows	MATCH
+models.M0	research/phase3/task86r-analyze/model0.go	FitM0	token categorical additive-v1	MATCH
+models.M1	research/phase3/task86r-analyze/model1.go	FitM1	orders 1..6; alpha .01/.1/.5	MATCH
+models.M2	research/phase3/task86r-analyze/model2.go	FitM2	PPM-C depth/support grid	MATCH
+models.M3	research/phase3/task86r-analyze/fsa.go	InduceFSA	blue-fringe; nonnormalized diagnostic vectors	SCIENTIFIC_CHANGE
+models.M4	research/phase3/task86r-analyze/model4.go	FitM4	M3 topology; alpha .01/.1/.5	INHERITS_R4
+models.M5	research/phase3/task86r-analyze/model5.go	FitM5	slot/support/cap grid	MATCH
+selection	research/phase3/task86r-analyze/selection.go	SelectByValidation	argmin PM2; first candidate tie-break	POST_FREEZE_COMPLETION
+B1	research/phase3/task86r-analyze/stageBC.go	runStageC	selected M0	MATCH
+B2	research/phase3/task86r-analyze/stageBC.go	runStageC	M1 order=2 then argmin PM2 alpha	SCIENTIFIC_CHANGE
+MFC	research/phase3/task86r-analyze/mfc.go	generateMFCPopulation	MFC0/1/2 x 16; 20000/5000/5000	MATCH
+calibration.jobs	research/phase3/task86r-analyze/stageA.go	runStageA	3 x 16 x 84 = 4032	MATCH
+calibration.thresholds	research/phase3/task86r-analyze/calibration.go	materializeThresholds	nearest-rank q.95 then max generator	MATCH_FOR_COMPLETE_ROWS
+calibration.seed_variation	research/phase3/task86r-analyze/stageA.go	runStageA	16 population-heldout values	SCIENTIFIC_CHANGE
+PM1_PM2_PM3_PM5	research/phase3/task86r-analyze/metrics.go	ComputePM1PM2PM3PM5	frozen definitions	MATCH
+PM4	research/phase3/task86r-analyze/metrics.go	ComputePM4	unseen DEVELOPMENT types	MATCH
+PM6	research/phase3/task86r-analyze/negative.go	BuildNegativePairs	frozen sampler plus undocumented 20000 cap	SCIENTIFIC_CHANGE
+F2	research/phase3/task86r-analyze/f2.go	StructuralMetrics	seven metrics via bijective natural-mode aliases	EQUIVALENT
+complexity	research/phase3/task86r-analyze/model*.go	Complexity	Task85 breakdown	MATCH_WITH_R4_TOPOLOGY_DEPENDENCE
+failure.operations	research/phase3/task86r-analyze/fsa.go	InduceFSA	100000 JS/closure operations	ALGORITHM_DEPENDENT
+generation.scales	research/phase3/task86r-analyze/generation.go	runGeneration	0.5/1/2	MATCH
+generation.convergence	research/phase3/task86r-analyze/generation.go	runGeneration	4/8/16/32 checkpoints	MATCH
+stability	research/phase3/task86r-analyze/stability.go	transcriptionStability	0.20 relative effect	MATCH
+predictive_gate	research/phase3/task86r-analyze/gates.go	EvalPredictiveMetric	strict B1/B2 threshold conjunction	MATCH_BUT_THRESHOLDS_PARTIAL
+structural_gate	research/phase3/task86r-analyze/structural.go	StructuralMetricPass/FamilyPass	3/4 edit and 2/3 lexical	MATCH_BUT_R1_R6_SENSITIVE
+adequacy_ladder	research/phase3/task86r-analyze/ladder.go	BuildLadder	frozen parent edges	MATCH
+verdicts	research/phase3/task86r-analyze/synth.go	synthesize	NONE/NOT_IDENTIFIABLE/NOT_READY	ROBUST_FROM_PM6
+

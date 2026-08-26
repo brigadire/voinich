@@ -1,0 +1,11 @@
+dof_id	location	choice	contract_status	classification	scientific_impact	evidence
+R1_STREAM	prng.go:pcgInc/NewPRNG	fixed stream increment and warm-up	not specified	SCIENTIFIC_COMPLETION	changes every stochastic sample	RNG_AUDIT.md
+R2_OBJECTIVE	selection.go:SelectByValidation	PM2 and candidate order	VALIDATION role only	SCIENTIFIC_COMPLETION	can change selected fit	MODEL_SELECTION_AUDIT.md
+R3_ORDER	stageBC.go:runStageC	force B2 order=2	order selected on VALIDATION in Task85	SCIENTIFIC_CHANGE	can change baseline thresholds/gates	BASELINE_B2_AUDIT.md
+R4_SEARCH	fsa.go:InduceFSA	blue-fringe/minimum-JS red search	all-pairs/first eligible	SCIENTIFIC_CHANGE	changes topology, language, fit status and operation count	STATE_MERGING_AUDIT.md
+U1_JS_NORMALIZATION	fsa.go:dist	denominator total+0.5*(alphabet+EOS+1)	next-symbol probability distribution requires total+0.5*(alphabet+EOS)	SCIENTIFIC_CHANGE	changes JS values and merges	source lines 108-122; normalized audit implementation
+U2_NEGATIVE_CAP	negative.go:BuildNegativePairs	20,000 attempts treated as NEGATIVE_EXHAUSTED	full one/two-position exhaustion; no cap	SCIENTIFIC_CHANGE	can make PM6 unavailable prematurely	source lines 159-169
+R6_REPLICATE_AXIS	stageA.go:runStageA	population index used as seed replicate	seed variation requires replicate variation	SCIENTIFIC_CHANGE	confounds population and RNG variation	CALIBRATION_INTERPRETATION_AUDIT.md
+U3_CALIBRATION_INVALIDITY	stageA.go:runStageA/materializeThresholds	failed/nonfinite jobs omitted and partial threshold table accepted	nonfinite input invalidates calibration	SCIENTIFIC_CHANGE	missing PM6 and M3/M4 thresholds declared CALIBRATION_VALID	no PM6 rows; 1728 failures; 948 partial thresholds
+U4_VALIDATION_RETENTION	writers/model selection	persist winner only	all candidates must be reportable/auditable	PURE_IMPLEMENTATION	prevents counterfactual audit but did not itself select a model	G1_MODEL_SELECTION.tsv has 12 class rows only
+

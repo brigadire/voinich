@@ -1,0 +1,11 @@
+finding	robustness	evidence
+PM6 negative exhaustion	ROBUST	231 ZL3b and 112 IT2a HELDOUT singleton occurrences exceed upper bounds 15 and 6 unique unseen singleton negatives; class/M5 restrictions only reduce capacity
+M3/M4 training failure	ROBUST	normalized frozen exhaustive algorithm reaches operation 100001 on both DEVELOPMENT inputs and all thresholds
+M5 productive coverage gap	ROBUST	VALIDATION argmin remains +Inf, implying no finite candidate under the executed grid; selected HELDOUT PM1 is +Inf; unseen scoring is frozen zero
+StructuralAdequacy failure	NOT_CONFIRMATORY	generation depends on R1 and thresholds/selection depend on R2/R6/U3; no complete counterfactual outputs exist
+PredictiveAdequacy failure	ROBUST	frozen PM6 requirement fails for any retained candidate due candidate-independent singleton/uniqueness impossibility
+G1_MINIMAL_CLASS=NONE	ROBUST	no candidate can pass the conjunction when required PM6 is unavailable
+TOKEN_FORMATION_DEPTH=NOT_IDENTIFIABLE	ROBUST	direct frozen mapping from no adequate candidate
+TASK87_READY=NOT_SUPPORTED	ROBUST	depends on absence of frozen adequate G1, independently preserved
+TOKEN_GRAMMAR_FROZEN fully confirmatory	NOT_CONFIRMATORY	primary NONE is robust, but subsidiary structural/calibration and procedure claims require qualification
+

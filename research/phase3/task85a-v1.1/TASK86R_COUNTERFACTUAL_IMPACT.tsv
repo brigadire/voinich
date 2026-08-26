@@ -1,0 +1,11 @@
+resolution_id	classification	affected_stage	affected_models	could_change_fit	could_change_selection	could_change_predictive_gate	could_change_structural_gate	could_change_G1_MINIMAL_CLASS	could_change_TOKEN_FORMATION_DEPTH	evidence
+R1	SCIENTIFIC_COMPLETION	generation/calibration	all generative	FALSE	FALSE	TRUE	TRUE	FALSE	FALSE	PM6 independently fails every retained class
+R2	SCIENTIFIC_COMPLETION	VALIDATION	M0-M5	FALSE	TRUE	TRUE	TRUE	FALSE	FALSE	candidate-level VALIDATION rows unavailable; PM6 class-independent obstruction
+R3	SCIENTIFIC_CHANGE	baseline/calibration	M1-M5	FALSE	FALSE	TRUE	FALSE	FALSE	FALSE	B2 construction differs; PM6 remains unavailable
+R4	SCIENTIFIC_CHANGE	fit/selection	M3/M4	TRUE	TRUE	TRUE	TRUE	FALSE	FALSE	synthetic divergence; exhaustive DEVELOPMENT still cap-fails
+R5	EQUIVALENT_IMPLEMENTATION	F2	all retained	FALSE	FALSE	FALSE	FALSE	FALSE	FALSE	all seven regressions pass at 1e-12
+R6	SCIENTIFIC_CHANGE	calibration	all	FALSE	FALSE	TRUE	TRUE	FALSE	FALSE	seed threshold axis changes; PM6 obstruction remains
+U1	SCIENTIFIC_CHANGE	M3/M4 fit	M3/M4	TRUE	TRUE	TRUE	TRUE	FALSE	FALSE	wrong JS normalization; exhaustive normalized DEVELOPMENT still cap-fails
+U2	SCIENTIFIC_CHANGE	PM6	all	FALSE	FALSE	TRUE	FALSE	FALSE	FALSE	cap can cause premature failure generally; singleton pigeonhole independently proves real-data failure
+U3	SCIENTIFIC_CHANGE	calibration/gates	all	FALSE	FALSE	TRUE	TRUE	FALSE	FALSE	partial thresholds treated as valid; independent PM6 impossibility remains
+

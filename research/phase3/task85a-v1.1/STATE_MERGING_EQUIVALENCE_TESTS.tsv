@@ -1,0 +1,10 @@
+test_id	input	algorithm	threshold	max_states	failed	operations	states	result
+SYN-001	a,aa,ab	Task86R_blue_fringe	0.05	256	FALSE	NOT_EXPOSED	2	language differs from exhaustive
+SYN-001	a,aa,ab	frozen_exhaustive_normalized	0.05	256	FALSE	10	3	accepted through length4: a,aa,ab
+DEV-Z-000	ZL3b_DEVELOPMENT	frozen_exhaustive_normalized	0	256	TRUE	100001	NA	operation cap
+DEV-Z-005	ZL3b_DEVELOPMENT	frozen_exhaustive_normalized	0.05	256	TRUE	100001	NA	operation cap
+DEV-Z-010	ZL3b_DEVELOPMENT	frozen_exhaustive_normalized	0.1	256	TRUE	100001	NA	operation cap
+DEV-I-000	IT2a_DEVELOPMENT	frozen_exhaustive_normalized	0	256	TRUE	100001	NA	operation cap
+DEV-I-005	IT2a_DEVELOPMENT	frozen_exhaustive_normalized	0.05	256	TRUE	100001	NA	operation cap
+DEV-I-010	IT2a_DEVELOPMENT	frozen_exhaustive_normalized	0.1	256	TRUE	100001	NA	operation cap
+

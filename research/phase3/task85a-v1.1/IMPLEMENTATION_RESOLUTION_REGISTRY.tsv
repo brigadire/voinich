@@ -1,0 +1,8 @@
+resolution_id	subject	frozen_statement	actual_resolution	classification	evidence
+R1	PCG-XSL-RR-128/64	SplitMix64 twice into 128-bit state; named output family	fixed multiplier; fixed 128-bit increment; one warm-up	SCIENTIFIC_COMPLETION	contract omits stream/increment and warm-up; no-warm-up changes seed 42 first draw
+R2	class-wise VALIDATION selection	select candidate within class on VALIDATION	argmin PM2; candidate_id tie-break	SCIENTIFIC_COMPLETION	primary metric is not an explicit selection objective; candidate-level alternatives were not persisted
+R3	B2 baseline	M1/M2 low order; order selected on VALIDATION	fix M1 order=2; select alpha by PM2	SCIENTIFIC_CHANGE	inherited B2 says order selected on VALIDATION; alpha objective was unspecified
+R4	M3/M4 merging	all unordered pairs in access-string order; merge first eligible pair	blue-fringe; minimum-JS red representative	SCIENTIFIC_CHANGE	synthetic automata/languages differ; actual pair set and order differ
+R5	glyph/rune alias	seven inherited Fingerprint V2 metrics	bijective single-rune natural-mode encoding	EQUIVALENT_IMPLEMENTATION	45/32 glyph round trips; direct and alternate-label F2 regressions within 1e-12
+R6	calibration interpretation	16 independent populations; population-centered q0.95; seed variation as replicate variation	one generation/job; populations reused as generation replicate axis	SCIENTIFIC_CHANGE	4032 fixes job count, but population variability is not same-fit seed-replicate variability
+
