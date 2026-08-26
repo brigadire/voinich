@@ -3,11 +3,19 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 )
 
 const namespace = "voinich.phase3.task86r.g1.v1.1"
 
 func main() {
+	if len(os.Args) > 1 && strings.HasPrefix(os.Args[1], "task86c-") {
+		if err := runTask86C(os.Args[1], os.Args[2:]); err != nil {
+			fmt.Fprintln(os.Stderr, "ERROR:", err)
+			os.Exit(1)
+		}
+		return
+	}
 	if err := run(); err != nil {
 		fmt.Fprintln(os.Stderr, "ERROR:", err)
 		writeBlockedMarker(err)
