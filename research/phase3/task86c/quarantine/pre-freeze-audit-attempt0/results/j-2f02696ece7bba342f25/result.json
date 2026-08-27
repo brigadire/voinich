@@ -1,0 +1,71 @@
+{
+  "Version": "task86c-control-v1",
+  "JobID": "j-2f02696ece7bba342f25",
+  "Branch": "S",
+  "CorpusID": "s-aab291e34c5e",
+  "Scale": "MEDIUM",
+  "Protocol": "HISTORICAL_REPLICATION",
+  "InputSHA": "96a834b93301780d1e643f665a6a2f68ced2ff30f6db62df3cf365db6e7339f3",
+  "ConfigSHA": "69d0f0aee10f48bb631c3f0765ba8976f49e61a48bf6d0c7815667eda3efcf6b",
+  "seed": 9108166206112192680,
+  "Node": "adelie",
+  "ScientificStatus": "OK",
+  "MinimalClass": "NONE",
+  "TokenFormationDepth": "NOT_IDENTIFIABLE",
+  "AdequateModels": null,
+  "Failures": [
+    "M0:NEGATIVE_EXHAUSTED",
+    "M1:NEGATIVE_EXHAUSTED",
+    "M2:NEGATIVE_EXHAUSTED",
+    "M2:NUMERICALLY_UNSTABLE",
+    "M3:NEGATIVE_EXHAUSTED",
+    "M4:NEGATIVE_EXHAUSTED",
+    "M5:NEGATIVE_EXHAUSTED"
+  ],
+  "RequestedNegatives": 410,
+  "ConstructibleNegatives": 0,
+  "PM6Available": false,
+  "PM6ByClass": {
+    "M0": false,
+    "M1": false,
+    "M2": false,
+    "M3": false,
+    "M4": false,
+    "M5": false
+  },
+  "CandidateByClass": {
+    "M0": "M0-001",
+    "M1": "M1-013",
+    "M2": "M2-001",
+    "M3": "M3-001",
+    "M4": "M4-001",
+    "M5": "M5-001"
+  },
+  "PredictivePassByClass": {
+    "M0": false,
+    "M1": false,
+    "M2": false,
+    "M3": false,
+    "M4": false,
+    "M5": false
+  },
+  "StructuralPassByClass": {
+    "M0": true,
+    "M1": true,
+    "M2": false,
+    "M3": false,
+    "M4": false,
+    "M5": true
+  },
+  "SufficientByClass": {
+    "M0": false,
+    "M1": false,
+    "M2": false,
+    "M3": false,
+    "M4": false,
+    "M5": false
+  },
+  "StartedUTC": "2026-08-26T09:24:31.727326737Z",
+  "FinishedUTC": "2026-08-26T09:24:36.016133783Z",
+  "RuntimeSeconds": 4.288808191
+}
