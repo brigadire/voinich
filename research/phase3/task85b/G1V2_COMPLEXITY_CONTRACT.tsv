@@ -1,0 +1,9 @@
+rule_id	input	decision	output
+C1	adequate candidates	remove MODEL_INADEQUATE; any unresolved lower rank blocks unique minimum	eligible set
+C2	description length = model bits + heldout PM1	compare only same representation and frozen corpus	pairwise order
+C3	pairwise difference and development equivalence bound	abs(delta)<=max(1 bit, development-null q95) forms an equivalence edge	observational graph
+C4	adequate graph	lowest-rank singleton with all lower ranks validly inadequate	UNIQUE_MINIMUM
+C5	adequate graph	lowest component contains multiple candidates or classes	EQUIVALENT_SET
+C6	partial pairwise ordering	valid edges order candidates but do not isolate minimum	ORDER_ONLY
+C7	missing fit/metric/generation/protocol evidence	if it can alter minimum	NOT_IDENTIFIABLE
+C8	no adequate candidates	all candidates validly rejected => NONE; otherwise NOT_IDENTIFIABLE	G1_MINIMAL_CLASS

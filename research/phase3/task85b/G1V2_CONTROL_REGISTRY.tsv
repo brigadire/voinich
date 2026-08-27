@@ -1,0 +1,13 @@
+control_id	branch	class_or_language	generator_or_source	independence	blinding	scales	replicates	use
+DEV_SAT	DEVELOPMENT	mixed	explicit saturation fixtures	independent	open	1k;4k	4	negative-protocol engineering only
+DEV_M0_M5	DEVELOPMENT	M0-M5	one public reference generator/class	independent	open	1k;4k;16k	3	implementation and threshold derivation
+BC_M0_A	CONFIRMATORY_SYNTHETIC	M0	external IID composition generator	independent	ground truth escrowed	2k;8k;32k	4	blind recovery
+BC_M1_A	CONFIRMATORY_SYNTHETIC	M1	external finite-order chain	independent	ground truth escrowed	2k;8k;32k	4	blind recovery
+BC_M2_A	CONFIRMATORY_SYNTHETIC	M2	external context-tree source	independent	ground truth escrowed	2k;8k;32k	4	blind recovery
+BC_M3_A	CONFIRMATORY_SYNTHETIC	M3	external deterministic automaton	independent	ground truth escrowed	2k;8k;32k	4	blind recovery
+BC_M4_A	CONFIRMATORY_SYNTHETIC	M4	external probabilistic automaton	independent	ground truth escrowed	2k;8k;32k	4	blind recovery
+BC_M5_A	CONFIRMATORY_SYNTHETIC	M5	external component grammar	independent	ground truth escrowed	2k;8k;32k	4	blind recovery
+BC_SECOND	CONFIRMATORY_SYNTHETIC	M0-M5	second independently authored generator/class	independent	ground truth escrowed	2k;8k;32k	4	generator-robust recovery
+NL_EN	CONFIRMATORY_NATURAL	English	Project Gutenberg public-domain fixed edition	n/a	analysis labels visible; outcomes blind	2k;8k;32k	4	applicability
+NL_LA	CONFIRMATORY_NATURAL	Latin	Perseus/Project Gutenberg fixed edition	n/a	same	2k;8k;32k	4	applicability
+NL_SA	CONFIRMATORY_NATURAL	Sanskrit	fixed UTF-8 public research edition	n/a	same	2k;8k;32k	4	applicability

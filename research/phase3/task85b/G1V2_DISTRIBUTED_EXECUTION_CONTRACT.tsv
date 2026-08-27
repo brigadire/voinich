@@ -1,0 +1,13 @@
+contract_id	requirement	design	acceptance
+DX01	N workers	Phase-I mTLS pull/lease coordinator with persistent workers	add worker without manifest change
+DX02	dynamic scheduling	workers claim next ready DAG job; no static shards	utilization >=70% while >=N ready jobs
+DX03	deterministic identity	canonical JSON scientific bundle SHA256; worker/time excluded	same job on every node has same ID
+DX04	immutability	workers receive hashes and write content-addressed result bundle only	input mutation test rejected
+DX05	resume	verified completion index is atomic and keyed by job_id	restart schedules only absent/unverified jobs
+DX06	retry	infrastructure failure expires lease and reissues identical bundle	retry preserves job_id and seed
+DX07	duplicate	matching hashes retained as reproducibility copies; mismatch quarantines all	conflict blocks aggregation
+DX08	DAG	manifest declares dependencies; scientific reachability artifact controls skips	executor cannot invent FAIL/NOT_REACHED
+DX09	determinism	canonical UTF-8 JSON; sorted keys; decimal floats; frozen tolerance only where declared	M0-M5 cross-node representatives equivalent
+DX10	telemetry	worker/start/end/wall/CPU/RSS/retry separated from scientific payload	changing telemetry leaves verdict/hash unchanged
+DX11	verification	transitive hashes/schema/config/code/dependencies/evidence checked before aggregation	any missing/corrupt artifact blocks
+DX12	scalability	benchmark on 1,2,4 workers; efficiency >=0.60 at 4, utilization >=0.70, overhead <=0.10, straggler fraction <=0.25	all ranges frozen before confirmation

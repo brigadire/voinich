@@ -1,0 +1,16 @@
+requirement_id	source	defect_addressed	design_response	artifact	validation_method
+G1V2-OBS-001	Task86C-a/G1_V2_REQUIREMENTS.tsv	PM1/2/4/5 evidence absent	mandatory pm_record fields and per-baseline gates	G1V2_EVIDENCE_ARTIFACT_REGISTRY.tsv;PM_REDESIGN.md	missing-PM negative verifier fixture
+G1V2-OBS-002	Task86C-a/G1_V2_REQUIREMENTS.tsv	PM6 availability conflated	three separate construction/score/acceptance fields	PM6_NEGATIVE_PROTOCOL.md	available/unavailable/pass/fail fixtures
+G1V2-OBS-003	Task86C-a/G1_V2_REQUIREMENTS.tsv	F2 aggregate only	metric/family/scale/replicate records	STRUCTURAL_ADEQUACY_V2.md	delete-F2 negative fixture
+G1V2-COMP-001	Task86C-a/G1_V2_REQUIREMENTS.tsv	M3/M4 training failure treated as class evidence	class/induction/completion axes	G1V2_FAILURE_REGISTRY.tsv	induction substitution negative fixture
+G1V2-NEG-001	Task86C-a/G1_V2_REQUIREMENTS.tsv	negative exhaustion	finite-complement sampling with replacement	PM6_NEGATIVE_PROTOCOL.md	saturated and partially saturated fixtures
+G1V2-GEN-001	Task86C-a/G1_V2_REQUIREMENTS.tsv	generation instability obscured	per-scale convergence/CV/status retained	EVIDENCE_PRESERVATION_CONTRACT.md	generation NOT_REACHED fixture
+G1V2-PROV-001	Task86C-a/G1_V2_REQUIREMENTS.tsv	post-hoc path unrecoverable	transitive hashes and decision-only verifier	DECISION_PATH_CONTRACT.md	hash corruption and regeneration tests
+DX-001	Task85b §26-31	static shards/stragglers	dynamic fine-grain pull queue	DISTRIBUTED_EXECUTION_DESIGN.md	N-worker benchmark
+DX-002	Task85b §32-34	worker-bound identity/non-resume	canonical scientific job ID and completion index	G1V2_JOB_SCHEMA.tsv	changed-worker restart test
+DX-003	Task85b §35	failure conflation	scientific/infrastructure registry	G1V2_DISTRIBUTED_FAILURE_REGISTRY.tsv	retry taxonomy test
+DX-004	Task85b §36-37	cross-node/duplicate ambiguity	canonical representation; conflict quarantine	DISTRIBUTED_EXECUTION_DESIGN.md	cross-node and duplicate tests
+DX-005	Task85b §38-44	implicit DAG/incomplete aggregation	explicit dependencies and manifest verifier	G1V2_DISTRIBUTED_EXECUTION_CONTRACT.tsv	missing dependency test
+DX-006	Task85b §45-46	unmeasured scalability/recovery	representative benchmark and failure battery	TASK86C_V2_CONTROL_DESIGN.md	scalability/failure Stage A
+CTRL-001	Task85b §15-20	unvalidated measurement	new independent blind M0-M5 controls	G1V2_CONTROL_REGISTRY.tsv	recovery criteria after analysis freeze
+FW-001	Task85b §21,48-50	control/target leakage	three firewalls and no automatic progression	TASK86C_V2_HANDOFF.md;TASK86V_HANDOFF.md	path/config access audit

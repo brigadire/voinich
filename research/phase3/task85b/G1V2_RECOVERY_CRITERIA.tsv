@@ -1,0 +1,10 @@
+criterion_id	measure	pass_threshold	failure_label
+RC_EXACT	exact generating-class recovery among identifiable controls	>=0.70 overall and >=0.50 in every class	MODEL_RECOVERY_NOT_VALIDATED
+RC_MINIMAL	minimal-sufficient class or registered equivalence set contains truth	>=0.85 overall and >=0.75 in every class	MODEL_RECOVERY_NOT_VALIDATED
+RC_EQUIV	equivalence-compatible recovery	>=0.90 overall	MODEL_RECOVERY_NOT_VALIDATED
+RC_NONE	NONE on known-correct controls	<=0.05 overall and zero classes >0.10	MODEL_RECOVERY_NOT_VALIDATED
+RC_NI	NOT_IDENTIFIABLE on known-correct controls	<=0.10 overall and <=0.20 every class	MODEL_RECOVERY_NOT_VALIDATED
+RC_UNDER	strictly lower inadequate class selected	<=0.10 overall	MODEL_RECOVERY_NOT_VALIDATED
+RC_OVER	strictly higher non-equivalent class selected	<=0.15 overall	MODEL_RECOVERY_NOT_VALIDATED
+RC_STABILITY	minimal/equivalent verdict agrees across adjacent scales in a generator-replicate	>=0.80	MODEL_RECOVERY_NOT_VALIDATED
+RC_NATURAL	per language assessable non-NONE outcome with >=3/4 replicate agreement at >=2 scales	all three languages	NATURAL_LANGUAGE_APPLICABILITY_NOT_VALIDATED

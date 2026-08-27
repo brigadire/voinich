@@ -1,0 +1,21 @@
+validation_id	method	result	note
+V01	requirements traceability set check	PASS	all seven Task86C-a IDs present
+V02	metric/status registry schema check	PASS	all required metrics/statuses present
+V03	predictive truth table exhaustive check	PASS	27 of 27 combinations agree with verifier
+V04	complete evidence regeneration fixture	PASS	MODEL_ADEQUATE regenerated without fit/generation
+V05	missing PM negative fixture	PASS	verifier refused
+V06	changed threshold/hash negative fixture	PASS	verifier refused
+V07	corrupt artifact hash negative fixture	PASS	verifier refused
+V08	missing F2 negative fixture	PASS	verifier refused
+V09	unavailable mapped to FAIL negative fixture	PASS	verifier refused
+V10	induction failure mapped to class inadequacy fixture	PASS	verifier refused
+V11	completion-index restart/change-worker simulation	PASS	verified jobs not rescheduled
+V12	duplicate identical/conflict simulation	PASS	identical counts once; conflict blocks
+V13	Phase-I checkpoint/changed-worker/duplicate Go tests	PASS	focused internal/conditionalregime tests
+V14	Phase-I mTLS two-worker/cache/certificate determinism tests	PASS	focused internal/conditionalregime tests
+V15	Phase-I lease expiry reassignment and checkpoint-resume tests	PASS	focused internal/conditionalregime tests with loopback
+V16	contract manifest SHA-256 verification	PASS	all listed design artifacts match
+V17	JSON parse and git diff check	PASS	manifest valid; no whitespace errors
+V18	physical cross-node G1-v2 representative run	DEFERRED	Task86C-v2 Stage A; adapter and G1-v2 jobs do not yet exist
+V19	blind controls	NOT_EXECUTED_BY_DESIGN	Task86C-v2 Stages C-F
+V20	Voynich	NOT_EXECUTED_BY_DESIGN	firewall enforced

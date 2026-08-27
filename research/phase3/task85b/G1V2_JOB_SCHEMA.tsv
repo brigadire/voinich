@@ -1,0 +1,17 @@
+field	type	required	scientific_identity	constraint
+job_id	sha256 hex	YES	DERIVED	SHA256 of canonical scientific fields; worker excluded
+experiment	string	YES	YES	g1v2/task86c-v2
+protocol_version	string	YES	YES	frozen version
+corpus_id	string	YES	YES	opaque for blinded synthetic branch
+model	string	YES	YES	M0..M5 or stage-neutral
+candidate	string	YES	YES	frozen candidate ID or NA
+scale	string	YES	YES	frozen scale
+replicate	integer	YES	YES	>=0
+seed	uint64	YES	YES	derived namespace seed
+stage	enum	YES	YES	FIT;PREDICTIVE;GENERATION;STRUCTURAL;AGGREGATION
+input_hashes	sha256 list	YES	YES	sorted
+code_hash	sha256	YES	YES	executable/source closure
+config_hash	sha256	YES	YES	frozen scientific config
+dependency_hashes	sha256 list	YES	YES	sorted and complete
+output_schema	string	YES	YES	frozen schema version
+worker	string	RESULT_ONLY	NO	provenance only

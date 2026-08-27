@@ -1,0 +1,17 @@
+status_id	domain	scientific_result	retry_same_job	adequacy_semantics
+FITTED	fit	YES	NO	continue
+TRAINING_FAILED	induction	YES	NO	MODEL_NOT_IDENTIFIABLE
+INDUCTION_LIMIT_REACHED	induction	YES	NO	MODEL_NOT_IDENTIFIABLE
+CONVERGENCE_FAILED	induction	YES	NO	MODEL_NOT_IDENTIFIABLE
+NUMERICALLY_UNSTABLE	generation	YES	NO	MODEL_NOT_IDENTIFIABLE
+GENERATION_FAILED	generation	YES	NO	MODEL_NOT_IDENTIFIABLE
+METRIC_UNAVAILABLE	measurement	YES	NO	NOT_ASSESSABLE
+METRIC_NONFINITE	measurement	YES	NO	NOT_ASSESSABLE
+NEGATIVE_TEST_NOT_IDENTIFIABLE	measurement	YES	NO	NOT_ASSESSABLE
+PROTOCOL_VETO	protocol	YES	NO	MODEL_NOT_IDENTIFIABLE
+WORKER_LOST	infrastructure	NO	YES	no scientific effect
+SSH_FAILURE	infrastructure	NO	YES	no scientific effect
+PROCESS_INTERRUPTED	infrastructure	NO	YES	no scientific effect
+RESULT_TRANSFER_FAILED	infrastructure	NO	YES	no scientific effect
+STORAGE_FAILURE	infrastructure	NO	YES	no scientific effect
+RESULT_CONFLICT	infrastructure	NO	NO	quarantine; aggregation refused

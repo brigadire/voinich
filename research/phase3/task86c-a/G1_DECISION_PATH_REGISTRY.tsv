@@ -1,0 +1,14 @@
+ordinal	stage	retained_evidence	allowed_statuses	audit_rule
+1	INPUT	manifest identity/hash	PASS/FAIL	verify only; corpus contents not opened
+2	TRAINING	TRAINING_FAILED failure class	PASS/TRAINING_FAILED	absence means StageD received a fitted model
+3	PM1	none	NOT_RECORDED/NOT_REACHED	never infer from predictive aggregate
+4	PM2	none	NOT_RECORDED/NOT_REACHED	never infer from candidate selection
+5	PM4	none	NOT_RECORDED/NOT_REACHED	never infer from predictive aggregate
+6	PM5	none	NOT_RECORDED/NOT_REACHED	never infer from predictive aggregate
+7	PM6	validity only	AVAILABLE_GATE_NOT_RECORDED/UNAVAILABLE/NOT_REACHED	validity is not gate pass
+8	PREDICTIVE_GATE	PredictivePassByClass	PASS/FAIL	recorded aggregate
+9	GENERATION	NUMERICALLY_UNSTABLE	PASS/GENERATION_FAILURE/NOT_REACHED	failure may coexist with gate failure
+10	F2	none	NOT_RECORDED/NOT_REACHED	individual metrics discarded
+11	STRUCTURAL_GATE	StructuralPassByClass	PASS/FAIL/NOT_REACHED	recorded aggregate; pipeline ran it independently
+12	COMPLEXITY	named failure classes	PASS/FAIL/NOT_REACHED	only explicit classes attributable
+13	FINAL	SufficientByClass	PASS/FAIL	recorded aggregate

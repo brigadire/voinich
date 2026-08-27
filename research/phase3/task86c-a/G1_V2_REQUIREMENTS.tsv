@@ -1,0 +1,8 @@
+defect_id	affected_stage	affected_models	synthetic_evidence	natural_language_evidence	universal	required_property_of_G1_v2	proposed_validation_test
+G1V2-OBS-001	PM1/PM2/PM4/PM5	M0-M5	all 576 synthetic jobs lack retained values/gates	all 96 natural jobs lack retained values/gates	yes	persist candidate, baselines, thresholds, finite flags, values and gate outcomes	round-trip audit reconstructs every gate without fitting
+G1V2-OBS-002	PM6	M0-M5	validity retained but value/gate omitted	same	yes	separate sampler availability, finite score and acceptance gate	known available/unavailable/pass/fail fixtures
+G1V2-OBS-003	F2/structural	M0-M5	only aggregate boolean retained	same	yes	persist individual metrics, families, thresholds and reachability	family-specific synthetic failure fixtures
+G1V2-COMP-001	training	M3;M4	training failed in frozen controls	training failed in frozen controls	no	report convergence/cap/state/operation diagnostics separately from class adequacy	known-correct M3/M4 controls at every scale
+G1V2-NEG-001	PM6 negative construction	M0-M5	negative exhaustion is widespread	negative exhaustion is widespread	yes	prevalidate constructibility and define non-veto unavailable semantics	saturated alphabet/vocabulary controls
+G1V2-GEN-001	generation	M0-M5	numeric instability retained	numeric instability retained	no	persist convergence, CV and per-scale failure separately	known-correct generators with deterministic limits
+G1V2-PROV-001	results freeze	M0-M5	post-hoc audit cannot recover intermediate evidence	same	yes	manifest every per-job intermediate artifact by hash	delete-free reproducibility audit before freeze

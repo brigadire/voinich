@@ -1,0 +1,13 @@
+metric_id	family	computation	applicability	threshold_rule	baseline	independent_evidence	metric_aggregation	family_rule
+EF1_GIANT_COMPONENT_SHARE	EDIT	absolute generated-target difference	all G1	max(development MFC q95, frozen practical-effect floor)	matched target scale	YES	median over generation replicates then worst required scale	3 of 4 assessable metrics pass; at least 3 assessable
+EF1_ISOLATE_SHARE	EDIT	absolute generated-target difference	all G1	same	matched target scale	YES	same	same
+EF2_GLOBAL_CLUSTERING	EDIT	absolute generated-target difference	all G1	same	matched target scale	YES	same	same
+EF3_DEGREE_FREQUENCY_SPEARMAN	EDIT	absolute generated-target difference	all G1	same	matched target scale	YES	same	same
+LP1_RULE_SUPPORT_GINI	LEXICAL_PARADIGM	absolute generated-target difference	all G1	same	matched target scale	YES	same	2 of 3 assessable metrics pass; at least 2 assessable
+LP4_PREFIX_ATTACHMENT_NMI	LEXICAL_PARADIGM	absolute generated-target difference	all G1	same	matched target scale	YES	same	same
+LP4_SUFFIX_ATTACHMENT_NMI	LEXICAL_PARADIGM	absolute generated-target difference	all G1	same	matched target scale	YES	same	same
+HR1_FOLIO_VARIANCE_SHARE	SKELETON	borrowed-layout statistic	G3 only	none	borrowed skeleton	NO	DIAGNOSTIC_ONLY	must not count
+HR1_LOCUS_VARIANCE_SHARE	SKELETON	borrowed-layout statistic	G3 only	none	borrowed skeleton	NO	DIAGNOSTIC_ONLY	must not count
+HR1_SECTION_VARIANCE_SHARE	SKELETON	borrowed-layout statistic	G3 only	none	borrowed skeleton	NO	DIAGNOSTIC_ONLY	must not count
+LS1_LINE_LENGTH_CV	SKELETON	borrowed-line statistic	G3 only	none	borrowed skeleton	NO	DIAGNOSTIC_ONLY	must not count
+PF5_WITHIN_FOLIO_PROGRESSION	SKELETON	borrowed-layout statistic	G3 only	none	borrowed skeleton	NO	DIAGNOSTIC_ONLY	must not count

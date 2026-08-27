@@ -1,0 +1,18 @@
+change_id	object	v1_definition	v2_definition	reason	evidence	classification
+CH01	PM1	REQUIRED_GATE	DIAGNOSTIC_ONLY; PM2 carries normalized likelihood	PM1 is a constant multiple of PM2 on one heldout set and is not independent	mathematical identity	SCIENTIFIC_CHANGE
+CH02	PM2	strict improvement above inherited MFC threshold	REQUIRED_GATE with preregistered development-null derivation and 0.01 bit floor	no silent threshold carryover	Task86C non-identifiability	SCIENTIFIC_CHANGE
+CH03	PM4	REQUIRED_GATE	SUPPORTING_EVIDENCE; unavailable if unseen set too small	applicability depends on corpus split	protocol audit	SCIENTIFIC_CHANGE
+CH04	PM5	REQUIRED_GATE; failed/nonfinite inputs could be omitted	REQUIRED_GATE; every prediction retained and any omission makes NOT_ASSESSABLE	remove partial-calibration acceptance	Task85a-v1.1 U3	SCIENTIFIC_CHANGE
+CH05	PM6	unique unseen token per positive; exhaustion FAIL	sample uniformly with replacement from exact length complement; coverage failure NOT_ASSESSABLE	constructibility and correct missingness semantics	Task86C;Task86C-a	SCIENTIFIC_CHANGE
+CH06	predictive logic	all unavailable collapsed to FAIL	PASS/FAIL/NOT_ASSESSABLE truth table	NONE must mean observed rejection	Task86C-a	SCIENTIFIC_CHANGE
+CH07	M0	cannot beat itself as B1	B1 retained as comparison but M0 judged against heldout calibration/null, not strict self-improvement	permit known M0 recovery	Task86C recovery=0	SCIENTIFIC_CHANGE
+CH08	M1/B2	fixed order 2 implementation	orders 1..3 validation-selected by frozen rule	resolve audit discrepancy	Task85a-v1.1 R3	SCIENTIFIC_CHANGE
+CH09	M3	blue-fringe cap could reject class	inducer status separate; bounded exact and approximate routes are candidate algorithms	algorithm is not class	Task85a-v1.1 R4;Task86C-a	SCIENTIFIC_CHANGE
+CH10	M4	convergence failure implied no candidate	convergence status yields MODEL_NOT_IDENTIFIABLE	algorithm is not class	Task86C-a	SCIENTIFIC_COMPLETION
+CH11	M5	unseen forms zero probability	productive component backoff frozen on development	known-correct grammar must be evaluable	Task85a-v1.1 coverage gap	SCIENTIFIC_CHANGE
+CH12	F2	unavailable failed; aggregate only	three-valued individual/family/scale/replicate evidence	observability	Task86C-a	SCIENTIFIC_CHANGE
+CH13	skeleton F2	could contribute pass	DIAGNOSTIC_ONLY and zero adequacy weight	not independent evidence	Task85	SCIENTIFIC_COMPLETION
+CH14	minimality	forced rank/tie winner	UNIQUE_MINIMUM/EQUIVALENT_SET/ORDER_ONLY/NOT_IDENTIFIABLE	respect observational equivalence	identifiability requirement	SCIENTIFIC_CHANGE
+CH15	RNG	post-freeze completion	counter-based namespaced seeds in manifest	cross-node determinism and auditability	Task85a-v1.1 R1	SCIENTIFIC_CHANGE
+CH16	execution	static two-host shards	Phase-I dynamic lease queue and stage DAG	resumability/scalability	Task86C telemetry	INFRASTRUCTURE_CHANGE
+CH17	artifact retention	aggregate candidate result	transitive content-addressed evidence graph	reconstruct verdict without compute	Task86C-a	INFRASTRUCTURE_CHANGE

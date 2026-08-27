@@ -1,0 +1,24 @@
+layer	allowed_status	meaning
+fit	FITTED	model artifact exists and validates
+fit	TRAINING_FAILED	fit ended scientifically without artifact
+fit	INDUCTION_LIMIT_REACHED	preregistered induction budget exhausted
+fit	CONVERGENCE_FAILED	preregistered convergence rule unmet
+metric	METRIC_AVAILABLE	value and all inputs exist
+metric	METRIC_UNAVAILABLE	applicability/coverage condition unmet
+metric	METRIC_NONFINITE	computed value is nonfinite
+predictive	PREDICTIVE_PASS	all required gates pass
+predictive	PREDICTIVE_FAIL	at least one valid required gate fails
+predictive	PREDICTIVE_NOT_ASSESSABLE	any required gate cannot be assessed
+generation	GENERATION_SUCCESS	all required batches validate
+generation	GENERATION_FAILED	attempt completed with scientific failure
+generation	GENERATION_NOT_REACHED	DAG says stage was skipped with recorded reason
+structural	STRUCTURAL_PASS	both discriminating families pass every required scale
+structural	STRUCTURAL_FAIL	valid family evidence fails
+structural	STRUCTURAL_NOT_ASSESSABLE	insufficient metrics/scales/replicates or not reached
+model	MODEL_ADEQUATE	predictive and structural pass with completed evidence
+model	MODEL_INADEQUATE	assessable predictive or structural evidence fails
+model	MODEL_NOT_IDENTIFIABLE	class could not receive an adequate/inadequate verdict
+minimum	UNIQUE_MINIMUM	one lowest-rank adequate equivalence component
+minimum	EQUIVALENT_SET	multiple observationally equivalent lowest candidates/classes
+minimum	ORDER_ONLY	adequacy establishes only a rank interval/order
+minimum	NOT_IDENTIFIABLE	missing evidence or discrimination prevents minimality

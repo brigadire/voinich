@@ -1,0 +1,6 @@
+gate_id	inputs	pass	fail	not_assessable	role
+PG_PM2	PM2 per baseline	all applicable baseline effects exceed frozen bound	one or more valid effects is at/below bound	value/baseline missing or nonfinite	REQUIRED_GATE
+PG_PM5	PM5 per baseline	all applicable baseline effects exceed frozen bound	one or more valid effects is at/below bound	value/baseline missing or nonfinite	REQUIRED_GATE
+PG_PM6	construction; score; acceptance	construction available AND score valid AND accepted	construction available AND score valid AND not accepted	construction unavailable OR score invalid	REQUIRED_GATE
+PG_PM4	PM4 per baseline	all applicable effects exceed bound	one or more valid effects is at/below bound	insufficient unseen set or invalid score	SUPPORTING_EVIDENCE
+PREDICTIVE	PG_PM2;PG_PM5;PG_PM6	all three PASS	at least one FAIL and every other required gate is PASS or FAIL	any required gate is NOT_ASSESSABLE	CANDIDATE_VERDICT

@@ -1,0 +1,12 @@
+artifact_type	producer	required_fields	scientific_meaning	downstream
+input_snapshot	manifest-builder	artifact_id;input_hash;corpus_id;split_hash	immutable scientific input	fit
+fit_record	fit job	artifact_id;job_id;input_hashes;code_hash;config_hash;seed;status;diagnostics;artifact_hash	induction outcome	predictive
+model_artifact	fit job	artifact_id;model_class;candidate;serialization_version;artifact_hash	fitted candidate	predictive;generation
+pm_record	predictive job	PM id;value;baseline values;threshold;available;finite;per-baseline gates;artifact_hash	complete predictive evidence	predictive verdict
+negative_record	predictive job	length;alphabet_size;observed_types;space_size;covered_occurrences;draws;construction_available;score_valid;accepted	PM6 construction and decision	predictive verdict
+predictive_verdict	decision verifier	individual gate inputs;truth-table version;verdict;artifact_hash	predictive gate	generation;model
+generation_batch	generation job	scale;replicate;seed;status;token artifact hash;diagnostics	generated population	F2
+f2_record	structural job	metric;family;generated;target;distance;threshold;applicability;gate;scale;replicate;not_reached_reason	individual structural evidence	family gate
+structural_verdict	decision verifier	metric/family/scale/replicate decisions;verdict;artifact_hash	structural gate	model
+minimality_record	aggregator	adequate set;pairwise comparisons;equivalence graph;blocked edges;verdict	minimal class evidence	final
+job_result	worker	job_id;worker;all hashes;scientific_status;infrastructure_status;artifact hashes;telemetry	distributed provenance	verifier

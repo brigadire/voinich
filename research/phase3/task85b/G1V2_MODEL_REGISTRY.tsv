@@ -1,0 +1,7 @@
+model_id	rank	class_definition	fit_contract	class_evidence	v1_to_v2_classification	change
+M0	0	IID distribution over token glyphs with explicit start/stop and frozen smoothing	maximum-likelihood counts; validation-selected smoothing	class rejected only after an assessable predictive and structural FAIL	SCIENTIFIC_COMPLETION	token-level start/stop likelihood made explicit; class unchanged
+M1	1	fixed-order Markov token generator	orders 1..3 selected on VALIDATION; smoothing frozen before HELDOUT	same	SCIENTIFIC_COMPLETION	B2/order selection ambiguity removed
+M2	2	variable-memory suffix-context generator	context tree depth and pruning selected on VALIDATION	same	EQUIVALENT_IMPLEMENTATION	class semantics retained
+M3	3	deterministic finite-state token generator	complete bounded exact path plus preregistered approximate inducer reported separately	same	SCIENTIFIC_CHANGE	blue-fringe outcome no longer stands for the whole class
+M4	4	probabilistic finite-state token generator	state count selected on VALIDATION; EM restarts and convergence evidence retained	same	SCIENTIFIC_COMPLETION	convergence/cap semantics completed
+M5	5	explicit component/rule grammar generating whole tokens	rule inventory learned on DEVELOPMENT; productive coverage selected on VALIDATION	same	SCIENTIFIC_CHANGE	zero-probability unseen forms replaced by frozen productive backoff
