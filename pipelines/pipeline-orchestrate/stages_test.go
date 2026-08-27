@@ -54,6 +54,9 @@ func TestStagesMatchRepository(t *testing.T) {
 		"experiment-compare":     true,
 		"fingerprint-v2-analyze": true,
 		"fingerprint-v2-verify":  true,
+		// Task86C-v2 distributed manifest coordinator/worker and evidence
+		// verifier. It executes a separate frozen DAG, not a Task49 stage.
+		"g1v2-executor": true,
 		// Task79c closure tools: separately configured Phase II research
 		// entry points with explicit, caller-chosen output paths, same as
 		// fingerprint-v2-analyze; none has a frozen Task49 stage contract.
