@@ -1,0 +1,29 @@
+{
+  "schema_version": "g1v2-execution-component-manifest-v1",
+  "frozen_utc": "2026-08-27T00:00:00Z",
+  "repository_base_commit": "650d0a6d341870e370f5185cf52af899bb069da9",
+  "binary": {
+    "name": "g1v2-executor",
+    "sha256": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+    "goos": "linux",
+    "goarch": "amd64",
+    "protocol_version": "g1v2-execution-v1",
+    "canonical_version": "canonical-json-nfc-v1"
+  },
+  "source_hashes": {
+    "internal/g1v2/evidence.go": "3812634b0f47abbe446eefcabe04b1bde1b29181d0b40a8b46f1cef8b3dd193c",
+    "internal/g1v2/executor.go": "fde4b3122dd3e139227a7d16348acbf8521922dc7d69431ce4668078094241df",
+    "internal/g1v2/fixture.go": "f2e16a522da08f00b2b3c80200132537fd67ecef3e284cdfb770feb6f4e67279",
+    "internal/g1v2/pm6.go": "f64b5eb38e11602f5ca09df254edce35242423161fcdcbd76793f50db7bb4bbb",
+    "internal/g1v2/remote.go": "88e9779b34ad521cba22ed8e59d7bd5d59571d19ae962ca6683027997f12bffa",
+    "internal/g1v2/types.go": "61a0b581c3fe5b297bb957a80ba7d2eec1f8c8a5c6eb3ddff5da6f8f1cdd2d95",
+    "internal/g1v2/verifier.go": "828c7c3d774ffa25de2d548c04783450cda762675d183f12d7153201b7423a5a",
+    "cmd/g1v2-executor/main.go": "8a51d3b2fd07b1356e301d779584d56b97c325b9690d328dbf1b5c9e52a62855"
+  },
+  "contract_hashes": {
+    "G1V2_JOB_SCHEMA.tsv": "aff0bf041efb39403ac438e83e2bf448d9b31d63408c2f8629c8f825eff533e3",
+    "G1V2_DISTRIBUTED_EXECUTION_CONTRACT.tsv": "cbf65183f18beb2ec60a79aabe9ff13564a6faff152734cec2927e65ac87fb4f",
+    "G1V2_EVIDENCE_ARTIFACT_REGISTRY.tsv": "a0ce6e826666c1444a54f2f856953d7063f9da01d9faa1983c65e4a66a86952f",
+    "G1V2_DECISION_STATUS_REGISTRY.tsv": "7068f6a8853a5610bcd1becd402278742934d57e7fcf460ce16b439d85068929"
+  }
+}

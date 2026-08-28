@@ -1,13 +1,72 @@
 # voynich_worker
 
-Task35 Ansible role: builds, installs, configures, starts, verifies and
-removes Task33/34 `conditional-regime-analyze` remote mTLS workers. Workers
-are deliberately ephemeral - they live entirely under `/tmp` on the target
-host - and the role never deploys a coordinator or a CA private key.
+The default `g1v2` profile deploys the frozen Task86C-v2 Linux/amd64 mTLS
+worker as a persistent systemd or OpenRC service. The older Task33/34
+`conditional-regime-analyze` implementation remains available only with
+`voynich_worker_profile: phase1`; its `/tmp` and PID-file behavior described
+later in this document is legacy behavior, not the G1-v2 production path.
 
 See `DISTRIBUTED_EXECUTION_OPERATIONS.md` at the repo root for the
 end-to-end operational story (CA generation, certificate issuance,
 starting the coordinator). This README covers the role itself.
+
+## Frozen G1-v2 production profile
+
+The profile installs only a controller-supplied executable whose SHA-256 is
+exactly `6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718`.
+It neither builds nor downloads code on a worker. It rejects a wrong source
+hash before copying, verifies the installed hash before service start, and
+checks Linux/amd64, HTTPS, systemd/OpenRC, CPU slots, RAM per slot and free
+cache capacity.
+
+Managed paths are `/opt/voinich-g1v2` for the root-owned executable and PKI,
+and `/var/lib/voinich-g1v2` for the unprivileged worker's persistent cache,
+temporary publications and logs. `ca.crt`, a unique worker certificate and
+its key are copied with mode `0640`; `ca.key` is explicitly refused. Worker
+identity remains the verified certificate URI SAN. The `--host` argument is
+operational telemetry and cannot override authenticated identity.
+
+Key variables:
+
+| Variable | Default | Meaning |
+|---|---|---|
+| `voynich_worker_profile` | `g1v2` | Select frozen production deployment; use `phase1` only for the legacy worker. |
+| `voynich_g1v2_binary_src` | required | Controller-local frozen Linux/amd64 executable. |
+| `voynich_worker_ca_src` | required | Controller-local `ca.crt`, never `ca.key`. |
+| `voynich_worker_cert_src` / `_key_src` | required | Unique per-host worker certificate/key. |
+| `voynich_worker_coordinator_url` | required | Operational `https://` endpoint; it never enters scientific identity. |
+| `voynich_g1v2_concurrency` | `voynich_worker_concurrency` | Persistent service slots; bounded by CPU and RAM facts. |
+| `voynich_g1v2_cache_dir` | `/var/lib/voinich-g1v2/cache` | Persistent worker-local SHA-256 CAS. |
+| `voynich_g1v2_temp_dir` | `/var/lib/voinich-g1v2/tmp` | Persistent publication staging; only stale `.publish-*` files are cleaned. |
+| `voynich_g1v2_min_cache_free_bytes` | `1073741824` | Fail-closed free-space threshold before service start. |
+| `voynich_g1v2_evidence_dir` | empty | Optional coordinator-visible evidence volume to create and validate. |
+| `voynich_g1v2_min_evidence_free_bytes` | `120000000000` | Required free bytes when the evidence directory is configured. |
+| `voynich_g1v2_preseed` | `[]` | List of `{src, sha256}` immutable CAS objects; destination name and post-copy content must match SHA-256. |
+| `voynich_g1v2_remove_cache_on_absent` | `false` | Preserve cache by default during decommissioning. |
+
+`present` performs the complete verified deployment. `started` and `stopped`
+only manage already-installed, hash-verified services. `status` is read-only.
+`absent` stops/disables services and removes the executable and credentials;
+the non-authoritative cache is retained unless explicitly requested.
+
+Each systemd slot uses `Restart=always`, an unprivileged account, a persistent
+working directory, read-only system protection, a 65,536 file-descriptor
+limit and optional explicit CPU/memory limits. Each OpenRC slot uses
+`supervise-daemon`, unlimited respawns, persistent logs and boot enablement.
+Workers make outbound mTLS connections to the coordinator and need no inbound
+application port. Reconnect and lease requeue are properties of the frozen
+executor, not Ansible-generated scheduling logic.
+
+The evidence volume is coordinator-visible authoritative storage, distinct
+from each worker cache. Configure `voynich_g1v2_evidence_dir` only on the host
+that owns that volume; workers do not each need 120 GB. For Task86C-v2 the
+validated path is `cognition:/usr/local/data/voinich-evidence`.
+
+Example deployment variables are inventory data or explicit extra vars. A
+coordinator address or slot-count change does not change a manifest, JobID,
+seed, protocol, evidence schema or canonicalization tuple.
+
+The remaining sections document the legacy `phase1` profile.
 
 ## What this role manages, and what it never touches
 

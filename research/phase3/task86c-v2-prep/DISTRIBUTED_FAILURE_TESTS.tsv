@@ -1,0 +1,10 @@
+test_id	failure	job_id_preserved	retry	scientific_failure_emitted	result
+DF01	worker lease expires	YES	YES	NO	PASS
+DF02	result transfer interrupted	YES	YES	NO	PASS
+DF03	coordinator reconstruction from CAS index	YES	YES unfinished only	NO	PASS
+DF04	TRAINING_FAILED	YES	NO	YES	PASS
+DF05	INDUCTION_LIMIT_REACHED	YES	NO	YES	PASS
+DF06	CONVERGENCE_FAILED	YES	NO	YES	PASS
+DF07	METRIC_UNAVAILABLE	YES	NO	YES	PASS
+DF08	wrong code hash	YES	NO	NO; incompatible worker rejected	PASS
+DF09	corrupt result	YES	YES elsewhere	NO	PASS

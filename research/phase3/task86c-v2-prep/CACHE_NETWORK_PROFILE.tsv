@@ -1,0 +1,5 @@
+test	behavior	bytes	hit_rate	result
+local_repeated_manifest	content-addressed immutable results reused from verified index	0 input retransfers	1.000 on resume	PASS
+remote_worker_warm_binary	worker executed 193 leases after one deployment	135162 result payload bytes	1.000 executable reuse	PASS
+remote_binary_cold_deploy	one frozen binary plus manifest	deployment artifact size; approximately 10 minute observed transfer	0.000	CONSTRAINT_RECORDED
+remote_input_cache_contract	Phase-I hash cache plus preseeded input access required by compatibility handshake	job bundles reference sorted SHA-256 only	1.000 for engineering fixture	PASS

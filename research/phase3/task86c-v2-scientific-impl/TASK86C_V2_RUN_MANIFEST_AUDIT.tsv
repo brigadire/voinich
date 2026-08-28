@@ -1,0 +1,16 @@
+audit_id	domain	status	evidence	notes
+MA01	schema	BLOCKED_AMBIGUOUS	A17	No complete frozen scientific schemas
+MA02	canonicalization	BLOCKED_AMBIGUOUS	A17	Scientific canonical numeric/model encodings absent
+MA03	JobIDs	NOT_RUN	A13-A17	Cannot build scientific bundles before inputs/handlers/DAG are frozen
+MA04	collisions	NOT_RUN	A13-A17	No authoritative manifest exists
+MA05	stages	BLOCKED_AMBIGUOUS	A15-A16	Expansion and reachability not uniquely specified
+MA06	models	BLOCKED_AMBIGUOUS	A01-A06	No exact candidate grid
+MA07	controls	BLOCKED_AMBIGUOUS	A13-A14	No immutable exact control set
+MA08	seeds	BLOCKED_AMBIGUOUS	A07	No complete v2 seed derivation/domain registry
+MA09	dependencies	BLOCKED_AMBIGUOUS	A15-A16	No unique DAG expansion
+MA10	reachability	BLOCKED_AMBIGUOUS	A15	Policy says generation may be skipped
+MA11	handlers	BLOCKED_AMBIGUOUS	A01-A12	No scientific implementation can be registered
+MA12	input closure	BLOCKED_AMBIGUOUS	A13-A14	No exact local corpora/generators
+MA13	expected evidence	BLOCKED_AMBIGUOUS	A17	No complete versioned machine-readable schemas
+MA14	aggregation closure	BLOCKED_AMBIGUOUS	A08-A12;A17	Threshold/complexity/evidence definitions incomplete
+

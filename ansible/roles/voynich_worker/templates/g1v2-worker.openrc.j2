@@ -1,0 +1,16 @@
+#!/sbin/openrc-run
+name="Frozen G1-v2 compute worker slot {{ item }}"
+description="Task86C-v2 pull-by-lease worker"
+command="{{ voynich_g1v2_install_dir }}/bin/g1v2-executor"
+command_args="worker --url {{ voynich_worker_coordinator_url }} --tls-cert {{ voynich_g1v2_install_dir }}/pki/worker.crt --tls-key {{ voynich_g1v2_install_dir }}/pki/worker.key --ca {{ voynich_g1v2_install_dir }}/pki/ca.crt --code-hash {{ voynich_g1v2_binary_sha256 }} --host {{ inventory_hostname }} --free-storage {{ voynich_g1v2_min_cache_free_bytes }}"
+command_user="{{ voynich_g1v2_service_user }}:{{ voynich_g1v2_service_group }}"
+directory="{{ voynich_g1v2_state_dir }}"
+supervisor="supervise-daemon"
+respawn_delay=5
+respawn_max=0
+output_log="{{ voynich_g1v2_state_dir }}/log/worker-{{ item }}.log"
+error_log="{{ voynich_g1v2_state_dir }}/log/worker-{{ item }}.log"
+
+depend() {
+  need net
+}

@@ -1,0 +1,13 @@
+metric_id	implementation_version	input	scales	family	direction	aggregation	threshold	practical_floor	status	independent	skeleton_policy
+EF1_GIANT_COMPONENT_SHARE	Fingerprint-v2/task85	normalized token occurrence corpus	2000;8000;32000	EDIT	absolute difference	median 4 replicates	max(dev-MFC-type7-q95,0.02)	0.02	PASS distance<=threshold	YES	WEIGHTED
+EF1_ISOLATE_SHARE	Fingerprint-v2/task85	normalized token occurrence corpus	2000;8000;32000	EDIT	absolute difference	median 4 replicates	max(dev-MFC-type7-q95,0.02)	0.02	PASS distance<=threshold	YES	WEIGHTED
+EF2_GLOBAL_CLUSTERING	Fingerprint-v2/task85	normalized token occurrence corpus	2000;8000;32000	EDIT	absolute difference	median 4 replicates	max(dev-MFC-type7-q95,0.02)	0.02	PASS distance<=threshold	YES	WEIGHTED
+EF3_DEGREE_FREQUENCY_SPEARMAN	Fingerprint-v2/task85	normalized token occurrence corpus	2000;8000;32000	EDIT	absolute difference	median 4 replicates	max(dev-MFC-type7-q95,0.05)	0.05	PASS distance<=threshold	YES	WEIGHTED
+LP1_RULE_SUPPORT_GINI	Fingerprint-v2/task85	normalized token occurrence corpus	2000;8000;32000	LEXICAL_PARADIGM	absolute difference	median 4 replicates	max(dev-MFC-type7-q95,0.03)	0.03	PASS distance<=threshold	YES	WEIGHTED
+LP4_PREFIX_ATTACHMENT_NMI	Fingerprint-v2/task85	normalized token occurrence corpus	2000;8000;32000	LEXICAL_PARADIGM	absolute difference	median 4 replicates	max(dev-MFC-type7-q95,0.03)	0.03	PASS distance<=threshold	YES	WEIGHTED
+LP4_SUFFIX_ATTACHMENT_NMI	Fingerprint-v2/task85	normalized token occurrence corpus	2000;8000;32000	LEXICAL_PARADIGM	absolute difference	median 4 replicates	max(dev-MFC-type7-q95,0.03)	0.03	PASS distance<=threshold	YES	WEIGHTED
+HR1_FOLIO_VARIANCE_SHARE	Fingerprint-v2/task85	normalized token occurrence corpus	2000;8000;32000	SKELETON	borrowed skeleton diagnostic	median 4 replicates	none	0	PASS distance<=threshold	NO	DIAGNOSTIC_ONLY
+HR1_LOCUS_VARIANCE_SHARE	Fingerprint-v2/task85	normalized token occurrence corpus	2000;8000;32000	SKELETON	borrowed skeleton diagnostic	median 4 replicates	none	0	PASS distance<=threshold	NO	DIAGNOSTIC_ONLY
+HR1_SECTION_VARIANCE_SHARE	Fingerprint-v2/task85	normalized token occurrence corpus	2000;8000;32000	SKELETON	borrowed skeleton diagnostic	median 4 replicates	none	0	PASS distance<=threshold	NO	DIAGNOSTIC_ONLY
+LS1_LINE_LENGTH_CV	Fingerprint-v2/task85	normalized token occurrence corpus	2000;8000;32000	SKELETON	borrowed skeleton diagnostic	median 4 replicates	none	0	PASS distance<=threshold	NO	DIAGNOSTIC_ONLY
+PF5_WITHIN_FOLIO_PROGRESSION	Fingerprint-v2/task85	normalized token occurrence corpus	2000;8000;32000	SKELETON	borrowed skeleton diagnostic	median 4 replicates	none	0	PASS distance<=threshold	NO	DIAGNOSTIC_ONLY

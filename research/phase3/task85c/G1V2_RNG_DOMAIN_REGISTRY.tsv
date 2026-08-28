@@ -1,0 +1,14 @@
+domain_id	purpose	namespace	counter_fields	output_interpretation	consumer
+FIT	candidate fitting	g1v2/fit	control_index,candidate_index,attempt	digest/u53/index	M0-M5 fit
+SELECT	validation selection	g1v2/select	control_index,model_rank	digest/u53	selector
+M4_RESTART	M4 initialization	g1v2/m4/restart	control_index,candidate_index,restart,state,parameter	digest/u53	M4
+GENERATE	model generation	g1v2/generate	control_index,candidate_index,scale_index,replicate,draw	digest/u53/index	generators
+PM_BOOTSTRAP	predictive bootstrap	g1v2/pm/bootstrap	control_index,candidate_index,metric_index,replicate,draw	index	PM2/PM5
+PM_PERMUTATION	predictive permutation	g1v2/pm/permutation	control_index,candidate_index,metric_index,replicate,pair	bit	PM thresholds
+PM6_COMPLEMENT	PM6 complement sampling	g1v2/pm6/complement	control_index,candidate_index,length,occurrence	index	PM6
+PM6_BOOTSTRAP	PM6 paired bootstrap	g1v2/pm6/bootstrap	control_index,candidate_index,replicate,draw	index	PM6
+PM6_PERMUTATION	PM6 label permutation	g1v2/pm6/permutation	control_index,candidate_index,replicate,pair	bit	PM6
+STRUCT_BOOTSTRAP	structural threshold bootstrap	g1v2/struct/bootstrap	metric_index,scale_index,replicate,draw	index	F2 calibration
+CONTROL_GENERATE	synthetic control generation	g1v2/control/generate	generator_index,scale_index,replicate,draw	digest/u53/index	control builder
+CORPUS_WINDOW	natural corpus window	g1v2/corpus/window	corpus_index,scale_index,replicate	index	corpus builder
+BLIND_ID	opaque blind identifiers	g1v2/blind/id	generator_index,scale_index,replicate	digest	escrow builder

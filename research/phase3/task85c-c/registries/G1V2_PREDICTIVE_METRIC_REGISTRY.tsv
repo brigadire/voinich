@@ -1,0 +1,6 @@
+metric_id	statistic	input	aggregation_unit	baseline_null	direction	threshold	practical_floor	status_semantics	role
+PM1	sum -log2 p of HELDOUT glyph events including EOS	glyph event	corpus	B1+B2	LOWER	diagnostic	0	finite nonnegative	DIAGNOSTIC
+PM2	PM1/scored glyph-event count	glyph event	corpus	B1+B2	LOWER	development q95	0.01 bit/event	PASS iff both effects strictly exceed threshold	REQUIRED
+PM4	mean log2 whole-token probability for HELDOUT tokens absent from DEVELOPMENT	token occurrence	corpus	B1+B2	HIGHER	development q05	0.05 bit/token	support only; <25 unseen => NOT_ASSESSABLE	SUPPORTING
+PM5	sum_bin (n_b/N)*abs(mean_conf_b-mean_label_b)	next-glyph event; label=1 for realized glyph, confidence=assigned probability	corpus	B1+B2	LOWER	development q95	0.01	PASS iff candidate ECE lower by > threshold	REQUIRED
+PM6	positive-mass-weighted mean length-stratified AUC; ties=0.5	matched positive-negative token pair	corpus	chance+permutation	HIGHER	max(0.5,permutation q95)	0	LCB strictly above both bounds	REQUIRED

@@ -1,0 +1,5 @@
+change_id	artifact	old_semantics	new_semantics	reason	classification	affects_model	affects_metric	affects_threshold	affects_DAG	affects_final_interpretation	authorized_scope
+C01	status registry	SCIENTIFIC_FAILURE implicit; no procedure successes	concrete failures; explicit procedure successes	E01/E04	DEFECT_CORRECTION;NECESSARY_SEMANTIC_COMPLETION	NO	NO	NO	NO	NO	YES
+C02	reachability	generic status and contradictory generation route	fully explicit concrete transitions	E01-E03	DEFECT_CORRECTION	NO	NO	NO	NO	NO	YES
+C03	aggregation	failure consequences partially implicit	failure=>UNRESOLVED; veto=>PROTOCOL_INVALID	NONE/identification safety	NECESSARY_SEMANTIC_COMPLETION	NO	NO	NO	NO	YES	YES
+C04	evidence/status semantics	per-type status set absent	normative permitted status sets	Task85c-c mechanical input	NECESSARY_SEMANTIC_COMPLETION	NO	NO	NO	NO	NO	YES

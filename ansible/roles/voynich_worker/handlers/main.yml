@@ -10,3 +10,23 @@
 - name: restart voynich worker (start)
   ansible.builtin.include_tasks: start.yml
   listen: "restart voynich worker"
+
+- name: restart frozen G1-v2 worker slots
+  become: true
+  ansible.builtin.systemd_service:
+    name: "{{ voynich_g1v2_service_name }}@{{ item }}.service"
+    state: restarted
+    daemon_reload: true
+  loop: "{{ range(1, (voynich_g1v2_concurrency | int) + 1) | list }}"
+  listen: "restart g1v2 workers"
+  when: not ansible_check_mode and ansible_service_mgr == 'systemd'
+
+- name: restart frozen G1-v2 OpenRC worker slots
+  become: true
+  ansible.builtin.service:
+    name: "{{ voynich_g1v2_service_name }}-{{ item }}"
+    state: restarted
+    enabled: true
+  loop: "{{ range(1, (voynich_g1v2_concurrency | int) + 1) | list }}"
+  listen: "restart g1v2 workers"
+  when: not ansible_check_mode and ansible_service_mgr == 'openrc'

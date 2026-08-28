@@ -12,18 +12,22 @@
 # deploy/experiment/cleanup per run - see REMOTE_WORKER_LIFECYCLE.md and
 # DISTRIBUTED_EXECUTION_OPERATIONS.md.
 
-- name: Assert required variables are set
+- name: Assert deployment profile is known
   ansible.builtin.assert:
     that:
+      - voynich_worker_profile in ['g1v2', 'phase1']
       - voynich_worker_state in ['present', 'started', 'stopped', 'status', 'absent']
+
+- name: Include frozen G1-v2 deployment tasks
+  ansible.builtin.include_tasks: g1v2.yml
+  when: voynich_worker_profile == 'g1v2'
+
+- name: Assert legacy Phase-I install directory is safely scoped
+  ansible.builtin.assert:
+    that:
       - voynich_worker_install_dir | length > 0
       - voynich_worker_install_dir is match('^/tmp/')
-    fail_msg: >-
-      voynich_worker_state must be one of present|started|stopped|status|absent,
-      and voynich_worker_install_dir must be a non-empty path under /tmp
-      (Task35 constraint: payload under /tmp by default; if you must
-      relocate it, keep it out of any path this role's absent-state
-      cleanup could confuse with something unmanaged).
+  when: voynich_worker_profile == 'phase1'
 
 - name: Assert coordinator URL uses HTTPS (phase 12 - no silent unauthenticated fallback)
   ansible.builtin.assert:
@@ -34,23 +38,29 @@
       worker never supports plaintext HTTP or -insecure-skip-verify, and
       this role will not silently degrade that guarantee.
   when: voynich_worker_state in ['present', 'started']
+    and voynich_worker_profile == 'phase1'
 
 - name: Include present-state tasks (deploy + start)
   ansible.builtin.include_tasks: present.yml
   when: voynich_worker_state == 'present'
+    and voynich_worker_profile == 'phase1'
 
 - name: Include started-state tasks (ensure running, no redeploy)
   ansible.builtin.include_tasks: started.yml
   when: voynich_worker_state == 'started'
+    and voynich_worker_profile == 'phase1'
 
 - name: Include stopped-state tasks (graceful stop, keep deployment)
   ansible.builtin.include_tasks: stopped.yml
   when: voynich_worker_state == 'stopped'
+    and voynich_worker_profile == 'phase1'
 
 - name: Include status-state tasks (report only, never fails)
   ansible.builtin.include_tasks: status.yml
   when: voynich_worker_state == 'status'
+    and voynich_worker_profile == 'phase1'
 
 - name: Include absent-state tasks (stop + full cleanup)
   ansible.builtin.include_tasks: absent.yml
   when: voynich_worker_state == 'absent'
+    and voynich_worker_profile == 'phase1'

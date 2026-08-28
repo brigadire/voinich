@@ -1,0 +1,10 @@
+status	meaning	legal_producer	required_evidence	downstream	aggregates
+PASS	assessable criterion satisfied	gate/verifier	finite statistic+threshold	per reachability	yes
+FAIL	assessable criterion not satisfied	gate/verifier	finite statistic+threshold	per reachability	yes
+NOT_ASSESSABLE	scientific evidence unavailable/insufficient	metric/gate/verifier	reason code and dependencies	per reachability	missingness; never rejection
+NOT_REACHED	planned cell suppressed by upstream contract	DAG materializer	upstream id/status/reason	none	no
+FIT_FAILURE	valid input but fit did not produce model	fit	reason+diagnostics	NOT_REACHED except aggregation	blocks identification
+NUMERICAL_FAILURE	prescribed finite calculation failed	any numeric handler	operation+nonfinite reason	NOT_REACHED where dependent	blocks identification
+INDUCTION_CAP	M3 bound exhausted without route result	M3 fit	operations+cap	NOT_REACHED where dependent	blocks identification
+GENERATION_FAILURE	generation exceeded 64 glyphs or invalid probability	generation	draw index+reason	structural NOT_REACHED	blocks identification
+PROTOCOL_VETO	schema/hash/firewall violation	verifier	violation	stop	blocks all

@@ -1,0 +1,3 @@
+test_id	injection	index_status	copies_quarantined	dependent_ready	aggregation_ready	result
+CQ01	valid but different artifact for identical JobID	CONFLICT	ALL	NO	NO	PASS
+CQ02	artifact bytes changed without hash update	REJECTED	CORRUPT COPY	NO	NO	PASS

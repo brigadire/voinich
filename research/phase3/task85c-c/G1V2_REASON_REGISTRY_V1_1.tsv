@@ -1,0 +1,40 @@
+reason_code	status	permitted_stage	causal_upstream_status	scientific_meaning	source
+SUPPRESS_PREDICTIVE_AFTER_FIT_FIT_FAILURE	NOT_REACHED	PREDICTIVE	FIT_FAILURE	downstream emits NOT_REACHED; causal state retained; candidate cannot be rejected from missing evidence	V2
+SUPPRESS_GENERATION_AFTER_FIT_FIT_FAILURE	NOT_REACHED	GENERATION	FIT_FAILURE	downstream emits NOT_REACHED; causal state retained; candidate cannot be rejected from missing evidence	V2
+SUPPRESS_COMPLEXITY_AFTER_FIT_FIT_FAILURE	NOT_REACHED	COMPLEXITY	FIT_FAILURE	downstream emits NOT_REACHED; causal state retained; candidate cannot be rejected from missing evidence	V2
+SUPPRESS_PREDICTIVE_AFTER_FIT_NUMERICAL_FAILURE	NOT_REACHED	PREDICTIVE	NUMERICAL_FAILURE	downstream emits NOT_REACHED; causal state retained; candidate cannot be rejected from missing evidence	V2
+SUPPRESS_GENERATION_AFTER_FIT_NUMERICAL_FAILURE	NOT_REACHED	GENERATION	NUMERICAL_FAILURE	downstream emits NOT_REACHED; causal state retained; candidate cannot be rejected from missing evidence	V2
+SUPPRESS_COMPLEXITY_AFTER_FIT_NUMERICAL_FAILURE	NOT_REACHED	COMPLEXITY	NUMERICAL_FAILURE	downstream emits NOT_REACHED; causal state retained; candidate cannot be rejected from missing evidence	V2
+SUPPRESS_PREDICTIVE_AFTER_FIT_INDUCTION_CAP	NOT_REACHED	PREDICTIVE	INDUCTION_CAP	downstream emits NOT_REACHED; causal state retained; candidate cannot be rejected from missing evidence	V2
+SUPPRESS_GENERATION_AFTER_FIT_INDUCTION_CAP	NOT_REACHED	GENERATION	INDUCTION_CAP	downstream emits NOT_REACHED; causal state retained; candidate cannot be rejected from missing evidence	V2
+SUPPRESS_COMPLEXITY_AFTER_FIT_INDUCTION_CAP	NOT_REACHED	COMPLEXITY	INDUCTION_CAP	downstream emits NOT_REACHED; causal state retained; candidate cannot be rejected from missing evidence	V2
+SUPPRESS_PREDICTIVE_AFTER_FIT_PROTOCOL_VETO	NOT_REACHED	PREDICTIVE	PROTOCOL_VETO	downstream emits NOT_REACHED; causal state retained; candidate cannot be rejected from missing evidence	V2
+SUPPRESS_GENERATION_AFTER_FIT_PROTOCOL_VETO	NOT_REACHED	GENERATION	PROTOCOL_VETO	downstream emits NOT_REACHED; causal state retained; candidate cannot be rejected from missing evidence	V2
+SUPPRESS_COMPLEXITY_AFTER_FIT_PROTOCOL_VETO	NOT_REACHED	COMPLEXITY	PROTOCOL_VETO	downstream emits NOT_REACHED; causal state retained; candidate cannot be rejected from missing evidence	V2
+SUPPRESS_GENERATION_AFTER_PREDICTIVE_FAIL	NOT_REACHED	GENERATION	FAIL	downstream emits NOT_REACHED; causal state retained; candidate cannot be rejected from missing evidence	V2
+SUPPRESS_GENERATION_AFTER_PREDICTIVE_NOT_ASSESSABLE	NOT_REACHED	GENERATION	NOT_ASSESSABLE	downstream emits NOT_REACHED; causal state retained; candidate cannot be rejected from missing evidence	V2
+SUPPRESS_GENERATION_AFTER_PREDICTIVE_NUMERICAL_FAILURE	NOT_REACHED	GENERATION	NUMERICAL_FAILURE	downstream emits NOT_REACHED; causal state retained; candidate cannot be rejected from missing evidence	V2
+SUPPRESS_GENERATION_AFTER_PREDICTIVE_PROTOCOL_VETO	NOT_REACHED	GENERATION	PROTOCOL_VETO	downstream emits NOT_REACHED; causal state retained; candidate cannot be rejected from missing evidence	V2
+SUPPRESS_GENERATION_AFTER_PREDICTIVE_NOT_REACHED	NOT_REACHED	GENERATION	NOT_REACHED	downstream emits NOT_REACHED; causal state retained; candidate cannot be rejected from missing evidence	V2
+SUPPRESS_F2_METRIC_AFTER_GENERATION_GENERATION_FAILURE	NOT_REACHED	F2_METRIC	GENERATION_FAILURE	downstream emits NOT_REACHED; causal state retained; candidate cannot be rejected from missing evidence	V2
+SUPPRESS_F2_METRIC_AFTER_GENERATION_NUMERICAL_FAILURE	NOT_REACHED	F2_METRIC	NUMERICAL_FAILURE	downstream emits NOT_REACHED; causal state retained; candidate cannot be rejected from missing evidence	V2
+SUPPRESS_F2_METRIC_AFTER_GENERATION_PROTOCOL_VETO	NOT_REACHED	F2_METRIC	PROTOCOL_VETO	downstream emits NOT_REACHED; causal state retained; candidate cannot be rejected from missing evidence	V2
+SUPPRESS_F2_METRIC_AFTER_GENERATION_NOT_REACHED	NOT_REACHED	F2_METRIC	NOT_REACHED	downstream emits NOT_REACHED; causal state retained; candidate cannot be rejected from missing evidence	V2
+FIT_DID_NOT_PRODUCE_MODEL	FIT_FAILURE	FIT	N/A	procedure failure; candidate unresolved	V2
+PRESCRIBED_NUMERIC_OPERATION_FAILED	NUMERICAL_FAILURE	FIT;PREDICTIVE;GENERATION;F2_METRIC;COMPLEXITY;CANDIDATE_AGGREGATION;CONTROL_AGGREGATION	N/A	procedure failure; never negative evidence	V2
+M3_ENUMERATION_CAP_REACHED	INDUCTION_CAP	FIT	N/A	M3 route unresolved	V2
+GENERATION_CAP_OR_RETRY_EXHAUSTED	GENERATION_FAILURE	GENERATION	N/A	generation unavailable; structural suppressed	V2
+PROTOCOL_CHAIN_INVALID	PROTOCOL_VETO	ANY	N/A	no ordinary final scientific verdict	V2
+INSUFFICIENT_SCORED_GLYPHS	NOT_ASSESSABLE	PREDICTIVE	N/A	V1 frozen applicability/missingness condition for predictive_metric	V1 representation completion
+INSUFFICIENT_UNSEEN_OCCURRENCES	NOT_ASSESSABLE	PREDICTIVE	N/A	V1 frozen applicability/missingness condition for predictive_metric	V1 representation completion
+WHOLE_TOKEN_PROBABILITY_UNSUPPORTED	NOT_ASSESSABLE	PREDICTIVE	N/A	V1 frozen applicability/missingness condition for predictive_metric	V1 representation completion
+INSUFFICIENT_PREDICTIONS	NOT_ASSESSABLE	PREDICTIVE	N/A	V1 frozen applicability/missingness condition for predictive_metric	V1 representation completion
+INSUFFICIENT_FROZEN_BINS	NOT_ASSESSABLE	PREDICTIVE	N/A	V1 frozen applicability/missingness condition for predictive_metric	V1 representation completion
+NEGATIVE_TEST_NOT_IDENTIFIABLE	NOT_ASSESSABLE	PREDICTIVE	N/A	V1 frozen applicability/missingness condition for predictive_metric	V1 representation completion
+REQUIRED_METRIC_NOT_ASSESSABLE	NOT_ASSESSABLE	PREDICTIVE	N/A	V1 frozen applicability/missingness condition for predictive_gate	V1 representation completion
+REQUIRED_METRIC_NOT_ASSESSABLE	NOT_ASSESSABLE	PREDICTIVE	N/A	V1 frozen applicability/missingness condition for predictive_verdict	V1 representation completion
+METRIC_NOT_APPLICABLE	NOT_ASSESSABLE	F2_METRIC	N/A	V1 frozen applicability/missingness condition for f2_metric	V1 representation completion
+DISPERSION_EXCEEDS_DEVELOPMENT_Q95	NOT_ASSESSABLE	F2_METRIC	N/A	V1 frozen applicability/missingness condition for f2_metric	V1 representation completion
+INSUFFICIENT_ASSESSABLE_MEMBERS	NOT_ASSESSABLE	CANDIDATE_AGGREGATION	N/A	V1 frozen applicability/missingness condition for structural_family	V1 representation completion
+INSUFFICIENT_ASSESSABLE_MEMBERS	NOT_ASSESSABLE	CANDIDATE_AGGREGATION	N/A	V1 frozen applicability/missingness condition for structural_gate	V1 representation completion
+REQUIRED_SCALE_NOT_ASSESSABLE	NOT_ASSESSABLE	CANDIDATE_AGGREGATION	N/A	V1 frozen applicability/missingness condition for structural_verdict	V1 representation completion

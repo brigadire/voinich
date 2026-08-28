@@ -1,0 +1,64 @@
+check_id	requirement	status	evidence
+V01	V1 parent identity	PASS	V1.1 reference/cross-validator suite
+V02	V2 parent identity	PASS	V1.1 reference/cross-validator suite
+V03	Task85c-a provenance identity	PASS	V1.1 reference/cross-validator suite
+V04	original A17 defect reproduction	PASS	V1.1 reference/cross-validator suite
+V05	E01 regression	PASS	V1.1 reference/cross-validator suite
+V06	E02 regression	PASS	V1.1 reference/cross-validator suite
+V07	E03 regression	PASS	V1.1 reference/cross-validator suite
+V08	E04 regression	PASS	V1.1 reference/cross-validator suite
+V09	status count	PASS	V1.1 reference/cross-validator suite
+V10	stage count	PASS	V1.1 reference/cross-validator suite
+V11	transition count	PASS	V1.1 reference/cross-validator suite
+V12	status registry closure	PASS	V1.1 reference/cross-validator suite
+V13	evidence schema registry closure	PASS	V1.1 reference/cross-validator suite
+V14	evidence/status matrix completeness	PASS	V1.1 reference/cross-validator suite
+V15	payload contract completeness	PASS	V1.1 reference/cross-validator suite
+V16	JSON Schema dialect	PASS	V1.1 reference/cross-validator suite
+V17	standard validator conformance	PASS	V1.1 reference/cross-validator suite
+V18	second-validator conformance	PASS	V1.1 reference/cross-validator suite
+V19	no custom normative keywords	PASS	V1.1 reference/cross-validator suite
+V20	schema/status exhaustive positive cases	PASS	V1.1 reference/cross-validator suite
+V21	schema/status exhaustive negative cases	PASS	V1.1 reference/cross-validator suite
+V22	producer/status cases	PASS	V1.1 reference/cross-validator suite
+V23	required-field mutations	PASS	V1.1 reference/cross-validator suite
+V24	forbidden-field mutations	PASS	V1.1 reference/cross-validator suite
+V25	null/absence mutations	PASS	V1.1 reference/cross-validator suite
+V26	reason-code mutations	PASS	V1.1 reference/cross-validator suite
+V27	cross-status mutations	PASS	V1.1 reference/cross-validator suite
+V28	hybrid payload mutations	PASS	V1.1 reference/cross-validator suite
+V29	cross-schema substitutions	PASS	V1.1 reference/cross-validator suite
+V30	hash-valid invalid cases	PASS	V1.1 reference/cross-validator suite
+V31	NOT_REACHED causality	PASS	V1.1 reference/cross-validator suite
+V32	suppression precedence	PASS	V1.1 reference/cross-validator suite
+V33	failure non-rejection	PASS	V1.1 reference/cross-validator suite
+V34	NONE safety	PASS	V1.1 reference/cross-validator suite
+V35	NOT_IDENTIFIABLE safety	PASS	V1.1 reference/cross-validator suite
+V36	PROTOCOL_INVALID propagation	PASS	V1.1 reference/cross-validator suite
+V37	M3 route semantics	PASS	V1.1 reference/cross-validator suite
+V38	evidence-only verifier	PASS	V1.1 reference/cross-validator suite
+V39	verifier mutation suite	PASS	V1.1 reference/cross-validator suite
+V40	canonicalization invariant	PASS	V1.1 reference/cross-validator suite
+V41	JobID invariant	PASS	V1.1 reference/cross-validator suite
+V42	candidate invariant	PASS	V1.1 reference/cross-validator suite
+V43	RNG invariant	PASS	V1.1 reference/cross-validator suite
+V44	model invariant	PASS	V1.1 reference/cross-validator suite
+V45	metric invariant	PASS	V1.1 reference/cross-validator suite
+V46	complexity invariant	PASS	V1.1 reference/cross-validator suite
+V47	control invariant	PASS	V1.1 reference/cross-validator suite
+V48	corpus invariant	PASS	V1.1 reference/cross-validator suite
+V49	DAG invariant	PASS	V1.1 reference/cross-validator suite
+V50	inherited Task85c golden	PASS	V1.1 reference/cross-validator suite
+V51	inherited Task85c-b golden	PASS	V1.1 reference/cross-validator suite
+V52	V1.1 golden extension	PASS	V1.1 reference/cross-validator suite
+V53	V1 to V1.1 semantic diff	PASS	V1.1 reference/cross-validator suite
+V54	cross-artifact consistency	PASS	V1.1 reference/cross-validator suite
+V55	results-manifest closure	PASS	V1.1 reference/cross-validator suite
+V56	blind firewall	PASS	V1.1 reference/cross-validator suite
+V57	natural-confirmatory firewall	PASS	V1.1 reference/cross-validator suite
+V58	Voynich firewall	PASS	V1.1 reference/cross-validator suite
+V59	go build ./...	PASS	repository check
+V60	go vet ./...	PASS	repository check
+V61	go test ./...	PASS	repository check
+V62	go test -race ./...	PASS	repository check
+V63	git diff --check	PASS	repository check

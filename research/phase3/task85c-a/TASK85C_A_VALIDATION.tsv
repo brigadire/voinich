@@ -1,0 +1,36 @@
+check_id	requirement	status	evidence
+V01	parent Task85c closure	PASS	Task85c validator and hashes
+V02	defect reproduction before repair	PASS	scientific-impl-R reproducer
+V03	expanded status/reachability defect	FAIL	E01-E04 reproducer
+V04	JSON Schema dialect declaration	NOT_TESTED	repair not created
+V05	status matrix completeness	FAIL	UNRESOLVED cells
+V06	all schema/status ALLOWED tests	NOT_TESTED	mandatory stop
+V07	all schema/status FORBIDDEN tests	NOT_TESTED	mandatory stop
+V08	required-field mutations	NOT_TESTED	mandatory stop
+V09	forbidden-field mutations	NOT_TESTED	mandatory stop
+V10	null/absence mutations	NOT_TESTED	mandatory stop
+V11	contradictory-field mutations	NOT_TESTED	mandatory stop
+V12	hash-valid invalid evidence	NOT_TESTED	no repaired schema
+V13	original not_reached/PASS regression	NOT_TESTED	no repaired schema
+V14	original fit/FAIL regression	NOT_TESTED	no repaired schema
+V15	scientific_failure schema audit	FAIL	registered failures lack reachability
+V16	canonicalization invariant	PASS	parent byte-identical
+V17	reachability invariant	PASS	parent byte-identical; internally defective
+V18	DAG invariant	PASS	1321152 jobs/2617152 edges unchanged
+V19	model invariant	PASS	parent byte-identical
+V20	RNG invariant	PASS	e47c5a... artifact unchanged
+V21	control/corpus invariant	PASS	parent byte-identical
+V22	inherited golden suite	PASS	G1V2_GOLDEN_REFERENCE=PASS
+V23	extended golden suite	NOT_TESTED	not created
+V24	schema root closure	NOT_TESTED	new root not created
+V25	V1 to V1_1 semantic diff	NOT_TESTED	V1_1 not created
+V26	results-manifest closure	PASS	failure closure only
+V27	go build ./...	NOT_TESTED	mandatory contract stop
+V28	go vet ./...	NOT_TESTED	mandatory contract stop
+V29	go test ./...	NOT_TESTED	mandatory contract stop
+V30	go test -race ./...	NOT_TESTED	mandatory contract stop
+V31	standard JSON Schema validator	NOT_TESTED	no repaired schemas
+V32	second JSON Schema validator	NOT_TESTED	no repaired schemas
+V33	blind firewall	PASS	no construction/execution
+V34	natural confirmatory firewall	PASS	no execution
+V35	Voynich firewall	PASS	no access

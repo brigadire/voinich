@@ -1,0 +1,14 @@
+status	category	allowed_producers	requires_assessable_statistic	scientific_negative_evidence	suppresses_downstream	terminal_semantics	description
+PASS	GATE_VERDICT	PREDICTIVE;F2_METRIC;CANDIDATE_AGGREGATION_INTERNAL	YES	NO	conditional	PAYLOAD_DEFINED	assessable positive gate result
+FAIL	GATE_VERDICT	PREDICTIVE;F2_METRIC;CANDIDATE_AGGREGATION_INTERNAL	YES	YES	conditional	PAYLOAD_DEFINED	assessable negative gate result only
+NOT_ASSESSABLE	ASSESSABILITY	PREDICTIVE;F2_METRIC;CANDIDATE_AGGREGATION_INTERNAL	NO	NO	conditional	UNRESOLVED	scientifically specified statistic unavailable after reaching its applicability decision
+FIT_SUCCESS	PROCEDURE_SUCCESS	FIT	NO	NO	no	PAYLOAD_DEFINED	fit and canonical model serialization completed; not a scientific PASS
+GENERATION_SUCCESS	PROCEDURE_SUCCESS	GENERATION	NO	NO	no	PAYLOAD_DEFINED	frozen generation batch completed; not a scientific PASS
+COMPLEXITY_SUCCESS	PROCEDURE_SUCCESS	COMPLEXITY	NO	NO	no	PAYLOAD_DEFINED	complexity record completed; not a scientific PASS
+AGGREGATION_SUCCESS	PROCEDURE_SUCCESS	CANDIDATE_AGGREGATION;CONTROL_AGGREGATION	NO	NO	no	PAYLOAD_DEFINED	aggregation completed; scientific result is a payload verdict
+FIT_FAILURE	PROCEDURE_FAILURE	FIT	NO	NO	yes	UNRESOLVED	valid input did not yield a fitted model; candidate unresolved
+NUMERICAL_FAILURE	PROCEDURE_FAILURE	FIT;PREDICTIVE;GENERATION;F2_METRIC;COMPLEXITY;CANDIDATE_AGGREGATION;CONTROL_AGGREGATION	NO	NO	stage-specific	UNRESOLVED	prescribed numeric procedure produced zero scale, forbidden nonfinite value, or convergence decrease
+INDUCTION_CAP	PROCEDURE_FAILURE	FIT/M3	NO	NO	yes	UNRESOLVED	bounded M3 induction exceeded frozen operation cap; route unresolved
+GENERATION_FAILURE	PROCEDURE_FAILURE	GENERATION	NO	NO	yes	UNRESOLVED	generation cap/retry or prescribed probability failure; candidate unresolved
+PROTOCOL_VETO	PROTOCOL_INVALIDITY	ANY_SCIENTIFIC_STAGE_OR_VERIFIER	NO	NO	yes	PROTOCOL_INVALID	input/schema/hash/dependency/firewall violation invalidates evidence chain; no ordinary verdict
+NOT_REACHED	DAG_SUPPRESSION	DAG_MATERIALIZER_FOR_PREDICTIVE;GENERATION;F2_METRIC;COMPLEXITY	NO	NO	already suppressed	UNRESOLVED	planned job exists but computation is suppressed by causal upstream status

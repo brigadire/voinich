@@ -1,0 +1,17 @@
+validation_id	validation	status	evidence	notes
+V01	Task85b artifact validator	PASS	research/phase3/task85b/validate.py => TASK85B_VALIDATION_PASS	Contract integrity only; validator explicitly has no fit/induction/generation code
+V02	Scientific contract uniqueness	FAIL	TASK86C_V2_SCIENTIFIC_CONTRACT_AMBIGUITY.md	A01-A17 prevent unique implementation
+V03	M0-M5 unit validation	NOT_RUN	N/A	Forbidden until A01-A06 are resolved
+V04	PM and PM6-v2 validation	NOT_RUN	N/A	Blocked by A07-A10
+V05	F2/structural/minimality validation	NOT_RUN	N/A	Blocked by A11-A12
+V06	Manifest/input/handler closure	NOT_RUN	N/A	Blocked by A13-A17
+V07	Distributed and retry scientific determinism	NOT_RUN	N/A	No uniquely specified scientific workload
+V08	Evidence-only scientific reconstruction	NOT_RUN	N/A	No frozen scientific evidence schemas
+V09	Blind firewall	PASS	TASK86C_V2_SCIENTIFIC_CONTRACT_AMBIGUITY.md	No Stage C/D execution or unblinding
+V10	Voynich firewall	PASS	TASK86C_V2_SCIENTIFIC_CONTRACT_AMBIGUITY.md	No G1-v2 Voynich execution
+V11	Task86C-v2-prep validator	PASS	research/phase3/task86c-v2-prep/validate.py => TASK86C_V2_PREP_VALIDATION_PASS	Frozen engineering infrastructure remains valid
+V12	go build ./...	PASS	isolated /tmp Go caches	Repository compiles; no scientific implementation claimed
+V13	go vet ./... and go test ./...	PASS	isolated /tmp Go caches	Repository checks passed
+V14	go test -race ./...	PASS	isolated /tmp Go caches	Repository race checks passed
+V15	ambiguity results-manifest hash closure	PASS	AMBIGUITY_RESULTS_MANIFEST_VALID	All listed ambiguity artifacts matched SHA-256 before this validation update; manifest refreshed afterward
+V16	git diff --check	PASS	no output	No whitespace errors in ambiguity artifact closure

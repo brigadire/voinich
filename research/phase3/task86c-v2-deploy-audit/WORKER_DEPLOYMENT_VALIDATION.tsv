@@ -1,0 +1,21 @@
+test_id	test	method	expected	observed	status
+DV01	fresh deployment	real Ansible present run against clean-equivalent cognition	role completes	OpenRC portability gap corrected; final present completed with four slots	PASS
+DV02	second/idempotent deployment	repeat identical present invocation	changed=0	ok=33 changed=0 failed=0	PASS
+DV03	binary checksum	remote sha256sum installed executable	exact frozen hash	6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718	PASS
+DV04	wrong binary rejection	check-mode with /bin/true	reject before copy, no change	failed source hash assertion; changed=0	PASS
+DV05	mTLS and compatibility handshake	real engineering coordinator plus deployed workers	compatible authenticated workers accepted	coordinator completed 193/193	PASS
+DV06	invalid certificate rejection	check-mode with coordinator cert/key as worker identity	reject URI SAN, no change	worker URI SAN assertion failed; changed=0	PASS
+DV07	service start	OpenRC status for four slots	all started	four status: started; all in default runlevel	PASS
+DV08	service restart	rc-service slot 1 restart	clean stop/start and active	both operations ok; final started	PASS
+DV09	coordinator reconnect	start coordinator after workers had been polling an absent endpoint	complete without worker restart	193/193 complete	PASS
+DV10	cache write/preseed	Ansible preseed engineering-only object	content address, owner/mode, post-copy hash	4218aadd... at CAS path, voynich-worker:voynich-worker 0440	PASS
+DV11	cache persistence	restart service then sha256sum same CAS object	unchanged object	4218aadd... unchanged; service started	PASS
+DV12	free-space positive	role df gates for cache and evidence	cache >=1 GiB; evidence >=120 GB	12645380096 and 178870026240 bytes available	PASS
+DV13	free-space rejection	real run with cache minimum 999999999999999	fail before service changes	capacity assertion failed; changed=0	PASS
+DV14	engineering job execution	open engineering fixture over cross-node mTLS	accepted deterministic results	G1V2_COORDINATOR_COMPLETE jobs=193/193	PASS
+DV15	worker addition	inventory target override plus unique cognition PKI	join without scientific change	cognition certificate identity accepted and jobs claimed	PASS
+DV16	worker removal/requeue	synchronized 3-second four-slot outage; 2-second leases; 25 engineering jobs	requeue identical jobs and finish	25/25 SUCCESS; retry_sum=4; max_retry=1; lease_history_max=2	PASS
+DV17	CA key isolation	remote find plus file-mode inspection	no ca.key; protected worker key	no ca.key output; worker.key root:voynich-worker 0640	PASS
+DV18	platform gate	facts and remote uname	Linux/amd64 only	Linux 6.18.41-gentoo-x86_64 x86_64 accepted	PASS
+DV19	check mode	full correct deployment invocation with --check	no undefined/runtime-only facts; no failure	ok=24 changed=0 failed=0	PASS
+DV20	syntax and repository checks	ansible syntax; git diff --check; prep validators; focused Go tests	all executed checks pass	syntax PASS; diff PASS; prep validators PASS; internal/g1v2 and cmd/g1v2-executor tests PASS; ansible-lint NOT_TESTED because not installed	PASS

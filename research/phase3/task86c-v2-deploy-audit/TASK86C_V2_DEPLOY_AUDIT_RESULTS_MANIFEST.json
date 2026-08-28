@@ -1,0 +1,57 @@
+{
+  "schema": "task86c-v2-deploy-audit-results-v1",
+  "created_utc": "2026-08-27T13:38:07Z",
+  "scope": "deployment-infrastructure-only",
+  "inventory": "/home/brigadire/devops/workdir/inventory_dev/voinich/hosts",
+  "tested_host": "cognition",
+  "tested_platform": "Linux/amd64 Gentoo OpenRC",
+  "frozen_executable": {
+    "sha256": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+    "remote_path": "/opt/voinich-g1v2/bin/g1v2-executor"
+  },
+  "compatibility": {
+    "protocol": "g1v2-execution-v1",
+    "evidence_schema": "g1v2-evidence-v1",
+    "canonicalization": "canonical-json-nfc-v1"
+  },
+  "deployment_observations": {
+    "service_slots": 4,
+    "idempotent_recap": "ok=33 changed=0 failed=0",
+    "check_mode_recap": "ok=24 changed=0 failed=0",
+    "lifecycle_status_recap": "ok=9 changed=0 failed=0",
+    "cache_available_bytes": 12645380096,
+    "evidence_available_bytes": 178870026240,
+    "engineering_reconnect_jobs": "193/193",
+    "engineering_requeue_jobs": "25/25",
+    "engineering_requeue_retry_sum": 4,
+    "engineering_requeue_max_retry": 1,
+    "engineering_requeue_max_lease_history": 2
+  },
+  "validation": {
+    "ansible_syntax": "PASS",
+    "ansible_check_mode": "PASS",
+    "ansible_lint": "NOT_TESTED_NOT_INSTALLED",
+    "git_diff_check": "PASS",
+    "task85b_validator": "PASS",
+    "task86c_v2_prep_validator": "PASS",
+    "focused_go_tests": "PASS",
+    "wrong_binary_rejection": "PASS",
+    "invalid_certificate_rejection": "PASS",
+    "insufficient_storage_rejection": "PASS"
+  },
+  "firewalls": {
+    "voynich_accessed": false,
+    "confirmatory_controls_accessed": false,
+    "fixture_class": "open-engineering-only"
+  },
+  "audit_artifacts_sha256": {
+    "ENGINEERING_PRESEED_INPUT.txt": "4218aadd24ca0fcf4988aebfb5ff4429df6dacd071b7e9fcb6ea3ddb94a4c75c",
+    "TASK86C_V2_DEPLOY_AUDIT_DESIGN.md": "96a64a74d90c0bd20b60ca8217553665d3e2d048e891ecf67199c45aaac529bc",
+    "TASK86C_V2_DEPLOY_AUDIT_REPORT.md": "be911a227e16c6fd2681cfb698914bdf018880481ef99b813fbbf867f352116d",
+    "WORKER_DEPLOYMENT_CONTRACT.md": "ceceb4cd1010047ba1429905f9153fe5ecf2e03e8641f63cf69e1c61d7ff738e",
+    "WORKER_DEPLOYMENT_VALIDATION.tsv": "a3dc5f0f623dad175f1890e7b4cdaeaad3dd65d7945f4747b0afed0e1615e019",
+    "WORKER_OPERATIONS.md": "9d7f600208c44b72bd469d95a34784757f983d6ba8c313ef4140844211edb726",
+    "WORKER_ROLE_REQUIREMENTS_AUDIT.tsv": "707b3963f60a69d68b4d3d819a6fd058c727fb25a81c3368357c7de2f343e839"
+  },
+  "verdict": "SUPPORTED"
+}

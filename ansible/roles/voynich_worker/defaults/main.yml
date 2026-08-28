@@ -4,7 +4,10 @@
 # onto the Task33/34 conditional-regime-analyze worker interface.
 
 # --- Core state model ---------------------------------------------------
-voynich_worker_state: present            # present|absent
+# g1v2 is the production default. Set phase1 explicitly only for the legacy
+# conditional-regime-analyze fleet.
+voynich_worker_profile: g1v2
+voynich_worker_state: present
 voynich_worker_install_dir: /tmp/voynich-worker
 
 # --- Worker runtime (maps 1:1 onto conditional-regime-analyze flags) ----
@@ -76,3 +79,26 @@ voynich_worker_readiness_poll_interval_seconds: 1
 # default linear strategy, that also delays the restart handler for every
 # *other*, perfectly healthy host in the same play.
 voynich_worker_readiness_probe_timeout_seconds: 3
+
+# --- Frozen Task86C-v2 worker deployment -------------------------------
+voynich_g1v2_binary_src: ""
+voynich_g1v2_binary_sha256: 6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718
+voynich_g1v2_protocol: g1v2-execution-v1
+voynich_g1v2_evidence_schema: g1v2-evidence-v1
+voynich_g1v2_canonicalization: canonical-json-nfc-v1
+voynich_g1v2_install_dir: /opt/voinich-g1v2
+voynich_g1v2_state_dir: /var/lib/voinich-g1v2
+voynich_g1v2_cache_dir: "{{ voynich_g1v2_state_dir }}/cache"
+voynich_g1v2_temp_dir: "{{ voynich_g1v2_state_dir }}/tmp"
+voynich_g1v2_service_user: voynich-worker
+voynich_g1v2_service_group: voynich-worker
+voynich_g1v2_service_name: voynich-g1v2-worker
+voynich_g1v2_concurrency: "{{ voynich_worker_concurrency }}"
+voynich_g1v2_min_cache_free_bytes: 1073741824
+voynich_g1v2_min_memory_per_slot_bytes: 2147483648
+voynich_g1v2_evidence_dir: ""
+voynich_g1v2_min_evidence_free_bytes: 120000000000
+voynich_g1v2_preseed: []
+voynich_g1v2_remove_cache_on_absent: false
+voynich_g1v2_memory_max: infinity
+voynich_g1v2_cpu_quota: ""

@@ -1,0 +1,5120 @@
+{
+  "schema_version": "g1v2-evidence-v1",
+  "canonical_version": "canonical-json-nfc-v1",
+  "jobs": [
+    {
+      "job_id": "61d7c70bba4965001f045f25d5dd9dc92eed4b8cbea15f43138943b7ea65ef6c",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "FIT",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M0",
+      "candidate": "M0-engineering",
+      "scale": "engineering-small",
+      "replicate": 0,
+      "seed": 86000,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M0/FIT",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "c9530e839426409679afee78d0baacdfcf810e9541e7ef28b02d686aa3d7a0ac",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "PREDICTIVE",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M0",
+      "candidate": "M0-engineering",
+      "scale": "engineering-small",
+      "replicate": 0,
+      "seed": 86000,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "61d7c70bba4965001f045f25d5dd9dc92eed4b8cbea15f43138943b7ea65ef6c"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M0/PREDICTIVE",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "940ad0d45a3e652fdd393bd52c335007e9ee594f6395afbee6f4fd5df3c69547",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "GENERATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M0",
+      "candidate": "M0-engineering",
+      "scale": "engineering-small",
+      "replicate": 0,
+      "seed": 86000,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "c9530e839426409679afee78d0baacdfcf810e9541e7ef28b02d686aa3d7a0ac"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M0/GENERATION",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "f2194cc93625bb7dea291b4272c9b1e248c7f1acbe3ac02acf2796a794b65495",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "STRUCTURAL",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M0",
+      "candidate": "M0-engineering",
+      "scale": "engineering-small",
+      "replicate": 0,
+      "seed": 86000,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "940ad0d45a3e652fdd393bd52c335007e9ee594f6395afbee6f4fd5df3c69547"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M0/STRUCTURAL",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "25f87fa49da2391e3a142b6cf9d02044b6f8f2c40a059d5a8019936da9f3090c",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "FIT",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M0",
+      "candidate": "M0-engineering",
+      "scale": "engineering-small",
+      "replicate": 1,
+      "seed": 86001,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M0/FIT",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "0a791bd1c1eafce5de6935309f509a3b634fa0c58d3da141e1dcd0f6bbed231b",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "PREDICTIVE",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M0",
+      "candidate": "M0-engineering",
+      "scale": "engineering-small",
+      "replicate": 1,
+      "seed": 86001,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "25f87fa49da2391e3a142b6cf9d02044b6f8f2c40a059d5a8019936da9f3090c"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M0/PREDICTIVE",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "22250b77d503aba6363345adb4c092d924f10c635fe4ba60d6c0ea081557dc06",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "GENERATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M0",
+      "candidate": "M0-engineering",
+      "scale": "engineering-small",
+      "replicate": 1,
+      "seed": 86001,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "0a791bd1c1eafce5de6935309f509a3b634fa0c58d3da141e1dcd0f6bbed231b"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M0/GENERATION",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "1d4e2c0645c11e0d860451584c9393916de96ae401456440bc3581268c2e6f73",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "STRUCTURAL",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M0",
+      "candidate": "M0-engineering",
+      "scale": "engineering-small",
+      "replicate": 1,
+      "seed": 86001,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "22250b77d503aba6363345adb4c092d924f10c635fe4ba60d6c0ea081557dc06"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M0/STRUCTURAL",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "7824465ba38f1052ef3764231cdaa1f3faac7c6e5cb50bd6b67bc9d36bdc3088",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "FIT",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M0",
+      "candidate": "M0-engineering",
+      "scale": "engineering-small",
+      "replicate": 2,
+      "seed": 86002,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M0/FIT",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "216093aa00a419e87fdd2148bf08931f54e54af08cda7f8b3dc853a77c8f814d",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "PREDICTIVE",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M0",
+      "candidate": "M0-engineering",
+      "scale": "engineering-small",
+      "replicate": 2,
+      "seed": 86002,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "7824465ba38f1052ef3764231cdaa1f3faac7c6e5cb50bd6b67bc9d36bdc3088"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M0/PREDICTIVE",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "75c2da9188928dd5527ff5e90fea69d71618edc917fbb8b55f8b89ea4fca5124",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "GENERATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M0",
+      "candidate": "M0-engineering",
+      "scale": "engineering-small",
+      "replicate": 2,
+      "seed": 86002,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "216093aa00a419e87fdd2148bf08931f54e54af08cda7f8b3dc853a77c8f814d"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M0/GENERATION",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "babebc956fa01ff72075a431ddeba36074a3eb0ddfb223616737ba73c1bb8a55",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "STRUCTURAL",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M0",
+      "candidate": "M0-engineering",
+      "scale": "engineering-small",
+      "replicate": 2,
+      "seed": 86002,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "75c2da9188928dd5527ff5e90fea69d71618edc917fbb8b55f8b89ea4fca5124"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M0/STRUCTURAL",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "1b003b69c1ddb45579fb43dca2566a5d9fe05699739bfe1d8c5f04e86e21ebd6",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "FIT",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M0",
+      "candidate": "M0-engineering",
+      "scale": "engineering-small",
+      "replicate": 3,
+      "seed": 86003,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M0/FIT",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "0a4c513610d792c0930fca304d1c30f26f410d1dcf9dc7230b174a8dbaab1e65",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "PREDICTIVE",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M0",
+      "candidate": "M0-engineering",
+      "scale": "engineering-small",
+      "replicate": 3,
+      "seed": 86003,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "1b003b69c1ddb45579fb43dca2566a5d9fe05699739bfe1d8c5f04e86e21ebd6"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M0/PREDICTIVE",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "f988321fe3d7579d3e34cb01d5bd19d483e585f27789ff11a1b66756d4a9b003",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "GENERATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M0",
+      "candidate": "M0-engineering",
+      "scale": "engineering-small",
+      "replicate": 3,
+      "seed": 86003,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "0a4c513610d792c0930fca304d1c30f26f410d1dcf9dc7230b174a8dbaab1e65"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M0/GENERATION",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "5172b856b1bd6dfecdaf64fb4cd726c8852849a80008dee840d2fd4a36b2a4c5",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "STRUCTURAL",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M0",
+      "candidate": "M0-engineering",
+      "scale": "engineering-small",
+      "replicate": 3,
+      "seed": 86003,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "f988321fe3d7579d3e34cb01d5bd19d483e585f27789ff11a1b66756d4a9b003"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M0/STRUCTURAL",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "2b3b59d5bfe15f72decb2b0bd299fc2615b66d79a79e5523ad8362230a97a7f4",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "FIT",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M0",
+      "candidate": "M0-engineering",
+      "scale": "engineering-small",
+      "replicate": 4,
+      "seed": 86004,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M0/FIT",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "2095ca891f845a218093397fef5e71a762557e403fab6444d074b70d124e3ef9",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "PREDICTIVE",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M0",
+      "candidate": "M0-engineering",
+      "scale": "engineering-small",
+      "replicate": 4,
+      "seed": 86004,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "2b3b59d5bfe15f72decb2b0bd299fc2615b66d79a79e5523ad8362230a97a7f4"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M0/PREDICTIVE",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "49dacfc5cd27da6f67ce118dc330e0dd69bf0a56000c1891ad57d00d111b41e1",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "GENERATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M0",
+      "candidate": "M0-engineering",
+      "scale": "engineering-small",
+      "replicate": 4,
+      "seed": 86004,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "2095ca891f845a218093397fef5e71a762557e403fab6444d074b70d124e3ef9"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M0/GENERATION",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "8faab093b469255452b3935c5d60b219b57c83966c01bc9b4defc90b6237ecc3",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "STRUCTURAL",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M0",
+      "candidate": "M0-engineering",
+      "scale": "engineering-small",
+      "replicate": 4,
+      "seed": 86004,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "49dacfc5cd27da6f67ce118dc330e0dd69bf0a56000c1891ad57d00d111b41e1"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M0/STRUCTURAL",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "e80b3bba08b0b3dc29e3085865c4a5abec1b6a0ab696e2cc6a38556d60b2708e",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "FIT",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M0",
+      "candidate": "M0-engineering",
+      "scale": "engineering-small",
+      "replicate": 5,
+      "seed": 86005,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M0/FIT",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "d5dfc9c71295ca03c2e3bf7fd866abe49a2a877d1a9e8c7bde8685f52046bef7",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "PREDICTIVE",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M0",
+      "candidate": "M0-engineering",
+      "scale": "engineering-small",
+      "replicate": 5,
+      "seed": 86005,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "e80b3bba08b0b3dc29e3085865c4a5abec1b6a0ab696e2cc6a38556d60b2708e"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M0/PREDICTIVE",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "bd93b59886f39f9eafba7af184d04a641784f8d9a8372bd7842b352641deee25",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "GENERATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M0",
+      "candidate": "M0-engineering",
+      "scale": "engineering-small",
+      "replicate": 5,
+      "seed": 86005,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "d5dfc9c71295ca03c2e3bf7fd866abe49a2a877d1a9e8c7bde8685f52046bef7"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M0/GENERATION",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "94d949a5b274e3dbbc3c5aeba0c88b1e3e29d1c037693ddd7acf4f000b42d126",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "STRUCTURAL",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M0",
+      "candidate": "M0-engineering",
+      "scale": "engineering-small",
+      "replicate": 5,
+      "seed": 86005,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "bd93b59886f39f9eafba7af184d04a641784f8d9a8372bd7842b352641deee25"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M0/STRUCTURAL",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "731a2c199454212a30aa156802cdf96aa70093585671f57e40cbd97151ed6e90",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "FIT",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M0",
+      "candidate": "M0-engineering",
+      "scale": "engineering-small",
+      "replicate": 6,
+      "seed": 86006,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M0/FIT",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "36146d5d5e6a33ff340177c837ea5fd9d3e7b0406677fa914b2a1cd1a5597df5",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "PREDICTIVE",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M0",
+      "candidate": "M0-engineering",
+      "scale": "engineering-small",
+      "replicate": 6,
+      "seed": 86006,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "731a2c199454212a30aa156802cdf96aa70093585671f57e40cbd97151ed6e90"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M0/PREDICTIVE",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "dced249978cc6c25b02d719a9bd6ce63f3fba5048c6111e58a423b52a237d2a7",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "GENERATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M0",
+      "candidate": "M0-engineering",
+      "scale": "engineering-small",
+      "replicate": 6,
+      "seed": 86006,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "36146d5d5e6a33ff340177c837ea5fd9d3e7b0406677fa914b2a1cd1a5597df5"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M0/GENERATION",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "405332a665537886c73dba10d1b4ebd53251ef8efbeef4a9735cae933a51bde7",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "STRUCTURAL",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M0",
+      "candidate": "M0-engineering",
+      "scale": "engineering-small",
+      "replicate": 6,
+      "seed": 86006,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "dced249978cc6c25b02d719a9bd6ce63f3fba5048c6111e58a423b52a237d2a7"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M0/STRUCTURAL",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "e07b0817a9a9fb551dbdad962bd9859aa51e36defe44d34078ddd319820e7693",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "FIT",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M0",
+      "candidate": "M0-engineering",
+      "scale": "engineering-small",
+      "replicate": 7,
+      "seed": 86007,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M0/FIT",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "03a1f270014c23a047a7b0ded9460c1d49b1cf4f9950818c4543ac7d1a8a1f55",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "PREDICTIVE",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M0",
+      "candidate": "M0-engineering",
+      "scale": "engineering-small",
+      "replicate": 7,
+      "seed": 86007,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "e07b0817a9a9fb551dbdad962bd9859aa51e36defe44d34078ddd319820e7693"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M0/PREDICTIVE",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "ce79054526e928f64a4812c88ca840f2a942a088d4d865d0761f230b844f49a9",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "GENERATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M0",
+      "candidate": "M0-engineering",
+      "scale": "engineering-small",
+      "replicate": 7,
+      "seed": 86007,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "03a1f270014c23a047a7b0ded9460c1d49b1cf4f9950818c4543ac7d1a8a1f55"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M0/GENERATION",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "a03692ecb0e63b2fc867e48eede62498cc00e5037dfdd1ac21d0bede00bf1998",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "STRUCTURAL",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M0",
+      "candidate": "M0-engineering",
+      "scale": "engineering-small",
+      "replicate": 7,
+      "seed": 86007,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "ce79054526e928f64a4812c88ca840f2a942a088d4d865d0761f230b844f49a9"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M0/STRUCTURAL",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "f1ec85729e45458ffbb57736858dff9fc1523161c6a59d44fbf3a8130b57275a",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "FIT",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M1",
+      "candidate": "M1-engineering",
+      "scale": "engineering-small",
+      "replicate": 0,
+      "seed": 86000,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M1/FIT",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "517d356cde7c41fc29aeaf56cd8c8579b76ab25a5fbc49795e0b4b8b771dce94",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "PREDICTIVE",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M1",
+      "candidate": "M1-engineering",
+      "scale": "engineering-small",
+      "replicate": 0,
+      "seed": 86000,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "f1ec85729e45458ffbb57736858dff9fc1523161c6a59d44fbf3a8130b57275a"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M1/PREDICTIVE",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "13e1782064abbaddec64ce5ac72fcfe13442a639968a74b3312f9d8cb6736143",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "GENERATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M1",
+      "candidate": "M1-engineering",
+      "scale": "engineering-small",
+      "replicate": 0,
+      "seed": 86000,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "517d356cde7c41fc29aeaf56cd8c8579b76ab25a5fbc49795e0b4b8b771dce94"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M1/GENERATION",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "e37591232a4a907d2f0bfce32bab504924093454c260f060c757d3aad32d7cdd",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "STRUCTURAL",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M1",
+      "candidate": "M1-engineering",
+      "scale": "engineering-small",
+      "replicate": 0,
+      "seed": 86000,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "13e1782064abbaddec64ce5ac72fcfe13442a639968a74b3312f9d8cb6736143"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M1/STRUCTURAL",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "e21c8b3ec762d83db5acb8482cb8211c078a212123dedb69434b9d345a19b61f",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "FIT",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M1",
+      "candidate": "M1-engineering",
+      "scale": "engineering-small",
+      "replicate": 1,
+      "seed": 86001,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M1/FIT",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "bdb63f06da5744988c0cd0e0ec9544f079b98adcf8ca9ef3e71be3965170ba67",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "PREDICTIVE",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M1",
+      "candidate": "M1-engineering",
+      "scale": "engineering-small",
+      "replicate": 1,
+      "seed": 86001,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "e21c8b3ec762d83db5acb8482cb8211c078a212123dedb69434b9d345a19b61f"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M1/PREDICTIVE",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "3590afa57ea197ee6595d720f9a5491f432cc00b7e75e01c430aa64266876e53",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "GENERATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M1",
+      "candidate": "M1-engineering",
+      "scale": "engineering-small",
+      "replicate": 1,
+      "seed": 86001,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "bdb63f06da5744988c0cd0e0ec9544f079b98adcf8ca9ef3e71be3965170ba67"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M1/GENERATION",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "9b2308934fb5e13b9607a48e72f427e9ff2a5c6a03c883c0d329272ee3e1ba3d",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "STRUCTURAL",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M1",
+      "candidate": "M1-engineering",
+      "scale": "engineering-small",
+      "replicate": 1,
+      "seed": 86001,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "3590afa57ea197ee6595d720f9a5491f432cc00b7e75e01c430aa64266876e53"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M1/STRUCTURAL",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "895d1e35207bc7270e3cd388999e84c7e9830e2d5b32052702095e9b4a022ebb",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "FIT",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M1",
+      "candidate": "M1-engineering",
+      "scale": "engineering-small",
+      "replicate": 2,
+      "seed": 86002,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M1/FIT",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "823792b29845ba1180b191d0b7ea0909ee1f1ff21f868867eb8175496f3c4591",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "PREDICTIVE",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M1",
+      "candidate": "M1-engineering",
+      "scale": "engineering-small",
+      "replicate": 2,
+      "seed": 86002,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "895d1e35207bc7270e3cd388999e84c7e9830e2d5b32052702095e9b4a022ebb"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M1/PREDICTIVE",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "95298b292cead7253a81165dfeea81c6ebface5b1229692d944c47fde193dff7",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "GENERATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M1",
+      "candidate": "M1-engineering",
+      "scale": "engineering-small",
+      "replicate": 2,
+      "seed": 86002,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "823792b29845ba1180b191d0b7ea0909ee1f1ff21f868867eb8175496f3c4591"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M1/GENERATION",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "13ec821f2e0120bff776893a75169b1873731c2873cf3c44090cfb65c1edde64",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "STRUCTURAL",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M1",
+      "candidate": "M1-engineering",
+      "scale": "engineering-small",
+      "replicate": 2,
+      "seed": 86002,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "95298b292cead7253a81165dfeea81c6ebface5b1229692d944c47fde193dff7"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M1/STRUCTURAL",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "82c95246351f51c10b9aedc60e522d3c507db468d040f8b38ff5deeedb6d6af5",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "FIT",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M1",
+      "candidate": "M1-engineering",
+      "scale": "engineering-small",
+      "replicate": 3,
+      "seed": 86003,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M1/FIT",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "58776368d465d847513e122c1403e8a8847976c23ee5a7cfd36a7be4011cad3c",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "PREDICTIVE",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M1",
+      "candidate": "M1-engineering",
+      "scale": "engineering-small",
+      "replicate": 3,
+      "seed": 86003,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "82c95246351f51c10b9aedc60e522d3c507db468d040f8b38ff5deeedb6d6af5"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M1/PREDICTIVE",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "141bfdaf1b93f4e6ef3bd9fc3adb65be1f690755de0f235d04d597d3685b03ab",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "GENERATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M1",
+      "candidate": "M1-engineering",
+      "scale": "engineering-small",
+      "replicate": 3,
+      "seed": 86003,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "58776368d465d847513e122c1403e8a8847976c23ee5a7cfd36a7be4011cad3c"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M1/GENERATION",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "009570673804324acfe8a70ce4835829c3514bf5896a2d1fcd16f55fd4a84d3d",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "STRUCTURAL",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M1",
+      "candidate": "M1-engineering",
+      "scale": "engineering-small",
+      "replicate": 3,
+      "seed": 86003,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "141bfdaf1b93f4e6ef3bd9fc3adb65be1f690755de0f235d04d597d3685b03ab"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M1/STRUCTURAL",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "2a86f3219aaafbea56f562b290bda94c52de5497f6bee418f794f396946baef5",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "FIT",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M1",
+      "candidate": "M1-engineering",
+      "scale": "engineering-small",
+      "replicate": 4,
+      "seed": 86004,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M1/FIT",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "166f67e4f737f838fdf1abb4f808d315371f588042f5ec920fcd6110bd9795a2",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "PREDICTIVE",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M1",
+      "candidate": "M1-engineering",
+      "scale": "engineering-small",
+      "replicate": 4,
+      "seed": 86004,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "2a86f3219aaafbea56f562b290bda94c52de5497f6bee418f794f396946baef5"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M1/PREDICTIVE",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "327aa900fa318c654daaeb5d8a91574d2ebb9a224960433f3721e560b76e044b",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "GENERATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M1",
+      "candidate": "M1-engineering",
+      "scale": "engineering-small",
+      "replicate": 4,
+      "seed": 86004,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "166f67e4f737f838fdf1abb4f808d315371f588042f5ec920fcd6110bd9795a2"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M1/GENERATION",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "f2dfc03b1565678583defb5ab03fb75c96e0dbc017dc9f6790161a14e17d0bbf",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "STRUCTURAL",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M1",
+      "candidate": "M1-engineering",
+      "scale": "engineering-small",
+      "replicate": 4,
+      "seed": 86004,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "327aa900fa318c654daaeb5d8a91574d2ebb9a224960433f3721e560b76e044b"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M1/STRUCTURAL",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "28012ede962e4afaaab714bc126eca58627336ffe0e4841aae1cb4acf8c468d3",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "FIT",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M1",
+      "candidate": "M1-engineering",
+      "scale": "engineering-small",
+      "replicate": 5,
+      "seed": 86005,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M1/FIT",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "3d1186b7d860030e0ea795df91974c78eedf4cfc3939b7432e145687805fcc9d",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "PREDICTIVE",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M1",
+      "candidate": "M1-engineering",
+      "scale": "engineering-small",
+      "replicate": 5,
+      "seed": 86005,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "28012ede962e4afaaab714bc126eca58627336ffe0e4841aae1cb4acf8c468d3"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M1/PREDICTIVE",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "9450785fd9a8525d46e24655302cfef237febe5b87196b33f1f06407c0376ddb",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "GENERATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M1",
+      "candidate": "M1-engineering",
+      "scale": "engineering-small",
+      "replicate": 5,
+      "seed": 86005,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "3d1186b7d860030e0ea795df91974c78eedf4cfc3939b7432e145687805fcc9d"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M1/GENERATION",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "48b2f7d99861f1106d4ef4458fc5ff2615cb9087a1417ef00ea287ff5b762625",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "STRUCTURAL",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M1",
+      "candidate": "M1-engineering",
+      "scale": "engineering-small",
+      "replicate": 5,
+      "seed": 86005,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "9450785fd9a8525d46e24655302cfef237febe5b87196b33f1f06407c0376ddb"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M1/STRUCTURAL",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "a9f2aebc4ab886d5b12c40fa1d6aff1147776eaba0b68d7790e8d0bf84fd1904",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "FIT",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M1",
+      "candidate": "M1-engineering",
+      "scale": "engineering-small",
+      "replicate": 6,
+      "seed": 86006,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M1/FIT",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "b3c4979db094d0c2780ab5e6b879e4734eeb4c3140512679d2ba1c2437b3e5e5",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "PREDICTIVE",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M1",
+      "candidate": "M1-engineering",
+      "scale": "engineering-small",
+      "replicate": 6,
+      "seed": 86006,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "a9f2aebc4ab886d5b12c40fa1d6aff1147776eaba0b68d7790e8d0bf84fd1904"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M1/PREDICTIVE",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "4ef45443c553d56349ae1960894b9b698f6ee077341296eb60269e0783d784f3",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "GENERATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M1",
+      "candidate": "M1-engineering",
+      "scale": "engineering-small",
+      "replicate": 6,
+      "seed": 86006,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "b3c4979db094d0c2780ab5e6b879e4734eeb4c3140512679d2ba1c2437b3e5e5"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M1/GENERATION",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "f213999f55570a3e08ed8457048fb2af575953f0b851402153089bb55572b3e7",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "STRUCTURAL",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M1",
+      "candidate": "M1-engineering",
+      "scale": "engineering-small",
+      "replicate": 6,
+      "seed": 86006,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "4ef45443c553d56349ae1960894b9b698f6ee077341296eb60269e0783d784f3"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M1/STRUCTURAL",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "c2f6009658069e77df8a1e815b37973a1c9df8794981baf63b4797625ac7736c",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "FIT",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M1",
+      "candidate": "M1-engineering",
+      "scale": "engineering-small",
+      "replicate": 7,
+      "seed": 86007,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M1/FIT",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "068f87eaef4b49a0e8ddc0c1993bc4860352c45763aef49b167f2a8f52ccac2f",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "PREDICTIVE",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M1",
+      "candidate": "M1-engineering",
+      "scale": "engineering-small",
+      "replicate": 7,
+      "seed": 86007,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "c2f6009658069e77df8a1e815b37973a1c9df8794981baf63b4797625ac7736c"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M1/PREDICTIVE",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "f8196fa2c5c8e2aa32f52940ed5ca4db99a537f0d21e9c223d0c3712e8635a76",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "GENERATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M1",
+      "candidate": "M1-engineering",
+      "scale": "engineering-small",
+      "replicate": 7,
+      "seed": 86007,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "068f87eaef4b49a0e8ddc0c1993bc4860352c45763aef49b167f2a8f52ccac2f"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M1/GENERATION",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "0691cf4b5884ed6f201a3b4dab1c10b96563b2c03c0df2caed3f0c55106b3ef0",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "STRUCTURAL",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M1",
+      "candidate": "M1-engineering",
+      "scale": "engineering-small",
+      "replicate": 7,
+      "seed": 86007,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "f8196fa2c5c8e2aa32f52940ed5ca4db99a537f0d21e9c223d0c3712e8635a76"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M1/STRUCTURAL",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "7e31689bf818608c82f9049ac16b26a82c27ddb4d274de76533b59187dd513d8",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "FIT",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M2",
+      "candidate": "M2-engineering",
+      "scale": "engineering-small",
+      "replicate": 0,
+      "seed": 86000,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M2/FIT",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "19f5824de6ecf19417291ed9b437e5c2fbe9d47fba0a82c69c2200ae2657836e",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "PREDICTIVE",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M2",
+      "candidate": "M2-engineering",
+      "scale": "engineering-small",
+      "replicate": 0,
+      "seed": 86000,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "7e31689bf818608c82f9049ac16b26a82c27ddb4d274de76533b59187dd513d8"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M2/PREDICTIVE",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "15dec3dc3908ab153e815e77370f91ec3c0a63b634e99471d4b96a8a9b72c1bb",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "GENERATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M2",
+      "candidate": "M2-engineering",
+      "scale": "engineering-small",
+      "replicate": 0,
+      "seed": 86000,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "19f5824de6ecf19417291ed9b437e5c2fbe9d47fba0a82c69c2200ae2657836e"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M2/GENERATION",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "c86d11586df069cf5d0607e327aa175520a47f6a5bb0efa08b517477026edf71",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "STRUCTURAL",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M2",
+      "candidate": "M2-engineering",
+      "scale": "engineering-small",
+      "replicate": 0,
+      "seed": 86000,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "15dec3dc3908ab153e815e77370f91ec3c0a63b634e99471d4b96a8a9b72c1bb"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M2/STRUCTURAL",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "3d4edf105d561f943d9aa7e2164f807816dedfd436e0fb00f0eb1242e2a44a6e",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "FIT",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M2",
+      "candidate": "M2-engineering",
+      "scale": "engineering-small",
+      "replicate": 1,
+      "seed": 86001,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M2/FIT",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "9d3c70f6d8d7323a21b5518d0ba843542ebe532ebe03cfb87d0e0197caae4172",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "PREDICTIVE",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M2",
+      "candidate": "M2-engineering",
+      "scale": "engineering-small",
+      "replicate": 1,
+      "seed": 86001,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "3d4edf105d561f943d9aa7e2164f807816dedfd436e0fb00f0eb1242e2a44a6e"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M2/PREDICTIVE",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "0340246610f2562ab41ddb79384427c0506ee14383aa7d95717df3c87678c0bd",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "GENERATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M2",
+      "candidate": "M2-engineering",
+      "scale": "engineering-small",
+      "replicate": 1,
+      "seed": 86001,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "9d3c70f6d8d7323a21b5518d0ba843542ebe532ebe03cfb87d0e0197caae4172"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M2/GENERATION",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "ccbe58a9a4ce8ae9ff28951aa662b6d1b308cb511f53b0d47c10a94a97707f16",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "STRUCTURAL",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M2",
+      "candidate": "M2-engineering",
+      "scale": "engineering-small",
+      "replicate": 1,
+      "seed": 86001,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "0340246610f2562ab41ddb79384427c0506ee14383aa7d95717df3c87678c0bd"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M2/STRUCTURAL",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "fdd287bae6e7641fd3e86360a090a358b760776dbdf2f1d5ffa450500d22ad12",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "FIT",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M2",
+      "candidate": "M2-engineering",
+      "scale": "engineering-small",
+      "replicate": 2,
+      "seed": 86002,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M2/FIT",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "4fec5d3186e8e13afed20eb3486312744f5701b86705fbf723e647cda55286fa",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "PREDICTIVE",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M2",
+      "candidate": "M2-engineering",
+      "scale": "engineering-small",
+      "replicate": 2,
+      "seed": 86002,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "fdd287bae6e7641fd3e86360a090a358b760776dbdf2f1d5ffa450500d22ad12"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M2/PREDICTIVE",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "de2574a059a05e313d962fee9ee4846f1b0319f686aef91ad1b08cb0946027b8",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "GENERATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M2",
+      "candidate": "M2-engineering",
+      "scale": "engineering-small",
+      "replicate": 2,
+      "seed": 86002,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "4fec5d3186e8e13afed20eb3486312744f5701b86705fbf723e647cda55286fa"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M2/GENERATION",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "75d92f58c00089aaf8e738dc7ecfec7b119826da3b000c6b83d30831c6cd4158",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "STRUCTURAL",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M2",
+      "candidate": "M2-engineering",
+      "scale": "engineering-small",
+      "replicate": 2,
+      "seed": 86002,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "de2574a059a05e313d962fee9ee4846f1b0319f686aef91ad1b08cb0946027b8"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M2/STRUCTURAL",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "b9ef4c924993de96b150a11f36c342a7bb70869902a2d5656d5044f673d28b05",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "FIT",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M2",
+      "candidate": "M2-engineering",
+      "scale": "engineering-small",
+      "replicate": 3,
+      "seed": 86003,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M2/FIT",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "ad6b3873e1f79c415c7f737bcedba35cc9d6bc19742f7f34805ec6b63053d8b9",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "PREDICTIVE",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M2",
+      "candidate": "M2-engineering",
+      "scale": "engineering-small",
+      "replicate": 3,
+      "seed": 86003,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "b9ef4c924993de96b150a11f36c342a7bb70869902a2d5656d5044f673d28b05"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M2/PREDICTIVE",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "8400b965c183e2064fe1173d4ec21a48c7afb03cd31a7424d7947b23d60d6589",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "GENERATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M2",
+      "candidate": "M2-engineering",
+      "scale": "engineering-small",
+      "replicate": 3,
+      "seed": 86003,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "ad6b3873e1f79c415c7f737bcedba35cc9d6bc19742f7f34805ec6b63053d8b9"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M2/GENERATION",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "5c5c4469f857a12315da0f0575184afa8a841a34da0eeaeb7be5b0a06f59f06e",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "STRUCTURAL",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M2",
+      "candidate": "M2-engineering",
+      "scale": "engineering-small",
+      "replicate": 3,
+      "seed": 86003,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "8400b965c183e2064fe1173d4ec21a48c7afb03cd31a7424d7947b23d60d6589"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M2/STRUCTURAL",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "8c156f0e99d2cc1c4ed9351a3322047454b2eca94ae4c983885e58025462dcfc",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "FIT",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M2",
+      "candidate": "M2-engineering",
+      "scale": "engineering-small",
+      "replicate": 4,
+      "seed": 86004,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M2/FIT",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "6ec604c32f848920a5a16a483d704f3ee6c803bcb2a2ab98bcf5c6d08aea85e3",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "PREDICTIVE",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M2",
+      "candidate": "M2-engineering",
+      "scale": "engineering-small",
+      "replicate": 4,
+      "seed": 86004,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "8c156f0e99d2cc1c4ed9351a3322047454b2eca94ae4c983885e58025462dcfc"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M2/PREDICTIVE",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "3e26cc0e2fb3986ab5530f91be72a025ac950f543fcc253c2e2594cf2fcd8d13",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "GENERATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M2",
+      "candidate": "M2-engineering",
+      "scale": "engineering-small",
+      "replicate": 4,
+      "seed": 86004,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "6ec604c32f848920a5a16a483d704f3ee6c803bcb2a2ab98bcf5c6d08aea85e3"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M2/GENERATION",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "f95239dcd063d2384c769715cfe202a79cd8d08e9bc5bbb8e81d809744d48475",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "STRUCTURAL",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M2",
+      "candidate": "M2-engineering",
+      "scale": "engineering-small",
+      "replicate": 4,
+      "seed": 86004,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "3e26cc0e2fb3986ab5530f91be72a025ac950f543fcc253c2e2594cf2fcd8d13"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M2/STRUCTURAL",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "06a01a4f9a98a8d3d0f2b4f1f583cf98c91ad689024d84eb002e78fd46ba87ad",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "FIT",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M2",
+      "candidate": "M2-engineering",
+      "scale": "engineering-small",
+      "replicate": 5,
+      "seed": 86005,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M2/FIT",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "676e2dac05cd3219fe378b4846d10a44c726aa3cc0dfc3de52fb358b686f5caa",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "PREDICTIVE",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M2",
+      "candidate": "M2-engineering",
+      "scale": "engineering-small",
+      "replicate": 5,
+      "seed": 86005,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "06a01a4f9a98a8d3d0f2b4f1f583cf98c91ad689024d84eb002e78fd46ba87ad"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M2/PREDICTIVE",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "7dcc74876546a1197bcec2f2b51a626deda8d4e80febdcdca64282a6974d9377",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "GENERATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M2",
+      "candidate": "M2-engineering",
+      "scale": "engineering-small",
+      "replicate": 5,
+      "seed": 86005,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "676e2dac05cd3219fe378b4846d10a44c726aa3cc0dfc3de52fb358b686f5caa"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M2/GENERATION",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "3a790b11c00a54727401bcd80edb4397899412ba6653e2119384efa6ecf48b27",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "STRUCTURAL",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M2",
+      "candidate": "M2-engineering",
+      "scale": "engineering-small",
+      "replicate": 5,
+      "seed": 86005,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "7dcc74876546a1197bcec2f2b51a626deda8d4e80febdcdca64282a6974d9377"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M2/STRUCTURAL",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "907762d44bc1ace99eaa5ed7977f1e91d42072f50007cd44862253e35b7b8b9d",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "FIT",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M2",
+      "candidate": "M2-engineering",
+      "scale": "engineering-small",
+      "replicate": 6,
+      "seed": 86006,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M2/FIT",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "7bd51b6a8b901fce9fb8ce3ffe82639ed2bfc1d6a8952ee925865b2a0174f2d6",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "PREDICTIVE",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M2",
+      "candidate": "M2-engineering",
+      "scale": "engineering-small",
+      "replicate": 6,
+      "seed": 86006,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "907762d44bc1ace99eaa5ed7977f1e91d42072f50007cd44862253e35b7b8b9d"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M2/PREDICTIVE",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "faf1b546ca00dc235c88b08afd1d77775221d1d1141e8a39504bc3190e6c0a6c",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "GENERATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M2",
+      "candidate": "M2-engineering",
+      "scale": "engineering-small",
+      "replicate": 6,
+      "seed": 86006,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "7bd51b6a8b901fce9fb8ce3ffe82639ed2bfc1d6a8952ee925865b2a0174f2d6"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M2/GENERATION",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "26f9ad037d489ee0d265c42b43db71faf12ea19fdd1a31d88f5c715be5aa3456",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "STRUCTURAL",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M2",
+      "candidate": "M2-engineering",
+      "scale": "engineering-small",
+      "replicate": 6,
+      "seed": 86006,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "faf1b546ca00dc235c88b08afd1d77775221d1d1141e8a39504bc3190e6c0a6c"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M2/STRUCTURAL",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "446bee2adc4055b4daa90d861c05bae911ab2fab05f0dda73c690a3929116720",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "FIT",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M2",
+      "candidate": "M2-engineering",
+      "scale": "engineering-small",
+      "replicate": 7,
+      "seed": 86007,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M2/FIT",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "31edac04ba5bebcef439baa0f7ee6315cdb6e76f7de7fd8231a986499d64ab75",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "PREDICTIVE",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M2",
+      "candidate": "M2-engineering",
+      "scale": "engineering-small",
+      "replicate": 7,
+      "seed": 86007,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "446bee2adc4055b4daa90d861c05bae911ab2fab05f0dda73c690a3929116720"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M2/PREDICTIVE",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "f2d619992bff9e5fdaadf93ac2d09fb22b466223b9ea894f2040d29b2e3e91c8",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "GENERATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M2",
+      "candidate": "M2-engineering",
+      "scale": "engineering-small",
+      "replicate": 7,
+      "seed": 86007,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "31edac04ba5bebcef439baa0f7ee6315cdb6e76f7de7fd8231a986499d64ab75"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M2/GENERATION",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "8375deea5325c97f6728ddd16d44efb8b97ec33516b9903d6c0e3d606cc1c7fa",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "STRUCTURAL",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M2",
+      "candidate": "M2-engineering",
+      "scale": "engineering-small",
+      "replicate": 7,
+      "seed": 86007,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "f2d619992bff9e5fdaadf93ac2d09fb22b466223b9ea894f2040d29b2e3e91c8"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M2/STRUCTURAL",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "1e72cbb8293eca37ee18eae6f6920ca1c2f05f3e06980f05828c2f22d22f6dd6",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "FIT",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M3",
+      "candidate": "M3-engineering",
+      "scale": "engineering-small",
+      "replicate": 0,
+      "seed": 86000,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M3/FIT",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "237d6a76f1c4c74e9fd6875bffc8e2360d58bc30e6f3d1eb18069f0f24cf2155",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "PREDICTIVE",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M3",
+      "candidate": "M3-engineering",
+      "scale": "engineering-small",
+      "replicate": 0,
+      "seed": 86000,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "1e72cbb8293eca37ee18eae6f6920ca1c2f05f3e06980f05828c2f22d22f6dd6"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M3/PREDICTIVE",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "7627fc46348a271d627bd62b6165623e6e9d353dc4e14f89a1126fffde368551",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "GENERATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M3",
+      "candidate": "M3-engineering",
+      "scale": "engineering-small",
+      "replicate": 0,
+      "seed": 86000,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "237d6a76f1c4c74e9fd6875bffc8e2360d58bc30e6f3d1eb18069f0f24cf2155"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M3/GENERATION",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "19930f95f0b065ba99aa8d0081c0ef17951a8cc44e2a2f6d9e2ac70738b546e3",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "STRUCTURAL",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M3",
+      "candidate": "M3-engineering",
+      "scale": "engineering-small",
+      "replicate": 0,
+      "seed": 86000,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "7627fc46348a271d627bd62b6165623e6e9d353dc4e14f89a1126fffde368551"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M3/STRUCTURAL",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "c53a1b49dba07920e811e6ae04912349e184a226126f0e1b4263b12aac563fa9",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "FIT",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M3",
+      "candidate": "M3-engineering",
+      "scale": "engineering-small",
+      "replicate": 1,
+      "seed": 86001,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M3/FIT",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "ad36b6e27800ec7363b16d21229a6f45aca425e463bf1086455e12a07ce17f3d",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "PREDICTIVE",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M3",
+      "candidate": "M3-engineering",
+      "scale": "engineering-small",
+      "replicate": 1,
+      "seed": 86001,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "c53a1b49dba07920e811e6ae04912349e184a226126f0e1b4263b12aac563fa9"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M3/PREDICTIVE",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "290e9f2239ed90446e64c81dfcff046f4a1d711d62a484dd004810bb17153a44",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "GENERATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M3",
+      "candidate": "M3-engineering",
+      "scale": "engineering-small",
+      "replicate": 1,
+      "seed": 86001,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "ad36b6e27800ec7363b16d21229a6f45aca425e463bf1086455e12a07ce17f3d"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M3/GENERATION",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "08b6f9d86800f7b5d8776e11f5d7333e969c654121ddba8db69319bffe685fcd",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "STRUCTURAL",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M3",
+      "candidate": "M3-engineering",
+      "scale": "engineering-small",
+      "replicate": 1,
+      "seed": 86001,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "290e9f2239ed90446e64c81dfcff046f4a1d711d62a484dd004810bb17153a44"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M3/STRUCTURAL",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "3b8d587deaeac23c13e5d2546361e12bc56b49a44fa61b8d35cb2870bfe19c5b",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "FIT",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M3",
+      "candidate": "M3-engineering",
+      "scale": "engineering-small",
+      "replicate": 2,
+      "seed": 86002,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M3/FIT",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "1c8bfe857db41164b7d5154403359c52949b35eba066640e264c14b625d93030",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "PREDICTIVE",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M3",
+      "candidate": "M3-engineering",
+      "scale": "engineering-small",
+      "replicate": 2,
+      "seed": 86002,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "3b8d587deaeac23c13e5d2546361e12bc56b49a44fa61b8d35cb2870bfe19c5b"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M3/PREDICTIVE",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "d1f01548078bf62fce812c5eaaf03c970564067be563c38b1f2d045438e92c79",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "GENERATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M3",
+      "candidate": "M3-engineering",
+      "scale": "engineering-small",
+      "replicate": 2,
+      "seed": 86002,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "1c8bfe857db41164b7d5154403359c52949b35eba066640e264c14b625d93030"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M3/GENERATION",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "64bb0c6553c1f964f2fced68371e4b22915042527705e5dea9c1ecc67d385cc9",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "STRUCTURAL",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M3",
+      "candidate": "M3-engineering",
+      "scale": "engineering-small",
+      "replicate": 2,
+      "seed": 86002,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "d1f01548078bf62fce812c5eaaf03c970564067be563c38b1f2d045438e92c79"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M3/STRUCTURAL",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "59cc509052335e4a205e73b588ff7ecb70e827c5ec42983c7a4a171fab261bac",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "FIT",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M3",
+      "candidate": "M3-engineering",
+      "scale": "engineering-small",
+      "replicate": 3,
+      "seed": 86003,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M3/FIT",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "ba13233fc30efb0e190a2b272a91569a70f9e402dd803d57adf1497cd3c20ad3",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "PREDICTIVE",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M3",
+      "candidate": "M3-engineering",
+      "scale": "engineering-small",
+      "replicate": 3,
+      "seed": 86003,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "59cc509052335e4a205e73b588ff7ecb70e827c5ec42983c7a4a171fab261bac"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M3/PREDICTIVE",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "6cac78c6391d42bc120e4aaea0dcba3f4dd730b5b17fede92611db8f1ef5184a",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "GENERATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M3",
+      "candidate": "M3-engineering",
+      "scale": "engineering-small",
+      "replicate": 3,
+      "seed": 86003,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "ba13233fc30efb0e190a2b272a91569a70f9e402dd803d57adf1497cd3c20ad3"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M3/GENERATION",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "bdb4f72b165b8ff5fcdef131b71d3e02cd180f38d19f1aa9c4e7695140c9a620",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "STRUCTURAL",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M3",
+      "candidate": "M3-engineering",
+      "scale": "engineering-small",
+      "replicate": 3,
+      "seed": 86003,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "6cac78c6391d42bc120e4aaea0dcba3f4dd730b5b17fede92611db8f1ef5184a"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M3/STRUCTURAL",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "03fa6879253da6895ea01827056a4edb22128f2c395d4631640d15da18158e8f",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "FIT",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M3",
+      "candidate": "M3-engineering",
+      "scale": "engineering-small",
+      "replicate": 4,
+      "seed": 86004,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M3/FIT",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "21860ad28059d3e60c9670e1dbe3b799317294535f49eaeb2ef64fa1eeddf87e",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "PREDICTIVE",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M3",
+      "candidate": "M3-engineering",
+      "scale": "engineering-small",
+      "replicate": 4,
+      "seed": 86004,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "03fa6879253da6895ea01827056a4edb22128f2c395d4631640d15da18158e8f"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M3/PREDICTIVE",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "115fc4871571d6c49c325f35dc99d3387d29643c4232608a4d34c6020090b81c",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "GENERATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M3",
+      "candidate": "M3-engineering",
+      "scale": "engineering-small",
+      "replicate": 4,
+      "seed": 86004,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "21860ad28059d3e60c9670e1dbe3b799317294535f49eaeb2ef64fa1eeddf87e"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M3/GENERATION",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "6ba8a7cad253f9f5e8b36711c8d87990e95d69c6c87c7f4565218ee471caa21e",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "STRUCTURAL",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M3",
+      "candidate": "M3-engineering",
+      "scale": "engineering-small",
+      "replicate": 4,
+      "seed": 86004,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "115fc4871571d6c49c325f35dc99d3387d29643c4232608a4d34c6020090b81c"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M3/STRUCTURAL",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "9933d776b72ef3c3dd505d28bf28c68d386f00d873994434abb41bbb73e3160d",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "FIT",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M3",
+      "candidate": "M3-engineering",
+      "scale": "engineering-small",
+      "replicate": 5,
+      "seed": 86005,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M3/FIT",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "77e59a5d041804cd8d05a6474b4c333ed43193e461c53b501ea4ca5cf8474a65",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "PREDICTIVE",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M3",
+      "candidate": "M3-engineering",
+      "scale": "engineering-small",
+      "replicate": 5,
+      "seed": 86005,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "9933d776b72ef3c3dd505d28bf28c68d386f00d873994434abb41bbb73e3160d"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M3/PREDICTIVE",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "6fc436eba23d5047a495913f0f986a2e25b51f8b512c360c978443347f958114",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "GENERATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M3",
+      "candidate": "M3-engineering",
+      "scale": "engineering-small",
+      "replicate": 5,
+      "seed": 86005,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "77e59a5d041804cd8d05a6474b4c333ed43193e461c53b501ea4ca5cf8474a65"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M3/GENERATION",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "641aa4cfb62e177dd9c310d7bc0f168a4ed5e7aa1054dde8bc1fbe93108ba851",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "STRUCTURAL",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M3",
+      "candidate": "M3-engineering",
+      "scale": "engineering-small",
+      "replicate": 5,
+      "seed": 86005,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "6fc436eba23d5047a495913f0f986a2e25b51f8b512c360c978443347f958114"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M3/STRUCTURAL",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "5594029d754f7b3dee78de27dce4a4147e63792ea489a9a2be2bc7afe93ba401",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "FIT",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M3",
+      "candidate": "M3-engineering",
+      "scale": "engineering-small",
+      "replicate": 6,
+      "seed": 86006,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M3/FIT",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "244adea12ae64bd24c9bc02099cae68664d8fb05e65a6c0759cd4f31d023bb28",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "PREDICTIVE",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M3",
+      "candidate": "M3-engineering",
+      "scale": "engineering-small",
+      "replicate": 6,
+      "seed": 86006,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "5594029d754f7b3dee78de27dce4a4147e63792ea489a9a2be2bc7afe93ba401"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M3/PREDICTIVE",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "aeb0395ddb2c69a01fc9d0f4de833913702d447a372e50e764620e0e6e44194e",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "GENERATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M3",
+      "candidate": "M3-engineering",
+      "scale": "engineering-small",
+      "replicate": 6,
+      "seed": 86006,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "244adea12ae64bd24c9bc02099cae68664d8fb05e65a6c0759cd4f31d023bb28"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M3/GENERATION",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "38cf917a0554c4efb81fac3f8b25c40f89bec9587af3191965199cb548f1e75f",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "STRUCTURAL",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M3",
+      "candidate": "M3-engineering",
+      "scale": "engineering-small",
+      "replicate": 6,
+      "seed": 86006,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "aeb0395ddb2c69a01fc9d0f4de833913702d447a372e50e764620e0e6e44194e"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M3/STRUCTURAL",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "f344a16f01529216c5c131fff92719591a0274512272e30fa9ca4353270e98dc",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "FIT",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M3",
+      "candidate": "M3-engineering",
+      "scale": "engineering-small",
+      "replicate": 7,
+      "seed": 86007,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M3/FIT",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "8b399bf73190351ccf6c3320957ca63c45b505ec395b7800a52aaa0df68bfb2f",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "PREDICTIVE",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M3",
+      "candidate": "M3-engineering",
+      "scale": "engineering-small",
+      "replicate": 7,
+      "seed": 86007,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "f344a16f01529216c5c131fff92719591a0274512272e30fa9ca4353270e98dc"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M3/PREDICTIVE",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "10c7fc9544e53d88c33fb3cd7927c1de33084ebc1c37e13d311457bc8b37303f",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "GENERATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M3",
+      "candidate": "M3-engineering",
+      "scale": "engineering-small",
+      "replicate": 7,
+      "seed": 86007,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "8b399bf73190351ccf6c3320957ca63c45b505ec395b7800a52aaa0df68bfb2f"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M3/GENERATION",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "5a368c511c697638d91a7d2b65ca7827f676134377c10aa5222aed4511175661",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "STRUCTURAL",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M3",
+      "candidate": "M3-engineering",
+      "scale": "engineering-small",
+      "replicate": 7,
+      "seed": 86007,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "10c7fc9544e53d88c33fb3cd7927c1de33084ebc1c37e13d311457bc8b37303f"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M3/STRUCTURAL",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "84607e37450abb9b51e61d3e14e0a79803a4ded0ed4d73c15a0404971f3cc347",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "FIT",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M4",
+      "candidate": "M4-engineering",
+      "scale": "engineering-small",
+      "replicate": 0,
+      "seed": 86000,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M4/FIT",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "dd7614448ab9a7b3f3bc9dd245b5ffaaa6fd34e65e0df8da542acacde2296fe7",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "PREDICTIVE",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M4",
+      "candidate": "M4-engineering",
+      "scale": "engineering-small",
+      "replicate": 0,
+      "seed": 86000,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "84607e37450abb9b51e61d3e14e0a79803a4ded0ed4d73c15a0404971f3cc347"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M4/PREDICTIVE",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "434c5b767015b21740bcab40b4baf484d878596db6419af302b7472ae0ea4483",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "GENERATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M4",
+      "candidate": "M4-engineering",
+      "scale": "engineering-small",
+      "replicate": 0,
+      "seed": 86000,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "dd7614448ab9a7b3f3bc9dd245b5ffaaa6fd34e65e0df8da542acacde2296fe7"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M4/GENERATION",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "1d0b2b582956d036bbde65cb18cf7f7fe080773c3c68dce3c2a497cb26ab3d90",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "STRUCTURAL",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M4",
+      "candidate": "M4-engineering",
+      "scale": "engineering-small",
+      "replicate": 0,
+      "seed": 86000,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "434c5b767015b21740bcab40b4baf484d878596db6419af302b7472ae0ea4483"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M4/STRUCTURAL",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "834367fda331e7df7583100d7bae7a03684cbfbc53e32ae37f6ab9c059792fe2",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "FIT",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M4",
+      "candidate": "M4-engineering",
+      "scale": "engineering-small",
+      "replicate": 1,
+      "seed": 86001,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M4/FIT",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "b47dbaf8807e06db600ff64d8e1a2f81a47fe0bb3237a41ddb525590e0d96704",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "PREDICTIVE",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M4",
+      "candidate": "M4-engineering",
+      "scale": "engineering-small",
+      "replicate": 1,
+      "seed": 86001,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "834367fda331e7df7583100d7bae7a03684cbfbc53e32ae37f6ab9c059792fe2"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M4/PREDICTIVE",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "88dd57228004355830fe13326c41edbf802092f7f4824d5fe7c3018ecbc18f00",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "GENERATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M4",
+      "candidate": "M4-engineering",
+      "scale": "engineering-small",
+      "replicate": 1,
+      "seed": 86001,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "b47dbaf8807e06db600ff64d8e1a2f81a47fe0bb3237a41ddb525590e0d96704"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M4/GENERATION",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "f8770afbeaad547c3a0d7459d16916f29a44688271b0c2a337ca172a2645e2a2",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "STRUCTURAL",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M4",
+      "candidate": "M4-engineering",
+      "scale": "engineering-small",
+      "replicate": 1,
+      "seed": 86001,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "88dd57228004355830fe13326c41edbf802092f7f4824d5fe7c3018ecbc18f00"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M4/STRUCTURAL",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "d05cfa3c472ca5cf7fa2bedbe044bd672dd69e27b8a3783cadf19ebbe3e47735",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "FIT",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M4",
+      "candidate": "M4-engineering",
+      "scale": "engineering-small",
+      "replicate": 2,
+      "seed": 86002,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M4/FIT",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "b6ba51257bde6668ccf53dc7aa27335d981edd31f8f07b4c72a3b0a39339866f",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "PREDICTIVE",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M4",
+      "candidate": "M4-engineering",
+      "scale": "engineering-small",
+      "replicate": 2,
+      "seed": 86002,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "d05cfa3c472ca5cf7fa2bedbe044bd672dd69e27b8a3783cadf19ebbe3e47735"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M4/PREDICTIVE",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "5dfe0bc1c4d3631c86fd234f66c9577c6a128ce3b888e7181b907790a01405a5",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "GENERATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M4",
+      "candidate": "M4-engineering",
+      "scale": "engineering-small",
+      "replicate": 2,
+      "seed": 86002,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "b6ba51257bde6668ccf53dc7aa27335d981edd31f8f07b4c72a3b0a39339866f"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M4/GENERATION",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "88956bd3ab305a90036ebbafb302f5a104964658cde0f584e9e95f89c287cf4c",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "STRUCTURAL",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M4",
+      "candidate": "M4-engineering",
+      "scale": "engineering-small",
+      "replicate": 2,
+      "seed": 86002,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "5dfe0bc1c4d3631c86fd234f66c9577c6a128ce3b888e7181b907790a01405a5"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M4/STRUCTURAL",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "2bcc507d8969463325b27839c2ae635a951c60379e7b4c82f306ec4ea4089089",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "FIT",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M4",
+      "candidate": "M4-engineering",
+      "scale": "engineering-small",
+      "replicate": 3,
+      "seed": 86003,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M4/FIT",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "e4b2cb2e0ca2c824aaff4262ef58d3c93e7379d940c48dc747184e801cae001f",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "PREDICTIVE",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M4",
+      "candidate": "M4-engineering",
+      "scale": "engineering-small",
+      "replicate": 3,
+      "seed": 86003,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "2bcc507d8969463325b27839c2ae635a951c60379e7b4c82f306ec4ea4089089"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M4/PREDICTIVE",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "547e552ffd5d5b8870846a9047527b4b22c06ea2d5ed886f65fe1df1de7d649e",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "GENERATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M4",
+      "candidate": "M4-engineering",
+      "scale": "engineering-small",
+      "replicate": 3,
+      "seed": 86003,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "e4b2cb2e0ca2c824aaff4262ef58d3c93e7379d940c48dc747184e801cae001f"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M4/GENERATION",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "03d244d7963ef51d5673f233525263a70e37cd9bedaaeb575f5a1a81548b7c88",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "STRUCTURAL",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M4",
+      "candidate": "M4-engineering",
+      "scale": "engineering-small",
+      "replicate": 3,
+      "seed": 86003,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "547e552ffd5d5b8870846a9047527b4b22c06ea2d5ed886f65fe1df1de7d649e"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M4/STRUCTURAL",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "630b1bedea47fafc68fa168abfd53fe36048d473ffdc34767ea68ef0436c3def",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "FIT",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M4",
+      "candidate": "M4-engineering",
+      "scale": "engineering-small",
+      "replicate": 4,
+      "seed": 86004,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M4/FIT",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "af57f9f60714014a5d736b40371928fb6fa8d45d938dcabd191084c361df021f",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "PREDICTIVE",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M4",
+      "candidate": "M4-engineering",
+      "scale": "engineering-small",
+      "replicate": 4,
+      "seed": 86004,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "630b1bedea47fafc68fa168abfd53fe36048d473ffdc34767ea68ef0436c3def"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M4/PREDICTIVE",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "31f9f908a42c19da0a762cbc9659a6d3cc8756aeecaf3ea2ebeaa13c4f515792",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "GENERATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M4",
+      "candidate": "M4-engineering",
+      "scale": "engineering-small",
+      "replicate": 4,
+      "seed": 86004,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "af57f9f60714014a5d736b40371928fb6fa8d45d938dcabd191084c361df021f"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M4/GENERATION",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "7cc8dd32b632c59a061f44e796042ffd94e1c09e57e667bf53abcb9356a76097",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "STRUCTURAL",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M4",
+      "candidate": "M4-engineering",
+      "scale": "engineering-small",
+      "replicate": 4,
+      "seed": 86004,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "31f9f908a42c19da0a762cbc9659a6d3cc8756aeecaf3ea2ebeaa13c4f515792"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M4/STRUCTURAL",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "d49b83de9683334160e22c0e05db789ba2279cc3d7b084e8fb734988166efb51",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "FIT",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M4",
+      "candidate": "M4-engineering",
+      "scale": "engineering-small",
+      "replicate": 5,
+      "seed": 86005,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M4/FIT",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "f6947df58138933bf31c05e5ed8731327aca5f9f08ab6bbce6c7b981b16a3552",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "PREDICTIVE",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M4",
+      "candidate": "M4-engineering",
+      "scale": "engineering-small",
+      "replicate": 5,
+      "seed": 86005,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "d49b83de9683334160e22c0e05db789ba2279cc3d7b084e8fb734988166efb51"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M4/PREDICTIVE",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "9fa6381900118b82783bab62e3624472a23adbc1ef3179d2f7e1632738b5352c",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "GENERATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M4",
+      "candidate": "M4-engineering",
+      "scale": "engineering-small",
+      "replicate": 5,
+      "seed": 86005,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "f6947df58138933bf31c05e5ed8731327aca5f9f08ab6bbce6c7b981b16a3552"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M4/GENERATION",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "d7d09ff165fdb494db05f1e03a0f80e153457b698b9f6bd216da19353ce6ec40",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "STRUCTURAL",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M4",
+      "candidate": "M4-engineering",
+      "scale": "engineering-small",
+      "replicate": 5,
+      "seed": 86005,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "9fa6381900118b82783bab62e3624472a23adbc1ef3179d2f7e1632738b5352c"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M4/STRUCTURAL",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "ab42c36faabe50835b4bf33bd8c457ad111ba52de11e9af2849f292e8420a907",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "FIT",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M4",
+      "candidate": "M4-engineering",
+      "scale": "engineering-small",
+      "replicate": 6,
+      "seed": 86006,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M4/FIT",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "0a3e103af193d00d9e3a940fe295b38c3b9ae172e91315dd481551d0e13c1b16",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "PREDICTIVE",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M4",
+      "candidate": "M4-engineering",
+      "scale": "engineering-small",
+      "replicate": 6,
+      "seed": 86006,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "ab42c36faabe50835b4bf33bd8c457ad111ba52de11e9af2849f292e8420a907"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M4/PREDICTIVE",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "20da279157228b9616f5019955c64fb3f4339d6bce9cbb2175fdd70652866515",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "GENERATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M4",
+      "candidate": "M4-engineering",
+      "scale": "engineering-small",
+      "replicate": 6,
+      "seed": 86006,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "0a3e103af193d00d9e3a940fe295b38c3b9ae172e91315dd481551d0e13c1b16"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M4/GENERATION",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "5490dfb69f4c409f66ee3990b2446a636c3872f5f98e477cd7a7565ed216a3c2",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "STRUCTURAL",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M4",
+      "candidate": "M4-engineering",
+      "scale": "engineering-small",
+      "replicate": 6,
+      "seed": 86006,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "20da279157228b9616f5019955c64fb3f4339d6bce9cbb2175fdd70652866515"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M4/STRUCTURAL",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "dccb4b65596e4a22c0435684231093cee985b5e73a5bbe9d572f48bba12f1182",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "FIT",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M4",
+      "candidate": "M4-engineering",
+      "scale": "engineering-small",
+      "replicate": 7,
+      "seed": 86007,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M4/FIT",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "5205b32fe854a69c27025c945498f3b05f99a28d795f80c041fee2fe1c09b219",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "PREDICTIVE",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M4",
+      "candidate": "M4-engineering",
+      "scale": "engineering-small",
+      "replicate": 7,
+      "seed": 86007,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "dccb4b65596e4a22c0435684231093cee985b5e73a5bbe9d572f48bba12f1182"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M4/PREDICTIVE",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "f2dba1afc7c716091939926a4c7e10ae1318d8851c3186914d4e83037bdf8003",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "GENERATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M4",
+      "candidate": "M4-engineering",
+      "scale": "engineering-small",
+      "replicate": 7,
+      "seed": 86007,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "5205b32fe854a69c27025c945498f3b05f99a28d795f80c041fee2fe1c09b219"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M4/GENERATION",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "2508fe11624609e6548ef45049ba2d013f9215b4321ccf19541ea8c8275a68fa",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "STRUCTURAL",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M4",
+      "candidate": "M4-engineering",
+      "scale": "engineering-small",
+      "replicate": 7,
+      "seed": 86007,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "f2dba1afc7c716091939926a4c7e10ae1318d8851c3186914d4e83037bdf8003"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M4/STRUCTURAL",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "507fa967a012b4d0b576d48a7a42c2c551bd12ed19c9c4903c82b16fbd79129f",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "FIT",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M5",
+      "candidate": "M5-engineering",
+      "scale": "engineering-small",
+      "replicate": 0,
+      "seed": 86000,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M5/FIT",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "b0c6baba0f1f822ab4a1aefe1761b35bd7172fa1b14d910aa34c05ef3c679f1f",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "PREDICTIVE",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M5",
+      "candidate": "M5-engineering",
+      "scale": "engineering-small",
+      "replicate": 0,
+      "seed": 86000,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "507fa967a012b4d0b576d48a7a42c2c551bd12ed19c9c4903c82b16fbd79129f"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M5/PREDICTIVE",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "e06fbfea1b156a599c04d2a4ea404c284a9d9a1168f275695be55e564411b02a",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "GENERATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M5",
+      "candidate": "M5-engineering",
+      "scale": "engineering-small",
+      "replicate": 0,
+      "seed": 86000,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "b0c6baba0f1f822ab4a1aefe1761b35bd7172fa1b14d910aa34c05ef3c679f1f"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M5/GENERATION",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "b5e3912a807998a82359224da0a8496509fe0cb9552255e07c2eedd871986894",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "STRUCTURAL",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M5",
+      "candidate": "M5-engineering",
+      "scale": "engineering-small",
+      "replicate": 0,
+      "seed": 86000,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "e06fbfea1b156a599c04d2a4ea404c284a9d9a1168f275695be55e564411b02a"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M5/STRUCTURAL",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "d831cf505b73c68611d8f00811cfcebd16db6ca01733a60573e94074b174ead7",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "FIT",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M5",
+      "candidate": "M5-engineering",
+      "scale": "engineering-small",
+      "replicate": 1,
+      "seed": 86001,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M5/FIT",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "518a7293414e33092c4ec4fc6ebc17662fa06fe0308e080f2fa152006171dc57",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "PREDICTIVE",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M5",
+      "candidate": "M5-engineering",
+      "scale": "engineering-small",
+      "replicate": 1,
+      "seed": 86001,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "d831cf505b73c68611d8f00811cfcebd16db6ca01733a60573e94074b174ead7"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M5/PREDICTIVE",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "635e7de8ecc36c1f434f063a4b0ade6480e34bb0e98468aa6edf8fb7693cf682",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "GENERATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M5",
+      "candidate": "M5-engineering",
+      "scale": "engineering-small",
+      "replicate": 1,
+      "seed": 86001,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "518a7293414e33092c4ec4fc6ebc17662fa06fe0308e080f2fa152006171dc57"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M5/GENERATION",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "fe133482fdfe9fa868ff9ffd60999fd5364c451529df0e7d9a3639ba6e35513d",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "STRUCTURAL",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M5",
+      "candidate": "M5-engineering",
+      "scale": "engineering-small",
+      "replicate": 1,
+      "seed": 86001,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "635e7de8ecc36c1f434f063a4b0ade6480e34bb0e98468aa6edf8fb7693cf682"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M5/STRUCTURAL",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "c4f71cf155993644c539c79c2453a079b6a6b49392eda9781fdef30046dce619",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "FIT",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M5",
+      "candidate": "M5-engineering",
+      "scale": "engineering-small",
+      "replicate": 2,
+      "seed": 86002,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M5/FIT",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "44e36026a2e56cb96e0b97f79cd0bbb7e4c96f0df30433da212676d141ab0f4b",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "PREDICTIVE",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M5",
+      "candidate": "M5-engineering",
+      "scale": "engineering-small",
+      "replicate": 2,
+      "seed": 86002,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "c4f71cf155993644c539c79c2453a079b6a6b49392eda9781fdef30046dce619"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M5/PREDICTIVE",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "7b65aa91e357da8b03d4b3a16979531cd53d5d271aa3c40eb7da90843b26b296",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "GENERATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M5",
+      "candidate": "M5-engineering",
+      "scale": "engineering-small",
+      "replicate": 2,
+      "seed": 86002,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "44e36026a2e56cb96e0b97f79cd0bbb7e4c96f0df30433da212676d141ab0f4b"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M5/GENERATION",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "a53991bc9924123b3ca9a0af3b19218da1e87f6ac0719156f3e4a4305f2a3f43",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "STRUCTURAL",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M5",
+      "candidate": "M5-engineering",
+      "scale": "engineering-small",
+      "replicate": 2,
+      "seed": 86002,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "7b65aa91e357da8b03d4b3a16979531cd53d5d271aa3c40eb7da90843b26b296"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M5/STRUCTURAL",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "22499b9feb4e4324a951553dca96b7466d27c435fc04f7377f024157d7371637",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "FIT",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M5",
+      "candidate": "M5-engineering",
+      "scale": "engineering-small",
+      "replicate": 3,
+      "seed": 86003,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M5/FIT",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "e011cc3e22123baa6fb7568999fcdfaa1a863af64040e858818f298dbdde5dc4",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "PREDICTIVE",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M5",
+      "candidate": "M5-engineering",
+      "scale": "engineering-small",
+      "replicate": 3,
+      "seed": 86003,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "22499b9feb4e4324a951553dca96b7466d27c435fc04f7377f024157d7371637"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M5/PREDICTIVE",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "9c6d6989a0c91dd6ab305d2af3c309baf8069a75650dd59e59a18dc64bf33bd3",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "GENERATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M5",
+      "candidate": "M5-engineering",
+      "scale": "engineering-small",
+      "replicate": 3,
+      "seed": 86003,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "e011cc3e22123baa6fb7568999fcdfaa1a863af64040e858818f298dbdde5dc4"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M5/GENERATION",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "97b00ea3bc7ff70ad7c3b41fb78a1ab98dac0eb2238204853e1660f082b5e87d",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "STRUCTURAL",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M5",
+      "candidate": "M5-engineering",
+      "scale": "engineering-small",
+      "replicate": 3,
+      "seed": 86003,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "9c6d6989a0c91dd6ab305d2af3c309baf8069a75650dd59e59a18dc64bf33bd3"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M5/STRUCTURAL",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "a428a14a26d7c66f711c3f9e0e941bf19c4d7de7d9d4d7831bb04926d55af213",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "FIT",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M5",
+      "candidate": "M5-engineering",
+      "scale": "engineering-small",
+      "replicate": 4,
+      "seed": 86004,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M5/FIT",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "90b7bec67413d5d1c0f38f041bd930313292c799752548f44a1987d1ba2d6406",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "PREDICTIVE",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M5",
+      "candidate": "M5-engineering",
+      "scale": "engineering-small",
+      "replicate": 4,
+      "seed": 86004,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "a428a14a26d7c66f711c3f9e0e941bf19c4d7de7d9d4d7831bb04926d55af213"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M5/PREDICTIVE",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "24233eeda27d64359ea16d8fcb4027e19823a04d848135e5c46e0665f0d68b46",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "GENERATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M5",
+      "candidate": "M5-engineering",
+      "scale": "engineering-small",
+      "replicate": 4,
+      "seed": 86004,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "90b7bec67413d5d1c0f38f041bd930313292c799752548f44a1987d1ba2d6406"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M5/GENERATION",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "b032de9b4fc1ec4c6283f481f4160fe1e6942edd7ac2f4493a0abfd9a9173b76",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "STRUCTURAL",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M5",
+      "candidate": "M5-engineering",
+      "scale": "engineering-small",
+      "replicate": 4,
+      "seed": 86004,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "24233eeda27d64359ea16d8fcb4027e19823a04d848135e5c46e0665f0d68b46"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M5/STRUCTURAL",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "b2cb324b82ba784f0e51b6353ab6890f93492f4231392abf4886881e349010e5",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "FIT",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M5",
+      "candidate": "M5-engineering",
+      "scale": "engineering-small",
+      "replicate": 5,
+      "seed": 86005,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M5/FIT",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "f1f0b9df985d2c9860ee82a5e81fdf1048b7a11c65a072207d37b21f8f3438ae",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "PREDICTIVE",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M5",
+      "candidate": "M5-engineering",
+      "scale": "engineering-small",
+      "replicate": 5,
+      "seed": 86005,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "b2cb324b82ba784f0e51b6353ab6890f93492f4231392abf4886881e349010e5"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M5/PREDICTIVE",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "72d800e130df7ee904f32308bb354cae93cf9f7c56154b75ced06a6491c8182d",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "GENERATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M5",
+      "candidate": "M5-engineering",
+      "scale": "engineering-small",
+      "replicate": 5,
+      "seed": 86005,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "f1f0b9df985d2c9860ee82a5e81fdf1048b7a11c65a072207d37b21f8f3438ae"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M5/GENERATION",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "0d2ff53dee668c60abc10095756c75df7e7e9ec92e9d3b63195005366eb6e0d2",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "STRUCTURAL",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M5",
+      "candidate": "M5-engineering",
+      "scale": "engineering-small",
+      "replicate": 5,
+      "seed": 86005,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "72d800e130df7ee904f32308bb354cae93cf9f7c56154b75ced06a6491c8182d"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M5/STRUCTURAL",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "05b411789756f2021b45d599082a9a4d70c5c626232df92b769c8e086aa18e0c",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "FIT",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M5",
+      "candidate": "M5-engineering",
+      "scale": "engineering-small",
+      "replicate": 6,
+      "seed": 86006,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M5/FIT",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "412eef05541d8017d59ff6f44f263b3153379f6eb264159482b046bd0bc3abef",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "PREDICTIVE",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M5",
+      "candidate": "M5-engineering",
+      "scale": "engineering-small",
+      "replicate": 6,
+      "seed": 86006,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "05b411789756f2021b45d599082a9a4d70c5c626232df92b769c8e086aa18e0c"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M5/PREDICTIVE",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "e50b2fbbb86a27b899cb67e614fb432932625aa2648980a7cbc88c9e71d01a78",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "GENERATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M5",
+      "candidate": "M5-engineering",
+      "scale": "engineering-small",
+      "replicate": 6,
+      "seed": 86006,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "412eef05541d8017d59ff6f44f263b3153379f6eb264159482b046bd0bc3abef"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M5/GENERATION",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "ea16113b07d856453c631d0fd60656718e5c35610f2a0b704d4aed9df2d6922f",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "STRUCTURAL",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M5",
+      "candidate": "M5-engineering",
+      "scale": "engineering-small",
+      "replicate": 6,
+      "seed": 86006,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "e50b2fbbb86a27b899cb67e614fb432932625aa2648980a7cbc88c9e71d01a78"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M5/STRUCTURAL",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "8e294e3099f4cf741f3fd22f3ddfffb9d5b9a168eac7bb0c10985d7172bd8053",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "FIT",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M5",
+      "candidate": "M5-engineering",
+      "scale": "engineering-small",
+      "replicate": 7,
+      "seed": 86007,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M5/FIT",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "151a18c836ffc0376329fe10919885abc33706c7cd94306af9ba3118147c2dec",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "PREDICTIVE",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M5",
+      "candidate": "M5-engineering",
+      "scale": "engineering-small",
+      "replicate": 7,
+      "seed": 86007,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "8e294e3099f4cf741f3fd22f3ddfffb9d5b9a168eac7bb0c10985d7172bd8053"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M5/PREDICTIVE",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "89c3b47038f75a2918efb41b6cb321b58a43598c6288796a892eaa9d8fa04b0f",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "GENERATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M5",
+      "candidate": "M5-engineering",
+      "scale": "engineering-small",
+      "replicate": 7,
+      "seed": 86007,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "151a18c836ffc0376329fe10919885abc33706c7cd94306af9ba3118147c2dec"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M5/GENERATION",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "bd48674172adf13c95807c6966d6fd1cbc8d5a8dc0fd89c022c89e8a90c07b39",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "STRUCTURAL",
+      "corpus_id": "open-engineering-fixture",
+      "model": "M5",
+      "candidate": "M5-engineering",
+      "scale": "engineering-small",
+      "replicate": 7,
+      "seed": 86007,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "89c3b47038f75a2918efb41b6cb321b58a43598c6288796a892eaa9d8fa04b0f"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "M5/STRUCTURAL",
+        "iterations": 500000
+      }
+    },
+    {
+      "job_id": "efed3ff377cc928028133cc160737a784569889880aa016851320da1c9f256cf",
+      "experiment": "g1v2/task86c-v2",
+      "protocol_version": "g1v2-execution-v1",
+      "stage": "AGGREGATION",
+      "corpus_id": "open-engineering-fixture",
+      "model": "stage-neutral",
+      "candidate": "stage-neutral-engineering",
+      "scale": "engineering-small",
+      "replicate": 0,
+      "seed": 86000,
+      "input_hashes": [
+        "91306ecb6ae3602775a7a96aff487244e615dc9991f48fadd8edf24be0c49ac9"
+      ],
+      "dependency_hashes": [],
+      "code_hash": "6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718",
+      "config_hash": "b9684dc46a37e6a5bd8c6def3ebc9b8ca6b98cb34b68b82d900a35a6a0cf2d0f",
+      "output_schema": "engineering-output-v1",
+      "depends_on": [
+        "009570673804324acfe8a70ce4835829c3514bf5896a2d1fcd16f55fd4a84d3d",
+        "03d244d7963ef51d5673f233525263a70e37cd9bedaaeb575f5a1a81548b7c88",
+        "0691cf4b5884ed6f201a3b4dab1c10b96563b2c03c0df2caed3f0c55106b3ef0",
+        "08b6f9d86800f7b5d8776e11f5d7333e969c654121ddba8db69319bffe685fcd",
+        "0d2ff53dee668c60abc10095756c75df7e7e9ec92e9d3b63195005366eb6e0d2",
+        "13ec821f2e0120bff776893a75169b1873731c2873cf3c44090cfb65c1edde64",
+        "19930f95f0b065ba99aa8d0081c0ef17951a8cc44e2a2f6d9e2ac70738b546e3",
+        "1d0b2b582956d036bbde65cb18cf7f7fe080773c3c68dce3c2a497cb26ab3d90",
+        "1d4e2c0645c11e0d860451584c9393916de96ae401456440bc3581268c2e6f73",
+        "2508fe11624609e6548ef45049ba2d013f9215b4321ccf19541ea8c8275a68fa",
+        "26f9ad037d489ee0d265c42b43db71faf12ea19fdd1a31d88f5c715be5aa3456",
+        "38cf917a0554c4efb81fac3f8b25c40f89bec9587af3191965199cb548f1e75f",
+        "3a790b11c00a54727401bcd80edb4397899412ba6653e2119384efa6ecf48b27",
+        "405332a665537886c73dba10d1b4ebd53251ef8efbeef4a9735cae933a51bde7",
+        "48b2f7d99861f1106d4ef4458fc5ff2615cb9087a1417ef00ea287ff5b762625",
+        "5172b856b1bd6dfecdaf64fb4cd726c8852849a80008dee840d2fd4a36b2a4c5",
+        "5490dfb69f4c409f66ee3990b2446a636c3872f5f98e477cd7a7565ed216a3c2",
+        "5a368c511c697638d91a7d2b65ca7827f676134377c10aa5222aed4511175661",
+        "5c5c4469f857a12315da0f0575184afa8a841a34da0eeaeb7be5b0a06f59f06e",
+        "641aa4cfb62e177dd9c310d7bc0f168a4ed5e7aa1054dde8bc1fbe93108ba851",
+        "64bb0c6553c1f964f2fced68371e4b22915042527705e5dea9c1ecc67d385cc9",
+        "6ba8a7cad253f9f5e8b36711c8d87990e95d69c6c87c7f4565218ee471caa21e",
+        "75d92f58c00089aaf8e738dc7ecfec7b119826da3b000c6b83d30831c6cd4158",
+        "7cc8dd32b632c59a061f44e796042ffd94e1c09e57e667bf53abcb9356a76097",
+        "8375deea5325c97f6728ddd16d44efb8b97ec33516b9903d6c0e3d606cc1c7fa",
+        "88956bd3ab305a90036ebbafb302f5a104964658cde0f584e9e95f89c287cf4c",
+        "8faab093b469255452b3935c5d60b219b57c83966c01bc9b4defc90b6237ecc3",
+        "94d949a5b274e3dbbc3c5aeba0c88b1e3e29d1c037693ddd7acf4f000b42d126",
+        "97b00ea3bc7ff70ad7c3b41fb78a1ab98dac0eb2238204853e1660f082b5e87d",
+        "9b2308934fb5e13b9607a48e72f427e9ff2a5c6a03c883c0d329272ee3e1ba3d",
+        "a03692ecb0e63b2fc867e48eede62498cc00e5037dfdd1ac21d0bede00bf1998",
+        "a53991bc9924123b3ca9a0af3b19218da1e87f6ac0719156f3e4a4305f2a3f43",
+        "b032de9b4fc1ec4c6283f481f4160fe1e6942edd7ac2f4493a0abfd9a9173b76",
+        "b5e3912a807998a82359224da0a8496509fe0cb9552255e07c2eedd871986894",
+        "babebc956fa01ff72075a431ddeba36074a3eb0ddfb223616737ba73c1bb8a55",
+        "bd48674172adf13c95807c6966d6fd1cbc8d5a8dc0fd89c022c89e8a90c07b39",
+        "bdb4f72b165b8ff5fcdef131b71d3e02cd180f38d19f1aa9c4e7695140c9a620",
+        "c86d11586df069cf5d0607e327aa175520a47f6a5bb0efa08b517477026edf71",
+        "ccbe58a9a4ce8ae9ff28951aa662b6d1b308cb511f53b0d47c10a94a97707f16",
+        "d7d09ff165fdb494db05f1e03a0f80e153457b698b9f6bd216da19353ce6ec40",
+        "e37591232a4a907d2f0bfce32bab504924093454c260f060c757d3aad32d7cdd",
+        "ea16113b07d856453c631d0fd60656718e5c35610f2a0b704d4aed9df2d6922f",
+        "f213999f55570a3e08ed8457048fb2af575953f0b851402153089bb55572b3e7",
+        "f2194cc93625bb7dea291b4272c9b1e248c7f1acbe3ac02acf2796a794b65495",
+        "f2dfc03b1565678583defb5ab03fb75c96e0dbc017dc9f6790161a14e17d0bbf",
+        "f8770afbeaad547c3a0d7459d16916f29a44688271b0c2a337ca172a2645e2a2",
+        "f95239dcd063d2384c769715cfe202a79cd8d08e9bc5bbb8e81d809744d48475",
+        "fe133482fdfe9fa868ff9ffd60999fd5364c451529df0e7d9a3639ba6e35513d"
+      ],
+      "work": {
+        "kind": "sha256-chain-v1",
+        "payload": "stage-neutral/AGGREGATION",
+        "iterations": 500000
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+reason_code	status	permitted_stage	causal_upstream_status	scientific_meaning
+SUPPRESS_PREDICTIVE_AFTER_FIT_FIT_FAILURE	NOT_REACHED	PREDICTIVE	FIT_FAILURE	downstream emits NOT_REACHED; causal state retained; candidate cannot be rejected from missing evidence
+SUPPRESS_GENERATION_AFTER_FIT_FIT_FAILURE	NOT_REACHED	GENERATION	FIT_FAILURE	downstream emits NOT_REACHED; causal state retained; candidate cannot be rejected from missing evidence
+SUPPRESS_COMPLEXITY_AFTER_FIT_FIT_FAILURE	NOT_REACHED	COMPLEXITY	FIT_FAILURE	downstream emits NOT_REACHED; causal state retained; candidate cannot be rejected from missing evidence
+SUPPRESS_PREDICTIVE_AFTER_FIT_NUMERICAL_FAILURE	NOT_REACHED	PREDICTIVE	NUMERICAL_FAILURE	downstream emits NOT_REACHED; causal state retained; candidate cannot be rejected from missing evidence
+SUPPRESS_GENERATION_AFTER_FIT_NUMERICAL_FAILURE	NOT_REACHED	GENERATION	NUMERICAL_FAILURE	downstream emits NOT_REACHED; causal state retained; candidate cannot be rejected from missing evidence
+SUPPRESS_COMPLEXITY_AFTER_FIT_NUMERICAL_FAILURE	NOT_REACHED	COMPLEXITY	NUMERICAL_FAILURE	downstream emits NOT_REACHED; causal state retained; candidate cannot be rejected from missing evidence
+SUPPRESS_PREDICTIVE_AFTER_FIT_INDUCTION_CAP	NOT_REACHED	PREDICTIVE	INDUCTION_CAP	downstream emits NOT_REACHED; causal state retained; candidate cannot be rejected from missing evidence
+SUPPRESS_GENERATION_AFTER_FIT_INDUCTION_CAP	NOT_REACHED	GENERATION	INDUCTION_CAP	downstream emits NOT_REACHED; causal state retained; candidate cannot be rejected from missing evidence
+SUPPRESS_COMPLEXITY_AFTER_FIT_INDUCTION_CAP	NOT_REACHED	COMPLEXITY	INDUCTION_CAP	downstream emits NOT_REACHED; causal state retained; candidate cannot be rejected from missing evidence
+SUPPRESS_PREDICTIVE_AFTER_FIT_PROTOCOL_VETO	NOT_REACHED	PREDICTIVE	PROTOCOL_VETO	downstream emits NOT_REACHED; causal state retained; candidate cannot be rejected from missing evidence
+SUPPRESS_GENERATION_AFTER_FIT_PROTOCOL_VETO	NOT_REACHED	GENERATION	PROTOCOL_VETO	downstream emits NOT_REACHED; causal state retained; candidate cannot be rejected from missing evidence
+SUPPRESS_COMPLEXITY_AFTER_FIT_PROTOCOL_VETO	NOT_REACHED	COMPLEXITY	PROTOCOL_VETO	downstream emits NOT_REACHED; causal state retained; candidate cannot be rejected from missing evidence
+SUPPRESS_GENERATION_AFTER_PREDICTIVE_FAIL	NOT_REACHED	GENERATION	FAIL	downstream emits NOT_REACHED; causal state retained; candidate cannot be rejected from missing evidence
+SUPPRESS_GENERATION_AFTER_PREDICTIVE_NOT_ASSESSABLE	NOT_REACHED	GENERATION	NOT_ASSESSABLE	downstream emits NOT_REACHED; causal state retained; candidate cannot be rejected from missing evidence
+SUPPRESS_GENERATION_AFTER_PREDICTIVE_NUMERICAL_FAILURE	NOT_REACHED	GENERATION	NUMERICAL_FAILURE	downstream emits NOT_REACHED; causal state retained; candidate cannot be rejected from missing evidence
+SUPPRESS_GENERATION_AFTER_PREDICTIVE_PROTOCOL_VETO	NOT_REACHED	GENERATION	PROTOCOL_VETO	downstream emits NOT_REACHED; causal state retained; candidate cannot be rejected from missing evidence
+SUPPRESS_GENERATION_AFTER_PREDICTIVE_NOT_REACHED	NOT_REACHED	GENERATION	NOT_REACHED	downstream emits NOT_REACHED; causal state retained; candidate cannot be rejected from missing evidence
+SUPPRESS_F2_METRIC_AFTER_GENERATION_GENERATION_FAILURE	NOT_REACHED	F2_METRIC	GENERATION_FAILURE	downstream emits NOT_REACHED; causal state retained; candidate cannot be rejected from missing evidence
+SUPPRESS_F2_METRIC_AFTER_GENERATION_NUMERICAL_FAILURE	NOT_REACHED	F2_METRIC	NUMERICAL_FAILURE	downstream emits NOT_REACHED; causal state retained; candidate cannot be rejected from missing evidence
+SUPPRESS_F2_METRIC_AFTER_GENERATION_PROTOCOL_VETO	NOT_REACHED	F2_METRIC	PROTOCOL_VETO	downstream emits NOT_REACHED; causal state retained; candidate cannot be rejected from missing evidence
+SUPPRESS_F2_METRIC_AFTER_GENERATION_NOT_REACHED	NOT_REACHED	F2_METRIC	NOT_REACHED	downstream emits NOT_REACHED; causal state retained; candidate cannot be rejected from missing evidence
+FIT_DID_NOT_PRODUCE_MODEL	FIT_FAILURE	FIT	N/A	procedure failure; candidate unresolved
+PRESCRIBED_NUMERIC_OPERATION_FAILED	NUMERICAL_FAILURE	FIT;PREDICTIVE;GENERATION;F2_METRIC;COMPLEXITY;CANDIDATE_AGGREGATION;CONTROL_AGGREGATION	N/A	procedure failure; never negative evidence
+M3_ENUMERATION_CAP_REACHED	INDUCTION_CAP	FIT	N/A	M3 route unresolved
+GENERATION_CAP_OR_RETRY_EXHAUSTED	GENERATION_FAILURE	GENERATION	N/A	generation unavailable; structural suppressed
+PROTOCOL_CHAIN_INVALID	PROTOCOL_VETO	ANY	N/A	no ordinary final scientific verdict

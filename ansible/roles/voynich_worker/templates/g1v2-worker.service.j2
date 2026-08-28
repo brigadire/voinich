@@ -1,0 +1,32 @@
+[Unit]
+Description=Frozen G1-v2 compute worker slot %i
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User={{ voynich_g1v2_service_user }}
+Group={{ voynich_g1v2_service_group }}
+WorkingDirectory={{ voynich_g1v2_state_dir }}
+ExecStart={{ voynich_g1v2_install_dir }}/bin/g1v2-executor worker --url {{ voynich_worker_coordinator_url }} --tls-cert {{ voynich_g1v2_install_dir }}/pki/worker.crt --tls-key {{ voynich_g1v2_install_dir }}/pki/worker.key --ca {{ voynich_g1v2_install_dir }}/pki/ca.crt --code-hash {{ voynich_g1v2_binary_sha256 }} --host {{ inventory_hostname }} --free-storage {{ voynich_g1v2_min_cache_free_bytes }}
+Restart=always
+RestartSec=5s
+TimeoutStopSec={{ voynich_worker_stop_timeout_seconds }}s
+KillSignal=SIGTERM
+NoNewPrivileges=true
+PrivateDevices=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths={{ voynich_g1v2_state_dir }}
+LimitNOFILE=65536
+TasksMax=4096
+MemoryMax={{ voynich_g1v2_memory_max }}
+{% if voynich_g1v2_cpu_quota | length > 0 %}
+CPUQuota={{ voynich_g1v2_cpu_quota }}
+{% endif %}
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

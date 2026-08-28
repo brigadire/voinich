@@ -1,0 +1,7 @@
+model_class	canonical_structure	structure_cost_bits	parameter_cost_bits	precision	total_rule
+M0	sorted vocabulary+probability vector	gamma(|A|)+sum utf8code(glyph)	32*(|A|+1)	binary32 round ties-even	sum
+M1	order+sorted observed contexts and rows	gamma(order)+gamma(rows)+context codes	32*rows*(|A|+1)	binary32	sum
+M2	sorted retained suffix tree	balanced-parenthesis 2N+labels	32*N*(|A|+1)	binary32	sum
+M3	BFS canonical states/transitions	gamma(S)+S*(|A|*ceil(log2 S)+1)	32*S*(|A|+1)	binary32	sum; route tag 1 bit
+M4	states canonically sorted by emission row then transition row	gamma(S)+ceil(log2(S!))	32*(S*S+S*(|A|+1)+S)	binary32	sum
+M5	sorted prefix/stem/suffix/rule/exception strings	gamma counts+utf8code inventory+rule incidence	32*(component probabilities+backoff weights)	binary32	sum

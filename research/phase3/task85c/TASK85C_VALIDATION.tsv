@@ -1,0 +1,10 @@
+check_id	requirement	status	evidence
+V01	A01-A17 closed	PASS	TASK85C_AMBIGUITY_CLOSURE.tsv
+V02	43 finite unique candidates	PASS	G1V2_CANDIDATE_REGISTRY.tsv
+V03	RNG domains unique + golden	PASS	registry+suite
+V04	all metrics/complexities/schemas	PASS	registries+schemas
+V05	192 controls; exact DAG 1321152 jobs/2617152 edges	PASS	G1V2_DAG_CONTRACT.json
+V06	golden coverage	PASS	TASK85C_GOLDEN_COVERAGE.tsv
+V07	no Voynich/blind-result dependency	PASS	validator firewall scan
+V08	two-implementer audit	PASS	TASK85C_REPORT.md
+V09	transitive hashes resolve	PASS	TASK85C_RESULTS_MANIFEST.json

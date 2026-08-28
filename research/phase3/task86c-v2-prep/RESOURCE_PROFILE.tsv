@@ -1,0 +1,3 @@
+host	role	architecture	physical_cores	logical_cpus	ram_bytes	available_evidence_bytes	storage_path	network_note
+adelie	coordinator+benchmark worker	x86_64 Linux	6	12	33254674432	30698373120	workspace NVMe	LAN route 10.10.24.107
+cognition	worker+evidence volume	x86_64 Linux	unknown	16	67330105344	178869764096	/usr/local/data ZFS	binary SCP cold transfer was slow; warm cache required

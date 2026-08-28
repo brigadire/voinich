@@ -1,0 +1,16 @@
+test_id	mutation	expected	observed	result
+NV01	PM value	REJECT	REJECT artifact hash mismatch	PASS
+NV02	PM threshold with rehash	REJECT	REJECT frozen threshold mismatch	PASS
+NV03	PM availability	REJECT	REJECT gate mismatch	PASS
+NV04	artifact byte/hash	REJECT	REJECT content hash mismatch	PASS
+NV05	F2 record	REJECT	REJECT artifact hash mismatch	PASS
+NV06	seed	REJECT	REJECT manifest closure mismatch	PASS
+NV07	config hash	REJECT	REJECT manifest closure mismatch	PASS
+NV08	code hash	REJECT	REJECT manifest closure mismatch	PASS
+NV09	dependency	REJECT	REJECT manifest closure mismatch	PASS
+NV10	scientific status/verdict	REJECT	REJECT regenerated decision mismatch	PASS
+NV11	unavailable to FAIL substitution	REJECT	REJECT gate mismatch	PASS
+NV12	induction failure to model inadequacy	REJECT	REJECT decision mismatch	PASS
+NV13	missing artifact	REJECT	REJECT artifact hash mismatch	PASS
+NV14	conflicting duplicate	QUARANTINE	QUARANTINE all copies; aggregation blocked	PASS
+NV15	wrong executable/config	REJECT	REJECT bundle/result closure mismatch	PASS

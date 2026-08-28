@@ -1,0 +1,50 @@
+check_id	requirement	status	evidence
+V01	parent Task85c identity	PASS	reference verifier
+V02	Task85c-a identity	PASS	reference verifier
+V03	E01 reproduction	PASS	reference verifier
+V04	E02 reproduction	PASS	reference verifier
+V05	E03 reproduction	PASS	reference verifier
+V06	E04 reproduction	PASS	reference verifier
+V07	status registry closure	PASS	reference verifier
+V08	producer/status closure	PASS	reference verifier
+V09	stage registry closure	PASS	reference verifier
+V10	reachability totality	PASS	reference verifier
+V11	reachability determinism	PASS	reference verifier
+V12	no unregistered reachability statuses	PASS	reference verifier
+V13	no emitted statuses without reachability	PASS	reference verifier
+V14	no impossible reachability rows	PASS	reference verifier
+V15	no accidental dead statuses	PASS	reference verifier
+V16	FAIL scientific semantics	PASS	reference verifier
+V17	FIT failure non-negative semantics	PASS	reference verifier
+V18	numerical failure non-negative semantics	PASS	reference verifier
+V19	induction-cap non-negative semantics	PASS	reference verifier
+V20	generation-failure non-negative semantics	PASS	reference verifier
+V21	protocol-veto semantics	PASS	reference verifier
+V22	NOT_ASSESSABLE semantics	PASS	reference verifier
+V23	NOT_REACHED semantics	PASS	reference verifier
+V24	generation-failure structural transition	PASS	reference verifier
+V25	complexity reachability	PASS	reference verifier
+V26	aggregation reachability	PASS	reference verifier
+V27	NONE safety	PASS	reference verifier
+V28	NOT_IDENTIFIABLE safety	PASS	reference verifier
+V29	missingness monotonicity	PASS	reference verifier
+V30	M3 route combinations	PASS	reference verifier
+V31	DAG job-count invariant	PASS	reference verifier
+V32	DAG dependency-count invariant	PASS	reference verifier
+V33	model invariant	PASS	reference verifier
+V34	candidate invariant	PASS	reference verifier
+V35	RNG invariant	PASS	reference verifier
+V36	metric invariant	PASS	reference verifier
+V37	complexity invariant	PASS	reference verifier
+V38	control/corpus invariant	PASS	reference verifier
+V39	threshold invariant	PASS	reference verifier
+V40	independent implementability	PASS	reference verifier
+V41	blind firewall	PASS	reference verifier
+V42	natural confirmatory firewall	PASS	reference verifier
+V43	Voynich firewall	PASS	reference verifier
+V44	results-manifest closure	PASS	reference verifier
+V45	go build ./...	PASS	repository check
+V46	go vet ./...	PASS	repository check
+V47	go test ./...	PASS	repository check
+V48	go test -race ./...	PASS	repository check
+V49	git diff --check	PASS	repository check

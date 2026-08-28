@@ -1,0 +1,34 @@
+evidence_type	status	required_fields	forbidden_fields	nullable_fields	canonicalization	source
+fit	FIT_SUCCESS	candidate_id;control_instance_id;fit_diagnostics_sha256	all undeclared and all result fields irrelevant to this branch	NONE	G1V2-CJ-1	V1+V2
+fitted_model	FIT_SUCCESS	candidate_id;control_instance_id;model_representation_sha256	all undeclared and all result fields irrelevant to this branch	NONE	G1V2-CJ-1	V1+V2
+predictive_metric	PASS	candidate_id;control_instance_id;metric_id;threshold;value	all undeclared and all result fields irrelevant to this branch	NONE	G1V2-CJ-1	V1+V2
+predictive_metric	FAIL	candidate_id;control_instance_id;metric_id;threshold;value	all undeclared and all result fields irrelevant to this branch	NONE	G1V2-CJ-1	V1+V2
+predictive_metric	NOT_ASSESSABLE	candidate_id;control_instance_id;metric_id;reason_code	all undeclared and all result fields irrelevant to this branch	NONE	G1V2-CJ-1	V1+V2
+predictive_gate	PASS	baseline_id;candidate_id;control_instance_id;metric_id;threshold;threshold_id;value	all undeclared and all result fields irrelevant to this branch	NONE	G1V2-CJ-1	V1+V2
+predictive_gate	FAIL	baseline_id;candidate_id;control_instance_id;metric_id;threshold;threshold_id;value	all undeclared and all result fields irrelevant to this branch	NONE	G1V2-CJ-1	V1+V2
+predictive_gate	NOT_ASSESSABLE	baseline_id;candidate_id;control_instance_id;metric_id;reason_code;threshold_id	all undeclared and all result fields irrelevant to this branch	NONE	G1V2-CJ-1	V1+V2
+predictive_verdict	PASS	candidate_id;control_instance_id;pm2_status;pm5_status;pm6_status	all undeclared and all result fields irrelevant to this branch	NONE	G1V2-CJ-1	V1+V2
+predictive_verdict	FAIL	candidate_id;control_instance_id;pm2_status;pm5_status;pm6_status	all undeclared and all result fields irrelevant to this branch	NONE	G1V2-CJ-1	V1+V2
+predictive_verdict	NOT_ASSESSABLE	candidate_id;control_instance_id;pm2_status;pm5_status;pm6_status;reason_code	all undeclared and all result fields irrelevant to this branch	NONE	G1V2-CJ-1	V1+V2
+generation	GENERATION_SUCCESS	candidate_id;control_instance_id;corpus_sha256;replicate;scale	all undeclared and all result fields irrelevant to this branch	NONE	G1V2-CJ-1	V1+V2
+f2_metric	PASS	candidate_id;control_instance_id;metric_id;replicate;scale;threshold;value	all undeclared and all result fields irrelevant to this branch	NONE	G1V2-CJ-1	V1+V2
+f2_metric	FAIL	candidate_id;control_instance_id;metric_id;replicate;scale;threshold;value	all undeclared and all result fields irrelevant to this branch	NONE	G1V2-CJ-1	V1+V2
+f2_metric	NOT_ASSESSABLE	candidate_id;control_instance_id;metric_id;reason_code;replicate;scale	all undeclared and all result fields irrelevant to this branch	NONE	G1V2-CJ-1	V1+V2
+structural_family	PASS	candidate_id;control_instance_id;family;member_statuses;scale	all undeclared and all result fields irrelevant to this branch	NONE	G1V2-CJ-1	V1+V2
+structural_family	FAIL	candidate_id;control_instance_id;family;member_statuses;scale	all undeclared and all result fields irrelevant to this branch	NONE	G1V2-CJ-1	V1+V2
+structural_family	NOT_ASSESSABLE	candidate_id;control_instance_id;family;member_statuses;reason_code;scale	all undeclared and all result fields irrelevant to this branch	NONE	G1V2-CJ-1	V1+V2
+structural_gate	PASS	assessable_count;candidate_id;control_instance_id;family;pass_count;scale	all undeclared and all result fields irrelevant to this branch	NONE	G1V2-CJ-1	V1+V2
+structural_gate	FAIL	assessable_count;candidate_id;control_instance_id;family;pass_count;scale	all undeclared and all result fields irrelevant to this branch	NONE	G1V2-CJ-1	V1+V2
+structural_gate	NOT_ASSESSABLE	assessable_count;candidate_id;control_instance_id;family;pass_count;reason_code;scale	all undeclared and all result fields irrelevant to this branch	NONE	G1V2-CJ-1	V1+V2
+structural_verdict	PASS	candidate_id;control_instance_id;scale_statuses	all undeclared and all result fields irrelevant to this branch	NONE	G1V2-CJ-1	V1+V2
+structural_verdict	FAIL	candidate_id;control_instance_id;scale_statuses	all undeclared and all result fields irrelevant to this branch	NONE	G1V2-CJ-1	V1+V2
+structural_verdict	NOT_ASSESSABLE	candidate_id;control_instance_id;reason_code;scale_statuses	all undeclared and all result fields irrelevant to this branch	NONE	G1V2-CJ-1	V1+V2
+complexity	COMPLEXITY_SUCCESS	candidate_id;control_instance_id;parameter_bits;structure_bits;total_bits	all undeclared and all result fields irrelevant to this branch	NONE	G1V2-CJ-1	V1+V2
+minimality	AGGREGATION_SUCCESS	candidate_id;candidate_verdict;control_instance_id;eligible_candidates;equivalence_components	all undeclared and all result fields irrelevant to this branch	NONE	G1V2-CJ-1	V1+V2
+final_verdict	AGGREGATION_SUCCESS	control_instance_id;identifiability_detail;verdict	all undeclared and all result fields irrelevant to this branch	NONE	G1V2-CJ-1	V1+V2
+not_reached	NOT_REACHED	upstream_stage;upstream_status;reason_code;selected_causal_job_id;causal_dependency_ids	all undeclared and all result fields irrelevant to this branch	NONE	G1V2-CJ-1	V1+V2
+scientific_failure	FIT_FAILURE	reason_code;diagnostics_hash;candidate_id/control_instance_id as required by producer stage	all undeclared and all result fields irrelevant to this branch	NONE	G1V2-CJ-1	V1+V2
+scientific_failure	NUMERICAL_FAILURE	reason_code;diagnostics_hash;candidate_id/control_instance_id as required by producer stage	all undeclared and all result fields irrelevant to this branch	NONE	G1V2-CJ-1	V1+V2
+scientific_failure	INDUCTION_CAP	reason_code;diagnostics_hash;candidate_id/control_instance_id as required by producer stage	all undeclared and all result fields irrelevant to this branch	NONE	G1V2-CJ-1	V1+V2
+scientific_failure	GENERATION_FAILURE	reason_code;diagnostics_hash;candidate_id/control_instance_id as required by producer stage	all undeclared and all result fields irrelevant to this branch	NONE	G1V2-CJ-1	V1+V2
+scientific_failure	PROTOCOL_VETO	reason_code;diagnostics_hash;candidate_id/control_instance_id as required by producer stage	all undeclared and all result fields irrelevant to this branch	NONE	G1V2-CJ-1	V1+V2

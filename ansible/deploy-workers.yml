@@ -19,9 +19,10 @@
 # `serial` below (or -e serial_size=N) for rolling deployment, and the
 # `voynich_workers` group for "all workers". There is no custom scheduler
 # here - see README.md and DISTRIBUTED_EXECUTION_OPERATIONS.md.
-- name: Manage the lifecycle of Task33/34/42 persistent remote workers
-  hosts: voynich_workers
+- name: Manage frozen G1-v2 persistent remote workers
+  hosts: "{{ voynich_worker_target_group | default('voynich_workers') }}"
   serial: "{{ serial_size | default('100%') }}"
   gather_facts: true
+  become: true
   roles:
     - role: voynich_worker

@@ -1,0 +1,79 @@
+# G1-v2 executable scientific contract V1.1
+
+Version: `G1_V2_EXECUTABLE_CONTRACT_V1_1`. This self-contained revision incorporates `G1_V2_STATUS_REACHABILITY_CONTRACT_V2` and repaired Draft 2020-12 evidence schemas. It supersedes V1 only for status/reachability/failure aggregation and A17 enforcement. Machine precedence is executable JSON, registries/V2 state machine, standard schemas, golden vectors, then explanatory prose. `x-*` annotations are non-normative; none is needed.
+
+Normative V2 status/reachability artifacts are copied by hash/reference in the machine contract. Evidence binds both contract versions; all objects are closed and hash under unchanged G1V2-CJ-1.
+
+---
+
+## Global representation and numerical contract
+
+A corpus is an ordered sequence of nonempty NFC tokens. A token is an ordered sequence of Unicode scalar-value glyphs. `<BOS>`, `<EOS>`, and `<UNK>` are reserved ASCII strings impossible as corpus glyphs. The vocabulary is the sorted UTF-8 byte order of DEVELOPMENT glyphs plus `<UNK>` and `<EOS>`; `<BOS>` is context-only. A non-DEVELOPMENT glyph maps to `<UNK>`. Each token starts with fresh BOS context and contributes one EOS prediction. Empty training data or a nonpositive/invalid normalization constant is `FIT_FAILURE`; a scored zero probability is `NOT_ASSESSABLE/NUMERICAL_FAILURE`, never FAIL evidence.
+
+All calculations use IEEE-754 binary64, round-to-nearest ties-to-even, base-2 logs, and Neumaier summation in ascending scientific identity order. Probabilities are normalized once by that sum. There is no implicit epsilon or approximate gate. Type-7 quantiles use `h=(n-1)p`. Scientific real evidence is a canonical decimal string, so JSON binary floating behavior cannot affect hashes. See `G1V2_EXECUTABLE_CONTRACT.json` for the complete global profile.
+
+Splits preserve occurrence order: first `floor(.6N)` DEVELOPMENT, next through `floor(.8N)` VALIDATION, remainder HELDOUT. Fit every registry candidate on DEVELOPMENT; select the smallest VALIDATION PM2, then fewer complexity bits, then bytewise candidate ID. Do not refit. HELDOUT is evaluation-only. Only DEVELOPMENT controls calibrate thresholds and bins; blind, natural-confirmatory, and Voynich data are prohibited.
+
+## M0
+
+M0 is glyph IID. For outcome `x` in vocabulary outcomes `O=A_dev union {UNK,EOS}`, `p(x)=(c(x)+alpha)/(sum_y c(y)+alpha|O|)`. Counts include glyph occurrences and one EOS per token, never BOS. Alpha is exactly the candidate registry grid. Alpha zero with an unseen outcome has zero mass and makes that score not assessable. Token probability is the product of glyph probabilities and EOS. Generation inverse-CDF samples UTF-8-sorted outcomes until EOS; UNK during generation is emitted as U+FFFD, and length 64 without EOS is GENERATION_FAILURE.
+
+## M1
+
+For exact orders 1, 2, and 3, left-pad each token with `order` BOS values. The row equation is additive-alpha over `O`. At score/generation, an absent context recursively drops its oldest symbol until an observed suffix row; the final order-0 row is M0 with the same alpha. A seen row may still assign zero to an unseen outcome at alpha zero. Generation and boundaries follow M0.
+
+## M2
+
+M2 is a probabilistic suffix tree, never PPM/CTW. Build all DEVELOPMENT suffix contexts of depths 0..D with at least two outgoing observations. Starting deepest and UTF-8 bytewise, retain context s iff `gain(s)=sum_x c(s,x)*log2(p_MLE(x|s)/p_parent(x))` is strictly greater than the candidate gain threshold; equality prunes. Parent probabilities use additive 0.5 and recursively retained suffixes. Pruning repeats bottom-up once because parent counts are immutable. Score and generation use the longest retained suffix, dropping to root. Candidate maximum depths and gain thresholds are exhaustive; no other pruning test exists.
+
+## M3
+
+M3 is a deterministic state transition topology with a probability row over next glyph/EOS at each state. Prefix-tree acceptor states are distinct DEVELOPMENT glyph prefixes; EOS is an accepting outcome and transitions consume glyphs. Canonical state IDs are BFS from state 0, labels bytewise.
+
+The exact route exhaustively enumerates every total mapping `(state,glyph)->state` for 1..S states and every accepting-state subset, discards topologies that cannot reproduce every DEVELOPMENT token, fits additive-0.5 outcome rows, and minimizes DEVELOPMENT negative log likelihood then state count then canonical transition bitstring. The operation bound is exactly the finite enumeration implied by S and alphabet; before enumeration compute it with big integers. If it exceeds 10^8 candidates, emit INDUCTION_CAP. Lexicographic enumeration and no heuristic pruning are mandatory.
+
+The approximate route begins at the prefix-tree acceptor. Candidate pairs are unordered state pairs. Hypothetically merge and determinize recursively; reject accepting/nonaccepting conflict. Score is weighted Jensen-Shannon divergence in bits between additive-0.5 outgoing rows, normalized by `(n_i+n_j)` and then divided by `log2(|O|)` (define score 0 when |O|=1). Choose lowest score, then canonical pair. Merge iff score <= threshold and resulting states do not exceed the cap; if above the cap, continue best legal merges regardless of threshold until cap, otherwise stop when no score <= threshold. Every evaluated pair counts one operation; cap 10^7. Exact and approximate are separately reported representatives of M3; M3 is adequate if either route is adequate, inadequate only if both routes are assessably inadequate, otherwise unresolved.
+
+## M4
+
+M4 is a discrete first-order HMM reset at each token. Hidden states 0..S-1 have initial pi, row-stochastic transition T, and emission E over `O`; EOS terminates and makes no transition. Baum-Welch forward/backward is scaled per event. Expected pi, transitions, and emissions are accumulated over tokens; M-step adds candidate alpha to every cell then row-normalizes. There are 8 restarts. Each parameter raw value is `1+u53` from M4_RESTART counters and normalized by row. Iterate E/M at most 500 times. Converge after an M-step when nondecrease is at least 0 and less than `1e-9*(1+abs(oldLL))` for two consecutive iterations. A decrease over `1e-10*(1+abs(oldLL))`, zero scale, or nonfinite value is NUMERICAL_FAILURE for that restart. Select greatest DEVELOPMENT likelihood, then fewer iterations, then restart index; state count is selected by global VALIDATION rule. Generation samples initial state, emission, then transition, with the global inverse-CDF convention.
+
+## M5
+
+M5 uses prefix/stem/suffix triples. For every DEVELOPMENT token and every pair of cut positions `0<=i<=j<=len`, enumerate `(prefix,stem,suffix)` requiring nonempty stem. Component strings with occurrence support at least the candidate minimum are retained; select for each token the triple maximizing `support(prefix)*support(stem)*support(suffix)`, ties by shorter total affix length then UTF-8 tuple. Retained triples are rules; tokens with no retained triple are literal exceptions.
+
+The rule distribution is additive-0.5 over retained triples, exception distribution additive-0.5, and productive backoff independently samples retained prefix, stem, suffix inventories from additive-0.5 marginal counts. If any productive inventory is empty, fitting fails. Support is every nonempty concatenation up to 64 glyphs; empty/unrepresentable is NOT_ASSESSABLE. Whole-token probability is `(1-w)*[0.9 P_rule(token)+0.1 P_exception(token)] + w*sum_{p+s+x=token}Pp(p)Ps(s)Px(x)`, summing decompositions bytewise. If exactly one of rule/exception inventory is empty, its 0.9/0.1 weight is reassigned wholly to the nonempty channel; both empty is FIT_FAILURE. Thus an unseen productive form has positive mass. Generation first selects the two mixture levels, then inverse-CDF component/rule/exception; invalid/overlength concatenations retry with successive counters at most 1024 times, then GENERATION_FAILURE.
+
+## Baselines and predictive metrics
+
+B1 is the validation-selected M0 candidate fit to the identical DEVELOPMENT split. For M0 itself, B1 is a development-null paired occurrence bootstrap comparing the selected M0 to an independently refit same-grid M0 on each bootstrap DEVELOPMENT sample; its expected null effect, not a model-vs-itself zero, is used. B2 for a candidate in Mj, j>0, is the validation-selected candidate of class M(j-1), irrespective of its later adequacy verdict; for M0 B2 is absent. This prevents a circular baseline definition. Baseline data, scoring units, vocabulary, and split are identical.
+
+For PM2 and PM5, 2,000 DEVELOPMENT paired occurrence bootstraps produce candidate-minus-baseline effects. Family is all candidate x required metric x applicable baseline comparisons within one control. A one-sided empirical p-value is `(1 + count(null_effect >= observed_effect))/(2001)`; order by p then candidate ID and apply Holm step-down alpha .05. A comparison PASS requires both Holm rejection and effect strictly beyond `max(type-7 q95 null, practical floor)`. Equality fails. PM4 is supporting only. Predictive PASS requires PM2/PM5/PM6 PASS; any FAIL plus no missing required evidence is FAIL; otherwise NOT_ASSESSABLE.
+
+PM5 events are each realized next glyph including EOS. Confidence is its assigned probability and label is 1 (the multiclass top-label shortcut is forbidden). Sort DEVELOPMENT events by `(confidence,event_index)`. Greedily form bins of 40, extending a bin through every equal-confidence value; if the final bin has fewer than 40, merge it into the previous. Freeze `[min,max]` and assign later equal boundary values to the earlier bin; outside values go to end bins. Require five bins. ECE is the occurrence-weighted formula in the metric registry.
+
+PM6 uses `C_l=A^l\\V_l`, lexicographic rank/unrank, uniform complement ranks with replacement, eligible HELDOUT lengths, and one negative per positive occurrence. Saturated lengths are excluded. Require >=80% occurrence coverage, >=100 pairs, and >=2 lengths. Per length AUC compares every positive to every sampled negative with half ties; aggregate by eligible positive mass. Each of 2,000 paired bootstrap replicates resamples pair indices within length with replacement and recomputes the weighted statistic. LCB is type-7 q0.05. Each of 2,000 permutations swaps each pair's labels on a RNG bit, recomputes AUC; q0.95 is type-7. PASS requires LCB strictly >0.5 and observed AUC strictly > permutation q0.95. Equality FAIL. Saturation/coverage failure is NOT_ASSESSABLE, never implementation failure.
+
+## Structural thresholds and adequacy
+
+At scales 2,000/8,000/32,000 tokens and four replicates, retain every Fingerprint-v2 metric and take its ordinary median (mean of middle two). DEVELOPMENT matched-form controls yield 2,000 token-occurrence bootstrap absolute distances per metric/scale. Threshold is max(type-7 q0.95, literal practical floor). Dispersion is MAD from the four replicate values and its threshold is type-7 q0.95 across development cells. Any excess dispersion makes that metric-scale NOT_ASSESSABLE. SKELETON rows are diagnostics only with zero weight.
+
+At a scale EDIT passes with >=3 assessable and >=3 PASS among four; LEXICAL_PARADIGM passes with >=2 assessable and >=2 PASS among three. An assessable shortfall fails. Structural PASS requires both families PASS at all scales. Any missing required family makes NOT_ASSESSABLE even if another fails; otherwise any FAIL fails. The threshold schema fixes provenance and hashes.
+
+## Complexity and minimality
+
+Strings use `utf8code(s)=gamma(byte_length+1)+8*byte_length`; positive integer Elias gamma costs `2*floor(log2 n)+1`. Probabilities are quantized to IEEE binary32 ties-even and cost 32 bits each; sorted structures and BFS state numbering are canonical. Exact formulas are in the complexity registry. No tolerance is applied to bit cost. Description length is complexity bits plus HELDOUT PM1. Equivalence edges use `abs(delta)<=max(1,development type-7 q95 paired delta)`.
+
+A candidate is adequate only with successful fit/generation, all required predictive PASS, structural PASS, and complete hashes. A class is rejected only when every registry route/candidate is assessably inadequate. Choose the lowest-rank adequate equivalence component only if every lower class is rejected. A singleton class is recovered; a multi-class/candidate minimum component is NOT_IDENTIFIABLE (record EQUIVALENT_SET). NONE means every candidate in every M0-M5 class completed and was validly inadequate. Any missing evidence capable of changing the minimum, unresolved route, overlap, or complexity comparison is NOT_IDENTIFIABLE. Failure never means NONE.
+
+## Controls, blindness, DAG, evidence, and reachability
+
+Generator A mirrors the mathematical family with direct inverse-CDF sampling. Generator B uses the distinct construction frozen in `G1V2_SYNTHETIC_GENERATOR_REGISTRY.tsv`; its exact probability tables, sampling algorithm, caps, independence rationale, and specification hash are normative. Both must be implemented in separate modules and may share only canonical parsing and RNG primitives; neither may call fitting or production model generation code. CONTROL_GENERATE counters use `(generator registry row, scale index, replicate, draw)`. Development roots are literal control-registry roots. Blind roots are the global root with that domain/counter tuple. Twelve open development instances, 144 blind instances, and 36 natural instances yield exactly 192 controls.
+
+Blind IDs and escrow obey `G1V2_BLIND_ESCROW_SCHEMA.json`; filenames and visible metadata contain only blind ID, content hash, and count. Natural selection was fixed by public-domain/repository availability, sufficient length, UTF-8 reproducibility, and distinct scripts/traditions before outcomes. Strip Gutenberg text outside the first line containing `*** START OF` and the first later line containing `*** END OF` (exclude both marker lines); absence/order failure stops. NFC, full Unicode casefold, then scan maximal Unicode Letter runs while retaining ASCII/U+2019 apostrophe only between letters (normalize U+2019 to ASCII); discard digits/punctuation/empty tokens. For each `(corpus,scale,replicate)` in scale then replicate order, draw a bounded start index using CORPUS_WINDOW, take `scale` circular consecutive occurrences, and accept the first successive-counter start whose circular occurrence-index set does not overlap a prior accepted window at that scale; after N starts, fail construction. Apply 60/20/20 inside each accepted window. Source hash mismatch stops construction. The Sanskrit repository snapshot has no Gutenberg stripping; all other steps are identical.
+
+All planned jobs exist even when not executed: suppressed cells emit NOT_REACHED. FIT failure suppresses predictive/generation/complexity; predictive non-PASS suppresses generation; aggregation always runs over status records. The TSV is normative. DAG identities/counts are normative JSON. Evidence follows G1V2-CJ-1 and schemas; hash the canonical object with `content_sha256` omitted. A verifier validates schemas/hashes, regenerates gates, adequacy, complexity graph, and final verdict solely from evidence.
+
+## Failure and firewall
+
+The only scientific failures are the status registry entries. Invalid input/schema/hash is a protocol veto; numerical/induction/generation failure blocks identification but is not negative class evidence. No worker/process/time/retry datum enters RNG, JobID, or evidence identity. No Stage C recovery, natural-language recovery, or Voynich evaluation was run for this freeze.
