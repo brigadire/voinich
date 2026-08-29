@@ -1,0 +1,2000 @@
+Task86C-v2-scientific-impl
+G1-v2 Scientific Workload Implementation, Manifest Construction
+and Production Execution Freeze
+
+
+PURPOSE
+
+Implement the frozen G1-v2 scientific workload required for
+Task86C-v2 blind control validation and produce the exact immutable
+artifacts required for operator execution.
+
+This task bridges:
+
+    Task85b
+        frozen scientific experiment contract
+
+and:
+
+    Task86C-v2-prep
+        frozen distributed/evidence infrastructure
+
+to produce:
+
+    production scientific executable
+    authoritative Task86C-v2 run manifest
+    immutable input closure
+    executable evidence-only verification path
+
+required by:
+
+    Task86C-v2-run.
+
+This task is IMPLEMENTATION + VALIDATION + FREEZE.
+
+It is NOT:
+
+    a redesign of G1-v2;
+    a scientific result;
+    the Task86C-v2 confirmatory run;
+    an analysis of Voynich;
+    an opportunity to tune G1-v2 against controls.
+
+
+======================================================================
+1. PRIMARY QUESTION
+======================================================================
+
+Can the frozen Task85b G1-v2 scientific design be represented
+exactly by executable scientific handlers and a complete immutable
+Task86C-v2 run manifest, while preserving the already validated
+Task86C-v2-prep distributed/evidence semantics?
+
+The required terminal product is a production execution closure:
+
+    frozen scientific contract
+        +
+    frozen scientific implementation
+        +
+    frozen input closure
+        +
+    frozen blind manifest
+        +
+    frozen distributed executor
+        =
+    reproducible Task86C-v2 computation.
+
+
+======================================================================
+2. AUTHORITATIVE INPUTS
+======================================================================
+
+Treat as authoritative, in descending order for their respective
+domains:
+
+Scientific design:
+
+    research/phase3/task85b/
+
+especially all frozen definitions covering:
+
+    M0–M5;
+    PM metrics;
+    PM6-v2;
+    F2 metrics/families;
+    predictive gates;
+    structural gates;
+    three-valued semantics;
+    model complexity/minimality;
+    blind control construction;
+    natural-language controls;
+    failure semantics;
+    NOT_REACHED semantics;
+    unblinding;
+    evidence-chain requirements.
+
+Distributed/evidence implementation:
+
+    research/phase3/task86c-v2-prep/
+
+especially:
+
+    G1V2_EXECUTOR_ADAPTER.md
+    WORKER_COMPATIBILITY_CONTRACT.md
+    PHASE1_EXECUTOR_INTEGRATION.md
+    TASK86C_V2_SCIENTIFIC_HANDOFF.md
+    TASK86C_V2_PREP_REPORT.md
+    TASK86C_V2_PREP_RESULTS_MANIFEST.json
+
+Deployment:
+
+    research/phase3/task86c-v2-deploy-audit/
+
+especially:
+
+    WORKER_DEPLOYMENT_CONTRACT.md
+    WORKER_OPERATIONS.md
+    TASK86C_V2_DEPLOY_AUDIT_REPORT.md
+
+Previous failed/diagnostic experiments may be inspected only to
+understand implementation history:
+
+    Task86R
+    Task86C
+    Task86C-a
+
+They are NOT authority for changing Task85b.
+
+
+======================================================================
+3. EXISTING INFRASTRUCTURE MUST BE REUSED
+======================================================================
+
+Task86C-v2-prep already froze and validated:
+
+    manifest/DAG adapter;
+    deterministic JobID;
+    mTLS coordinator/workers;
+    pull/lease execution;
+    retry/resume;
+    content-addressed evidence;
+    duplicate handling;
+    conflict quarantine;
+    dependency/reachability handling;
+    evidence publication;
+    evidence-only verifier architecture.
+
+Do NOT replace these.
+
+Do NOT implement:
+
+    new scheduler;
+    new queue;
+    new lease mechanism;
+    new JobID;
+    new retry policy;
+    new evidence store;
+    new duplicate policy;
+    new reachability engine;
+    new distributed protocol.
+
+Scientific handlers must plug into the frozen executor.
+
+
+======================================================================
+4. KNOWN PREP LIMITATION
+======================================================================
+
+The existing prep executable contains the engineering handler:
+
+    sha256-chain-v1
+
+used to validate distributed execution.
+
+M0–M5 labels in that engineering fixture are routing labels only.
+
+They are NOT implementations of the scientific M0–M5 models.
+
+Do not reuse engineering sha256-chain-v1 as scientific computation.
+
+The purpose of this task is to implement the missing scientific
+workload.
+
+
+======================================================================
+5. CHANGE BOUNDARY
+======================================================================
+
+The prep executable SHA-256:
+
+    6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718
+
+belongs to the frozen PREP infrastructure validation.
+
+It must NOT be assumed to be the final scientific executable.
+
+Adding scientific handlers creates an explicit reviewed executable
+change boundary.
+
+At completion this task MUST produce:
+
+    new production executable SHA-256
+
+and freeze it for Task86C-v2-run.
+
+Do not overwrite historical documentation claiming which executable
+was used for Task86C-v2-prep.
+
+
+======================================================================
+6. NO SCIENTIFIC REDESIGN
+======================================================================
+
+Task85b definitions are frozen.
+
+Implementation must not change them because:
+
+    implementation is difficult;
+    runtime is high;
+    a model fails;
+    a control behaves unexpectedly;
+    a metric is inconvenient;
+    a result looks scientifically undesirable.
+
+If Task85b contains an ambiguity that prevents unique implementation:
+
+    STOP;
+
+classify:
+
+    SCIENTIFIC_CONTRACT_AMBIGUITY
+
+and document the exact ambiguity.
+
+Do not silently choose a convenient interpretation.
+
+
+======================================================================
+7. IMPLEMENT M0–M5
+======================================================================
+
+Implement the exact frozen Task85b definitions for:
+
+    M0
+    M1
+    M2
+    M3
+    M4
+    M5
+
+Do not implement from the conceptual labels alone.
+
+Use the exact algorithms, hyperparameter grids, fitting rules,
+selection rules, stopping rules and failure semantics frozen by
+Task85b.
+
+For each model produce an implementation traceability record:
+
+    frozen requirement
+        →
+    package/function
+        →
+    test
+        →
+    evidence artifact.
+
+
+======================================================================
+8. M0 IMPLEMENTATION
+======================================================================
+
+Implement M0 exactly as frozen.
+
+Verify at minimum:
+
+    training input interpretation;
+    token/glyph vocabulary handling;
+    probability estimation;
+    zero-probability behavior;
+    generation;
+    likelihood/scoring;
+    complexity accounting;
+    deterministic seed use.
+
+Do not add smoothing unless explicitly frozen.
+
+
+======================================================================
+9. M1 IMPLEMENTATION
+======================================================================
+
+Implement the frozen fixed-order/local-dependence model.
+
+Verify:
+
+    context definition;
+    boundary treatment;
+    order/hyperparameters;
+    fitting;
+    unseen-context behavior;
+    generation;
+    scoring;
+    complexity;
+    deterministic tie-breaking.
+
+
+======================================================================
+10. M2 IMPLEMENTATION
+======================================================================
+
+Implement the frozen variable-memory model.
+
+Verify exactly:
+
+    memory representation;
+    induction rule;
+    pruning/selection;
+    maximum memory constraints;
+    tie-breaking;
+    stopping rule;
+    scoring;
+    generation;
+    complexity.
+
+Do not substitute another variable-order model merely because a
+library implementation is available.
+
+
+======================================================================
+11. M3 IMPLEMENTATION
+======================================================================
+
+Implement the frozen deterministic finite-state model.
+
+Pay particular attention to the state-merging definition frozen
+after the Task86R/Task85a experience.
+
+Verify:
+
+    initial state construction;
+    candidate merge generation;
+    merge score;
+    normalization;
+    divergence calculation;
+    deterministic candidate ordering;
+    convergence/stopping;
+    operation limits;
+    failure semantics;
+    generation;
+    complexity.
+
+Do not restore an older Task86R state-merging algorithm if Task85b
+supersedes it.
+
+
+======================================================================
+12. M4 IMPLEMENTATION
+======================================================================
+
+Implement the frozen probabilistic finite-state model.
+
+Verify:
+
+    topology;
+    probability estimation;
+    state induction/merging;
+    initialization;
+    convergence;
+    numerical stability;
+    randomization;
+    scoring;
+    generation;
+    complexity.
+
+All stochastic behavior must derive from frozen scientific seeds.
+
+
+======================================================================
+13. M5 IMPLEMENTATION
+======================================================================
+
+Implement the frozen explicit component/rule grammar.
+
+Verify:
+
+    component inventory;
+    rule induction;
+    rule application;
+    token construction;
+    unseen forms;
+    zero-probability semantics;
+    generation;
+    complexity;
+    failure semantics.
+
+Do not introduce linguistic interpretations not present in Task85b.
+
+
+======================================================================
+14. SCIENTIFIC RNG
+======================================================================
+
+All stochastic scientific operations must use the exact frozen seed
+derivation.
+
+Verify:
+
+    model fitting seeds;
+    selection seeds;
+    generation seeds;
+    negative/complement sampling seeds;
+    synthetic-control seeds.
+
+Operational properties must NOT affect scientific RNG:
+
+    worker identity;
+    worker count;
+    worker slot;
+    lease number;
+    retry number;
+    execution order;
+    wall-clock time.
+
+The same JobID executed on different workers must produce identical
+scientific evidence.
+
+
+======================================================================
+15. IMPLEMENT PREDICTIVE METRICS
+======================================================================
+
+Implement/preserve all frozen predictive measurements exactly.
+
+Each PM must produce its own evidence record.
+
+Do not preserve only aggregate:
+
+    PredictivePass.
+
+The evidence chain must contain the individual metric values,
+validity/status and gate decisions required to reconstruct the
+verdict later.
+
+This requirement directly addresses the evidence loss discovered in
+Task86C-a.
+
+
+======================================================================
+16. PM6-v2
+======================================================================
+
+Implement the frozen constructive finite-complement PM6-v2 protocol.
+
+For token length l:
+
+    C_l = A^l \ V_l
+
+and:
+
+    |C_l| = |A|^l - |V_l|.
+
+Use the exact Task85b protocol.
+
+Sampling is with replacement where frozen.
+
+A saturated length must NOT become:
+
+    TRAINING_FAILED
+    NEGATIVE_EXHAUSTED
+
+merely because no complement exists.
+
+Use the frozen three-valued semantics, including:
+
+    NOT_ASSESSABLE
+
+when the negative discrimination question is not identifiable.
+
+
+======================================================================
+17. THREE-VALUED SEMANTICS
+======================================================================
+
+Preserve distinctions among:
+
+    PASS
+    FAIL
+    NOT_ASSESSABLE
+
+and separately:
+
+    NOT_REACHED.
+
+These are not aliases.
+
+In particular:
+
+    NOT_ASSESSABLE != FAIL
+    NOT_REACHED != missing evidence
+    scientific failure != infrastructure failure.
+
+
+======================================================================
+18. FAILURE SEMANTICS
+======================================================================
+
+Implement exact frozen scientific failure statuses.
+
+Examples may include, where specified by Task85b:
+
+    TRAINING_FAILED
+    INDUCTION_LIMIT_REACHED
+    CONVERGENCE_FAILED
+    NUMERICALLY_UNSTABLE
+    COMPLEXITY_UNBOUNDED
+    GENERATION_FAILED
+    METRIC_UNAVAILABLE
+
+Do not transform a scientific failure into an infrastructure retry.
+
+Scientific failures must be published as evidence.
+
+
+======================================================================
+19. GENERATION
+======================================================================
+
+Implement frozen generation for every model that reaches generation.
+
+Generation must preserve:
+
+    frozen sample sizes;
+    frozen replication counts;
+    frozen seeds;
+    required structural skeleton treatment;
+    exact output representation.
+
+A generation result must be reproducible independently of worker
+assignment.
+
+
+======================================================================
+20. F2 STRUCTURAL EVALUATION
+======================================================================
+
+Integrate the frozen Fingerprint-v2 structural measurements required
+by Task85b.
+
+Use the already frozen F2 implementations where available.
+
+Do not reimplement a metric merely to make integration easier unless
+necessary and equivalence is demonstrated.
+
+
+======================================================================
+21. SKELETON-ONLY METRICS
+======================================================================
+
+Task85 identified F2 metrics that are skeleton-only when structural
+skeletons are borrowed.
+
+Preserve the Task85b evidentiary treatment.
+
+Such metrics may be computed where required for completeness but
+must not gain independent discriminating weight if Task85b excludes
+that weight.
+
+
+======================================================================
+22. STRUCTURAL GATES
+======================================================================
+
+Implement exact frozen:
+
+    metric-level status;
+    family-level aggregation;
+    structural gates;
+    StructuralAdequacy;
+    NOT_ASSESSABLE handling;
+    NOT_REACHED handling.
+
+Every structural verdict must be reconstructible from immutable
+metric evidence.
+
+
+======================================================================
+23. MINIMALITY
+======================================================================
+
+Implement the exact frozen minimality procedure.
+
+Do not simply select the model with the best score.
+
+The implementation must distinguish:
+
+    recovered model class;
+    adequate but non-minimal classes;
+    NONE;
+    NOT_IDENTIFIABLE
+
+according to Task85b.
+
+
+======================================================================
+24. NONE VS NOT_IDENTIFIABLE
+======================================================================
+
+Preserve the frozen distinction.
+
+NONE means the frozen ladder contains no class satisfying the
+required adequacy criteria.
+
+NOT_IDENTIFIABLE means the measurement/recovery procedure cannot
+make the required distinction.
+
+These outcomes must not collapse into one status.
+
+
+======================================================================
+25. SCIENTIFIC JOB TYPES
+======================================================================
+
+Define the scientific handler/job types needed to express the
+Task85b evidence chain:
+
+    input
+        →
+    fit / induction
+        →
+    model
+        →
+    predictive metrics
+        →
+    predictive gates
+        →
+    predictive verdict
+        →
+    generation
+        →
+    F2 metric records
+        →
+    family aggregation
+        →
+    structural verdict
+        →
+    complexity/minimality
+        →
+    final control verdict.
+
+Map them onto the existing frozen executor stages:
+
+    FIT
+    PREDICTIVE
+    GENERATION
+    STRUCTURAL
+    AGGREGATION.
+
+Do not add a scheduler-side scientific decision engine.
+
+
+======================================================================
+26. REACHABILITY
+======================================================================
+
+Scientific reachability must follow Task85b.
+
+Scheduler/executor must not infer scientific meaning.
+
+If a downstream job is not reached, evidence must contain the frozen
+NOT_REACHED representation including:
+
+    reason;
+    upstream dependency;
+    dependency hash
+
+as required by prep.
+
+
+======================================================================
+27. EVIDENCE GRANULARITY
+======================================================================
+
+The following must survive as immutable evidence where applicable:
+
+    input identity;
+    split identity;
+    model class;
+    hyperparameters;
+    scientific seeds;
+    fit status;
+    fitted-model representation/hash;
+    individual PM values/statuses;
+    individual predictive gates;
+    predictive verdict;
+    generation identity/hash;
+    individual F2 values/statuses;
+    family aggregation;
+    individual structural gates;
+    structural verdict;
+    complexity;
+    minimality;
+    final verdict.
+
+Do not store only final verdicts.
+
+
+======================================================================
+28. EVIDENCE-ONLY RECONSTRUCTION
+======================================================================
+
+The existing evidence-only verifier architecture must be extended as
+needed to understand the scientific evidence produced here.
+
+It must reconstruct:
+
+    PM decisions;
+    predictive gates;
+    PredictiveAdequacy;
+    F2/family decisions;
+    StructuralAdequacy;
+    complexity/minimality;
+    final G1-v2 control verdict
+
+without:
+
+    fitting;
+    induction;
+    generation;
+    access to model implementation.
+
+The verifier must remain evidence-only.
+
+
+======================================================================
+29. VERIFIER SEPARATION
+======================================================================
+
+The evidence verifier must not import or invoke scientific fitting or
+generation packages.
+
+This is a hard architectural constraint.
+
+A bug in model implementation must not automatically be duplicated
+inside verdict reconstruction.
+
+
+======================================================================
+30. CONTROL CORPUS CLOSURE
+======================================================================
+
+Construct the exact control corpus set required by Task85b.
+
+It must include:
+
+    development controls;
+    new blind synthetic M0–M5 controls;
+    natural-language controls.
+
+Natural-language controls must include at least the frozen set
+specified by Task85b, expected to include:
+
+    English
+    Latin
+    Sanskrit
+
+unless Task85b itself specifies justified alternatives.
+
+Do not substitute corpora opportunistically.
+
+
+======================================================================
+31. CORPUS PROVENANCE
+======================================================================
+
+For every corpus/input preserve:
+
+    logical identity;
+    source;
+    license/provenance where relevant;
+    preprocessing procedure;
+    byte hash;
+    tokenization hash;
+    split hash;
+    resulting corpus statistics.
+
+Do not depend on mutable remote URLs at execution time.
+
+All scientific inputs must be locally immutable/content-addressed
+before freeze.
+
+
+======================================================================
+32. DEVELOPMENT CONTROLS
+======================================================================
+
+Development controls may be used only in the manner authorized by
+Task85b.
+
+Use them to execute the frozen Stage B procedure, including any
+predeclared threshold derivation and constructibility validation.
+
+Do not use confirmatory/blind controls for debugging thresholds.
+
+
+======================================================================
+33. THRESHOLD FREEZE
+======================================================================
+
+If Task85b requires numerical thresholds to be derived during the
+open development stage, perform that procedure exactly once using
+only authorized development controls.
+
+Produce an explicit threshold artifact.
+
+Hash and freeze it before blind-control manifest construction.
+
+After threshold freeze:
+
+    no threshold changes.
+
+
+======================================================================
+34. BLIND SYNTHETIC CONTROLS
+======================================================================
+
+Construct the new synthetic controls required for Stage C according
+to Task85b.
+
+Their ground-truth M0–M5 identities must remain inaccessible to the
+operator/scientific execution path except where cryptographically or
+procedurally required.
+
+The execution manifest must use blind identifiers.
+
+Do not encode the ground-truth class into:
+
+    filename;
+    JobID;
+    path;
+    human-readable metadata exposed during run.
+
+
+======================================================================
+35. BLIND ESCROW
+======================================================================
+
+Create the frozen mapping between:
+
+    blind control ID
+        ↔
+    true generator class / ground truth.
+
+Store it separately from ordinary run inputs/evidence.
+
+Produce:
+
+    escrow hash
+
+before scientific execution.
+
+Do not expose escrow contents to the operator during Task86C-v2-run.
+
+
+======================================================================
+36. NATURAL-LANGUAGE CONTROLS
+======================================================================
+
+Construct the frozen natural-language controls exactly as specified.
+
+They are not synthetic ground-truth recovery cells.
+
+Their purpose is to test:
+
+    NATURAL_LANGUAGE_APPLICABILITY_VALIDATED.
+
+Keep their identities according to the Task85b blind/open design.
+
+Do not tune model behavior specifically to make natural language
+pass.
+
+
+======================================================================
+37. DEVELOPMENT / BLIND FIREWALL
+======================================================================
+
+Implementation debugging may use:
+
+    unit fixtures;
+    engineering fixtures;
+    authorized open development controls.
+
+Once implementation validation reaches the blind freeze boundary,
+do not inspect blind-control outcomes to modify implementation.
+
+If a software defect is discovered after blind computation begins:
+
+    preserve evidence;
+    stop;
+    classify the defect;
+    do not silently patch and continue.
+
+
+======================================================================
+38. AUTHORITATIVE RUN MANIFEST
+======================================================================
+
+Generate the single authoritative Task86C-v2 scientific run
+manifest.
+
+It must contain/resolve all scientific work required by the frozen
+design.
+
+The manifest must be:
+
+    deterministic;
+    canonical;
+    schema-valid;
+    DAG-valid;
+    complete;
+    content-hashable;
+    independent of worker inventory.
+
+
+======================================================================
+39. MANIFEST MUST NOT CONTAIN OPERATIONAL TOPOLOGY
+======================================================================
+
+The scientific manifest must not depend on:
+
+    cognition;
+    10.10.24.105;
+    10.10.24.107;
+    109.87.30.62;
+    worker certificate identities;
+    worker count;
+    slot count;
+    coordinator port;
+    Ansible inventory.
+
+Those are operational properties.
+
+The same frozen manifest must be executable on any compatible
+cluster.
+
+
+======================================================================
+40. JOBID DETERMINISM
+======================================================================
+
+Verify JobIDs derive only from the frozen scientific fields defined
+by prep.
+
+Test explicitly that changing:
+
+    worker identity;
+    worker count;
+    coordinator endpoint;
+    execution order;
+    lease number
+
+does not change JobIDs.
+
+
+======================================================================
+41. MANIFEST COMPLETENESS
+======================================================================
+
+Before freeze calculate and record:
+
+    total manifest jobs;
+    jobs per stage;
+    jobs per model;
+    jobs per corpus/control;
+    dependency edge count;
+    expected terminal aggregation cells;
+    expected evidence classes.
+
+Compare these counts against an independently constructed
+expectation from Task85b.
+
+Do not accept a manifest merely because it is syntactically valid.
+
+
+======================================================================
+42. MANIFEST DRY VALIDATION
+======================================================================
+
+Run without scientific bulk computation:
+
+    schema validation;
+    canonicalization validation;
+    JobID collision validation;
+    DAG acyclicity;
+    dependency closure;
+    input existence;
+    input hashes;
+    handler availability;
+    seed availability;
+    expected aggregation closure.
+
+No blind scientific result should be required for this validation.
+
+
+======================================================================
+43. CONSTRUCTIBILITY TEST
+======================================================================
+
+Before freeze prove every manifest job can be dispatched to a known
+scientific handler.
+
+There must be no production job referencing:
+
+    sha256-chain-v1
+
+unless it is explicitly an engineering-only job outside the
+scientific run.
+
+Every scientific handler identifier must resolve.
+
+
+======================================================================
+44. SMALL OPEN END-TO-END FIXTURE
+======================================================================
+
+Create an open, non-confirmatory scientific fixture small enough to
+execute quickly but containing the complete scientific path:
+
+    FIT
+    PREDICTIVE
+    GENERATION
+    STRUCTURAL
+    AGGREGATION.
+
+It must exercise at least one representative path through each
+scientific model implementation as practical.
+
+The purpose is implementation validation, not model evaluation.
+
+
+======================================================================
+45. DISTRIBUTED DETERMINISM TEST
+======================================================================
+
+Execute the same open scientific fixture:
+
+    locally;
+    on cognition;
+    with multiple workers if practical.
+
+Require identical scientific JobID → result-content mapping.
+
+Telemetry may differ.
+
+Scientific evidence must not.
+
+
+======================================================================
+46. RETRY DETERMINISM TEST
+======================================================================
+
+Force at least one infrastructure lease expiry/requeue during the
+open scientific fixture.
+
+Require:
+
+    same JobID;
+    same scientific seed;
+    same result content/hash.
+
+Retry number must not enter scientific RNG.
+
+
+======================================================================
+47. SCIENTIFIC FAILURE FIXTURES
+======================================================================
+
+Create explicit open fixtures that exercise frozen scientific
+failure semantics.
+
+Verify that scientific failures:
+
+    become evidence;
+    do not become infrastructure retries;
+    preserve dependencies;
+    produce correct downstream NOT_REACHED where required.
+
+
+======================================================================
+48. THREE-VALUED FIXTURES
+======================================================================
+
+Test explicit examples of:
+
+    PASS;
+    FAIL;
+    NOT_ASSESSABLE;
+    NOT_REACHED.
+
+The evidence-only verifier must reproduce all four distinctions.
+
+
+======================================================================
+49. PM6-v2 SATURATION FIXTURE
+======================================================================
+
+Include a deliberately saturated complement case.
+
+Verify that PM6-v2 produces the frozen:
+
+    NOT_ASSESSABLE
+
+behavior rather than:
+
+    NEGATIVE_EXHAUSTED
+    TRAINING_FAILED
+    infinite retry.
+
+
+======================================================================
+50. EVIDENCE MUTATION TESTS
+======================================================================
+
+Extend the prep fail-closed mutation suite.
+
+At minimum mutate/substitute:
+
+    input hash;
+    model hash;
+    PM value;
+    PM status;
+    predictive gate;
+    generation hash;
+    F2 value;
+    family verdict;
+    structural gate;
+    complexity;
+    minimality;
+    dependency hash;
+    NOT_REACHED reason;
+    final verdict;
+    seed;
+    handler identity.
+
+Evidence-only verification must fail closed where the mutation
+violates closure.
+
+
+======================================================================
+51. MODEL-SPECIFIC UNIT TESTS
+======================================================================
+
+For M0–M5 include deterministic unit tests covering frozen edge
+cases.
+
+Tests must be based on small explicit fixtures with independently
+known expected behavior where possible.
+
+Do not validate a model solely by comparing it to itself.
+
+
+======================================================================
+52. LEGACY REGRESSION
+======================================================================
+
+Where frozen Task85b behavior intentionally differs from Task86R or
+Task86C, add regression tests demonstrating the new intended
+behavior.
+
+Especially guard against reintroduction of:
+
+    old negative-sampler exhaustion;
+    lost PM evidence;
+    partial calibration acceptance;
+    undeclared JS normalization;
+    old state-merging semantics;
+    map-iteration nondeterminism.
+
+
+======================================================================
+53. GO MAP DETERMINISM
+======================================================================
+
+Audit scientific code for nondeterministic map iteration wherever
+iteration order can affect:
+
+    fitting;
+    selection;
+    tie-breaking;
+    serialization;
+    generation;
+    manifest construction;
+    evidence construction.
+
+Sort explicitly where scientific output can depend on ordering.
+
+This is a mandatory regression concern after Task83a.
+
+
+======================================================================
+54. FLOATING-POINT DETERMINISM
+======================================================================
+
+Document floating-point assumptions.
+
+Avoid reduction-order dependence where practical.
+
+If deterministic Linux/amd64 execution is required for exact
+evidence equality, enforce and document that boundary.
+
+Do not claim cross-architecture byte identity unless tested.
+
+
+======================================================================
+55. PERFORMANCE CHECK
+======================================================================
+
+Run representative open workloads for M0–M5.
+
+Record:
+
+    wall time;
+    CPU time where available;
+    peak memory where available;
+    evidence size.
+
+Compare against Task85b capacity estimates.
+
+A performance discrepancy is not permission to change the
+scientific design.
+
+It may affect only operational capacity recommendations.
+
+
+======================================================================
+56. PRODUCTION EXECUTABLE BUILD
+======================================================================
+
+After all implementation and open validation passes:
+
+    build the production Linux/amd64 g1v2-executor.
+
+The build must include:
+
+    frozen distributed executor;
+    scientific handlers;
+    evidence support;
+    verifier-compatible evidence schemas.
+
+Record:
+
+    repository commit;
+    Go version;
+    GOOS;
+    GOARCH;
+    build command;
+    executable size;
+    SHA-256.
+
+
+======================================================================
+57. NEW EXECUTABLE FREEZE
+======================================================================
+
+Freeze the resulting executable hash as:
+
+    TASK86C_V2_PRODUCTION_EXECUTABLE_SHA256
+
+This hash supersedes the prep hash ONLY for future Task86C-v2
+scientific execution.
+
+It does not rewrite historical Task86C-v2-prep provenance.
+
+
+======================================================================
+58. DEPLOYMENT CONTRACT UPDATE
+======================================================================
+
+Update deployment/run documentation to reference the new production
+scientific executable hash.
+
+This is an expected:
+
+    INFRASTRUCTURE_CHANGE_AT_DECLARED_EXECUTABLE_BOUNDARY.
+
+Do not otherwise redesign the audited Ansible role.
+
+Verify the role still rejects any binary not matching the newly
+frozen production hash.
+
+
+======================================================================
+59. NEW PKI
+======================================================================
+
+Current production PKI was regenerated.
+
+Record the current non-secret certificate closure.
+
+CA certificate SHA-256:
+
+    3f0a73dbec2ecd396854a612ac6216c95e89f6bd0380db8c0bc50cfc3c03f50b
+
+Coordinator certificate SHA-256:
+
+    a8c2b04e2ab4ac00383f3e9fed91c49af6a7c7982fccb7102dd1af3bc886255a
+
+Coordinator certificate SAN includes:
+
+    10.10.24.107
+    109.87.30.62
+
+Do not store private-key contents or private-key hashes in public
+scientific artifacts unless existing project policy explicitly
+requires such hashes.
+
+
+======================================================================
+60. COORDINATOR EXECUTION INTERFACE
+======================================================================
+
+The production scientific executable must support the already
+identified coordinator interface:
+
+    <FROZEN_G1V2_EXECUTOR> coordinator \
+      --manifest <FROZEN_RUN_MANIFEST> \
+      --store /usr/local/data/voinich-evidence \
+      --listen :8443 \
+      --tls-cert /home/brigadire/devops/workdir/go/voinich/pki/coordinator.crt \
+      --tls-key /home/brigadire/devops/workdir/go/voinich/pki/coordinator.key \
+      --client-ca /home/brigadire/devops/workdir/go/voinich/pki/ca.crt \
+      --lease-timeout 30s
+
+Do not change this CLI unnecessarily while adding scientific
+handlers.
+
+
+======================================================================
+61. WORKER ENDPOINTS
+======================================================================
+
+Deployment topology currently uses:
+
+LAN / cognition:
+
+    https://10.10.24.107:8443
+
+External workers:
+
+    https://109.87.30.62:8443
+
+Both addresses are covered by the coordinator certificate.
+
+These are operational values and must not enter scientific JobID.
+
+
+======================================================================
+62. AUTHORITATIVE SCIENTIFIC MANIFEST FREEZE
+======================================================================
+
+After all open implementation validation is complete, generate the
+final Task86C-v2 scientific run manifest.
+
+Freeze:
+
+    path;
+    byte size;
+    SHA-256;
+    schema;
+    canonicalization;
+    total JobID count;
+    dependency count;
+    input-root hash;
+    threshold artifact hash;
+    blind escrow hash.
+
+Call its hash:
+
+    TASK86C_V2_RUN_MANIFEST_SHA256.
+
+
+======================================================================
+63. IMMUTABLE INPUT MANIFEST
+======================================================================
+
+Generate a complete immutable input manifest listing every
+scientific input required by the production run.
+
+At minimum:
+
+    logical ID;
+    content-addressed path;
+    SHA-256;
+    size;
+    role;
+    corpus/control category;
+    preprocessing artifact dependencies.
+
+The coordinator/workers must not need mutable network downloads
+during the frozen run.
+
+
+======================================================================
+64. PRESEED MANIFEST
+======================================================================
+
+Generate an Ansible/CAS-compatible preseed manifest for all
+appropriate immutable inputs.
+
+The operator should be able to preseed the fleet without learning
+blind ground truth.
+
+Do not include escrow content if workers do not require it.
+
+
+======================================================================
+65. BLIND OPERATOR HANDOFF
+======================================================================
+
+Create an operator handoff that contains everything necessary to
+run Task86C-v2 but nothing requiring scientific interpretation.
+
+It must provide concrete values for:
+
+    <FROZEN_G1V2_EXECUTOR>
+    <FROZEN_RUN_MANIFEST>
+    executable SHA-256
+    run-manifest SHA-256
+    immutable input/preseed manifest
+    evidence-store requirements
+    coordinator command
+    worker deployment variables
+    expected manifest/job counts
+    closure-verification command.
+
+The operator must not have to infer missing parameters.
+
+
+======================================================================
+66. RUNBOOK UPDATE
+======================================================================
+
+Update:
+
+    TASK86C_V2_RUNBOOK.md
+
+Replace placeholders with the frozen production values or explicit
+artifact paths.
+
+The runbook must become executable documentation.
+
+No critical production command may contain unresolved placeholders
+except host-specific worker inventory values intentionally supplied
+at deployment time.
+
+
+======================================================================
+67. DO NOT RUN THE BLIND BULK EXPERIMENT
+======================================================================
+
+This task MUST NOT execute the full Task86C-v2 blind scientific run.
+
+Allowed:
+
+    unit tests;
+    engineering fixtures;
+    open development controls where Task85b permits;
+    small open scientific fixtures;
+    manifest validation;
+    constructibility checks.
+
+Forbidden:
+
+    full Stage C blind recovery execution;
+    full Stage D confirmatory natural-language execution where it
+        belongs to Task86C-v2-run;
+    unblinding;
+    scientific recovery verdict.
+
+
+======================================================================
+68. NO VOYNICH EXECUTION
+======================================================================
+
+Do not run G1-v2 against the Voynich target.
+
+Task86V remains blocked until Task86C-v2 establishes the required
+control-validation dimensions.
+
+No Voynich result belongs in this task.
+
+
+======================================================================
+69. REQUIRED TRACEABILITY MATRIX
+======================================================================
+
+Create:
+
+    G1V2_SCIENTIFIC_IMPLEMENTATION_TRACEABILITY.tsv
+
+Columns at minimum:
+
+    requirement_id
+    task85b_source
+    frozen_requirement
+    implementation
+    tests
+    evidence_schema
+    status
+    notes.
+
+Every scientific requirement used by Task86C-v2 must map to
+executable implementation.
+
+
+======================================================================
+70. REQUIRED HANDLER REGISTRY
+======================================================================
+
+Create:
+
+    G1V2_SCIENTIFIC_HANDLER_REGISTRY.tsv
+
+Columns:
+
+    handler_id
+    executor_stage
+    scientific_function
+    input_schema
+    output_schema
+    deterministic
+    seed_domain
+    implementation
+    tests.
+
+There must be no unresolved scientific handler in the final
+manifest.
+
+
+======================================================================
+71. REQUIRED MODEL REGISTRY
+======================================================================
+
+Create:
+
+    G1V2_MODEL_IMPLEMENTATION_REGISTRY.tsv
+
+for M0–M5 including:
+
+    model_id
+    frozen_definition
+    hyperparameters
+    fit_handler
+    predictive_handler
+    generation_handler
+    complexity_handler
+    failure_semantics
+    tests
+    status.
+
+
+======================================================================
+72. REQUIRED INPUT REGISTRY
+======================================================================
+
+Create:
+
+    TASK86C_V2_INPUT_MANIFEST.tsv
+
+with complete immutable provenance and hashes.
+
+
+======================================================================
+73. REQUIRED MANIFEST AUDIT
+======================================================================
+
+Create:
+
+    TASK86C_V2_RUN_MANIFEST_AUDIT.tsv
+
+covering:
+
+    schema;
+    canonicalization;
+    JobIDs;
+    collisions;
+    stages;
+    models;
+    controls;
+    seeds;
+    dependencies;
+    reachability;
+    handlers;
+    input closure;
+    expected evidence;
+    aggregation closure.
+
+
+======================================================================
+74. REQUIRED VALIDATION MATRIX
+======================================================================
+
+Create:
+
+    TASK86C_V2_SCIENTIFIC_IMPL_VALIDATION.tsv
+
+At minimum include:
+
+    M0 unit validation
+    M1 unit validation
+    M2 unit validation
+    M3 unit validation
+    M4 unit validation
+    M5 unit validation
+    PM metrics
+    PM6-v2 saturation
+    PASS semantics
+    FAIL semantics
+    NOT_ASSESSABLE semantics
+    NOT_REACHED semantics
+    scientific failure publication
+    generation determinism
+    F2 integration
+    family aggregation
+    structural verdict
+    minimality
+    NONE
+    NOT_IDENTIFIABLE
+    evidence-only reconstruction
+    mutation rejection
+    local deterministic execution
+    distributed deterministic execution
+    retry deterministic execution
+    manifest construction
+    manifest closure
+    handler constructibility
+    input closure
+    blind firewall
+    Voynich firewall.
+
+
+======================================================================
+75. REQUIRED ARTIFACTS
+======================================================================
+
+Create under:
+
+    research/phase3/task86c-v2-scientific-impl/
+
+at minimum:
+
+    TASK86C_V2_SCIENTIFIC_IMPL_DESIGN.md
+    TASK86C_V2_SCIENTIFIC_IMPL_REPORT.md
+    G1V2_SCIENTIFIC_IMPLEMENTATION_TRACEABILITY.tsv
+    G1V2_SCIENTIFIC_HANDLER_REGISTRY.tsv
+    G1V2_MODEL_IMPLEMENTATION_REGISTRY.tsv
+    TASK86C_V2_INPUT_MANIFEST.tsv
+    TASK86C_V2_RUN_MANIFEST_AUDIT.tsv
+    TASK86C_V2_SCIENTIFIC_IMPL_VALIDATION.tsv
+    TASK86C_V2_OPERATOR_HANDOFF.md
+    TASK86C_V2_SCIENTIFIC_IMPL_RESULTS_MANIFEST.json
+
+and the frozen machine-readable:
+
+    Task86C-v2 scientific run manifest;
+    threshold artifact;
+    immutable input manifest;
+    preseed manifest;
+    blind escrow artifact or immutable reference/hash to it.
+
+Preserve all schemas required for independent verification.
+
+
+======================================================================
+76. RESULTS MANIFEST
+======================================================================
+
+TASK86C_V2_SCIENTIFIC_IMPL_RESULTS_MANIFEST.json must transitively
+cover all authoritative implementation/freeze artifacts.
+
+Include at minimum:
+
+    repository commit;
+    production executable SHA-256;
+    scientific run-manifest SHA-256;
+    Task85b contract hashes;
+    threshold hash;
+    input-root hash;
+    blind escrow hash;
+    handler-registry hash;
+    model-registry hash;
+    validation-matrix hash;
+    operator-handoff hash;
+    runbook hash.
+
+
+======================================================================
+77. REQUIRED VERDICTS
+======================================================================
+
+Issue at minimum:
+
+    M0_IMPLEMENTATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    M1_IMPLEMENTATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    M2_IMPLEMENTATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    M3_IMPLEMENTATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    M4_IMPLEMENTATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    M5_IMPLEMENTATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    PREDICTIVE_EVIDENCE_COMPLETE =
+        SUPPORTED / NOT_SUPPORTED
+
+    PM6_V2_IMPLEMENTATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    THREE_VALUED_SEMANTICS =
+        SUPPORTED / NOT_SUPPORTED
+
+    GENERATION_IMPLEMENTATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    F2_INTEGRATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    STRUCTURAL_AGGREGATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    MINIMALITY_IMPLEMENTATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    EVIDENCE_ONLY_RECONSTRUCTION =
+        SUPPORTED / NOT_SUPPORTED
+
+    SCIENTIFIC_HANDLER_CLOSURE =
+        SUPPORTED / NOT_SUPPORTED
+
+    SCIENTIFIC_INPUT_CLOSURE =
+        SUPPORTED / NOT_SUPPORTED
+
+    RUN_MANIFEST_CLOSURE =
+        SUPPORTED / NOT_SUPPORTED
+
+    DISTRIBUTED_SCIENTIFIC_DETERMINISM =
+        SUPPORTED / NOT_SUPPORTED
+
+    BLIND_FIREWALL_PRESERVED =
+        SUPPORTED / NOT_SUPPORTED
+
+    VOYNICH_FIREWALL_PRESERVED =
+        SUPPORTED / NOT_SUPPORTED
+
+    TASK86C_V2_SCIENTIFIC_EXECUTION_READY =
+        SUPPORTED / NOT_SUPPORTED.
+
+
+======================================================================
+78. EXECUTION-READY RULE
+======================================================================
+
+TASK86C_V2_SCIENTIFIC_EXECUTION_READY = SUPPORTED
+
+only if ALL of the following hold:
+
+1. M0–M5 frozen implementations exist.
+2. All required scientific handlers exist.
+3. PM evidence is individually preserved.
+4. PM6-v2 is implemented correctly.
+5. Three-valued semantics are preserved.
+6. Scientific failures are represented correctly.
+7. Generation is deterministic.
+8. Required F2 metrics are integrated.
+9. Structural aggregation is reconstructible.
+10. Minimality is reconstructible.
+11. Evidence-only verification succeeds.
+12. Scientific handler closure is complete.
+13. Immutable input closure is complete.
+14. Blind control construction is frozen.
+15. Threshold artifact is frozen.
+16. Blind escrow is frozen and isolated.
+17. Authoritative run manifest is complete.
+18. All manifest JobIDs are deterministic/collision-free.
+19. Every manifest job resolves to a handler.
+20. Open end-to-end scientific fixture succeeds.
+21. Distributed scientific determinism succeeds.
+22. Retry determinism succeeds.
+23. Mutation tests fail closed.
+24. Production executable is built and hashed.
+25. Production executable hash is frozen.
+26. Scientific run-manifest hash is frozen.
+27. Operator handoff contains no critical placeholders.
+28. Runbook contains concrete production execution values.
+29. Blind firewall is preserved.
+30. Voynich firewall is preserved.
+
+
+======================================================================
+79. TERMINAL MARKERS
+======================================================================
+
+If fully ready:
+
+    TASK86C_V2_SCIENTIFIC_EXECUTION_READY_FROZEN
+
+If implementation remains incomplete:
+
+    TASK86C_V2_SCIENTIFIC_EXECUTION_NOT_READY
+
+If Task85b cannot be uniquely implemented without changing the
+frozen scientific contract:
+
+    TASK86C_V2_SCIENTIFIC_CONTRACT_AMBIGUOUS
+
+If blind/confirmatory data were improperly exposed or used for
+implementation tuning:
+
+    TASK86C_V2_SCIENTIFIC_IMPL_INVALID
+
+Exactly one terminal marker.
+
+
+======================================================================
+80. REPOSITORY VALIDATION
+======================================================================
+
+Run at minimum:
+
+    go build ./...
+    go vet ./...
+    go test ./...
+    go test -race ./...
+
+Run all authoritative Task85b validators.
+
+Run all authoritative Task86C-v2-prep validators.
+
+Run the new scientific implementation validator.
+
+Run the evidence-only verifier against the open end-to-end fixture.
+
+Run:
+
+    git diff --check
+
+If Ansible frozen-hash configuration is updated, also run:
+
+    ansible-playbook --syntax-check
+
+and appropriate check-mode validation.
+
+Do not mark unavailable tooling as PASS.
+
+
+======================================================================
+81. DEFINITION OF DONE
+======================================================================
+
+Task is complete only when:
+
+1. Task85b has been traced into executable requirements.
+2. M0 is implemented and tested.
+3. M1 is implemented and tested.
+4. M2 is implemented and tested.
+5. M3 is implemented and tested.
+6. M4 is implemented and tested.
+7. M5 is implemented and tested.
+8. Frozen RNG derivation is implemented.
+9. Individual PM evidence is preserved.
+10. PM6-v2 is implemented.
+11. PASS/FAIL/NOT_ASSESSABLE are distinct.
+12. NOT_REACHED is distinct and evidenced.
+13. Scientific failure semantics are implemented.
+14. Generation is implemented.
+15. Required F2 integration is complete.
+16. Skeleton-only evidentiary rules are preserved.
+17. Structural aggregation is implemented.
+18. Minimality is implemented.
+19. NONE/NOT_IDENTIFIABLE remain distinct.
+20. Scientific handler registry is complete.
+21. Every scientific handler is constructible.
+22. Evidence-only reconstruction succeeds.
+23. Verifier remains independent of fitting/generation.
+24. Development controls are properly separated.
+25. Threshold derivation/freeze is complete where required.
+26. Blind synthetic controls are constructed.
+27. Blind IDs do not expose ground truth.
+28. Escrow is independently frozen.
+29. Natural-language controls are prepared.
+30. Complete immutable corpus/input provenance exists.
+31. Scientific manifest is deterministic.
+32. Scientific manifest is DAG-valid.
+33. JobIDs are deterministic.
+34. Operational topology does not enter JobIDs.
+35. Manifest expected counts are independently checked.
+36. Open scientific end-to-end fixture succeeds.
+37. Distributed deterministic fixture succeeds.
+38. Retry deterministic fixture succeeds.
+39. Scientific failure fixtures succeed.
+40. PM6-v2 saturation fixture succeeds.
+41. Evidence mutation tests fail closed.
+42. Legacy nondeterminism regressions are covered.
+43. Representative performance is measured.
+44. Production Linux/amd64 executable is built.
+45. Production executable SHA-256 is frozen.
+46. Deployment contract references the new executable boundary.
+47. Current PKI certificate closure is recorded.
+48. Authoritative scientific run manifest is generated.
+49. Run-manifest SHA-256 is frozen.
+50. Immutable input manifest is complete.
+51. Preseed manifest is complete.
+52. Operator handoff is complete.
+53. TASK86C_V2_RUNBOOK.md contains concrete execution parameters.
+54. No blind bulk scientific run has been performed.
+55. No blind ground truth has been used for tuning.
+56. No Voynich G1-v2 computation has been performed.
+57. Results manifest transitively covers the freeze.
+58. All required verdicts are issued.
+59. Exactly one terminal marker is issued.
+
+
+======================================================================
+82. FINAL HANDOFF
+======================================================================
+
+A successful task must end by printing a concise operator block:
+
+    TASK86C_V2_SCIENTIFIC_EXECUTION_READY = SUPPORTED
+
+    PRODUCTION_EXECUTABLE:
+        <path>
+
+    PRODUCTION_EXECUTABLE_SHA256:
+        <sha256>
+
+    FROZEN_RUN_MANIFEST:
+        <path>
+
+    FROZEN_RUN_MANIFEST_SHA256:
+        <sha256>
+
+    INPUT_MANIFEST:
+        <path>
+
+    PRESEED_MANIFEST:
+        <path>
+
+    BLIND_ESCROW_SHA256:
+        <sha256>
+
+    EXPECTED_JOB_COUNT:
+        <count>
+
+    EVIDENCE_STORE_MINIMUM:
+        <bytes>
+
+    COORDINATOR_COMMAND:
+        <complete executable command>
+
+    CLOSURE_VERIFICATION_COMMAND:
+        <complete command>
+
+    TERMINAL_MARKER:
+        TASK86C_V2_SCIENTIFIC_EXECUTION_READY_FROZEN
+
+No unresolved placeholder is permitted in this block.
+
+
+======================================================================
+83. SCIENTIFIC INTERPRETATION BOUNDARY
+======================================================================
+
+Successful completion of this task means only:
+
+    G1-v2 is executable as frozen;
+    Task86C-v2 inputs are frozen;
+    the blind experiment can be run reproducibly.
+
+It does NOT mean:
+
+    M0–M5 recovery works;
+    natural language is identifiable;
+    G1-v2 is scientifically validated;
+    any model describes Voynich;
+    Task86V is ready.
+
+Those conclusions may be reached only after:
+
+    Task86C-v2-run
+        →
+    immutable evidence freeze
+        →
+    Task86C-v2-analysis.

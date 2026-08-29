@@ -1,0 +1,490 @@
+Я бы разбил Phase III на три этапа: две независимые исследовательские линии, затем их объединение. При этом первые задачи должны заниматься не построением «лучшей грамматики», а сначала заморозить критерии, по которым мы вообще признаем грамматику достаточной. Это продолжает методологию Phase II и защищает от подгонки.
+
+Предлагаемая схема:
+
+```text
+                         PHASE III
+                            │
+              ┌─────────────┴─────────────┐
+              │                           │
+           LINE A                      LINE B
+     Grammar / information       Synthetic manuscript
+              │                           │
+              ▼                           ▼
+          Task85                      Task90
+   Grammar experiment           Synthetic manuscript
+   design + baselines           representation/design
+              │                           │
+              ▼                           ▼
+          Task86                      Task91
+   Token-formation              Manuscript assembler +
+   grammar discovery            structural provenance
+              │                           │
+              ▼                           ▼
+          Task87                      Task92
+   Context/sequence             Manuscript-scale
+   grammar                      control generation
+              │                           │
+              ▼                           ▼
+          Task88                      Task93
+   Hierarchical/structural      Mechanism → manuscript
+   grammar + minimality         extensions
+              │                           │
+              ▼                           ▼
+          Task89                      Task94
+   Information residual +       Multi-family F2
+   message-free generators      coverage validation
+              │                           │
+              ▼                           ▼
+      GRAMMAR LINE FROZEN       MANUSCRIPT LINE FROZEN
+              │                           │
+              └─────────────┬─────────────┘
+                            ▼
+                         Task95
+                Phase III model-space freeze
+                            │
+                            ▼
+                         Task96
+                Blind multi-family generation
+                            │
+                            ▼
+                         Task97
+                Confirmatory F2 comparison
+                            │
+                            ▼
+                         Task98
+                Grammar / mechanism /
+                information identifiability
+                            │
+                            ▼
+                 PHASE III VERDICT
+```
+
+### Line A — грамматика и информационный остаток
+
+**Task85 — Voynich Grammar Experimental Design and Baselines**
+
+Это фундаментальная задача. До построения грамматики замораживаем experimental contract.
+
+Нужно определить:
+
+* единицы моделирования;
+* train/validation/test partition;
+* обязательно hierarchical holdout — line/page/folio, а не только random tokens;
+* допустимые классы грамматик;
+* меры сложности;
+* критерий минимальности;
+* predictive metrics;
+* какие F2 families доступны для validation;
+* natural-language и synthetic controls;
+* критерий `GRAMMAR_SUFFICIENT`;
+* критерий `GRAMMAR_MINIMAL`;
+* residual estimator;
+* защиту от target leakage.
+
+Результат:
+
+`GRAMMAR_EXPERIMENT_CONTRACT_FROZEN`
+
+Это особенно важно: иначе после Task86 можно бесконечно усложнять грамматику, пока она не начнёт описывать МВ почти буквально.
+
+**Task86 — Token Formation Grammar**
+
+Первый реальный генеративный эксперимент:
+
+[
+G_1:\quad components\rightarrow token.
+]
+
+Исследовать, насколько компактной системой можно воспроизвести:
+
+* vocabulary;
+* token frequency spectrum;
+* допустимые/недопустимые формы;
+* edit graph;
+* lexical paradigms;
+* token length;
+* internal positional structure;
+* rare/unseen forms.
+
+Сравнить несколько frozen model classes.
+
+Ключевой вопрос:
+
+> Насколько сложна минимальная система правил, необходимая для образования Voynich tokens?
+
+Результат:
+
+`TOKEN_GRAMMAR_FROZEN`.
+
+**Task87 — Contextual Sequence Grammar**
+
+Добавляем:
+
+[
+G_2:\quad context\rightarrow token.
+]
+
+Исследуем:
+
+* соседние токены;
+* transition probabilities;
+* repetition;
+* conditional token forms;
+* local regimes;
+* начало/конец строки;
+* зависимость формы токена от контекста.
+
+Главное — измерить incremental gain:
+
+[
+G_1\rightarrow G_2.
+]
+
+Если контекст почти ничего не добавляет, это само по себе важный результат.
+
+Результат:
+
+`CONTEXT_GRAMMAR_FROZEN`.
+
+**Task88 — Structural Grammar and Minimality**
+
+Добавляем третий уровень:
+
+[
+G_3:\quad structural\ state\rightarrow distribution.
+]
+
+Line position, locus, page/folio, section и прочие состояния — только там, где это статистически оправдано.
+
+После этого сравниваем:
+
+[
+G_1,\quad G_2,\quad G_3
+]
+
+по held-out prediction и complexity penalty.
+
+Здесь впервые определяем:
+
+[
+G_{\min}.
+]
+
+То есть не наиболее точную, а **минимальную достаточную грамматику Voynichese**.
+
+Результаты:
+
+`VOYNICH_GRAMMAR_SPEC_FROZEN`
+
+`GRAMMAR_MINIMALITY_FROZEN`.
+
+**Task89 — Information Residual and Message-Free Generation**
+
+Это, на мой взгляд, центральный эксперимент Line A.
+
+Берём (G_{\min}) и исследуем:
+
+[
+R=V\mid G_{\min}.
+]
+
+Измеряем:
+
+* residual entropy;
+* residual dependencies;
+* residual structure по line/page/folio;
+* residual predictability;
+* cross-transcription stability.
+
+Затем используем ту же grammar **без сообщения**:
+
+[
+G_{\min}+RNG\rightarrow M_i
+]
+
+и генерируем много независимых корпусов.
+
+Проверяем:
+
+[
+F(M_1),F(M_2),...,F(M_n)
+]
+
+против VM.
+
+Получаем два отдельных ответа:
+
+`RESIDUAL_INFORMATION_STATUS`
+
+и
+
+`MESSAGE_FREE_REPRODUCTION_STATUS`.
+
+После этого Line A замораживается.
+
+---
+
+### Line B — от token stream к manuscript
+
+Эта линия непосредственно атакует главный результат Task83r: 3/13 CORE. 
+
+**Task90 — Synthetic Manuscript Representation and Metric Applicability Design**
+
+Сначала определить объект:
+
+[
+SyntheticManuscript.
+]
+
+Он должен поддерживать token → line → page → folio → recto/verso → section/locus и, где необходимо, координаты.
+
+Особенно важна provenance каждого structural property:
+
+`MECHANISM_GENERATED`
+
+`SOURCE_INHERITED`
+
+`ASSEMBLER_GENERATED`
+
+`UNAVAILABLE`.
+
+После этого составить applicability matrix для всех 13 CORE.
+
+Результат:
+
+`SYNTHETIC_MANUSCRIPT_CONTRACT_FROZEN`.
+
+**Task91 — Structural Assembler and Provenance Validation**
+
+Реализовать generic assembler.
+
+Но здесь эксперимент должен показать, какие F2 metrics становятся доступными просто благодаря formatting и какие действительно требуют механизма.
+
+Например:
+
+[
+tokenstream\rightarrow lines
+]
+
+не должно автоматически считаться воспроизведением line structure.
+
+Результат — валидированный infrastructure layer, а не hypothesis result.
+
+**Task92 — Manuscript-Scale Controls**
+
+До Fontana строим controls:
+
+* natural text;
+* procedural text;
+* simple null;
+* shuffled/null variants.
+
+Превращаем их в manuscript objects по правилам, не настроенным на VM.
+
+Это даст ответ на очень важный вопрос:
+
+> Какие manuscript-level свойства F2 возникают просто из организации текста на страницах?
+
+И одновременно проверит сам measurement machinery.
+
+**Task93 — Mechanism-to-Manuscript Extension**
+
+Теперь расширяем frozen Phase II mechanisms:
+
+* Fontana;
+* shorthand;
+* extraction;
+
+до manuscript-scale.
+
+Каждое расширение маркируется:
+
+`SOURCE_ATTESTED`
+
+`SOURCE_CONSTRAINED`
+
+`GENERALIZED`.
+
+Особенно важно получить то, чего не было в Phase II:
+
+[
+input\rightarrow mechanism\rightarrow manuscript
+]
+
+и полноценные trajectories.
+
+Никакого сравнения с Voynich на этом этапе.
+
+**Task94 — Multi-Family F2 Coverage Validation**
+
+Считаем F2 для всех synthetic manuscripts, ещё не выполняя confirmatory ranking.
+
+Главный результат:
+
+[
+3/13\rightarrow ?/13.
+]
+
+Но важнее количество независимых families.
+
+Например, результат `9/13`, если семь метрик являются вариациями одной edit-family, недостаточен.
+
+Устанавливаем:
+
+`MANUSCRIPT_MULTI_FAMILY_PORTFOLIO_FROZEN`.
+
+---
+
+### Объединение линий
+
+Только теперь Line A и Line B получают право встретиться.
+
+**Task95 — Phase III Model-Space and Comparison Freeze**
+
+Объединяем:
+
+[
+H_N = natural
+]
+
+[
+H_F = external\ memory
+]
+
+[
+H_S = shorthand
+]
+
+[
+H_A = extraction
+]
+
+[
+H_G = formal\ grammar
+]
+
+[
+H_M = message!-!free\ grammar.
+]
+
+Здесь замораживаем:
+
+* hypothesis space;
+* metrics;
+* families;
+* weights;
+* nulls;
+* distances;
+* trajectories;
+* coverage gates;
+* identifiability criteria;
+* evidence levels;
+* final decision rules.
+
+После этого никаких изменений моделей.
+
+`PHASE3_COMPARISON_CONTRACT_FROZEN`.
+
+**Task96 — Blind Multi-Seed / Multi-Corpus Manuscript Generation**
+
+Генерируем окончательные portfolios.
+
+Для каждого применимого класса:
+
+[
+model\times corpus\times seed\times scale
+\rightarrow SyntheticManuscript.
+]
+
+Voynich target закрыт firewall.
+
+Особенно важен (H_M): много независимых message-free документов должны генерироваться без отбора «удачных» seeds.
+
+Результат:
+
+`PHASE3_BLIND_PORTFOLIO_FROZEN`.
+
+**Task97 — Confirmatory Multi-Family Comparison**
+
+Теперь открываем deterministic Voynich fingerprint и выполняем аналог Task83r, но уже в расширенном пространстве.
+
+Главное отличие:
+
+[
+F2_{\text{3 CORE / 1 family}}
+]
+
+должно смениться на честное multi-family intersection.
+
+Сравниваем:
+
+* endpoint;
+* trajectory;
+* family residuals;
+* scale behavior;
+* transcription robustness;
+* null separation;
+* Pareto structure.
+
+Результат ещё не должен автоматически отвечать «что такое МВ».
+
+**Task98 — Generative and Information Identifiability Verdict**
+
+Финальная интерпретационная задача.
+
+Она объединяет результаты Task89 и Task97 и отвечает на четыре разных вопроса:
+
+[
+\boxed{\text{GRAMMAR_IDENTIFIABILITY}}
+]
+
+Можно ли выделить конкретный класс формальной грамматики?
+
+[
+\boxed{\text{INFORMATION_RESIDUAL}}
+]
+
+Остаётся ли после грамматики существенная структурированная информация?
+
+[
+\boxed{\text{MESSAGE_FREE_COMPATIBILITY}}
+]
+
+Может ли генератор без сообщения стабильно воспроизводить VM?
+
+[
+\boxed{\text{MECHANISM_IDENTIFICATION_FROM_F2_V3}}
+]
+
+Стали ли natural / external-memory / shorthand / extraction / grammar / message-free classes различимыми?
+
+И только здесь выдаётся финальный Phase III verdict.
+
+---
+
+Есть один момент, который я бы изменил относительно простой последовательности `Task85 → ... → Task98`: **Line A и Line B действительно стоит выполнять параллельно** после Task85/Task90. Они концептуально независимы и могут взаимно испортить эксперимент, если одна линия начнёт адаптироваться под результаты другой.
+
+В результате дорожная карта получается:
+
+| Task | Назначение                           | Freeze/result            |
+| ---- | ------------------------------------ | ------------------------ |
+| 85   | Grammar design                       | Grammar contract         |
+| 86   | Token grammar                        | G1                       |
+| 87   | Context grammar                      | G2                       |
+| 88   | Structural grammar + minimality      | Gmin                     |
+| 89   | Residual + message-free generation   | Line A frozen            |
+| 90   | Synthetic manuscript design          | Manuscript contract      |
+| 91   | Assembler/provenance                 | Infrastructure validated |
+| 92   | Manuscript controls                  | Controls frozen          |
+| 93   | Mechanism→manuscript                 | Mechanisms frozen        |
+| 94   | Multi-family F2 coverage             | Line B frozen            |
+| 95   | Unified hypothesis/comparison design | Comparison frozen        |
+| 96   | Blind generation                     | Portfolio frozen         |
+| 97   | Confirmatory comparison              | Experimental result      |
+| 98   | Identifiability/information verdict  | **Phase III verdict**    |
+
+И я бы добавил затем **Task99 — Phase III Scientific Report**, аналогичный Task71/Task84, но только после полного закрытия эксперимента.
+
+Так Phase III не становится просто «ещё одной попыткой угадать, что такое МВ». Она последовательно отвечает на более фундаментальные вопросы: **какие правила необходимы для его генерации, сколько независимой информации остаётся сверх этих правил, может ли тот же результат возникать вообще без сообщения и, наконец, становится ли происхождение документа статистически идентифицируемым при существенно более полном fingerprint.** Это непосредственно продолжает зафиксированный Task84 вывод о нынешней неидентифицируемости из-за узкого пересечения моделей с Fingerprint V2. 
+

@@ -1,0 +1,4 @@
+finding	fixture	contract_version	schema_result	scientific_result
+H-SC01-A	frozen positive generation evidence	G1_V2_EXECUTABLE_CONTRACT_V1_1	ACCEPT	wrong current scientific version
+H-SC01-B	same fixture with only contract_version changed	G1_V2_EXECUTABLE_CONTRACT_V1_2	REJECT	required current version cannot be published
+H-SC01-SCOPE	all frozen evidence schemas	V1_2	REJECT	15/15 schemas have V1_1 const only

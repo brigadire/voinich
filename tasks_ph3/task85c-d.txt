@@ -1,0 +1,2030 @@
+Task85c-d — G1-v2 V1.1 JobID Scientific Identity
+and Golden Vector Reconciliation
+
+
+PURPOSE
+
+Resolve the mandatory STOP discovered by:
+
+    Task86C-v2-scientific-impl-R2
+
+where the frozen G1-v2 V1.1 JobID contract and the frozen JobID
+golden vector produce scientifically different JobIDs.
+
+Known blocking findings:
+
+    R2-G01
+        golden JobID payload uses contract version V1
+        instead of V1.1.
+
+    R2-G02
+        golden JobID payload uses "dependencies"
+        while the frozen DAG registry uses
+        "dependency_job_ids".
+
+Observed consequence:
+
+    three distinct JobIDs are reproducible for what is intended
+    to be one scientific job identity.
+
+Task85c-d must determine and freeze ONE authoritative JobID
+scientific identity representation, reconcile every transitive
+artifact that depends on it, and issue a controlled patch-level
+contract refreeze if and only if this can be done without changing
+the scientific design.
+
+This task is:
+
+    CONTRACT DEFECT RESOLUTION
+    JOBID IDENTITY RECONCILIATION
+    GOLDEN VECTOR RECONCILIATION
+    TRANSITIVE IDENTITY AUDIT
+    CONTROLLED PATCH REFREEZE
+
+It is NOT:
+
+    scientific redesign;
+    model redesign;
+    RNG redesign;
+    DAG redesign;
+    status/reachability redesign;
+    evidence semantics redesign;
+    production implementation;
+    threshold computation;
+    blind-control construction;
+    production execution;
+    Voynich evaluation.
+
+
+======================================================================
+1. TRIGGERING FAILURE
+======================================================================
+
+The triggering R2 result is:
+
+    CONTRACT_VERSION =
+        G1_V2_EXECUTABLE_CONTRACT_V1_1
+
+    TASK86C_V2_SCIENTIFIC_EXECUTION_READY =
+        NOT_SUPPORTED
+
+    FAILURE_CLASS =
+        GOLDEN_CONTRACT_CONTRADICTION
+
+    BLOCKING_FINDINGS =
+        R2-G01,R2-G02
+
+    PRODUCTION_RUN_AUTHORIZED =
+        NO
+
+    TERMINAL_MARKER =
+        TASK86C_V2_V1_1_CONTRACT_DEFECT.
+
+Preserve the complete R2 failure closure as immutable provenance.
+
+
+======================================================================
+2. KNOWN DEFECT SET
+======================================================================
+
+The initial permitted defect set is exactly:
+
+    R2-G01
+    R2-G02.
+
+R2-G01:
+
+    JobID golden fixture uses an obsolete/superseded
+    contract-version value.
+
+R2-G02:
+
+    JobID golden fixture and DAG registry disagree on the
+    dependency field name/representation:
+
+        dependencies
+
+    versus:
+
+        dependency_job_ids.
+
+Do not assume these descriptions already establish which artifact
+is correct.
+
+
+======================================================================
+3. CENTRAL QUESTION
+======================================================================
+
+Task85c-d must answer:
+
+    What exact canonical payload constitutes the frozen
+    scientific identity of a G1-v2 V1.1 job for JobID derivation?
+
+The answer must uniquely determine:
+
+    field names;
+    field presence;
+    field absence;
+    field values;
+    contract-version binding;
+    dependency representation;
+    dependency ordering;
+    canonical serialization;
+    hash domain separation;
+    digest truncation;
+    final textual JobID.
+
+
+======================================================================
+4. REQUIRED UNIQUE RESULT
+======================================================================
+
+For every planned scientific job there must be exactly one valid:
+
+    scientific_identity_payload
+        →
+    canonical bytes
+        →
+    SHA-256 digest
+        →
+    JobID.
+
+Require:
+
+    VALID_JOBID_IDENTITY_VARIANTS_PER_JOB = 1.
+
+If more than one scientifically valid identity remains:
+
+    STOP JOBID_IDENTITY_AMBIGUOUS.
+
+
+======================================================================
+5. AUTHORITATIVE PARENT
+======================================================================
+
+Primary parent:
+
+    G1_V2_EXECUTABLE_CONTRACT_V1_1
+
+SHA-256:
+
+    5c3cd272c1dbae9bfe1d7a100155faf102e86d34660da239e1cb31704ad470b0
+
+Task85c-c artifact root:
+
+    dc27660d3e03a06f91aaa1c3aa6c48226328457746c9dc819e7c0a355ce8f09c
+
+Evidence schema root:
+
+    4744ca82532cd47a0d02bb680796b26a11ceca57d6229f0b312df69a103f784b
+
+Golden suite root:
+
+    967e63f9c3ba66d99cbff4da83c819d705f1f14c4ace923dbcd1cb8e7dfd1ff8.
+
+
+======================================================================
+6. STATUS/REACHABILITY PARENT
+======================================================================
+
+Preserve unchanged:
+
+    G1_V2_STATUS_REACHABILITY_CONTRACT_V2
+
+SHA-256:
+
+    fc1ca07d8123ed5d44bc24ecba98fca54d5b05781ecbaba820d44079319038b9.
+
+Task85c-d is not authorized to alter its semantics.
+
+
+======================================================================
+7. R2 FAILURE IDENTITY
+======================================================================
+
+Verify the immutable R2 failure manifest, defect report and
+reproducer before performing any repair.
+
+Require:
+
+    R2_FAILURE_CLOSURE_IDENTITY =
+        SUPPORTED.
+
+The reproducer must independently reproduce:
+
+    R2-G01
+    R2-G02
+
+and the distinct JobIDs observed by R2.
+
+Failure to reproduce:
+
+    STOP R2_FAILURE_NOT_REPRODUCIBLE.
+
+
+======================================================================
+8. NO GOLDEN-FIRST REPAIR
+======================================================================
+
+Do NOT begin by changing the golden expected JobID.
+
+First determine normative JobID semantics from the complete frozen
+V1.1 artifact closure.
+
+Only after one authoritative identity has been established may
+golden vectors be regenerated.
+
+
+======================================================================
+9. NO CONTRACT-FIRST ASSUMPTION
+======================================================================
+
+Likewise, do not assume every V1.1 prose/registry artifact is
+necessarily correct merely because it is labelled normative.
+
+The defect demonstrates a contradiction inside the frozen closure.
+
+Audit all relevant normative artifacts according to their frozen
+precedence rules.
+
+
+======================================================================
+10. MACHINE PRECEDENCE
+======================================================================
+
+Apply the exact normative precedence frozen by Task85c-c.
+
+Record every artifact participating in the JobID definition and its
+precedence.
+
+Create:
+
+    G1V2_JOBID_NORMATIVE_SOURCE_AUDIT.tsv.
+
+At minimum record:
+
+    artifact
+    SHA-256
+    normative/non-normative
+    precedence
+    JobID-relevant clause
+    payload field definition
+    version semantics
+    dependency semantics
+    contradiction
+    disposition.
+
+
+======================================================================
+11. COMPLETE JOBID SOURCE AUDIT
+======================================================================
+
+Search the complete V1.1 closure for all definitions or examples of:
+
+    JobID
+    job_id
+    G1V2-JOB
+    scientific identity
+    scientific_identity
+    dependency
+    dependencies
+    dependency_job_ids
+    contract_version
+    G1_V2_EXECUTABLE_CONTRACT_V1
+    G1_V2_EXECUTABLE_CONTRACT_V1_1.
+
+Do not restrict the audit to the already failing golden vector.
+
+
+======================================================================
+12. HISTORICAL AUDIT
+======================================================================
+
+Inspect historical Task85c JobID artifacts only to determine:
+
+    provenance;
+    intended migration;
+    whether V1.1 accidentally retained a V1 fixture.
+
+Historical V1 behavior is NOT automatically normative for V1.1.
+
+
+======================================================================
+13. R2-G01 RESOLUTION
+======================================================================
+
+Determine whether the JobID scientific identity in V1.1 must bind:
+
+    G1_V2_EXECUTABLE_CONTRACT_V1_1
+
+or whether V1.1 intentionally preserves a stable earlier identity
+namespace.
+
+This must be decided from frozen normative semantics, not from
+implementation convenience.
+
+
+======================================================================
+14. VERSION-BINDING INVARIANT
+======================================================================
+
+The final repair must explicitly state whether:
+
+    contract_version
+
+is part of the JobID scientific identity.
+
+If YES:
+
+    freeze the exact value and encoding.
+
+If NO:
+
+    remove it from the JobID payload contract and explain why
+    existing normative V1.1 artifacts implying otherwise were
+    defective.
+
+Do not leave version binding implicit.
+
+
+======================================================================
+15. PATCH VERSION RECURSION
+======================================================================
+
+Prevent recursive identity instability.
+
+If Task85c-d issues:
+
+    G1_V2_EXECUTABLE_CONTRACT_V1_1_1
+
+the JobID definition MUST NOT create a situation where changing:
+
+    V1.1 → V1.1.1
+
+necessarily changes every JobID merely because the patch contract
+name itself is embedded in the identity, unless that behavior is
+explicitly required by the resolved scientific identity semantics.
+
+This question must be explicitly tested and frozen.
+
+
+======================================================================
+16. SCIENTIFIC IDENTITY VS CONTRACT IDENTITY
+======================================================================
+
+Explicitly distinguish:
+
+    scientific job identity
+
+from:
+
+    contract artifact identity.
+
+A contract patch that only repairs representation/golden closure
+must not silently create a new scientific experiment unless the
+normative JobID semantics actually require that consequence.
+
+
+======================================================================
+17. R2-G02 RESOLUTION
+======================================================================
+
+Determine the unique normative dependency representation.
+
+Candidates known from the defect include:
+
+    dependencies
+    dependency_job_ids.
+
+Audit:
+
+    DAG registry;
+    JobID payload contract;
+    schemas;
+    golden vectors;
+    manifest format;
+    evidence dependency fields;
+    reference validators.
+
+
+======================================================================
+18. FIELD-NAME SEMANTICS
+======================================================================
+
+Determine whether:
+
+    dependencies
+
+and:
+
+    dependency_job_ids
+
+are:
+
+    aliases;
+    distinct concepts;
+    historical/new names;
+    one normative and one erroneous.
+
+Aliases are forbidden in the final JobID identity unless a single
+canonical representation is explicitly frozen.
+
+
+======================================================================
+19. DEPENDENCY CONTENT
+======================================================================
+
+Freeze whether the JobID identity contains:
+
+    direct dependency JobIDs;
+    scientific dependency identities;
+    dependency descriptors;
+    no dependency field.
+
+Do not infer this solely from the field name.
+
+
+======================================================================
+20. DIRECT VS TRANSITIVE DEPENDENCIES
+======================================================================
+
+If dependencies participate in JobID identity, explicitly freeze
+whether they mean:
+
+    direct DAG parents only
+
+or:
+
+    transitive closure.
+
+Only one representation may be normative.
+
+
+======================================================================
+21. DEPENDENCY ORDER
+======================================================================
+
+Freeze dependency ordering exactly.
+
+Possible ordering must be derived from the contract, for example:
+
+    canonical scientific identity order;
+    UTF-8 bytewise JobID order;
+    DAG registry order.
+
+Do not allow scheduler/discovery order.
+
+
+======================================================================
+22. EMPTY DEPENDENCIES
+======================================================================
+
+Freeze the representation for jobs with no dependencies:
+
+    field absent
+
+versus:
+
+    field present as [].
+
+These MUST NOT both be valid scientific identities for the same job.
+
+
+======================================================================
+23. DUPLICATE DEPENDENCIES
+======================================================================
+
+Freeze whether duplicate dependency IDs are structurally impossible
+or explicitly rejected.
+
+The same scientific DAG must not acquire another JobID because a
+dependency is accidentally repeated.
+
+
+======================================================================
+24. SELF/CYCLIC DEPENDENCIES
+======================================================================
+
+Ensure the JobID payload contract cannot legitimize:
+
+    self-dependency;
+    cyclic dependency;
+    dependency not present in the frozen DAG.
+
+This is primarily DAG validation, but JobID fixtures must not encode
+invalid dependency structures.
+
+
+======================================================================
+25. JOBID FORMULA
+======================================================================
+
+Preserve unless proven contradictory:
+
+    "j-" +
+    first 40 lowercase hexadecimal characters of
+
+    SHA256(
+        ASCII "G1V2-JOB" ||
+        NUL ||
+        G1V2-CJ-1(scientific_identity_payload)
+    ).
+
+Any change to:
+
+    domain separator;
+    NUL;
+    SHA-256;
+    truncation length;
+    lowercase hex;
+    prefix
+
+is outside the initial R2-G01/G02 repair scope.
+
+
+======================================================================
+26. CANONICALIZATION
+======================================================================
+
+Preserve:
+
+    G1V2-CJ-1
+
+unless the audit demonstrates a direct contradiction necessary to
+resolve R2-G01/R2-G02.
+
+Expected result:
+
+    CANONICALIZATION_UNCHANGED = SUPPORTED.
+
+
+======================================================================
+27. SCIENTIFIC PAYLOAD REGISTRY
+======================================================================
+
+Create:
+
+    G1V2_JOBID_SCIENTIFIC_IDENTITY_PAYLOAD_V1_1_1.json
+
+and explanatory:
+
+    G1V2_JOBID_SCIENTIFIC_IDENTITY_PAYLOAD_V1_1_1.md.
+
+The machine-readable artifact must uniquely specify the JobID input
+payload.
+
+
+======================================================================
+28. FIELD INVENTORY
+======================================================================
+
+Create:
+
+    G1V2_JOBID_PAYLOAD_FIELD_REGISTRY.tsv.
+
+For every possible field record:
+
+    field_name
+    required
+    forbidden
+    type
+    canonical representation
+    ordering
+    semantic source
+    scientific_identity_role
+    notes.
+
+No undeclared field may enter JobID hashing.
+
+
+======================================================================
+29. PAYLOAD CLOSURE
+======================================================================
+
+The JobID payload must reject unknown fields.
+
+Adding irrelevant metadata such as:
+
+    hostname;
+    worker;
+    lease;
+    retry;
+    timestamp;
+    execution order;
+    coordinator;
+    filesystem path
+
+must not produce another valid scientific identity.
+
+
+======================================================================
+30. OPERATIONAL INDEPENDENCE
+======================================================================
+
+Preserve:
+
+    JOBID_OPERATIONAL_INDEPENDENCE = SUPPORTED.
+
+JobID must be invariant under:
+
+    worker assignment;
+    coordinator;
+    host;
+    retry count;
+    lease ID;
+    execution time;
+    execution order;
+    concurrency;
+    evidence-store path.
+
+
+======================================================================
+31. OUTCOME INDEPENDENCE
+======================================================================
+
+JobID must be determined before scientific execution.
+
+It must not depend on:
+
+    PASS/FAIL;
+    procedure failure;
+    NOT_REACHED;
+    generated output;
+    metric result;
+    aggregation verdict.
+
+Require:
+
+    JOBID_OUTCOME_INDEPENDENCE = SUPPORTED.
+
+
+======================================================================
+32. DAG IDENTITY
+======================================================================
+
+The repair must preserve the frozen planned DAG cardinality:
+
+    JOBS = 1,321,152
+    DEPENDENCY_EDGES = 2,617,152.
+
+No job or edge may be added/removed to resolve JobID representation.
+
+
+======================================================================
+33. JOBID SET CONSEQUENCE
+======================================================================
+
+Explicitly calculate whether the resolved representation changes
+JobIDs relative to:
+
+    V1 historical identities;
+    V1.1 golden identities;
+    V1.1 DAG-registry-derived identities.
+
+Do not conceal a global JobID migration as a fixture correction.
+
+
+======================================================================
+34. MIGRATION CLASSIFICATION
+======================================================================
+
+Classify the repair as exactly one:
+
+    GOLDEN_ONLY_CORRECTION
+
+    REPRESENTATION_CORRECTION_WITH_STABLE_SCIENTIFIC_IDENTITY
+
+    JOBID_IDENTITY_CORRECTION_WITH_GLOBAL_ID_MIGRATION
+
+    SCIENTIFIC_IDENTITY_CHANGE_REQUIRED.
+
+Only the first three may potentially continue within Task85c-d.
+
+The fourth requires:
+
+    STOP SCIENTIFIC_IDENTITY_CHANGE_REQUIRED.
+
+
+======================================================================
+35. SCIENTIFIC CHANGE TEST
+======================================================================
+
+A JobID textual change alone is not automatically a scientific
+design change.
+
+Determine whether the mapping still identifies exactly the same:
+
+    candidate;
+    control;
+    stage;
+    parameters;
+    seed namespace/counter;
+    dependencies;
+    scientific inputs.
+
+If those remain invariant and only canonical representation is
+repaired, classify accordingly.
+
+
+======================================================================
+36. BIJECTION REQUIREMENT
+======================================================================
+
+Prove a bijection between:
+
+    frozen planned scientific jobs
+
+and:
+
+    resolved JobIDs.
+
+Require:
+
+    planned jobs = 1,321,152
+    unique JobIDs = 1,321,152
+    collisions = 0
+    unmapped jobs = 0
+    multiply mapped jobs = 0.
+
+
+======================================================================
+37. EDGE RECONSTRUCTION
+======================================================================
+
+Using resolved JobIDs, reconstruct all:
+
+    2,617,152
+
+dependency edges.
+
+Require:
+
+    dangling dependency IDs = 0
+    self edges = 0
+    unexpected edges = 0
+    missing edges = 0.
+
+
+======================================================================
+38. INDEPENDENT IMPLEMENTATIONS
+======================================================================
+
+Implement two independent JobID reference calculators.
+
+They must not share the final payload-construction function.
+
+For the complete DAG require:
+
+    implementation_A JobIDs
+        ==
+    implementation_B JobIDs.
+
+Any disagreement:
+
+    STOP JOBID_IDENTITY_AMBIGUOUS.
+
+
+======================================================================
+39. COMPLETE DAG JOBID AUDIT
+======================================================================
+
+Do not validate only several golden examples.
+
+Generate JobIDs independently for all:
+
+    1,321,152 planned jobs.
+
+Compare:
+
+    count;
+    uniqueness;
+    payload closure;
+    dependency closure;
+    root;
+    deterministic ordering.
+
+
+======================================================================
+40. JOBID SET ROOT
+======================================================================
+
+Freeze:
+
+    G1V2_JOBID_SET_ROOT_SHA256
+
+over the canonical ordered set of all 1,321,152 resolved JobIDs.
+
+
+======================================================================
+41. DAG EDGE ROOT
+======================================================================
+
+Freeze:
+
+    G1V2_JOBID_DAG_EDGE_ROOT_SHA256
+
+over the canonical ordered representation of all 2,617,152 resolved
+dependency edges.
+
+
+======================================================================
+42. GOLDEN RECONCILIATION
+======================================================================
+
+Only after sections 10–41 pass may JobID golden vectors be repaired.
+
+Generate expected JobIDs from the independently verified normative
+payload contract.
+
+Do not hand-edit expected hash strings.
+
+
+======================================================================
+43. POSITIVE JOBID GOLDENS
+======================================================================
+
+Provide positive vectors covering at minimum:
+
+    dependency-free FIT job;
+    PREDICTIVE job;
+    GENERATION job;
+    F2_METRIC job;
+    COMPLEXITY job;
+    CANDIDATE_AGGREGATION job;
+    CONTROL_AGGREGATION job;
+    M3 route-specific identities;
+    representative blind-safe identity;
+    representative natural-control identity.
+
+Use synthetic/non-secret identities where appropriate.
+
+
+======================================================================
+44. NEGATIVE JOBID GOLDENS
+======================================================================
+
+Provide negative vectors for:
+
+    obsolete contract version;
+    wrong dependency field name;
+    both dependency fields present;
+    missing required dependency field;
+    wrong dependency ordering;
+    duplicate dependency;
+    extra operational field;
+    retry-dependent field;
+    outcome-dependent field;
+    unknown scientific field;
+    noncanonical representation.
+
+
+======================================================================
+45. R2-G01 PERMANENT REGRESSION
+======================================================================
+
+Add an explicit regression fixture that reproduces the obsolete V1
+contract-version payload.
+
+It must either:
+
+    REJECT as invalid payload
+
+or:
+
+    canonicalize to the one frozen representation
+
+according to the resolved contract.
+
+It must never remain a second valid JobID identity.
+
+
+======================================================================
+46. R2-G02 PERMANENT REGRESSION
+======================================================================
+
+Add explicit fixtures for:
+
+    dependencies
+    dependency_job_ids.
+
+Exactly one canonical scientific representation may survive unless
+the resolved contract explicitly proves they are semantically
+different fields.
+
+For the same job they must never yield two valid JobIDs.
+
+
+======================================================================
+47. THREE-ID REGRESSION
+======================================================================
+
+Preserve the exact R2 reproducer demonstrating the three observed
+JobIDs:
+
+    j-d852...
+    j-f7c...
+    j-186f....
+
+After repair require:
+
+    authoritative valid JobIDs among these/newly derived variants
+        = exactly 1
+
+for the reproduced scientific job.
+
+
+======================================================================
+48. TRANSITIVE GOLDEN AUDIT
+======================================================================
+
+Audit every V1.1 golden vector containing directly or indirectly:
+
+    job_id;
+    dependency JobID;
+    DAG edge;
+    evidence dependency;
+    manifest identity;
+    aggregation dependency;
+    content hash over JobID-bearing payload.
+
+Do not assume only the JobID vector changes.
+
+
+======================================================================
+49. TRANSITIVE FIXTURE REGENERATION
+======================================================================
+
+If resolved JobIDs change, regenerate every affected derived fixture
+mechanically.
+
+Record:
+
+    old hash
+    new hash
+    reason
+    derivation path.
+
+No unrelated fixture may change.
+
+
+======================================================================
+50. EVIDENCE IMPACT AUDIT
+======================================================================
+
+Audit all 15 V1.1 evidence schemas and fixtures for JobID-bearing
+fields.
+
+Expected scientific evidence semantics remain unchanged.
+
+If JobID repair requires changing status/evidence scientific
+semantics:
+
+    STOP DEFECT_SCOPE_EXPANDED.
+
+
+======================================================================
+51. STATUS/REACHABILITY INVARIANT
+======================================================================
+
+Require byte/hash identity of the frozen V2 status/reachability
+contract.
+
+Expected SHA-256:
+
+    fc1ca07d8123ed5d44bc24ecba98fca54d5b05781ecbaba820d44079319038b9.
+
+No transition may change.
+
+
+======================================================================
+52. EVIDENCE SCHEMA SEMANTICS
+======================================================================
+
+Evidence schemas may require transitive version/hash updates if
+JobID representation is referenced normatively.
+
+Such updates must be classified as:
+
+    TRANSITIVE_JOBID_REPAIR
+
+and must not change:
+
+    allowed statuses;
+    producer legality;
+    payload scientific meaning;
+    failure semantics.
+
+
+======================================================================
+53. SCHEMA ROOT
+======================================================================
+
+If schema bytes necessarily change, compute a new schema root.
+
+If no schema bytes change, preserve:
+
+    4744ca82532cd47a0d02bb680796b26a11ceca57d6229f0b312df69a103f784b.
+
+Do not force a new root merely because the contract patch version
+changes.
+
+
+======================================================================
+54. GOLDEN ROOT
+======================================================================
+
+A new golden root is expected if any JobID golden or dependent
+fixture changes.
+
+Freeze:
+
+    G1V2_GOLDEN_SUITE_V1_1_1_ROOT_SHA256.
+
+
+======================================================================
+55. INHERITED GOLDENS
+======================================================================
+
+All golden vectors unrelated to JobID identity must remain
+byte-identical where their payload does not transitively include a
+JobID.
+
+Unexpected unrelated golden change:
+
+    STOP PATCH_DRIFT.
+
+
+======================================================================
+56. MODEL SPACE INVARIANT
+======================================================================
+
+Require unchanged:
+
+    M0
+    M1
+    M2
+    M3 exact
+    M3 approximate
+    M4
+    M5.
+
+No model implementation/design change is authorized.
+
+
+======================================================================
+57. CANDIDATE INVARIANT
+======================================================================
+
+Expected candidate registry SHA-256 remains:
+
+    96b618ab324db77b8402081075241b275f8925c45cdab058ba741e4beed29b58.
+
+
+======================================================================
+58. RNG INVARIANT
+======================================================================
+
+Expected RNG contract SHA-256 remains:
+
+    e47c5a8c62dd8dee34441e4274c0d49d1a7ce4aab0360aff4751cb08b6394a43.
+
+JobID repair must not alter RNG scientific draws.
+
+
+======================================================================
+59. CONTROL INVARIANT
+======================================================================
+
+Expected control registry SHA-256 remains:
+
+    261138beb57a4fd61f87d4c0d341ca97223dac76014739a3a4664266722312e6.
+
+
+======================================================================
+60. CORPUS INVARIANT
+======================================================================
+
+Expected corpus registry SHA-256 remains:
+
+    db8b49d782f39fe0b5f3b0365d0023e5fc223d5306215be10b636a03123ced03.
+
+
+======================================================================
+61. DAG TOPOLOGY INVARIANT
+======================================================================
+
+Expected underlying scientific DAG topology remains unchanged.
+
+Historical DAG contract SHA-256:
+
+    58f11d4749362d25c39cef3224e358015b587e77a3078b0eba00f3d82be2b0e9.
+
+A representation-level JobID repair may require a new derived DAG
+identity/root, but not a different topology.
+
+
+======================================================================
+62. METRIC INVARIANT
+======================================================================
+
+All PM/F2 definitions, thresholds algorithms and gate semantics
+remain unchanged.
+
+Task85c-d must not compute production thresholds.
+
+
+======================================================================
+63. COMPLEXITY INVARIANT
+======================================================================
+
+Complexity and minimality definitions remain unchanged.
+
+No JobID representation may enter scientific complexity bits unless
+already explicitly frozen by V1.1.
+
+
+======================================================================
+64. BLIND FIREWALL
+======================================================================
+
+Do not construct or inspect the 144 production blind controls.
+
+Do not generate blind escrow.
+
+JobID fixtures must use non-secret synthetic examples.
+
+
+======================================================================
+65. NATURAL FIREWALL
+======================================================================
+
+Do not execute or analyze natural confirmatory controls.
+
+No natural recovery outcome may influence JobID repair.
+
+
+======================================================================
+66. VOYNICH FIREWALL
+======================================================================
+
+Do not read or evaluate Voynich data for this task.
+
+No Voynich result may influence JobID semantics.
+
+
+======================================================================
+67. PRODUCTION FIREWALL
+======================================================================
+
+Do not create:
+
+    production executable;
+    production thresholds;
+    production input closure;
+    production blind escrow;
+    production preseed;
+    production run manifest.
+
+These remain responsibilities of the resumed scientific
+implementation task.
+
+
+======================================================================
+68. PATCH VERSION DECISION
+======================================================================
+
+If the repair changes no scientific design and only resolves the
+frozen JobID representation/golden contradiction, issue:
+
+    G1_V2_EXECUTABLE_CONTRACT_V1_1_1.
+
+This is the preferred successful outcome.
+
+Do NOT call it V1.2 merely because artifact hashes change.
+
+
+======================================================================
+69. PATCH SEMANTICS
+======================================================================
+
+V1.1.1 must explicitly state:
+
+    scientific design unchanged;
+    status/reachability unchanged;
+    DAG topology unchanged;
+    candidate space unchanged;
+    RNG unchanged;
+    model/metric/complexity unchanged;
+
+and identify the exact JobID/golden corrections.
+
+
+======================================================================
+70. WHEN PATCH-LEVEL REFREEZE IS FORBIDDEN
+======================================================================
+
+Do not issue V1.1.1 if resolution requires changing:
+
+    which scientific jobs exist;
+    scientific dependencies;
+    model/candidate identity;
+    RNG identity;
+    scientific input identity;
+    status/reachability semantics;
+    gate semantics;
+    final decision semantics.
+
+Then:
+
+    STOP SCIENTIFIC_IDENTITY_CHANGE_REQUIRED.
+
+
+======================================================================
+71. SELF-CONTAINED PATCH CONTRACT
+======================================================================
+
+Successful V1.1.1 must itself provide one unambiguous JobID
+definition.
+
+R3 must not need to read Task85c-d prose to determine JobID
+semantics.
+
+
+======================================================================
+72. MACHINE-READABLE CONTRACT
+======================================================================
+
+Produce:
+
+    G1V2_EXECUTABLE_CONTRACT_V1_1_1.json
+
+and:
+
+    G1V2_EXECUTABLE_CONTRACT_V1_1_1.md.
+
+The machine-readable contract must contain/bind the resolved JobID
+payload contract.
+
+
+======================================================================
+73. CONTRACT DIFF
+======================================================================
+
+Create:
+
+    TASK85C_D_CONTRACT_DIFF.tsv.
+
+Classify every changed artifact/semantic element as:
+
+    R2_G01_REPAIR
+    R2_G02_REPAIR
+    TRANSITIVE_JOBID_REPAIR
+    GOLDEN_REGENERATION
+    TRANSITIVE_HASH_CHANGE
+    DOCUMENTATION_ALIGNMENT
+    UNEXPECTED_CHANGE.
+
+
+======================================================================
+74. ZERO UNEXPECTED CHANGE
+======================================================================
+
+Successful patch requires:
+
+    UNEXPECTED_CHANGE = 0.
+
+Otherwise:
+
+    STOP PATCH_DRIFT.
+
+
+======================================================================
+75. MACHINE PRECEDENCE
+======================================================================
+
+V1.1.1 must explicitly freeze precedence for JobID identity so that
+a future implementation cannot choose between:
+
+    prose;
+    DAG registry;
+    JobID registry;
+    schema;
+    golden fixture.
+
+There must be one machine-readable source of truth.
+
+
+======================================================================
+76. GOLDEN IS TEST, NOT AUTHORITY
+======================================================================
+
+Freeze explicitly:
+
+    golden vectors verify the normative JobID contract;
+    golden vectors do not override it.
+
+If a future golden conflicts with the normative payload contract:
+
+    CONTRACT/GOLDEN CONTRADICTION
+
+must be reported rather than silently adopting golden behavior.
+
+
+======================================================================
+77. JOBID REFERENCE IMPLEMENTATION
+======================================================================
+
+Create a small independent reference implementation that accepts a
+scientific job identity and outputs:
+
+    normalized payload;
+    canonical bytes;
+    full SHA-256;
+    final JobID.
+
+It must be usable by future R3 as an oracle/test implementation.
+
+
+======================================================================
+78. EXPLAIN MODE
+======================================================================
+
+Reference implementation should support an explain/audit mode that
+shows, without ambiguity:
+
+    fields included;
+    fields excluded;
+    normalized dependencies;
+    canonical bytes/hash;
+    resulting JobID.
+
+This is diagnostic only and must not alter computation.
+
+
+======================================================================
+79. COMPLETE-DAG REFERENCE MANIFEST
+======================================================================
+
+Generate a non-production audit artifact covering all planned jobs:
+
+    job scientific identity
+    resolved JobID
+    direct dependency JobIDs.
+
+This is an identity audit, NOT the production run manifest.
+
+
+======================================================================
+80. AUDIT MANIFEST FIREWALL
+======================================================================
+
+The complete-DAG identity audit must not contain:
+
+    blind truth;
+    production thresholds;
+    production executable identity;
+    execution authorization.
+
+It cannot be used as a substitute for the later R3 production run
+manifest.
+
+
+======================================================================
+81. REQUIRED ARTIFACT DIRECTORY
+======================================================================
+
+Create:
+
+    research/phase3/task85c-d/
+
+
+======================================================================
+82. REQUIRED ARTIFACTS
+======================================================================
+
+At minimum create:
+
+    TASK85C_D_DESIGN.md
+
+    TASK85C_D_REPORT.md
+
+    TASK85C_D_R2_FAILURE_REPRODUCTION.md
+
+    TASK85C_D_CONTRACT_DIFF.tsv
+
+    G1V2_JOBID_NORMATIVE_SOURCE_AUDIT.tsv
+
+    G1V2_JOBID_PAYLOAD_FIELD_REGISTRY.tsv
+
+    G1V2_JOBID_SCIENTIFIC_IDENTITY_PAYLOAD_V1_1_1.md
+    G1V2_JOBID_SCIENTIFIC_IDENTITY_PAYLOAD_V1_1_1.json
+
+    G1V2_EXECUTABLE_CONTRACT_V1_1_1.md
+    G1V2_EXECUTABLE_CONTRACT_V1_1_1.json
+
+    G1V2_JOBID_GOLDEN_VECTORS_V1_1_1.json
+
+    G1V2_JOBID_COMPLETE_DAG_AUDIT.tsv
+
+    reference/
+        reproduce_r2_jobid_defect.*
+        jobid_reference_a.*
+        jobid_reference_b.*
+        verify_jobid_goldens.*
+        verify_complete_dag_jobids.*
+        verify_contract_diff.*
+        verify_results_manifest.*
+
+    golden/
+        positive/
+        negative/
+        regressions/
+        transitive/
+
+    TASK85C_D_VALIDATION.tsv
+
+    TASK85C_D_RESULTS_MANIFEST.json
+
+and exactly one terminal marker artifact.
+
+
+======================================================================
+83. LARGE AUDIT ARTIFACT
+======================================================================
+
+If the complete 1,321,152-row DAG audit is too large for convenient
+Git storage, it may be stored as a deterministic compressed or
+content-addressed artifact.
+
+The results manifest must bind:
+
+    format;
+    row count;
+    uncompressed canonical root;
+    stored-object SHA-256.
+
+Do not omit the complete audit merely because it is large.
+
+
+======================================================================
+84. VALIDATION MATRIX
+======================================================================
+
+TASK85C_D_VALIDATION.tsv must include at minimum:
+
+    parent V1.1 identity
+    Task85c-c root identity
+    R2 failure closure identity
+
+    R2-G01 reproduced
+    R2-G02 reproduced
+    three-ID divergence reproduced
+
+    normative source audit complete
+    precedence resolution
+    contract-version semantics
+    dependency-field semantics
+    dependency-content semantics
+    dependency ordering
+    empty dependency representation
+    duplicate dependency rejection
+
+    scientific/contract identity separation
+    patch-version recursion test
+
+    JobID payload closure
+    canonicalization
+    JobID formula
+    operational independence
+    outcome independence
+
+    independent implementation A
+    independent implementation B
+    implementation agreement
+
+    complete DAG JobID count
+    JobID uniqueness
+    collision count
+    edge reconstruction
+    dangling dependencies
+    self edges
+
+    R2-G01 regression
+    R2-G02 regression
+    three-ID regression
+
+    transitive golden audit
+    evidence impact audit
+    schema impact audit
+
+    status/reachability invariant
+    model invariant
+    candidate invariant
+    RNG invariant
+    metric invariant
+    complexity invariant
+    control invariant
+    corpus invariant
+    DAG topology invariant
+
+    V1.1→V1.1.1 semantic diff
+    unexpected changes
+
+    inherited non-JobID goldens
+    repaired JobID goldens
+    complete golden suite
+
+    blind firewall
+    natural firewall
+    Voynich firewall
+    production firewall
+
+    results-manifest closure.
+
+
+======================================================================
+85. REQUIRED COUNTS
+======================================================================
+
+On successful patch require:
+
+    CANDIDATE_COUNT = 43
+    CONTROL_COUNT = 192
+
+    STATUS_COUNT = 13
+    DAG_STAGE_COUNT = 7
+    DIRECT_REACHABILITY_TRANSITIONS = 45
+
+    DAG_JOB_COUNT = 1321152
+    UNIQUE_JOBID_COUNT = 1321152
+    JOBID_COLLISION_COUNT = 0
+
+    DAG_DEPENDENCY_COUNT = 2617152
+    DANGLING_DEPENDENCY_COUNT = 0.
+
+
+======================================================================
+86. REQUIRED HASH OUTPUTS
+======================================================================
+
+On success freeze at minimum:
+
+    EXECUTABLE_CONTRACT_V1_1_1_SHA256
+    JOBID_PAYLOAD_CONTRACT_SHA256
+    JOBID_GOLDEN_ROOT_SHA256
+    JOBID_SET_ROOT_SHA256
+    JOBID_DAG_EDGE_ROOT_SHA256
+    GOLDEN_SUITE_V1_1_1_ROOT_SHA256
+    EVIDENCE_SCHEMA_ROOT_SHA256
+    TASK85C_D_ARTIFACT_ROOT_SHA256.
+
+
+======================================================================
+87. SCHEMA ROOT VERDICT
+======================================================================
+
+Report explicitly:
+
+    EVIDENCE_SCHEMA_ROOT_CHANGED =
+        YES / NO.
+
+If NO:
+
+    retain
+    4744ca82532cd47a0d02bb680796b26a11ceca57d6229f0b312df69a103f784b.
+
+If YES:
+
+    provide old/new roots and exact JobID-related reason for every
+    changed schema byte.
+
+
+======================================================================
+88. REQUIRED VERDICTS
+======================================================================
+
+Issue at minimum:
+
+    PARENT_V1_1_IDENTITY =
+        SUPPORTED / NOT_SUPPORTED
+
+    R2_FAILURE_REPRODUCED =
+        SUPPORTED / NOT_SUPPORTED
+
+    R2_G01 =
+        CLOSED / OPEN
+
+    R2_G02 =
+        CLOSED / OPEN
+
+    JOBID_NORMATIVE_SOURCE_CLOSED =
+        SUPPORTED / NOT_SUPPORTED
+
+    JOBID_PAYLOAD_UNIQUE =
+        SUPPORTED / NOT_SUPPORTED
+
+    CONTRACT_VERSION_BINDING =
+        SUPPORTED / NOT_SUPPORTED
+
+    DEPENDENCY_REPRESENTATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    JOBID_OPERATIONAL_INDEPENDENCE =
+        SUPPORTED / NOT_SUPPORTED
+
+    JOBID_OUTCOME_INDEPENDENCE =
+        SUPPORTED / NOT_SUPPORTED
+
+    JOBID_REFERENCE_IMPLEMENTATIONS_AGREE =
+        SUPPORTED / NOT_SUPPORTED
+
+    COMPLETE_DAG_JOBID_BIJECTION =
+        SUPPORTED / NOT_SUPPORTED
+
+    COMPLETE_DAG_EDGE_CLOSURE =
+        SUPPORTED / NOT_SUPPORTED
+
+    JOBID_COLLISIONS =
+        0 / <count>
+
+    SCIENTIFIC_DESIGN_UNCHANGED =
+        SUPPORTED / NOT_SUPPORTED
+
+    STATUS_REACHABILITY_UNCHANGED =
+        SUPPORTED / NOT_SUPPORTED
+
+    MODEL_SPACE_UNCHANGED =
+        SUPPORTED / NOT_SUPPORTED
+
+    RNG_UNCHANGED =
+        SUPPORTED / NOT_SUPPORTED
+
+    DAG_TOPOLOGY_UNCHANGED =
+        SUPPORTED / NOT_SUPPORTED
+
+    GOLDEN_RECONCILIATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    TRANSITIVE_FIXTURE_CLOSURE =
+        SUPPORTED / NOT_SUPPORTED
+
+    PATCH_DRIFT =
+        NONE / PRESENT
+
+    CONTRACT_PATCH_REFREEZE =
+        SUPPORTED / NOT_SUPPORTED
+
+    TASK86C_V2_SCIENTIFIC_IMPL_R3_READY =
+        SUPPORTED / NOT_SUPPORTED.
+
+
+======================================================================
+89. PATCH SUCCESS GATE
+======================================================================
+
+TASK86C_V2_SCIENTIFIC_IMPL_R3_READY = SUPPORTED
+
+only if ALL hold:
+
+1. Parent V1.1 identity verified.
+2. Task85c-c root verified.
+3. R2 failure closure verified.
+4. R2-G01 reproduced.
+5. R2-G02 reproduced.
+6. Three distinct R2 JobID variants reproduced.
+7. Complete normative JobID source audit completed.
+8. Exactly one normative JobID payload is derived.
+9. Contract-version binding is explicit.
+10. Patch-version recursion is resolved.
+11. Scientific identity and contract artifact identity are explicitly
+    distinguished.
+12. Dependency field representation is unique.
+13. Dependency content is unique.
+14. Dependency ordering is unique.
+15. Empty dependency representation is unique.
+16. Duplicate dependencies cannot create a second valid identity.
+17. JobID formula is unique.
+18. G1V2-CJ-1 semantics remain fixed.
+19. Operational metadata cannot affect JobID.
+20. Scientific outcome cannot affect JobID.
+21. Independent JobID implementations agree.
+22. All 1,321,152 planned jobs map to JobIDs.
+23. Exactly 1,321,152 unique JobIDs exist.
+24. Collision count is zero.
+25. All 2,617,152 edges reconstruct.
+26. Dangling dependency count is zero.
+27. R2-G01 regression passes.
+28. R2-G02 regression passes.
+29. Three-ID regression leaves exactly one authoritative identity.
+30. All transitively JobID-dependent goldens are reconciled.
+31. All unrelated goldens remain unchanged.
+32. Evidence impact audit closes.
+33. Schema impact audit closes.
+34. Status/reachability remains unchanged.
+35. M0–M5 remain unchanged.
+36. Candidate registry remains unchanged.
+37. RNG remains unchanged.
+38. PM/F2 semantics remain unchanged.
+39. Complexity/minimality remains unchanged.
+40. Controls/corpora remain unchanged.
+41. DAG topology remains unchanged.
+42. No production threshold is computed.
+43. No blind control is constructed/examined.
+44. No natural confirmatory recovery is run.
+45. No Voynich evaluation is run.
+46. No production executable is frozen.
+47. No production run manifest is created.
+48. Semantic diff contains zero unexpected changes.
+49. V1.1.1 is self-contained.
+50. New golden/root closure is frozen.
+51. Results manifest closes transitively.
+
+
+======================================================================
+90. STOP — IDENTITY AMBIGUITY
+======================================================================
+
+If normative precedence cannot uniquely determine the scientific
+JobID payload:
+
+    STOP JOBID_IDENTITY_AMBIGUOUS.
+
+Terminal marker:
+
+    TASK85C_D_JOBID_IDENTITY_AMBIGUOUS.
+
+Do not choose one of:
+
+    j-d852...
+    j-f7c...
+    j-186f...
+
+by preference or majority evidence.
+
+
+======================================================================
+91. STOP — SCIENTIFIC CHANGE
+======================================================================
+
+If fixing R2-G01/G02 requires changing the scientific experiment
+rather than its representation:
+
+    STOP SCIENTIFIC_IDENTITY_CHANGE_REQUIRED.
+
+Terminal marker:
+
+    TASK85C_D_SCIENTIFIC_IDENTITY_CHANGE_REQUIRED.
+
+Do not issue V1.1.1.
+
+
+======================================================================
+92. STOP — EXPANDED DEFECT
+======================================================================
+
+If the audit discovers another normative contradiction necessary to
+JobID resolution but outside R2-G01/G02:
+
+    STOP DEFECT_SCOPE_EXPANDED.
+
+Create a precise defect report.
+
+Do not opportunistically repair unrelated contract semantics.
+
+
+======================================================================
+93. STOP — PATCH DRIFT
+======================================================================
+
+If controlled refreeze changes anything scientifically unrelated to
+JobID reconciliation:
+
+    STOP PATCH_DRIFT.
+
+Terminal marker:
+
+    TASK85C_D_PATCH_DRIFT.
+
+
+======================================================================
+94. STOP — VALIDATION FAILURE
+======================================================================
+
+If the proposed unique JobID contract cannot pass:
+
+    independent implementation;
+    complete DAG bijection;
+    complete edge reconstruction;
+    golden reconciliation;
+    transitive closure
+
+then:
+
+    STOP JOBID_RECONCILIATION_FAILURE.
+
+
+======================================================================
+95. TERMINAL MARKERS
+======================================================================
+
+Exactly one terminal marker must be emitted.
+
+Success:
+
+    G1_V2_EXECUTABLE_SCIENTIFIC_CONTRACT_V1_1_1_FROZEN
+
+Ambiguous identity:
+
+    TASK85C_D_JOBID_IDENTITY_AMBIGUOUS
+
+Scientific identity change required:
+
+    TASK85C_D_SCIENTIFIC_IDENTITY_CHANGE_REQUIRED
+
+Expanded defect:
+
+    TASK85C_D_CONTRACT_DEFECT_EXPANDED
+
+Patch drift:
+
+    TASK85C_D_PATCH_DRIFT
+
+Validation/reconciliation failure:
+
+    TASK85C_D_JOBID_RECONCILIATION_INVALID.
+
+
+======================================================================
+96. SUCCESSFUL FINAL OUTPUT
+======================================================================
+
+On success print at minimum:
+
+    PARENT_CONTRACT_VERSION =
+        G1_V2_EXECUTABLE_CONTRACT_V1_1
+
+    PARENT_CONTRACT_SHA256 =
+        5c3cd272c1dbae9bfe1d7a100155faf102e86d34660da239e1cb31704ad470b0
+
+    R2_G01 =
+        CLOSED
+
+    R2_G02 =
+        CLOSED
+
+    JOBID_REPAIR_CLASS =
+        <classification>
+
+    EXECUTABLE_CONTRACT_VERSION =
+        G1_V2_EXECUTABLE_CONTRACT_V1_1_1
+
+    EXECUTABLE_CONTRACT_V1_1_1 =
+        research/phase3/task85c-d/
+        G1V2_EXECUTABLE_CONTRACT_V1_1_1.md
+
+    EXECUTABLE_CONTRACT_V1_1_1_SHA256 =
+        <sha256>
+
+    JOBID_PAYLOAD_CONTRACT_SHA256 =
+        <sha256>
+
+    JOBID_CONTRACT_VERSION_BINDING =
+        <exact frozen rule>
+
+    JOBID_DEPENDENCY_FIELD =
+        <exact frozen field>
+
+    JOBID_DEPENDENCY_SEMANTICS =
+        <exact frozen rule>
+
+    JOBID_SET_ROOT_SHA256 =
+        <sha256>
+
+    JOBID_DAG_EDGE_ROOT_SHA256 =
+        <sha256>
+
+    DAG_JOB_COUNT =
+        1321152
+
+    UNIQUE_JOBID_COUNT =
+        1321152
+
+    JOBID_COLLISION_COUNT =
+        0
+
+    DAG_DEPENDENCY_COUNT =
+        2617152
+
+    DANGLING_DEPENDENCY_COUNT =
+        0
+
+    OLD_GOLDEN_SUITE_ROOT_SHA256 =
+        967e63f9c3ba66d99cbff4da83c819d705f1f14c4ace923dbcd1cb8e7dfd1ff8
+
+    GOLDEN_SUITE_V1_1_1_ROOT_SHA256 =
+        <sha256>
+
+    EVIDENCE_SCHEMA_ROOT_CHANGED =
+        YES / NO
+
+    EVIDENCE_SCHEMA_ROOT_SHA256 =
+        <sha256>
+
+    SCIENTIFIC_DESIGN_UNCHANGED =
+        SUPPORTED
+
+    STATUS_REACHABILITY_UNCHANGED =
+        SUPPORTED
+
+    MODEL_SPACE_UNCHANGED =
+        SUPPORTED
+
+    RNG_UNCHANGED =
+        SUPPORTED
+
+    DAG_TOPOLOGY_UNCHANGED =
+        SUPPORTED
+
+    PATCH_DRIFT =
+        NONE
+
+    TASK85C_D_ARTIFACT_ROOT_SHA256 =
+        <sha256>
+
+    TASK86C_V2_SCIENTIFIC_IMPL_R3_READY =
+        SUPPORTED
+
+    TERMINAL_MARKER =
+        G1_V2_EXECUTABLE_SCIENTIFIC_CONTRACT_V1_1_1_FROZEN.
+
+
+======================================================================
+97. FAILURE FINAL OUTPUT
+======================================================================
+
+On failure print:
+
+    PARENT_CONTRACT_VERSION =
+        G1_V2_EXECUTABLE_CONTRACT_V1_1
+
+    TASK86C_V2_SCIENTIFIC_IMPL_R3_READY =
+        NOT_SUPPORTED
+
+    R2_G01 =
+        CLOSED / OPEN
+
+    R2_G02 =
+        CLOSED / OPEN
+
+    FAILURE_CLASS =
+        <exact STOP class>
+
+    BLOCKING_FINDINGS =
+        <exact finding IDs>
+
+    EXECUTABLE_CONTRACT_V1_1_1 =
+        NOT_ISSUED
+
+    PRODUCTION_RUN_AUTHORIZED =
+        NO
+
+    TERMINAL_MARKER =
+        <exactly one failure marker>.
+
+
+======================================================================
+98. DEFINITION OF DONE
+======================================================================
+
+Task85c-d is complete only when a second independent implementer can
+read the patched V1.1.1 machine-readable contract and, without
+consulting:
+
+    Task85c-d discussion;
+    historical V1 behavior;
+    R2 implementation;
+    hand-written golden expectations,
+
+derive exactly the same JobID for every one of the 1,321,152 planned
+jobs.
+
+The resulting JobID graph must contain exactly:
+
+    1,321,152 unique JobIDs
+    2,617,152 dependency edges
+
+and be bijective with the already frozen scientific DAG.
+
+Golden vectors must then be consequences of that normative identity
+contract, not an alternative source of JobID semantics.
+
+The patch must change no scientific property outside the exact
+JobID identity/representation defect and its necessary transitive
+artifacts.
+
+Only after:
+
+    TASK86C_V2_SCIENTIFIC_IMPL_R3_READY = SUPPORTED
+
+may production scientific implementation resume.

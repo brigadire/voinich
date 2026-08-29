@@ -1,0 +1,8 @@
+component	normative_artifact	implementation	validation	result	notes
+contract identity	G1V2_EXECUTABLE_CONTRACT_V1_1.md	identity verifier	Task85c-c results validator	PASS	parent hash/root close
+JobID errata	G1V2_EXECUTABLE_CONTRACT_V1_1.json;G1V2_DAG_CONTRACT.json	audit resolution	R2/Task85c-d reproducers	PASS	R2-G01/G02 closed
+blind run identity	G1V2_RNG_DOMAIN_REGISTRY.tsv;G1V2_BLIND_ESCROW_SCHEMA.json	NOT_IMPLEMENTED	reproduce_execution_identity_defect.py	FAIL	EI01
+M0-M5 and 43 candidates	V1.1 model/candidate registries	NOT_IMPLEMENTED	NOT_RUN	NOT_TESTED	mandatory execution-identity stop
+predictive/structural/complexity/aggregation	V1.1 metric and contract artifacts	NOT_IMPLEMENTED	NOT_RUN	NOT_TESTED	mandatory execution-identity stop
+evidence/reachability	V1.1 schemas;V2 state machine	NOT_IMPLEMENTED	parent validators only	NOT_TESTED	production implementation not reached
+run-instance controls/thresholds/DAG	V1.1 controls and DAG template	NOT_MATERIALIZED	NOT_RUN	NOT_TESTED	must follow unique blind identity

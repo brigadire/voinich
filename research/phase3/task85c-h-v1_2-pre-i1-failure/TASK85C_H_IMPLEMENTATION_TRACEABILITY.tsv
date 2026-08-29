@@ -1,0 +1,6 @@
+component_id	scientific_authority	implementation_package	implementation_symbol	unit_test	golden_test	bounded_fixture	evidence_type	status
+AUTH-V1.2	G1_V2_EXECUTABLE_CONTRACT_V1_2	none	none	authority reproduction	identity hashes	authority fixture	all	SUPPORTED
+AUTH-EVIDENCE	V1.2 evidence binding + V1.1 schema root	none	none	reproduce_authority_conflict.py	V1.1 positive generation fixture	V1.2-mutated fixture	all 15 schemas	CONTRADICTORY
+AUTH-JOBID	V1.2 + E1	none	none	reproduce_authority_conflict.py	E1 machine literal	version fixture	JobID	CONTRADICTORY
+GENERATION	G1V2_GENERATION_SEMANTICS_V1	research Task85c-g references	reference primitives	Task85c-g property tests	28/28	open reference fixture	generation	REFERENCE_SUPPORTED
+PRODUCTION-SCIENCE	V1.2 complete protocol	none	none	not run	not run	blocked	all	NOT_IMPLEMENTED_DUE_TO_STOP

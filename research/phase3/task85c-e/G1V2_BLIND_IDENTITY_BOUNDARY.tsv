@@ -1,0 +1,11 @@
+requirement	current_source	scientific_effect	blindness_effect	integrity_effect	reproducibility_effect	classification	justification
+generator identity/class/parameters	V1.1 generator/control registries	changes corpus distribution/truth	hidden until unblind	bind exact truth	scientific and run	SCIENTIFIC_NORMATIVE	determines scientific control
+G1V2-RNG-1 root/CONTROL_GENERATE counters	V1.1 RNG registry	changes realized corpus	hidden seed identity	bind realization	scientific and run	SCIENTIFIC_NORMATIVE	sole scientific randomness source
+token count/generated token sequence	V1.1 control registry	changes metrics and verdicts	corpus is blind-safe input	content integrity	scientific and run	SCIENTIFIC_NORMATIVE	direct scientific data
+content_sha256	V1.1 escrow prose	no change if bytes fixed	may be visible	detects content substitution	exact run	INTEGRITY_NORMATIVE	independent binding to corpus
+truth sealing and later authenticated opening	V1.1 escrow contract	no metric effect if truth fixed	prevents premature truth disclosure	binds later evaluation	exact run	BLINDNESS_NORMATIVE	required blind protocol property
+escrow-key independence/CSPRNG	E1	no scientific effect	prevents ID prediction/correlation	authenticates mapping	exact run	BLINDNESS_NORMATIVE	must be independent of scientific RNG
+HMAC algorithm/domain/framing	E1	no effect with corpus/truth fixed	opaque keyed ID	unique reproducible association	exact run	INTEGRITY_NORMATIVE	one representation per concrete run
+blind_id literal bytes	E1	none	opaque; must not encode truth	lookup/collision resistance	exact run	EXECUTION_PROVENANCE	not a scientific variable
+JobID literal bytes	V1.1 DAG plus E1	none if underlying job fixed	must not reveal truth	one-to-one DAG binding	exact run	EXECUTION_PROVENANCE	concrete run identifier
+worker/retry/lease/time/path	V1.1 DAG exclusions	none	none	must not alter identity	none	EXECUTION_PROVENANCE	forbidden from scientific and opaque identity inputs

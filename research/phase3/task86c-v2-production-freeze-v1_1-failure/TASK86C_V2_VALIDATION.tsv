@@ -1,0 +1,22 @@
+check_id	requirement	status	evidence	notes
+V01	V1.1 identity	PASS	Task85c-c results validator	5c3cd272c1dbae9bfe1d7a100155faf102e86d34660da239e1cb31704ad470b0
+V02	E1 identity	PASS	Task85c-e results manifest	dbfb9a4a7101eed7006f751b9c4631b5f0286c3792f9777cc833c5dcfa42a3d3
+V03	status/reachability identity	PASS	Task85c-b verifier	13 statuses; 7 stages; 45 transitions
+V04	R2-G01/R2-G02/EI01	PASS	E1 validators	CLOSED
+V05	nonempty corpus requirement	PASS	V1.1 machine contract	explicit nonempty token array
+V06	initial EOS reachable	FAIL	reproduce_empty_token_contract_defect.py	PF-SC01; first frozen M0 control draw
+V07	unique initial-EOS scientific semantics	FAIL	source audit	no reject/resample/condition/failure rule
+V08	scientific implementation/coverage	NOT_TESTED	mandatory scientific stop	INCOMPLETE
+V09	golden/model/RNG/PM/F2 validation	NOT_TESTED	mandatory scientific stop	no implementation
+V10	evidence contract/evidence-only verifier	NOT_TESTED	mandatory scientific stop	production integration absent
+V11	DEVELOPMENT calibration/threshold freeze	NOT_TESTED	mandatory scientific stop	no controls generated
+V12	blind materialization/leakage	NOT_TESTED	mandatory pre-secret stop	0 controls; no key/truth
+V13	natural input closure	NOT_TESTED	mandatory scientific stop	0 controls
+V14	control count/input root	NOT_TESTED	mandatory scientific stop	0 of 192
+V15	DAG/JobID/integrity roots	NOT_TESTED	mandatory scientific stop	not materialized
+V16	distributed/retry determinism	NOT_TESTED	mandatory scientific stop	no production executable
+V17	capacity qualification	NOT_TESTED	mandatory scientific stop	actual handlers absent
+V18	production executable/preseed/run manifest	NOT_TESTED	mandatory scientific stop	not frozen
+V19	operator handoff/runbook	PASS	blocked handoff documents	run explicitly prohibited
+V20	scientific firewall	PASS	action audit	no confirmatory execution or secret creation
+V21	results-manifest closure	PASS	failure manifest verifier	all produced failure artifacts bound

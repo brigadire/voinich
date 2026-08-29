@@ -1,0 +1,1572 @@
+Task85a — Grammar Experimental Contract Completion
+and Executable Preregistration V1.1
+
+Цель
+
+Исправить обнаруженную Task86 неполноту frozen Task85
+experimental contract и выпустить новую, полностью исполнимую,
+численно и алгоритмически однозначную версию preregistration
+для повторного G1-эксперимента.
+
+Task85a является:
+
+    CONTRACT REPAIR / COMPLETION TASK
+
+а НЕ:
+
+    grammar experiment;
+    model-selection task;
+    Voynich fitting task;
+    exploratory analysis.
+
+Исходный Task85-v1 должен остаться неизменным и сохраниться
+как historical frozen artifact.
+
+Task85a должен создать новую версию:
+
+    GRAMMAR_EXPERIMENT_CONTRACT_V1.1_FROZEN
+
+которая наследует scientific design Task85 и закрывает
+только те operational degrees of freedom, которые сделали
+Task86 неисполнимым.
+
+После успешного freeze:
+
+    TASK86R_READY = SUPPORTED.
+
+Если построить однозначный executable contract без изменения
+scientific design Task85 невозможно:
+
+    GRAMMAR_CONTRACT_V1_1_UNRESOLVED.
+
+
+======================================================================
+1. AUTHORITATIVE PREDECESSORS
+======================================================================
+
+Использовать как authoritative:
+
+    research/phase3/task85/*
+    research/phase3/task86/TASK86_DESIGN_EXECUTION.md
+    research/phase3/task86/TASK86_REPORT.md
+    research/phase3/task86/TASK87_HANDOFF.md
+
+Task86 terminal result:
+
+    TASK86_EXPERIMENT_BLOCKED
+
+является methodological/provenance result,
+а не scientific result о Voynichese.
+
+Task86 не выполнил:
+
+    MFC generation;
+    Voynich fitting;
+    VALIDATION evaluation;
+    HELDOUT evaluation.
+
+Поэтому Task85a может завершить preregistration
+без использования model-performance information.
+
+
+======================================================================
+2. NON-DESTRUCTIVE VERSIONING
+======================================================================
+
+Запрещено редактировать frozen Task85-v1 artifacts in place.
+
+Создать отдельный versioned contract layer, например:
+
+research/phase3/task85a/
+
+или другой repository-consistent location.
+
+Все изменения должны быть представлены как:
+
+    Task85-v1
+        +
+    Task85a completion
+        =
+    Task85-v1.1 executable contract.
+
+Сохранить provenance chain:
+
+    Task85
+        →
+    Task86 BLOCKED
+        →
+    Task85a
+        →
+    Task86R.
+
+
+======================================================================
+3. SCOPE OF PERMITTED CHANGES
+======================================================================
+
+Task85a разрешено только закрыть operational ambiguity.
+
+Разрешено определить:
+
+    exact algorithms;
+    finite numeric grids;
+    smoothing constants;
+    deterministic tie-breaking;
+    calibration population sizes;
+    scale grids;
+    replicate checkpoints;
+    numeric tolerances;
+    failure thresholds;
+    exact metric functionals;
+    deterministic sampling procedures;
+    seed derivation;
+    convergence rules.
+
+Запрещено менять:
+
+    central research question;
+    definition of grammar;
+    G1/G2/G3 separation;
+    G1 information firewall;
+    authoritative corpora;
+    corpus split;
+    DEVELOPMENT/VALIDATION/HELDOUT roles;
+    M0–M5 model classes;
+    primary metric families;
+    complexity-accounting principle;
+    lexicon/exception accounting;
+    semantics firewall;
+    Fontana/mechanism firewall;
+    HELDOUT policy.
+
+
+======================================================================
+4. TARGET-BLINDNESS AUDIT
+======================================================================
+
+До создания V1.1 подтвердить и документировать:
+
+    no Voynich model fitting occurred in Task86;
+    no VALIDATION statistics were computed;
+    no HELDOUT statistics were computed;
+    no MFC calibration results exist;
+    no model-performance information is available
+        from Task86.
+
+Создать:
+
+    TASK85A_TARGET_BLINDNESS_AUDIT.md
+
+и verdict:
+
+    CONTRACT_REPAIR_TARGET_BLIND =
+        SUPPORTED / NOT_SUPPORTED.
+
+Если NOT_SUPPORTED:
+
+    остановить Task85a;
+
+    не выпускать V1.1 confirmatory contract.
+
+
+======================================================================
+5. GAP INVENTORY
+======================================================================
+
+Преобразовать список Task86 blockers
+в formal contract-gap registry.
+
+Создать:
+
+    CONTRACT_GAP_REGISTRY.tsv
+
+Минимальные поля:
+
+    gap_id
+    source
+    affected_artifact
+    affected_model_or_metric
+    missing_definition
+    scientific_effect
+    proposed_resolution
+    resolution_basis
+    target_blind
+    status.
+
+Каждый blocker Task86 должен иметь
+ровно прослеживаемое разрешение.
+
+
+======================================================================
+6. RESOLUTION PRINCIPLE
+======================================================================
+
+Каждый missing parameter/algorithm должен выбираться
+не по ожидаемому качеству на Voynich, а по одному из:
+
+    standard/statistically conventional definition;
+    simplest sufficient implementation;
+    existing repository precedent;
+    historical frozen implementation;
+    external methodological precedent;
+    target-blind calibration requirement;
+    computational feasibility.
+
+Для каждого решения указать:
+
+    WHY THIS CHOICE?
+
+Запрещено обосновывать решение:
+
+    "better matches Voynich";
+    "expected to improve F2";
+    "likely winner";
+    "works better on DEVELOPMENT Voynich".
+
+Task85a не должен запускать Voynich models
+даже на DEVELOPMENT.
+
+
+======================================================================
+7. M0 CONTRACT COMPLETION
+======================================================================
+
+Полностью определить M0.
+
+Зафиксировать:
+
+    probability estimator;
+    smoothing method if applicable;
+    smoothing constant/grid;
+    BOS/EOS treatment;
+    unseen glyph/token handling;
+    normalization;
+    scoring unit;
+    generation procedure.
+
+Если M0 имеет hyperparameters,
+дать конечный numeric grid.
+
+Не оставлять:
+
+    implementation-defined defaults.
+
+
+======================================================================
+8. M1 CONTRACT COMPLETION
+======================================================================
+
+Для fixed-order GLYPH n-gram сохранить frozen:
+
+    n ∈ {1,...,6}
+
+если именно это определено Task85.
+
+Дополнительно заморозить:
+
+    smoothing family;
+    exact smoothing formula;
+    finite smoothing-parameter grid;
+    BOS/EOS convention;
+    unseen context handling;
+    backoff/interpolation rule;
+    generation termination rule;
+    maximum generated token length policy.
+
+Все combinations должны быть enumerable
+до fitting.
+
+
+======================================================================
+9. M2 ALGORITHM FREEZE
+======================================================================
+
+Выбрать и заморозить ровно один
+variable-order Markov family/algorithm
+в рамках определения M2 Task85.
+
+Например, если выбран context-tree/PPM-like подход,
+полностью определить:
+
+    context construction;
+    maximum depth grid;
+    context selection/pruning;
+    escape/backoff probability;
+    penalty/threshold grid;
+    unseen-context behavior;
+    BOS/EOS handling;
+    generation algorithm;
+    termination;
+    deterministic tie-breaking.
+
+Название "variable-order Markov"
+само по себе недостаточно.
+
+
+======================================================================
+10. M2 FINITE GRID
+======================================================================
+
+Создать конечный enumeration:
+
+    M2_HYPERPARAMETER_GRID.tsv
+
+Каждая строка должна однозначно определять
+один candidate model.
+
+До Task86R должно быть возможно вычислить:
+
+    exact number of M2 candidates
+
+без чтения Voynich corpus.
+
+
+======================================================================
+11. M3 ALGORITHM FREEZE
+======================================================================
+
+Полностью определить deterministic finite-state
+formation model.
+
+Зафиксировать:
+
+    initial representation;
+    state construction;
+    state merging/minimization algorithm;
+    merge order;
+    merge criterion;
+    threshold grid;
+    max-state grid;
+    acceptance criterion;
+    generation traversal;
+    tie-breaking;
+    termination;
+    unseen-form scoring.
+
+Особенно устранить обнаруженную Task86 проблему:
+
+    M3 must have a deterministic generative rule.
+
+Если это невозможно в рамках frozen M3 definition,
+явно определить M3 как:
+
+    NON_GENERATIVE_BY_DESIGN
+
+и заранее определить последствия для
+StructuralAdequacy.
+
+Не оставлять это на Task86R.
+
+
+======================================================================
+12. M4 ALGORITHM FREEZE
+======================================================================
+
+Для probabilistic finite-state model определить:
+
+    state topology source;
+    topology fitting;
+    transition probability estimator;
+    emission probability estimator if applicable;
+    smoothing;
+    finite parameter grids;
+    state cap;
+    pruning;
+    generation;
+    termination;
+    unseen handling;
+    tie-breaking.
+
+Создать:
+
+    M4_HYPERPARAMETER_GRID.tsv.
+
+
+======================================================================
+13. M3/M4 FAIRNESS
+======================================================================
+
+Определить, должны ли M3 и M4:
+
+    share topology induction
+
+или:
+
+    use independently specified induction.
+
+Решение принять сейчас.
+
+Нельзя позволять Task86R выбирать
+вариант после VALIDATION results.
+
+
+======================================================================
+14. M5 COMPONENT DISCOVERY
+======================================================================
+
+Полностью определить, что алгоритмически означает:
+
+    COMPONENT.
+
+Не давать semantic interpretation.
+
+Зафиксировать:
+
+    candidate component extraction;
+    boundary discovery;
+    minimum component length;
+    maximum component length if applicable;
+    overlap policy;
+    component frequency/support;
+    inventory construction;
+    deterministic ordering.
+
+Один и тот же input должен всегда давать
+byte-identical component inventory.
+
+
+======================================================================
+15. M5 RULE INDUCTION
+======================================================================
+
+Определить:
+
+    slot representation;
+    slot-count grid;
+    rule representation;
+    minimum-support grid;
+    inventory-cap grid;
+    rule induction;
+    rule pruning;
+    exception creation;
+    lexical fallback;
+    generation;
+    unseen-form scoring.
+
+Создать:
+
+    M5_HYPERPARAMETER_GRID.tsv.
+
+Все LexiconCost/ExceptionCost consequences
+должны следовать Task85 complexity contract.
+
+
+======================================================================
+16. HYPERPARAMETER ENUMERATION
+======================================================================
+
+Для M0–M5 создать единый:
+
+    G1_HYPERPARAMETER_GRID.tsv
+
+с полями минимум:
+
+    model_class
+    candidate_id
+    parameter_name/value set
+    deterministic
+    generative
+    applicable_metrics
+    applicable_ablations.
+
+Grid должен быть конечным.
+
+Task86R не имеет права добавлять candidate.
+
+
+======================================================================
+17. COMPUTATIONAL FEASIBILITY
+======================================================================
+
+До freeze оценить computational cost
+полного candidate grid.
+
+Разрешён target-blind complexity/runtime pilot
+на:
+
+    synthetic data;
+    natural-language controls;
+    artificial message-free corpora.
+
+Запрещён runtime pilot через fitting Voynich.
+
+Если grid слишком велик:
+
+    сократить его по заранее описанному
+    computational criterion,
+
+а не по model performance.
+
+
+======================================================================
+18. MFC0–MFC2 EXACT SPECIFICATION
+======================================================================
+
+Полностью определить frozen message-free
+calibration generators:
+
+    MFC0
+    MFC1
+    MFC2.
+
+Для каждого указать:
+
+    generator algorithm;
+    alphabet source;
+    parameter source;
+    sequence/token-length distribution;
+    population size;
+    corpus scale;
+    number of independent populations;
+    seeds;
+    train/validation analogue;
+    expected known generating structure.
+
+MFC configuration должна быть воспроизводима
+без Voynich fitting.
+
+
+======================================================================
+19. CALIBRATION PURPOSE
+======================================================================
+
+Явно определить, какую quantity калибрует
+каждый MFC.
+
+Например:
+
+    overfitting gap;
+    parameter/data ratio;
+    predictive improvement null;
+    seed variation;
+    structural-distance variation.
+
+Не использовать один неопределённый
+"null spread" для всех решений.
+
+
+======================================================================
+20. NULL-SPREAD FUNCTIONAL
+======================================================================
+
+Полностью определить:
+
+    NullSpread(metric, calibration population).
+
+Указать:
+
+    center estimator;
+    dispersion estimator;
+    quantile/confidence rule;
+    tail convention;
+    finite-sample handling.
+
+Если разные metrics требуют разных functionals,
+перечислить их заранее.
+
+
+======================================================================
+21. CALIBRATION THRESHOLDS
+======================================================================
+
+Определить точную процедуру получения thresholds
+из MFC0–MFC2.
+
+Различать:
+
+    threshold fixed numerically in Task85a
+
+и:
+
+    threshold deterministically derived
+    from future MFC calibration.
+
+Во втором случае формула должна быть полностью frozen.
+
+После MFC run Task86R не должен принимать
+человеческое решение о threshold.
+
+
+======================================================================
+22. REPLICATE CONTRACT
+======================================================================
+
+Определить exact replicate checkpoints.
+
+Например:
+
+    R1, R2, ... Rk
+
+или конкретный набор:
+
+    4, 8, 16, 32, ...
+
+Конкретные значения выбрать и обосновать Task85a.
+
+Определить:
+
+    minimum replicates;
+    maximum replicates;
+    stopping rule.
+
+Stopping rule должен быть deterministic.
+
+
+======================================================================
+23. CONVERGENCE TOLERANCE
+======================================================================
+
+Определить численную:
+
+    GENERATION_CONVERGENCE_TOLERANCE.
+
+Указать:
+
+    quantity compared;
+    absolute/relative difference;
+    number of consecutive checkpoints;
+    behavior when tolerance not reached.
+
+Не оставлять "stable enough"
+как human judgment.
+
+
+======================================================================
+24. SCALE GRID
+======================================================================
+
+Заморозить complete generation scale grid.
+
+Например:
+
+    matched-size
+    plus predefined smaller/larger scales,
+
+если это совместимо с Task85.
+
+Для каждого scale определить:
+
+    exact TOKEN count
+
+или deterministic formula его получения.
+
+Scale нельзя менять после generation results.
+
+
+======================================================================
+25. CROSS-TRANSCRIPTION TOLERANCE
+======================================================================
+
+Полностью определить:
+
+    TRANSCRIPTION_STABLE
+    DIRECTION_STABLE
+    TRANSCRIPTION_SENSITIVE.
+
+Для каждой applicable metric family
+задать численный или формально детерминированный criterion.
+
+Например, если используется relative effect tolerance:
+
+    exact formula;
+    denominator handling;
+    zero handling;
+    direction rule.
+
+Не использовать qualitative inspection.
+
+
+======================================================================
+26. NUMERICAL INSTABILITY
+======================================================================
+
+Определить frozen:
+
+    NUMERICALLY_UNSTABLE
+
+criterion.
+
+Рассмотреть минимум:
+
+    NaN/Inf;
+    probability normalization failure;
+    underflow/overflow beyond handled log-space behavior;
+    non-convergence;
+    excessive run-to-run variation.
+
+Для каждого случая определить threshold/action.
+
+
+======================================================================
+27. COMPLEXITY-GROWTH FAILURE
+======================================================================
+
+Task86 обнаружил отсутствие threshold для:
+
+    COMPLEXITY_UNBOUNDED.
+
+Определить:
+
+    complexity-growth statistic;
+    scale points;
+    slope/ratio estimator;
+    numeric threshold;
+    confidence/stability requirement.
+
+Threshold должен быть target-blind.
+
+
+======================================================================
+28. MEMORIZATION THRESHOLD
+======================================================================
+
+Полностью определить:
+
+    MEMORIZATION_DOMINATED.
+
+Если используется parameter-to-data ratio:
+
+    точно определить numerator;
+    точно определить denominator;
+    threshold;
+    treatment of lexicon;
+    treatment of exceptions.
+
+Предпочтительно использовать Task85
+Complexity(G), а не только free parameter count,
+если это соответствует frozen scientific principle.
+
+Если threshold выводится из MFC calibration,
+заморозить формулу.
+
+
+======================================================================
+29. NEGATIVE-TOKEN GENERATOR
+======================================================================
+
+Создать полностью deterministic:
+
+    NEGATIVE_TOKEN_PROTOCOL.md.
+
+Определить:
+
+    source partition;
+    number of negatives;
+    matching ratio;
+    token-length matching;
+    glyph-frequency matching;
+    component matching where applicable;
+    rejection rules;
+    duplicate policy;
+    collision with observed tokens;
+    RNG/seed derivation;
+    exhaustion behavior.
+
+
+======================================================================
+30. GLYPH-FREQUENCY CLASS
+======================================================================
+
+Точно определить:
+
+    GLYPH_FREQUENCY_CLASS.
+
+Например, если используются bins:
+
+    как вычисляются frequencies;
+    на какой partition;
+    границы bins;
+    treatment of ties;
+    unseen glyphs.
+
+Нельзя определять bins после просмотра
+negative-discrimination performance.
+
+
+======================================================================
+31. PM6 EXACT FUNCTIONAL
+======================================================================
+
+Зафиксировать PM6 полностью:
+
+    positive set;
+    negative set;
+    score;
+    AUC implementation;
+    tie handling;
+    aggregation;
+    transcription aggregation;
+    uncertainty estimate if required.
+
+Independent implementation должна получать
+тот же PM6 из frozen inputs.
+
+
+======================================================================
+32. PM5 CALIBRATION ERROR
+======================================================================
+
+Полностью определить PM5.
+
+Зафиксировать:
+
+    prediction object;
+    binning strategy;
+    exact bin boundaries or deterministic rule;
+    number of bins;
+    empty-bin handling;
+    weighting;
+    error functional.
+
+Например, если используется ECE-like metric,
+записать точную формулу.
+
+Не оставлять просто:
+
+    "bucketed calibration error".
+
+
+======================================================================
+33. PREDICTIVE ADEQUACY GATE
+======================================================================
+
+Проверить Task85 definition и превратить его
+в executable decision rule.
+
+Должно быть возможно программно вычислить:
+
+    PredictiveAdequacy(G)
+        ∈ {PASS, FAIL}
+
+без subjective interpretation.
+
+Определить:
+
+    required PM metrics;
+    baseline comparison;
+    MFC null-spread use;
+    cross-transcription requirement;
+    tie handling.
+
+
+======================================================================
+34. STRUCTURAL ADEQUACY GATE
+======================================================================
+
+Аналогично полностью определить:
+
+    StructuralAdequacy(G).
+
+Использовать только frozen G1-applicable F2 metrics:
+
+    EF1_GIANT_COMPONENT_SHARE
+    EF1_ISOLATE_SHARE
+    EF2_GLOBAL_CLUSTERING
+    EF3_DEGREE_FREQUENCY_SPEARMAN
+    LP1_RULE_SUPPORT_GINI
+    LP4_PREFIX_ATTACHMENT_NMI
+    LP4_SUFFIX_ATTACHMENT_NMI
+
+если именно этот список frozen Task85.
+
+Определить:
+
+    metric tolerance;
+    family aggregation;
+    minimum family support;
+    seed aggregation;
+    transcription rule.
+
+
+======================================================================
+35. FAMILY-LEVEL GATES
+======================================================================
+
+Не оставлять выражение:
+
+    "family-level success"
+
+без формального определения.
+
+Для каждой G1 family указать:
+
+    member metrics;
+    metric pass criterion;
+    family pass criterion;
+    handling unavailable/degenerate metrics.
+
+Затем определить:
+
+    StructuralAdequacy overall gate.
+
+
+======================================================================
+36. MINIMALITY TIE RULE
+======================================================================
+
+Task85 определяет:
+
+    G_min =
+        argmin Complexity(G)
+
+    subject to adequacy.
+
+Task85a должен определить,
+что делать при практически равной complexity
+или статистически indistinguishable candidates.
+
+Зафиксировать deterministic:
+
+    tie tolerance;
+    equivalence-set rule;
+    preference rule, если допустим.
+
+Не выбирать "simpler-looking" model вручную.
+
+
+======================================================================
+37. MODEL-LADDER GAIN
+======================================================================
+
+Полностью определить criterion для:
+
+    M0 → M1
+    M1 → M2
+    M2 → M3/M4
+    M3/M4 → M5.
+
+Определить, что означает:
+
+    REPRESENTATIONAL_GAIN = SUPPORTED.
+
+Criterion должен учитывать:
+
+    held-out predictive improvement;
+    complexity difference;
+    structural adequacy where applicable.
+
+Это потребуется для TOKEN_FORMATION_DEPTH.
+
+
+======================================================================
+38. TOKEN_FORMATION_DEPTH RULE
+======================================================================
+
+Создать deterministic mapping:
+
+    observed Task86R results
+        →
+    FREQUENCY_ONLY
+    LOCAL_MARKOV
+    VARIABLE_MEMORY
+    FINITE_STATE
+    EXPLICIT_RULE_SYSTEM
+    NOT_IDENTIFIABLE.
+
+Нельзя определять mapping
+после получения model ladder.
+
+
+======================================================================
+39. EXPLICIT RULE REQUIREMENT
+======================================================================
+
+Заранее определить criterion:
+
+    EXPLICIT_RULE_GRAMMAR_REQUIRED =
+        SUPPORTED
+        / NOT_SUPPORTED
+        / INCONCLUSIVE.
+
+Например:
+
+SUPPORTED только если M5 проходит adequacy,
+а все less-expressive viable classes не проходят
+или уступают согласно frozen ladder criterion.
+
+Точная логика должна быть frozen сейчас.
+
+
+======================================================================
+40. SEED DERIVATION
+======================================================================
+
+Создать единый deterministic seed contract.
+
+Seed должен быть pure function от:
+
+    experiment namespace;
+    model class;
+    candidate id;
+    corpus/control id;
+    transcription;
+    partition;
+    scale;
+    replicate index.
+
+Использовать stable hash/derivation,
+а не Go runtime hash.
+
+Зафиксировать endianness/range conversion.
+
+
+======================================================================
+41. DETERMINISTIC ORDERING
+======================================================================
+
+Учитывая проблему Phase II с Go map iteration,
+явно потребовать:
+
+    sorted iteration before floating-point accumulation;
+    sorted serialization;
+    deterministic candidate enumeration;
+    deterministic token ordering where order is not semantic.
+
+Добавить regression tests.
+
+
+======================================================================
+42. IMPLEMENTATION REFERENCE
+======================================================================
+
+Task85a желательно должен не только написать prose specification,
+но и предоставить machine-readable configuration.
+
+Например:
+
+    G1_EXECUTABLE_CONTRACT.json
+
+с:
+
+    model grids;
+    thresholds;
+    scales;
+    replicate checkpoints;
+    seeds/seed derivation version;
+    metric settings;
+    failure thresholds;
+    gate definitions.
+
+Task86R должен читать эту configuration,
+а не переписывать числа вручную.
+
+
+======================================================================
+43. CONTRACT VALIDATOR
+======================================================================
+
+Реализовать validator, который до Task86R проверяет:
+
+    all M0–M5 algorithms specified;
+    all hyperparameter grids finite;
+    no empty parameter dimensions;
+    all thresholds defined;
+    all PM functionals complete;
+    negative-token protocol complete;
+    scale grid complete;
+    replicate rule complete;
+    seed rule complete;
+    all adequacy gates executable;
+    all failure conditions executable.
+
+Validator должен завершаться non-zero,
+если остаётся хотя бы один scientific placeholder.
+
+
+======================================================================
+44. PLACEHOLDER AUDIT
+======================================================================
+
+Автоматически/вручную проверить V1.1 artifacts
+на unresolved language:
+
+    TBD
+    TODO
+    choose
+    appropriate
+    reasonable
+    suitable
+    as needed
+    if useful
+    stable enough
+    standard method
+
+и аналогичные expressions,
+если они оставляют scientific degree of freedom.
+
+Не все такие слова являются ошибкой,
+но каждое occurrence должно быть audited.
+
+
+======================================================================
+45. TASK86 BLOCKER REGRESSION
+======================================================================
+
+Создать regression artifact:
+
+    TASK86_BLOCKER_REGRESSION.tsv.
+
+Для каждого из 10 blocker groups Task86:
+
+    original blocker;
+    V1.1 artifact;
+    exact section/key resolving it;
+    executable;
+    regression status.
+
+Все должны иметь:
+
+    RESOLVED.
+
+Иначе V1.1 freeze запрещён.
+
+
+======================================================================
+46. NO VOYNICH FIT TEST
+======================================================================
+
+Task85a tooling должен иметь firewall,
+не позволяющий вызвать M0–M5 fitting
+на Voynich corpora.
+
+Допустимы:
+
+    checksum verification;
+    metadata/split verification;
+    contract validation.
+
+Недопустимы:
+
+    parameter estimation;
+    token-frequency inspection for tuning;
+    model scoring;
+    F2 scoring;
+    VALIDATION scoring;
+    HELDOUT scoring.
+
+
+======================================================================
+47. EXISTING SPLIT IMMUTABILITY
+======================================================================
+
+Не пересоздавать научно новый split.
+
+Проверить byte-identical:
+
+    GRAMMAR_CORPUS_SPLIT.tsv
+    GRAMMAR_CORPUS_SPLIT_MANIFEST.json.
+
+Task85a должен ссылаться на frozen Task85 split,
+а не выпускать другой.
+
+
+======================================================================
+48. EXISTING F2 IMMUTABILITY
+======================================================================
+
+Не менять Fingerprint V2 definitions.
+
+Не добавлять новые G1 metrics.
+
+Task85a занимается только executable completion
+уже frozen G1 experiment.
+
+G2 metric gap относится к будущему Task87
+и находится вне scope.
+
+
+======================================================================
+49. EXISTING COMPLEXITY PRINCIPLE
+======================================================================
+
+Сохранить:
+
+    Complexity(G) =
+        StructureCost
+        + LexiconCost
+        + ExceptionCost
+
+в соответствии с Task85.
+
+Task85a может определить недостающие
+numeric details реализации,
+но не может заменить scientific principle
+другим complexity objective.
+
+
+======================================================================
+50. DOCUMENT SCIENTIFIC IMPACT
+======================================================================
+
+Для каждого дополнения классифицировать:
+
+    IMPLEMENTATION_DETAIL
+
+    OPERATIONAL_COMPLETION
+
+    SCIENTIFIC_EXTENSION.
+
+Нормальный Task85a artifact должен содержать
+только первые две категории.
+
+Если хотя бы одно необходимое изменение является:
+
+    SCIENTIFIC_EXTENSION
+
+оно должно быть явно вынесено отдельно.
+
+В таком случае определить,
+может ли V1.1 всё ещё считаться
+completion Task85 или требуется новый
+experimental design.
+
+
+======================================================================
+51. REQUIRED ARTIFACTS
+======================================================================
+
+Создать минимум:
+
+research/phase3/task85a/
+
+    TASK85A_DESIGN.md
+
+    TASK85A_TARGET_BLINDNESS_AUDIT.md
+
+    CONTRACT_GAP_REGISTRY.tsv
+
+    G1_ALGORITHM_REGISTRY.tsv
+    G1_HYPERPARAMETER_GRID.tsv
+
+    M2_HYPERPARAMETER_GRID.tsv
+    M4_HYPERPARAMETER_GRID.tsv
+    M5_HYPERPARAMETER_GRID.tsv
+
+    G1_CALIBRATION_CONTRACT.md
+    G1_STABILITY_CONTRACT.md
+    G1_TRANSCRIPTION_STABILITY_CONTRACT.md
+
+    G1_FAILURE_THRESHOLDS.tsv
+
+    NEGATIVE_TOKEN_PROTOCOL.md
+    PM5_CALIBRATION_SPEC.md
+    PM6_DISCRIMINATION_SPEC.md
+
+    G1_ADEQUACY_GATES.md
+    G1_MODEL_LADDER_CONTRACT.md
+
+    G1_SEED_CONTRACT.md
+
+    G1_EXECUTABLE_CONTRACT.json
+
+    TASK86_BLOCKER_REGRESSION.tsv
+
+    TASK86R_HANDOFF.md
+
+    TASK85A_REPORT.md
+    TASK85A_RESULTS_MANIFEST.json.
+
+
+======================================================================
+52. VERSION MANIFEST
+======================================================================
+
+Создать:
+
+    GRAMMAR_EXPERIMENT_CONTRACT_V1_1_MANIFEST.json.
+
+Он должен содержать:
+
+    Task85 parent freeze identity;
+    Task86 blocked-result identity;
+    all inherited Task85 artifact hashes;
+    all Task85a artifact hashes;
+    authoritative corpus hashes;
+    split hashes;
+    executable-contract hash;
+    code revision;
+    contract version.
+
+Должно быть однозначно видно:
+
+    что унаследовано;
+    что добавлено;
+    что не изменилось.
+
+
+======================================================================
+53. TASK86R HANDOFF
+======================================================================
+
+TASK86R_HANDOFF.md должен быть настолько полным,
+чтобы новый агент мог выполнить G1 experiment
+без принятия новых scientific decisions.
+
+Handoff должен указывать:
+
+    exact authoritative inputs;
+    exact split;
+    executable contract;
+    MFC configurations;
+    M0–M5 algorithms;
+    candidate grids;
+    PM5/PM6 definitions;
+    failure thresholds;
+    scale grid;
+    replicate rule;
+    convergence rule;
+    transcription stability rule;
+    adequacy gates;
+    minimality rule;
+    model-ladder rule;
+    seed derivation;
+    pre-HELDOUT freeze requirements;
+    final verdict mapping.
+
+
+======================================================================
+54. TASK86R PREFLIGHT
+======================================================================
+
+Task85a должен определить machine-checkable preflight.
+
+До первого calibration generation Task86R обязан получить:
+
+    CONTRACT_COMPLETE = SUPPORTED
+    ALL_GRIDS_FINITE = SUPPORTED
+    ALL_THRESHOLDS_DEFINED = SUPPORTED
+    ALL_GATES_EXECUTABLE = SUPPORTED
+    NEGATIVE_PROTOCOL_COMPLETE = SUPPORTED
+    PM5_COMPLETE = SUPPORTED
+    PM6_COMPLETE = SUPPORTED
+    SEED_CONTRACT_COMPLETE = SUPPORTED
+    TASK86_BLOCKERS_RESOLVED = SUPPORTED.
+
+Любой другой результат:
+
+    Task86R must stop before fitting.
+
+
+======================================================================
+55. REQUIRED VERDICTS
+======================================================================
+
+TASK85A_REPORT.md должен выдать минимум:
+
+    CONTRACT_REPAIR_TARGET_BLIND =
+        SUPPORTED / NOT_SUPPORTED
+
+    TASK85_V1_IMMUTABLE =
+        SUPPORTED / NOT_SUPPORTED
+
+    CORPUS_SPLIT_UNCHANGED =
+        SUPPORTED / NOT_SUPPORTED
+
+    G1_MODEL_SPACE_UNCHANGED =
+        SUPPORTED / NOT_SUPPORTED
+
+    G1_ALGORITHMS_FULLY_SPECIFIED =
+        SUPPORTED / NOT_SUPPORTED
+
+    HYPERPARAMETER_SPACE_FINITE =
+        SUPPORTED / NOT_SUPPORTED
+
+    CALIBRATION_CONTRACT_COMPLETE =
+        SUPPORTED / NOT_SUPPORTED
+
+    NULL_SPREAD_DEFINED =
+        SUPPORTED / NOT_SUPPORTED
+
+    GENERATION_SCALE_GRID_DEFINED =
+        SUPPORTED / NOT_SUPPORTED
+
+    REPLICATE_STOP_RULE_DEFINED =
+        SUPPORTED / NOT_SUPPORTED
+
+    CONVERGENCE_TOLERANCE_DEFINED =
+        SUPPORTED / NOT_SUPPORTED
+
+    CROSS_TRANSCRIPTION_TOLERANCE_DEFINED =
+        SUPPORTED / NOT_SUPPORTED
+
+    FAILURE_THRESHOLDS_DEFINED =
+        SUPPORTED / NOT_SUPPORTED
+
+    NEGATIVE_TOKEN_PROTOCOL_DEFINED =
+        SUPPORTED / NOT_SUPPORTED
+
+    PM5_FULLY_SPECIFIED =
+        SUPPORTED / NOT_SUPPORTED
+
+    PM6_FULLY_SPECIFIED =
+        SUPPORTED / NOT_SUPPORTED
+
+    PREDICTIVE_ADEQUACY_EXECUTABLE =
+        SUPPORTED / NOT_SUPPORTED
+
+    STRUCTURAL_ADEQUACY_EXECUTABLE =
+        SUPPORTED / NOT_SUPPORTED
+
+    MINIMALITY_RULE_EXECUTABLE =
+        SUPPORTED / NOT_SUPPORTED
+
+    MODEL_LADDER_RULE_EXECUTABLE =
+        SUPPORTED / NOT_SUPPORTED
+
+    TOKEN_FORMATION_DEPTH_RULE_EXECUTABLE =
+        SUPPORTED / NOT_SUPPORTED
+
+    DETERMINISM_CONTRACT_COMPLETE =
+        SUPPORTED / NOT_SUPPORTED
+
+    TASK86_BLOCKERS_RESOLVED =
+        SUPPORTED / PARTIAL / NOT_SUPPORTED
+
+    TASK86R_READY =
+        SUPPORTED / NOT_SUPPORTED.
+
+
+======================================================================
+56. FREEZE CONDITIONS
+======================================================================
+
+Выпустить:
+
+    GRAMMAR_EXPERIMENT_CONTRACT_V1.1_FROZEN
+
+только если:
+
+    CONTRACT_REPAIR_TARGET_BLIND = SUPPORTED
+
+    TASK85_V1_IMMUTABLE = SUPPORTED
+
+    CORPUS_SPLIT_UNCHANGED = SUPPORTED
+
+    G1_MODEL_SPACE_UNCHANGED = SUPPORTED
+
+    TASK86_BLOCKERS_RESOLVED = SUPPORTED
+
+    TASK86R_READY = SUPPORTED
+
+и все executable-contract validation tests проходят.
+
+Иначе:
+
+    GRAMMAR_CONTRACT_V1_1_UNRESOLVED.
+
+
+======================================================================
+57. NON-GOALS
+======================================================================
+
+Task85a НЕ должен:
+
+    fit M0–M5 on Voynich;
+    inspect model performance on Voynich;
+    compute G1 predictive metrics on Voynich;
+    compute G1 F2 results;
+    run VALIDATION;
+    open HELDOUT;
+    select a grammar;
+    alter M0–M5 scientific model classes;
+    add G1 metrics;
+    add G2 metrics;
+    compute information residual;
+    run message-free VM reproduction;
+    compare against Fontana;
+    reinterpret Phase II;
+    answer whether Voynichese is a language.
+
+
+======================================================================
+58. VALIDATION
+======================================================================
+
+Обязательно проверить:
+
+    Task85 parent checksums;
+    Task86 blocked artifacts;
+    authoritative corpus checksums;
+    split byte identity;
+    V1.1 manifest consistency;
+    finite candidate enumeration;
+    deterministic configuration parsing;
+    no missing thresholds;
+    no unresolved scientific placeholders;
+    blocker regression;
+    no-Voynich-fit firewall.
+
+Если добавлен Go tooling:
+
+    go build ./...
+    go vet ./...
+    go test ./...
+    go test -race ./...
+
+Всегда:
+
+    git diff --check.
+
+
+======================================================================
+59. DEFINITION OF DONE
+======================================================================
+
+Task85a завершён только когда:
+
+1. Task86 blocked result audited.
+2. Target-blindness confirmed.
+3. Task85-v1 preserved unchanged.
+4. Frozen corpus split verified unchanged.
+5. All Task86 blocker groups entered in gap registry.
+6. Every blocker has an explicit resolution.
+7. M0 fully specified.
+8. M1 fully specified.
+9. M2 algorithm frozen.
+10. M2 finite grid frozen.
+11. M3 algorithm frozen.
+12. M3 generation/tie behavior frozen.
+13. M4 algorithm frozen.
+14. M4 finite grid frozen.
+15. M5 component discovery frozen.
+16. M5 rule induction frozen.
+17. M5 finite grid frozen.
+18. Unified M0–M5 candidate grid generated.
+19. Candidate grid shown computationally feasible.
+20. MFC0–MFC2 fully specified.
+21. Calibration population sizes frozen.
+22. Null-spread functionals frozen.
+23. Calibration threshold derivation frozen.
+24. Scale grid frozen.
+25. Replicate checkpoints frozen.
+26. Replicate stopping rule frozen.
+27. Convergence tolerance frozen.
+28. Cross-transcription tolerance frozen.
+29. NUMERICALLY_UNSTABLE threshold frozen.
+30. COMPLEXITY_UNBOUNDED threshold frozen.
+31. MEMORIZATION_DOMINATED threshold frozen.
+32. Negative-token sampler frozen.
+33. Glyph-frequency classes frozen.
+34. PM5 functional frozen.
+35. PM6 functional frozen.
+36. PredictiveAdequacy executable.
+37. StructuralAdequacy executable.
+38. Family-level gates executable.
+39. Minimality tie rule frozen.
+40. Model-ladder gain rule frozen.
+41. TOKEN_FORMATION_DEPTH mapping frozen.
+42. EXPLICIT_RULE_GRAMMAR_REQUIRED mapping frozen.
+43. Seed derivation frozen.
+44. Deterministic ordering requirements frozen.
+45. Machine-readable executable contract produced.
+46. Contract validator implemented.
+47. Placeholder audit completed.
+48. All Task86 blockers pass regression.
+49. No Voynich fitting performed.
+50. TASK86R_HANDOFF.md complete.
+51. TASK86R preflight defined.
+52. Version manifest complete.
+53. Required verdicts issued.
+54. Repository validation passes.
+55. GRAMMAR_EXPERIMENT_CONTRACT_V1.1_FROZEN issued.
+

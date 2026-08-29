@@ -1,0 +1,1235 @@
+Task85a-v1.1 — Post-Freeze Implementation Resolution Audit
+and Task86R Confirmatory Integrity Validation
+
+Цель
+
+Провести независимый post-freeze аудит всех implementation resolutions,
+принятых при выполнении Task86R поверх замороженного
+Task85 + Task85a-v1.1 experimental contract.
+
+Основной вопрос:
+
+    Были ли все решения, принятые исполнителем Task86R,
+    чистыми implementation details, не изменяющими scientific semantics
+    frozen contract?
+
+или:
+
+    Task86R фактически ввёл новые scientific degrees of freedom
+    после preregistration?
+
+Task85a-v1.1 НЕ является:
+
+    новым grammar experiment;
+    повторным Task86R;
+    исправлением отрицательного результата;
+    расширением model space;
+    изменением frozen contract.
+
+Задача является:
+
+    CONFIRMATORY INTEGRITY / PROVENANCE AUDIT.
+
+Основной итог:
+
+    TASK86R_CONFIRMATORY_INTEGRITY =
+        SUPPORTED
+        / PARTIAL
+        / NOT_SUPPORTED.
+
+Если SUPPORTED:
+
+    существующий TOKEN_GRAMMAR_FROZEN
+    и G1_MINIMAL_CLASS=NONE
+    сохраняются без изменений.
+
+Если NOT_SUPPORTED:
+
+    определить минимально необходимое corrective action,
+    но НЕ выполнять его в рамках этой задачи.
+
+
+======================================================================
+1. AUTHORITATIVE INPUTS
+======================================================================
+
+Использовать как immutable evidence:
+
+    Task85 frozen artifacts;
+    Task85a frozen artifacts;
+    GRAMMAR_EXPERIMENT_CONTRACT_V1.1_FROZEN;
+
+    Task86 historical BLOCKED artifacts;
+
+    Task86R source code;
+    Task86R execution ledger;
+    Task86R reports;
+    Task86R result tables;
+    Task86R freeze markers;
+
+    git commit:
+        0e60737
+
+Особенно:
+
+    research/phase3/task86r/TASK86R_EXECUTION.md
+    research/phase3/task86r/TASK86R_REPORT.md
+    research/phase3/task86r/G1_MODEL_SELECTION_REPORT.md
+    research/phase3/task86r/G1_HELDOUT_REPORT.md
+    research/phase3/task86r/G1_GENERATIVE_VALIDATION_REPORT.md
+    research/phase3/task86r/TASK87_HANDOFF.md
+
+Не изменять эти artifacts.
+
+
+======================================================================
+2. AUDIT SUBJECT
+======================================================================
+
+TASK86R_EXECUTION.md перечисляет implementation resolutions,
+которые необходимо проверить независимо:
+
+R1.
+    PCG-XSL-RR-128/64 implementation:
+        multiplier;
+        increment;
+        warm-up advance.
+
+R2.
+    VALIDATION class-wise selection:
+        argmin VALIDATION PM2;
+        candidate_id tie-break.
+
+R3.
+    B2 baseline selection:
+        VALIDATION-argmin-PM2 alpha
+        среди M1 order=2 candidates.
+
+R4.
+    M3/M4 state-merging search:
+        blue-fringe restriction
+        вместо exhaustive all-pairs enumeration.
+
+R5.
+    glyph ↔ rune alias encoding
+        для frozen Fingerprint V2 computation.
+
+R6.
+    calibration structural/predictive null generation
+        и использование 16 independent populations
+        как replicate axis.
+
+Не ограничиваться prose description.
+
+Проверить фактический source code и execution path.
+
+
+======================================================================
+3. CLASSIFICATION
+======================================================================
+
+Каждый resolution R1–R6 классифицировать ровно в одну категорию:
+
+PURE_IMPLEMENTATION
+
+    Контракт однозначно определяет scientific operation,
+    а решение является только технической реализацией,
+    не способной изменить scientific result.
+
+EQUIVALENT_IMPLEMENTATION
+
+    Контракт допускает несколько реализаций,
+    но математически или экспериментально подтверждено,
+    что выбранная реализация эквивалентна
+    относительно всех relevant frozen outputs/verdicts.
+
+SCIENTIFIC_COMPLETION
+
+    Frozen contract оставлял существенную степень свободы,
+    а Task86R самостоятельно определил её после freeze.
+
+SCIENTIFIC_CHANGE
+
+    Task86R исполнил процедуру,
+    отличающуюся от frozen scientific contract.
+
+UNRESOLVED
+
+    Имеющихся evidence недостаточно,
+    чтобы доказать одну из категорий выше.
+
+
+======================================================================
+4. BURDEN OF PROOF
+======================================================================
+
+Фраза:
+
+    "standard implementation"
+
+не является доказательством equivalence.
+
+Фраза:
+
+    "reasonable choice"
+
+не является доказательством equivalence.
+
+Фраза:
+
+    "does not change semantics"
+
+не является доказательством equivalence.
+
+Для PURE_IMPLEMENTATION требуется показать,
+что alternative implementation cannot change
+scientifically relevant output.
+
+Для EQUIVALENT_IMPLEMENTATION требуется:
+
+    mathematical argument
+
+и/или
+
+    controlled regression experiment.
+
+
+======================================================================
+5. SCIENTIFICALLY RELEVANT OUTPUT
+======================================================================
+
+Resolution считается scientific-significant,
+если он способен изменить хотя бы одно из:
+
+    candidate training success/failure;
+    fitted model;
+    candidate selected on VALIDATION;
+    PM1/PM2/PM4/PM5/PM6;
+    Complexity(G);
+    memorization status;
+    generation output distribution;
+    F2 metric;
+    family-level structural gate;
+    PredictiveAdequacy;
+    StructuralAdequacy;
+    model ladder;
+    G1_MINIMAL_CLASS;
+    TOKEN_FORMATION_DEPTH;
+    EXPLICIT_RULE_GRAMMAR_REQUIRED;
+    TASK87_READY.
+
+
+======================================================================
+6. R1 — RNG AUDIT
+======================================================================
+
+Проверить Task85a-v1.1 seed/RNG contract против
+реального Task86R implementation.
+
+Определить:
+
+    был ли конкретный PCG algorithm
+    полностью определён frozen contract;
+
+    были ли multiplier/increment
+    математически однозначны;
+
+    был ли warm-up определён;
+
+    могла ли другая допустимая реализация
+    дать другой generated sample.
+
+Выполнить deterministic test vectors:
+
+    seed
+        →
+    first N uint64 outputs.
+
+Создать frozen test-vector artifact.
+
+Если contract задавал только:
+
+    "PCG-XSL-RR-128/64"
+
+и существует единственная canonical parameterization,
+это необходимо доказать ссылкой на implementation/specification
+или repository precedent.
+
+Иначе resolution может быть SCIENTIFIC_COMPLETION.
+
+
+======================================================================
+7. R1 OUTCOME SENSITIVITY
+======================================================================
+
+Если R1 не является PURE_IMPLEMENTATION,
+проверить sensitivity scientific outputs.
+
+Не требуется полный Task86R rerun.
+
+Достаточно representative generation subset,
+способного показать:
+
+    identical distribution/output
+
+или:
+
+    potentially different scientific result.
+
+Не использовать Voynich HELDOUT для нового tuning.
+
+
+======================================================================
+8. R2 — MODEL-SELECTION RULE AUDIT
+======================================================================
+
+Проверить, был ли:
+
+    argmin VALIDATION PM2
+
+явно frozen до Task86R.
+
+Не считать выражение:
+
+    "primary predictive metric"
+
+автоматически равным:
+
+    "selection objective".
+
+Найти точную provenance chain:
+
+    Task85
+        →
+    Task85a
+        →
+    G1_EXECUTABLE_CONTRACT.json
+        →
+    Task86R implementation.
+
+Ответить:
+
+    мог ли другой contract-consistent selection statistic
+    выбрать другого candidate внутри M0–M5?
+
+
+======================================================================
+9. R2 COUNTERFACTUAL TEST
+======================================================================
+
+Если selection rule не был явно frozen,
+использовать уже существующие VALIDATION results
+только для audit sensitivity.
+
+НЕ выполнять новый fitting.
+
+Проверить:
+
+    PM1 selection;
+    PM2 selection;
+    complexity-aware selection;
+
+только если эти alternatives действительно
+могли быть допустимыми из frozen prose.
+
+Цель:
+
+    не выбрать лучший rule,
+
+а определить:
+
+    влияет ли unresolved degree of freedom
+    на selected candidate.
+
+
+======================================================================
+10. R3 — B2 BASELINE AUDIT
+======================================================================
+
+Проверить точное определение B2
+в Task85/Task85a.
+
+Определить:
+
+    фиксировался ли конкретный M1 order=2 candidate;
+
+    фиксировалась ли alpha;
+
+    разрешался ли VALIDATION-based selection;
+
+    совпадает ли actual B2 с frozen baseline semantics.
+
+Проверить, может ли выбор другого допустимого alpha
+изменить PredictiveAdequacy threshold comparison.
+
+
+======================================================================
+11. R4 — M3/M4 AUDIT: HIGHEST PRIORITY
+======================================================================
+
+R4 считать CRITICAL audit item.
+
+Task86R сообщает:
+
+    blue-fringe restriction
+
+вместо:
+
+    exhaustive all-pairs enumeration.
+
+Не принимать утверждение об equivalence без проверки.
+
+
+======================================================================
+12. FORMALIZE BOTH STATE-MERGING ALGORITHMS
+======================================================================
+
+Явно записать:
+
+A:
+
+    exhaustive all-pairs greedy JS-divergence merging.
+
+B:
+
+    actual Task86R blue-fringe restricted search.
+
+Для обоих определить:
+
+    initial trie;
+    candidate pair set;
+    ordering;
+    JS threshold;
+    merge/reject operation;
+    representative state behavior;
+    max_states;
+    operation counting;
+    termination.
+
+
+======================================================================
+13. R4 MATHEMATICAL EQUIVALENCE
+======================================================================
+
+Определить, являются ли A и B:
+
+    algorithmically identical;
+
+    search-equivalent;
+
+    outcome-equivalent;
+
+или:
+
+    distinct induction algorithms.
+
+Особенно проверить:
+
+    может ли A рассмотреть merge,
+    который B никогда не рассматривает;
+
+    может ли порядок merges отличаться;
+
+    может ли один algorithm достичь max_states,
+    а другой operation cap;
+
+    могут ли resulting automata различаться.
+
+
+======================================================================
+14. R4 SYNTHETIC COUNTEREXAMPLE SEARCH
+======================================================================
+
+Построить target-blind synthetic test corpus suite.
+
+Искать corpus, на котором:
+
+    exhaustive
+        !=
+    blue-fringe
+
+по одному из:
+
+    training status;
+    number of operations;
+    final state count;
+    accepted language;
+    transition structure.
+
+Это НЕ model tuning.
+
+Это algorithm-equivalence test.
+
+
+======================================================================
+15. R4 REAL-DATA SENSITIVITY
+======================================================================
+
+Если synthetic counterexample существует,
+R4 автоматически не может быть PURE_IMPLEMENTATION.
+
+Далее определить,
+может ли divergence быть relevant для Task86R.
+
+Разрешён ограниченный diagnostic rerun
+M3/M4 induction на:
+
+    DEVELOPMENT only.
+
+HELDOUT не использовать.
+
+Не менять thresholds/max_states.
+
+Сравнить:
+
+    exhaustive
+    vs
+    blue-fringe
+
+на frozen DEVELOPMENT input.
+
+
+======================================================================
+16. OPERATION-CAP SEMANTICS
+======================================================================
+
+Особенно проверить значение:
+
+    100,000 operations.
+
+Определить, что именно считалось operation
+в frozen contract и actual implementation.
+
+Если blue-fringe уменьшает число examined pairs,
+то operation-cap comparison может быть
+algorithm-dependent.
+
+Проверить, сохраняется ли утверждение:
+
+    "M3/M4 cannot converge within
+     frozen 100,000-operation cap"
+
+при contract-intended algorithm.
+
+
+======================================================================
+17. R4 VERDICT IMPACT
+======================================================================
+
+Task86R использует failure M3/M4
+как одну из независимых причин G1_MINIMAL_CLASS=NONE.
+
+Поэтому отдельно определить:
+
+    M3_M4_FAILURE_EVIDENCE =
+        CONFIRMATORY
+        / CONDITIONAL
+        / INVALID
+        / UNRESOLVED.
+
+Даже если общий NONE сохраняется из-за других gates,
+не сохранять ложное утверждение,
+что finite-state class была корректно исключена.
+
+
+======================================================================
+18. R5 — GLYPH/RUNE ALIAS AUDIT
+======================================================================
+
+Проверить bijection:
+
+    frozen glyph
+        ↔
+    rune alias.
+
+Требовать:
+
+    one-to-one;
+    reversible;
+    deterministic;
+    no collisions;
+    no ordering change where ordering matters;
+    no accidental EVA recomposition;
+    no metric-specific semantic change.
+
+Для полного observed alphabet выполнить
+round-trip test:
+
+    glyph
+        →
+    alias
+        →
+    glyph.
+
+Требовать byte-identical recovery.
+
+
+======================================================================
+19. R5 METRIC REGRESSION
+======================================================================
+
+На representative frozen corpus
+сравнить F2 computation:
+
+    direct glyph representation
+
+против:
+
+    alias representation
+
+там, где independent direct implementation возможен.
+
+Все seven G1 F2 metrics должны совпасть
+в пределах exact/numerically justified tolerance.
+
+
+======================================================================
+20. R6 — CALIBRATION INTERPRETATION AUDIT
+======================================================================
+
+Проверить frozen calibration contract:
+
+    4032-job workload;
+    16 populations;
+    generated HELDOUT-analogue size;
+    replicate semantics;
+    seed variation.
+
+Определить, было ли однозначно задано:
+
+    one generation per
+    (generator,population,candidate);
+
+и:
+
+    16 populations as replicate axis.
+
+Если это только одна из возможных interpretations,
+классифицировать соответствующим образом.
+
+
+======================================================================
+21. R6 THRESHOLD SENSITIVITY
+======================================================================
+
+Если R6 содержит unresolved freedom,
+использовать только existing calibration outputs,
+где возможно.
+
+Не генерировать новую preferred calibration.
+
+Проверить, могут ли alternative contract-consistent
+aggregation schemes изменить:
+
+    q0.95 threshold;
+    PredictiveAdequacy;
+    StructuralAdequacy.
+
+Цель — sensitivity audit,
+не threshold reselection.
+
+
+======================================================================
+22. SEARCH FOR UNDISCLOSED RESOLUTIONS
+======================================================================
+
+Не ограничиваться R1–R6.
+
+Сравнить:
+
+    frozen executable contract
+
+с:
+
+    Task86R source code
+
+и выявить любые дополнительные places,
+где implementation содержит choice,
+не заданный contract.
+
+Создать:
+
+    IMPLEMENTATION_DEGREE_OF_FREEDOM_AUDIT.tsv.
+
+Каждая найденная degree of freedom
+должна быть классифицирована.
+
+
+======================================================================
+23. STATIC CONTRACT-TO-CODE TRACE
+======================================================================
+
+Для scientifically relevant configuration
+создать mapping:
+
+    contract_key
+        →
+    source_file
+        →
+    function
+        →
+    runtime value.
+
+Минимум:
+
+    RNG;
+    M0-M5 algorithms;
+    hyperparameter grids;
+    selection;
+    B2;
+    MFC;
+    PM metrics;
+    negative protocol;
+    F2;
+    complexity;
+    failure thresholds;
+    generation scales;
+    convergence;
+    stability;
+    adequacy gates.
+
+
+======================================================================
+24. NO NEW SCIENTIFIC DESIGN
+======================================================================
+
+Task85a-v1.1 запрещено:
+
+    исправлять Task86R;
+    выбирать preferred alternative;
+    менять contract;
+    расширять grid;
+    улучшать negative-token protocol;
+    повышать M3/M4 operation cap;
+    менять M5;
+    создавать новую grammar;
+    переопределять adequacy.
+
+Только audit.
+
+
+======================================================================
+25. PM6 RESULT PRESERVATION
+======================================================================
+
+Отдельно проверить,
+зависит ли finding:
+
+    NEGATIVE_EXHAUSTED for length-1 tokens
+
+от любого R1–R6.
+
+Если нет, зафиксировать:
+
+    PM6_NEGATIVE_EXHAUSTION_ROBUST =
+        SUPPORTED.
+
+Это важно, поскольку PM6 failure
+сам по себе блокирует frozen PredictiveAdequacy
+для всех retained candidates. :contentReference[oaicite:2]{index=2}
+
+
+======================================================================
+26. STRUCTURAL FAILURE PRESERVATION
+======================================================================
+
+Аналогично определить,
+зависит ли:
+
+    zero StructuralAdequacy passes
+
+от audited implementation resolutions.
+
+Task86R generative report показывает,
+что structural_adequate=false
+для всех evaluated class/transcription rows. :contentReference[oaicite:3]{index=3}
+
+Выдать:
+
+    STRUCTURAL_FAILURE_ROBUST =
+        SUPPORTED
+        / PARTIAL
+        / NOT_SUPPORTED.
+
+
+======================================================================
+27. M5 COVERAGE FINDING
+======================================================================
+
+Проверить независимо finding:
+
+    M5 assigns zero probability
+    to observed VALIDATION/HELDOUT forms.
+
+Task86R HELDOUT report содержит:
+
+    PM1 = +Inf
+
+для M5 на ZL3b и IT2a. :contentReference[oaicite:4]{index=4}
+
+Определить:
+
+    зависит ли это от R1–R6;
+
+    является ли это прямым следствием
+    frozen M5 unseen-scoring semantics.
+
+Выдать:
+
+    M5_PRODUCTIVE_COVERAGE_GAP_ROBUST =
+        SUPPORTED
+        / NOT_SUPPORTED
+        / UNRESOLVED.
+
+
+======================================================================
+28. COUNTERFACTUAL OUTCOME MATRIX
+======================================================================
+
+Создать:
+
+    TASK86R_COUNTERFACTUAL_IMPACT.tsv.
+
+Для каждого resolution:
+
+    resolution_id
+    classification
+    affected_stage
+    affected_models
+    could_change_fit
+    could_change_selection
+    could_change_predictive_gate
+    could_change_structural_gate
+    could_change_G1_MINIMAL_CLASS
+    could_change_TOKEN_FORMATION_DEPTH
+    evidence.
+
+
+======================================================================
+29. VERDICT ROBUSTNESS LEVELS
+======================================================================
+
+Для каждого Task86R major finding определить:
+
+ROBUST
+
+    finding survives all scientifically
+    plausible audited alternatives.
+
+CONDITIONAL
+
+    finding is valid only under
+    one implementation resolution.
+
+NOT_CONFIRMATORY
+
+    finding depends on post-freeze
+    scientific completion/change.
+
+UNRESOLVED
+
+    evidence insufficient.
+
+Применить минимум к:
+
+    PM6 negative exhaustion;
+    M3/M4 training failure;
+    M5 productive coverage gap;
+    StructuralAdequacy failure;
+    PredictiveAdequacy failure;
+    G1_MINIMAL_CLASS=NONE;
+    TOKEN_FORMATION_DEPTH=NOT_IDENTIFIABLE;
+    TASK87_READY=NOT_SUPPORTED.
+
+
+======================================================================
+30. OVERALL INTEGRITY RULE
+======================================================================
+
+Set:
+
+TASK86R_CONFIRMATORY_INTEGRITY = SUPPORTED
+
+только если:
+
+    no resolution is SCIENTIFIC_COMPLETION;
+    no resolution is SCIENTIFIC_CHANGE;
+    no scientifically relevant resolution is UNRESOLVED;
+
+и все primary Task86R verdicts
+remain confirmatory.
+
+
+Set:
+
+TASK86R_CONFIRMATORY_INTEGRITY = PARTIAL
+
+если:
+
+    one or more resolutions affect subsidiary claims,
+
+но:
+
+    G1_MINIMAL_CLASS=NONE
+    and
+    TASK87_READY=NOT_SUPPORTED
+
+remain robust from independent unaffected evidence.
+
+
+Set:
+
+TASK86R_CONFIRMATORY_INTEGRITY = NOT_SUPPORTED
+
+если:
+
+    post-freeze resolution can change
+    the primary confirmatory conclusion.
+
+
+======================================================================
+31. IMPORTANT DISTINCTION
+======================================================================
+
+Не считать автоматически:
+
+    overall NONE remains unchanged
+
+эквивалентным:
+
+    original experiment fully confirmatory.
+
+Например:
+
+если M3/M4 failure оказывается
+implementation-dependent,
+
+но PM6 всё равно заставляет все models
+fail PredictiveAdequacy,
+
+то возможно:
+
+    G1_MINIMAL_CLASS=NONE remains robust
+
+при этом:
+
+    "finite-state models failed under
+     the preregistered procedure"
+
+может стать:
+
+    NOT_CONFIRMATORY.
+
+Это должно быть отражено явно.
+
+
+======================================================================
+32. CORRECTIVE-ACTION CLASSIFICATION
+======================================================================
+
+Если integrity != SUPPORTED,
+определить минимальный следующий шаг:
+
+NO_ACTION
+
+    original Task86R fully valid.
+
+REPORT_CORRECTION_ONLY
+
+    primary result valid,
+    subsidiary interpretation requires correction.
+
+TARGETED_RERUN
+
+    only affected branch requires clean rerun.
+
+FULL_TASK86R_RERUN
+
+    primary confirmatory result compromised.
+
+NEW_CONTRACT_VERSION_REQUIRED
+
+    frozen contract itself remained incomplete.
+
+Не выполнять corrective action.
+
+
+======================================================================
+33. VERSIONING POLICY
+======================================================================
+
+Не удалять:
+
+    GRAMMAR_EXPERIMENT_CONTRACT_V1.1_FROZEN
+    TOKEN_GRAMMAR_FROZEN.
+
+Audit должен добавить provenance layer.
+
+Если original result требует qualification,
+создать новый marker,
+но не переписывать historical markers.
+
+
+======================================================================
+34. REQUIRED ARTIFACTS
+======================================================================
+
+Создать минимум:
+
+research/phase3/task85a-v1.1/
+
+    TASK85A_V1_1_AUDIT_DESIGN.md
+
+    IMPLEMENTATION_RESOLUTION_REGISTRY.tsv
+    IMPLEMENTATION_DEGREE_OF_FREEDOM_AUDIT.tsv
+    CONTRACT_TO_CODE_TRACE.tsv
+
+    RNG_AUDIT.md
+    RNG_TEST_VECTORS.tsv
+
+    MODEL_SELECTION_AUDIT.md
+    BASELINE_B2_AUDIT.md
+
+    STATE_MERGING_AUDIT.md
+    STATE_MERGING_EQUIVALENCE_TESTS.tsv
+    STATE_MERGING_SYNTHETIC_COUNTEREXAMPLES.tsv
+
+    GLYPH_ALIAS_AUDIT.md
+    GLYPH_ALIAS_REGRESSION.tsv
+
+    CALIBRATION_INTERPRETATION_AUDIT.md
+
+    TASK86R_COUNTERFACTUAL_IMPACT.tsv
+    TASK86R_VERDICT_ROBUSTNESS.tsv
+
+    TASK85A_V1_1_AUDIT_REPORT.md
+    TASK85A_V1_1_RESULTS_MANIFEST.json.
+
+
+======================================================================
+35. REQUIRED VERDICTS
+======================================================================
+
+Выдать минимум:
+
+    R1_RNG =
+        PURE_IMPLEMENTATION
+        / EQUIVALENT_IMPLEMENTATION
+        / SCIENTIFIC_COMPLETION
+        / SCIENTIFIC_CHANGE
+        / UNRESOLVED
+
+    R2_SELECTION =
+        same enum
+
+    R3_B2 =
+        same enum
+
+    R4_STATE_MERGING =
+        same enum
+
+    R5_GLYPH_ALIAS =
+        same enum
+
+    R6_CALIBRATION =
+        same enum
+
+    UNDISCLOSED_SCIENTIFIC_DOF =
+        NOT_DETECTED
+        / DETECTED
+        / UNRESOLVED
+
+    PM6_NEGATIVE_EXHAUSTION_ROBUST =
+        SUPPORTED / NOT_SUPPORTED
+
+    M3_M4_FAILURE_EVIDENCE =
+        CONFIRMATORY
+        / CONDITIONAL
+        / INVALID
+        / UNRESOLVED
+
+    M5_PRODUCTIVE_COVERAGE_GAP_ROBUST =
+        SUPPORTED / NOT_SUPPORTED / UNRESOLVED
+
+    STRUCTURAL_FAILURE_ROBUST =
+        SUPPORTED / PARTIAL / NOT_SUPPORTED
+
+    G1_NONE_VERDICT_ROBUST =
+        SUPPORTED / PARTIAL / NOT_SUPPORTED
+
+    TOKEN_FORMATION_DEPTH_ROBUST =
+        SUPPORTED / PARTIAL / NOT_SUPPORTED
+
+    TASK87_NOT_READY_ROBUST =
+        SUPPORTED / PARTIAL / NOT_SUPPORTED
+
+    TASK86R_CONFIRMATORY_INTEGRITY =
+        SUPPORTED / PARTIAL / NOT_SUPPORTED
+
+    CORRECTIVE_ACTION =
+        NO_ACTION
+        / REPORT_CORRECTION_ONLY
+        / TARGETED_RERUN
+        / FULL_TASK86R_RERUN
+        / NEW_CONTRACT_VERSION_REQUIRED.
+
+
+======================================================================
+36. FREEZE MARKERS
+======================================================================
+
+Если:
+
+    TASK86R_CONFIRMATORY_INTEGRITY = SUPPORTED
+
+создать:
+
+    TASK86R_CONFIRMATORY_INTEGRITY_VERIFIED.
+
+Если:
+
+    TASK86R_CONFIRMATORY_INTEGRITY = PARTIAL
+
+создать:
+
+    TASK86R_CONFIRMATORY_INTEGRITY_QUALIFIED.
+
+Если:
+
+    TASK86R_CONFIRMATORY_INTEGRITY = NOT_SUPPORTED
+
+создать:
+
+    TASK86R_CONFIRMATORY_INTEGRITY_NOT_VERIFIED.
+
+Ровно один marker.
+
+
+======================================================================
+37. REPORT REQUIREMENTS
+======================================================================
+
+TASK85A_V1_1_AUDIT_REPORT.md должен ответить:
+
+1. Какие post-freeze implementation resolutions
+   действительно были сделаны Task86R?
+
+2. Были ли они явно разрешены Task85a-v1.1?
+
+3. Какие являются PURE_IMPLEMENTATION?
+
+4. Какие требуют доказательства equivalence?
+
+5. Есть ли SCIENTIFIC_COMPLETION?
+
+6. Есть ли SCIENTIFIC_CHANGE?
+
+7. Найдены ли незадокументированные degrees of freedom?
+
+8. Эквивалентны ли RNG implementations?
+
+9. Был ли VALIDATION selection rule preregistered?
+
+10. Был ли B2 selection preregistered?
+
+11. Эквивалентны ли exhaustive и blue-fringe
+    state-merging procedures?
+
+12. Может ли R4 изменить training success/failure M3/M4?
+
+13. Остаётся ли M3/M4 failure confirmatory evidence?
+
+14. Является ли glyph alias bijective
+    и metric-preserving?
+
+15. Однозначно ли calibration interpretation
+    следует frozen contract?
+
+16. Остаётся ли PM6 negative exhaustion robust?
+
+17. Остаётся ли M5 coverage failure robust?
+
+18. Остаётся ли StructuralAdequacy failure robust?
+
+19. Остаётся ли PredictiveAdequacy failure robust?
+
+20. Остаётся ли G1_MINIMAL_CLASS=NONE robust?
+
+21. Остаётся ли TOKEN_FORMATION_DEPTH=NOT_IDENTIFIABLE robust?
+
+22. Остаётся ли TASK87_READY=NOT_SUPPORTED robust?
+
+23. Можно ли считать TOKEN_GRAMMAR_FROZEN
+    полностью confirmatory?
+
+24. Требуется ли qualification?
+
+25. Какое минимальное corrective action требуется?
+
+
+======================================================================
+38. VALIDATION
+======================================================================
+
+Обязательно:
+
+    verify commit 0e60737;
+    verify Task85 hashes;
+    verify Task85a hashes;
+    verify Task86R hashes;
+    verify freeze markers;
+
+    deterministic audit tools;
+    deterministic synthetic counterexample tests;
+    deterministic RNG vectors;
+    deterministic glyph round-trip tests;
+
+    no HELDOUT tuning;
+    no contract modification;
+    no result replacement.
+
+Если добавлен Go code:
+
+    go build ./...
+    go vet ./...
+    go test ./...
+    go test -race ./...
+
+Всегда:
+
+    git diff --check.
+
+
+======================================================================
+39. DEFINITION OF DONE
+======================================================================
+
+Task85a-v1.1 завершён только когда:
+
+1. Task85/Task85a/Task86R provenance verified.
+2. Commit 0e60737 verified.
+3. R1 audited.
+4. R2 audited.
+5. R3 audited.
+6. R4 audited.
+7. Exhaustive and blue-fringe formally compared.
+8. Synthetic equivalence/counterexample test completed.
+9. Operation-cap semantics audited.
+10. M3/M4 failure evidence classified.
+11. R5 audited.
+12. Glyph alias round-trip verified.
+13. F2 alias regression completed.
+14. R6 audited.
+15. Undisclosed DOF search completed.
+16. Contract-to-code trace completed.
+17. PM6 finding robustness determined.
+18. M5 coverage finding robustness determined.
+19. Structural failure robustness determined.
+20. Counterfactual impact matrix completed.
+21. All major Task86R verdicts classified by robustness.
+22. Overall confirmatory integrity determined.
+23. Corrective action determined.
+24. Audit report completed.
+25. Results manifest completed.
+26. Repository validation passes.
+27. Exactly one integrity marker issued.

@@ -1,0 +1,2113 @@
+Task85c-g — G1-v2 Complete Generative Semantics Resolution
+and Scientific Contract V1.2 Freeze
+
+
+PURPOSE
+
+Resolve the complete G1-v2 generation-semantics defect class exposed
+by Task85c-f and produce one self-contained executable scientific
+contract:
+
+    G1_V2_EXECUTABLE_CONTRACT_V1_2.
+
+Task85c-f demonstrated that:
+
+    PF-SC01-EMPTY-TOKEN-GENERATION
+
+is reproducible, but is not an isolated defect.
+
+The generation layer as frozen in V1.1 does not uniquely define the
+function:
+
+    frozen model state
+        +
+    frozen generation parameters
+        +
+    frozen G1V2-RNG-1 stream
+        →
+    exact generated token sequence
+        →
+    exact serialized corpus bytes.
+
+Task85c-f audited 25 generation paths and found 8 open generation
+ambiguities, including at least:
+
+    PF-SC01 nonempty-token generation;
+
+    Generator B sampling algorithms;
+
+    canonical outcome enumeration/order;
+
+    token maximum-length semantics;
+
+    M5 attempt/counter/RNG-consumption semantics;
+
+    generated-corpus byte serialization.
+
+Task85c-g must resolve the ENTIRE generation subsystem as one
+scientific-contract repair.
+
+It must NOT repair one ambiguity and STOP merely because another
+ambiguity of the same generation-semantics class is discovered.
+
+The task must continue until either:
+
+    A. the complete generation subsystem is executable without
+       unstated scientific choices and V1.2 can be frozen;
+
+or:
+
+    B. a defect outside the authorized generation-repair scope is
+       discovered, or the generation requirements cannot be made
+       mutually coherent without redesigning unrelated scientific
+       components.
+
+No production experiment is executed by this task.
+
+
+======================================================================
+1. AUTHORITATIVE INPUTS
+======================================================================
+
+Parent scientific contract:
+
+    G1_V2_EXECUTABLE_CONTRACT_V1_1
+
+SHA-256:
+
+    5c3cd272c1dbae9bfe1d7a100155faf102e86d34660da239e1cb31704ad470b0
+
+Task85c-c artifact root:
+
+    dc27660d3e03a06f91aaa1c3aa6c48226328457746c9dc819e7c0a355ce8f09c
+
+Status/reachability contract:
+
+    G1_V2_STATUS_REACHABILITY_CONTRACT_V2
+
+SHA-256:
+
+    fc1ca07d8123ed5d44bc24ecba98fca54d5b05781ecbaba820d44079319038b9
+
+Execution identity erratum:
+
+    G1V2_EXECUTION_IDENTITY_ERRATUM_E1
+
+SHA-256:
+
+    dbfb9a4a7101eed7006f751b9c4631b5f0286c3792f9777cc833c5dcfa42a3d
+
+Task85c-e artifact root:
+
+    cc4860f8326080d433e3eae10b8370c542f030196b3af6ba614265294fd26ec6
+
+Task85c-f artifact root excluding results manifest:
+
+    1269d2a47efe053511824afef5a7236203e275897f3d17f12c71979f96b5fec6
+
+Task85c-f terminal marker:
+
+    TASK85C_F_SCIENTIFIC_CONTRACT_DEFECT_EXPANDED
+
+
+======================================================================
+2. TASK85C-F FINDINGS ARE INPUT EVIDENCE
+======================================================================
+
+Task85c-f established:
+
+    PF_SC01_REPRODUCED = YES
+
+    PF_SC01 = OPEN
+
+    candidate_boundary_cross_implementation = PASS
+
+    GENERATION_PATHS_AUDITED = 25
+
+    GENERATION_AMBIGUITIES_OPEN = 8
+
+    SCIENTIFIC_DESIGN_CHANGE_SCOPE = EXPANDED
+
+    unexpected_scientific_change_required_but_not_applied = 5
+
+    V1_2_READY = NOT_SUPPORTED
+
+    PRODUCTION_FREEZE_RETRY_READY = NOT_SUPPORTED
+
+    SCIENTIFIC_FIREWALL = INTACT.
+
+It also demonstrated for PF-SC01:
+
+    retry:
+        first glyph = a
+        RNG draws consumed = 2
+
+    conditional admissible-support sampling:
+        first glyph = d
+        RNG draws consumed = 1.
+
+Two independent candidate implementations agreed on the Task85c-f
+boundary fixtures.
+
+These candidate semantics and fixtures are evidence.
+
+They are NOT yet normative V1.2 semantics.
+
+
+======================================================================
+3. CLOSED FINDINGS MUST REMAIN CLOSED
+======================================================================
+
+Preserve:
+
+    R2-G01 = CLOSED
+    R2-G02 = CLOSED
+    EI01    = CLOSED.
+
+In particular:
+
+    scientific randomness source =
+        G1V2-RNG-1
+
+    blind_id =
+        opaque execution identifier
+
+    escrow =
+        blindness and truth commitment
+
+    JobID =
+        run execution identifier bound to scientific job.
+
+Generation semantics MUST NOT become dependent on:
+
+    escrow key;
+    blind_id;
+    JobID;
+    worker;
+    coordinator;
+    scheduler ordering;
+    execution timing.
+
+
+======================================================================
+4. AUTHORIZED SCIENTIFIC REPAIR SCOPE
+======================================================================
+
+Task85c-g is explicitly authorized to make scientifically normative
+changes required to make the existing generation subsystem fully
+executable.
+
+Authorized areas include:
+
+    categorical sampling semantics;
+
+    admissible-support sampling;
+
+    outcome enumeration/order;
+
+    special-symbol sampling/emission;
+
+    RNG draw allocation and consumption;
+
+    generation state transitions;
+
+    token termination;
+
+    minimum token length;
+
+    maximum token length;
+
+    Generator A execution semantics;
+
+    Generator B execution semantics;
+
+    M0–M5 generation semantics;
+
+    M5 attempts/counters/retries;
+
+    generated token serialization;
+
+    generated corpus byte serialization;
+
+    generation-specific golden vectors;
+
+    generation-specific machine-readable registries;
+
+    transitive contract hashes.
+
+These changes are expected scientific repairs.
+
+Do NOT classify them as unexpected merely because they can change
+generated corpus bytes.
+
+
+======================================================================
+5. OUT-OF-SCOPE SCIENTIFIC CHANGES
+======================================================================
+
+Task85c-g is NOT authorized to redesign:
+
+    fitted M0–M5 probability models;
+
+    candidate inventory/grid;
+
+    DEVELOPMENT/VALIDATION/HELDOUT split;
+
+    PM definitions;
+
+    bootstrap/permutation counts;
+
+    F2 metric definitions;
+
+    structural acceptance criteria;
+
+    complexity/minimality criteria;
+
+    status/reachability semantics;
+
+    final model/class decision rules;
+
+    control counts;
+
+    blind-control architecture;
+
+    natural-control architecture.
+
+If generation repair requires changing one of these:
+
+    STOP OUT_OF_SCOPE_SCIENTIFIC_CONTRACT_DEFECT.
+
+
+======================================================================
+6. CRITICAL STOP POLICY
+======================================================================
+
+DO NOT STOP merely because another ambiguity is found in:
+
+    generation;
+    sampling;
+    outcome ordering;
+    RNG consumption;
+    termination;
+    retries;
+    counters;
+    special symbols;
+    corpus serialization.
+
+Such findings are IN SCOPE and must be resolved by this task.
+
+Record them in the generation ambiguity registry and continue.
+
+STOP only if:
+
+    the defect lies outside generation scope;
+
+    two higher-precedence scientific requirements are irreconcilable;
+
+    a generation repair necessarily changes an unrelated scientific
+    component;
+
+    no coherent scientifically defensible generation semantics can
+    be constructed without redesigning the experiment;
+
+    the scientific firewall is violated.
+
+
+======================================================================
+7. COMPLETE AMBIGUITY REGISTRY
+======================================================================
+
+Start from the Task85c-f boundary audit.
+
+Create:
+
+    G1V2_GENERATION_AMBIGUITY_REGISTRY.tsv
+
+For every known or newly discovered ambiguity record:
+
+    ambiguity_id
+    source
+    affected_generator
+    affected_model
+    affected_state
+    competing_interpretations
+    scientific_effect
+    RNG_effect
+    corpus_byte_effect
+    resolution
+    justification
+    tests
+    status.
+
+Do not limit the registry to the eight already known findings.
+
+
+======================================================================
+8. FULL GENERATION-PATH INVENTORY
+======================================================================
+
+Reconstruct the complete inventory of generation paths from V1.1
+rather than assuming that the Task85c-f count of 25 is necessarily
+complete.
+
+For every path identify:
+
+    model family;
+    generator;
+    sampling primitive;
+    state;
+    support construction;
+    special symbols;
+    RNG domain;
+    RNG draws;
+    termination mechanism;
+    retry mechanism;
+    serialization path.
+
+Freeze the final count:
+
+    GENERATION_PATH_COUNT = <count>.
+
+Require every path to reach:
+
+    RESOLVED.
+
+
+======================================================================
+9. ONE GENERATION SEMANTICS
+======================================================================
+
+Define a single protocol-level generative semantics sufficient to
+interpret all M0–M5 and Generator A/B generation paths.
+
+Model-specific behavior may differ where required by the frozen
+models.
+
+Shared concepts must not acquire incompatible meanings between
+generators.
+
+
+======================================================================
+10. GENERATION STATE MACHINE
+======================================================================
+
+Produce normative:
+
+    G1V2_GENERATION_STATE_MACHINE_V1.md
+    G1V2_GENERATION_STATE_MACHINE_V1.json.
+
+At minimum represent:
+
+    BEFORE_TOKEN
+    INSIDE_TOKEN
+    TOKEN_COMPLETE
+    CORPUS_COMPLETE
+
+plus model-specific states where genuinely required.
+
+For every transition define:
+
+    current state;
+    support;
+    admissible outcomes;
+    RNG operation;
+    emitted value;
+    next state;
+    counter changes;
+    termination behavior;
+    failure behavior.
+
+
+======================================================================
+11. CANONICAL OUTCOME IDENTITY
+======================================================================
+
+Every categorical distribution must have one canonical ordered
+outcome sequence.
+
+No ambiguity may remain between:
+
+    registry order;
+    UTF-8 byte order;
+    lexical order;
+    map iteration order;
+    model-construction order.
+
+Define explicitly which source determines scientific outcome order.
+
+
+======================================================================
+12. ORDER MUST BE PART OF SCIENTIFIC SAMPLING
+======================================================================
+
+Because one U53 value mapped through different categorical ordering
+can produce different symbols, outcome order is scientifically
+normative.
+
+Freeze it before downstream DEVELOPMENT evaluation.
+
+Do not choose ordering based on resulting corpus quality.
+
+
+======================================================================
+13. M0 ORDER CONFLICT
+======================================================================
+
+Resolve explicitly the Task85c-f conflict between:
+
+    "UTF-8-sorted outcomes"
+
+and the explicit M0 registry row where:
+
+    <EOS>
+
+appears after ordinary glyphs.
+
+Determine one normative V1.2 rule.
+
+Add a permanent regression vector demonstrating the resolution.
+
+
+======================================================================
+14. CANONICAL CATEGORICAL SAMPLER
+======================================================================
+
+Define one canonical categorical sampling primitive for every
+location where direct categorical sampling is required.
+
+Specify exactly:
+
+    ordered outcomes;
+    probability representation;
+    normalization;
+    summation order;
+    cumulative construction;
+    U53 interpretation;
+    interval convention;
+    exact-boundary convention;
+    final-bin handling;
+    zero-probability outcomes;
+    numerical failure behavior.
+
+
+======================================================================
+15. FLOATING-POINT SEMANTICS
+======================================================================
+
+Reuse the frozen V1.1 numerical contract wherever applicable:
+
+    IEEE-754 binary64;
+    ties-to-even;
+    existing summation rules;
+    existing canonical numerical evidence semantics.
+
+Where generation requires additional arithmetic ordering, freeze it
+explicitly.
+
+No platform-dependent floating-point choice is permitted.
+
+
+======================================================================
+16. ADMISSIBLE-SUPPORT SAMPLING
+======================================================================
+
+Resolve PF-SC01 as part of the general constrained-generation rule.
+
+When the current state forbids one or more model outcomes, define
+the effective distribution over the admissible support.
+
+Unless contradicted by a higher-level model requirement, use:
+
+    A(s) =
+        admissible outcomes in state s
+
+    Z =
+        Σ[x ∈ A(s)] P(x)
+
+    P_s(x) =
+        P(x) / Z.
+
+Then perform one canonical categorical sample from P_s.
+
+This proposed rule must be justified mathematically and applied
+consistently.
+
+Do not retain rejection sampling as an alternative implementation
+if it consumes a different deterministic RNG stream.
+
+
+======================================================================
+17. PF-SC01 CLOSURE
+======================================================================
+
+The discovered fixture must become normative.
+
+Record:
+
+    DRAW0_U53 =
+        0.92848667210989588
+
+    original unconstrained outcome =
+        <EOS>
+
+    state =
+        BEFORE_TOKEN.
+
+V1.2 must specify exactly:
+
+    effective admissible support;
+    normalized probabilities;
+    sampled glyph;
+    RNG draws consumed;
+    resulting state.
+
+No alternative implementation may remain valid.
+
+
+======================================================================
+18. RNG STREAM SEMANTICS
+======================================================================
+
+For every stochastic transition freeze:
+
+    RNG domain;
+    number of U53 values consumed;
+    consumption order;
+    whether draws may be discarded;
+    whether draws may be reused;
+    behavior on forbidden outcomes;
+    behavior on numerical failure;
+    behavior on retries.
+
+For identical scientific input and seed, the final RNG consumption
+trace must be deterministic.
+
+
+======================================================================
+19. RNG TRACE
+======================================================================
+
+Define a non-secret test representation of an RNG consumption trace.
+
+At minimum:
+
+    draw_index
+    RNG domain
+    U53
+    operation
+    generation state
+    selected outcome
+    emitted outcome
+    counters after operation.
+
+Use this for golden fixtures and cross-implementation testing.
+
+Do not require production evidence to expose unnecessary RNG
+internals if the existing evidence contract does not require them.
+
+
+======================================================================
+20. SPECIAL SYMBOL SEMANTICS
+======================================================================
+
+Freeze the exact generation role of:
+
+    BOS
+    EOS
+    UNK
+
+and every model-specific sentinel.
+
+For each specify:
+
+    may appear in context?
+    may appear in sampling support?
+    may be selected?
+    may be emitted?
+    may terminate token?
+    may terminate corpus?
+
+No implicit sentinel semantics remain.
+
+
+======================================================================
+21. NONEMPTY TOKEN INVARIANT
+======================================================================
+
+Freeze:
+
+    every emitted generated token contains at least one emitted
+    glyph.
+
+The generation state machine must enforce this directly.
+
+It must not rely on post-generation deletion of empty tokens.
+
+
+======================================================================
+22. TOKEN LENGTH DEFINITION
+======================================================================
+
+Define token length precisely.
+
+State whether it counts:
+
+    emitted glyphs;
+    sampled symbols;
+    model transitions;
+    Unicode code points;
+    bytes.
+
+Use one definition wherever the generation contract refers to token
+length.
+
+
+======================================================================
+23. MAXIMUM LENGTH 64
+======================================================================
+
+Resolve the Task85c-f ambiguity concerning:
+
+    "length 64 without EOS"
+
+and M5 support through 64 glyphs.
+
+Define exactly:
+
+    whether length 64 is legal;
+    when the limit check occurs;
+    whether a 64th glyph may be emitted;
+    whether another RNG draw is allowed after glyph 64;
+    whether EOS is forced;
+    whether termination is structural;
+    whether reaching the limit is failure.
+
+Add boundary vectors for lengths:
+
+    63
+    64
+    attempted 65.
+
+
+======================================================================
+24. FORCED TERMINATION
+======================================================================
+
+If maximum-length termination is structural rather than sampled,
+state explicitly:
+
+    no RNG draw is consumed for the forced termination.
+
+If another behavior is selected, specify its exact RNG semantics.
+
+There must be one rule.
+
+
+======================================================================
+25. GENERATOR A
+======================================================================
+
+Turn Generator A into a completely executable specification.
+
+For every Generator A path freeze:
+
+    support derivation;
+    outcome order;
+    probability construction;
+    sampling primitive;
+    state transitions;
+    RNG consumption;
+    termination;
+    serialization.
+
+
+======================================================================
+26. GENERATOR B
+======================================================================
+
+Generator B MUST become an executable scientific specification.
+
+Algorithm names alone are insufficient.
+
+Task85c-f specifically identified incomplete definitions involving:
+
+    exponential races;
+    Walker alias;
+    cumulative matrix rows.
+
+Resolve each completely.
+
+
+======================================================================
+27. GENERATOR B — EXPONENTIAL RACE
+======================================================================
+
+If exponential-race sampling remains part of Generator B, specify:
+
+    canonical candidate enumeration;
+    RNG derivation per candidate;
+    transformation from U53;
+    treatment of U53 = 0;
+    treatment of zero weights;
+    floating-point operation order;
+    race-score comparison;
+    tie behavior;
+    number/order of RNG draws.
+
+Provide normative vectors.
+
+
+======================================================================
+28. GENERATOR B — WALKER ALIAS
+======================================================================
+
+If Walker alias remains part of Generator B, specify:
+
+    canonical outcome order;
+    exact alias-table construction;
+    work-list ordering;
+    probability scaling;
+    floating-point arithmetic;
+    table rounding;
+    column selection;
+    threshold draw;
+    U53 allocation;
+    tie convention;
+    behavior for degenerate distributions.
+
+Either freeze the resulting tables or freeze a unique algorithm that
+constructs them byte-for-byte / value-for-value.
+
+Provide normative vectors.
+
+
+======================================================================
+29. GENERATOR B — CUMULATIVE MATRIX ROWS
+======================================================================
+
+For cumulative-row sampling specify:
+
+    row identity;
+    outcome enumeration;
+    row normalization;
+    cumulative construction;
+    U53 mapping;
+    boundary convention;
+    zero-mass behavior;
+    RNG consumption.
+
+Provide normative vectors.
+
+
+======================================================================
+30. GENERATOR B INDEPENDENCE
+======================================================================
+
+Preserve the scientific independence of Generator B from Generator A.
+
+Shared protocol primitives such as:
+
+    U53 definition;
+    numerical semantics;
+    canonical categorical sampler
+
+may be shared.
+
+Generator B's construction must not simply call Generator A in a
+way that defeats the intended independent-control design.
+
+
+======================================================================
+31. M0–M4 GENERATION CLOSURE
+======================================================================
+
+For each of:
+
+    M0
+    M1
+    M2
+    M3 exact
+    M3 approximate
+    M4
+
+prove that V1.2 uniquely defines:
+
+    initial generation state;
+    context/state initialization;
+    probability/support derivation;
+    stochastic transition;
+    RNG consumption;
+    token termination;
+    corpus termination;
+    exact output token sequence.
+
+
+======================================================================
+32. M5 GENERATION CLOSURE
+======================================================================
+
+Treat M5 separately because Task85c-f found additional ambiguity in:
+
+    retry semantics;
+    1024 attempts;
+    counters;
+    component draws.
+
+Produce an explicit M5 generation state machine.
+
+
+======================================================================
+33. M5 ATTEMPT DEFINITION
+======================================================================
+
+Define exactly what constitutes one:
+
+    attempt.
+
+Specify:
+
+    when attempt counter increments;
+    initial counter value;
+    maximum accepted attempt index;
+    what state resets between attempts;
+    what state persists;
+    what RNG state persists.
+
+
+======================================================================
+34. M5 1024-ATTEMPT RULE
+======================================================================
+
+Define exactly what:
+
+    1024 successive attempts
+
+means.
+
+There must be no ambiguity between:
+
+    attempts 0..1023;
+    attempts 1..1024;
+    1024 retries after an initial attempt.
+
+Freeze one interpretation.
+
+
+======================================================================
+35. M5 COMPONENT DRAWS
+======================================================================
+
+For every M5 attempt specify the exact order and conditional
+execution of draws for:
+
+    prefix;
+    stem;
+    suffix;
+    mixture/component choice;
+    backoff;
+    any rejection/validity operation.
+
+If an attempt fails partway through, define which already-consumed
+draws remain consumed.
+
+No RNG rollback unless explicitly frozen.
+
+
+======================================================================
+36. M5 COUNTERS
+======================================================================
+
+Inventory every M5 counter.
+
+For each define:
+
+    scope;
+    initialization;
+    increment point;
+    reset point;
+    maximum;
+    interaction with token generation;
+    interaction with retry.
+
+No implementation-local counter may affect scientific output without
+being specified.
+
+
+======================================================================
+37. FAILURE AFTER ATTEMPT EXHAUSTION
+======================================================================
+
+Define exact behavior if M5 exhausts the frozen attempt limit.
+
+Map the condition to an existing frozen generation/procedure status
+where semantically valid.
+
+Do not silently emit an invalid token.
+
+Do not invent a new scientific status unless unavoidable.
+
+
+======================================================================
+38. TOKEN ABSTRACTION
+======================================================================
+
+Define the normative generated token abstraction before byte
+serialization.
+
+At minimum specify:
+
+    glyph representation;
+    token sequence ordering;
+    line grouping if any;
+    corpus ordering.
+
+Separate logical token identity from serialization bytes.
+
+
+======================================================================
+39. CANONICAL CORPUS SERIALIZATION
+======================================================================
+
+Define exactly one canonical function:
+
+    generated token structure
+        →
+    corpus bytes.
+
+Freeze at minimum:
+
+    character encoding;
+    normalization;
+    token delimiter;
+    line delimiter;
+    empty-line behavior;
+    trailing whitespace policy;
+    final newline policy.
+
+No implementation-dependent text writer behavior is permitted.
+
+
+======================================================================
+40. CONTENT HASH IDENTITY
+======================================================================
+
+Scientific generated-content hashes must be computed over the
+canonical V1.2 corpus bytes.
+
+The same logical generated corpus must not acquire different
+scientific hashes because one implementation emits a final newline
+and another does not.
+
+
+======================================================================
+41. SERIALIZATION GOLDENS
+======================================================================
+
+Provide byte-level golden vectors covering at minimum:
+
+    one token;
+    multiple tokens;
+    multiple lines if applicable;
+    shortest legal token;
+    length-64 token;
+    non-ASCII case if reachable;
+    final newline;
+    empty structures where legal.
+
+Store expected output as an unambiguous byte representation or
+SHA-256 plus exact fixture bytes.
+
+
+======================================================================
+42. ZERO-MASS STATES
+======================================================================
+
+For every constrained distribution audit whether:
+
+    admissible probability mass = 0
+
+is reachable.
+
+For each reachable case define exact behavior.
+
+Prefer an existing frozen procedure/generation failure status when
+consistent.
+
+No infinite retry loops are permitted.
+
+
+======================================================================
+43. DEGENERATE DISTRIBUTIONS
+======================================================================
+
+Test and specify:
+
+    one positive outcome;
+    all but one outcome forbidden;
+    probability 1 outcome;
+    zero-probability entries;
+    extreme small positive weights;
+    cumulative total affected by binary64 rounding.
+
+The resulting behavior must be deterministic.
+
+
+======================================================================
+44. TIE SEMANTICS
+======================================================================
+
+Freeze all scientifically reachable tie behavior, including:
+
+    categorical boundaries;
+    exponential-race equal scores;
+    alias thresholds;
+    equal model-specific priorities.
+
+Tie breaking must use a deterministic scientific rule, not map or
+iteration order.
+
+
+======================================================================
+45. IMPLEMENTATION-INDEPENDENCE REQUIREMENT
+======================================================================
+
+V1.2 generation semantics must be implementable independently in:
+
+    Go
+
+and at least one independent reference implementation.
+
+Agreement must not depend on shared implementation code.
+
+
+======================================================================
+46. TWO INDEPENDENT REFERENCE IMPLEMENTATIONS
+======================================================================
+
+Produce two independent reference implementations for the complete
+normative generation primitives.
+
+They may share normative input artifacts.
+
+They MUST NOT call each other's sampling/generation implementation.
+
+
+======================================================================
+47. GOLDEN SUITE
+======================================================================
+
+Produce:
+
+    G1V2_GENERATION_GOLDEN_SUITE_V1.json.
+
+Include:
+
+    inherited valid V1.1 vectors;
+    Task85c-f boundary cases;
+    PF-SC01;
+    M0 order conflict;
+    constrained support;
+    categorical boundaries;
+    EOS/BOS/UNK;
+    length 63/64/65 boundary;
+    Generator A;
+    Generator B exponential race;
+    Generator B alias;
+    Generator B cumulative rows;
+    M0–M5;
+    M5 attempts;
+    M5 counter reset;
+    M5 exhaustion;
+    serialization;
+    RNG consumption traces.
+
+
+======================================================================
+48. PF-SC01 MUST BECOME CLOSED
+======================================================================
+
+The final V1.2 suite must contain a normative PF-SC01 regression
+vector.
+
+Require:
+
+    PF_SC01 = CLOSED.
+
+The vector must state exact:
+
+    input probabilities;
+    original support;
+    admissible support;
+    U53;
+    selected glyph;
+    emitted bytes;
+    draws consumed;
+    resulting state.
+
+
+======================================================================
+49. PROPERTY TESTING
+======================================================================
+
+Run substantial deterministic property testing over the complete
+generation layer.
+
+At minimum test:
+
+    no empty emitted tokens;
+    no forbidden sentinel emission;
+    deterministic output;
+    deterministic RNG consumption;
+    legal token lengths;
+    termination;
+    canonical serialization;
+    Generator A closure;
+    Generator B closure;
+    M5 attempt bound.
+
+Use at least the Task85c-f scale:
+
+    >= 16,384
+
+property cases, and increase where useful.
+
+
+======================================================================
+50. DIFFERENTIAL TESTING
+======================================================================
+
+Compare:
+
+    production Go implementation/reference candidate;
+    reference implementation A;
+    reference implementation B.
+
+For identical fixtures require agreement on:
+
+    logical tokens;
+    corpus bytes;
+    RNG draw counts;
+    RNG operation ordering;
+    terminal generation state;
+    failure status where applicable.
+
+
+======================================================================
+51. AMBIGUITY SEARCH
+======================================================================
+
+After implementing candidate V1.2 semantics, perform a second
+explicit ambiguity search over all generation artifacts.
+
+Search for concepts equivalent to:
+
+    retry;
+    resample;
+    skip;
+    as appropriate;
+    implementation-defined;
+    arbitrary order;
+    equivalent algorithm;
+    normalize;
+    until valid;
+    attempt;
+    maximum length;
+    handle EOS;
+    serialize;
+    canonical order
+
+where their exact meaning is not machine-defined.
+
+Every scientifically consequential occurrence must be resolved.
+
+
+======================================================================
+52. SECOND-IMPLEMENTER CHALLENGE
+======================================================================
+
+Give an independent implementation path only:
+
+    V1.2 machine-readable generation specification;
+    required registries;
+    golden fixture inputs.
+
+Ask it to reconstruct generated outputs.
+
+Record every question it would need to ask.
+
+Success requires:
+
+    UNSTATED_SCIENTIFIC_CHOICES = 0.
+
+
+======================================================================
+53. NO DOWNSTREAM MODEL SELECTION
+======================================================================
+
+Generation-semantic choices must be frozen BEFORE evaluating their
+effect on:
+
+    DEVELOPMENT thresholds;
+    recovery rates;
+    candidate PASS/FAIL;
+    structural gates;
+    minimal class;
+    final verdict.
+
+Do not compare competing generation semantics by downstream
+performance.
+
+
+======================================================================
+54. DEVELOPMENT IMPACT AUDIT
+======================================================================
+
+Only AFTER all generation choices have been normatively resolved,
+it is permitted to determine how V1.2 changes disposable/open
+DEVELOPMENT generated bytes relative to V1.1 candidate
+interpretations.
+
+This is an impact audit only.
+
+It must not feed back into semantic choices.
+
+
+======================================================================
+55. NO CONFIRMATORY ACCESS
+======================================================================
+
+Task85c-g MUST NOT:
+
+    create production escrow key;
+    create production blind controls;
+    unblind anything;
+    run natural confirmatory recovery;
+    evaluate Voynich;
+    inspect confirmatory outcomes;
+    create the production DAG;
+    tune V1.2 from confirmatory behavior.
+
+
+======================================================================
+56. SCIENTIFIC FIREWALL
+======================================================================
+
+Require:
+
+    SCIENTIFIC_FIREWALL = INTACT.
+
+Any prohibited confirmatory access:
+
+    STOP SCIENTIFIC_FIREWALL_VIOLATION.
+
+
+======================================================================
+57. SCIENTIFIC CHANGE CLASSIFICATION
+======================================================================
+
+Create:
+
+    G1V2_V1_1_TO_V1_2_SCIENTIFIC_DIFF.tsv.
+
+Classify every change as:
+
+    GENERATION_DEFECT_REPAIR
+    GENERATION_EXECUTABILITY_CLARIFICATION
+    GENERATION_NUMERICAL_CLARIFICATION
+    GENERATION_SERIALIZATION_FREEZE
+    TRANSITIVE_HASH_CHANGE
+    OUT_OF_SCOPE_SCIENTIFIC_CHANGE.
+
+Unlike Task85c-f, generation changes required to close the known
+defect class are expected and permitted.
+
+Success requires:
+
+    OUT_OF_SCOPE_SCIENTIFIC_CHANGE = 0.
+
+
+======================================================================
+58. DO NOT MINIMIZE THE REPAIR ARTIFICIALLY
+======================================================================
+
+Do not attempt to preserve V1.1 corpus bytes merely for backward
+compatibility.
+
+If uniquely defined V1.2 generation semantics produce different
+bytes, record the difference.
+
+Scientific correctness and pre-execution determinism take precedence
+over preserving an ambiguous V1.1 realization.
+
+
+======================================================================
+59. CONTRACT VERSION
+======================================================================
+
+Successful completion MUST issue a new scientific contract:
+
+    G1_V2_EXECUTABLE_CONTRACT_V1_2.
+
+Do not represent the generation repair merely as an erratum to
+V1.1.
+
+Generation changes affect scientific data and therefore require a
+scientific contract revision.
+
+
+======================================================================
+60. V1.2 SELF-CONTAINMENT
+======================================================================
+
+V1.2 must be self-contained for scientific execution.
+
+An implementer must not need to inspect:
+
+    Task85c-f prose;
+    historical bug reports;
+    source code;
+    implementation comments
+
+to determine generation semantics.
+
+Historical artifacts remain provenance.
+
+
+======================================================================
+61. MACHINE-READABLE GENERATION CONTRACT
+======================================================================
+
+Create a normative machine-readable artifact:
+
+    G1V2_GENERATION_SEMANTICS_V1.json.
+
+It must encode or bind all scientifically necessary:
+
+    states;
+    outcome ordering;
+    sampling primitives;
+    admissibility;
+    special symbols;
+    length rules;
+    RNG consumption;
+    Generator B algorithms;
+    M5 attempt semantics;
+    serialization.
+
+
+======================================================================
+62. MACHINE/PROSE PRECEDENCE
+======================================================================
+
+Freeze explicit precedence for V1.2.
+
+Recommended:
+
+    G1_V2_EXECUTABLE_CONTRACT_V1_2.json
+        >
+    normative machine registries including
+        G1V2_GENERATION_SEMANTICS_V1.json
+        >
+    normative golden vectors
+        >
+    explanatory Markdown.
+
+Any contradiction at the same/higher normative level:
+
+    validation failure.
+
+
+======================================================================
+63. HISTORICAL ARTIFACT PRESERVATION
+======================================================================
+
+Do not overwrite:
+
+    V1.1;
+    Task85c-f candidate state machine;
+    Task85c-f candidate vectors;
+    Task85c-f audit.
+
+Preserve them as provenance showing why V1.2 was required.
+
+
+======================================================================
+64. E1 COMPATIBILITY
+======================================================================
+
+Validate V1.2 against:
+
+    G1V2_EXECUTION_IDENTITY_ERRATUM_E1.
+
+Require:
+
+    scientific corpus independent of escrow key;
+    scientific corpus independent of blind_id;
+    scientific corpus independent of JobID;
+    scientific RNG independent of execution identity.
+
+If generation repair violates this:
+
+    STOP OUT_OF_SCOPE_SCIENTIFIC_CONTRACT_DEFECT.
+
+
+======================================================================
+65. STATUS/REACHABILITY COMPATIBILITY
+======================================================================
+
+Validate against:
+
+    G1_V2_STATUS_REACHABILITY_CONTRACT_V2.
+
+Use existing procedure/generation failure statuses where applicable.
+
+If generation semantics cannot be represented without changing
+status/reachability scientific meaning:
+
+    STOP OUT_OF_SCOPE_SCIENTIFIC_CONTRACT_DEFECT.
+
+
+======================================================================
+66. CONTROL ARCHITECTURE PRESERVATION
+======================================================================
+
+Preserve:
+
+    12 open DEVELOPMENT controls;
+    144 blind synthetic controls;
+    36 natural confirmatory controls.
+
+Task85c-g may use disposable non-production fixtures.
+
+It must not materialize the production blind set.
+
+
+======================================================================
+67. MODEL PROBABILITY PRESERVATION
+======================================================================
+
+Generation repair may condition a distribution on a structurally
+admissible support where required.
+
+It must not alter fitted model probabilities merely to make
+generation convenient.
+
+Distinguish explicitly:
+
+    fitted/model distribution
+
+from:
+
+    state-conditioned generation distribution.
+
+
+======================================================================
+68. GENERATOR B SCIENTIFIC INTENT AUDIT
+======================================================================
+
+Before selecting executable Generator B algorithms, identify what
+scientific property Generator B is intended to provide.
+
+Freeze enough of that intent to prevent an implementation repair
+from accidentally making Generator B equivalent to Generator A or
+changing the control class being tested.
+
+Do not use downstream recovery results for this audit.
+
+
+======================================================================
+69. ALGORITHM SELECTION PRINCIPLE
+======================================================================
+
+Where V1.1 names an algorithm family but omits executable details,
+select a canonical published/standard formulation consistent with
+the frozen scientific intent.
+
+Selection criteria may include:
+
+    determinism;
+    minimal additional assumptions;
+    compatibility with existing numeric semantics;
+    independent implementability;
+    absence of platform-dependent behavior.
+
+Selection criteria MUST NOT include:
+
+    better downstream recovery;
+    preferred thresholds;
+    preferred final verdict.
+
+
+======================================================================
+70. DECISION LOG
+======================================================================
+
+For every ambiguity requiring a scientific choice create a decision
+record containing:
+
+    ambiguity;
+    admissible alternatives;
+    chosen rule;
+    scientific justification;
+    rejected alternatives;
+    whether distributions differ;
+    whether deterministic RNG realization differs;
+    affected artifacts;
+    downstream results consulted = NO.
+
+Create:
+
+    G1V2_GENERATION_DECISION_LOG.tsv.
+
+
+======================================================================
+71. FREEZE ORDER
+======================================================================
+
+The mandatory order is:
+
+    inventory ambiguities
+        →
+    resolve mathematical semantics
+        →
+    resolve RNG consumption
+        →
+    resolve serialization
+        →
+    freeze generation semantics
+        →
+    freeze generation goldens
+        →
+    independent implementation validation
+        →
+    freeze V1.2
+        →
+    only then perform non-confirmatory impact audit.
+
+Do not inspect downstream scientific consequences while choosing
+generation rules.
+
+
+======================================================================
+72. HASH CLOSURE
+======================================================================
+
+Freeze SHA-256 identities for at minimum:
+
+    V1.2 Markdown contract;
+    V1.2 machine contract;
+    generation semantics;
+    ambiguity registry;
+    decision log;
+    generation golden suite;
+    scientific diff;
+    validation results.
+
+Create a transitive Task85c-g artifact root.
+
+
+======================================================================
+73. REQUIRED DIRECTORY
+======================================================================
+
+Create:
+
+    research/phase3/task85c-g/
+
+
+======================================================================
+74. REQUIRED ARTIFACTS
+======================================================================
+
+At minimum:
+
+    TASK85C_G_DESIGN.md
+    TASK85C_G_REPORT.md
+
+    G1V2_GENERATION_AMBIGUITY_REGISTRY.tsv
+    G1V2_GENERATION_PATH_INVENTORY.tsv
+    G1V2_GENERATION_DECISION_LOG.tsv
+
+    G1V2_GENERATION_STATE_MACHINE_V1.md
+    G1V2_GENERATION_STATE_MACHINE_V1.json
+
+    G1V2_GENERATION_SEMANTICS_V1.md
+    G1V2_GENERATION_SEMANTICS_V1.json
+
+    G1V2_GENERATION_GOLDEN_SUITE_V1.json
+    G1V2_GENERATION_SERIALIZATION_V1.json
+
+    G1V2_V1_1_TO_V1_2_SCIENTIFIC_DIFF.tsv
+
+    G1_V2_EXECUTABLE_CONTRACT_V1_2.md
+    G1_V2_EXECUTABLE_CONTRACT_V1_2.json
+
+    TASK85C_G_VALIDATION.tsv
+    TASK85C_G_RESULTS_MANIFEST.json
+
+    reference/
+        generation_reference_a.*
+        generation_reference_b.*
+        verify_generation_semantics.*
+        verify_generation_goldens.*
+        verify_rng_consumption.*
+        verify_generator_b.*
+        verify_m5_generation.*
+        verify_corpus_serialization.*
+        verify_v1_2_contract.*
+
+and exactly one terminal marker.
+
+
+======================================================================
+75. REQUIRED VALIDATION
+======================================================================
+
+Validate at minimum:
+
+    parent V1.1 identity;
+    E1 identity;
+    status/reachability V2 identity;
+
+    R2-G01 remains CLOSED;
+    R2-G02 remains CLOSED;
+    EI01 remains CLOSED;
+
+    complete generation-path inventory;
+    every Task85c-f ambiguity addressed;
+    every newly discovered in-scope ambiguity addressed;
+
+    canonical outcome ordering;
+    categorical sampling;
+    constrained-support sampling;
+    RNG consumption;
+    EOS/BOS/UNK semantics;
+    nonempty token invariant;
+    maximum length;
+    Generator A;
+    Generator B;
+    M0–M5 generation;
+    M5 attempts/counters;
+    canonical corpus serialization;
+
+    PF-SC01 regression;
+    boundary goldens;
+    Generator B goldens;
+    M5 goldens;
+    serialization goldens;
+
+    two independent implementations;
+    property tests;
+    differential tests;
+    second-implementer challenge;
+
+    E1 compatibility;
+    status/reachability compatibility;
+
+    no out-of-scope scientific changes;
+    no confirmatory access;
+    results-manifest closure.
+
+
+======================================================================
+76. REQUIRED VERDICTS
+======================================================================
+
+Report at minimum:
+
+    PARENT_V1_1_IDENTITY =
+        SUPPORTED / NOT_SUPPORTED
+
+    E1_IDENTITY =
+        SUPPORTED / NOT_SUPPORTED
+
+    STATUS_REACHABILITY_V2_IDENTITY =
+        SUPPORTED / NOT_SUPPORTED
+
+    R2_G01 =
+        CLOSED / OPEN
+
+    R2_G02 =
+        CLOSED / OPEN
+
+    EI01 =
+        CLOSED / OPEN
+
+    PF_SC01 =
+        CLOSED / OPEN
+
+    GENERATION_PATH_COUNT =
+        <count>
+
+    GENERATION_PATHS_RESOLVED =
+        <count>
+
+    GENERATION_AMBIGUITIES_FOUND =
+        <count>
+
+    GENERATION_AMBIGUITIES_RESOLVED =
+        <count>
+
+    GENERATION_AMBIGUITIES_OPEN =
+        <count>
+
+    CATEGORICAL_SAMPLING =
+        FROZEN / AMBIGUOUS
+
+    OUTCOME_ORDER =
+        FROZEN / AMBIGUOUS
+
+    RNG_CONSUMPTION =
+        FROZEN / AMBIGUOUS
+
+    SPECIAL_SYMBOL_SEMANTICS =
+        FROZEN / AMBIGUOUS
+
+    TOKEN_LENGTH_SEMANTICS =
+        FROZEN / AMBIGUOUS
+
+    GENERATOR_A =
+        EXECUTABLE / AMBIGUOUS
+
+    GENERATOR_B =
+        EXECUTABLE / AMBIGUOUS
+
+    M5_GENERATION =
+        EXECUTABLE / AMBIGUOUS
+
+    CORPUS_SERIALIZATION =
+        FROZEN / AMBIGUOUS
+
+    GENERATION_GOLDENS =
+        PASS / FAIL
+
+    CROSS_IMPLEMENTATION =
+        PASS / FAIL
+
+    PROPERTY_TESTS =
+        PASS / FAIL
+
+    SECOND_IMPLEMENTER_UNSTATED_CHOICES =
+        <count>
+
+    OUT_OF_SCOPE_SCIENTIFIC_CHANGE =
+        <count>
+
+    SCIENTIFIC_FIREWALL =
+        INTACT / VIOLATED
+
+    V1_2_READY =
+        SUPPORTED / NOT_SUPPORTED
+
+    PRODUCTION_FREEZE_RETRY_READY =
+        SUPPORTED / NOT_SUPPORTED.
+
+
+======================================================================
+77. SUCCESS GATE
+======================================================================
+
+V1_2_READY = SUPPORTED only if ALL hold:
+
+1. Parent V1.1 identity passes.
+2. E1 identity passes.
+3. Status/reachability V2 identity passes.
+4. R2-G01 remains CLOSED.
+5. R2-G02 remains CLOSED.
+6. EI01 remains CLOSED.
+7. PF-SC01 is CLOSED.
+8. Complete generation-path inventory exists.
+9. Every generation path is RESOLVED.
+10. Every known Task85c-f ambiguity is resolved.
+11. Every newly found in-scope generation ambiguity is resolved.
+12. GENERATION_AMBIGUITIES_OPEN = 0.
+13. Outcome ordering is frozen.
+14. Canonical categorical sampling is frozen.
+15. Constrained-support sampling is frozen.
+16. RNG consumption is frozen.
+17. Special-symbol semantics are frozen.
+18. Nonempty-token invariant is guaranteed.
+19. Maximum-length semantics are frozen.
+20. Generator A is executable.
+21. Generator B is executable.
+22. M0 generation is executable.
+23. M1 generation is executable.
+24. M2 generation is executable.
+25. M3 exact generation is executable.
+26. M3 approximate generation is executable.
+27. M4 generation is executable.
+28. M5 generation is executable.
+29. M5 attempt/counter semantics are frozen.
+30. Corpus serialization is frozen.
+31. PF-SC01 golden passes.
+32. Complete generation golden suite passes.
+33. Two independent implementations agree.
+34. Property tests pass.
+35. Differential tests pass.
+36. Second implementer requires zero unstated scientific choices.
+37. E1 compatibility passes.
+38. Status/reachability compatibility passes.
+39. OUT_OF_SCOPE_SCIENTIFIC_CHANGE = 0.
+40. Scientific firewall remains intact.
+41. No production blind controls were created.
+42. No production escrow key was created.
+43. No natural confirmatory recovery was run.
+44. Voynich was not evaluated.
+45. V1.2 machine and prose artifacts are hash-closed.
+
+
+======================================================================
+78. FAILURE CONDITIONS
+======================================================================
+
+STOP OUT_OF_SCOPE_SCIENTIFIC_CONTRACT_DEFECT
+
+only if generation repair requires changing scientific semantics
+outside the authorized generation subsystem.
+
+STOP IRRECONCILABLE_GENERATION_CONTRACT
+
+if higher-precedence scientific requirements impose mutually
+incompatible generation semantics and no resolution preserves the
+scientific intent.
+
+STOP SCIENTIFIC_FIREWALL_VIOLATION
+
+if confirmatory information is accessed or used during semantic
+selection.
+
+STOP V1_2_VALIDATION_FAILURE
+
+if candidate V1.2 cannot pass independent implementation,
+golden/property/differential or contract validation.
+
+Do NOT STOP merely because:
+
+    another generation ambiguity is discovered.
+
+Resolve it, register it, test it and continue.
+
+
+======================================================================
+79. FAILURE OUTPUT
+======================================================================
+
+On failure report:
+
+    PARENT_CONTRACT_VERSION =
+        G1_V2_EXECUTABLE_CONTRACT_V1_1
+
+    FAILURE_CLASS =
+        <exact class>
+
+    BLOCKING_FINDINGS =
+        <IDs>
+
+    GENERATION_AMBIGUITIES_FOUND =
+        <count>
+
+    GENERATION_AMBIGUITIES_RESOLVED =
+        <count>
+
+    GENERATION_AMBIGUITIES_OPEN =
+        <count>
+
+    V1_2_READY =
+        NOT_SUPPORTED
+
+    PRODUCTION_FREEZE_RETRY_READY =
+        NOT_SUPPORTED
+
+    SCIENTIFIC_FIREWALL =
+        <state>
+
+    TERMINAL_MARKER =
+        <exact marker>.
+
+
+======================================================================
+80. TERMINAL MARKERS
+======================================================================
+
+Success:
+
+    G1_V2_EXECUTABLE_SCIENTIFIC_CONTRACT_V1_2_FROZEN
+
+Out-of-scope scientific defect:
+
+    TASK85C_G_OUT_OF_SCOPE_SCIENTIFIC_CONTRACT_DEFECT
+
+Irreconcilable generation contract:
+
+    TASK85C_G_IRRECONCILABLE_GENERATION_CONTRACT
+
+Validation failure:
+
+    TASK85C_G_V1_2_VALIDATION_FAILED
+
+Firewall violation:
+
+    TASK85C_G_SCIENTIFIC_FIREWALL_VIOLATION.
+
+Exactly one terminal marker must be emitted.
+
+
+======================================================================
+81. SUCCESSFUL FINAL OUTPUT
+======================================================================
+
+On success print at minimum:
+
+    PARENT_CONTRACT_VERSION =
+        G1_V2_EXECUTABLE_CONTRACT_V1_1
+
+    NEW_CONTRACT_VERSION =
+        G1_V2_EXECUTABLE_CONTRACT_V1_2
+
+    NEW_CONTRACT_SHA256 =
+        <sha256>
+
+    GENERATION_SEMANTICS_VERSION =
+        G1V2_GENERATION_SEMANTICS_V1
+
+    GENERATION_SEMANTICS_SHA256 =
+        <sha256>
+
+    GENERATION_GOLDEN_SUITE =
+        G1V2_GENERATION_GOLDEN_SUITE_V1
+
+    GENERATION_GOLDEN_ROOT_SHA256 =
+        <sha256>
+
+    PF_SC01 =
+        CLOSED
+
+    GENERATION_PATH_COUNT =
+        <count>
+
+    GENERATION_PATHS_RESOLVED =
+        <same count>
+
+    GENERATION_AMBIGUITIES_FOUND =
+        <count>
+
+    GENERATION_AMBIGUITIES_RESOLVED =
+        <same count>
+
+    GENERATION_AMBIGUITIES_OPEN =
+        0
+
+    CATEGORICAL_SAMPLING =
+        FROZEN
+
+    OUTCOME_ORDER =
+        FROZEN
+
+    RNG_CONSUMPTION =
+        FROZEN
+
+    SPECIAL_SYMBOL_SEMANTICS =
+        FROZEN
+
+    TOKEN_LENGTH_SEMANTICS =
+        FROZEN
+
+    GENERATOR_A =
+        EXECUTABLE
+
+    GENERATOR_B =
+        EXECUTABLE
+
+    M5_GENERATION =
+        EXECUTABLE
+
+    CORPUS_SERIALIZATION =
+        FROZEN
+
+    CROSS_IMPLEMENTATION =
+        PASS
+
+    PROPERTY_TESTS =
+        PASS
+
+    SECOND_IMPLEMENTER_UNSTATED_CHOICES =
+        0
+
+    E1_COMPATIBILITY =
+        SUPPORTED
+
+    STATUS_REACHABILITY_V2_COMPATIBILITY =
+        SUPPORTED
+
+    R2_G01 =
+        CLOSED
+
+    R2_G02 =
+        CLOSED
+
+    EI01 =
+        CLOSED
+
+    OUT_OF_SCOPE_SCIENTIFIC_CHANGE =
+        0
+
+    SCIENTIFIC_FIREWALL =
+        INTACT
+
+    TASK85C_G_ARTIFACT_ROOT_SHA256 =
+        <sha256>
+
+    PRODUCTION_FREEZE_RETRY_READY =
+        SUPPORTED
+
+    NEXT_TASK =
+        Task86C-v2-production-freeze
+
+    TERMINAL_MARKER =
+        G1_V2_EXECUTABLE_SCIENTIFIC_CONTRACT_V1_2_FROZEN.
+
+
+======================================================================
+82. DEFINITION OF DONE
+======================================================================
+
+Task85c-g is complete only when the entire G1-v2 generation layer
+defines a unique scientific transformation:
+
+    frozen fitted model
+        +
+    frozen generator identity
+        +
+    frozen generation parameters/state
+        +
+    frozen G1V2-RNG-1 stream
+        →
+    exact logical generated corpus
+        →
+    exact canonical corpus bytes.
+
+No implementation may need to choose:
+
+    outcome ordering;
+    retry vs conditioning;
+    number of RNG draws;
+    alias construction;
+    exponential-race enumeration;
+    tie behavior;
+    EOS handling;
+    maximum-length behavior;
+    M5 attempt semantics;
+    counter reset semantics;
+    corpus delimiters;
+    final newline behavior;
+
+or any equivalent scientifically consequential generation detail.
+
+The purpose of Task85c-g is to end the generation-repair chain.
+
+Finding another ambiguity inside generation is work to be completed
+inside Task85c-g, not justification for Task85c-h.
+
+Only a genuine out-of-scope scientific contradiction, an
+irreconcilable generation design, validation failure, or firewall
+violation may prevent the V1.2 freeze.

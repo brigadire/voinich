@@ -1,0 +1,1342 @@
+Task86C-a — G1 Failure Decomposition and Latent Model Adequacy Audit
+
+Цель
+
+Разобрать результаты замороженного Task86C до уровня отдельных
+моделей, метрик и gates и установить, почему G1-v1 присвоил
+итоговый результат NONE:
+
+    synthetic ground-truth controls;
+    English;
+    Latin;
+    Sanskrit.
+
+Основные вопросы:
+
+1. Какие M0–M5 успешно fitted/trained на каждом control corpus?
+
+2. Какие predictive metrics фактически были вычислены
+   и какие из них были пройдены каждой моделью?
+
+3. Какие structural metrics/families фактически воспроизводились?
+
+4. На каком самом раннем этапе каждая модель переставала
+   удовлетворять G1-v1?
+
+5. Является ли PM6 единственным universal veto,
+   либо существуют независимые причины failure?
+
+6. Есть ли модели, которые выглядели бы adequate
+   при исключении только технически недоступного PM6?
+
+7. В частности:
+   существуют ли M0–M5, фактически хорошо описывающие
+   natural-language controls, но скрытые итоговым NONE?
+
+8. Что произошло с known-correct models на synthetic controls?
+
+Главный результат задачи:
+
+    не новый G1 verdict,
+
+а decomposition:
+
+    NONE
+      →
+    конкретные причины rejection.
+
+
+======================================================================
+1. STATUS OF TASK
+======================================================================
+
+Task86C-a является:
+
+    POST-HOC DIAGNOSTIC AUDIT
+    существующего frozen Task86C.
+
+Task86C-a НЕ является:
+
+    новым confirmatory experiment;
+    G1-v2;
+    исправлением Task86C;
+    повторным fitting experiment;
+    поиском лучшей grammar;
+    новым Voynich experiment.
+
+Результаты Task86C остаются неизменными:
+
+    TASK86C_G1_CONTROL_VALIDATION_FROZEN
+
+и:
+
+    G1_MEASUREMENT_IDENTIFIABLE = NOT_SUPPORTED.
+
+Task86C-a добавляет diagnostic interpretation layer.
+
+
+======================================================================
+2. AUTHORITATIVE INPUT
+======================================================================
+
+Использовать frozen artifacts:
+
+    Task85;
+    Task85a;
+    Task85a-v1.1;
+    Task86R;
+    Task86C.
+
+Primary empirical source:
+
+    research/phase3/task86c/
+
+Использовать:
+
+    per-job results;
+    execution ledger;
+    synthetic results;
+    natural-language results;
+    PM results;
+    structural results;
+    failure records;
+    manifests;
+    frozen ground truth после разрешённого unblinding.
+
+Не изменять существующие artifacts.
+
+
+======================================================================
+3. NO NEW HEAVY EXPERIMENT BY DEFAULT
+======================================================================
+
+Primary analysis должен использовать уже существующие
+672 Task86C jobs.
+
+Не выполнять новый fitting/generation,
+если необходимые intermediate results уже существуют.
+
+Разрешены:
+
+    aggregation;
+    parsing;
+    recomputation derived statistics;
+    reconstruction verdict paths;
+    consistency checks.
+
+Если необходимая intermediate quantity отсутствует,
+зафиксировать:
+
+    NOT_RECORDED
+
+вместо автоматического rerun.
+
+Любой дополнительный computation должен быть явно
+классифицирован как:
+
+    DERIVED_RECOMPUTATION
+
+или:
+
+    NEW_DIAGNOSTIC_COMPUTATION.
+
+NEW_DIAGNOSTIC_COMPUTATION не может использоваться
+как confirmatory evidence Task86C.
+
+
+======================================================================
+4. VOYNICH FIREWALL
+======================================================================
+
+Не использовать Voynich corpus.
+
+Не выполнять fitting на Voynich.
+
+Не использовать Voynich metric values
+для определения adequacy thresholds.
+
+Task86R разрешено использовать только
+для provenance и понимания G1-v1 logic.
+
+Task86C-a исследует controls.
+
+
+======================================================================
+5. UNIT OF ANALYSIS
+======================================================================
+
+Основная единица:
+
+    corpus
+    × model class
+    × candidate
+    × scale
+    × replicate
+    × protocol layer.
+
+Для synthetic дополнительно:
+
+    ground-truth class;
+    generator identity;
+    INDEPENDENT / IN_FAMILY,
+    если соответствующая категория существует.
+
+
+======================================================================
+6. RECONSTRUCT FULL DECISION PATH
+======================================================================
+
+Для каждого Task86C analysis job восстановить:
+
+INPUT
+  ↓
+TRAINING/FITTING
+  ↓
+MODEL AVAILABLE?
+  ↓
+PM1
+PM2
+PM4
+PM5
+PM6
+  ↓
+PredictiveAdequacy
+  ↓
+GENERATION
+  ↓
+F2 extraction
+  ↓
+StructuralAdequacy
+  ↓
+Complexity/minimality
+  ↓
+FINAL G1 VERDICT.
+
+Для каждого перехода сохранить:
+
+    PASS
+    FAIL
+    UNAVAILABLE
+    NOT_REACHED
+    NONFINITE
+    TRAINING_FAILED
+    NOT_RECORDED
+
+или более точный frozen status.
+
+
+======================================================================
+7. DO NOT COLLAPSE FAILURE TYPES
+======================================================================
+
+Особенно запрещено преобразовывать всё в:
+
+    PASS / FAIL.
+
+Различать минимум:
+
+    MODEL_MISMATCH
+
+    TRAINING_FAILURE
+
+    COMPUTATIONAL_LIMIT
+
+    METRIC_FAILURE
+
+    METRIC_UNAVAILABLE
+
+    NEGATIVE_SET_EXHAUSTION
+
+    NONFINITE_SCORE
+
+    GENERATION_FAILURE
+
+    STRUCTURAL_FAILURE
+
+    CALIBRATION_FAILURE
+
+    PROTOCOL_VETO
+
+    NOT_REACHED
+
+    NOT_RECORDED.
+
+
+======================================================================
+8. FIRST-FAILURE ANALYSIS
+======================================================================
+
+Для каждой model/corpus execution определить:
+
+    FIRST_FAILURE_STAGE.
+
+Например:
+
+    TRAINING
+    PM1
+    PM2
+    PM4
+    PM5
+    PM6
+    PREDICTIVE_GATE
+    GENERATION
+    F2
+    STRUCTURAL_GATE
+    COMPLEXITY
+    NONE.
+
+Если несколько failures логически независимы,
+дополнительно сохранить:
+
+    ALL_FAILURE_REASONS.
+
+
+======================================================================
+9. FAILURE ATTRIBUTION
+======================================================================
+
+Каждый failure классифицировать:
+
+MODEL_EVIDENCE
+
+    результат непосредственно свидетельствует,
+    что fitted model плохо описывает данные.
+
+PROTOCOL_EVIDENCE
+
+    failure вызван measurement/acceptance protocol.
+
+COMPUTATIONAL_EVIDENCE
+
+    fitting/generation procedure не смогла завершиться
+    в заданных вычислительных пределах.
+
+UNRESOLVED
+
+    невозможно установить источник.
+
+Это принципиально важно:
+
+    TRAINING_FAILED
+
+не эквивалентно:
+
+    MODEL_CLASS_INADEQUATE.
+
+
+======================================================================
+10. PM-BY-PM DECOMPOSITION
+======================================================================
+
+Для каждой модели собрать фактические значения/status:
+
+    PM1
+    PM2
+    PM4
+    PM5
+    PM6.
+
+Для каждой метрики определить:
+
+    available rate;
+    finite rate;
+    pass rate;
+    fail rate;
+    unavailable rate;
+    distribution by corpus;
+    distribution by model;
+    distribution by scale.
+
+Не использовать final PredictiveAdequacy
+как замену individual PM results.
+
+
+======================================================================
+11. PM6 ISOLATION
+======================================================================
+
+Отдельно провести PM6 ablation analysis.
+
+Ввести только диагностический показатель:
+
+    PREDICTIVE_ADEQUACY_WITHOUT_PM6.
+
+Он НЕ является новым scientific verdict.
+
+Он отвечает только:
+
+    прошла бы модель остальные frozen predictive requirements,
+    если PM6 считать diagnostic-unavailable,
+    а не veto?
+
+Не менять thresholds PM1/PM2/PM4/PM5.
+
+
+======================================================================
+12. PM6 ABLATION MATRIX
+======================================================================
+
+Создать:
+
+    corpus
+    model
+    original_predictive_adequacy
+    PM6_status
+    predictive_without_PM6
+    interpretation.
+
+Особенно определить:
+
+    сколько models изменяются
+
+из:
+
+    FAIL
+
+в:
+
+    PASS*
+
+только вследствие исключения PM6.
+
+PASS* всегда маркировать как:
+
+    DIAGNOSTIC_COUNTERFACTUAL
+
+а не как новый G1 result.
+
+
+======================================================================
+13. UNIVERSAL VETO TEST
+======================================================================
+
+Проверить гипотезу:
+
+    PM6 является universal veto.
+
+Выдать:
+
+PM6_VETO_ROLE =
+
+    SOLE_UNIVERSAL_VETO
+
+если удаление только PM6 устраняет
+универсальный predictive failure;
+
+    ONE_OF_MULTIPLE_UNIVERSAL_FAILURES
+
+если существуют другие универсальные blockers;
+
+    MAJOR_BUT_NOT_UNIVERSAL
+
+если PM6 блокирует большинство, но не все cases;
+
+    NOT_PRIMARY
+
+если основная проблема возникает раньше;
+
+    INCONCLUSIVE.
+
+
+======================================================================
+14. SYNTHETIC GROUND-TRUTH ANALYSIS
+======================================================================
+
+Synthetic controls являются главным диагностическим инструментом.
+
+Для каждого ground-truth class:
+
+    M0
+    M1
+    M2
+    M3
+    M4
+    M5
+
+отдельно исследовать candidate
+того же класса.
+
+То есть:
+
+    GT=M0 → fitted M0
+    GT=M1 → fitted M1
+    ...
+    GT=M5 → fitted M5.
+
+Ответить:
+
+    успешно ли fitted expected model;
+    какие PM она прошла;
+    где впервые failed;
+    дошла ли до structural validation;
+    какие structural families прошла;
+    почему final result стал NONE.
+
+
+======================================================================
+15. EXPECTED-CLASS SURVIVAL TABLE
+======================================================================
+
+Создать таблицу:
+
+GT | FIT | PM1 | PM2 | PM4 | PM5 | PM6 |
+Predictive-no-PM6 | Structural | Final
+
+для:
+
+    M0
+    M1
+    M2
+    M3
+    M4
+    M5.
+
+Разбить минимум:
+
+    by scale;
+    by generator;
+    by replicate.
+
+
+======================================================================
+16. SYNTHETIC FAILURE LOCALIZATION
+======================================================================
+
+Для каждого ground-truth класса определить:
+
+    EXPECTED_MODEL_FIRST_FAILURE.
+
+Например:
+
+    M0 → PM6
+    M1 → PM6
+    M2 → PM4
+    M3 → TRAINING
+    M4 → TRAINING
+    M5 → PM1
+
+— только если это действительно следует из данных.
+
+Не предполагать результат заранее.
+
+
+======================================================================
+17. LOWER-CLASS / HIGHER-CLASS BEHAVIOR
+======================================================================
+
+Для synthetic corpora проверить не только expected model.
+
+Определить:
+
+    какие более простые модели проходят до veto;
+    какие более сложные модели проходят до veto.
+
+Это позволяет различить:
+
+    failure of recovery
+
+от:
+
+    inability to discriminate model complexity.
+
+
+======================================================================
+18. LATENT RECOVERY
+======================================================================
+
+Ввести диагностическое понятие:
+
+    LATENT_RECOVERY.
+
+Для synthetic corpus:
+
+LATENT_RECOVERY = TRUE
+
+только если expected/minimal-sufficient model:
+
+    successfully fitted;
+
+    проходит все доступные meaningful predictive gates
+    кроме отдельно доказанного protocol-unavailable gate;
+
+    не имеет независимого model-evidence failure;
+
+    и, если structural evidence доступна,
+    удовлетворяет соответствующим frozen structural criteria.
+
+Это diagnostic construct.
+
+Не заменять им Task86C recovery verdict.
+
+
+======================================================================
+19. LATENT RECOVERY RATE
+======================================================================
+
+Вычислить:
+
+    latent recovery rate by class;
+    latent recovery rate by scale;
+    latent recovery rate by generator.
+
+Сравнить с историческим:
+
+    observed recovery rate = 0%.
+
+Это покажет, насколько `NONE` объясняется
+acceptance machinery.
+
+
+======================================================================
+20. NATURAL-LANGUAGE DECOMPOSITION
+======================================================================
+
+Для:
+
+    English
+    Latin
+    Sanskrit
+
+создать полный model-by-model audit M0–M5.
+
+Не спрашивать пока:
+
+    "какова истинная grammar языка?"
+
+Спрашивать:
+
+    какие модели успешно fitted;
+
+    какие predictive properties они воспроизводят;
+
+    какие structural properties они воспроизводят;
+
+    где каждая модель rejected;
+
+    какие rejection являются model evidence,
+    а какие protocol evidence.
+
+
+======================================================================
+21. NATURAL-LANGUAGE MODEL MATRIX
+======================================================================
+
+Создать минимум:
+
+Language | Model | Fit | PM1 | PM2 | PM4 | PM5 | PM6 |
+Predictive-no-PM6 | Structural | First failure | Final
+
+для всех:
+
+    3 languages × M0–M5
+
+и всех relevant scales/replicates.
+
+
+======================================================================
+22. NATURAL-LANGUAGE LATENT ADEQUACY
+======================================================================
+
+Ввести диагностический статус:
+
+LATENT_ADEQUACY =
+
+    SUPPORTED
+
+    PARTIAL
+
+    NOT_SUPPORTED
+
+    NOT_ASSESSABLE.
+
+SUPPORTED не означает:
+
+    "это истинная грамматика языка".
+
+Он означает:
+
+    "до применения известных defective/unavailable vetoes
+     данная model class не демонстрирует independent evidence
+     of inadequacy under the available G1 measurements."
+
+
+======================================================================
+23. CRITICAL NATURAL-LANGUAGE QUESTION
+======================================================================
+
+Ответить непосредственно:
+
+    Есть ли хотя бы одна M0–M5 для English,
+    Latin или Sanskrit, которая:
+
+        successfully fitted;
+
+        имеет finite meaningful predictive scores;
+
+        проходит все predictive criteria кроме PM6;
+
+        и не имеет независимого structural failure?
+
+Выдать отдельно для каждого языка:
+
+    ENGLISH_LATENT_MODEL_SET
+    LATIN_LATENT_MODEL_SET
+    SANSKRIT_LATENT_MODEL_SET.
+
+Допустимые значения:
+
+    {M...}
+    EMPTY
+    NOT_ASSESSABLE.
+
+
+======================================================================
+24. STRUCTURAL ADEQUACY DECOMPOSITION
+======================================================================
+
+Не использовать только final:
+
+    StructuralAdequacy = FAIL.
+
+Разложить его по:
+
+    individual F2 metrics;
+    metric families;
+    thresholds;
+    scale;
+    replicate.
+
+Определить:
+
+    какие models близки к controls;
+    какие fail во всех families;
+    какие fail из-за одной family;
+    какие structural comparisons вообще не были reached.
+
+
+======================================================================
+25. STRUCTURAL FAILURE WITHOUT PM6
+======================================================================
+
+Если historical pipeline не запускал structural stage
+после PredictiveAdequacy failure,
+не считать:
+
+    StructuralAdequacy = FAIL.
+
+Использовать:
+
+    NOT_REACHED.
+
+Если structural artifacts уже были вычислены независимо,
+использовать их.
+
+Не запускать массовую новую generation только ради заполнения
+отсутствующих cells в рамках primary audit.
+
+
+======================================================================
+26. M0 DIAGNOSTIC
+======================================================================
+
+M0 synthetic controls особенно важны.
+
+Для corpus, заведомо generated IID,
+проверить:
+
+    M0 fitting success;
+    fitted distribution vs generating distribution;
+    PM results;
+    rejection stage.
+
+Если M0 ground truth успешно fitted,
+но rejected исключительно protocol veto,
+это сильное evidence measurement failure.
+
+Если M0 не способен даже fitted/reproduce IID corpus,
+проблема глубже.
+
+
+======================================================================
+27. M1/M2 DIAGNOSTIC
+======================================================================
+
+Для M1/M2 проверить:
+
+    context recovery;
+    predictive likelihood;
+    over/under-fitting;
+    candidate selection;
+    scale dependence.
+
+Определить, существует ли evidence,
+что correct dependency depth recovered,
+даже если final G1 verdict = NONE.
+
+
+======================================================================
+28. M3/M4 DIAGNOSTIC
+======================================================================
+
+Отдельно анализировать:
+
+    fitting success;
+    computational-limit failure;
+    state count;
+    operation count;
+    convergence;
+    predictive metrics if fitted.
+
+Не трактовать:
+
+    operation cap reached
+
+как:
+
+    finite-state model disproved.
+
+Выдать:
+
+    M3_RECOVERY_LIMITATION =
+        MODEL
+        / INDUCTION
+        / PROTOCOL
+        / MIXED
+        / UNRESOLVED
+
+и аналогично M4.
+
+
+======================================================================
+29. M5 DIAGNOSTIC
+======================================================================
+
+Проверить:
+
+    productive coverage;
+    unseen-form probability;
+    PM1/PM2 finiteness;
+    component/rule coverage;
+    generation validity.
+
+Особенно различать:
+
+    rule class inadequate
+
+и:
+
+    конкретная frozen M5 induction/coverage procedure
+    не восстановила generating grammar.
+
+
+======================================================================
+30. SCALE EFFECTS
+======================================================================
+
+Для каждого failure stage проверить dependence от:
+
+    SMALL
+    MEDIUM
+    VOYNICH_SCALE
+    LARGE
+
+или фактического frozen scale registry Task86C.
+
+Ответить:
+
+    исчезает ли failure с ростом данных;
+
+    появляется ли failure из-за alphabet/vocabulary saturation;
+
+    ухудшается ли PM6 при росте corpus;
+
+    улучшается ли fitting expected class.
+
+
+======================================================================
+31. REPLICATE STABILITY
+======================================================================
+
+Для каждого diagnostic result определить:
+
+    replicate agreement.
+
+Не делать сильный вывод по единичному corpus.
+
+Создать:
+
+    FAILURE_STAGE_STABILITY.tsv.
+
+
+======================================================================
+32. FAILURE CASCADE
+======================================================================
+
+Построить агрегированную failure cascade:
+
+TOTAL JOBS
+    ↓
+TRAINING SUCCESS
+    ↓
+PM1 AVAILABLE/PASS
+    ↓
+PM2 AVAILABLE/PASS
+    ↓
+PM4 AVAILABLE/PASS
+    ↓
+PM5 AVAILABLE/PASS
+    ↓
+PM6 AVAILABLE/PASS
+    ↓
+PREDICTIVE ADEQUATE
+    ↓
+STRUCTURAL EVALUABLE
+    ↓
+STRUCTURAL ADEQUATE
+    ↓
+FINAL ADEQUATE.
+
+Отдельно для:
+
+    synthetic;
+    natural languages;
+    each ground-truth class;
+    each language.
+
+
+======================================================================
+33. COUNTERFACTUAL GATES
+======================================================================
+
+Разрешены diagnostic counterfactuals:
+
+CF0:
+    historical full protocol.
+
+CF1:
+    PM6 treated as unavailable/non-veto.
+
+CF2:
+    protocol-only failures treated as non-veto,
+    model-evidence failures retained.
+
+CF2 является исключительно diagnostic upper bound.
+
+Не создавать из CF1/CF2 новую G1 classification.
+
+
+======================================================================
+34. NO THRESHOLD TUNING
+======================================================================
+
+Запрещено:
+
+    менять thresholds;
+    выбирать новые quantiles;
+    менять PM definitions;
+    менять structural tolerances;
+    менять complexity penalties;
+    выбирать threshold, максимизирующий recovery.
+
+Использовать frozen values.
+
+Task86C-a диагностирует существующую систему,
+а не оптимизирует новую.
+
+
+======================================================================
+35. NO MODEL MODIFICATION
+======================================================================
+
+Запрещено:
+
+    изменять M0–M5;
+    исправлять M5 coverage;
+    менять M3/M4 induction;
+    менять smoothing;
+    добавлять model classes;
+    менять tokenization.
+
+Все предложения вынести в:
+
+    TASK85B_REQUIREMENTS.md.
+
+
+======================================================================
+36. G1-v2 REQUIREMENTS EXTRACTION
+======================================================================
+
+На основании failure decomposition сформировать требования
+к будущему Task85b.
+
+Для каждого найденного defect:
+
+    defect_id
+    affected_stage
+    affected_models
+    synthetic evidence
+    natural-language evidence
+    universal?
+    required property of G1-v2
+    proposed validation test
+
+Но НЕ проектировать конкретное решение,
+если evidence не определяет его однозначно.
+
+
+======================================================================
+37. IMPORTANT DISTINCTION
+======================================================================
+
+Отчёт должен строго различать:
+
+A.
+
+    "Model failed to explain corpus."
+
+B.
+
+    "Model fitting algorithm failed."
+
+C.
+
+    "Metric could not be computed."
+
+D.
+
+    "Acceptance protocol rejected model
+     because another required metric was unavailable."
+
+E.
+
+    "Structural validation was never reached."
+
+Эти состояния нельзя объединять под словом:
+
+    FAIL.
+
+
+======================================================================
+38. REQUIRED VERDICTS
+======================================================================
+
+Выдать минимум:
+
+    PM6_VETO_ROLE =
+        SOLE_UNIVERSAL_VETO
+        / ONE_OF_MULTIPLE_UNIVERSAL_FAILURES
+        / MAJOR_BUT_NOT_UNIVERSAL
+        / NOT_PRIMARY
+        / INCONCLUSIVE
+
+    PRE_PM6_PREDICTIVE_INFORMATION =
+        INFORMATIVE
+        / PARTIAL
+        / NON_INFORMATIVE
+
+    SYNTHETIC_LATENT_RECOVERY =
+        SUPPORTED
+        / PARTIAL
+        / NOT_SUPPORTED
+        / NOT_ASSESSABLE
+
+    NATURAL_LANGUAGE_LATENT_ADEQUACY =
+        SUPPORTED
+        / PARTIAL
+        / NOT_SUPPORTED
+        / NOT_ASSESSABLE
+
+    ENGLISH_LATENT_MODEL_SET =
+        model set / EMPTY / NOT_ASSESSABLE
+
+    LATIN_LATENT_MODEL_SET =
+        model set / EMPTY / NOT_ASSESSABLE
+
+    SANSKRIT_LATENT_MODEL_SET =
+        model set / EMPTY / NOT_ASSESSABLE
+
+    M0_RECOVERY_DIAGNOSTIC =
+        SUPPORTED / PARTIAL / NOT_SUPPORTED
+
+    M1_RECOVERY_DIAGNOSTIC =
+        SUPPORTED / PARTIAL / NOT_SUPPORTED
+
+    M2_RECOVERY_DIAGNOSTIC =
+        SUPPORTED / PARTIAL / NOT_SUPPORTED
+
+    M3_RECOVERY_LIMITATION =
+        MODEL / INDUCTION / PROTOCOL / MIXED / UNRESOLVED
+
+    M4_RECOVERY_LIMITATION =
+        MODEL / INDUCTION / PROTOCOL / MIXED / UNRESOLVED
+
+    M5_RECOVERY_LIMITATION =
+        MODEL / INDUCTION / PROTOCOL / MIXED / UNRESOLVED
+
+    G1_V1_PRIMARY_FAILURE_SOURCE =
+        MODEL_SPACE
+        / FITTING
+        / MEASUREMENT_PROTOCOL
+        / MULTIPLE
+        / UNRESOLVED
+
+    TASK85B_READY =
+        SUPPORTED / NOT_SUPPORTED
+
+    TASK86C_A_VALID =
+        SUPPORTED / NOT_SUPPORTED.
+
+
+======================================================================
+39. REQUIRED ARTIFACTS
+======================================================================
+
+Создать минимум:
+
+research/phase3/task86c-a/
+
+    TASK86C_A_DESIGN.md
+
+    G1_DECISION_PATH_REGISTRY.tsv
+    JOB_FAILURE_DECOMPOSITION.tsv
+    FIRST_FAILURE_STAGE.tsv
+    FAILURE_STAGE_STABILITY.tsv
+
+    PM_DECOMPOSITION.tsv
+    PM6_ABLATION.tsv
+    PREDICTIVE_COUNTERFACTUALS.tsv
+
+    SYNTHETIC_EXPECTED_CLASS_SURVIVAL.tsv
+    SYNTHETIC_LATENT_RECOVERY.tsv
+    SYNTHETIC_FAILURE_CASCADE.tsv
+
+    NATURAL_LANGUAGE_MODEL_MATRIX.tsv
+    NATURAL_LANGUAGE_LATENT_ADEQUACY.tsv
+    NATURAL_LANGUAGE_FAILURE_CASCADE.tsv
+
+    STRUCTURAL_DECOMPOSITION.tsv
+    MODEL_CLASS_DIAGNOSTICS.tsv
+
+    G1_FAILURE_SUMMARY.tsv
+    G1_V2_REQUIREMENTS.tsv
+
+    TASK85B_REQUIREMENTS.md
+    TASK86C_A_REPORT.md
+    TASK86C_A_RESULTS_MANIFEST.json.
+
+
+======================================================================
+40. REPORT QUESTIONS
+======================================================================
+
+TASK86C_A_REPORT.md должен ответить минимум:
+
+1. Что фактически означает NONE в Task86C?
+
+2. Сколько jobs не дошли до fitting?
+
+3. Сколько моделей успешно fitted?
+
+4. Каковы pass/fail/unavailable rates PM1?
+
+5. То же PM2?
+
+6. То же PM4?
+
+7. То же PM5?
+
+8. То же PM6?
+
+9. Является ли PM6 единственным universal veto?
+
+10. Какие failures существуют независимо от PM6?
+
+11. Что происходит с ground-truth M0 до PM6?
+
+12. Что происходит с ground-truth M1?
+
+13. Что происходит с ground-truth M2?
+
+14. Что происходит с ground-truth M3?
+
+15. Что происходит с ground-truth M4?
+
+16. Что происходит с ground-truth M5?
+
+17. Сколько synthetic expected models имеют
+    latent recovery?
+
+18. Почему exact/minimal recovery Task86C равны нулю?
+
+19. Какие M0–M5 успешно fitted на English?
+
+20. Какие из них проходят PM1/2/4/5?
+
+21. Какие имеют independent structural failure?
+
+22. Каков ENGLISH_LATENT_MODEL_SET?
+
+23. То же для Latin?
+
+24. То же для Sanskrit?
+
+25. Можно ли на основании имеющихся данных утверждать,
+    что M0–M5 не описывают natural languages?
+
+26. Или исторический NONE главным образом вызван
+    measurement protocol?
+
+27. Как failure зависит от corpus scale?
+
+28. Как стабилен результат между replicates?
+
+29. Где находится первая универсальная точка разрушения G1?
+
+30. Какие отдельные model-specific проблемы существуют?
+
+31. Какие свойства обязательно должен иметь G1-v2?
+
+32. Достаточно ли информации для постановки Task85b?
+
+
+======================================================================
+41. TERMINAL INTERPRETATION
+======================================================================
+
+Особенно явно ответить на вопрос:
+
+    "Прошли ли M0–M5 естественные языки?"
+
+Допустимы только evidence-based ответы вида:
+
+A.
+
+    Некоторые модели демонстрируют latent adequacy,
+    но были отвергнуты protocol veto.
+
+B.
+
+    Модели имеют независимые failures ещё до PM6.
+
+C.
+
+    Имеющихся artifacts недостаточно для определения.
+
+Не повторять автоматически:
+
+    English = NONE
+
+как доказательство:
+
+    M0–M5 do not model English.
+
+
+======================================================================
+42. TERMINAL MARKERS
+======================================================================
+
+Если audit корректно завершён:
+
+    TASK86C_A_FAILURE_DECOMPOSITION_FROZEN.
+
+Если existing Task86C artifacts недостаточны
+для meaningful decomposition:
+
+    TASK86C_A_EVIDENCE_INSUFFICIENT.
+
+Если integrity audit нарушен:
+
+    TASK86C_A_INVALID.
+
+Ровно один terminal marker.
+
+
+======================================================================
+43. COMPUTATIONAL POLICY
+======================================================================
+
+Эта задача должна быть существенно дешевле Task86C.
+
+Не распределять вычисления на 10.10.24.105,
+если достаточно aggregation существующих results.
+
+Если обнаружится необходимость нового тяжёлого fitting/generation:
+
+    не запускать автоматически;
+
+    задокументировать missing evidence;
+
+    включить требование в следующую задачу.
+
+Допустимы локальные deterministic aggregation tools.
+
+
+======================================================================
+44. VALIDATION
+======================================================================
+
+Обязательно:
+
+    verify Task86C terminal marker;
+    verify Task86C results manifest;
+    verify all referenced job/result hashes;
+    verify 672-job accounting;
+    verify no historical artifacts modified;
+    verify no Voynich corpus access;
+    deterministic regeneration of derived tables.
+
+Если добавлен Go code:
+
+    go build ./...
+    go vet ./...
+    go test ./...
+    go test -race ./...
+
+Всегда:
+
+    git diff --check.
+
+
+======================================================================
+45. DEFINITION OF DONE
+======================================================================
+
+Task86C-a завершён только когда:
+
+1. Все 672 Task86C jobs accounted for.
+2. Full G1 decision path reconstructed.
+3. Failure taxonomy applied.
+4. First failure determined where evidence permits.
+5. PM1 decomposed.
+6. PM2 decomposed.
+7. PM4 decomposed.
+8. PM5 decomposed.
+9. PM6 decomposed.
+10. PM6 ablation completed.
+11. PM6 veto role determined.
+12. Synthetic expected-class paths reconstructed.
+13. M0 diagnostic completed.
+14. M1 diagnostic completed.
+15. M2 diagnostic completed.
+16. M3 diagnostic completed.
+17. M4 diagnostic completed.
+18. M5 diagnostic completed.
+19. Synthetic latent recovery assessed.
+20. English M0–M5 matrix completed.
+21. Latin M0–M5 matrix completed.
+22. Sanskrit M0–M5 matrix completed.
+23. Natural-language latent adequacy assessed.
+24. Structural evidence decomposed.
+25. NOT_REACHED distinguished from FAIL.
+26. Scale effects assessed.
+27. Replicate stability assessed.
+28. Failure cascades produced.
+29. Counterfactual CF1 produced.
+30. Counterfactual CF2 produced.
+31. Primary G1-v1 failure source determined.
+32. G1-v2 requirements extracted.
+33. TASK85B_REQUIREMENTS.md written.
+34. TASK86C_A_REPORT.md answers all required questions.
+35. Results manifest completed.
+36. Repository validation passes.
+37. Exactly one terminal marker issued.

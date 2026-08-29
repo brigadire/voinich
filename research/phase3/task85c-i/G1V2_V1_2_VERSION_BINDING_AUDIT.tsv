@@ -1,0 +1,13 @@
+finding_id	artifact	occurrence	classification	disposition	status
+H-SC01	schemas/*.schema.json	15 literal V1.1 bindings	MUST_VERSION_TO_V1_2	new 15-schema V1.2 family	CLOSED
+H-SC03	G1V2_EVIDENCE_SCHEMA_REGISTRY_V1_1.tsv	V1.1 schema paths/ids	HISTORICAL_CORRECT	new V1.2 JSON registry selected by I1	CLOSED
+H-SC04	G1V2_EVIDENCE_PAYLOAD_CONTRACT_V1_1.tsv	filename versioned; rows contain no contract literal	HISTORICAL_CORRECT	preserved by hash as version-neutral payload semantics	CLOSED
+H-SC05	G1V2_EVIDENCE_STATUS_MATRIX_V1_1.tsv	filename versioned; no contract literal	HISTORICAL_CORRECT	unchanged status semantics under V2	CLOSED
+H-SC06	G1V2_REASON_REGISTRY_V1_1.tsv	filename versioned; no contract literal	HISTORICAL_CORRECT	unchanged reason semantics	CLOSED
+H-SC07	reference/evidence_only_verifier.py	hard-coded V1.1 selection	MUST_VERSION_TO_V1_2	explicit I1/registry V1.2 verifier	CLOSED
+H-SC08	registries/G1V2_DAG_CONTRACT.json	generic contract_version payload field	NONNORMATIVE	E2 supplies current V1.2 value; dependency_job_ids preserved	CLOSED
+H-SC02	G1V2_EXECUTION_IDENTITY_ERRATUM_E1.json	E1 V1.1 scientific identity	HISTORICAL_CORRECT	E2 binds V1.2; E1 immutable	CLOSED
+H-SC09	G1_V2_EXECUTABLE_CONTRACT_V1_2.json/evidence_contract	historical V1.1 evidence authority references	MUST_VERSION_TO_V1_2	I1 supersedes only cross-artifact selection	CLOSED
+H-SC10	G1_V2_EXECUTABLE_CONTRACT_V1_2.json/execution_identity_erratum	E1 selection	MUST_VERSION_TO_V1_2	I1 selects E2	CLOSED
+H-SC11	G1_V2_EXECUTABLE_CONTRACT_V1_2.md inherited V1.1 section	explicit historical inherited prose	HISTORICAL_CORRECT	V1.2 preamble and I1 precedence disambiguate	CLOSED
+H-SC12	golden/schema-positive/cases.json	historical V1.1 fixture family	HISTORICAL_CORRECT	new disposable V1.2 fixtures; old goldens unchanged	CLOSED

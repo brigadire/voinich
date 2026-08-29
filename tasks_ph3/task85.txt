@@ -1,0 +1,1602 @@
+Task85 — Voynich Formal Grammar Experimental Design,
+Baselines and Validation Contract
+
+Цель
+
+Подготовить и заморозить научный дизайн Line A Phase III:
+
+    Voynich Generative Grammar
+    and Information Residual.
+
+Task85 НЕ должен строить окончательную грамматику Voynichese.
+
+Task85 должен определить:
+
+1. Что в Phase III операционально называется "grammar".
+
+2. Какие уровни структуры должна уметь описывать grammar.
+
+3. Какие model classes допустимо сравнивать.
+
+4. Как corpus делится на discovery / validation / held-out
+   без structural leakage.
+
+5. По каким критериям grammar считается:
+       predictive;
+       structurally adequate;
+       sufficient;
+       minimal.
+
+6. Как измеряется complexity grammar.
+
+7. Какие baselines и null models необходимы.
+
+8. Какие Fingerprint V2 metrics/families могут использоваться
+   для независимой generative validation.
+
+9. Как после freeze grammar будет определяться
+   information residual.
+
+10. Как будущие Task86–89 должны быть защищены
+    от post-hoc tuning.
+
+Финальный результат:
+
+    GRAMMAR_EXPERIMENT_CONTRACT_FROZEN
+
+или, если корректный экспериментальный дизайн
+построить невозможно:
+
+    GRAMMAR_EXPERIMENT_DESIGN_UNRESOLVED.
+
+
+======================================================================
+1. SCIENTIFIC CONTEXT
+======================================================================
+
+Использовать как authoritative predecessor:
+
+    Phase I scientific report;
+    Phase II scientific report;
+    PHASE1_TO_PHASE2_CONCLUSION_MAP.tsv;
+    PHASE2_HYPOTHESIS_STATUS.tsv;
+    PHASE_III_OPEN_PROBLEMS.md;
+    PHASE3_GOALS.
+
+Task85 должен исходить из двух результатов предыдущих фаз.
+
+A. Voynich обладает сильной constrained formation
+   и измеримой многоуровневой структурой.
+
+B. Phase II:
+
+       BEST_SUPPORTED_CLASS = INCONCLUSIVE
+
+       MECHANISM_IDENTIFICATION_FROM_F2 =
+           NOT_IDENTIFIABLE
+
+   при primary direct coverage:
+
+       3 / 13 CORE,
+       one edit-related family.
+
+Task85 не должен переинтерпретировать эти результаты.
+
+
+======================================================================
+2. CENTRAL RESEARCH QUESTION
+======================================================================
+
+Основной вопрос Line A:
+
+    Может ли наблюдаемая структура Voynichese
+    быть описана компактной формальной
+    генеративной системой, способной
+    предсказывать ранее не использованные
+    части корпуса?
+
+Это НЕ вопрос:
+
+    "Какова грамматика языка Войнича?"
+
+и НЕ вопрос:
+
+    "Что означает текст?"
+
+
+======================================================================
+3. OPERATIONAL DEFINITION OF GRAMMAR
+======================================================================
+
+Определить grammar G как:
+
+    explicit generative model over observable
+    transcription units and structural context
+
+такой, что G задаёт вероятности и/или допустимость
+наблюдаемых последовательностей и способен
+генерировать новые последовательности.
+
+Grammar должна иметь:
+
+    formally specified representation;
+    finite description;
+    deterministic implementation given seed;
+    computable likelihood/probability
+        where model permits;
+    generative sampling procedure;
+    measurable complexity.
+
+Запрещено определять grammar через
+семантические предположения.
+
+
+======================================================================
+4. TERMINOLOGICAL NEUTRALITY
+======================================================================
+
+На этапе Task85 запрещено предполагать:
+
+    glyph = character/letter;
+    token = linguistic word;
+    token component = morpheme;
+    line = sentence;
+    page = discourse unit;
+    prefix = linguistic prefix;
+    suffix = linguistic suffix.
+
+Использовать нейтральные обозначения:
+
+    GLYPH
+    TOKEN
+    COMPONENT
+    POSITION
+    CONTEXT
+    STRUCTURAL_STATE.
+
+Если используются термины prefix/suffix/stem,
+явно маркировать их как формальные,
+не семантические категории.
+
+
+======================================================================
+5. THREE GRAMMAR LEVELS
+======================================================================
+
+Зафиксировать три уровня будущего исследования.
+
+G1 — TOKEN FORMATION
+
+    P(token structure)
+
+или эквивалентная generative representation.
+
+G2 — CONTEXTUAL SEQUENCE
+
+    P(token_i | local context, G1).
+
+G3 — STRUCTURAL CONDITIONING
+
+    P(token_i |
+        local context,
+        structural state,
+        G1,
+        G2).
+
+Task85 должен определить,
+какие observable variables разрешены
+на каждом уровне.
+
+
+======================================================================
+6. G1 SCOPE
+======================================================================
+
+G1 должен исследовать минимум:
+
+    glyph/component combinations;
+    token length;
+    internal position;
+    formation constraints;
+    edit-family relations;
+    lexical paradigms;
+    rare forms;
+    unseen forms.
+
+G1 не должен видеть:
+
+    соседние tokens;
+    line position;
+    page;
+    folio;
+    section;
+
+кроме информации, необходимой исключительно
+для определения transcription unit.
+
+
+======================================================================
+7. G2 SCOPE
+======================================================================
+
+G2 может использовать:
+
+    preceding tokens;
+    following context only where prediction
+        protocol makes this legitimate;
+    local transition history;
+    repetition state;
+    short-range token context.
+
+Не разрешать G2 использовать manuscript hierarchy,
+иначе нельзя будет измерить incremental contribution G3.
+
+
+======================================================================
+8. G3 SCOPE
+======================================================================
+
+Candidate structural variables:
+
+    position in physical line;
+    line boundary;
+    locus;
+    page;
+    folio;
+    recto/verso;
+    section;
+    local regime;
+    other Fingerprint V2 structural states.
+
+Task85 должен провести applicability audit
+и определить, какие из них допустимы
+как conditioning variables.
+
+Не включать variable только потому,
+что она улучшает fit.
+
+
+======================================================================
+9. NESTED MODEL PRINCIPLE
+======================================================================
+
+Где возможно, обеспечить:
+
+    G1 ⊂ G2 ⊂ G3
+
+или определить строгий comparison mapping.
+
+Это необходимо для измерения:
+
+    Δ(G1 → G2)
+
+и:
+
+    Δ(G2 → G3).
+
+Цель — понять, какой масштаб структуры
+реально добавляет predictive information.
+
+
+======================================================================
+10. CORPUS AUTHORITY
+======================================================================
+
+Использовать только deterministic authoritative
+Voynich corpora, утверждённые Task83b.
+
+Минимум:
+
+    ZL3b
+    IT2a.
+
+Все prepared corpora должны проходить
+authoritative provenance verification.
+
+Старые unresolved/invalid corpus artifacts
+использовать запрещено.
+
+
+======================================================================
+11. TRANSCRIPTION POLICY
+======================================================================
+
+Одна transcription не должна использоваться
+для выбора модели, а другая только для красивой проверки.
+
+Task85 должен заранее определить роль:
+
+    ZL3b
+    IT2a
+
+в discovery/replication protocol.
+
+Предпочтительный принцип:
+
+    model selection protocol одинаков
+    для обеих transcription;
+
+    primary conclusions require
+    cross-transcription stability.
+
+Определить статусы:
+
+    TRANSCRIPTION_STABLE
+    DIRECTION_STABLE
+    TRANSCRIPTION_SENSITIVE.
+
+
+======================================================================
+12. DATA PARTITIONING
+======================================================================
+
+Random token split как единственный holdout запрещён.
+
+Разработать hierarchical partition scheme.
+
+Минимум рассмотреть:
+
+    token holdout;
+    line holdout;
+    page holdout;
+    folio holdout;
+    section holdout.
+
+Цель:
+
+    предотвратить leakage локальных
+    manuscript-specific patterns.
+
+
+======================================================================
+13. DISCOVERY / VALIDATION / CONFIRMATION
+======================================================================
+
+Разделить данные минимум на:
+
+    DEVELOPMENT
+
+    VALIDATION
+
+    HELDOUT.
+
+DEVELOPMENT:
+
+    model construction;
+    debugging;
+    exploratory diagnostics.
+
+VALIDATION:
+
+    model-class selection;
+    hyperparameter selection;
+    complexity calibration.
+
+HELDOUT:
+
+    final confirmatory evaluation only.
+
+HELDOUT нельзя открывать до model freeze.
+
+
+======================================================================
+14. STRUCTURAL SPLIT DESIGN
+======================================================================
+
+Task85 должен определить конкретный
+детерминированный split manifest.
+
+При split учитывать:
+
+    Currier/section structure where authoritative;
+    folio grouping;
+    recto/verso pairing;
+    page adjacency;
+    local regimes;
+    line adjacency.
+
+Не допускать попадания почти идентичного
+локального материала одновременно
+в train и heldout через соседние loci.
+
+
+======================================================================
+15. SPLIT BALANCE
+======================================================================
+
+Проверить DEVELOPMENT / VALIDATION / HELDOUT на:
+
+    token count;
+    line count;
+    folio count;
+    section composition;
+    token-length distribution;
+    major transcription metadata;
+    applicable F2 distributions.
+
+Balance не должен достигаться
+перестановкой individual tokens,
+разрушающей manuscript structure.
+
+
+======================================================================
+16. SPLIT FREEZE
+======================================================================
+
+Создать:
+
+    GRAMMAR_CORPUS_SPLIT.tsv
+    GRAMMAR_CORPUS_SPLIT_MANIFEST.json
+
+и marker:
+
+    GRAMMAR_CORPUS_SPLIT_FROZEN.
+
+После freeze запрещено менять split
+по результатам grammar experiments.
+
+
+======================================================================
+17. MODEL-CLASS REGISTRY
+======================================================================
+
+До Task86 создать frozen registry
+candidate model classes.
+
+Минимум рассмотреть:
+
+M0 — IID/token-frequency baseline
+
+M1 — character/glyph n-gram
+
+M2 — variable-order Markov
+
+M3 — finite-state formation grammar
+
+M4 — probabilistic finite-state grammar
+
+M5 — component/rule formation grammar
+
+M6 — contextual token model
+
+M7 — hierarchical/state-conditioned model.
+
+Конкретный состав должен быть обоснован Task85.
+
+Не включать model class только потому,
+что ожидается хороший fit на Voynich.
+
+
+======================================================================
+18. MODEL CLASS FAIRNESS
+======================================================================
+
+Для каждого class определить:
+
+    inputs;
+    accessible context;
+    parameterization;
+    training algorithm;
+    hyperparameter space;
+    generation algorithm;
+    complexity measure;
+    deterministic seed behavior;
+    failure conditions.
+
+Нельзя сравнивать модели,
+если одна получает существенно больше
+target information без явного учёта этого.
+
+
+======================================================================
+19. NEURAL MODEL POLICY
+======================================================================
+
+Neural language models могут использоваться
+только как auxiliary predictive upper bound,
+если это научно полезно.
+
+Они не должны быть primary grammar,
+если отсутствует заранее определённая:
+
+    interpretable representation;
+    comparable complexity measure;
+    generation contract;
+    residual accounting.
+
+Цель Phase III — получить объяснимую
+generative structure, а не максимальный predictor.
+
+
+======================================================================
+20. BASELINES
+======================================================================
+
+Определить обязательные baselines.
+
+Минимум:
+
+B0:
+    IID glyph/token baseline.
+
+B1:
+    unigram token model.
+
+B2:
+    simple n-gram model.
+
+B3:
+    shuffled-token control.
+
+B4:
+    formation-preserving shuffled control,
+    если может быть определён target-blind.
+
+B5:
+    natural-language controls.
+
+Baselines должны позволять отличить:
+
+    trivial frequency fit
+
+от:
+
+    genuine grammar structure.
+
+
+======================================================================
+21. NATURAL-LANGUAGE CONTROLS
+======================================================================
+
+Использовать уже provenance-valid controls,
+где это возможно.
+
+Если нужны дополнительные controls,
+критерии их выбора должны быть
+сформулированы до Voynich grammar comparison.
+
+Контроли должны по возможности иметь
+сопоставимый размер или использовать
+scale-normalized protocol.
+
+
+======================================================================
+22. MESSAGE-FREE CONTROLS
+======================================================================
+
+Task85 должен определить baseline generators,
+не содержащие сообщения:
+
+    IID;
+    Markov;
+    constrained formation;
+    shuffled grammar-like variants.
+
+Это ещё НЕ Task89 message-free experiment.
+
+Здесь они нужны для calibration:
+
+    что означает "grammar detected"
+    в корпусе, где известно,
+    что семантического сообщения нет.
+
+
+======================================================================
+23. PRIMARY PREDICTIVE METRICS
+======================================================================
+
+Заморозить predictive metrics.
+
+Рассмотреть минимум:
+
+    held-out negative log likelihood;
+    cross entropy;
+    perplexity where meaningful;
+    unseen-token probability;
+    predictive calibration.
+
+Не использовать только training likelihood.
+
+
+======================================================================
+24. STRUCTURAL VALIDATION METRICS
+======================================================================
+
+Grammar должна оцениваться также
+по generative structural reproduction.
+
+Провести applicability audit
+Fingerprint V2.
+
+Для каждой F2 metric определить:
+
+    DIRECTLY_APPLICABLE_TO_G1
+    DIRECTLY_APPLICABLE_TO_G2
+    DIRECTLY_APPLICABLE_TO_G3
+    GENERATION_APPLICABLE
+    STRUCTURE_REQUIRED
+    NOT_APPLICABLE.
+
+Создать:
+
+    GRAMMAR_F2_APPLICABILITY.tsv.
+
+
+======================================================================
+25. FAMILY-LEVEL VALIDATION
+======================================================================
+
+Не считать большое количество
+коррелированных metrics независимыми доказательствами.
+
+Evaluation должна агрегироваться
+минимум на уровне:
+
+    metric;
+    family;
+    structural scale.
+
+Определить family-level success gates
+до Task86.
+
+
+======================================================================
+26. GENERATIVE VALIDATION
+======================================================================
+
+Каждый candidate grammar,
+допущенный до final validation,
+должен уметь генерировать independent samples.
+
+Для frozen model:
+
+    G + seed_i → synthetic corpus_i.
+
+Количество seeds/replicates определить Task85
+по power/stability analysis,
+не по Voynich fit.
+
+
+======================================================================
+27. GENERATED CORPUS SCALE
+======================================================================
+
+Определить правила размера synthetic corpus.
+
+Не позволять модели получать преимущество
+путём генерации удобного объёма данных.
+
+Рассмотреть:
+
+    matched-size generation;
+    multiple corpus scales;
+    convergence diagnostics.
+
+Использовать опыт Task82a,
+но не наследовать его параметры автоматически.
+
+
+======================================================================
+28. COMPLEXITY
+======================================================================
+
+Grammar complexity должна измеряться явно.
+
+Рассмотреть:
+
+    number of states;
+    number of transitions;
+    number of production rules;
+    number of parameters;
+    encoded model length.
+
+Выбрать primary complexity measure
+до grammar fitting.
+
+
+======================================================================
+29. DESCRIPTION LENGTH
+======================================================================
+
+Предпочтительно определить MDL-like accounting:
+
+    L(G) + L(V | G).
+
+Если используется MDL,
+Task85 должен полностью определить:
+
+    coding assumptions;
+    parameter cost;
+    model cost;
+    residual cost;
+    unseen-symbol handling.
+
+Нельзя выбирать coding scheme
+после получения grammar.
+
+
+======================================================================
+30. MINIMALITY
+======================================================================
+
+Определить operational criterion:
+
+    GRAMMAR_MINIMAL.
+
+Минимальность НЕ означает:
+
+    модель с минимальным числом правил вообще.
+
+Она должна означать:
+
+    simplest model satisfying frozen
+    predictive + structural adequacy gates.
+
+Формально:
+
+    G_min =
+        argmin Complexity(G)
+
+    subject to:
+
+        PredictiveAdequacy(G)
+        AND
+        StructuralAdequacy(G).
+
+
+======================================================================
+31. SUFFICIENCY
+======================================================================
+
+Определить:
+
+    GRAMMAR_SUFFICIENT.
+
+Требовать минимум:
+
+    held-out predictive improvement over baselines;
+    cross-transcription robustness;
+    generative reproduction of preregistered
+        structural families;
+    stability across seeds;
+    stability across relevant held-out partitions.
+
+Высокая likelihood сама по себе недостаточна.
+
+
+======================================================================
+32. OVERFITTING CONTROL
+======================================================================
+
+Обязательно измерять:
+
+    train performance;
+    validation performance;
+    held-out performance;
+    complexity.
+
+Model с почти буквальным memorization corpus
+не может считаться explanatory grammar.
+
+
+======================================================================
+33. LEXICON ACCOUNTING
+======================================================================
+
+Отдельно определить стоимость хранения lexicon.
+
+Нельзя считать модель компактной,
+если "grammar" мала,
+но содержит огромный memorized vocabulary table.
+
+Complexity должна включать:
+
+    grammar
+    +
+    stored lexicon
+    +
+    exceptions.
+
+
+======================================================================
+34. EXCEPTION ACCOUNTING
+======================================================================
+
+Все special cases должны учитываться
+как часть model complexity.
+
+Запрещено:
+
+    вручную добавлять исключения
+    и не учитывать их стоимость.
+
+Создать единый representation для:
+
+    regular rules;
+    lexical exceptions;
+    structural exceptions.
+
+
+======================================================================
+35. UNSEEN FORMS
+======================================================================
+
+Grammar должна проверяться на способности:
+
+    assign probability to unseen valid-like forms;
+
+и:
+
+    discriminate held-out observed forms
+    from appropriate null/non-observed forms.
+
+Task85 должен определить
+target-blind negative-generation protocol.
+
+
+======================================================================
+36. NEGATIVE TOKEN CONTROLS
+======================================================================
+
+Создать метод генерации negative token sets.
+
+Они должны быть matched минимум по:
+
+    length
+
+и по возможности:
+
+    glyph frequency;
+    component inventory.
+
+Нельзя использовать очевидно невозможный random noise,
+если он делает classification тривиальной.
+
+
+======================================================================
+37. EDIT-GRAPH VALIDATION
+======================================================================
+
+Использовать frozen edit-graph machinery
+как один из structural validation channels.
+
+Проверять:
+
+    degree structure;
+    neighborhood structure;
+    family organization;
+    paradigm organization;
+
+где applicable.
+
+Не оптимизировать grammar непосредственно
+под final edit-graph score.
+
+
+======================================================================
+38. CONTEXTUAL GAIN
+======================================================================
+
+Для Task87 заранее определить:
+
+    CONTEXT_INFORMATION_GAIN.
+
+Например:
+
+    predictive gain G2 over G1
+
+при complexity adjustment.
+
+Это позволит ответить:
+
+    насколько token choice содержит информацию,
+    не объяснимую одной token-formation grammar.
+
+
+======================================================================
+39. STRUCTURAL GAIN
+======================================================================
+
+Аналогично определить для Task88:
+
+    STRUCTURAL_INFORMATION_GAIN
+
+как преимущество G3 над G2
+на held-out data с complexity adjustment.
+
+Это ключевой тест того,
+несёт ли manuscript position predictive information.
+
+
+======================================================================
+40. ABLATION CONTRACT
+======================================================================
+
+Определить обязательные ablations.
+
+Минимум:
+
+    remove token formation;
+    remove local context;
+    remove line position;
+    remove hierarchy;
+    remove lexical memory;
+    remove state.
+
+Конкретные ablations применяются
+только к моделям, где имеют смысл.
+
+
+======================================================================
+41. INFORMATION RESIDUAL PREPARATION
+======================================================================
+
+Task85 НЕ вычисляет финальный residual.
+
+Но должен определить,
+что Task89 будет считать residual.
+
+Предпочтительно:
+
+    residual = information not predicted
+               by frozen G_min.
+
+Определить representation residual,
+например через:
+
+    surprisal sequence;
+    coding residual;
+    prediction errors;
+    sampled-choice residual.
+
+Не называть residual plaintext.
+
+
+======================================================================
+42. RESIDUAL ENTROPY CONTRACT
+======================================================================
+
+Определить candidate estimators:
+
+    H(V | G)
+
+или эквивалентную predictive/MDL quantity.
+
+Estimator должен быть:
+
+    applicable to held-out data;
+    deterministic;
+    bias-audited;
+    scale-aware.
+
+Final estimator freeze может произойти
+до Task89, но его design должен быть
+заложен Task85.
+
+
+======================================================================
+43. RESIDUAL STRUCTURE CONTRACT
+======================================================================
+
+Task89 должен иметь возможность проверить,
+сохраняется ли структура в residual.
+
+Task85 должен определить будущие tests минимум для:
+
+    autocorrelation/dependence;
+    local sequence;
+    line position;
+    page/folio;
+    section;
+    applicable F2 families.
+
+Нужны matched residual nulls.
+
+
+======================================================================
+44. MESSAGE-FREE FUTURE EXPERIMENT
+======================================================================
+
+Определить boundary между:
+
+    grammar fitting
+
+и:
+
+    message-free generation.
+
+Task86–88 строят grammar.
+
+Только после:
+
+    G_min FROZEN
+
+Task89 может выполнять:
+
+    G_min + RNG → message-free corpora.
+
+Нельзя выбирать G_min по тому,
+насколько хорошо его message-free samples
+совпадают с full Voynich target.
+
+
+======================================================================
+45. SEMANTICS FIREWALL
+======================================================================
+
+Никакие результаты Task85–89
+не должны интерпретироваться через:
+
+    proposed Voynich translations;
+    candidate plaintext;
+    semantic labels;
+    presumed subject matter;
+    illustrated page meaning.
+
+Line A является structural experiment.
+
+
+======================================================================
+46. FONTANA FIREWALL
+======================================================================
+
+Не выбирать grammar representation
+потому, что она напоминает Fontana mechanisms.
+
+Task85–89 должны быть независимы
+от того, поддерживает ли grammar
+external-memory interpretation.
+
+Fontana comparison происходит позднее,
+после Line A freeze.
+
+
+======================================================================
+47. PHASE II MECHANISM FIREWALL
+======================================================================
+
+Не использовать:
+
+    Task81/82 mechanism fit;
+    Task83r distances;
+    "natural closest";
+    Fontana endpoint values;
+    shorthand distances;
+    extraction rankings
+
+для выбора grammar class или thresholds.
+
+Phase II может определять открытые вопросы,
+но не target-fit design Line A.
+
+
+======================================================================
+48. HELDOUT SENTINEL
+======================================================================
+
+До первого доступа к HELDOUT создать:
+
+    GRAMMAR_MODEL_SELECTION_FROZEN
+
+и sentinel с:
+
+    git commit;
+    split manifest checksum;
+    model registry checksum;
+    metric registry checksum;
+    complexity contract checksum;
+    selected model/hyperparameters;
+    generation settings;
+    seed contract.
+
+После sentinel model selection запрещён.
+
+
+======================================================================
+49. BUG POLICY
+======================================================================
+
+После heldout opening:
+
+Implementation bug with unchanged
+scientific semantics:
+
+    document;
+    fix;
+    regression-test;
+    recompute all affected models symmetrically.
+
+Scientific-definition change:
+
+    invalidate confirmatory run.
+
+Не менять contract post-hoc.
+
+
+======================================================================
+50. DETERMINISM
+======================================================================
+
+Унаследовать требования Task83b.
+
+При одинаковых:
+
+    input;
+    model;
+    parameters;
+    seed;
+    code;
+
+результат должен быть deterministic.
+
+Проверить:
+
+    process restart;
+    map order;
+    worker count;
+    GOMAXPROCS;
+    serialization order.
+
+
+======================================================================
+51. SEED CONTRACT
+======================================================================
+
+Для stochastic grammar training/generation
+определить deterministic seed derivation.
+
+Seed не должен зависеть от:
+
+    job order;
+    worker assignment;
+    filesystem order;
+    map iteration.
+
+Запретить seed cherry-picking.
+
+
+======================================================================
+52. MODEL FAILURE
+======================================================================
+
+Заранее определить failure classes:
+
+    TRAINING_FAILED
+    NON_GENERATIVE
+    NUMERICALLY_UNSTABLE
+    HELDOUT_DEGENERATE
+    COMPLEXITY_UNBOUNDED
+    MEMORIZATION_DOMINATED
+    STRUCTURAL_VALIDATION_FAILED.
+
+Failed model нельзя тихо удалить
+из comparison registry.
+
+
+======================================================================
+53. PILOT POLICY
+======================================================================
+
+Разрешены target-aware pilots только на DEVELOPMENT partition.
+
+Их цель:
+
+    runtime estimation;
+    numerical stability;
+    implementation validation;
+    rough hyperparameter bounds.
+
+Pilot results не могут использовать HELDOUT.
+
+Все изменения design после pilots
+должны произойти до design freeze.
+
+
+======================================================================
+54. POWER / STABILITY ANALYSIS
+======================================================================
+
+Определить:
+
+    number of folds;
+    number of seeds;
+    number of generated corpora;
+    corpus scale
+
+на основании stability/convergence analysis.
+
+Не выбирать количество replicates
+по достижению желаемого p-value.
+
+
+======================================================================
+55. MULTIPLE TESTING
+======================================================================
+
+Если grammar validation включает
+множественные hypothesis tests,
+заранее определить correction policy
+или family-level gate,
+если correction неприменима.
+
+Не принимать решение после просмотра p-values.
+
+
+======================================================================
+56. PRIMARY VS SECONDARY EVIDENCE
+======================================================================
+
+Разделить:
+
+PRIMARY:
+
+    held-out predictive performance;
+    complexity-adjusted adequacy;
+    preregistered structural families;
+    cross-transcription robustness.
+
+SECONDARY:
+
+    exploratory diagnostics;
+    individual token examples;
+    visualization;
+    non-CORE F2;
+    qualitative grammar inspection.
+
+Final verdict не должен зависеть
+от secondary evidence.
+
+
+======================================================================
+57. REQUIRED REGISTRIES
+======================================================================
+
+Создать минимум:
+
+    GRAMMAR_UNIT_REGISTRY.tsv
+
+    GRAMMAR_MODEL_REGISTRY.tsv
+
+    GRAMMAR_METRIC_REGISTRY.tsv
+
+    GRAMMAR_COMPLEXITY_CONTRACT.md
+
+    GRAMMAR_F2_APPLICABILITY.tsv
+
+    GRAMMAR_BASELINE_REGISTRY.tsv
+
+    GRAMMAR_ABLATION_REGISTRY.tsv
+
+    GRAMMAR_FAILURE_REGISTRY.tsv.
+
+
+======================================================================
+58. REQUIRED DESIGN ARTIFACTS
+======================================================================
+
+Создать минимум:
+
+research/phase3/task85/
+
+    TASK85_DESIGN.md
+
+    PHASE3_LINE_A_RESEARCH_QUESTIONS.md
+
+    GRAMMAR_UNIT_REGISTRY.tsv
+    GRAMMAR_MODEL_REGISTRY.tsv
+    GRAMMAR_METRIC_REGISTRY.tsv
+
+    GRAMMAR_COMPLEXITY_CONTRACT.md
+    GRAMMAR_VALIDATION_CONTRACT.md
+
+    GRAMMAR_CORPUS_SPLIT.tsv
+    GRAMMAR_CORPUS_SPLIT_MANIFEST.json
+
+    GRAMMAR_F2_APPLICABILITY.tsv
+
+    GRAMMAR_BASELINE_REGISTRY.tsv
+    GRAMMAR_ABLATION_REGISTRY.tsv
+    GRAMMAR_FAILURE_REGISTRY.tsv
+
+    GRAMMAR_RESIDUAL_CONTRACT.md
+
+    TASK86_HANDOFF.md
+
+    TASK85_REPORT.md
+    TASK85_RESULTS_MANIFEST.json
+
+и final markers:
+
+    GRAMMAR_CORPUS_SPLIT_FROZEN
+
+    GRAMMAR_EXPERIMENT_CONTRACT_FROZEN
+
+либо один failure marker:
+
+    GRAMMAR_EXPERIMENT_DESIGN_UNRESOLVED.
+
+
+======================================================================
+59. TASK86 HANDOFF
+======================================================================
+
+TASK86_HANDOFF.md должен однозначно задавать
+первый generative experiment.
+
+Task86 разрешается исследовать только:
+
+    G1 — TOKEN FORMATION.
+
+Handoff должен содержать:
+
+    authoritative corpus;
+    allowed partitions;
+    unit definition;
+    allowed G1 model classes;
+    hyperparameter ranges;
+    baselines;
+    metrics;
+    complexity accounting;
+    generation protocol;
+    seeds;
+    validation rules;
+    model-selection rule;
+    freeze condition.
+
+Task86 не должен самостоятельно
+переопределять experimental design.
+
+
+======================================================================
+60. REQUIRED QUESTIONS
+======================================================================
+
+TASK85_REPORT.md должен ответить минимум:
+
+1. Что операционально называется grammar?
+
+2. Какие transcription units используются?
+
+3. Почему выбран именно этот unit representation?
+
+4. Как разделены G1/G2/G3?
+
+5. Какие model classes допускаются?
+
+6. Почему эти classes достаточно различны
+   для meaningful comparison?
+
+7. Какие baselines используются?
+
+8. Как устроен DEVELOPMENT/VALIDATION/HELDOUT split?
+
+9. Как предотвращён structural leakage?
+
+10. Как проверяется cross-transcription robustness?
+
+11. Какие predictive metrics primary?
+
+12. Какие F2 metrics/families применимы?
+
+13. Как измеряется complexity?
+
+14. Как учитывается lexicon?
+
+15. Как учитываются exceptions?
+
+16. Что означает GRAMMAR_SUFFICIENT?
+
+17. Что означает GRAMMAR_MINIMAL?
+
+18. Как будет измеряться contextual gain?
+
+19. Как будет измеряться structural gain?
+
+20. Какие ablations обязательны?
+
+21. Как grammar должна генерировать synthetic corpora?
+
+22. Как выбираются seeds/scales/replicates?
+
+23. Как предотвращается seed cherry-picking?
+
+24. Что будет считаться information residual?
+
+25. Какие residual nulls планируются?
+
+26. Как отделено grammar discovery
+    от message-free experiment?
+
+27. Как обеспечен semantics firewall?
+
+28. Как обеспечен Fontana/mechanism firewall?
+
+29. Когда открывается HELDOUT?
+
+30. Какие действия после HELDOUT opening
+    инвалидируют experiment?
+
+31. Готов ли contract для Task86?
+
+
+======================================================================
+61. TASK85 VERDICTS
+======================================================================
+
+Выдать минимум:
+
+    GRAMMAR_UNIT_DEFINITION =
+        SUPPORTED / UNRESOLVED
+
+    G1_G2_G3_SEPARATION =
+        SUPPORTED / UNRESOLVED
+
+    HIERARCHICAL_SPLIT_VALID =
+        SUPPORTED / NOT_SUPPORTED
+
+    STRUCTURAL_LEAKAGE_CONTROL =
+        SUPPORTED / NOT_SUPPORTED
+
+    CROSS_TRANSCRIPTION_PROTOCOL =
+        SUPPORTED / NOT_SUPPORTED
+
+    MODEL_SPACE_PREDEFINED =
+        SUPPORTED / NOT_SUPPORTED
+
+    BASELINE_SPACE_PREDEFINED =
+        SUPPORTED / NOT_SUPPORTED
+
+    COMPLEXITY_ACCOUNTING =
+        SUPPORTED / NOT_SUPPORTED
+
+    LEXICON_COST_ACCOUNTED =
+        SUPPORTED / NOT_SUPPORTED
+
+    GRAMMAR_SUFFICIENCY_DEFINED =
+        SUPPORTED / NOT_SUPPORTED
+
+    GRAMMAR_MINIMALITY_DEFINED =
+        SUPPORTED / NOT_SUPPORTED
+
+    GENERATIVE_VALIDATION_DEFINED =
+        SUPPORTED / NOT_SUPPORTED
+
+    F2_VALIDATION_SPACE_DEFINED =
+        SUPPORTED / PARTIAL / NOT_SUPPORTED
+
+    RESIDUAL_CONTRACT_DEFINED =
+        SUPPORTED / PARTIAL / NOT_SUPPORTED
+
+    SEMANTICS_FIREWALL =
+        SUPPORTED / NOT_SUPPORTED
+
+    PHASE2_MECHANISM_FIREWALL =
+        SUPPORTED / NOT_SUPPORTED
+
+    DETERMINISM_CONTRACT =
+        SUPPORTED / NOT_SUPPORTED
+
+    TASK86_READY =
+        SUPPORTED / NOT_SUPPORTED.
+
+
+======================================================================
+62. SUCCESS CRITERION
+======================================================================
+
+Task85 является успешным, если после его freeze
+Task86 может быть выполнен другим исследователем
+без необходимости принимать новые существенные
+scientific-design decisions.
+
+Иными словами:
+
+    Task85 defines the experiment.
+
+    Task86 executes the first part of it.
+
+
+======================================================================
+63. NON-GOALS
+======================================================================
+
+Task85 НЕ должен:
+
+    выводить grammar Voynichese;
+    выбирать победившую grammar;
+    анализировать HELDOUT;
+    вычислять final information residual;
+    генерировать final message-free portfolio;
+    сравнивать grammar с Fontana;
+    повторять Task83r;
+    определять, является ли VM natural language;
+    определять, имеет ли VM смысл;
+    искать plaintext;
+    искать translation;
+    искать semantic interpretation.
+
+
+======================================================================
+64. VALIDATION
+======================================================================
+
+Проверить:
+
+    all authoritative input paths;
+    all checksums;
+    Task83b provenance verifier;
+    corpus split determinism;
+    no overlap prohibited by split contract;
+    registry consistency;
+    metric applicability consistency;
+    model → allowed-input consistency;
+    G1/G2/G3 access restrictions.
+
+Если добавлен Go tooling:
+
+    go build ./...
+    go vet ./...
+    go test ./...
+    go test -race ./...
+
+Всегда:
+
+    git diff --check.
+
+
+======================================================================
+65. DEFINITION OF DONE
+======================================================================
+
+Task85 завершён только когда:
+
+1. Phase I/II predecessor conclusions audited;
+2. central Line A question fixed;
+3. grammar operationally defined;
+4. linguistic assumptions explicitly excluded;
+5. transcription units frozen;
+6. G1/G2/G3 scopes frozen;
+7. authoritative corpora fixed;
+8. transcription protocol fixed;
+9. hierarchical split generated;
+10. split leakage audited;
+11. split manifest frozen;
+12. DEVELOPMENT/VALIDATION/HELDOUT roles fixed;
+13. model classes preregistered;
+14. model access rules fixed;
+15. baselines preregistered;
+16. natural controls defined;
+17. message-free calibration controls defined;
+18. predictive metrics frozen;
+19. F2 applicability audited;
+20. family-level gates defined;
+21. generation protocol defined;
+22. corpus scale policy defined;
+23. complexity measure frozen;
+24. lexicon cost included;
+25. exception cost included;
+26. GRAMMAR_SUFFICIENT formally defined;
+27. GRAMMAR_MINIMAL formally defined;
+28. overfitting criteria defined;
+29. unseen-form test defined;
+30. negative-token protocol defined;
+31. contextual gain defined;
+32. structural gain defined;
+33. ablations preregistered;
+34. residual representation defined;
+35. residual-analysis boundary defined;
+36. message-free experiment boundary defined;
+37. semantics firewall established;
+38. Fontana/mechanism firewall established;
+39. HELDOUT sentinel protocol defined;
+40. post-opening bug policy defined;
+41. deterministic seed contract defined;
+42. failure classes defined;
+43. pilot policy defined;
+44. stability/replicate policy defined;
+45. primary/secondary evidence separated;
+46. required registries generated;
+47. TASK86_HANDOFF.md is complete;
+48. TASK86_READY explicitly determined;
+49. validation passes;
+50. GRAMMAR_EXPERIMENT_CONTRACT_FROZEN issued.

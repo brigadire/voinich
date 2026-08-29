@@ -1,0 +1,15 @@
+{
+  "version": "G1V2-GENERATION-BOUNDARY-DIAGNOSTIC-1",
+  "normative_status": "candidate boundary vectors; not a V1.2 golden suite",
+  "cases": [
+    {"id":"EOS-ZERO","operation":"candidate_constrained_categorical","input":{"outcomes":["a","<EOS>"],"probabilities":["0.8","0.2"],"admissible":["a"],"u53":"0.90000000000000002"},"expected":{"status":"OK","outcome":"a","draws":1},"emitted_bytes":"61","resulting_rng_position":"next categorical draw"},
+    {"id":"EOS-AFTER-ONE","operation":"candidate_constrained_categorical","input":{"outcomes":["a","<EOS>"],"probabilities":["0.8","0.2"],"admissible":["a","<EOS>"],"u53":"0.90000000000000002"},"expected":{"status":"OK","outcome":"<EOS>","draws":1},"emitted_bytes":"","resulting_rng_position":"next categorical draw"},
+    {"id":"BELOW-BOUNDARY","operation":"candidate_constrained_categorical","input":{"outcomes":["a","b"],"probabilities":["0.5","0.5"],"admissible":["a","b"],"u53":"0.49999999999999994"},"expected":{"status":"OK","outcome":"a","draws":1},"emitted_bytes":"61","resulting_rng_position":"next categorical draw"},
+    {"id":"EXACT-BOUNDARY","operation":"candidate_constrained_categorical","input":{"outcomes":["a","b"],"probabilities":["0.5","0.5"],"admissible":["a","b"],"u53":"0.5"},"expected":{"status":"OK","outcome":"b","draws":1},"emitted_bytes":"62","resulting_rng_position":"next categorical draw"},
+    {"id":"ABOVE-BOUNDARY","operation":"candidate_constrained_categorical","input":{"outcomes":["a","b"],"probabilities":["0.5","0.5"],"admissible":["a","b"],"u53":"0.50000000000000011"},"expected":{"status":"OK","outcome":"b","draws":1},"emitted_bytes":"62","resulting_rng_position":"next categorical draw"},
+    {"id":"FORBIDDEN-BOS","operation":"candidate_constrained_categorical","input":{"outcomes":["<BOS>","a"],"probabilities":["0.5","0.5"],"admissible":["a"],"u53":"0.10000000000000001"},"expected":{"status":"OK","outcome":"a","draws":1},"emitted_bytes":"61","resulting_rng_position":"next categorical draw"},
+    {"id":"ZERO-ADMISSIBLE-MASS","operation":"candidate_constrained_categorical","input":{"outcomes":["a","<EOS>"],"probabilities":["0","1"],"admissible":["a"],"u53":"0.25"},"expected":{"status":"GENERATION_FAILURE","draws":0},"emitted_bytes":"","resulting_rng_position":"unchanged"},
+    {"id":"UNK-INITIAL","operation":"candidate_constrained_categorical","input":{"outcomes":["<UNK>","a","<EOS>"],"probabilities":["0.5","0.25","0.25"],"admissible":["<UNK>","a"],"u53":"0.25"},"expected":{"status":"OK","outcome":"<UNK>","draws":1},"emitted_bytes":"efbfbd","resulting_rng_position":"next categorical draw"},
+    {"id":"MAX-LENGTH","operation":"diagnostic_state_transition","input":{"state":"INSIDE_TOKEN","emitted_glyphs":64,"eos_observed":false},"expected":{"status":"AMBIGUOUS_IN_V1_1"},"emitted_bytes":"unchanged","resulting_rng_position":"not uniquely specified"}
+  ]
+}

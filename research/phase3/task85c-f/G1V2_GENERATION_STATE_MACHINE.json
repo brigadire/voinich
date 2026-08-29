@@ -1,0 +1,31 @@
+{
+  "schema": "g1v2.generation-state-machine.candidate-1",
+  "normative_status": "NOT_FROZEN_DEFECT_EXPANDED",
+  "states": {
+    "BEFORE_TOKEN": {
+      "admissible": "ordinary glyphs and UNK with positive mass; never BOS or EOS",
+      "transition": "glyph or UNK emission -> INSIDE_TOKEN",
+      "rng": "one U53 from conditional admissible distribution"
+    },
+    "INSIDE_TOKEN": {
+      "admissible": "ordinary glyphs, UNK, EOS; never BOS",
+      "transition": "glyph or UNK emission -> INSIDE_TOKEN; EOS -> TOKEN_COMPLETE",
+      "rng": "one draw under the route's fully specified categorical sampler"
+    },
+    "TOKEN_COMPLETE": {"admissible": "none", "transition": "return token", "rng": "none"}
+  },
+  "symbols": {
+    "BOS": "context-only; never sampled or emitted",
+    "EOS": "not emitted; forbidden before a glyph; terminates after one or more glyphs",
+    "UNK": "sampleable model outcome; emits U+FFFD and counts as one glyph",
+    "ordinary": "sampleable and emitted as its NFC UTF-8 scalar"
+  },
+  "zero_admissible_mass_candidate": "GENERATION_FAILURE before consuming a draw",
+  "unresolved": [
+    "outcome identity order",
+    "Generator B algorithms and draw allocation",
+    "maximum-length transition timing",
+    "M5 attempt/counter allocation",
+    "corpus byte serialization"
+  ]
+}

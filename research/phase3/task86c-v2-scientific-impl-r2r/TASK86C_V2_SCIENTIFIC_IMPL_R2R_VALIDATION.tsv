@@ -1,0 +1,25 @@
+check_id	requirement	status	evidence	notes
+V01	V1.1 identity	PASS	Task85c-c results manifest	5c3cd272c1dbae9bfe1d7a100155faf102e86d34660da239e1cb31704ad470b0
+V02	Task85c-c artifact root	PASS	results_manifest_validator.py	dc27660d3e03a06f91aaa1c3aa6c48226328457746c9dc819e7c0a355ce8f09c
+V03	status/reachability identity	PASS	state-machine verifier	13 statuses; 7 stages; 45 transitions
+V04	R2-G01	PASS	Task85c-d audit	CLOSED; stable V1.1 scientific identity
+V05	R2-G02	PASS	Task85c-d audit	CLOSED; dependency_job_ids
+V06	D01 workflow classification	PASS	R2R section 3	materialization is authorized in R2R
+V07	unique blind-ID procedure	FAIL	reference/reproduce_execution_identity_defect.py	EI01
+V08	escrow key generation	NOT_TESTED	safety stop	no production secret generated
+V09	complete scientific implementation	NOT_TESTED	mandatory EI01 stop	M0-M5 handlers not implemented
+V10	golden/evidence implementation validation	NOT_TESTED	mandatory EI01 stop	production implementation absent
+V11	DEVELOPMENT controls/thresholds	NOT_TESTED	mandatory EI01 stop	not materialized
+V12	blind controls/blindness audit	NOT_TESTED	mandatory EI01 stop	no blind truth created or exposed
+V13	natural controls	NOT_TESTED	mandatory EI01 stop	not materialized or executed
+V14	control closure	NOT_TESTED	mandatory EI01 stop	0 of 192
+V15	JobID/DAG/independent reconstruction	NOT_TESTED	mandatory EI01 stop	concrete blind IDs unavailable
+V16	local/distributed/retry/conflict validation	NOT_TESTED	mandatory EI01 stop	production handlers absent
+V17	capacity qualification	NOT_TESTED	mandatory EI01 stop	actual handlers absent
+V18	production build/deployment hash	NOT_TESTED	mandatory EI01 stop	no binary frozen
+V19	preseed/run manifest/handoff	NOT_TESTED	mandatory EI01 stop	production run prohibited
+V20	blind unblinding firewall	PASS	action audit	no escrow or blind controls created
+V21	natural recovery firewall	PASS	action audit	no confirmatory execution
+V22	Voynich firewall	PASS	action audit	no Voynich access
+V23	bulk production firewall	PASS	action audit	no production DAG submitted
+V24	results-manifest closure	PASS	failure manifest verifier	failure artifacts only

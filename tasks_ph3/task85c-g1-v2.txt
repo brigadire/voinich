@@ -1,0 +1,2030 @@
+Task85c — G1-v2 Executable Scientific Contract Resolution
+
+
+PURPOSE
+
+Resolve the scientific-contract ambiguities discovered by
+Task86C-v2-scientific-impl and transform the frozen Task85b
+methodological design into a uniquely implementable, machine-checkable
+G1-v2 scientific contract.
+
+Task85c is a SCIENTIFIC DESIGN + SPECIFICATION + FREEZE task.
+
+It must resolve exactly the implementation blockers A01–A17 recorded in:
+
+    research/phase3/task86c-v2-scientific-impl/
+        TASK86C_V2_SCIENTIFIC_CONTRACT_AMBIGUITY.md
+
+The result must allow a subsequent implementation agent to implement
+G1-v2 without making any independent scientific choices.
+
+The required terminal product is:
+
+    G1_V2_EXECUTABLE_SCIENTIFIC_CONTRACT_FROZEN
+
+Task85c does NOT:
+
+    implement the production scientific handlers;
+    build the production scientific executable;
+    execute Task86C-v2 blind controls;
+    unblind controls;
+    evaluate Voynich;
+    modify previous scientific results;
+    reinterpret Task86R/Task86C results.
+
+
+======================================================================
+1. BACKGROUND
+======================================================================
+
+Task85b froze the G1-v2 methodological design.
+
+Task86C-v2-scientific-impl subsequently established:
+
+    TASK86C_V2_SCIENTIFIC_EXECUTION_READY = NOT_SUPPORTED
+
+    TERMINAL_MARKER =
+        TASK86C_V2_SCIENTIFIC_CONTRACT_AMBIGUOUS
+
+The implementation audit identified 17 independent blockers A01–A17.
+
+The failure is not an experimental result.
+
+It means that Task85b does not uniquely map:
+
+    scientific design
+        →
+    executable algorithm
+        →
+    immutable scientific evidence.
+
+Task85c must close that gap.
+
+
+======================================================================
+2. PRIMARY REQUIREMENT
+======================================================================
+
+After Task85c, two competent independent implementers given only:
+
+    Task85c frozen contract;
+    immutable input artifacts;
+    specified runtime boundary
+
+must be able to produce scientifically equivalent implementations
+without making additional scientific design decisions.
+
+Where byte identity is required by the contract, the expected byte
+representation must also be uniquely specified.
+
+
+======================================================================
+3. AUTHORITATIVE INPUTS
+======================================================================
+
+Primary scientific design:
+
+    research/phase3/task85b/
+
+Blocking ambiguity audit:
+
+    research/phase3/task86c-v2-scientific-impl/
+        TASK86C_V2_SCIENTIFIC_CONTRACT_AMBIGUITY.md
+        TASK86C_V2_SCIENTIFIC_IMPL_REPORT.md
+        TASK86C_V2_SCIENTIFIC_IMPL_DESIGN.md
+        TASK86C_V2_SCIENTIFIC_IMPL_RESULTS_MANIFEST.json
+
+Older executable contract may be consulted only as historical input:
+
+    research/phase3/task85a/
+
+Task86R and Task86C/Task86C-a may be consulted for failure history.
+
+Task86C-v2-prep may be consulted for distributed/evidence constraints.
+
+None of these older artifacts may silently fill a Task85c ambiguity.
+
+
+======================================================================
+4. TASK85B RELATIONSHIP
+======================================================================
+
+Task85c does not discard Task85b.
+
+Treat Task85b as the scientific parent design.
+
+For every Task85c decision classify it as one of:
+
+    CLARIFICATION
+    COMPLETION
+    NECESSARY_SCIENTIFIC_CHANGE
+
+CLARIFICATION:
+    makes an already unique Task85b intention executable.
+
+COMPLETION:
+    selects a missing parameter/algorithm required to instantiate
+    Task85b without changing its intended scientific question.
+
+NECESSARY_SCIENTIFIC_CHANGE:
+    changes a substantive Task85b scientific choice because no
+    satisfactory executable completion exists.
+
+Every NECESSARY_SCIENTIFIC_CHANGE requires explicit documentation
+and justification.
+
+Do not hide changes under "implementation detail".
+
+
+======================================================================
+5. NO SILENT V1 INHERITANCE
+======================================================================
+
+Do not automatically inherit Task85a definitions.
+
+The ambiguity audit established concrete incompatibilities:
+
+    Task85a M0:
+        token categorical
+
+    Task85b M0:
+        glyph IID
+
+    Task85a M1:
+        orders 1..6
+
+    Task85b M1:
+        orders 1..3
+
+    Task85a M3:
+        superseded greedy JS merger
+
+    Task85b M3:
+        bounded exact + approximate routes
+
+    Task85a M4:
+        no EM
+
+    Task85b M4:
+        EM/restart/convergence design
+
+    Task85a M5:
+        zero probability outside retained rules/exceptions
+
+    Task85b M5:
+        productive component backoff.
+
+An old definition may be reused only after explicit review and
+Task85c freeze.
+
+
+======================================================================
+6. SCOPE CONTROL
+======================================================================
+
+Resolve A01–A17.
+
+Do not broaden the task into another general redesign of G1-v2.
+
+New scientific features may not be introduced merely because they
+appear useful.
+
+For each proposed addition ask:
+
+    Is this required to uniquely resolve A01–A17?
+
+If NO:
+
+    OUT_OF_SCOPE.
+
+
+======================================================================
+7. EXECUTABILITY STANDARD
+======================================================================
+
+Prose descriptions such as:
+
+    "use smoothing"
+    "variable-memory model"
+    "bounded exact search"
+    "adaptive bins"
+    "use bootstrap"
+    "select on validation"
+    "model bits"
+
+are insufficient.
+
+A frozen definition must specify, where applicable:
+
+    mathematical equations;
+    data representation;
+    finite parameter grid;
+    initialization;
+    boundary handling;
+    stopping condition;
+    tie-breaking;
+    numerical convention;
+    RNG domain;
+    failure condition;
+    canonical output;
+    complexity cost;
+    golden test vectors.
+
+
+======================================================================
+8. GOLDEN VECTOR RULE
+======================================================================
+
+Every scientifically relevant algorithm introduced or completed by
+Task85c must have at least one deterministic golden test vector.
+
+Prefer several vectors for important edge cases.
+
+A golden vector must specify enough information to detect a
+scientifically non-equivalent implementation.
+
+Typical structure:
+
+    input
+    frozen parameters
+    seed/domain if stochastic
+    expected intermediate state where useful
+    expected output
+    expected status
+    expected canonical representation/hash where applicable.
+
+Golden vectors are part of the frozen scientific contract.
+
+
+======================================================================
+9. NUMERICAL CONVENTIONS
+======================================================================
+
+Freeze globally applicable numerical rules before model-specific
+definitions.
+
+Specify at minimum:
+
+    floating-point representation;
+    log base;
+    probability normalization;
+    zero handling;
+    epsilon usage if any;
+    comparison tolerance;
+    summation convention where relevant;
+    quantile convention;
+    tie comparison;
+    serialization of floating-point values.
+
+Do not use an unspecified "approximately equal" rule in a scientific
+gate.
+
+
+======================================================================
+10. A01 — M0
+======================================================================
+
+Resolve M0 completely.
+
+Freeze:
+
+    sample space;
+    glyph/token representation;
+    start/stop symbols;
+    vocabulary construction;
+    UNK policy;
+    boundary counting;
+    probability equation;
+    smoothing family;
+    smoothing parameter grid;
+    validation objective;
+    validation split usage;
+    tie-breaking;
+    likelihood/scoring;
+    generation;
+    failure semantics;
+    complexity formula;
+    canonical fitted-model representation.
+
+Provide golden vectors covering at minimum:
+
+    ordinary fit;
+    unseen event;
+    boundary handling;
+    smoothing selection;
+    deterministic generation.
+
+
+======================================================================
+11. A02 — M1
+======================================================================
+
+Resolve the fixed-order model completely.
+
+Freeze:
+
+    context definition;
+    orders exactly 1..3 unless Task85c explicitly changes this;
+    start/end context;
+    vocabulary;
+    smoothing family;
+    smoothing grid;
+    unseen-context recursion/backoff;
+    validation objective;
+    model selection;
+    ties;
+    scoring;
+    generation;
+    complexity;
+    failure semantics.
+
+Provide golden vectors for each order and unseen contexts.
+
+
+======================================================================
+12. A03 — M2
+======================================================================
+
+Select ONE exact variable-memory algorithm.
+
+Do not leave the choice between:
+
+    PPM;
+    PST;
+    CTW;
+    another suffix model
+
+to implementation.
+
+Freeze:
+
+    model family;
+    context representation;
+    maximum depth;
+    induction algorithm;
+    candidate/grid;
+    escape/backoff estimator;
+    pruning rule;
+    pruning statistic;
+    threshold/grid;
+    validation selection;
+    stopping;
+    tie-breaking;
+    scoring;
+    generation;
+    complexity;
+    failures.
+
+Provide induction and generation golden vectors.
+
+
+======================================================================
+13. A04 — M3
+======================================================================
+
+Resolve both Task85b M3 routes:
+
+    bounded exact path;
+    preregistered approximate inducer.
+
+For the exact route freeze:
+
+    state representation;
+    initial construction;
+    search space;
+    exact objective;
+    bound;
+    pruning;
+    candidate ordering;
+    operation accounting;
+    termination;
+    complexity.
+
+For the approximate route freeze:
+
+    initial construction;
+    candidate merges;
+    normalized merge score;
+    divergence definition;
+    normalization denominator;
+    candidate ordering;
+    tie-breaking;
+    operation accounting;
+    stopping;
+    failure semantics.
+
+Freeze how the two routes jointly represent the M3 model class.
+
+Do not restore the superseded Task86R greedy JS algorithm implicitly.
+
+Provide small exact-search golden vectors where the optimum can be
+verified independently.
+
+
+======================================================================
+14. A05 — M4
+======================================================================
+
+Resolve M4 completely.
+
+Freeze:
+
+    probabilistic topology;
+    state-count grid;
+    parameterization;
+    initialization;
+    EM equations;
+    smoothing/regularization;
+    restart count;
+    restart seed derivation;
+    convergence objective;
+    tolerance;
+    iteration cap;
+    numerical failure criteria;
+    restart selection;
+    state-count selection;
+    tie-breaking;
+    scoring;
+    generation;
+    complexity.
+
+Provide golden vectors including at least:
+
+    one EM iteration;
+    convergence;
+    restart selection;
+    deterministic generation.
+
+
+======================================================================
+15. A06 — M5
+======================================================================
+
+Resolve productive component backoff completely.
+
+Freeze:
+
+    component inventory;
+    component extraction/induction;
+    rule representation;
+    rule induction/search;
+    retained rules;
+    exception representation;
+    productive support;
+    backoff distribution;
+    mixture/backoff weight;
+    parameter grid;
+    validation selection;
+    unseen-form probability;
+    generation;
+    scoring;
+    complexity;
+    failure semantics.
+
+Explicitly demonstrate that previously zero-mass unseen forms receive
+the intended frozen treatment.
+
+Provide golden vectors for:
+
+    retained rule;
+    exception;
+    unseen but productive form;
+    invalid/unrepresentable form;
+    generation.
+
+
+======================================================================
+16. MODEL CANDIDATE REGISTRY
+======================================================================
+
+Produce an exact finite candidate registry for M0–M5.
+
+Every candidate must have a stable ID.
+
+The registry must completely determine:
+
+    model class;
+    algorithm route;
+    hyperparameters;
+    fitting configuration;
+    selection group.
+
+No phrases such as:
+
+    "about 12 candidates"
+
+are permitted in the frozen contract.
+
+
+======================================================================
+17. A07 — RNG
+======================================================================
+
+Freeze one global scientific RNG specification.
+
+Specify:
+
+    root seed representation;
+    derivation function;
+    namespace encoding;
+    counter encoding;
+    counter-based PRNG or deterministic hash construction;
+    byte order;
+    integer conversion;
+    uniform conversion;
+    rejection sampling if needed;
+    domain registry.
+
+Define separate stable namespaces for at least:
+
+    model fit;
+    model selection;
+    M4 restart;
+    generation;
+    PM bootstrap;
+    PM permutation;
+    PM6 complement sampling;
+    structural bootstrap;
+    synthetic control generation;
+    corpus window selection
+
+where applicable.
+
+Scientific RNG must be independent of:
+
+    worker;
+    process;
+    execution order;
+    retry;
+    lease;
+    wall clock.
+
+Provide golden RNG vectors.
+
+
+======================================================================
+18. RNG DOMAIN REGISTRY
+======================================================================
+
+Create a machine-readable registry:
+
+    G1V2_RNG_DOMAIN_REGISTRY.tsv
+
+At minimum:
+
+    domain_id
+    purpose
+    namespace
+    counter fields
+    output interpretation
+    consumer.
+
+No scientific code may invent an unregistered RNG namespace.
+
+
+======================================================================
+19. A08 — PREDICTIVE BASELINES
+======================================================================
+
+Freeze B1 and B2 exactly.
+
+Freeze M0's self-baseline/null treatment.
+
+Specify:
+
+    baseline construction;
+    resampling unit;
+    development-null construction;
+    number of replicates;
+    statistic;
+    multiplicity family;
+    correction procedure;
+    practical-effect floors;
+    threshold derivation;
+    ties;
+    three-valued handling.
+
+Provide deterministic baseline/threshold golden vectors.
+
+
+======================================================================
+20. PREDICTIVE METRIC REGISTRY
+======================================================================
+
+Produce a complete executable definition for every predictive metric,
+not only PM5/PM6.
+
+For each metric freeze:
+
+    metric ID;
+    mathematical statistic;
+    input;
+    aggregation unit;
+    baseline/null;
+    direction;
+    threshold;
+    practical floor;
+    status semantics;
+    output schema.
+
+No predictive gate may depend on undocumented behavior.
+
+
+======================================================================
+21. A09 — PM5
+======================================================================
+
+Freeze weighted adaptive-bin ECE.
+
+Specify:
+
+    prediction event;
+    observed label;
+    confidence value;
+    adaptive-bin construction;
+    number of bins or selection rule;
+    minimum bin size;
+    equal-value/tie handling;
+    bin boundaries;
+    weighting;
+    empty-bin handling;
+    DEVELOPMENT freeze procedure;
+    application to VALIDATION/HELDOUT.
+
+Provide exact bin and ECE golden vectors.
+
+
+======================================================================
+22. A10 — PM6
+======================================================================
+
+Retain the already intended finite-complement definition:
+
+    C_l = A^l \ V_l
+
+but complete the inferential procedure.
+
+Freeze:
+
+    eligible lengths;
+    length weighting;
+    complement sampling;
+    replacement semantics;
+    paired-bootstrap unit;
+    bootstrap replicate count;
+    bootstrap RNG domain;
+    LCB statistic;
+    percentile/quantile convention;
+    permutation unit;
+    permutation count;
+    permutation RNG domain;
+    tie handling;
+    q0.95 definition;
+    exact gate statistic;
+    saturation semantics.
+
+Saturated complement remains a candidate for:
+
+    NOT_ASSESSABLE
+
+according to the frozen protocol, not an implementation error.
+
+Provide normal and saturated golden vectors.
+
+
+======================================================================
+23. A11 — STRUCTURAL THRESHOLDS
+======================================================================
+
+Freeze the complete structural threshold derivation.
+
+Specify:
+
+    development controls used;
+    MFC q95 computation;
+    practical-effect floors;
+    dispersion statistic;
+    dispersion q95;
+    quantile convention;
+    multiplicity if any;
+    generation scales;
+    exact token/sample count at each scale;
+    replicate count;
+    threshold artifact format.
+
+Every threshold must be either:
+
+    literal frozen numeric value
+
+or uniquely derivable by a frozen algorithm from immutable
+development inputs.
+
+
+======================================================================
+24. STRUCTURAL METRIC REGISTRY
+======================================================================
+
+For every F2 metric/family used by G1-v2 freeze:
+
+    metric ID;
+    implementation/version;
+    input representation;
+    scale;
+    direction;
+    aggregation;
+    threshold;
+    practical floor;
+    missing/unavailable semantics;
+    family membership;
+    skeleton-only status.
+
+Do not silently change existing Fingerprint-v2 definitions.
+
+
+======================================================================
+25. SKELETON-ONLY RULE
+======================================================================
+
+Explicitly identify every skeleton-only F2 metric under borrowed
+structural skeleton generation.
+
+Freeze whether it is:
+
+    diagnostic only;
+    included without independent weight;
+    excluded from discrimination.
+
+No implementation discretion is allowed.
+
+
+======================================================================
+26. STRUCTURAL ADEQUACY
+======================================================================
+
+Specify the complete structural decision function.
+
+Given metric evidence, an independent implementation must derive
+exactly one of:
+
+    PASS
+    FAIL
+    NOT_ASSESSABLE
+
+for each required level and ultimately StructuralAdequacy.
+
+Specify family aggregation and cross-scale aggregation exactly.
+
+
+======================================================================
+27. A12 — COMPLEXITY
+======================================================================
+
+Replace generic "model bits" with exact model-specific complexity
+definitions.
+
+Freeze canonical serialization and bit cost for:
+
+    M0;
+    M1;
+    M2;
+    M3 exact;
+    M3 approximate;
+    M4;
+    M5.
+
+Specify:
+
+    structure cost;
+    parameter cost;
+    probability precision/coding;
+    integer coding;
+    rule/state/context coding;
+    exception/backoff coding;
+    hyperparameter cost if included;
+    equivalence tolerance if any.
+
+The same fitted model must receive the same complexity independently
+of implementation language.
+
+
+======================================================================
+28. MINIMALITY
+======================================================================
+
+Freeze the exact minimality algorithm.
+
+Specify:
+
+    candidate adequacy prerequisite;
+    complexity ordering;
+    equivalence;
+    ties;
+    class-level aggregation;
+    M3 route aggregation;
+    selection across M0–M5.
+
+Define exactly when the result is:
+
+    a recovered class;
+    NONE;
+    NOT_IDENTIFIABLE.
+
+
+======================================================================
+29. NONE
+======================================================================
+
+Provide a normative definition and golden decision example for NONE.
+
+NONE must not mean:
+
+    computation failed;
+    evidence missing;
+    apparatus cannot distinguish classes.
+
+
+======================================================================
+30. NOT_IDENTIFIABLE
+======================================================================
+
+Provide a normative definition and golden decision example for
+NOT_IDENTIFIABLE.
+
+Explicitly specify which patterns of:
+
+    NOT_ASSESSABLE;
+    equivalent candidates;
+    unresolved complexity;
+    class overlap
+
+lead to NOT_IDENTIFIABLE.
+
+
+======================================================================
+31. A13 — SYNTHETIC CONTROLS
+======================================================================
+
+Freeze exact synthetic control generators.
+
+Task85b requires at least two independently authored generators per
+class.
+
+For every M0–M5 control generator freeze:
+
+    generator ID;
+    implementation specification;
+    authorship/independence rationale;
+    parameter set;
+    root seed;
+    corpus size;
+    output representation;
+    expected provenance;
+    generator version/hash where implementation already exists.
+
+Do not leave generator choice to Task86C-v2 implementation.
+
+
+======================================================================
+32. SYNTHETIC CONTROL INDEPENDENCE
+======================================================================
+
+Document why paired generators are meaningfully independent.
+
+Avoid validating a recovery implementation solely against synthetic
+data produced by the same internal code path as the fitted model.
+
+Where practical use:
+
+    mathematically independent implementation;
+    separately implemented generator;
+    independently specified mechanism.
+
+Record limitations explicitly.
+
+
+======================================================================
+33. DEVELOPMENT CONTROLS
+======================================================================
+
+Replace generic development-control registry rows with immutable
+control definitions.
+
+Freeze:
+
+    exact source;
+    exact generator/input;
+    parameters;
+    seed;
+    preprocessing;
+    content hash;
+    scientific role.
+
+Development controls are the only controls that may be used for
+open calibration where Task85b permits it.
+
+
+======================================================================
+34. A14 — NATURAL-LANGUAGE CORPORA
+======================================================================
+
+Freeze exact immutable corpora for:
+
+    English;
+    Latin;
+    Sanskrit.
+
+For each specify:
+
+    work/corpus;
+    edition/version;
+    source;
+    license/public-domain status;
+    exact local input artifact;
+    SHA-256;
+    normalization;
+    character policy;
+    tokenization;
+    filtering;
+    segmentation;
+    window construction;
+    window seed;
+    occurrence-window selection;
+    final corpus hash;
+    final corpus statistics.
+
+"English", "Latin", or "Sanskrit" alone is not a corpus
+specification.
+
+
+======================================================================
+35. CORPUS SELECTION PRINCIPLE
+======================================================================
+
+Select corpora according to predeclared scientific criteria, not
+because their observed G1-v2 behavior is convenient.
+
+Document criteria before running G1-v2 on candidate corpora.
+
+Do not compare multiple candidate corpora and retain whichever gives
+a preferred result.
+
+
+======================================================================
+36. CORPUS PREPROCESSING VECTORS
+======================================================================
+
+Provide small golden preprocessing vectors for each natural-language
+pipeline.
+
+Given raw input fragment X, the frozen preprocessing must produce
+exact normalized/tokenized output Y.
+
+
+======================================================================
+37. BLIND CONTROL CONSTRUCTION
+======================================================================
+
+Freeze the algorithm for constructing Stage C blind synthetic
+controls.
+
+Specify:
+
+    generator selection;
+    parameter cells;
+    seeds;
+    blind ID generation;
+    corpus size;
+    ordering;
+    metadata visible during execution.
+
+Ground-truth class must not be inferable from the blind ID,
+filename, path, JobID or visible metadata.
+
+
+======================================================================
+38. BLIND ESCROW
+======================================================================
+
+Freeze the escrow representation and creation protocol.
+
+Specify:
+
+    mapping schema;
+    canonicalization;
+    hash;
+    storage boundary;
+    when it may be opened;
+    who/what process needs it.
+
+The future Task86C-v2 implementation may implement this protocol but
+must not redesign it.
+
+
+======================================================================
+39. A15 — REACHABILITY
+======================================================================
+
+Replace "may skip" with an exact reachability policy.
+
+For every relevant stage define whether downstream execution occurs
+after:
+
+    PASS;
+    FAIL;
+    NOT_ASSESSABLE;
+    scientific model failure.
+
+At minimum cover:
+
+    FIT
+    PREDICTIVE
+    GENERATION
+    STRUCTURAL
+    AGGREGATION.
+
+Specify exact NOT_REACHED propagation.
+
+
+======================================================================
+40. REACHABILITY TABLE
+======================================================================
+
+Create:
+
+    G1V2_REACHABILITY_CONTRACT.tsv
+
+with at least:
+
+    upstream_stage
+    upstream_status
+    downstream_stage
+    action
+    downstream_status
+    reason_code.
+
+This table is normative.
+
+
+======================================================================
+41. A16 — EXACT DAG
+======================================================================
+
+Freeze declarative DAG expansion rules.
+
+Starting from the candidate/control registries, the rules must
+uniquely generate every scientific job and dependency.
+
+No approximate job counts are permitted.
+
+
+======================================================================
+42. EXACT EXPECTED COUNTS
+======================================================================
+
+Calculate and freeze exact expected counts:
+
+    control instances;
+    candidate fits;
+    predictive jobs;
+    generation batches;
+    structural metric jobs;
+    aggregation jobs;
+    terminal cells;
+    total jobs;
+    dependency edges.
+
+Counts must be derivable independently from the registries and DAG
+rules.
+
+
+======================================================================
+43. JOB IDENTITY INPUTS
+======================================================================
+
+Specify the exact scientific identity fields contributing to JobID.
+
+Verify that JobID excludes:
+
+    hostname;
+    worker identity;
+    coordinator endpoint;
+    lease;
+    retry;
+    execution order;
+    wall clock.
+
+Provide JobID golden vectors if JobID scientific payload changes.
+
+
+======================================================================
+44. A17 — SCIENTIFIC EVIDENCE SCHEMAS
+======================================================================
+
+Freeze complete versioned machine-readable schemas for every
+scientific evidence type.
+
+At minimum:
+
+    fit;
+    fitted model;
+    predictive metric;
+    predictive gate;
+    predictive verdict;
+    generation;
+    F2 metric;
+    structural family;
+    structural gate;
+    structural verdict;
+    complexity;
+    minimality;
+    final verdict;
+    NOT_REACHED;
+    scientific failure.
+
+
+======================================================================
+45. CANONICAL EVIDENCE
+======================================================================
+
+Freeze:
+
+    canonical JSON/profile;
+    key ordering;
+    Unicode normalization;
+    integer representation;
+    floating-point representation;
+    null policy;
+    status-specific required fields;
+    forbidden fields;
+    content-hash procedure.
+
+Evidence hash identity must not depend on incidental serializer
+behavior.
+
+
+======================================================================
+46. STATUS SEMANTICS
+======================================================================
+
+Create one normative status registry.
+
+At minimum distinguish:
+
+    PASS
+    FAIL
+    NOT_ASSESSABLE
+    NOT_REACHED
+
+plus every frozen scientific failure status.
+
+For each status define:
+
+    meaning;
+    legal producer;
+    required evidence;
+    downstream reachability;
+    whether it participates in aggregation.
+
+
+======================================================================
+47. EVIDENCE-ONLY DECISION CONTRACT
+======================================================================
+
+Specify the entire deterministic decision path from evidence to
+final verdict without reference to model implementation.
+
+It must be possible to implement a verifier from Task85c alone that
+can reconstruct:
+
+    predictive gates;
+    PredictiveAdequacy;
+    structural gates;
+    StructuralAdequacy;
+    complexity/minimality;
+    recovered class/NONE/NOT_IDENTIFIABLE.
+
+
+======================================================================
+48. THRESHOLD ARTIFACT CONTRACT
+======================================================================
+
+If thresholds are derived rather than literal, define a versioned
+threshold artifact schema.
+
+The artifact must record:
+
+    development input hashes;
+    derivation algorithm version;
+    RNG root/domain where applicable;
+    replicate counts;
+    raw required statistics or hashes to them;
+    resulting thresholds;
+    practical floors;
+    canonical hash.
+
+Threshold derivation must be reproducible independently.
+
+
+======================================================================
+49. CALIBRATION FIREWALL
+======================================================================
+
+Freeze exactly which data may influence:
+
+    smoothing selection;
+    model hyperparameter selection;
+    PM thresholds;
+    structural thresholds;
+    practical-effect floors;
+    bin boundaries.
+
+Explicitly prohibit:
+
+    blind Stage C controls;
+    confirmatory natural-language outcomes;
+    Voynich
+
+from post-freeze calibration.
+
+
+======================================================================
+50. SPLIT SEMANTICS
+======================================================================
+
+For every use of:
+
+    DEVELOPMENT
+    VALIDATION
+    HELDOUT
+
+specify exactly:
+
+    what is fitted;
+    what is selected;
+    what is calibrated;
+    what is evaluated;
+    whether refitting occurs after selection.
+
+Do not leave "validation-selected" without defining the resulting
+training procedure.
+
+
+======================================================================
+51. DATA LEAKAGE AUDIT
+======================================================================
+
+Produce an explicit audit proving that:
+
+    HELDOUT does not select hyperparameters;
+    blind controls do not select thresholds;
+    natural-language confirmatory results do not alter the apparatus;
+    Voynich does not alter G1-v2.
+
+Any exception must be classified as a scientific design change.
+
+
+======================================================================
+52. GOLDEN CONTRACT SUITE
+======================================================================
+
+Create a machine-readable golden suite covering the complete
+contract.
+
+At minimum include:
+
+    RNG;
+    preprocessing;
+    M0 fit/score/generate;
+    M1 fit/score/generate;
+    M2 induction/score/generate;
+    M3 exact;
+    M3 approximate;
+    M4 EM/restart/generation;
+    M5 backoff/generation;
+    predictive baselines;
+    PM5;
+    PM6 ordinary;
+    PM6 saturated;
+    structural threshold derivation;
+    structural aggregation;
+    complexity M0–M5;
+    minimality;
+    NONE;
+    NOT_IDENTIFIABLE;
+    reachability;
+    canonical evidence;
+    JobID/DAG expansion.
+
+Golden suite must not require the production implementation to
+define expected answers.
+
+
+======================================================================
+53. INDEPENDENT REFERENCE CALCULATIONS
+======================================================================
+
+Where practical, derive golden expected values independently using:
+
+    explicit hand calculation;
+    small reference script;
+    exhaustive enumeration.
+
+Do not generate expected values by running the same future production
+implementation and copying its output.
+
+Reference scripts, if used, become frozen scientific artifacts.
+
+
+======================================================================
+54. MACHINE-READABLE CONTRACT
+======================================================================
+
+The final contract must not exist only as prose.
+
+Create machine-readable registries/schemas sufficient for automated
+validation.
+
+Prefer declarative TSV/JSON schemas for:
+
+    models;
+    candidates;
+    RNG domains;
+    predictive metrics;
+    structural metrics;
+    controls;
+    corpora;
+    reachability;
+    DAG;
+    evidence;
+    statuses;
+    thresholds.
+
+
+======================================================================
+55. IMPLEMENTATION TRACEABILITY
+======================================================================
+
+Create:
+
+    G1V2_EXECUTABLE_CONTRACT_TRACEABILITY.tsv
+
+with columns at minimum:
+
+    ambiguity_id
+    task85b_source
+    task85c_resolution
+    resolution_type
+    normative_artifact
+    golden_vector
+    status
+    notes.
+
+Every A01–A17 must be CLOSED.
+
+
+======================================================================
+56. AMBIGUITY CLOSURE MATRIX
+======================================================================
+
+Create:
+
+    TASK85C_AMBIGUITY_CLOSURE.tsv
+
+with:
+
+    ambiguity_id
+    original_problem
+    resolution
+    scientific_rationale
+    exact_artifact
+    golden_test
+    residual_ambiguity
+    verdict.
+
+Allowed verdicts:
+
+    CLOSED
+    BLOCKED.
+
+No A01–A17 may be omitted.
+
+
+======================================================================
+57. CHANGE REGISTER
+======================================================================
+
+Create:
+
+    TASK85C_CHANGE_REGISTER.tsv
+
+For every decision classify:
+
+    CLARIFICATION
+    COMPLETION
+    NECESSARY_SCIENTIFIC_CHANGE.
+
+Include:
+
+    source requirement;
+    previous wording;
+    new frozen definition;
+    reason;
+    expected scientific effect;
+    compatibility with Task85b.
+
+This is required to prevent Task85c from silently becoming G1-v3.
+
+
+======================================================================
+58. CONTRACT VERSION
+======================================================================
+
+Assign an explicit version, for example:
+
+    G1_V2_EXECUTABLE_CONTRACT_V1
+
+Do not call it G1-v3 unless the accumulated scientific changes
+actually require a new model design.
+
+The report must explicitly assess this question.
+
+
+======================================================================
+59. TRANSITIVE FREEZE
+======================================================================
+
+Generate a results manifest whose hashes transitively cover all
+normative Task85c artifacts.
+
+Freeze:
+
+    parent Task85b contract hash;
+    ambiguity-audit hash;
+    all registries;
+    all schemas;
+    all golden vectors;
+    immutable development inputs;
+    immutable natural-language source/preprocessing specifications;
+    synthetic generator specifications;
+    threshold derivation contract;
+    DAG contract;
+    evidence contract.
+
+No mutable external dependency may be part of the scientific
+identity without an immutable local hash.
+
+
+======================================================================
+60. NO PRODUCTION IMPLEMENTATION
+======================================================================
+
+Do NOT implement production M0–M5 handlers in this task.
+
+Small independent reference scripts used to establish golden vectors
+are permitted.
+
+They must not silently become the production implementation.
+
+Separation is intentional:
+
+    Task85c:
+        decides what computation means.
+
+    Task86C-v2-scientific-impl-R:
+        implements that computation.
+
+
+======================================================================
+61. NO PRODUCTION BINARY
+======================================================================
+
+Do not freeze a new production g1v2-executor hash here.
+
+The production executable hash belongs to the subsequent
+implementation task.
+
+Task85c freezes the contract against which that executable will be
+validated.
+
+
+======================================================================
+62. NO BLIND SCIENTIFIC RUN
+======================================================================
+
+Do not execute Stage C blind recovery.
+
+Where blind-control generator definitions are required, specify and
+freeze them without running the recovery apparatus against their
+blind outputs.
+
+
+======================================================================
+63. NO CONFIRMATORY NATURAL-LANGUAGE RUN
+======================================================================
+
+Natural-language corpora may be acquired, normalized and frozen as
+inputs if required.
+
+Do not run the confirmatory G1-v2 recovery experiment on them.
+
+
+======================================================================
+64. VOYNICH FIREWALL
+======================================================================
+
+Do not evaluate G1-v2 against Voynich.
+
+Do not use Voynich to choose:
+
+    algorithms;
+    parameters;
+    thresholds;
+    complexity;
+    controls;
+    corpora;
+    model grids.
+
+Task86V remains blocked.
+
+
+======================================================================
+65. REQUIRED ARTIFACTS
+======================================================================
+
+Create under:
+
+    research/phase3/task85c/
+
+at minimum:
+
+    TASK85C_DESIGN.md
+    TASK85C_REPORT.md
+    TASK85C_AMBIGUITY_CLOSURE.tsv
+    TASK85C_CHANGE_REGISTER.tsv
+
+    G1V2_EXECUTABLE_CONTRACT.md
+    G1V2_EXECUTABLE_CONTRACT.json
+
+    G1V2_EXECUTABLE_CONTRACT_TRACEABILITY.tsv
+
+    G1V2_MODEL_REGISTRY.tsv
+    G1V2_CANDIDATE_REGISTRY.tsv
+    G1V2_RNG_DOMAIN_REGISTRY.tsv
+
+    G1V2_PREDICTIVE_METRIC_REGISTRY.tsv
+    G1V2_STRUCTURAL_METRIC_REGISTRY.tsv
+    G1V2_COMPLEXITY_CONTRACT.tsv
+
+    G1V2_CONTROL_REGISTRY.tsv
+    G1V2_CORPUS_REGISTRY.tsv
+
+    G1V2_REACHABILITY_CONTRACT.tsv
+    G1V2_DAG_CONTRACT.json
+
+    G1V2_STATUS_REGISTRY.tsv
+
+    schemas/
+        scientific evidence schemas
+
+    golden/
+        golden input/output vectors
+
+    reference/
+        independent reference calculations if required
+
+    TASK85C_VALIDATION.tsv
+    TASK85C_RESULTS_MANIFEST.json
+
+Additional artifacts may be created where required by the resolved
+contract.
+
+
+======================================================================
+66. MODEL REGISTRY REQUIREMENTS
+======================================================================
+
+G1V2_MODEL_REGISTRY.tsv must contain enough information to locate the
+complete normative definition of each M0–M5 model.
+
+Do not compress mathematical definitions into ambiguous one-line
+descriptions.
+
+Use stable references into the executable contract where necessary.
+
+
+======================================================================
+67. CANDIDATE REGISTRY REQUIREMENTS
+======================================================================
+
+G1V2_CANDIDATE_REGISTRY.tsv must enumerate the exact finite candidate
+space.
+
+At minimum:
+
+    candidate_id
+    model_class
+    route
+    hyperparameters
+    selection_group
+    normative_definition.
+
+The exact candidate count must be stated.
+
+
+======================================================================
+68. CONTROL REGISTRY REQUIREMENTS
+======================================================================
+
+G1V2_CONTROL_REGISTRY.tsv must enumerate every control role required
+to construct Task86C-v2.
+
+Distinguish:
+
+    development;
+    blind synthetic;
+    natural-language confirmatory.
+
+Do not expose future blind ground truth in an operator-facing
+artifact.
+
+
+======================================================================
+69. CORPUS REGISTRY REQUIREMENTS
+======================================================================
+
+G1V2_CORPUS_REGISTRY.tsv must identify immutable natural-language and
+other fixed corpus inputs.
+
+Where actual final content hashes cannot legitimately be produced
+without a later construction step, the construction algorithm and
+source hashes must nevertheless be fully frozen and the reason
+explicitly documented.
+
+Prefer freezing final content during Task85c when doing so does not
+violate blindness.
+
+
+======================================================================
+70. DAG CONTRACT REQUIREMENTS
+======================================================================
+
+G1V2_DAG_CONTRACT.json must allow a validator to derive:
+
+    exact scientific cells;
+    exact stage dependencies;
+    exact reachability rules;
+    exact expected job count;
+    exact expected dependency count.
+
+It must not contain operational cluster topology.
+
+
+======================================================================
+71. EVIDENCE SCHEMA REQUIREMENTS
+======================================================================
+
+Every schema must define:
+
+    schema ID/version;
+    required fields;
+    optional fields;
+    forbidden status combinations;
+    numeric representation;
+    dependency references;
+    scientific identity fields;
+    canonicalization.
+
+Provide valid and invalid examples.
+
+
+======================================================================
+72. VALIDATOR
+======================================================================
+
+Implement a Task85c contract validator.
+
+It must verify at minimum:
+
+    all A01–A17 CLOSED;
+    all M0–M5 uniquely specified;
+    candidate registry finite;
+    candidate IDs unique;
+    RNG domains unique;
+    all predictive metrics complete;
+    all structural metrics complete;
+    complexity defined for every candidate class;
+    every control defined;
+    corpora immutable/constructible;
+    reachability total;
+    DAG expansion deterministic;
+    exact job counts derivable;
+    every evidence type has schema;
+    every required algorithm has golden coverage;
+    all normative artifact hashes resolve;
+    no Voynich dependency;
+    no blind-result dependency.
+
+
+======================================================================
+73. INDEPENDENT IMPLEMENTABILITY AUDIT
+======================================================================
+
+Before freeze perform a second-pass audit from the perspective of an
+implementation agent that is not allowed to make scientific choices.
+
+For each component ask:
+
+    Can this be implemented without choosing among two
+    scientifically non-equivalent alternatives?
+
+If NO:
+
+    contract is still ambiguous.
+
+Do not freeze merely because all documents exist.
+
+
+======================================================================
+74. TWO-IMPLEMENTER TEST
+======================================================================
+
+Where feasible, use the following conceptual acceptance test:
+
+    Implementer A reads the contract.
+    Implementer B reads the contract.
+
+Neither communicates with the other.
+
+Would both necessarily agree on:
+
+    algorithm;
+    candidate grid;
+    RNG stream;
+    thresholds;
+    corpus;
+    DAG;
+    evidence;
+    complexity;
+    final decision function?
+
+If not, document and close the remaining ambiguity.
+
+
+======================================================================
+75. GOLDEN COVERAGE AUDIT
+======================================================================
+
+Produce a matrix showing golden-vector coverage of all scientifically
+meaningful operations.
+
+A model being described in prose but having no executable test vector
+is insufficient for final freeze where a small deterministic vector
+can reasonably be constructed.
+
+
+======================================================================
+76. REQUIRED VERDICTS
+======================================================================
+
+Issue at minimum:
+
+    A01_M0 = CLOSED / BLOCKED
+    A02_M1 = CLOSED / BLOCKED
+    A03_M2 = CLOSED / BLOCKED
+    A04_M3 = CLOSED / BLOCKED
+    A05_M4 = CLOSED / BLOCKED
+    A06_M5 = CLOSED / BLOCKED
+    A07_RNG = CLOSED / BLOCKED
+    A08_BASELINES = CLOSED / BLOCKED
+    A09_PM5 = CLOSED / BLOCKED
+    A10_PM6 = CLOSED / BLOCKED
+    A11_STRUCTURAL_THRESHOLDS = CLOSED / BLOCKED
+    A12_COMPLEXITY = CLOSED / BLOCKED
+    A13_SYNTHETIC_CONTROLS = CLOSED / BLOCKED
+    A14_NATURAL_LANGUAGE_CORPORA = CLOSED / BLOCKED
+    A15_REACHABILITY = CLOSED / BLOCKED
+    A16_DAG = CLOSED / BLOCKED
+    A17_EVIDENCE_SCHEMAS = CLOSED / BLOCKED
+
+and:
+
+    MODEL_SPACE_EXECUTABLE = SUPPORTED / NOT_SUPPORTED
+
+    RNG_CONTRACT_EXECUTABLE = SUPPORTED / NOT_SUPPORTED
+
+    PREDICTIVE_CONTRACT_EXECUTABLE =
+        SUPPORTED / NOT_SUPPORTED
+
+    STRUCTURAL_CONTRACT_EXECUTABLE =
+        SUPPORTED / NOT_SUPPORTED
+
+    COMPLEXITY_MINIMALITY_EXECUTABLE =
+        SUPPORTED / NOT_SUPPORTED
+
+    CONTROL_INPUT_CLOSURE =
+        SUPPORTED / NOT_SUPPORTED
+
+    DAG_CONTRACT_EXECUTABLE =
+        SUPPORTED / NOT_SUPPORTED
+
+    EVIDENCE_CONTRACT_EXECUTABLE =
+        SUPPORTED / NOT_SUPPORTED
+
+    GOLDEN_CONTRACT_COVERAGE =
+        SUPPORTED / NOT_SUPPORTED
+
+    INDEPENDENT_IMPLEMENTABILITY =
+        SUPPORTED / NOT_SUPPORTED
+
+    BLIND_FIREWALL_PRESERVED =
+        SUPPORTED / NOT_SUPPORTED
+
+    VOYNICH_FIREWALL_PRESERVED =
+        SUPPORTED / NOT_SUPPORTED
+
+    TASK86C_V2_SCIENTIFIC_IMPL_R_READY =
+        SUPPORTED / NOT_SUPPORTED.
+
+
+======================================================================
+77. FREEZE RULE
+======================================================================
+
+TASK86C_V2_SCIENTIFIC_IMPL_R_READY = SUPPORTED
+
+only if:
+
+1. A01–A17 are all CLOSED.
+2. M0–M5 are uniquely executable.
+3. Exact candidate registry exists.
+4. RNG is completely specified with golden vectors.
+5. Predictive baselines/metrics/gates are executable.
+6. PM5 is completely specified.
+7. PM6 is completely specified.
+8. Structural thresholds are uniquely derivable.
+9. Structural aggregation is executable.
+10. Complexity is exact for M0–M5.
+11. Minimality is exact.
+12. NONE and NOT_IDENTIFIABLE are exact.
+13. Synthetic controls are fully specified.
+14. Natural-language corpora are immutable/constructible without
+    scientific discretion.
+15. Reachability is total.
+16. Exact DAG expansion is deterministic.
+17. Exact expected job/dependency counts are derivable.
+18. Scientific evidence schemas are complete.
+19. Canonicalization is complete.
+20. Evidence-only decision logic is completely specified.
+21. Required golden vectors exist.
+22. Contract validator passes.
+23. Independent implementability audit passes.
+24. Blind firewall is preserved.
+25. Voynich firewall is preserved.
+26. Transitive results-manifest closure passes.
+
+
+======================================================================
+78. STOP CONDITIONS
+======================================================================
+
+STOP rather than inventing a completion if:
+
+    a blocker cannot be resolved without changing the central
+    scientific question;
+
+    two scientifically non-equivalent alternatives remain and there
+    is no preregisterable basis for choosing one;
+
+    required control data cannot be obtained with adequate
+    provenance;
+
+    blindness has already been compromised;
+
+    Voynich results would be required to choose the design.
+
+Document the unresolved issue explicitly.
+
+
+======================================================================
+79. TERMINAL MARKERS
+======================================================================
+
+Successful freeze:
+
+    G1_V2_EXECUTABLE_SCIENTIFIC_CONTRACT_FROZEN
+
+Contract remains underdetermined:
+
+    G1_V2_EXECUTABLE_SCIENTIFIC_CONTRACT_BLOCKED
+
+Scientific changes are so extensive that this is no longer
+reasonably G1-v2:
+
+    G1_V2_REDESIGN_REQUIRED
+
+Integrity/firewall violation:
+
+    TASK85C_SCIENTIFIC_INTEGRITY_FAILED
+
+Exactly one terminal marker must be issued.
+
+
+======================================================================
+80. SUCCESSFUL FINAL OUTPUT
+======================================================================
+
+On successful completion print:
+
+    A01-A17 = CLOSED
+
+    EXECUTABLE_CONTRACT_VERSION =
+        <version>
+
+    EXECUTABLE_CONTRACT:
+        <path>
+
+    EXECUTABLE_CONTRACT_SHA256:
+        <sha256>
+
+    CANDIDATE_REGISTRY_SHA256:
+        <sha256>
+
+    RNG_CONTRACT_SHA256:
+        <sha256>
+
+    CONTROL_REGISTRY_SHA256:
+        <sha256>
+
+    CORPUS_REGISTRY_SHA256:
+        <sha256>
+
+    DAG_CONTRACT_SHA256:
+        <sha256>
+
+    EVIDENCE_SCHEMA_ROOT_SHA256:
+        <sha256>
+
+    GOLDEN_SUITE_ROOT_SHA256:
+        <sha256>
+
+    EXPECTED_TASK86C_V2_JOB_COUNT:
+        <exact count>
+
+    EXPECTED_TASK86C_V2_DEPENDENCY_COUNT:
+        <exact count>
+
+    TASK86C_V2_SCIENTIFIC_IMPL_R_READY =
+        SUPPORTED
+
+    TERMINAL_MARKER =
+        G1_V2_EXECUTABLE_SCIENTIFIC_CONTRACT_FROZEN
+
+
+======================================================================
+81. FAILURE FINAL OUTPUT
+======================================================================
+
+If freeze cannot be completed, print:
+
+    UNRESOLVED_AMBIGUITIES:
+        <IDs>
+
+    TASK86C_V2_SCIENTIFIC_IMPL_R_READY =
+        NOT_SUPPORTED
+
+    TERMINAL_MARKER =
+        <one allowed failure marker>
+
+and identify the exact scientific decision that prevents a unique
+implementation.
+
+
+======================================================================
+82. DEFINITION OF DONE
+======================================================================
+
+Task85c is complete only when an implementation agent can be given
+the frozen Task85c closure and instructed:
+
+    "Implement this contract exactly."
+
+without needing to ask or decide:
+
+    which M0 estimator;
+    which M1 smoothing/backoff;
+    which M2 algorithm;
+    which M3 exact/approximate inducer;
+    which M4 topology/EM procedure;
+    which M5 productive backoff;
+    which RNG;
+    which bootstrap/permutation convention;
+    which thresholds;
+    which complexity code;
+    which synthetic generators;
+    which English/Latin/Sanskrit corpora;
+    whether downstream stages run;
+    how many jobs exist;
+    how evidence is serialized;
+    how final adequacy/minimality is reconstructed.
+
+If any such choice remains, Task85c is not frozen.

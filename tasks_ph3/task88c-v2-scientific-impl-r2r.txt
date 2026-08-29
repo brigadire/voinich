@@ -1,0 +1,1014 @@
+Task86C-v2-scientific-impl-R2R —
+G1-v2 Production Scientific Implementation,
+Run Materialization and Execution Freeze
+
+
+PURPOSE
+
+Implement the frozen G1-v2 scientific experiment defined by:
+
+    G1_V2_EXECUTABLE_CONTRACT_V1_1
+
+prepare one concrete production run instance, validate the actual
+scientific implementation, materialize the complete production DAG,
+qualify computational capacity, and freeze all artifacts required for:
+
+    Task86C-v2-run.
+
+This task replaces the failed implementation attempt:
+
+    Task86C-v2-scientific-impl-R2
+
+and supersedes the impossible workflow boundary introduced by:
+
+    Task85c-d.
+
+The successful output must allow the production experiment to be
+started without any remaining scientific decision.
+
+
+======================================================================
+1. AUTHORITATIVE SCIENTIFIC CONTRACT
+======================================================================
+
+Scientific authority:
+
+    G1_V2_EXECUTABLE_CONTRACT_V1_1
+
+SHA-256:
+
+    5c3cd272c1dbae9bfe1d7a100155faf102e86d34660da239e1cb31704ad470b0
+
+Task85c-c artifact root:
+
+    dc27660d3e03a06f91aaa1c3aa6c48226328457746c9dc819e7c0a355ce8f09c
+
+Evidence schema root:
+
+    4744ca82532cd47a0d02bb680796b26a11ceca57d6229f0b312df69a103f784b
+
+Status/reachability contract:
+
+    G1_V2_STATUS_REACHABILITY_CONTRACT_V2
+
+SHA-256:
+
+    fc1ca07d8123ed5d44bc24ecba98fca54d5b05781ecbaba820d44079319038b9
+
+Do not redesign or reinterpret scientific semantics.
+
+
+======================================================================
+2. KNOWN IMPLEMENTATION ERRATA
+======================================================================
+
+Task86C-v2-scientific-impl-R2 discovered:
+
+    R2-G01
+    R2-G02.
+
+Task85c-d established their unique resolution by frozen machine
+precedence:
+
+    R2-G01 = CLOSED
+
+    scientific identity version =
+        G1_V2_EXECUTABLE_CONTRACT_V1_1
+
+    R2-G02 = CLOSED
+
+    canonical dependency field =
+        dependency_job_ids.
+
+Treat these resolutions as implementation errata required to make
+the V1.1 machine-readable contract internally executable.
+
+Do not reopen them unless an actual contradiction with a
+higher-precedence V1.1 normative machine artifact is demonstrated.
+
+
+======================================================================
+3. TASK85C-D D01 CLASSIFICATION
+======================================================================
+
+Task85c-d stopped on:
+
+    D01-BLIND-ID-CLOSURE.
+
+D01 does NOT by itself constitute a scientific-contract defect.
+
+The circularity arose because Task85c-d simultaneously required:
+
+    complete concrete JobID graph
+
+and prohibited:
+
+    blind-control materialization;
+    escrow-key creation.
+
+The complete concrete JobID graph is a RUN INSTANCE artifact.
+
+It is therefore materialized in this task only after the concrete
+blind control_instance_id values exist.
+
+Do not use placeholder blind IDs.
+
+
+======================================================================
+4. THREE LAYERS
+======================================================================
+
+Maintain an explicit distinction between:
+
+A. SCIENTIFIC CONTRACT
+
+    models;
+    candidates;
+    RNG;
+    controls;
+    metrics;
+    statistical tests;
+    decision rules;
+    status/reachability semantics.
+
+B. EXECUTION TEMPLATE
+
+    scientific job types;
+    dependency rules;
+    JobID function;
+    canonicalization;
+    evidence schemas.
+
+C. RUN INSTANCE
+
+    concrete DEVELOPMENT instances;
+    concrete blind instances;
+    escrow;
+    concrete natural-control instances;
+    thresholds;
+    concrete JobIDs;
+    instantiated DAG;
+    run manifest.
+
+A and B must be frozen before C is materialized.
+
+C is intentionally created during R2R.
+
+
+======================================================================
+5. DEFECT CLASSIFICATION
+======================================================================
+
+Do not automatically create a new scientific contract revision for
+every implementation problem.
+
+Classify newly discovered problems as:
+
+SCIENTIFIC_CONTRACT_DEFECT
+
+    Affects possible scientific result or interpretation, including:
+        model mathematics;
+        candidate space;
+        RNG;
+        control distribution;
+        metrics;
+        statistical tests;
+        thresholds algorithm;
+        gate semantics;
+        status/reachability;
+        aggregation/final decision.
+
+    Action:
+        STOP.
+        Production run forbidden.
+        Contract repair required.
+
+
+EXECUTION_IDENTITY_DEFECT
+
+    Scientific experiment is fixed, but execution identity is
+    genuinely ambiguous.
+
+    Action:
+        STOP before production freeze.
+        Document exact ambiguity.
+        Do not choose arbitrarily.
+
+
+WORKFLOW_BOUNDARY_DEFECT
+
+    Contract is unambiguous, but the task ordering requires an
+    artifact before its legitimate prerequisites exist.
+
+    Action:
+        correct workflow locally;
+        do not revise scientific contract.
+
+
+IMPLEMENTATION_DEFECT
+
+    Code disagrees with the unambiguous frozen contract.
+
+    Action:
+        fix code;
+        rerun validation;
+        no contract revision.
+
+
+======================================================================
+6. SCIENTIFIC IMPLEMENTATION
+======================================================================
+
+Implement the complete V1.1 production scientific apparatus.
+
+This includes all frozen:
+
+    43 candidates;
+    M0–M5;
+    M3 exact and approximate routes;
+    selection rules;
+    B1/B2;
+    PM1/PM2/PM4/PM5/PM6;
+    generation;
+    12 F2 metrics;
+    structural gates;
+    complexity;
+    equivalence/minimality;
+    candidate/class aggregation;
+    final identification;
+    13 statuses;
+    7 DAG stages;
+    45 direct reachability transitions.
+
+Do not restate or redesign their mathematics in this task.
+
+The implementation must follow V1.1 machine-readable normative
+artifacts.
+
+
+======================================================================
+7. IMPLEMENTATION TRACEABILITY
+======================================================================
+
+Create a concise machine-readable traceability table mapping every
+major frozen scientific component to:
+
+    normative contract artifact;
+    implementation package/function;
+    validation test;
+    result.
+
+No frozen scientific component may remain:
+
+    NOT_IMPLEMENTED
+    UNKNOWN
+    IMPLEMENTER_CHOICE.
+
+
+======================================================================
+8. GOLDEN VALIDATION
+======================================================================
+
+Run the complete applicable V1.1 golden/verifier suite.
+
+For the known JobID fixtures affected by R2-G01/R2-G02:
+
+    validate against the machine-precedence resolution established
+    by Task85c-d;
+
+    preserve the old conflicting vectors as regression fixtures;
+
+    do not allow obsolete golden bytes to override the normative
+    machine contract.
+
+A new disagreement not explained by R2-G01/R2-G02:
+
+    investigate and classify under section 5.
+
+
+======================================================================
+9. EVIDENCE VALIDATION
+======================================================================
+
+Production evidence must conform to the frozen V1.1 evidence
+contract and schemas.
+
+Preserve:
+
+    Draft 2020-12 enforcement;
+    no custom normative schema keywords;
+    deterministic canonicalization;
+    content-addressed evidence;
+    fail-closed validation;
+    evidence-only reconstruction.
+
+Unknown contract/schema/status/stage/evidence type:
+
+    fail closed.
+
+
+======================================================================
+10. DEVELOPMENT MATERIALIZATION
+======================================================================
+
+Construct exactly the frozen authorized:
+
+    12 open DEVELOPMENT controls.
+
+Use only authorized DEVELOPMENT data for:
+
+    calibration;
+    thresholds;
+    PM5 bins;
+    structural thresholds;
+    practical floors;
+    equivalence calibration;
+
+according to V1.1.
+
+Freeze all derived calibration artifacts before confirmatory
+execution.
+
+
+======================================================================
+11. THRESHOLD FREEZE
+======================================================================
+
+Create one immutable threshold/calibration closure.
+
+Record:
+
+    source DEVELOPMENT IDs;
+    derivation algorithm identity;
+    RNG identity where applicable;
+    content hashes.
+
+Freeze:
+
+    TASK86C_V2_THRESHOLD_ROOT_SHA256.
+
+No blind, natural-confirmatory or Voynich result may influence this
+closure.
+
+
+======================================================================
+12. BLIND RUN-INSTANCE MATERIALIZATION
+======================================================================
+
+R2R IS authorized to construct the concrete production blind
+instances.
+
+Construct exactly:
+
+    144 blind synthetic controls
+
+using the frozen V1.1 blind protocol.
+
+This includes creation of the escrow key and concrete blind:
+
+    control_instance_id
+
+values required for run-instance JobID materialization.
+
+This is preparation of the experiment.
+
+It is NOT unblinding.
+
+
+======================================================================
+13. BLIND ESCROW
+======================================================================
+
+Generate the escrow key using the frozen cryptographic procedure.
+
+Secret truth/key material must remain outside:
+
+    production executable;
+    coordinator manifest;
+    worker inputs;
+    ordinary evidence;
+    repository-visible public metadata.
+
+Freeze only the permitted commitment/reference.
+
+The mapping between blind ID and truth remains sealed until the
+authorized post-run analysis/unblind stage.
+
+
+======================================================================
+14. BLINDNESS AUDIT
+======================================================================
+
+Before DAG materialization, independently verify that worker- and
+coordinator-visible artifacts reveal no blind truth.
+
+Require:
+
+    BLIND_TRUTH_LEAKAGE = 0.
+
+Failure:
+
+    STOP BLINDNESS_VIOLATION.
+
+
+======================================================================
+15. NATURAL CONFIRMATORY MATERIALIZATION
+======================================================================
+
+Construct exactly:
+
+    36 natural confirmatory instances
+
+using the frozen source hashes and preprocessing/window rules.
+
+Freeze their concrete control_instance_id and content hashes.
+
+Do NOT run confirmatory recovery during R2R.
+
+
+======================================================================
+16. COMPLETE CONTROL CLOSURE
+======================================================================
+
+After sections 10–15 require:
+
+    DEVELOPMENT = 12
+    BLIND_SYNTHETIC = 144
+    NATURAL_CONFIRMATORY = 36
+
+    CONTROL_INSTANCE_COUNT = 192.
+
+Freeze:
+
+    TASK86C_V2_INPUT_ROOT_SHA256.
+
+
+======================================================================
+17. JOBID MATERIALIZATION
+======================================================================
+
+Only now materialize concrete JobIDs.
+
+Use the resolved V1.1 JobID identity:
+
+    scientific identity version =
+        G1_V2_EXECUTABLE_CONTRACT_V1_1
+
+    dependency field =
+        dependency_job_ids.
+
+Use the frozen JobID function and G1V2-CJ-1 canonicalization.
+
+Do not use placeholders.
+
+
+======================================================================
+18. COMPLETE PRODUCTION DAG
+======================================================================
+
+Instantiate the complete production DAG.
+
+Require exactly:
+
+    candidate fits                   8,256
+    predictive jobs                  8,256
+    generation batches              99,072
+    F2 metric jobs                1,188,864
+    complexity jobs                  8,256
+    candidate aggregation jobs       8,256
+    control aggregation jobs           192
+
+    TOTAL JOBS                    1,321,152
+    DEPENDENCY EDGES              2,617,152.
+
+All planned jobs exist independently of later reachability outcomes.
+
+
+======================================================================
+19. JOBID CLOSURE
+======================================================================
+
+After concrete run materialization verify:
+
+    DAG_JOB_COUNT = 1321152
+    UNIQUE_JOBID_COUNT = 1321152
+    JOBID_COLLISION_COUNT = 0
+
+    DAG_DEPENDENCY_COUNT = 2617152
+    DANGLING_DEPENDENCY_COUNT = 0.
+
+Every dependency must reference a concrete JobID in the same frozen
+run instance.
+
+
+======================================================================
+20. INDEPENDENT DAG RECONSTRUCTION
+======================================================================
+
+Use an independent validator to reconstruct the concrete JobID DAG
+from:
+
+    frozen contract;
+    concrete control closure;
+    threshold closure;
+    scientific job registry.
+
+Require identical:
+
+    JobID set;
+    dependency set;
+    counts;
+    canonical roots.
+
+Do not use the scheduler as the independent validator.
+
+
+======================================================================
+21. RUN MANIFEST
+======================================================================
+
+Construct one authoritative immutable production run manifest.
+
+It must bind:
+
+    V1.1 contract;
+    status/reachability contract;
+    production executable;
+    evidence schema root;
+    input root;
+    threshold root;
+    concrete blind-safe IDs;
+    natural-control IDs;
+    all concrete JobIDs;
+    all dependencies;
+    preseed closure.
+
+It MUST NOT contain blind truth or escrow key.
+
+
+======================================================================
+22. SCIENTIFIC FIREWALL
+======================================================================
+
+During R2R it is forbidden to:
+
+    run the complete 1,321,152-job experiment;
+    unblind synthetic controls;
+    analyze blind recovery;
+    run natural-confirmatory recovery;
+    evaluate Voynich;
+    tune thresholds from confirmatory results.
+
+Allowed:
+
+    DEVELOPMENT computation;
+    golden/unit/property tests;
+    bounded open fixtures;
+    implementation validation;
+    capacity benchmarks on open/artificial inputs;
+    construction and hashing of confirmatory inputs;
+    concrete DAG/run-manifest materialization.
+
+
+======================================================================
+23. LOCAL AND DISTRIBUTED VALIDATION
+======================================================================
+
+Run a bounded OPEN fixture through:
+
+    local execution
+
+and:
+
+    real coordinator/worker execution.
+
+Exercise the actual production handlers across the complete stage
+types where practical.
+
+Require scientifically identical evidence independent of:
+
+    worker;
+    scheduling;
+    concurrency;
+    retry;
+    coordinator restart.
+
+
+======================================================================
+24. RETRY AND CONFLICT VALIDATION
+======================================================================
+
+Explicitly test:
+
+    worker interruption;
+    lease expiration;
+    retry;
+    coordinator restart/resume;
+    duplicate identical evidence;
+    conflicting evidence.
+
+Require:
+
+    retry preserves JobID and scientific identity;
+
+    identical duplicate evidence is harmless;
+
+    conflicting evidence is quarantined and never silently chosen.
+
+
+======================================================================
+25. CAPACITY QUALIFICATION
+======================================================================
+
+Benchmark the actual production implementation using only open or
+artificial authorized fixtures.
+
+Project the complete run using the exact instantiated DAG.
+
+Record at minimum:
+
+    projected CPU-hours;
+    projected wall time;
+    peak RAM/worker slot;
+    evidence storage;
+    temporary storage;
+    cache storage;
+    coordinator/index storage;
+    recommended worker slots;
+    required free disk.
+
+M3 exact must receive explicit capacity qualification.
+
+Capacity insufficiency does NOT authorize changing scientific
+semantics.
+
+
+======================================================================
+26. PRODUCTION EXECUTABLE FREEZE
+======================================================================
+
+Build and freeze the Linux/amd64 production scientific executable.
+
+Record:
+
+    source-tree identity;
+    Go version;
+    build command;
+    GOOS/GOARCH;
+    executable SHA-256.
+
+Freeze:
+
+    TASK86C_V2_PRODUCTION_EXECUTABLE_SHA256.
+
+Update deployment verification to require that exact binary.
+
+
+======================================================================
+27. PRESEED CLOSURE
+======================================================================
+
+Construct the immutable production preseed closure required by
+workers.
+
+Workers must not fetch mutable scientific inputs from the Internet
+during the production run.
+
+Freeze:
+
+    TASK86C_V2_PRESEED_ROOT_SHA256.
+
+
+======================================================================
+28. OPERATOR HANDOFF
+======================================================================
+
+Create a concise operator handoff/runbook containing exact:
+
+    executable path/hash;
+    run-manifest path/hash;
+    input root;
+    threshold root;
+    preseed root;
+    evidence-store path;
+    capacity requirements;
+    coordinator command;
+    worker configuration;
+    preflight command;
+    restart procedure;
+    completion verification;
+    immutable post-run freeze procedure.
+
+The operator may choose operational resources/concurrency.
+
+The operator must make no scientific choice.
+
+
+======================================================================
+29. REQUIRED ARTIFACT DIRECTORY
+======================================================================
+
+Create:
+
+    research/phase3/task86c-v2-scientific-impl-r2r/
+
+
+======================================================================
+30. REQUIRED ARTIFACTS
+======================================================================
+
+At minimum:
+
+    TASK86C_V2_SCIENTIFIC_IMPL_R2R_DESIGN.md
+    TASK86C_V2_SCIENTIFIC_IMPL_R2R_REPORT.md
+
+    TASK86C_V2_KNOWN_ERRATA.md
+    TASK86C_V2_IMPLEMENTATION_TRACEABILITY.tsv
+
+    TASK86C_V2_THRESHOLD_MANIFEST.tsv
+    TASK86C_V2_INPUT_MANIFEST.tsv
+    TASK86C_V2_BLIND_SAFE_MANIFEST.tsv
+    TASK86C_V2_NATURAL_INPUT_MANIFEST.tsv
+
+    TASK86C_V2_DAG_AUDIT.json
+    TASK86C_V2_CAPACITY_REPORT.md
+
+    TASK86C_V2_PRESEED_MANIFEST.tsv
+    TASK86C_V2_OPERATOR_HANDOFF.md
+    TASK86C_V2_RUNBOOK.md
+
+    TASK86C_V2_SCIENTIFIC_IMPL_R2R_VALIDATION.tsv
+    TASK86C_V2_SCIENTIFIC_IMPL_R2R_RESULTS_MANIFEST.json
+
+and exactly one terminal marker.
+
+
+======================================================================
+31. STOP CONDITIONS
+======================================================================
+
+STOP SCIENTIFIC_CONTRACT_DEFECT
+
+if execution requires a scientifically meaningful choice not fixed
+by V1.1.
+
+STOP EXECUTION_IDENTITY_DEFECT
+
+if two scientifically identical run objects can legitimately obtain
+different execution identities after applying the resolved
+R2-G01/R2-G02 rules.
+
+STOP BLINDNESS_VIOLATION
+
+if blind truth leaks outside escrow authorization.
+
+STOP IMPLEMENTATION_VALIDATION_FAILURE
+
+if production implementation does not reproduce frozen scientific
+behavior.
+
+STOP DAG_MATERIALIZATION_FAILURE
+
+if after concrete control materialization the exact DAG cannot be
+constructed with:
+
+    1,321,152 unique JobIDs
+    2,617,152 valid edges.
+
+STOP DETERMINISM_FAILURE
+
+if scientifically identical executions produce different evidence.
+
+Do NOT STOP merely because a workflow artifact could not have
+existed before one of its legitimate run-materialization
+prerequisites.
+
+Correct such ordering inside R2R and document it as:
+
+    WORKFLOW_BOUNDARY_CORRECTION.
+
+
+======================================================================
+32. CAPACITY NOT READY
+======================================================================
+
+If science and implementation validate but available resources are
+insufficient:
+
+    TASK86C_V2_CAPACITY_QUALIFIED = NOT_SUPPORTED
+    TASK86C_V2_SCIENTIFIC_EXECUTION_READY = NOT_SUPPORTED
+
+Terminal marker:
+
+    TASK86C_V2_CAPACITY_NOT_READY.
+
+Do not redesign the experiment.
+
+
+======================================================================
+33. SUCCESS GATE
+======================================================================
+
+TASK86C_V2_SCIENTIFIC_EXECUTION_READY = SUPPORTED
+
+only if:
+
+    V1.1 identity verified;
+
+    R2-G01 CLOSED;
+    R2-G02 CLOSED;
+
+    complete scientific implementation validated;
+
+    evidence/verifier closure validated;
+
+    12 DEVELOPMENT controls materialized;
+
+    DEVELOPMENT thresholds frozen;
+
+    144 blind controls materialized;
+
+    escrow sealed;
+
+    BLIND_TRUTH_LEAKAGE = 0;
+
+    36 natural controls materialized;
+
+    CONTROL_INSTANCE_COUNT = 192;
+
+    complete concrete DAG materialized;
+
+    DAG_JOB_COUNT = 1321152;
+
+    UNIQUE_JOBID_COUNT = 1321152;
+
+    JOBID_COLLISION_COUNT = 0;
+
+    DAG_DEPENDENCY_COUNT = 2617152;
+
+    DANGLING_DEPENDENCY_COUNT = 0;
+
+    independent DAG reconstruction agrees;
+
+    local/distributed determinism validated;
+
+    retry/restart determinism validated;
+
+    capacity qualified;
+
+    production executable frozen;
+
+    preseed closure frozen;
+
+    production run manifest frozen;
+
+    operator handoff complete;
+
+    blind controls not unblinded;
+
+    natural confirmatory recovery not run;
+
+    Voynich not evaluated;
+
+    bulk production run not started.
+
+
+======================================================================
+34. SUCCESSFUL FINAL OUTPUT
+======================================================================
+
+On success print at minimum:
+
+    CONTRACT_VERSION =
+        G1_V2_EXECUTABLE_CONTRACT_V1_1
+
+    CONTRACT_SHA256 =
+        5c3cd272c1dbae9bfe1d7a100155faf102e86d34660da239e1cb31704ad470b0
+
+    R2_G01 =
+        CLOSED
+
+    R2_G02 =
+        CLOSED
+
+    D01_BLIND_ID_CLOSURE =
+        CLOSED_BY_RUN_INSTANCE_MATERIALIZATION
+
+    PRODUCTION_EXECUTABLE_SHA256 =
+        <sha256>
+
+    INPUT_ROOT_SHA256 =
+        <sha256>
+
+    THRESHOLD_ROOT_SHA256 =
+        <sha256>
+
+    PRESEED_ROOT_SHA256 =
+        <sha256>
+
+    PRODUCTION_RUN_MANIFEST_SHA256 =
+        <sha256>
+
+    CONTROL_INSTANCE_COUNT =
+        192
+
+    BLIND_CONTROL_COUNT =
+        144
+
+    NATURAL_CONFIRMATORY_COUNT =
+        36
+
+    DAG_JOB_COUNT =
+        1321152
+
+    UNIQUE_JOBID_COUNT =
+        1321152
+
+    JOBID_COLLISION_COUNT =
+        0
+
+    DAG_DEPENDENCY_COUNT =
+        2617152
+
+    DANGLING_DEPENDENCY_COUNT =
+        0
+
+    BLIND_TRUTH_LEAKAGE =
+        0
+
+    DISTRIBUTED_DETERMINISM =
+        SUPPORTED
+
+    TASK86C_V2_CAPACITY_QUALIFIED =
+        SUPPORTED
+
+    TASK86C_V2_SCIENTIFIC_EXECUTION_READY =
+        SUPPORTED
+
+    PRODUCTION_RUN_AUTHORIZED =
+        YES
+
+    TERMINAL_MARKER =
+        TASK86C_V2_SCIENTIFIC_EXECUTION_READY_FROZEN.
+
+
+======================================================================
+35. FAILURE OUTPUT
+======================================================================
+
+On failure print:
+
+    CONTRACT_VERSION =
+        G1_V2_EXECUTABLE_CONTRACT_V1_1
+
+    TASK86C_V2_SCIENTIFIC_EXECUTION_READY =
+        NOT_SUPPORTED
+
+    FAILURE_CLASS =
+        <scientific-contract /
+         execution-identity /
+         blindness /
+         implementation /
+         DAG /
+         determinism /
+         capacity>
+
+    BLOCKING_FINDINGS =
+        <exact findings>
+
+    PRODUCTION_RUN_AUTHORIZED =
+        NO
+
+    TERMINAL_MARKER =
+        <exact failure marker>.
+
+
+======================================================================
+36. DEFINITION OF DONE
+======================================================================
+
+This task is complete when one concrete production run instance has
+been fully materialized and frozen, but not executed.
+
+At completion:
+
+    science is frozen;
+    implementation is validated;
+    thresholds are frozen;
+    blind truth is sealed;
+    confirmatory inputs are frozen;
+    concrete JobIDs exist;
+    the complete DAG exists;
+    production executable exists;
+    run manifest exists;
+    capacity is qualified.
+
+The operator can then execute:
+
+    Task86C-v2-run
+
+without choosing or modifying any scientific parameter.
+
+No additional design/refreeze task is required unless R2R discovers
+a genuine SCIENTIFIC_CONTRACT_DEFECT or unresolved
+EXECUTION_IDENTITY_DEFECT.

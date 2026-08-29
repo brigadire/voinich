@@ -1,0 +1,2517 @@
+Task86C-v2-scientific-impl-R
+G1-v2 Frozen Contract Implementation, Validation,
+Capacity Qualification and Production Execution Freeze
+
+
+PURPOSE
+
+Implement the frozen executable scientific contract:
+
+    G1_V2_EXECUTABLE_CONTRACT_V1
+
+produced by Task85c, integrate it with the already validated
+Task86C-v2 distributed/evidence infrastructure, construct all
+authorized immutable execution inputs, validate implementation
+against the independent golden suite, qualify computational capacity,
+and freeze the production scientific executable and authoritative
+Task86C-v2 run manifest.
+
+This task resumes Task86C-v2-scientific-impl after the ambiguity
+resolution performed by Task85c.
+
+This is:
+
+    IMPLEMENTATION
+    INTEGRATION
+    VALIDATION
+    CAPACITY QUALIFICATION
+    PRODUCTION FREEZE
+
+This is NOT:
+
+    scientific redesign;
+    threshold tuning;
+    model-family redesign;
+    confirmatory analysis;
+    Task86C-v2 bulk execution;
+    unblinding;
+    Voynich evaluation.
+
+
+======================================================================
+1. AUTHORITATIVE SCIENTIFIC CONTRACT
+======================================================================
+
+The scientific implementation MUST conform to:
+
+    research/phase3/task85c/
+
+Contract version:
+
+    G1_V2_EXECUTABLE_CONTRACT_V1
+
+Normative prose:
+
+    G1V2_EXECUTABLE_CONTRACT.md
+
+Machine-readable contract:
+
+    G1V2_EXECUTABLE_CONTRACT.json
+
+Registries, schemas, golden vectors and DAG artifacts referenced by
+the Task85c results manifest are jointly normative.
+
+Task85c specifies that in case of contradiction:
+
+    machine-readable contract / registries
+        >
+    explanatory prose.
+
+Do not resolve contradictions by implementation preference.
+
+
+======================================================================
+2. FROZEN CONTRACT IDENTITY
+======================================================================
+
+Verify before implementation:
+
+EXECUTABLE_CONTRACT_SHA256:
+
+    275b29c592be6d3cb80c20df9b9348348009d758e2770ed39da0066004b11bca
+
+TASK85C_ARTIFACT_ROOT_SHA256:
+
+    273913473e3e37d6a776c79b0eb214753a90e9dbaf5d78e186dcb65a0c32c351
+
+EVIDENCE_SCHEMA_ROOT_SHA256:
+
+    8462ceb7f34efce1674528af7e69bdbf6855cd4938494d6d5034247245235ed0
+
+GOLDEN_SUITE_ROOT_SHA256:
+
+    b7443a962a82dd5c0cd67b71e24d8acea73fc9be4863fca4078bc53e468c7e51
+
+CANDIDATE_REGISTRY_SHA256:
+
+    96b618ab324db77b8402081075241b275f8925c45cdab058ba741e4beed29b58
+
+RNG_CONTRACT_SHA256:
+
+    e47c5a8c62dd8dee34441e4274c0d49d1a7ce4aab0360aff4751cb08b6394a43
+
+CONTROL_REGISTRY_SHA256:
+
+    261138beb57a4fd61f87d4c0d341ca97223dac76014739a3a4664266722312e6
+
+CORPUS_REGISTRY_SHA256:
+
+    db8b49d782f39fe0b5f3b0365d0023e5fc223d5306215be10b636a03123ced03
+
+DAG_CONTRACT_SHA256:
+
+    58f11d4749362d25c39cef3224e358015b587e77a3078b0eba00f3d82be2b0e9
+
+If any authoritative hash differs:
+
+    STOP.
+
+Do not implement against an unrecorded contract revision.
+
+
+======================================================================
+3. PARENT PROVENANCE
+======================================================================
+
+Preserve provenance chain:
+
+    Task85b
+        →
+    Task86C-v2-scientific-impl
+        SCIENTIFIC_CONTRACT_AMBIGUITY
+        →
+    Task85c
+        G1_V2_EXECUTABLE_SCIENTIFIC_CONTRACT_FROZEN
+        →
+    Task86C-v2-scientific-impl-R
+
+Do not rewrite the historical failed implementation task.
+
+Its STOP was valid and remains part of provenance.
+
+
+======================================================================
+4. IMPLEMENTATION AUTHORITY
+======================================================================
+
+The implementation agent is NOT authorized to make scientific
+choices.
+
+If the contract specifies algorithm X:
+
+    implement X.
+
+Do not replace it with Y because Y is:
+
+    simpler;
+    faster;
+    available in a library;
+    numerically more familiar;
+    scientifically preferable;
+    easier to distribute.
+
+Performance problems are capacity problems, not authorization for
+scientific modification.
+
+
+======================================================================
+5. CONTRACT DEFECT RULE
+======================================================================
+
+Task85c claims independent implementability.
+
+Therefore an implementation ambiguity is no longer resolved by
+choosing an interpretation.
+
+If two scientifically non-equivalent implementations remain
+permitted by the frozen Task85c closure:
+
+    STOP.
+
+Classify:
+
+    CONTRACT_DEFECT
+
+Record:
+
+    exact normative artifacts;
+    conflicting/insufficient clauses;
+    smallest reproducing example;
+    scientifically distinct interpretations;
+    implementation point reached.
+
+Do not patch the contract inside this task.
+
+
+======================================================================
+6. IMPLEMENTATION DEFECT RULE
+======================================================================
+
+If implementation output disagrees with a valid Task85c golden
+vector:
+
+    assume IMPLEMENTATION_DEFECT
+
+unless an actual contradiction in the frozen contract/golden suite
+is independently demonstrated.
+
+Do not change the expected golden output to make the implementation
+pass.
+
+
+======================================================================
+7. EXISTING EXECUTOR INFRASTRUCTURE
+======================================================================
+
+Reuse Task86C-v2-prep infrastructure:
+
+    deterministic JobID;
+    manifest/DAG execution;
+    mTLS coordinator/workers;
+    pull/lease jobs;
+    retries/resume;
+    immutable CAS;
+    atomic publication;
+    duplicate handling;
+    conflict quarantine;
+    persistent indexes;
+    evidence-only verifier architecture.
+
+Do not replace this infrastructure unless a demonstrated engineering
+defect prevents implementation.
+
+Any required infrastructure fix must preserve scientific identity.
+
+
+======================================================================
+8. PREP EXECUTABLE BOUNDARY
+======================================================================
+
+Historical prep executable SHA-256:
+
+    6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718
+
+is NOT the production scientific executable.
+
+It validated engineering infrastructure only.
+
+Do not:
+
+    publish it as the production scientific binary;
+    alter its historical provenance;
+    claim that sha256-chain-v1 is a scientific handler.
+
+This task must produce a NEW frozen production executable hash.
+
+
+======================================================================
+9. IMPLEMENT GLOBAL NUMERICAL CONTRACT
+======================================================================
+
+Implement the Task85c global numerical profile exactly.
+
+At minimum preserve:
+
+    IEEE-754 binary64;
+    round-to-nearest ties-to-even;
+    base-2 logarithms;
+    prescribed Neumaier summation;
+    ascending scientific-identity reduction order;
+    prescribed normalization;
+    no implicit epsilon;
+    exact gate comparisons;
+    type-7 quantiles;
+    canonical scientific-real evidence encoding;
+    prohibition of NaN/Infinity evidence.
+
+Do not use reduction orders whose results depend on worker scheduling.
+
+
+======================================================================
+10. IMPLEMENT CANONICALIZATION
+======================================================================
+
+Implement:
+
+    G1V2-CJ-1
+
+exactly.
+
+Canonicalization must preserve the Task85c rules for:
+
+    UTF-8;
+    NFC;
+    object-key ordering;
+    compact separators;
+    arrays;
+    LF termination;
+    numeric strings;
+    null/absent fields;
+    content hashes.
+
+Provide implementation tests against Task85c canonical examples.
+
+
+======================================================================
+11. IMPLEMENT SCIENTIFIC RNG
+======================================================================
+
+Implement:
+
+    G1V2-RNG-1
+
+exactly.
+
+Use the frozen:
+
+    SHA-256 counter construction;
+    root seed;
+    namespace encoding;
+    counter encoding;
+    u64 bounded sampling;
+    u53 conversion;
+    domain registry.
+
+No execution property may affect scientific RNG.
+
+Forbidden RNG inputs include:
+
+    hostname;
+    worker;
+    process ID;
+    execution order;
+    lease;
+    retry;
+    current time.
+
+
+======================================================================
+12. RNG GOLDEN VALIDATION
+======================================================================
+
+Run all Task85c RNG golden vectors.
+
+Also test that identical scientific jobs executed:
+
+    locally;
+    remotely;
+    after retry;
+    after coordinator restart
+
+produce identical RNG-derived scientific outputs.
+
+
+======================================================================
+13. IMPLEMENT CORPUS REPRESENTATION
+======================================================================
+
+Implement the exact corpus/token/glyph representation:
+
+    ordered sequence of nonempty NFC tokens;
+    Unicode scalar-value glyphs;
+    reserved BOS/EOS/UNK semantics;
+    DEVELOPMENT-derived vocabulary;
+    UTF-8 bytewise ordering;
+    non-DEVELOPMENT glyph → UNK.
+
+Implement exact:
+
+    60/20/20 occurrence-order split;
+    floor cut points;
+    no post-selection refit.
+
+
+======================================================================
+14. IMPLEMENT M0
+======================================================================
+
+Implement frozen M0:
+
+    iid_glyph_dirichlet
+
+including:
+
+    counts;
+    EOS handling;
+    alpha candidate grid;
+    zero-mass semantics;
+    validation selection;
+    scoring;
+    generation;
+    U+FFFD generation for UNK;
+    64-glyph cap;
+    complexity.
+
+Pass all M0 golden vectors.
+
+
+======================================================================
+15. IMPLEMENT M1
+======================================================================
+
+Implement frozen:
+
+    fixed_order_markov
+
+for exact orders:
+
+    1
+    2
+    3
+
+including:
+
+    BOS padding;
+    additive-alpha rows;
+    suffix fallback;
+    M0 order-0 fallback;
+    scoring;
+    generation;
+    complexity.
+
+Pass all M1 golden vectors.
+
+
+======================================================================
+16. IMPLEMENT M2
+======================================================================
+
+Implement exactly:
+
+    pst_likelihood_gain
+
+Do NOT substitute:
+
+    PPM;
+    CTW;
+    another PST induction rule.
+
+Implement frozen:
+
+    context enumeration;
+    minimum outgoing requirement;
+    gain equation;
+    additive-0.5 parent probabilities;
+    bottom-up pruning;
+    equality pruning;
+    maximum-depth grid;
+    gain-threshold grid;
+    longest retained suffix;
+    scoring;
+    generation;
+    complexity.
+
+Pass all M2 golden vectors.
+
+
+======================================================================
+17. IMPLEMENT M3 EXACT ROUTE
+======================================================================
+
+Implement the frozen exhaustive M3 route.
+
+Requirements include:
+
+    deterministic topology;
+    total (state,glyph)->state mappings;
+    accepting subsets;
+    reproducibility constraint;
+    additive-0.5 outcome rows;
+    DEVELOPMENT NLL objective;
+    state-count tie;
+    canonical transition-bitstring tie;
+    lexicographic enumeration;
+    big-integer preflight candidate count;
+    exact 10^8 induction cap.
+
+If candidate enumeration exceeds the frozen cap:
+
+    emit INDUCTION_CAP
+
+exactly as specified.
+
+Do not replace exhaustive search with heuristic search.
+
+
+======================================================================
+18. IMPLEMENT M3 APPROXIMATE ROUTE
+======================================================================
+
+Implement the frozen approximate route:
+
+    prefix-tree acceptor;
+    unordered state pairs;
+    hypothetical merge;
+    recursive determinization;
+    accepting/nonaccepting conflict rejection;
+    additive-0.5 outgoing rows;
+    normalized weighted JS score;
+    prescribed denominator;
+    canonical pair ordering;
+    threshold;
+    state cap;
+    forced legal merges when above cap;
+    operation accounting;
+    10^7 cap.
+
+Pass M3 approximate golden vectors.
+
+
+======================================================================
+19. M3 CLASS SEMANTICS
+======================================================================
+
+Preserve separate evidence for:
+
+    M3 exact
+    M3 approximate.
+
+Implement frozen class aggregation:
+
+    adequate if either route adequate;
+    inadequate only if both assessably inadequate;
+    otherwise unresolved.
+
+Do not merge the routes into one undocumented fitted model.
+
+
+======================================================================
+20. IMPLEMENT M4
+======================================================================
+
+Implement:
+
+    discrete_hmm_baum_welch
+
+exactly.
+
+Requirements include:
+
+    token-reset HMM;
+    hidden states 0..S-1;
+    pi/T/E;
+    EOS termination;
+    scaled forward/backward;
+    expected-count accumulation;
+    additive candidate alpha;
+    8 restarts;
+    frozen RNG initialization;
+    max 500 EM iterations;
+    exact convergence rule;
+    exact likelihood-decrease failure rule;
+    zero-scale/nonfinite failure;
+    restart selection;
+    global VALIDATION state-count selection;
+    generation;
+    complexity.
+
+Pass M4 golden vectors including one-step EM and restart selection.
+
+
+======================================================================
+21. IMPLEMENT M5
+======================================================================
+
+Implement:
+
+    three_component_productive_grammar
+
+exactly.
+
+Preserve:
+
+    all cut pairs;
+    nonempty stem;
+    support threshold;
+    deterministic triple selection;
+    retained rules;
+    literal exceptions;
+    additive-0.5 distributions;
+    productive component marginals;
+    mixture/backoff weight;
+    channel reassignment;
+    unseen productive positive mass;
+    decomposition summation order;
+    64-glyph support;
+    generation retry cap 1024;
+    complexity.
+
+Pass all M5 golden vectors.
+
+
+======================================================================
+22. IMPLEMENT EXACT CANDIDATE REGISTRY
+======================================================================
+
+Load/compile the frozen Task85c candidate registry.
+
+Expected candidate count:
+
+    43
+
+No candidate may be:
+
+    added;
+    removed;
+    merged;
+    renamed scientifically;
+    dynamically generated from an alternative grid.
+
+Validate candidate IDs and parameter closure before run-manifest
+construction.
+
+
+======================================================================
+23. IMPLEMENT SELECTION
+======================================================================
+
+Implement exactly:
+
+    fit on DEVELOPMENT;
+    select by minimum VALIDATION PM2;
+    nonfinite ineligible;
+    complexity bits tie-break;
+    candidate ID bytewise final tie-break;
+    no DEVELOPMENT+VALIDATION refit;
+    HELDOUT evaluation only.
+
+Selection evidence must preserve all information required for
+evidence-only reconstruction.
+
+
+======================================================================
+24. IMPLEMENT PREDICTIVE METRICS
+======================================================================
+
+Implement every required frozen predictive metric:
+
+    PM1
+    PM2
+    PM4
+    PM5
+    PM6
+
+with exact Task85c semantics.
+
+Do not collapse individual metric evidence into an aggregate pass.
+
+
+======================================================================
+25. IMPLEMENT B1/B2
+======================================================================
+
+Implement frozen baselines exactly.
+
+Preserve the special M0 self-baseline development-null procedure.
+
+Implement B2 as the validation-selected preceding model class
+candidate exactly as specified, independent of later adequacy.
+
+
+======================================================================
+26. IMPLEMENT BOOTSTRAP / MULTIPLICITY
+======================================================================
+
+Implement frozen:
+
+    2,000 DEVELOPMENT paired occurrence bootstraps;
+    one-sided empirical p-value;
+    Holm step-down alpha 0.05;
+    prescribed family;
+    q95 null effect;
+    practical-effect floors;
+    strict comparisons.
+
+Equality does not pass a strict gate.
+
+
+======================================================================
+27. IMPLEMENT PM5
+======================================================================
+
+Implement exact weighted adaptive-bin ECE:
+
+    realized next-glyph/EOS events;
+    assigned probability confidence;
+    label = 1;
+    DEVELOPMENT event sorting;
+    greedy bins of 40;
+    equal-confidence extension;
+    final-bin merge;
+    frozen boundaries;
+    equal-boundary earlier-bin rule;
+    end-bin assignment;
+    minimum five bins;
+    occurrence weighting.
+
+Pass PM5 golden vectors.
+
+
+======================================================================
+28. IMPLEMENT PM6
+======================================================================
+
+Implement exact finite-complement PM6:
+
+    C_l = A^l \ V_l
+
+including:
+
+    lexicographic rank/unrank;
+    replacement sampling;
+    one negative per positive;
+    eligible HELDOUT lengths;
+    saturated-length exclusion;
+    >=80% occurrence coverage;
+    >=100 pairs;
+    >=2 lengths;
+    AUC with half ties;
+    positive-mass aggregation;
+    2,000 paired bootstrap replicates;
+    q0.05 LCB;
+    2,000 paired label permutations;
+    q0.95;
+    strict PASS rules.
+
+Saturation/coverage insufficiency:
+
+    NOT_ASSESSABLE
+
+not:
+
+    TRAINING_FAILED
+    NEGATIVE_EXHAUSTED
+    infrastructure retry.
+
+
+======================================================================
+29. IMPLEMENT PREDICTIVE VERDICT
+======================================================================
+
+Implement exact frozen logic for:
+
+    PASS
+    FAIL
+    NOT_ASSESSABLE.
+
+Predictive PASS requires:
+
+    PM2 PASS
+    PM5 PASS
+    PM6 PASS
+
+under the full frozen rule.
+
+PM4 remains supporting only where specified.
+
+
+======================================================================
+30. IMPLEMENT GENERATION
+======================================================================
+
+Implement deterministic generation for all required model routes.
+
+Frozen scales:
+
+    2,000
+    8,000
+    32,000 tokens
+
+Replicates:
+
+    4 per scale.
+
+Scientific generation must be byte-identical for identical JobID
+under the supported deterministic runtime boundary.
+
+
+======================================================================
+31. IMPLEMENT F2 STRUCTURAL METRICS
+======================================================================
+
+Integrate exactly the frozen structural metric set:
+
+    EF1_GIANT_COMPONENT_SHARE
+    EF1_ISOLATE_SHARE
+    EF2_GLOBAL_CLUSTERING
+    EF3_DEGREE_FREQUENCY_SPEARMAN
+    LP1_RULE_SUPPORT_GINI
+    LP4_PREFIX_ATTACHMENT_NMI
+    LP4_SUFFIX_ATTACHMENT_NMI
+    HR1_FOLIO_VARIANCE_SHARE
+    HR1_LOCUS_VARIANCE_SHARE
+    HR1_SECTION_VARIANCE_SHARE
+    LS1_LINE_LENGTH_CV
+    PF5_WITHIN_FOLIO_PROGRESSION
+
+Reuse existing validated F2 implementations where contract-compatible.
+
+Do not rewrite them without necessity.
+
+
+======================================================================
+32. SKELETON METRIC SEMANTICS
+======================================================================
+
+Preserve frozen SKELETON treatment:
+
+    diagnostic only
+    zero discriminating weight.
+
+Do not accidentally count skeleton-only agreement as independent
+structural evidence.
+
+
+======================================================================
+33. IMPLEMENT STRUCTURAL THRESHOLDS
+======================================================================
+
+Implement exact Task85c threshold derivation:
+
+    matched-form DEVELOPMENT controls;
+    2,000 occurrence bootstraps;
+    absolute distances;
+    type-7 q0.95;
+    literal practical floor;
+    threshold = max(q0.95, floor);
+    four-replicate MAD;
+    development dispersion q0.95.
+
+Produce threshold evidence conforming to:
+
+    G1V2_THRESHOLD_ARTIFACT_SCHEMA.json.
+
+
+======================================================================
+34. IMPLEMENT STRUCTURAL ADEQUACY
+======================================================================
+
+Implement exact family/scale logic.
+
+EDIT:
+
+    >=3 assessable
+    and >=3 PASS among four.
+
+LEXICAL_PARADIGM:
+
+    >=2 assessable
+    and >=2 PASS among three.
+
+Implement exact cross-scale aggregation and
+NOT_ASSESSABLE precedence.
+
+
+======================================================================
+35. IMPLEMENT COMPLEXITY
+======================================================================
+
+Implement the frozen complexity contract exactly.
+
+Preserve:
+
+    utf8code;
+    Elias gamma;
+    canonical structure order;
+    BFS state numbering;
+    binary32 probability quantization;
+    exact bit accounting;
+    no complexity tolerance.
+
+Pass model-specific complexity golden vectors.
+
+
+======================================================================
+36. IMPLEMENT DESCRIPTION LENGTH / EQUIVALENCE
+======================================================================
+
+Implement:
+
+    description length =
+        complexity bits + HELDOUT PM1
+
+and the exact frozen equivalence-edge rule.
+
+Do not introduce floating comparison tolerances beyond the contract.
+
+
+======================================================================
+37. IMPLEMENT MINIMALITY
+======================================================================
+
+Implement the exact minimality graph/ordering.
+
+Preserve:
+
+    candidate adequacy;
+    class rejection;
+    lower-class rejection prerequisite;
+    equivalence components;
+    singleton recovery;
+    EQUIVALENT_SET;
+    NONE;
+    NOT_IDENTIFIABLE.
+
+Pass golden vectors for both NONE and NOT_IDENTIFIABLE.
+
+
+======================================================================
+38. IMPLEMENT STATUS REGISTRY
+======================================================================
+
+Implement all frozen scientific statuses exactly.
+
+Keep distinct:
+
+    PASS
+    FAIL
+    NOT_ASSESSABLE
+    NOT_REACHED
+
+and all scientific failure statuses.
+
+Scientific failure must never silently become negative evidence.
+
+
+======================================================================
+39. IMPLEMENT REACHABILITY
+======================================================================
+
+Use:
+
+    G1V2_REACHABILITY_CONTRACT.tsv
+
+as normative.
+
+All planned DAG jobs remain represented.
+
+Suppressed jobs publish:
+
+    NOT_REACHED
+
+evidence with the required reason and dependencies.
+
+Therefore scientific outcomes MUST NOT change total DAG cardinality.
+
+
+======================================================================
+40. IMPLEMENT SCIENTIFIC EVIDENCE SCHEMAS
+======================================================================
+
+Implement all frozen Task85c schemas.
+
+At minimum:
+
+    fit
+    fitted_model
+    predictive_metric
+    predictive_gate
+    predictive_verdict
+    generation
+    f2_metric
+    structural_family
+    structural_gate
+    structural_verdict
+    complexity
+    minimality
+    final_verdict
+    not_reached
+    scientific_failure.
+
+Reject invalid evidence fail-closed.
+
+
+======================================================================
+41. EVIDENCE HASHING
+======================================================================
+
+Implement Task85c content hashing exactly.
+
+Evidence content hash must be calculated from the canonical object
+with:
+
+    content_sha256 omitted
+
+as frozen.
+
+No worker/lease/retry metadata may enter scientific evidence
+identity.
+
+
+======================================================================
+42. EVIDENCE-ONLY VERIFIER
+======================================================================
+
+Extend the existing prep verifier to support all scientific evidence.
+
+It must reconstruct without fitting/generation:
+
+    schema validity;
+    hashes;
+    dependencies;
+    predictive gates;
+    PredictiveAdequacy;
+    structural gates;
+    StructuralAdequacy;
+    complexity graph;
+    minimality;
+    final control verdict.
+
+It must not import model-fitting/generation packages.
+
+
+======================================================================
+43. INDEPENDENT VERIFIER RULE
+======================================================================
+
+Do not duplicate production decision code wholesale into the
+evidence verifier.
+
+Where practical, implement verifier decisions from declarative
+registries/schemas.
+
+A production decision bug should remain detectable by the verifier.
+
+
+======================================================================
+44. IMPLEMENT DEVELOPMENT CONTROLS
+======================================================================
+
+Construct the exact 12 open DEVELOPMENT control instances.
+
+These may be used for:
+
+    implementation validation;
+    threshold construction;
+    bin construction;
+    authorized calibration.
+
+Do not modify their definition after observing outputs.
+
+
+======================================================================
+45. IMPLEMENT SYNTHETIC GENERATORS
+======================================================================
+
+Implement frozen synthetic Generator A and Generator B definitions.
+
+They must reside in separate modules as required by Task85c.
+
+They may share only authorized primitives such as:
+
+    canonical parsing
+    RNG
+
+and MUST NOT call:
+
+    fitting code;
+    production model generation code.
+
+
+======================================================================
+46. GENERATOR INDEPENDENCE TEST
+======================================================================
+
+Audit and test that Generator B is not accidentally implemented as a
+wrapper around the production model generator.
+
+Record code-level dependency evidence.
+
+Failure invalidates control independence.
+
+
+======================================================================
+47. BLIND CONTROL CONSTRUCTION
+======================================================================
+
+Implement the frozen Stage C construction protocol for:
+
+    144 blind synthetic instances.
+
+This task MAY construct and freeze the blind input corpus because
+Task85c has now frozen its construction.
+
+It MUST NOT run the G1-v2 recovery apparatus against the full blind
+set.
+
+
+======================================================================
+48. BLIND ESCROW
+======================================================================
+
+Implement:
+
+    g1v2.blind-escrow.v1
+
+exactly.
+
+Use the frozen offline trusted-builder procedure.
+
+Visible execution metadata may contain only authorized blind fields.
+
+Escrow must remain outside:
+
+    worker namespace
+    coordinator namespace
+    normal evidence namespace.
+
+Do not expose:
+
+    class
+    generator_id
+    parameters
+    seed
+
+to the operator-facing run manifest.
+
+
+======================================================================
+49. ESCROW SECRET HANDLING
+======================================================================
+
+The escrow key is secret operational material.
+
+Do not:
+
+    commit it;
+    place it in results manifest;
+    copy it to workers;
+    log it;
+    hash it into ordinary scientific evidence.
+
+Record only the permitted escrow artifact/root hashes.
+
+
+======================================================================
+50. NATURAL-LANGUAGE INPUT CONSTRUCTION
+======================================================================
+
+Construct/freeze the exact natural-language inputs specified by the
+Task85c corpus registry:
+
+    English
+    Latin
+    Sanskrit.
+
+Verify upstream hashes before preprocessing.
+
+Implement exact:
+
+    Gutenberg stripping where applicable;
+    NFC;
+    Unicode casefold;
+    Letter-run scanning;
+    apostrophe treatment;
+    punctuation/digit removal;
+    circular occurrence windows;
+    nonoverlap rule;
+    CORPUS_WINDOW RNG;
+    60/20/20 split.
+
+Do not run confirmatory recovery against them in this task.
+
+
+======================================================================
+51. CONSTRUCTIBLE_HASH_LOCKED LATIN
+======================================================================
+
+The Task85c report classifies Latin as:
+
+    CONSTRUCTIBLE_HASH_LOCKED.
+
+Construct it only from the frozen upstream artifacts and frozen
+procedure.
+
+Any upstream hash mismatch:
+
+    STOP INPUT_PROVENANCE_FAILURE.
+
+Do not substitute another edition/source.
+
+
+======================================================================
+52. INPUT CLOSURE
+======================================================================
+
+Produce immutable local content-addressed artifacts for every
+production input required by Task86C-v2-run.
+
+Workers must not require mutable Internet downloads.
+
+Generate a complete input manifest containing:
+
+    logical ID;
+    role;
+    source/provenance;
+    byte size;
+    SHA-256;
+    preprocessing identity;
+    control category;
+    content-addressed location.
+
+
+======================================================================
+53. THRESHOLD FREEZE
+======================================================================
+
+Using ONLY authorized open DEVELOPMENT controls, derive all threshold
+and PM5-bin artifacts required by the frozen contract.
+
+Freeze them before construction/freeze of the final production run
+manifest.
+
+After threshold freeze:
+
+    no recalibration.
+
+Blind, natural confirmatory and Voynich data MUST NOT influence
+thresholds.
+
+
+======================================================================
+54. THRESHOLD VALIDATION
+======================================================================
+
+Validate threshold artifacts against:
+
+    g1v2.thresholds.v1
+
+including:
+
+    development input hashes;
+    algorithm version;
+    RNG root;
+    replicate counts;
+    raw-statistics hashes;
+    thresholds;
+    practical floors;
+    content hash.
+
+
+======================================================================
+55. EXACT DAG
+======================================================================
+
+Implement:
+
+    G1V2-DAG-1
+
+exactly.
+
+Expected immutable cardinalities:
+
+    controls                 192
+    candidates per control    43
+
+    candidate fits          8,256
+    predictive jobs         8,256
+    generation batches     99,072
+    structural jobs     1,188,864
+    complexity jobs         8,256
+    candidate aggregation   8,256
+    control aggregation       192
+
+    TOTAL JOBS          1,321,152
+
+    DEPENDENCY EDGES    2,617,152
+
+Any mismatch:
+
+    STOP DAG_CONSTRUCTION_FAILURE.
+
+
+======================================================================
+56. JOBID
+======================================================================
+
+Implement the frozen JobID payload and hash exactly.
+
+JobID:
+
+    j- + first 40 lowercase hex SHA256(
+        ASCII "G1V2-JOB" NUL ||
+        G1V2-CJ-1(payload)
+    )
+
+Use exactly the frozen payload fields.
+
+Explicitly verify exclusion of:
+
+    hostname
+    worker
+    coordinator
+    lease
+    retry
+    execution order
+    wall clock.
+
+
+======================================================================
+57. AUTHORITATIVE RUN MANIFEST
+======================================================================
+
+Generate the final production scientific manifest only after:
+
+    implementation validation;
+    input closure;
+    development calibration;
+    threshold freeze;
+    blind construction;
+    natural input construction;
+    exact DAG validation.
+
+Manifest must be:
+
+    deterministic;
+    canonical;
+    complete;
+    immutable;
+    blind-safe;
+    topology-independent.
+
+
+======================================================================
+58. RUN MANIFEST BLINDNESS AUDIT
+======================================================================
+
+Before freeze scan the complete run manifest and paths for leakage of:
+
+    true M0–M5 control class;
+    generator identity;
+    hidden parameters;
+    seed where prohibited;
+    escrow data.
+
+A blind control must be identifiable only by permitted blind
+metadata.
+
+
+======================================================================
+59. MANIFEST INDEPENDENT RECONSTRUCTION
+======================================================================
+
+Provide a validator that independently derives expected manifest
+cardinality from:
+
+    control registry
+    candidate registry
+    DAG contract
+
+and compares it to the generated manifest.
+
+Do not trust manifest generator self-reported counts.
+
+
+======================================================================
+60. GOLDEN SUITE
+======================================================================
+
+Run the complete independent Task85c golden suite.
+
+Required:
+
+    G1V2_GOLDEN_REFERENCE = PASS
+
+Production implementation must pass every applicable golden vector.
+
+No expected output may be rewritten by this task.
+
+
+======================================================================
+61. IMPLEMENTATION-SPECIFIC TEST SUITE
+======================================================================
+
+Add unit/integration tests covering at minimum:
+
+    M0–M5;
+    numerical profile;
+    canonicalization;
+    RNG;
+    candidate selection;
+    PM metrics;
+    PM6 saturation;
+    structural thresholds;
+    complexity;
+    minimality;
+    statuses;
+    reachability;
+    evidence schemas;
+    evidence hashes;
+    DAG;
+    JobID;
+    blind metadata;
+    corpus preprocessing.
+
+
+======================================================================
+62. LEGACY REGRESSION TESTS
+======================================================================
+
+Explicitly guard against known historical failure modes:
+
+    Go map iteration nondeterminism;
+    PM evidence loss;
+    PM6 NEGATIVE_EXHAUSTED misuse;
+    partial calibration acceptance;
+    undeclared sampler caps;
+    old JS normalization;
+    superseded M3 merge semantics;
+    old M4 no-EM behavior;
+    old M5 zero-mass behavior;
+    Task85a candidate-grid inheritance.
+
+
+======================================================================
+63. SCIENTIFIC FAILURE TESTS
+======================================================================
+
+Construct open fixtures for:
+
+    FIT_FAILURE;
+    NUMERICAL_FAILURE;
+    INDUCTION_CAP;
+    GENERATION_FAILURE;
+    NOT_ASSESSABLE;
+    NOT_REACHED
+
+and any other frozen statuses.
+
+Verify exact downstream reachability.
+
+
+======================================================================
+64. MUTATION TESTS
+======================================================================
+
+Extend fail-closed evidence mutation tests.
+
+Mutate at minimum:
+
+    contract version;
+    candidate ID;
+    seed identity;
+    fit hash;
+    model hash;
+    PM value;
+    PM status;
+    predictive gate;
+    generation hash;
+    F2 value;
+    structural status;
+    complexity;
+    minimality;
+    dependency;
+    NOT_REACHED reason;
+    final verdict.
+
+Verifier must reject inconsistent closure.
+
+
+======================================================================
+65. LOCAL END-TO-END FIXTURE
+======================================================================
+
+Run an OPEN, NON-CONFIRMATORY end-to-end scientific fixture through:
+
+    FIT
+    PREDICTIVE
+    GENERATION
+    F2
+    COMPLEXITY
+    CANDIDATE_AGGREGATION
+    CONTROL_AGGREGATION.
+
+It must use actual production scientific handlers.
+
+Do not use sha256-chain-v1.
+
+
+======================================================================
+66. DISTRIBUTED END-TO-END FIXTURE
+======================================================================
+
+Execute the same open fixture through the real coordinator/worker
+infrastructure.
+
+Compare local and distributed:
+
+    JobIDs;
+    evidence content;
+    hashes;
+    final reconstructed verdict.
+
+Require scientific equality.
+
+Operational telemetry may differ.
+
+
+======================================================================
+67. RETRY / RESTART DETERMINISM
+======================================================================
+
+Force:
+
+    worker loss / lease expiry;
+    retry;
+    coordinator restart
+
+during an open scientific fixture.
+
+Require identical scientific results/hashes.
+
+No retry property may enter RNG/evidence identity.
+
+
+======================================================================
+68. DUPLICATE / CONFLICT VALIDATION
+======================================================================
+
+Verify:
+
+equal duplicate:
+    accepted as duplicate telemetry according to prep contract.
+
+same JobID + unequal scientific result:
+    CONFLICT
+    quarantine
+    descendants blocked
+    no preferred result selected.
+
+
+======================================================================
+69. CAPACITY QUALIFICATION — REQUIRED
+======================================================================
+
+The Task85b-era capacity estimate is obsolete for production
+planning because Task85c freezes a substantially larger exact DAG.
+
+Before production freeze, benchmark representative real scientific
+handlers.
+
+Do not extrapolate from sha256-chain-v1 engineering jobs.
+
+
+======================================================================
+70. CAPACITY BENCHMARK DESIGN
+======================================================================
+
+Benchmark representative cells from:
+
+    M0
+    M1
+    M2
+    M3 exact
+    M3 approximate
+    M4
+    M5
+
+and representative:
+
+    PM/bootstrap;
+    generation at all scales;
+    F2 metrics;
+    aggregation.
+
+Sample controls representing relevant corpus sizes/types.
+
+Use OPEN/non-confirmatory inputs only.
+
+
+======================================================================
+71. M3 CAPACITY SPECIAL CASE
+======================================================================
+
+M3 exact may enumerate up to:
+
+    10^8 candidates per fit
+
+before INDUCTION_CAP.
+
+Measure separately:
+
+    preflight enumeration cardinality distribution;
+    fraction immediately capped;
+    runtime of tractable exact cells;
+    memory;
+    evidence size.
+
+Do not assume average M3 exact cost from other model classes.
+
+
+======================================================================
+72. CAPACITY METRICS
+======================================================================
+
+Record at minimum per benchmark class:
+
+    count;
+    median wall time;
+    p90 wall time;
+    p99 where sample supports it;
+    CPU time;
+    peak RSS where available;
+    evidence bytes;
+    temporary bytes;
+    cache behavior.
+
+Also measure coordinator overhead for a large manifest subset.
+
+
+======================================================================
+73. FULL-RUN PROJECTION
+======================================================================
+
+Using exact DAG cardinalities and measured handler costs, calculate:
+
+    projected CPU-hours;
+    projected wall time at 1 node;
+    projected wall time at current cluster;
+    projected evidence storage;
+    projected transient storage;
+    projected cache storage;
+    expected coordinator index/storage size;
+    expected network transfer.
+
+State assumptions explicitly.
+
+
+======================================================================
+74. CAPACITY SAFETY MARGIN
+======================================================================
+
+Recommend production resources with explicit safety margin.
+
+At minimum derive:
+
+    minimum free evidence storage;
+    minimum transient headroom;
+    recommended worker slots;
+    recommended RAM/slot;
+    recommended coordinator resources.
+
+Do not reuse the old 120 GB threshold automatically if new
+measurement indicates more is required.
+
+
+======================================================================
+75. CAPACITY VERDICT
+======================================================================
+
+Issue:
+
+    TASK86C_V2_CAPACITY_QUALIFIED =
+        SUPPORTED
+        NOT_SUPPORTED
+
+SUPPORTED requires that the intended production topology can execute
+the frozen DAG without a known resource impossibility.
+
+A long runtime alone is not scientific failure.
+
+If current resources are insufficient, report required resources.
+Do not alter G1-v2.
+
+
+======================================================================
+76. PRODUCTION BUILD
+======================================================================
+
+After scientific implementation and validation:
+
+build the production Linux/amd64 executable.
+
+Record:
+
+    git commit;
+    dirty/clean status;
+    Go version;
+    GOOS;
+    GOARCH;
+    build command;
+    build flags;
+    executable size;
+    SHA-256.
+
+
+======================================================================
+77. PRODUCTION EXECUTABLE FREEZE
+======================================================================
+
+Freeze:
+
+    TASK86C_V2_PRODUCTION_EXECUTABLE_SHA256
+
+This MUST be a new scientific executable identity.
+
+It supersedes the prep executable only for future Task86C-v2
+scientific execution.
+
+Historical prep provenance remains unchanged.
+
+
+======================================================================
+78. WORKER COMPATIBILITY
+======================================================================
+
+Update the production deployment compatibility contract with the new
+scientific executable hash.
+
+Preserve the frozen protocol tuple unless implementation genuinely
+requires an explicitly documented compatible version boundary.
+
+Verify workers reject a binary with the wrong hash.
+
+
+======================================================================
+79. CURRENT PKI
+======================================================================
+
+Use the current production PKI.
+
+Record non-secret identities:
+
+CA certificate SHA-256:
+
+    3f0a73dbec2ecd396854a612ac6216c95e89f6bd0380db8c0bc50cfc3c03f50b
+
+Coordinator certificate SHA-256:
+
+    a8c2b04e2ab4ac00383f3e9fed91c49af6a7c7982fccb7102dd1af3bc886255a
+
+Coordinator SAN:
+
+    10.10.24.107
+    109.87.30.62
+
+All worker certificates must chain to the current CA and contain a
+unique:
+
+    URI:voinich-worker:<host>.
+
+
+======================================================================
+80. COORDINATOR INTERFACE
+======================================================================
+
+Production executable must support:
+
+    <FROZEN_G1V2_EXECUTOR> coordinator \
+      --manifest <FROZEN_RUN_MANIFEST> \
+      --store /usr/local/data/voinich-evidence \
+      --listen :8443 \
+      --tls-cert /home/brigadire/devops/workdir/go/voinich/pki/coordinator.crt \
+      --tls-key /home/brigadire/devops/workdir/go/voinich/pki/coordinator.key \
+      --client-ca /home/brigadire/devops/workdir/go/voinich/pki/ca.crt \
+      --lease-timeout 30s
+
+Do not change this interface without engineering necessity.
+
+
+======================================================================
+81. WORKER ENDPOINTS
+======================================================================
+
+Operational endpoints:
+
+LAN / cognition:
+
+    https://10.10.24.107:8443
+
+external workers:
+
+    https://109.87.30.62:8443
+
+These values MUST NOT enter scientific identity.
+
+
+======================================================================
+82. PRESEED MANIFEST
+======================================================================
+
+Generate a production preseed manifest containing all immutable
+non-secret objects that should be placed in worker CAS before the
+run.
+
+Each entry must include:
+
+    SHA-256;
+    byte size;
+    source content-addressed path;
+    destination/cache identity.
+
+Do not distribute escrow secrets.
+
+
+======================================================================
+83. OPERATOR HANDOFF
+======================================================================
+
+Create a complete operator handoff containing concrete:
+
+    production executable path;
+    executable SHA-256;
+    run manifest path;
+    run manifest SHA-256;
+    input manifest;
+    preseed manifest;
+    expected job count;
+    expected dependency count;
+    evidence storage requirement;
+    coordinator command;
+    worker deployment commands/variables;
+    closure verification command;
+    capacity projection.
+
+No scientific decision may remain for the operator.
+
+
+======================================================================
+84. RUNBOOK UPDATE
+======================================================================
+
+Update:
+
+    TASK86C_V2_RUNBOOK.md
+
+to the new production freeze.
+
+Remove obsolete prep-binary assumptions and old capacity estimates.
+
+The runbook must explicitly state:
+
+    1,321,152 jobs
+    2,617,152 dependency edges
+
+unless Task85c itself has been invalidated, in which case STOP.
+
+
+======================================================================
+85. DO NOT RUN FULL TASK86C-v2
+======================================================================
+
+This task must NOT submit the complete frozen 1,321,152-job
+scientific manifest for execution.
+
+Allowed:
+
+    development calibration required to freeze thresholds;
+    golden tests;
+    unit tests;
+    open fixtures;
+    capacity benchmarks;
+    bounded manifest subsets for engineering validation.
+
+Forbidden:
+
+    full blind Stage C recovery;
+    full natural confirmatory recovery;
+    production scientific verdict generation.
+
+
+======================================================================
+86. BLIND RESULT FIREWALL
+======================================================================
+
+Blind controls may be constructed and hashed.
+
+Do not inspect them through G1-v2 in a way that yields recovery
+results before Task86C-v2-run.
+
+Do not use blind outcomes for:
+
+    debugging;
+    optimization;
+    thresholds;
+    capacity-dependent scientific changes.
+
+
+======================================================================
+87. NATURAL CONFIRMATORY FIREWALL
+======================================================================
+
+Natural-language production inputs may be constructed and frozen.
+
+Do not execute the confirmatory recovery experiment against them.
+
+Use separate open development/benchmark inputs for implementation
+testing.
+
+
+======================================================================
+88. VOYNICH FIREWALL
+======================================================================
+
+Do not read/evaluate Voynich as G1-v2 scientific input.
+
+Do not use Voynich results to optimize:
+
+    implementation;
+    candidate ordering;
+    performance;
+    thresholds;
+    model selection.
+
+Task86V remains blocked.
+
+
+======================================================================
+89. PERFORMANCE OPTIMIZATION RULE
+======================================================================
+
+Engineering optimization is allowed only if scientifically
+equivalent.
+
+Examples:
+
+    caching;
+    indexing;
+    precomputed immutable tables;
+    safe parallelism;
+    memory-layout changes.
+
+For every nontrivial optimization demonstrate equivalence against:
+
+    golden vectors;
+    deterministic fixture;
+    evidence hashes where applicable.
+
+Do not use approximate computation where exact computation is frozen.
+
+
+======================================================================
+90. PARALLELISM RULE
+======================================================================
+
+Parallelism must not change prescribed scientific reduction order.
+
+If an operation requires ascending scientific-identity Neumaier
+summation, parallel workers may prepare terms but final reduction
+must preserve the frozen order.
+
+Scientific byte identity takes precedence over throughput.
+
+
+======================================================================
+91. REQUIRED TRACEABILITY
+======================================================================
+
+Create:
+
+    G1V2_SCIENTIFIC_IMPLEMENTATION_TRACEABILITY.tsv
+
+Columns at minimum:
+
+    contract_requirement
+    normative_source
+    implementation
+    tests
+    golden_vectors
+    evidence_schema
+    status
+    notes.
+
+Every scientific requirement must map to code and validation.
+
+
+======================================================================
+92. REQUIRED HANDLER REGISTRY
+======================================================================
+
+Create:
+
+    G1V2_SCIENTIFIC_HANDLER_REGISTRY.tsv
+
+with:
+
+    handler_id
+    stage
+    contract_operation
+    implementation
+    input_schema
+    output_schema
+    RNG_domains
+    deterministic_boundary
+    tests
+    status.
+
+No scientific production job may resolve to sha256-chain-v1.
+
+
+======================================================================
+93. REQUIRED IMPLEMENTATION REGISTRY
+======================================================================
+
+Create:
+
+    G1V2_MODEL_IMPLEMENTATION_REGISTRY.tsv
+
+for all 43 candidates/routes, mapping them to production code.
+
+
+======================================================================
+94. REQUIRED INPUT MANIFEST
+======================================================================
+
+Create:
+
+    TASK86C_V2_INPUT_MANIFEST.tsv
+
+covering all immutable production inputs without exposing escrow
+secrets.
+
+
+======================================================================
+95. REQUIRED CAPACITY ARTIFACTS
+======================================================================
+
+Create:
+
+    TASK86C_V2_CAPACITY_BENCHMARK.tsv
+    TASK86C_V2_CAPACITY_MODEL.md
+    TASK86C_V2_CLUSTER_REQUIREMENTS.md
+
+The capacity model must be based on actual scientific handlers.
+
+
+======================================================================
+96. REQUIRED MANIFEST AUDIT
+======================================================================
+
+Create:
+
+    TASK86C_V2_RUN_MANIFEST_AUDIT.tsv
+
+covering at minimum:
+
+    contract hash;
+    candidate closure;
+    control closure;
+    threshold closure;
+    input closure;
+    blind audit;
+    JobIDs;
+    DAG counts;
+    dependency closure;
+    handlers;
+    schemas;
+    reachability;
+    expected terminal cells.
+
+
+======================================================================
+97. REQUIRED VALIDATION MATRIX
+======================================================================
+
+Create:
+
+    TASK86C_V2_SCIENTIFIC_IMPL_R_VALIDATION.tsv
+
+Include at minimum:
+
+    Task85c hash closure
+    canonicalization
+    numerical profile
+    RNG
+    M0
+    M1
+    M2
+    M3 exact
+    M3 approximate
+    M3 aggregation
+    M4
+    M5
+    selection
+    B1
+    B2
+    PM1
+    PM2
+    PM4
+    PM5
+    PM6
+    predictive aggregation
+    generation
+    F2 integration
+    structural thresholds
+    structural aggregation
+    complexity
+    minimality
+    NONE
+    NOT_IDENTIFIABLE
+    status semantics
+    reachability
+    evidence schemas
+    evidence hashing
+    evidence-only verification
+    synthetic generator independence
+    blind construction
+    escrow isolation
+    natural preprocessing
+    input closure
+    threshold freeze
+    DAG exact counts
+    JobID
+    manifest blindness
+    golden suite
+    local E2E
+    distributed E2E
+    retry determinism
+    coordinator restart
+    duplicate handling
+    conflict handling
+    capacity qualification
+    production executable freeze
+    operator handoff
+    blind firewall
+    natural confirmatory firewall
+    Voynich firewall.
+
+
+======================================================================
+98. REQUIRED ARTIFACTS
+======================================================================
+
+Create under:
+
+    research/phase3/task86c-v2-scientific-impl-r/
+
+at minimum:
+
+    TASK86C_V2_SCIENTIFIC_IMPL_R_DESIGN.md
+    TASK86C_V2_SCIENTIFIC_IMPL_R_REPORT.md
+
+    G1V2_SCIENTIFIC_IMPLEMENTATION_TRACEABILITY.tsv
+    G1V2_SCIENTIFIC_HANDLER_REGISTRY.tsv
+    G1V2_MODEL_IMPLEMENTATION_REGISTRY.tsv
+
+    TASK86C_V2_INPUT_MANIFEST.tsv
+    TASK86C_V2_PRESEED_MANIFEST.tsv
+    TASK86C_V2_RUN_MANIFEST_AUDIT.tsv
+
+    TASK86C_V2_CAPACITY_BENCHMARK.tsv
+    TASK86C_V2_CAPACITY_MODEL.md
+    TASK86C_V2_CLUSTER_REQUIREMENTS.md
+
+    TASK86C_V2_SCIENTIFIC_IMPL_R_VALIDATION.tsv
+    TASK86C_V2_OPERATOR_HANDOFF.md
+
+    TASK86C_V2_SCIENTIFIC_IMPL_R_RESULTS_MANIFEST.json
+
+and frozen machine-readable:
+
+    threshold artifact(s);
+    PM5 bin artifact(s);
+    blind input manifest;
+    blind escrow artifact/reference as permitted;
+    natural-language input artifacts;
+    production scientific run manifest;
+    production preseed manifest.
+
+
+======================================================================
+99. RESULTS MANIFEST
+======================================================================
+
+The results manifest must transitively bind:
+
+    Task85c artifact root;
+    executable contract hash;
+    golden-suite root;
+    evidence-schema root;
+    production source commit;
+    production executable hash;
+    threshold root;
+    input root;
+    blind corpus root;
+    escrow hash;
+    natural corpus root;
+    production run-manifest hash;
+    preseed-manifest hash;
+    capacity artifacts;
+    validation matrix;
+    operator handoff;
+    updated runbook.
+
+
+======================================================================
+100. REPOSITORY VALIDATION
+======================================================================
+
+Run at minimum:
+
+    Task85c validator
+    Task85c golden reference verifier
+
+    go build ./...
+    go vet ./...
+    go test ./...
+    go test -race ./...
+
+    Task86C-v2-prep validators
+    scientific implementation validator
+    evidence-only verifier
+    manifest validator
+    input closure validator
+    blind leakage validator
+
+    git diff --check
+
+Run Ansible syntax/check validation after production executable hash
+is updated.
+
+Unavailable checks must be recorded as NOT_TESTED, not PASS.
+
+
+======================================================================
+101. REQUIRED VERDICTS
+======================================================================
+
+Issue at minimum:
+
+    TASK85C_CONTRACT_IDENTITY =
+        SUPPORTED / NOT_SUPPORTED
+
+    M0_IMPLEMENTATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    M1_IMPLEMENTATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    M2_IMPLEMENTATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    M3_EXACT_IMPLEMENTATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    M3_APPROX_IMPLEMENTATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    M4_IMPLEMENTATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    M5_IMPLEMENTATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    RNG_IMPLEMENTATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    PREDICTIVE_IMPLEMENTATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    PM6_IMPLEMENTATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    GENERATION_IMPLEMENTATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    F2_INTEGRATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    STRUCTURAL_IMPLEMENTATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    COMPLEXITY_MINIMALITY_IMPLEMENTATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    EVIDENCE_CONTRACT_IMPLEMENTATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    EVIDENCE_ONLY_RECONSTRUCTION =
+        SUPPORTED / NOT_SUPPORTED
+
+    SYNTHETIC_GENERATOR_INDEPENDENCE =
+        SUPPORTED / NOT_SUPPORTED
+
+    BLIND_INPUT_CLOSURE =
+        SUPPORTED / NOT_SUPPORTED
+
+    NATURAL_INPUT_CLOSURE =
+        SUPPORTED / NOT_SUPPORTED
+
+    THRESHOLD_FREEZE =
+        SUPPORTED / NOT_SUPPORTED
+
+    RUN_MANIFEST_CLOSURE =
+        SUPPORTED / NOT_SUPPORTED
+
+    DISTRIBUTED_SCIENTIFIC_DETERMINISM =
+        SUPPORTED / NOT_SUPPORTED
+
+    TASK86C_V2_CAPACITY_QUALIFIED =
+        SUPPORTED / NOT_SUPPORTED
+
+    BLIND_FIREWALL_PRESERVED =
+        SUPPORTED / NOT_SUPPORTED
+
+    NATURAL_CONFIRMATORY_FIREWALL_PRESERVED =
+        SUPPORTED / NOT_SUPPORTED
+
+    VOYNICH_FIREWALL_PRESERVED =
+        SUPPORTED / NOT_SUPPORTED
+
+    TASK86C_V2_SCIENTIFIC_EXECUTION_READY =
+        SUPPORTED / NOT_SUPPORTED.
+
+
+======================================================================
+102. EXECUTION-READY RULE
+======================================================================
+
+TASK86C_V2_SCIENTIFIC_EXECUTION_READY = SUPPORTED
+
+only if ALL of the following hold:
+
+1. Task85c hash closure matches.
+2. All 43 frozen candidates resolve to production implementation.
+3. M0–M5 implementations pass contract/golden validation.
+4. M3 exact and approximate routes are separately valid.
+5. G1V2-RNG-1 passes golden validation.
+6. G1V2-CJ-1 passes canonical validation.
+7. Predictive metrics/baselines are implemented.
+8. PM5 is implemented.
+9. PM6 is implemented including saturation semantics.
+10. Generation is deterministic.
+11. Required F2 metrics are integrated.
+12. Structural thresholds are frozen.
+13. Structural adequacy is reconstructible.
+14. Complexity is exact.
+15. Minimality/NONE/NOT_IDENTIFIABLE are exact.
+16. Scientific statuses/reachability are exact.
+17. Evidence schemas/hashes are enforced.
+18. Evidence-only reconstruction succeeds.
+19. Development controls are frozen.
+20. Synthetic generators satisfy independence constraints.
+21. Blind inputs are constructed and frozen.
+22. Escrow is isolated.
+23. Natural-language inputs are frozen.
+24. Input closure succeeds.
+25. Threshold/bin freeze succeeds before production manifest freeze.
+26. Production manifest contains exactly 1,321,152 jobs.
+27. Production manifest implies exactly 2,617,152 dependencies.
+28. All JobIDs are deterministic/collision-free.
+29. Manifest blind-leakage audit passes.
+30. Local production-handler E2E succeeds.
+31. Distributed production-handler E2E succeeds.
+32. Retry/restart determinism succeeds.
+33. Duplicate/conflict tests succeed.
+34. Capacity qualification succeeds.
+35. Production Linux/amd64 executable is built.
+36. Production executable SHA-256 is frozen.
+37. Deployment contract is updated to the new hash.
+38. Preseed manifest is frozen.
+39. Operator handoff is complete.
+40. Runbook contains concrete production values.
+41. Blind bulk recovery has NOT been run.
+42. Natural confirmatory recovery has NOT been run.
+43. Voynich G1-v2 evaluation has NOT been run.
+44. Results manifest transitively closes the production freeze.
+
+
+======================================================================
+103. STOP CONDITIONS
+======================================================================
+
+STOP immediately for:
+
+    CONTRACT_HASH_MISMATCH
+    CONTRACT_DEFECT
+    GOLDEN_CONTRACT_CONTRADICTION
+    INPUT_PROVENANCE_FAILURE
+    BLINDNESS_VIOLATION
+    DAG_CONSTRUCTION_FAILURE
+    EVIDENCE_CONTRACT_FAILURE
+    DETERMINISM_FAILURE
+    SCIENTIFIC_FIREWALL_VIOLATION.
+
+Do not STOP merely because:
+
+    runtime is long;
+    a scientific model fails;
+    M3 reaches INDUCTION_CAP;
+    PM6 is NOT_ASSESSABLE;
+    a candidate is inadequate.
+
+Those are scientific/operational outcomes defined by the contract.
+
+
+======================================================================
+104. TERMINAL MARKERS
+======================================================================
+
+Successful production freeze:
+
+    TASK86C_V2_SCIENTIFIC_EXECUTION_READY_FROZEN
+
+Contract defect:
+
+    TASK86C_V2_TASK85C_CONTRACT_DEFECT
+
+Implementation incomplete/invalid:
+
+    TASK86C_V2_SCIENTIFIC_IMPLEMENTATION_NOT_READY
+
+Capacity insufficient:
+
+    TASK86C_V2_CAPACITY_NOT_READY
+
+Integrity/firewall failure:
+
+    TASK86C_V2_SCIENTIFIC_IMPL_R_INVALID
+
+Exactly one terminal marker.
+
+
+======================================================================
+105. SUCCESSFUL FINAL OUTPUT
+======================================================================
+
+On successful completion print:
+
+    TASK86C_V2_SCIENTIFIC_EXECUTION_READY =
+        SUPPORTED
+
+    CONTRACT_VERSION =
+        G1_V2_EXECUTABLE_CONTRACT_V1
+
+    CONTRACT_SHA256 =
+        275b29c592be6d3cb80c20df9b9348348009d758e2770ed39da0066004b11bca
+
+    PRODUCTION_EXECUTABLE =
+        <path>
+
+    PRODUCTION_EXECUTABLE_SHA256 =
+        <sha256>
+
+    FROZEN_RUN_MANIFEST =
+        <path>
+
+    FROZEN_RUN_MANIFEST_SHA256 =
+        <sha256>
+
+    INPUT_MANIFEST =
+        <path>
+
+    INPUT_ROOT_SHA256 =
+        <sha256>
+
+    THRESHOLD_ROOT_SHA256 =
+        <sha256>
+
+    BLIND_INPUT_ROOT_SHA256 =
+        <sha256>
+
+    BLIND_ESCROW_SHA256 =
+        <sha256>
+
+    NATURAL_INPUT_ROOT_SHA256 =
+        <sha256>
+
+    PRESEED_MANIFEST =
+        <path>
+
+    EXPECTED_JOB_COUNT =
+        1321152
+
+    EXPECTED_DEPENDENCY_COUNT =
+        2617152
+
+    PROJECTED_CPU_HOURS =
+        <measured projection>
+
+    PROJECTED_EVIDENCE_BYTES =
+        <measured projection>
+
+    RECOMMENDED_WORKER_SLOTS =
+        <capacity result>
+
+    MINIMUM_EVIDENCE_FREE_BYTES =
+        <capacity result>
+
+    COORDINATOR_COMMAND =
+        <complete command>
+
+    CLOSURE_VERIFICATION_COMMAND =
+        <complete command>
+
+    TERMINAL_MARKER =
+        TASK86C_V2_SCIENTIFIC_EXECUTION_READY_FROZEN
+
+
+======================================================================
+106. DEFINITION OF DONE
+======================================================================
+
+The task is done when the operator can execute Task86C-v2-run using
+only the frozen handoff/runbook and has no scientific choice left to
+make.
+
+At that point the only permitted operator decisions are operational:
+
+    which compatible worker runs a job;
+    how many compatible slots are enabled;
+    whether a failed worker is restarted;
+    whether additional compatible capacity is added.
+
+The operator must not decide:
+
+    model algorithms;
+    candidate grids;
+    seeds;
+    thresholds;
+    controls;
+    corpora;
+    reachability;
+    metrics;
+    complexity;
+    evidence interpretation.
+
+Scientific meaning belongs entirely to the frozen Task85c contract.

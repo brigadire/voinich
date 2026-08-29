@@ -1,0 +1,935 @@
+Task86C-v2-deploy-audit — Audit Ansible Worker Deployment
+for G1-v2 Compute Cluster
+
+
+PURPOSE
+
+Audit the existing Ansible role used to deploy distributed
+Voynich compute workers and determine whether it is sufficient
+to deploy production workers for the frozen Task86C-v2
+scientific experiment.
+
+Expected existing role:
+
+    ansible/roles/voynich_worker
+
+The role was inherited from the Phase-I distributed execution
+infrastructure and was identified by Task85b / Task86C-v2-prep
+as the intended worker deployment path.
+
+Task86C-v2-prep has already established:
+
+    TASK86C_V2_COMPUTE_READY_FROZEN.
+
+This task does NOT redesign the distributed executor and does NOT
+run Task86C-v2.
+
+Primary question:
+
+    Can ansible/roles/voynich_worker deploy a fresh compatible
+    machine into a fully operational G1-v2 worker without manual
+    configuration that would affect reproducibility or scientific
+    execution?
+
+
+======================================================================
+1. AUTHORITATIVE INPUTS
+======================================================================
+
+Use as authoritative inputs:
+
+    research/phase3/task86c-v2-prep/
+        PHASE1_EXECUTOR_INTEGRATION.md
+        WORKER_COMPATIBILITY_CONTRACT.md
+        G1V2_EXECUTOR_ADAPTER.md
+        TASK86C_V2_SCIENTIFIC_HANDOFF.md
+        TASK86C_V2_CLUSTER_RECOMMENDATION.md
+        TASK86C_V2_CAPACITY_ESTIMATE.md
+        TASK86C_V2_PREP_REPORT.md
+        TASK86C_V2_PREP_RESULTS_MANIFEST.json
+
+and:
+
+    research/phase3/task85b/
+
+where needed for frozen execution requirements.
+
+Audit the actual current Ansible implementation in the repository.
+
+Do not infer role behavior from documentation alone.
+
+
+======================================================================
+2. SCOPE
+======================================================================
+
+Inspect at minimum:
+
+    ansible/roles/voynich_worker/
+
+including:
+
+    defaults/
+    vars/
+    tasks/
+    handlers/
+    templates/
+    files/
+    meta/
+
+where present.
+
+Also inspect:
+
+    inventories;
+    playbooks invoking the role;
+    group_vars/host_vars relevant to workers;
+    certificate provisioning;
+    binary deployment;
+    service definitions;
+    firewall/network setup;
+    cache/storage setup.
+
+Determine the complete deployment path from:
+
+    fresh compatible Linux host
+
+to:
+
+    authenticated operational g1v2 worker.
+
+
+======================================================================
+3. DO NOT ASSUME PHASE-I COMPATIBILITY
+======================================================================
+
+The fact that the role worked for Phase I is not sufficient.
+
+Compare its actual behavior against the frozen G1-v2 worker
+contract.
+
+Every required property must be classified as:
+
+    SATISFIED
+    PARTIAL
+    MISSING
+    CONFLICTING
+    NOT_APPLICABLE.
+
+
+======================================================================
+4. EXECUTABLE DEPLOYMENT
+======================================================================
+
+Verify whether the role installs the exact frozen G1-v2
+executable.
+
+Current frozen executable SHA-256:
+
+    6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718
+
+Verify:
+
+    source of binary;
+    destination path;
+    ownership;
+    permissions;
+    replacement/update behavior;
+    SHA-256 verification;
+    failure behavior on checksum mismatch.
+
+The role must fail closed if the installed executable does not
+match the required hash.
+
+Do not silently rebuild the binary on individual workers.
+
+
+======================================================================
+5. PLATFORM COMPATIBILITY
+======================================================================
+
+Frozen worker platform is:
+
+    Linux/amd64.
+
+Verify that the role checks or guarantees compatible:
+
+    OS;
+    architecture;
+    runtime assumptions.
+
+An incompatible worker must not be enrolled.
+
+
+======================================================================
+6. mTLS MATERIAL
+======================================================================
+
+Verify deployment of:
+
+    ca.crt;
+    unique worker certificate;
+    unique worker private key.
+
+The worker must NOT receive:
+
+    ca.key.
+
+Verify:
+
+    file ownership;
+    file permissions;
+    destination paths;
+    certificate uniqueness;
+    accidental logging;
+    accidental inclusion in repository artifacts.
+
+
+======================================================================
+7. CERTIFICATE IDENTITY
+======================================================================
+
+Worker identity must originate from the certificate URI SAN.
+
+Verify that the role does not allow arbitrary worker identity to
+override authenticated certificate identity.
+
+Check consistency with:
+
+    internal/pki
+    g1v2-executor worker.
+
+
+======================================================================
+8. COORDINATOR CONFIGURATION
+======================================================================
+
+Verify that the role configures the worker with the coordinator
+endpoint required by the frozen executor.
+
+Coordinator location is operational configuration and must not
+enter scientific JobID/config hashes.
+
+Determine how coordinator address is supplied:
+
+    role default;
+    inventory;
+    group_vars;
+    host_vars;
+    command-line variable.
+
+It must be possible to change coordinator inventory without
+changing scientific configuration.
+
+
+======================================================================
+9. PROTOCOL COMPATIBILITY
+======================================================================
+
+Verify compatibility with frozen:
+
+    protocol:
+        g1v2-execution-v1
+
+    evidence schema:
+        g1v2-evidence-v1
+
+    canonicalization:
+        canonical-json-nfc-v1.
+
+The role need not encode scientific definitions, but must deploy
+a binary/configuration that participates in the exact compatibility
+handshake.
+
+
+======================================================================
+10. WORKER SERVICE
+======================================================================
+
+Verify that the role installs and manages the worker as a
+persistent service.
+
+Expected behavior:
+
+    start automatically;
+    restart after reboot;
+    reconnect after coordinator/network interruption;
+    stop cleanly;
+    restart safely.
+
+Inspect actual service implementation, e.g.:
+
+    systemd.
+
+Verify:
+
+    ExecStart;
+    environment;
+    WorkingDirectory;
+    user/group;
+    Restart policy;
+    resource limits;
+    logging.
+
+
+======================================================================
+11. DEDICATED USER
+======================================================================
+
+Determine whether the worker runs as:
+
+    root
+
+or:
+
+    dedicated unprivileged user.
+
+Prefer a dedicated service account unless the implementation has
+a documented requirement for root.
+
+Verify ownership of:
+
+    executable;
+    certificates;
+    cache;
+    temporary files;
+    logs.
+
+
+======================================================================
+12. CONTENT-ADDRESSED CACHE
+======================================================================
+
+Task86C-v2 requires writable SHA-256 CAS/cache access.
+
+Verify that the role:
+
+    creates cache directory;
+    sets correct ownership;
+    sets permissions;
+    configures worker path;
+    preserves cache across service restart;
+    does not use volatile /tmp as authoritative storage.
+
+The cache may be local per worker.
+
+
+======================================================================
+13. EVIDENCE STORAGE
+======================================================================
+
+Distinguish:
+
+    worker cache/temp storage
+
+from:
+
+    coordinator-visible authoritative evidence storage.
+
+Task86C-v2 handoff requires at least:
+
+    120 GB
+
+usable evidence capacity.
+
+Current verified location:
+
+    cognition:/usr/local/data
+
+with approximately:
+
+    178.87 GB
+
+available during prep.
+
+Determine whether the Ansible deployment correctly handles this
+architecture.
+
+Do NOT assume every worker needs its own 120 GB evidence volume.
+
+
+======================================================================
+14. TEMPORARY STORAGE
+======================================================================
+
+Verify that workers have sufficient temporary storage for
+individual scientific jobs and atomic result publication.
+
+Determine:
+
+    temp path;
+    cleanup behavior;
+    behavior after failed job;
+    behavior after worker restart.
+
+Invalid temporary artifacts may be cleaned.
+
+Verified scientific evidence must not be deleted.
+
+
+======================================================================
+15. INPUT PRESEEDING
+======================================================================
+
+Task86C-v2 requires immutable inputs to be coordinator-visible or
+preseeded into CAS before the blind run.
+
+Audit whether the role supports:
+
+    preseeded immutable input artifacts;
+    hash verification;
+    cache reuse.
+
+Task86C-v2-prep observed that cold binary/input transfer can be
+slow, so warm/preseeded CAS is operationally important.
+
+Determine whether additional Ansible support is required.
+
+
+======================================================================
+16. STORAGE CAPACITY CHECK
+======================================================================
+
+Verify whether the role checks free space before starting the
+worker.
+
+Worker compatibility requires at least the coordinator-required
+free storage.
+
+The role or worker startup procedure must fail clearly if required
+capacity is unavailable.
+
+Do not rely on `/tmp` capacity.
+
+
+======================================================================
+17. CPU / MEMORY DISCOVERY
+======================================================================
+
+Determine whether deployment records or exposes:
+
+    CPU count;
+    available memory;
+    worker slot configuration.
+
+Task86C-v2 cluster planning assumes effective non-oversubscribed
+worker slots.
+
+Do not automatically launch one worker per CPU if that could
+oversubscribe M3/M4/M5 jobs.
+
+
+======================================================================
+18. WORKER CONCURRENCY
+======================================================================
+
+Determine exactly how concurrency is configured.
+
+It must be operational configuration and must not affect
+scientific identity.
+
+Verify that:
+
+    concurrency can be changed per host;
+    adding slots does not change manifest;
+    JobID remains unchanged;
+    scientific seeds remain unchanged.
+
+Document recommended defaults based on available RAM/CPU.
+
+
+======================================================================
+19. RESOURCE LIMITS
+======================================================================
+
+Inspect whether the role/service imposes:
+
+    memory limits;
+    CPU limits;
+    file descriptor limits;
+    process limits;
+    filesystem quotas.
+
+Identify any limit that could incorrectly terminate heavy
+Task86C-v2 jobs.
+
+Do not modify scientific computation limits to accommodate
+deployment constraints.
+
+
+======================================================================
+20. NETWORK REQUIREMENTS
+======================================================================
+
+Determine actual worker → coordinator network requirements.
+
+Document:
+
+    protocol;
+    port;
+    connection direction;
+    DNS/IP assumptions;
+    firewall requirements.
+
+The Phase-I/G1-v2 model is:
+
+    worker dials coordinator.
+
+Workers should not require arbitrary inbound access unless the
+implementation actually requires it.
+
+
+======================================================================
+21. SECURITY AUDIT
+======================================================================
+
+Check for obvious deployment-security defects:
+
+    CA private key copied to workers;
+    private keys world-readable;
+    credentials committed to repository;
+    TLS verification disabled;
+    arbitrary shell interpolation;
+    secrets printed to logs;
+    worker running unnecessarily as root;
+    writable executable/config by untrusted users.
+
+Do not broaden this into a general penetration test.
+
+
+======================================================================
+22. IDEMPOTENCY
+======================================================================
+
+Run the role twice against a suitable test worker if infrastructure
+permits.
+
+Second execution should produce no unintended changes.
+
+At minimum inspect idempotency of:
+
+    user creation;
+    directories;
+    certificates;
+    binary;
+    service;
+    cache;
+    configuration.
+
+
+======================================================================
+23. UPGRADE / REPLACEMENT SEMANTICS
+======================================================================
+
+Determine what happens when the frozen executable changes in a
+future experiment.
+
+The role must support controlled replacement but must not
+automatically upgrade workers during a frozen Task86C-v2 run.
+
+Task86C-v2 requires exact-code closure.
+
+
+======================================================================
+24. RUN-TIME DRIFT
+======================================================================
+
+Determine whether package updates, generated configuration or
+external downloads can alter worker behavior after deployment.
+
+Identify all mutable dependencies.
+
+Prefer deployment where scientific execution depends on the frozen
+binary and explicit immutable configuration rather than ambient
+host state.
+
+
+======================================================================
+25. WORKER ADDITION
+======================================================================
+
+Verify the exact procedure for adding a new compute node.
+
+Expected sequence:
+
+    prepare compatible Linux/amd64 host;
+    issue unique worker certificate/key;
+    add host to Ansible inventory;
+    configure coordinator/cache/storage/concurrency;
+    run role;
+    verify handshake;
+    worker joins lease pool.
+
+Adding a worker must require no changes to:
+
+    scientific manifest;
+    thresholds;
+    seeds;
+    JobIDs;
+    evidence semantics.
+
+
+======================================================================
+26. WORKER REMOVAL
+======================================================================
+
+Verify safe worker removal:
+
+    stop worker;
+    outstanding lease expires/requeues;
+    optionally revoke/deny certificate;
+    no scientific result is lost;
+    no scientific manifest changes.
+
+Document the procedure.
+
+
+======================================================================
+27. FRESH-HOST DEPLOYMENT TEST
+======================================================================
+
+Where practical, perform an actual deployment to a clean or
+clean-equivalent Linux/amd64 host.
+
+Do not merely inspect YAML.
+
+Required end state:
+
+    role completes;
+    worker service running;
+    mTLS handshake succeeds;
+    compatibility handshake succeeds;
+    worker claims an engineering job;
+    result is accepted;
+    service survives restart/reconnect.
+
+
+======================================================================
+28. NO CONFIRMATORY EXECUTION
+======================================================================
+
+Deployment testing must use only engineering fixtures.
+
+Do NOT execute:
+
+    Task86C-v2 blind manifest;
+    confirmatory synthetic controls;
+    natural-language confirmatory controls;
+    Voynich jobs.
+
+
+======================================================================
+29. GAP HANDLING
+======================================================================
+
+If the existing role is incomplete, classify every gap as:
+
+    DEPLOYMENT_BUG
+    DEPLOYMENT_MISSING_FEATURE
+    DOCUMENTATION_GAP
+    SCIENTIFIC_CONTRACT_CONFLICT.
+
+For the first three categories the agent MAY modify the Ansible
+role within this task.
+
+A SCIENTIFIC_CONTRACT_CONFLICT must NOT be repaired locally.
+
+Stop and report the conflict.
+
+
+======================================================================
+30. ALLOWED ROLE MODIFICATIONS
+======================================================================
+
+The agent may implement deployment-only corrections necessary to
+satisfy the already frozen Task86C-v2 execution contract.
+
+Examples:
+
+    install g1v2-executor;
+    checksum validation;
+    certificate installation;
+    service template;
+    cache directory;
+    storage checks;
+    coordinator configuration;
+    worker concurrency configuration;
+    preseed support;
+    health/compatibility check.
+
+These are:
+
+    INFRASTRUCTURE_CHANGE.
+
+They must not alter scientific behavior.
+
+
+======================================================================
+31. NO NEW SCHEDULER
+======================================================================
+
+Do not implement:
+
+    another queue;
+    another lease mechanism;
+    another JobID scheme;
+    another retry policy;
+    another evidence store.
+
+Deployment must use the frozen Task86C-v2-prep implementation.
+
+
+======================================================================
+32. REQUIRED AUDIT MATRIX
+======================================================================
+
+Create:
+
+    WORKER_ROLE_REQUIREMENTS_AUDIT.tsv
+
+with at least:
+
+    requirement_id
+    requirement
+    authoritative_source
+    role_implementation
+    status
+    evidence
+    corrective_action
+    final_status.
+
+Every worker/deployment requirement from Task86C-v2-prep must be
+traceable through this matrix.
+
+
+======================================================================
+33. REQUIRED DEPLOYMENT TEST MATRIX
+======================================================================
+
+Create:
+
+    WORKER_DEPLOYMENT_VALIDATION.tsv
+
+covering at minimum:
+
+    fresh deployment;
+    second/idempotent deployment;
+    binary checksum;
+    wrong binary rejection;
+    mTLS handshake;
+    invalid certificate rejection;
+    service start;
+    service restart;
+    coordinator reconnect;
+    cache write;
+    cache persistence;
+    free-space check;
+    engineering job execution;
+    worker addition;
+    worker removal/requeue.
+
+
+======================================================================
+34. REQUIRED DOCUMENTS
+======================================================================
+
+Create under:
+
+    research/phase3/task86c-v2-deploy-audit/
+
+at minimum:
+
+    TASK86C_V2_DEPLOY_AUDIT_DESIGN.md
+    WORKER_ROLE_REQUIREMENTS_AUDIT.tsv
+    WORKER_DEPLOYMENT_VALIDATION.tsv
+    WORKER_DEPLOYMENT_CONTRACT.md
+    WORKER_OPERATIONS.md
+    TASK86C_V2_DEPLOY_AUDIT_REPORT.md
+    TASK86C_V2_DEPLOY_AUDIT_RESULTS_MANIFEST.json.
+
+If role modifications are required, document:
+
+    files changed;
+    reason;
+    requirement satisfied;
+    tests performed.
+
+
+======================================================================
+35. REQUIRED VERDICTS
+======================================================================
+
+Issue at minimum:
+
+    ROLE_BINARY_DEPLOYMENT =
+        SUPPORTED / NOT_SUPPORTED
+
+    ROLE_BINARY_HASH_ENFORCEMENT =
+        SUPPORTED / NOT_SUPPORTED
+
+    ROLE_PLATFORM_COMPATIBILITY =
+        SUPPORTED / NOT_SUPPORTED
+
+    ROLE_MTLS_PROVISIONING =
+        SUPPORTED / NOT_SUPPORTED
+
+    ROLE_CA_KEY_ISOLATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    ROLE_COORDINATOR_CONFIGURATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    ROLE_SERVICE_MANAGEMENT =
+        SUPPORTED / NOT_SUPPORTED
+
+    ROLE_CACHE_CONFIGURATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    ROLE_STORAGE_VALIDATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    ROLE_CONCURRENCY_CONFIGURATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    ROLE_IDEMPOTENCY =
+        SUPPORTED / NOT_SUPPORTED
+
+    ROLE_FRESH_HOST_DEPLOYMENT =
+        SUPPORTED / NOT_SUPPORTED
+
+    ROLE_WORKER_EXPANSION =
+        SUPPORTED / NOT_SUPPORTED
+
+    ROLE_SCIENTIFIC_CONTRACT_PRESERVED =
+        SUPPORTED / NOT_SUPPORTED
+
+    VOYNICH_FIREWALL_PRESERVED =
+        SUPPORTED / NOT_SUPPORTED
+
+    CONFIRMATORY_FIREWALL_PRESERVED =
+        SUPPORTED / NOT_SUPPORTED
+
+    TASK86C_V2_DEPLOYMENT_READY =
+        SUPPORTED / NOT_SUPPORTED.
+
+
+======================================================================
+36. DEPLOYMENT-READY RULE
+======================================================================
+
+TASK86C_V2_DEPLOYMENT_READY = SUPPORTED
+
+only if a fresh compatible worker can be transformed by the
+documented Ansible deployment path into a worker satisfying the
+frozen Task86C-v2 compatibility contract without undocumented
+manual changes.
+
+In particular:
+
+    exact executable is installed;
+    executable hash is verified;
+    mTLS material is correct;
+    CA private key remains offline;
+    coordinator configuration is correct;
+    cache/storage is usable;
+    service is persistent;
+    compatibility handshake succeeds;
+    engineering job executes successfully;
+    role is repeatable/idempotent.
+
+
+======================================================================
+37. TERMINAL MARKERS
+======================================================================
+
+If deployment is fully ready:
+
+    TASK86C_V2_DEPLOYMENT_READY_FROZEN
+
+If deployment remains incomplete:
+
+    TASK86C_V2_DEPLOYMENT_NOT_READY
+
+If satisfying the deployment requirements would require changing
+the frozen scientific contract or a firewall is violated:
+
+    TASK86C_V2_DEPLOYMENT_AUDIT_INVALID
+
+Exactly one terminal marker.
+
+
+======================================================================
+38. REPOSITORY VALIDATION
+======================================================================
+
+If Ansible tooling is available, run appropriate:
+
+    syntax check;
+    lint;
+    check-mode where meaningful;
+    deployment test.
+
+Also run repository-required tests affected by modifications.
+
+If Go code is touched:
+
+    go build ./...
+    go vet ./...
+    go test ./...
+    go test -race ./...
+
+Always:
+
+    git diff --check.
+
+Do not mark a test PASS if it could not actually be executed.
+Use NOT_TESTED with reason where necessary.
+
+
+======================================================================
+39. DEFINITION OF DONE
+======================================================================
+
+Task is complete only when:
+
+1. Existing role has been inspected from source.
+2. All relevant playbooks/inventory variables are traced.
+3. Every frozen worker requirement is mapped to role behavior.
+4. Binary installation is verified.
+5. Exact binary hash enforcement is verified.
+6. Linux/amd64 compatibility is verified.
+7. Worker certificate provisioning is verified.
+8. CA private-key isolation is verified.
+9. Certificate permissions are verified.
+10. Coordinator configuration is verified.
+11. Frozen protocol compatibility is verified.
+12. Persistent service configuration is verified.
+13. Service restart/reconnect behavior is verified.
+14. Worker privilege model is documented.
+15. CAS/cache setup is verified.
+16. Evidence-storage architecture is verified.
+17. Temporary-storage behavior is verified.
+18. Input-preseed mechanism is audited.
+19. Free-space validation is verified.
+20. CPU/RAM discovery is audited.
+21. Worker concurrency configuration is verified.
+22. Resource limits are audited.
+23. Network requirements are documented.
+24. Deployment security checks are complete.
+25. Role idempotency is tested where possible.
+26. Upgrade/freeze behavior is documented.
+27. Mutable runtime dependencies are identified.
+28. Worker-add procedure is verified.
+29. Worker-removal procedure is verified.
+30. Fresh-host deployment is tested where practical.
+31. Engineering job execution succeeds.
+32. No confirmatory control is opened.
+33. No Voynich target is accessed.
+34. All deployment gaps are classified.
+35. Permitted deployment gaps are corrected where necessary.
+36. WORKER_ROLE_REQUIREMENTS_AUDIT.tsv is complete.
+37. WORKER_DEPLOYMENT_VALIDATION.tsv is complete.
+38. Operations documentation is complete.
+39. Results manifest is complete.
+40. TASK86C_V2_DEPLOYMENT_READY is determined.
+41. Exactly one terminal marker is issued.

@@ -1,0 +1,3136 @@
+Task86C-v2-scientific-impl-R2 —
+G1-v2 V1.1 Production Scientific Implementation,
+Validation, Capacity Qualification and Execution Freeze
+
+
+PURPOSE
+
+Implement the frozen executable scientific contract:
+
+    G1_V2_EXECUTABLE_CONTRACT_V1_1
+
+as the production scientific implementation for the G1-v2 experiment.
+
+Integrate that implementation with the already validated
+Task86C-v2 distributed execution/evidence infrastructure.
+
+Construct and freeze all remaining production inputs required for
+the bulk scientific run.
+
+Validate the implementation against the complete V1.1 golden and
+evidence contract.
+
+Qualify actual computational capacity using the real scientific
+handlers.
+
+Freeze:
+
+    production scientific executable;
+    immutable scientific inputs;
+    DEVELOPMENT-derived thresholds/bins;
+    blind input closure;
+    natural-confirmatory input closure;
+    authoritative production run manifest;
+    production preseed manifest;
+    operator handoff/runbook.
+
+The successful output of this task must permit:
+
+    Task86C-v2-run
+
+to begin with ZERO remaining scientific choices.
+
+This task is:
+
+    PRODUCTION SCIENTIFIC IMPLEMENTATION
+    CONTRACT CONFORMANCE
+    INPUT CONSTRUCTION
+    DEVELOPMENT CALIBRATION
+    BLIND INPUT CONSTRUCTION
+    GOLDEN VALIDATION
+    DISTRIBUTED DETERMINISM VALIDATION
+    CAPACITY QUALIFICATION
+    PRODUCTION EXECUTION FREEZE
+
+It is NOT:
+
+    scientific design;
+    contract repair;
+    model redesign;
+    status/reachability redesign;
+    threshold tuning from confirmatory outcomes;
+    confirmatory recovery;
+    bulk scientific execution;
+    blind unblinding;
+    natural-language result analysis;
+    Voynich evaluation.
+
+
+======================================================================
+1. SINGLE SCIENTIFIC AUTHORITY
+======================================================================
+
+The sole production scientific authority is:
+
+    G1_V2_EXECUTABLE_CONTRACT_V1_1
+
+Path:
+
+    research/phase3/task85c-c/
+        G1V2_EXECUTABLE_CONTRACT_V1_1.md
+
+SHA-256:
+
+    5c3cd272c1dbae9bfe1d7a100155faf102e86d34660da239e1cb31704ad470b0
+
+Machine-readable contract:
+
+    research/phase3/task85c-c/
+        G1V2_EXECUTABLE_CONTRACT_V1_1.json
+
+Task85c V1, Task85c-a, Task85c-b and explanatory defect reports are
+historical provenance and regression material.
+
+They MUST NOT be used as alternative scientific authorities when
+implementing production behavior.
+
+
+======================================================================
+2. CONTRACT CLOSURE
+======================================================================
+
+Before implementation, verify the complete Task85c-c results
+manifest and all transitively bound normative artifacts.
+
+Expected Task85c-c artifact root:
+
+    dc27660d3e03a06f91aaa1c3aa6c48226328457746c9dc819e7c0a355ce8f09c
+
+Expected evidence schema root:
+
+    4744ca82532cd47a0d02bb680796b26a11ceca57d6229f0b312df69a103f784b
+
+Expected V1.1 golden root:
+
+    967e63f9c3ba66d99cbff4da83c819d705f1f14c4ace923dbcd1cb8e7dfd1ff8
+
+Expected status/reachability contract:
+
+    G1_V2_STATUS_REACHABILITY_CONTRACT_V2
+
+Expected status/reachability SHA-256:
+
+    fc1ca07d8123ed5d44bc24ecba98fca54d5b05781ecbaba820d44079319038b9
+
+Expected status/reachability root:
+
+    51b3b517f50a050f93524c1dbe74701efd244821b48e6d23607b63ddf39c1f0f
+
+Any mismatch:
+
+    STOP CONTRACT_IDENTITY_FAILURE.
+
+
+======================================================================
+3. HISTORICAL PROVENANCE
+======================================================================
+
+Preserve the complete repair lineage:
+
+    Task85b
+        ↓
+    Task85c / G1_V2_EXECUTABLE_CONTRACT_V1
+        ↓
+    Task86C-v2-scientific-impl-R
+        A17_STATUS_SCHEMA_CONTRADICTION
+        ↓
+    Task85c-a
+        E01–E04 / CONTRACT_DEFECT_EXPANDED
+        ↓
+    Task85c-b
+        G1_V2_STATUS_REACHABILITY_CONTRACT_V2
+        ↓
+    Task85c-c
+        G1_V2_EXECUTABLE_CONTRACT_V1_1
+        ↓
+    Task86C-v2-scientific-impl-R2
+
+Do not rewrite or replace any historical artifact.
+
+
+======================================================================
+4. NO SCIENTIFIC CHOICE
+======================================================================
+
+R2 is an implementation task.
+
+The implementer may choose:
+
+    code organization;
+    safe optimization;
+    operational parallelism;
+    storage layout;
+    worker slot count;
+    logging implementation;
+
+only when those choices cannot alter scientific output.
+
+The implementer MUST NOT choose:
+
+    model mathematics;
+    smoothing;
+    tie breaking;
+    numerical reduction;
+    RNG;
+    generation behavior;
+    metric definitions;
+    thresholds;
+    status semantics;
+    reachability;
+    evidence semantics;
+    aggregation semantics;
+    complexity;
+    candidate space;
+    controls;
+    corpus preprocessing;
+    scientific retry behavior.
+
+
+======================================================================
+5. CONTRACT DEFECT RULE
+======================================================================
+
+If V1.1 still permits two scientifically non-equivalent
+implementations:
+
+    STOP CONTRACT_DEFECT.
+
+Do not resolve ambiguity by:
+
+    choosing the simpler implementation;
+    copying historical behavior;
+    consulting V1 prose over V1.1;
+    tuning against controls;
+    examining confirmatory results.
+
+Document the exact ambiguity and minimal reproducer.
+
+
+======================================================================
+6. GOLDEN MISMATCH RULE
+======================================================================
+
+If implementation output differs from a V1.1 golden vector, presume:
+
+    IMPLEMENTATION_DEFECT
+
+until proven otherwise.
+
+Do not modify expected golden output to make implementation tests
+pass.
+
+A genuine contradiction between V1.1 normative artifacts and golden
+vectors:
+
+    STOP CONTRACT_DEFECT.
+
+
+======================================================================
+7. EXISTING EXECUTION INFRASTRUCTURE
+======================================================================
+
+Reuse the already validated Task86C-v2 distributed infrastructure
+where compatible:
+
+    coordinator/worker architecture;
+    mTLS;
+    deterministic JobID;
+    leases;
+    retries;
+    resume;
+    content-addressed cache;
+    evidence publication;
+    duplicate detection;
+    conflict quarantine;
+    deterministic reduction.
+
+Scientific decisions MUST remain outside the scheduler.
+
+
+======================================================================
+8. HISTORICAL PREP EXECUTABLE
+======================================================================
+
+The historical prep/infrastructure executable SHA:
+
+    6b015b2e4078b9b5f109ebf3aa8d73918888e431bde267e0d10c3013b524f718
+
+is NOT the production scientific executable.
+
+Preserve it only as provenance.
+
+R2 MUST produce and freeze a new production executable.
+
+
+======================================================================
+9. IMPLEMENTATION TRACEABILITY
+======================================================================
+
+Create:
+
+    G1V2_SCIENTIFIC_IMPLEMENTATION_TRACEABILITY_V1_1.tsv
+
+Every normative V1.1 requirement must map to:
+
+    contract artifact;
+    section/registry row/schema;
+    implementation package/function;
+    tests;
+    golden vectors;
+    validation result.
+
+No normative requirement may have:
+
+    implementation = UNKNOWN.
+
+
+======================================================================
+10. SCIENTIFIC HANDLER REGISTRY
+======================================================================
+
+Create:
+
+    G1V2_SCIENTIFIC_HANDLER_REGISTRY_V1_1.tsv.
+
+Record every production handler for:
+
+    FIT
+    PREDICTIVE
+    GENERATION
+    F2_METRIC
+    COMPLEXITY
+    CANDIDATE_AGGREGATION
+    CONTROL_AGGREGATION
+
+plus any deterministic suboperations required by V1.1.
+
+
+======================================================================
+11. NUMERICAL PROFILE
+======================================================================
+
+Implement exactly the frozen numerical contract:
+
+    IEEE-754 binary64;
+    round-to-nearest ties-to-even;
+    base-2 logarithms;
+    no implicit epsilon;
+    Neumaier compensated summation;
+    ascending scientific identity reduction order;
+    Type-7 quantiles;
+    canonical scientific decimal evidence.
+
+Do not allow Go map iteration, goroutine completion order or worker
+order to determine scientific reduction order.
+
+
+======================================================================
+12. CANONICALIZATION
+======================================================================
+
+Implement exactly:
+
+    G1V2-CJ-1.
+
+Preserve:
+
+    NFC;
+    UTF-8 bytewise object-key ordering;
+    compact separators;
+    canonical arrays;
+    canonical scientific numbers;
+    LF termination;
+    content_sha256 omission during content-hash calculation.
+
+Run every V1.1 canonicalization golden vector.
+
+
+======================================================================
+13. RNG
+======================================================================
+
+Implement exactly:
+
+    G1V2-RNG-1.
+
+Expected frozen RNG contract identity remains:
+
+    e47c5a8c62dd8dee34441e4274c0d49d1a7ce4aab0360aff4751cb08b6394a43
+
+Implement all namespaces/counters exactly.
+
+No:
+
+    hostname;
+    worker ID;
+    retry count;
+    scheduling order;
+    timestamp;
+    process ID
+
+may affect RNG.
+
+
+======================================================================
+14. CORPUS REPRESENTATION
+======================================================================
+
+Implement the V1.1 corpus contract exactly:
+
+    ordered nonempty NFC tokens;
+    glyphs = Unicode scalar values;
+    DEVELOPMENT vocabulary;
+    <UNK>;
+    <EOS>;
+    <BOS> context-only;
+    non-DEVELOPMENT glyph → <UNK>.
+
+No corpus-specific exception may be introduced.
+
+
+======================================================================
+15. DATA SPLIT
+======================================================================
+
+Implement occurrence-order:
+
+    60% DEVELOPMENT
+    20% VALIDATION
+    20% HELDOUT
+
+using the exact floor boundaries frozen in V1.1.
+
+Fit on DEVELOPMENT.
+
+Select on VALIDATION.
+
+Do not refit.
+
+Evaluate frozen selected fit on HELDOUT.
+
+
+======================================================================
+16. CANDIDATE REGISTRY
+======================================================================
+
+Implement exactly all:
+
+    43 candidates.
+
+Expected candidate registry SHA-256:
+
+    96b618ab324db77b8402081075241b275f8925c45cdab058ba741e4beed29b58
+
+No candidate may be added, removed or merged.
+
+
+======================================================================
+17. SELECTION
+======================================================================
+
+Implement exactly:
+
+    minimum VALIDATION PM2
+        then
+    lower complexity bits
+        then
+    UTF-8 bytewise candidate_id.
+
+Nonfinite objective:
+
+    ineligible.
+
+No post-selection refit.
+
+
+======================================================================
+18. M0
+======================================================================
+
+Implement exact V1.1 M0:
+
+    glyph IID;
+    additive alpha;
+    counts include EOS;
+    BOS excluded;
+    frozen vocabulary;
+    exact zero-mass semantics;
+    inverse-CDF generation;
+    UNK generation → U+FFFD;
+    token cap 64;
+    cap exhaustion → GENERATION_FAILURE.
+
+Pass all M0 golden vectors.
+
+
+======================================================================
+19. M1
+======================================================================
+
+Implement exact V1.1 M1:
+
+    orders 1–3;
+    BOS padding;
+    additive-alpha rows;
+    suffix backoff;
+    M0 root fallback;
+    exact zero-mass semantics;
+    frozen generation convention.
+
+Pass all M1 golden vectors.
+
+
+======================================================================
+20. M2
+======================================================================
+
+Implement exact V1.1 M2 probabilistic suffix tree:
+
+    contexts depth 0..D;
+    outgoing-support requirement;
+    exact likelihood-gain formula;
+    strict gain threshold;
+    equality prunes;
+    additive-0.5 parent probabilities;
+    bottom-up pruning;
+    immutable parent counts;
+    longest retained suffix;
+    exact candidate grid.
+
+No PPM/CTW substitution.
+
+Pass all M2 golden vectors.
+
+
+======================================================================
+21. M3 EXACT
+======================================================================
+
+Implement exact-route M3 exactly.
+
+Required:
+
+    exhaustive deterministic topology enumeration;
+    canonical state IDs;
+    accepting-state subsets;
+    reproduction filter;
+    additive-0.5 rows;
+    DEVELOPMENT NLL minimization;
+    state-count tie;
+    transition-bitstring tie;
+    big-integer pre-enumeration bound;
+    10^8 candidate cap.
+
+If bound exceeds cap:
+
+    INDUCTION_CAP.
+
+Do not replace exhaustive enumeration with heuristic search.
+
+
+======================================================================
+22. M3 APPROXIMATE
+======================================================================
+
+Implement approximate-route M3 exactly:
+
+    prefix-tree acceptor;
+    unordered state pairs;
+    recursive determinization;
+    accepting/nonaccepting conflict rejection;
+    frozen weighted JS divergence;
+    |O| normalization;
+    canonical pair tie;
+    frozen threshold;
+    state cap;
+    forced legal merges above cap;
+    10^7 evaluated-pair operation cap.
+
+Do not reuse superseded historical M3 merge semantics.
+
+
+======================================================================
+23. M3 ROUTE AGGREGATION
+======================================================================
+
+Implement V1.1/V2 route semantics:
+
+    either route ADEQUATE
+        → M3 ADEQUATE
+
+    both routes assessably INADEQUATE
+        → M3 INADEQUATE
+
+    otherwise
+        → M3 UNRESOLVED
+
+with protocol-invalid propagation as frozen.
+
+
+======================================================================
+24. M4
+======================================================================
+
+Implement exact V1.1 M4:
+
+    discrete first-order HMM;
+    token reset;
+    EOS termination;
+    scaled forward/backward;
+    Baum-Welch;
+    exact additive alpha;
+    8 restarts;
+    RNG initialization;
+    max 500 iterations;
+    frozen convergence criterion;
+    frozen decrease tolerance;
+    numerical-failure handling;
+    frozen restart selection.
+
+Do not substitute another optimizer.
+
+
+======================================================================
+25. M5
+======================================================================
+
+Implement exact V1.1 M5:
+
+    prefix/stem/suffix decomposition;
+    all cut pairs;
+    nonempty stem;
+    support threshold;
+    frozen triple selection/ties;
+    retained rules;
+    literal exceptions;
+    additive-0.5 distributions;
+    productive backoff;
+    frozen mixture weights;
+    frozen empty-channel reassignment;
+    support <=64 glyphs;
+    exact productive probability summation;
+    exact generation;
+    1024 retry cap.
+
+Pass all M5 golden vectors.
+
+
+======================================================================
+26. MODEL FAILURE STATES
+======================================================================
+
+Implement exactly the V1.1/V2 typed states.
+
+Do not use generic:
+
+    SCIENTIFIC_FAILURE.
+
+Implement:
+
+    FIT_SUCCESS
+    GENERATION_SUCCESS
+    COMPLEXITY_SUCCESS
+    AGGREGATION_SUCCESS
+
+and concrete failure states as frozen.
+
+
+======================================================================
+27. PASS/FAIL INVARIANT
+======================================================================
+
+PASS/FAIL may only be emitted as assessable scientific gate/verifier
+outcomes.
+
+Specifically:
+
+    FIT failure != FAIL
+    numerical failure != FAIL
+    induction cap != FAIL
+    generation failure != FAIL
+    protocol veto != FAIL.
+
+Add regression tests for each substitution.
+
+
+======================================================================
+28. B1
+======================================================================
+
+Implement B1 exactly.
+
+For non-M0 candidates:
+
+    validation-selected M0 candidate on the identical DEVELOPMENT
+    split.
+
+For M0:
+
+    independent DEVELOPMENT-null paired bootstrap/refit mechanism
+    frozen by V1.1.
+
+Do not replace the M0 baseline with model-vs-itself zero.
+
+
+======================================================================
+29. B2
+======================================================================
+
+For candidate Mj, j>0:
+
+    B2 = validation-selected candidate of class M(j-1)
+
+regardless of its later adequacy verdict.
+
+For M0:
+
+    B2 absent.
+
+No circular baseline definition.
+
+
+======================================================================
+30. PM1
+======================================================================
+
+Implement PM1 exactly as frozen.
+
+Preserve scoring units, EOS handling, vocabulary and reduction order.
+
+
+======================================================================
+31. PM2
+======================================================================
+
+Implement:
+
+    2000 DEVELOPMENT paired occurrence bootstraps;
+    frozen candidate-minus-baseline effect;
+    one-sided empirical p;
+    Holm step-down alpha .05;
+    q95 null threshold;
+    practical floor;
+    strict inequality.
+
+No confirmatory data may enter calibration.
+
+
+======================================================================
+32. PM4
+======================================================================
+
+Implement PM4 exactly as frozen.
+
+Preserve its supporting-only role.
+
+It must not accidentally become a required adequacy gate.
+
+
+======================================================================
+33. PM5
+======================================================================
+
+Implement exact adaptive-bin ECE:
+
+    realized next-glyph events including EOS;
+    assigned probability as confidence;
+    label = 1;
+    deterministic event ordering;
+    bins of 40;
+    equal-confidence extension;
+    final-bin merge;
+    frozen boundary assignment;
+    at least five bins;
+    occurrence-weighted ECE.
+
+Freeze DEVELOPMENT-derived bins before confirmatory execution.
+
+
+======================================================================
+34. PM6
+======================================================================
+
+Implement exact finite-complement PM6:
+
+    C_l = A^l \ V_l;
+    lexicographic rank/unrank;
+    uniform complement ranks with replacement;
+    one negative per positive occurrence;
+    eligible HELDOUT lengths;
+    saturated lengths excluded;
+    >=80% occurrence coverage;
+    >=100 pairs;
+    >=2 lengths;
+    2000 paired bootstraps;
+    q0.05 LCB;
+    2000 pair-label permutations;
+    q0.95 permutation threshold.
+
+PASS requires both strict inequalities frozen by V1.1.
+
+Coverage/saturation insufficiency:
+
+    NOT_ASSESSABLE
+
+not implementation failure.
+
+
+======================================================================
+35. PREDICTIVE VERDICT
+======================================================================
+
+Implement the complete V1.1 predictive gate.
+
+Required predictive PASS:
+
+    PM2 PASS
+    PM5 PASS
+    PM6 PASS
+
+according to the exact V1.1 missingness/failure semantics.
+
+Do not infer behavior from historical V1.
+
+
+======================================================================
+36. GENERATION
+======================================================================
+
+Implement exact scientific generation for each model at:
+
+    2,000
+    8,000
+    32,000
+
+tokens with:
+
+    4 replicates per scale.
+
+Use frozen RNG namespace/counters.
+
+Generated corpus identity must be independent of execution topology.
+
+
+======================================================================
+37. F2 METRICS
+======================================================================
+
+Implement/integrate all 12 frozen F2 metrics:
+
+    EF1_GIANT_COMPONENT_SHARE
+    EF1_ISOLATE_SHARE
+    EF2_GLOBAL_CLUSTERING
+    EF3_DEGREE_FREQUENCY_SPEARMAN
+
+    LP1_RULE_SUPPORT_GINI
+    LP4_PREFIX_ATTACHMENT_NMI
+    LP4_SUFFIX_ATTACHMENT_NMI
+
+    HR1_FOLIO_VARIANCE_SHARE
+    HR1_LOCUS_VARIANCE_SHARE
+    HR1_SECTION_VARIANCE_SHARE
+
+    LS1_LINE_LENGTH_CV
+    PF5_WITHIN_FOLIO_PROGRESSION.
+
+No metric may be silently omitted.
+
+
+======================================================================
+38. SKELETON
+======================================================================
+
+Preserve SKELETON diagnostics as:
+
+    diagnostic only
+    weight = 0.
+
+They cannot determine structural PASS/FAIL.
+
+
+======================================================================
+39. STRUCTURAL CALIBRATION
+======================================================================
+
+Using only authorized DEVELOPMENT controls:
+
+    derive the frozen structural thresholds;
+    derive dispersion thresholds;
+    apply practical floors exactly.
+
+No blind, natural-confirmatory or Voynich result may participate.
+
+
+======================================================================
+40. STRUCTURAL GATES
+======================================================================
+
+Implement:
+
+EDIT per scale:
+
+    >=3 assessable
+    and
+    >=3 PASS
+    among four required metrics.
+
+LEXICAL_PARADIGM per scale:
+
+    >=2 assessable
+    and
+    >=2 PASS
+    among three required metrics.
+
+Structural PASS requires both families PASS at every scale.
+
+Apply V1.1 missingness semantics exactly.
+
+
+======================================================================
+41. COMPLEXITY
+======================================================================
+
+Implement exact complexity accounting:
+
+    utf8code;
+    Elias gamma;
+    binary32 probability cost;
+    sorted structures;
+    canonical BFS state numbering;
+    exact registry formulas.
+
+No tolerance in bit cost.
+
+
+======================================================================
+42. DESCRIPTION LENGTH
+======================================================================
+
+Implement:
+
+    description_length =
+        complexity_bits
+        +
+        HELDOUT PM1
+
+exactly as frozen.
+
+
+======================================================================
+43. EQUIVALENCE GRAPH
+======================================================================
+
+Implement equivalence edges:
+
+    abs(delta)
+        <=
+    max(1, DEVELOPMENT type-7 q95 paired delta)
+
+using the exact frozen calibration and deterministic graph
+construction.
+
+
+======================================================================
+44. CANDIDATE AGGREGATION
+======================================================================
+
+Implement exactly:
+
+    ADEQUATE
+    INADEQUATE
+    UNRESOLVED
+    PROTOCOL_INVALID.
+
+Procedure completion status:
+
+    AGGREGATION_SUCCESS
+
+is distinct from the scientific candidate verdict.
+
+
+======================================================================
+45. CLASS AGGREGATION
+======================================================================
+
+Implement:
+
+    any adequate candidate
+        → ADEQUATE
+
+    all required candidates assessably inadequate
+        → INADEQUATE
+
+    otherwise
+        → UNRESOLVED
+
+with protocol-invalid propagation exactly as V1.1 requires.
+
+
+======================================================================
+46. FINAL IDENTIFICATION
+======================================================================
+
+Implement exactly:
+
+    lowest adequate equivalence component
+
+only when every lower class is rejected.
+
+Singleton:
+
+    RECOVERED_Mj.
+
+Non-singleton/equivalent minimum:
+
+    NOT_IDENTIFIABLE
+    with EQUIVALENT_SET.
+
+Every M0–M5 candidate validly inadequate:
+
+    NONE.
+
+Missing decisive evidence:
+
+    NOT_IDENTIFIABLE.
+
+Protocol-invalid chain:
+
+    PROTOCOL_INVALID.
+
+
+======================================================================
+47. NONE SAFETY
+======================================================================
+
+Add implementation property tests proving:
+
+    FIT_FAILURE
+    NUMERICAL_FAILURE
+    INDUCTION_CAP
+    GENERATION_FAILURE
+    NOT_ASSESSABLE
+    NOT_REACHED
+
+cannot help establish NONE.
+
+
+======================================================================
+48. FAILURE NON-REJECTION
+======================================================================
+
+For every procedural failure state, test that replacing valid
+assessable negative evidence by that failure cannot make a candidate
+or class more rejectable.
+
+
+======================================================================
+49. STATUS REGISTRY
+======================================================================
+
+Implement exactly the 13 frozen statuses.
+
+Require:
+
+    STATUS_COUNT = 13.
+
+Unknown status:
+
+    fail closed.
+
+
+======================================================================
+50. STAGE REGISTRY
+======================================================================
+
+Implement exactly the seven frozen DAG stages:
+
+    FIT
+    PREDICTIVE
+    GENERATION
+    F2_METRIC
+    COMPLEXITY
+    CANDIDATE_AGGREGATION
+    CONTROL_AGGREGATION.
+
+Require:
+
+    DAG_STAGE_COUNT = 7.
+
+
+======================================================================
+51. REACHABILITY
+======================================================================
+
+Implement exactly the 45 frozen direct V2 transitions.
+
+Require:
+
+    DIRECT_REACHABILITY_TRANSITIONS = 45.
+
+Do not reconstruct historical V1 reachability.
+
+
+======================================================================
+52. MULTI-PARENT SUPPRESSION
+======================================================================
+
+Implement:
+
+    downstream RUN iff all direct upstream transitions RUN.
+
+Otherwise:
+
+    NOT_REACHED.
+
+Implement exact V2 precedence and JobID tie rule.
+
+Preserve all causal dependency IDs.
+
+
+======================================================================
+53. NOT_REACHED
+======================================================================
+
+Suppressed planned jobs must emit valid:
+
+    NOT_REACHED
+
+evidence.
+
+Do not:
+
+    delete them from DAG;
+    mark them successful scientific jobs;
+    silently omit evidence.
+
+
+======================================================================
+54. PROTOCOL_VETO
+======================================================================
+
+Implement protocol invalidity separately from scientific
+missingness.
+
+Protocol veto must propagate to:
+
+    PROTOCOL_INVALID
+
+where V1.1 requires it.
+
+It must never become scientific FAIL.
+
+
+======================================================================
+55. EVIDENCE SCHEMAS
+======================================================================
+
+Implement all 15 V1.1 evidence schemas.
+
+Expected evidence schema root:
+
+    4744ca82532cd47a0d02bb680796b26a11ceca57d6229f0b312df69a103f784b.
+
+Do not use superseded V1 schemas.
+
+
+======================================================================
+56. JSON SCHEMA VALIDATION
+======================================================================
+
+Production evidence must satisfy:
+
+    JSON Schema Draft 2020-12.
+
+No custom x-* keyword may be required for scientific correctness.
+
+
+======================================================================
+57. EVIDENCE CONTRACT
+======================================================================
+
+Evidence must bind:
+
+    V1.1 contract;
+    V2 status/reachability contract;
+    schema identity;
+    JobID;
+    dependencies;
+    scientific identity;
+    content hash
+
+as required by the V1.1 payload contract.
+
+
+======================================================================
+58. EVIDENCE-ONLY VERIFIER
+======================================================================
+
+Implement/integrate an independent production evidence-only
+verifier.
+
+It MUST NOT import production:
+
+    fitting;
+    model induction;
+    generation.
+
+It reconstructs from evidence:
+
+    schema validity;
+    hashes;
+    reachability;
+    gates;
+    adequacy;
+    complexity graph;
+    aggregation;
+    final verdict.
+
+
+======================================================================
+59. VERIFIER FAIL-CLOSED
+======================================================================
+
+Unknown:
+
+    contract
+    schema
+    status
+    stage
+    reason
+    evidence type
+
+must fail closed.
+
+
+======================================================================
+60. SCIENTIFIC FAILURE EVIDENCE TYPE
+======================================================================
+
+Preserve the V1.1 distinction:
+
+    scientific_failure
+
+is an evidence type used for typed procedural failures.
+
+It is NOT the removed generic status:
+
+    SCIENTIFIC_FAILURE.
+
+Add a regression test preventing those concepts from being
+conflated.
+
+
+======================================================================
+61. OPEN DEVELOPMENT CONTROLS
+======================================================================
+
+Construct exactly the 12 authorized open DEVELOPMENT controls.
+
+Use them only for:
+
+    calibration;
+    implementation validation;
+    permitted open fixtures.
+
+Record immutable content hashes.
+
+
+======================================================================
+62. SYNTHETIC GENERATOR A
+======================================================================
+
+Implement Generator A exactly as frozen:
+
+    mirrors mathematical family;
+    direct inverse-CDF sampling;
+    frozen probability tables/parameters/RNG.
+
+
+======================================================================
+63. SYNTHETIC GENERATOR B
+======================================================================
+
+Implement Generator B independently according to its frozen
+registry.
+
+Generator B MUST NOT:
+
+    call production model generation;
+    wrap Generator A;
+    call fitting code.
+
+Shared code is limited to contract-authorized primitives such as:
+
+    canonical parsing
+    RNG primitives.
+
+
+======================================================================
+64. GENERATOR INDEPENDENCE AUDIT
+======================================================================
+
+Perform a static and runtime dependency audit demonstrating the
+required Generator A/B/production separation.
+
+Issue:
+
+    SYNTHETIC_GENERATOR_INDEPENDENCE =
+        SUPPORTED / NOT_SUPPORTED.
+
+
+======================================================================
+65. BLIND CONTROL CONSTRUCTION
+======================================================================
+
+Construct and freeze exactly:
+
+    144 blind synthetic instances
+
+using the frozen blind protocol.
+
+This is construction only.
+
+DO NOT run the scientific recovery apparatus against the full blind
+set during R2.
+
+
+======================================================================
+66. BLIND ESCROW
+======================================================================
+
+Implement/freeze:
+
+    g1v2.blind-escrow.v1
+
+exactly as required.
+
+Secret truth must remain outside:
+
+    worker inputs;
+    coordinator inputs;
+    normal evidence;
+    repository-visible metadata.
+
+Visible worker/coordinator metadata may contain only the authorized
+blind-safe fields.
+
+
+======================================================================
+67. BLIND KEY
+======================================================================
+
+Generate/use the required cryptographically random escrow key
+according to the frozen protocol.
+
+The secret key MUST NOT be:
+
+    committed to Git;
+    embedded in executable;
+    embedded in run manifest;
+    sent to workers;
+    stored in evidence.
+
+Record only permitted cryptographic commitments/provenance.
+
+
+======================================================================
+68. BLINDNESS AUDIT
+======================================================================
+
+Perform an independent audit of:
+
+    filenames;
+    manifests;
+    JobIDs;
+    evidence metadata;
+    preseed objects;
+    coordinator-visible metadata;
+    worker-visible metadata.
+
+Require:
+
+    BLIND_TRUTH_LEAKAGE = 0.
+
+
+======================================================================
+69. NATURAL CONFIRMATORY INPUTS
+======================================================================
+
+Construct and freeze exactly:
+
+    36 natural confirmatory instances
+
+according to the frozen V1.1 corpus/source/window protocol.
+
+Do not run recovery against them in R2.
+
+
+======================================================================
+70. SOURCE HASHES
+======================================================================
+
+Verify every natural corpus source against the frozen expected source
+identity.
+
+Mismatch:
+
+    STOP INPUT_PROVENANCE_FAILURE.
+
+Do not substitute a newer edition or mirror silently.
+
+
+======================================================================
+71. NATURAL PREPROCESSING
+======================================================================
+
+Implement exact V1.1 preprocessing:
+
+    source-specific Gutenberg stripping where required;
+    NFC;
+    full Unicode casefold;
+    Unicode Letter runs;
+    internal ASCII/U+2019 apostrophe handling;
+    U+2019 normalization;
+    digit/punctuation removal;
+    deterministic circular windows;
+    non-overlap rule;
+    frozen RNG counters.
+
+Sanskrit follows its separately frozen source rule.
+
+
+======================================================================
+72. INPUT CLOSURE
+======================================================================
+
+Build one immutable content-addressed production input closure
+covering:
+
+    12 open DEVELOPMENT controls;
+    144 blind synthetic controls;
+    36 natural confirmatory controls;
+    all immutable registries;
+    schemas;
+    required corpus/source objects;
+    frozen calibration artifacts.
+
+Require:
+
+    CONTROL_INSTANCE_COUNT = 192.
+
+
+======================================================================
+73. NO VOYNICH EXECUTION
+======================================================================
+
+Do not run Voynich during R2.
+
+If the later production experiment includes a separately defined
+Voynich target outside the 192 control DAG, construct only the
+contract-authorized immutable input reference required for the
+operator handoff.
+
+Do not compute its scientific results.
+
+
+======================================================================
+74. DEVELOPMENT THRESHOLD FREEZE
+======================================================================
+
+Using only authorized DEVELOPMENT data, construct all threshold
+artifacts required by V1.1.
+
+This includes, where applicable:
+
+    predictive null/effect calibration;
+    practical-floor binding;
+    PM5 bin definitions;
+    structural thresholds;
+    dispersion thresholds;
+    complexity/equivalence calibration artifacts.
+
+Freeze them before production manifest freeze.
+
+
+======================================================================
+75. THRESHOLD PROVENANCE
+======================================================================
+
+Every threshold/bin artifact must record:
+
+    contract version;
+    source control IDs;
+    DEVELOPMENT-only declaration;
+    algorithm identity;
+    RNG identity where applicable;
+    canonical content hash.
+
+No threshold may depend on confirmatory outcome.
+
+
+======================================================================
+76. THRESHOLD FREEZE ROOT
+======================================================================
+
+Compute:
+
+    TASK86C_V2_THRESHOLD_ROOT_SHA256.
+
+After freeze:
+
+    no recalibration;
+    no replacement;
+    no tuning
+
+is permitted for the production run.
+
+
+======================================================================
+77. DAG CONSTRUCTION
+======================================================================
+
+Construct the authoritative production DAG from V1.1.
+
+Require exactly:
+
+    control instances                 192
+    candidates                         43
+
+    candidate fits                   8256
+    predictive jobs                  8256
+    generation batches              99072
+    F2/structural metric jobs     1188864
+    complexity jobs                  8256
+    candidate aggregation jobs       8256
+    control aggregation jobs          192
+
+    TOTAL JOBS                    1321152
+    DEPENDENCY EDGES              2617152
+    TERMINAL CELLS                   8256.
+
+
+======================================================================
+78. DAG MISMATCH
+======================================================================
+
+Any mismatch in frozen DAG cardinality:
+
+    STOP DAG_CONSTRUCTION_FAILURE.
+
+Do not modify cardinality to match implementation convenience.
+
+
+======================================================================
+79. JOB ID
+======================================================================
+
+Implement exactly the frozen JobID formula:
+
+    "j-" +
+    first 40 lowercase hex chars of
+
+    SHA256(
+        ASCII "G1V2-JOB" || NUL ||
+        G1V2-CJ-1(job scientific identity payload)
+    ).
+
+No operational property may enter JobID.
+
+
+======================================================================
+80. OUTCOME-INDEPENDENT DAG
+======================================================================
+
+All 1,321,152 planned jobs exist before outcomes are known.
+
+Reachability may convert planned work to:
+
+    NOT_REACHED
+
+but must not change:
+
+    JobID set;
+    dependency edge set;
+    manifest cardinality.
+
+
+======================================================================
+81. AUTHORITATIVE RUN MANIFEST
+======================================================================
+
+Construct one deterministic immutable:
+
+    TASK86C_V2_PRODUCTION_RUN_MANIFEST.
+
+It must bind:
+
+    V1.1 contract;
+    V2 root;
+    executable identity;
+    input root;
+    threshold root;
+    schema root;
+    blind-safe control identities;
+    natural input identities;
+    all JobIDs;
+    all dependencies;
+    evidence contract;
+    preseed root.
+
+It MUST NOT contain blind truth.
+
+
+======================================================================
+82. INDEPENDENT MANIFEST RECONSTRUCTION
+======================================================================
+
+Implement an independent validator that reconstructs the complete
+manifest from frozen inputs and contract.
+
+Require:
+
+    byte-identical output
+    and
+    identical SHA-256.
+
+This validator must not depend on the production scheduler.
+
+
+======================================================================
+83. PRESEED MANIFEST
+======================================================================
+
+Construct the immutable production preseed manifest containing all
+non-secret content-addressed objects workers may require before
+execution.
+
+Do not include escrow secrets.
+
+
+======================================================================
+84. PRESEED CLOSURE
+======================================================================
+
+Verify:
+
+    every manifest object needed before job execution
+        is either
+    locally derivable from frozen contract
+        or
+    present in preseed closure.
+
+No production worker may download mutable scientific input from the
+Internet.
+
+
+======================================================================
+85. LOCAL SCIENTIFIC FIXTURE
+======================================================================
+
+Run a bounded OPEN end-to-end fixture using actual production
+scientific handlers.
+
+It must exercise at minimum:
+
+    fit;
+    predictive;
+    generation;
+    F2;
+    complexity;
+    candidate aggregation;
+    control aggregation;
+    evidence publication;
+    evidence-only reconstruction.
+
+No blind/natural/Voynich data.
+
+
+======================================================================
+86. DISTRIBUTED SCIENTIFIC FIXTURE
+======================================================================
+
+Run the same OPEN fixture through the real coordinator/worker
+architecture.
+
+Require scientific evidence:
+
+    byte-identical
+    hash-identical
+
+to the local fixture.
+
+
+======================================================================
+87. REAL MTLS
+======================================================================
+
+Use the current regenerated PKI for distributed validation.
+
+Expected CA cert SHA-256:
+
+    3f0a73dbec2ecd396854a612ac6216c95e89f6bd0380db8c0bc50cfc3c03f50b
+
+Expected coordinator cert SHA-256:
+
+    a8c2b04e2ab4ac00383f3e9fed91c49af6a7c7982fccb7102dd1af3bc886255a
+
+Coordinator SANs include:
+
+    10.10.24.107
+    109.87.30.62.
+
+Do not embed private key material in scientific artifacts.
+
+
+======================================================================
+88. RETRY DETERMINISM
+======================================================================
+
+Force at least:
+
+    worker interruption;
+    lease expiration;
+    retry;
+    coordinator restart/resume.
+
+Require final scientific evidence to be byte/hash identical to the
+uninterrupted reference.
+
+
+======================================================================
+89. DUPLICATE EVIDENCE
+======================================================================
+
+Preserve infrastructure semantics:
+
+Equal evidence for same JobID:
+
+    harmless duplicate telemetry.
+
+Different evidence for same JobID:
+
+    CONFLICT;
+    quarantine;
+    block affected descendants/aggregation;
+    never silently choose one.
+
+
+======================================================================
+90. EVIDENCE PUBLICATION
+======================================================================
+
+Preserve fail-closed publication:
+
+    temporary object
+        →
+    schema/hash/closure validation
+        →
+    fsync
+        →
+    content-addressed rename
+        →
+    atomic JobID index publication.
+
+Partial evidence must never appear valid.
+
+
+======================================================================
+91. DETERMINISTIC REDUCTION
+======================================================================
+
+Parallel execution may change wall-clock order only.
+
+All scientific aggregation/reduction order must follow the frozen
+scientific identity order.
+
+Test at multiple concurrency levels.
+
+
+======================================================================
+92. CROSS-ARCHITECTURE POLICY
+======================================================================
+
+Production executable target is:
+
+    Linux/amd64.
+
+If other architectures are tested, do not assume numerical identity
+without explicit validation.
+
+Production manifest must bind the frozen supported executable target.
+
+
+======================================================================
+93. GOLDEN VALIDATION
+======================================================================
+
+Run the complete V1.1 golden suite.
+
+Expected root:
+
+    967e63f9c3ba66d99cbff4da83c819d705f1f14c4ace923dbcd1cb8e7dfd1ff8.
+
+Do not modify expected vectors.
+
+
+======================================================================
+94. SCHEMA REGRESSION
+======================================================================
+
+Run all Task85c-c schema vectors.
+
+The Task85c-c report records:
+
+    15 schemas
+    195 evidence/status cells
+    1,731 schema vectors.
+
+R2 implementation must pass the frozen suite unchanged.
+
+
+======================================================================
+95. HISTORICAL DEFECT REGRESSIONS
+======================================================================
+
+Retain explicit tests for:
+
+    not_reached/PASS rejection;
+    fit/FAIL rejection;
+    removed SCIENTIFIC_FAILURE status;
+    E01;
+    E02;
+    E03;
+    E04.
+
+Production code must not regress to pre-V1.1 behavior.
+
+
+======================================================================
+96. MAP NONDETERMINISM REGRESSION
+======================================================================
+
+Add tests that repeatedly randomize insertion order of logically
+identical Go maps/collections.
+
+Scientific output must remain byte-identical.
+
+
+======================================================================
+97. HISTORICAL MODEL REGRESSIONS
+======================================================================
+
+Explicitly prevent recurrence of:
+
+    old JS normalization;
+    superseded M3 merge;
+    M4 without Baum-Welch;
+    M5 zero-mass productive forms;
+    inherited Task85a grids;
+    undeclared sampler caps.
+
+
+======================================================================
+98. HISTORICAL PM REGRESSIONS
+======================================================================
+
+Prevent recurrence of:
+
+    PM evidence loss;
+    PM6 NEGATIVE_EXHAUSTED misuse;
+    incomplete calibration acceptance;
+    model-vs-itself M0 baseline;
+    non-frozen PM5 bins.
+
+
+======================================================================
+99. REACHABILITY REGRESSIONS
+======================================================================
+
+Prevent recurrence of:
+
+    generic SCIENTIFIC_FAILURE;
+    missing concrete failure transitions;
+    GENERATION_FAILURE → F2 RUN;
+    FIT failure → FAIL;
+    suppression by deleting DAG jobs.
+
+
+======================================================================
+100. MUTATION TESTS
+======================================================================
+
+Run mutation tests covering:
+
+    status;
+    evidence type;
+    producer;
+    reason code;
+    dependency;
+    JobID;
+    content hash;
+    reachability;
+    threshold hash;
+    model serialization;
+    aggregation verdict.
+
+Each scientifically meaningful mutation must fail closed.
+
+
+======================================================================
+101. CAPACITY QUALIFICATION
+======================================================================
+
+Capacity qualification is MANDATORY.
+
+Historical prep estimates are obsolete.
+
+Benchmark the actual R2 production scientific handlers.
+
+
+======================================================================
+102. CAPACITY INPUT FIREWALL
+======================================================================
+
+Capacity benchmarks may use only:
+
+    OPEN DEVELOPMENT controls;
+    synthetic non-confirmatory fixtures;
+    deterministic artificial stress fixtures.
+
+Do not benchmark on:
+
+    blind controls;
+    natural confirmatory controls;
+    Voynich.
+
+
+======================================================================
+103. HANDLER BENCHMARKS
+======================================================================
+
+Benchmark at minimum:
+
+    M0 fit/score/generate;
+    M1 fit/score/generate;
+    M2 fit/score/generate;
+    M3 exact;
+    M3 approximate;
+    M4 fit/score/generate;
+    M5 fit/score/generate;
+
+    PM bootstrap;
+    PM6 bootstrap/permutation;
+    generation 2k/8k/32k;
+    each F2 metric family;
+    complexity;
+    candidate aggregation;
+    control aggregation;
+    evidence validation/publication.
+
+
+======================================================================
+104. M3 EXACT CAPACITY
+======================================================================
+
+M3 exact requires special qualification.
+
+Measure:
+
+    pre-enumeration candidate counts;
+    fraction hitting INDUCTION_CAP;
+    runtime of tractable cases;
+    peak RSS;
+    CPU;
+    evidence size.
+
+Do not execute >10^8 enumeration merely for benchmarking.
+
+
+======================================================================
+105. CAPACITY STATISTICS
+======================================================================
+
+Record, where meaningful:
+
+    median
+    p90
+    p99
+
+for:
+
+    wall time;
+    CPU time;
+    peak RSS;
+    output evidence bytes;
+    temporary bytes;
+    cache bytes.
+
+Preserve raw benchmark observations.
+
+
+======================================================================
+106. FULL-RUN PROJECTION
+======================================================================
+
+Using exact DAG counts and measured handlers, project:
+
+    total CPU-hours;
+    expected wall time by worker-slot count;
+    peak aggregate RAM;
+    final evidence storage;
+    transient storage;
+    cache storage;
+    coordinator/index storage;
+    expected network traffic.
+
+Do not reuse the historical 60–100 GB estimate without measurement.
+
+
+======================================================================
+107. SAFETY MARGINS
+======================================================================
+
+Derive explicit operational safety margins for:
+
+    free disk;
+    RAM per slot;
+    worker slots;
+    coordinator storage;
+    evidence growth.
+
+Record methodology rather than choosing an unexplained percentage.
+
+
+======================================================================
+108. CAPACITY VERDICT
+======================================================================
+
+Issue:
+
+    TASK86C_V2_CAPACITY_QUALIFIED =
+        SUPPORTED / NOT_SUPPORTED.
+
+NOT_SUPPORTED means:
+
+    add resources
+    or
+    reduce operational concurrency.
+
+It does NOT authorize scientific simplification.
+
+
+======================================================================
+109. PRODUCTION BUILD
+======================================================================
+
+Build a new:
+
+    Linux/amd64
+
+production scientific executable.
+
+Record:
+
+    repository commit;
+    dirty/clean state;
+    Go version;
+    GOOS;
+    GOARCH;
+    build command;
+    build flags;
+    binary size;
+    SHA-256.
+
+
+======================================================================
+110. DIRTY TREE
+======================================================================
+
+Prefer a clean source tree.
+
+If production freeze is attempted from a dirty tree, either:
+
+    STOP
+
+or freeze a complete reproducible source-tree identity that includes
+every relevant uncommitted byte.
+
+Do not identify a dirty build only by Git commit.
+
+
+======================================================================
+111. PRODUCTION EXECUTABLE HASH
+======================================================================
+
+Freeze:
+
+    TASK86C_V2_PRODUCTION_EXECUTABLE_SHA256.
+
+This replaces the historical prep executable as the deployment
+expected scientific binary.
+
+Do not overwrite historical provenance.
+
+
+======================================================================
+112. DEPLOYMENT HASH UPDATE
+======================================================================
+
+Update:
+
+    ansible/roles/voynich_worker
+
+or the equivalent deployment configuration to require the new
+production scientific executable SHA-256.
+
+Run:
+
+    syntax validation;
+    check mode where possible;
+    idempotency validation where practical.
+
+
+======================================================================
+113. COORDINATOR INTERFACE
+======================================================================
+
+The production executable must support the frozen operational
+coordinator interface equivalent to:
+
+    <PRODUCTION_EXECUTABLE> coordinator \
+      --manifest <FROZEN_RUN_MANIFEST> \
+      --store /usr/local/data/voinich-evidence \
+      --listen :8443 \
+      --tls-cert /home/brigadire/devops/workdir/go/voinich/pki/coordinator.crt \
+      --tls-key /home/brigadire/devops/workdir/go/voinich/pki/coordinator.key \
+      --client-ca /home/brigadire/devops/workdir/go/voinich/pki/ca.crt \
+      --lease-timeout 30s
+
+Operational path differences may be parameterized.
+
+Scientific identity may not depend on them.
+
+
+======================================================================
+114. WORKER INTERFACE
+======================================================================
+
+Freeze/document the exact production worker command/configuration.
+
+Worker configuration may determine:
+
+    coordinator URL;
+    certificate paths;
+    cache path;
+    evidence/temp path;
+    slot count.
+
+It must not determine scientific identity.
+
+
+======================================================================
+115. PRE-FLIGHT CLOSURE
+======================================================================
+
+Provide a command/tool that verifies before run:
+
+    production binary hash;
+    contract hash;
+    schema root;
+    golden root;
+    input root;
+    threshold root;
+    preseed root;
+    run manifest hash;
+    DAG counts;
+    dependency counts;
+    PKI identities;
+    storage availability.
+
+Failure:
+
+    do not start production.
+
+
+======================================================================
+116. OPERATOR SCIENTIFIC FIREWALL
+======================================================================
+
+The operator may choose only operational properties:
+
+    which compatible worker;
+    number of worker slots;
+    service start/stop;
+    retry/restart after infrastructure failure;
+    storage expansion;
+    network route.
+
+The operator MUST NOT choose:
+
+    jobs;
+    candidates;
+    seeds;
+    thresholds;
+    models;
+    retry seeds;
+    scientific branches;
+    status mapping;
+    evidence acceptance.
+
+
+======================================================================
+117. PRODUCTION RUNBOOK
+======================================================================
+
+Update/create the production runbook for:
+
+    Task86C-v2-run.
+
+It must cover:
+
+    preflight;
+    deploy;
+    coordinator start;
+    worker start;
+    preseed verification;
+    manifest submission;
+    operational monitoring;
+    restart/recovery;
+    evidence closure verification;
+    immutable freeze;
+    handoff to analysis.
+
+No scientific interpretation during run.
+
+
+======================================================================
+118. MANIFEST SUBMISSION
+======================================================================
+
+The operator must submit the frozen production manifest exactly as
+produced by R2.
+
+No:
+
+    job filtering;
+    hand-edited manifest;
+    selective resubmission;
+    scientific prioritization.
+
+
+======================================================================
+119. RETRIES
+======================================================================
+
+Infrastructure retry preserves:
+
+    JobID
+    scientific input
+    RNG identity
+    expected evidence semantics.
+
+Never create a new scientific draw because a worker failed.
+
+
+======================================================================
+120. RUN COMPLETION
+======================================================================
+
+Queue empty is NOT sufficient.
+
+The runbook must require proof of:
+
+    complete planned JobID closure;
+    complete dependency closure;
+    valid terminal evidence for every planned job;
+    no unresolved conflict quarantine;
+    all required aggregation evidence;
+    evidence-only verifier closure.
+
+
+======================================================================
+121. IMMUTABLE RUN FREEZE
+======================================================================
+
+After complete execution, Task86C-v2-run must freeze:
+
+    evidence root;
+    JobID index root;
+    manifest identity;
+    executable identity;
+    contract identity;
+    threshold identity;
+    input identity;
+    completion report.
+
+Only then may analysis/unblinding begin.
+
+
+======================================================================
+122. NO UNBLINDING IN R2
+======================================================================
+
+R2 must not open blind truth.
+
+Escrow remains sealed.
+
+No implementation test may depend on whether blind recovery is
+correct.
+
+
+======================================================================
+123. NO NATURAL CONFIRMATORY RECOVERY
+======================================================================
+
+R2 may construct and hash natural confirmatory inputs.
+
+It must not execute their complete scientific recovery DAG.
+
+
+======================================================================
+124. NO VOYNICH RECOVERY
+======================================================================
+
+R2 must not execute the scientific apparatus against Voynich.
+
+No Voynich result may exist before the production execution freeze.
+
+
+======================================================================
+125. NO FULL PRODUCTION RUN
+======================================================================
+
+Do NOT submit the full:
+
+    1,321,152-job
+
+production manifest during R2.
+
+Allowed execution:
+
+    golden vectors;
+    unit tests;
+    DEVELOPMENT calibration;
+    open local fixture;
+    open distributed fixture;
+    bounded capacity benchmarks;
+    deterministic engineering tests.
+
+The bulk run belongs exclusively to:
+
+    Task86C-v2-run.
+
+
+======================================================================
+126. PERFORMANCE OPTIMIZATION
+======================================================================
+
+Optimization is allowed only if scientifically equivalent.
+
+Examples:
+
+    memoization;
+    safe immutable caches;
+    vectorized loops;
+    bounded operational parallelism;
+    precomputation.
+
+Every optimization affecting scientific computation must be checked
+against the unoptimized reference/golden result.
+
+
+======================================================================
+127. APPROXIMATION FIREWALL
+======================================================================
+
+An exact computation frozen by V1.1 may not be replaced with an
+approximation for performance reasons.
+
+In particular:
+
+    M3 exact remains exact;
+    bootstrap counts remain exact;
+    permutation counts remain exact;
+    F2 metrics remain exact.
+
+Capacity insufficiency is an operational result, not permission to
+change science.
+
+
+======================================================================
+128. REQUIRED ARTIFACT DIRECTORY
+======================================================================
+
+Create:
+
+    research/phase3/task86c-v2-scientific-impl-r2/
+
+
+======================================================================
+129. REQUIRED DOCUMENTS
+======================================================================
+
+At minimum create:
+
+    TASK86C_V2_SCIENTIFIC_IMPL_R2_DESIGN.md
+
+    TASK86C_V2_SCIENTIFIC_IMPL_R2_REPORT.md
+
+    G1V2_SCIENTIFIC_IMPLEMENTATION_TRACEABILITY_V1_1.tsv
+
+    G1V2_SCIENTIFIC_HANDLER_REGISTRY_V1_1.tsv
+
+    G1V2_MODEL_IMPLEMENTATION_REGISTRY_V1_1.tsv
+
+    TASK86C_V2_INPUT_MANIFEST.tsv
+
+    TASK86C_V2_THRESHOLD_MANIFEST.tsv
+
+    TASK86C_V2_BLIND_INPUT_MANIFEST.tsv
+
+    TASK86C_V2_NATURAL_INPUT_MANIFEST.tsv
+
+    TASK86C_V2_PRESEED_MANIFEST.tsv
+
+    TASK86C_V2_RUN_MANIFEST_AUDIT.tsv
+
+    TASK86C_V2_CAPACITY_BENCHMARK.tsv
+
+    TASK86C_V2_CAPACITY_MODEL.md
+
+    TASK86C_V2_CLUSTER_REQUIREMENTS.md
+
+    TASK86C_V2_SCIENTIFIC_IMPL_R2_VALIDATION.tsv
+
+    TASK86C_V2_OPERATOR_HANDOFF.md
+
+    TASK86C_V2_RUNBOOK.md
+
+    TASK86C_V2_SCIENTIFIC_IMPL_R2_RESULTS_MANIFEST.json
+
+and exactly one terminal marker artifact.
+
+
+======================================================================
+130. REQUIRED FROZEN PRODUCTION OBJECTS
+======================================================================
+
+On successful R2 freeze, produce at minimum:
+
+    production scientific executable;
+
+    authoritative production run manifest;
+
+    production preseed manifest;
+
+    immutable input closure;
+
+    DEVELOPMENT threshold/bin closure;
+
+    blind-safe input closure;
+
+    blind escrow artifact/reference;
+
+    natural-confirmatory input closure;
+
+    deployment expected-hash configuration;
+
+    operator handoff/runbook.
+
+
+======================================================================
+131. RESULTS MANIFEST
+======================================================================
+
+TASK86C_V2_SCIENTIFIC_IMPL_R2_RESULTS_MANIFEST.json must transitively
+bind:
+
+    Task85c-c artifact root;
+    V1.1 contract;
+    V1.1 schema root;
+    V1.1 golden root;
+    V2 root;
+    source tree identity;
+    production executable;
+    handler registry;
+    input root;
+    threshold root;
+    blind input root;
+    escrow commitment/reference;
+    natural input root;
+    preseed root;
+    run manifest;
+    DAG audit;
+    capacity benchmark/model;
+    deployment configuration;
+    validation;
+    handoff;
+    runbook;
+    terminal marker.
+
+
+======================================================================
+132. VALIDATION COMMANDS
+======================================================================
+
+Run at minimum:
+
+    Task85c-c results-manifest validator
+    Task85c-c V1.1 contract validator
+    Task85c-c schema validator
+    Task85c-c golden verifier
+    Task85c-b state-machine verifier
+
+    production implementation traceability validator
+    production scientific golden tests
+    evidence-only verifier tests
+    DAG/manifest reconstruction validator
+    input closure validator
+    threshold provenance validator
+    blind leakage validator
+    preseed closure validator
+
+    go build ./...
+    go vet ./...
+    go test ./...
+    go test -race ./...
+
+    git diff --check
+
+    Ansible syntax validation
+    Ansible check mode where applicable.
+
+Unavailable checks:
+
+    NOT_TESTED
+
+never PASS.
+
+
+======================================================================
+133. VALIDATION MATRIX
+======================================================================
+
+TASK86C_V2_SCIENTIFIC_IMPL_R2_VALIDATION.tsv must include at minimum:
+
+    V1.1 contract identity
+    schema-root identity
+    golden-root identity
+    V2 identity
+
+    canonicalization
+    RNG
+    corpus representation
+    split
+    candidate registry
+    selection
+
+    M0
+    M1
+    M2
+    M3 exact
+    M3 approximate
+    M3 route aggregation
+    M4
+    M5
+
+    B1
+    B2
+    PM1
+    PM2
+    PM4
+    PM5
+    PM6
+    predictive verdict
+
+    generation
+    F2 metrics
+    structural calibration
+    structural gates
+    complexity
+    description length
+    equivalence graph
+
+    candidate aggregation
+    class aggregation
+    final verdict
+
+    status registry
+    reachability
+    multi-parent suppression
+    NOT_REACHED
+    PROTOCOL_VETO
+
+    all 15 schemas
+    evidence-only verifier
+
+    Generator A
+    Generator B
+    generator independence
+
+    open controls
+    blind construction
+    blind leakage
+    natural input construction
+    input closure
+    threshold freeze
+
+    DAG cardinality
+    dependency cardinality
+    JobID determinism
+    manifest reconstruction
+    preseed closure
+
+    local scientific fixture
+    distributed scientific fixture
+    retry determinism
+    coordinator restart
+    duplicate handling
+    conflict quarantine
+
+    capacity benchmarks
+    capacity projection
+    storage qualification
+
+    production build
+    production executable hash
+    deployment hash
+    operator handoff
+    runbook
+
+    blind execution firewall
+    natural-confirmatory execution firewall
+    Voynich execution firewall
+    full-production-run firewall.
+
+
+======================================================================
+134. REQUIRED VERDICTS
+======================================================================
+
+Issue at minimum:
+
+    CONTRACT_V1_1_IDENTITY =
+        SUPPORTED / NOT_SUPPORTED
+
+    SCIENTIFIC_IMPLEMENTATION_TRACEABILITY =
+        SUPPORTED / NOT_SUPPORTED
+
+    M0_IMPLEMENTATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    M1_IMPLEMENTATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    M2_IMPLEMENTATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    M3_EXACT_IMPLEMENTATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    M3_APPROX_IMPLEMENTATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    M4_IMPLEMENTATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    M5_IMPLEMENTATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    RNG_IMPLEMENTATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    PREDICTIVE_IMPLEMENTATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    PM6_IMPLEMENTATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    GENERATION_IMPLEMENTATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    F2_IMPLEMENTATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    STRUCTURAL_IMPLEMENTATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    COMPLEXITY_MINIMALITY_IMPLEMENTATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    STATUS_REACHABILITY_IMPLEMENTATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    EVIDENCE_CONTRACT_IMPLEMENTATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    EVIDENCE_ONLY_RECONSTRUCTION =
+        SUPPORTED / NOT_SUPPORTED
+
+    SYNTHETIC_GENERATOR_INDEPENDENCE =
+        SUPPORTED / NOT_SUPPORTED
+
+    BLIND_INPUT_CLOSURE =
+        SUPPORTED / NOT_SUPPORTED
+
+    NATURAL_INPUT_CLOSURE =
+        SUPPORTED / NOT_SUPPORTED
+
+    THRESHOLD_FREEZE =
+        SUPPORTED / NOT_SUPPORTED
+
+    RUN_MANIFEST_CLOSURE =
+        SUPPORTED / NOT_SUPPORTED
+
+    DISTRIBUTED_DETERMINISM =
+        SUPPORTED / NOT_SUPPORTED
+
+    TASK86C_V2_CAPACITY_QUALIFIED =
+        SUPPORTED / NOT_SUPPORTED
+
+    SCIENTIFIC_FIREWALLS =
+        SUPPORTED / NOT_SUPPORTED
+
+    TASK86C_V2_SCIENTIFIC_EXECUTION_READY =
+        SUPPORTED / NOT_SUPPORTED.
+
+
+======================================================================
+135. EXECUTION-READY GATE
+======================================================================
+
+TASK86C_V2_SCIENTIFIC_EXECUTION_READY = SUPPORTED
+
+only if ALL of the following hold:
+
+1. V1.1 identity closes.
+2. Task85c-c artifact closure closes.
+3. V1.1 schema root matches.
+4. V1.1 golden root matches.
+5. V2 status/reachability identity matches.
+6. All 43 candidates are implemented.
+7. M0 passes golden validation.
+8. M1 passes golden validation.
+9. M2 passes golden validation.
+10. M3 exact passes golden validation.
+11. M3 approximate passes golden validation.
+12. M4 passes golden validation.
+13. M5 passes golden validation.
+14. RNG passes all golden vectors.
+15. Canonicalization passes all golden vectors.
+16. B1/B2 are implemented exactly.
+17. PM1/PM2/PM4/PM5/PM6 are implemented exactly.
+18. Predictive gate is implemented exactly.
+19. Generation is implemented exactly.
+20. All 12 F2 metrics are implemented.
+21. Structural gates are implemented.
+22. Complexity/minimality is implemented.
+23. Status/reachability V2 is implemented.
+24. All 15 V1.1 schemas are enforced.
+25. Evidence-only reconstruction passes.
+26. Historical A17/E01–E04 regressions pass.
+27. Failure non-rejection passes.
+28. NONE safety passes.
+29. PROTOCOL_INVALID propagation passes.
+30. Generator A passes.
+31. Generator B passes.
+32. Generator independence passes.
+33. Exactly 12 DEVELOPMENT controls are frozen.
+34. Exactly 144 blind controls are frozen.
+35. Blind truth leakage audit passes.
+36. Exactly 36 natural confirmatory controls are frozen.
+37. Source hashes/preprocessing close.
+38. Exactly 192 control instances are frozen.
+39. DEVELOPMENT thresholds/bins are frozen.
+40. Threshold provenance is DEVELOPMENT-only.
+41. Input closure is immutable.
+42. DAG contains exactly 1,321,152 jobs.
+43. DAG contains exactly 2,617,152 edges.
+44. JobID reconstruction is deterministic.
+45. Authoritative run manifest reconstructs byte-identically.
+46. Preseed closure passes.
+47. Local actual-handler fixture passes.
+48. Distributed actual-handler fixture passes.
+49. Local/distributed evidence is byte/hash identical.
+50. Retry determinism passes.
+51. Coordinator restart/resume determinism passes.
+52. Equal duplicate handling passes.
+53. Conflict quarantine passes.
+54. Capacity benchmarks use actual handlers.
+55. M3 exact capacity is explicitly qualified.
+56. Full-run CPU/storage/RAM projection exists.
+57. Required operational capacity is available or formally specified.
+58. TASK86C_V2_CAPACITY_QUALIFIED=SUPPORTED.
+59. New Linux/amd64 production executable is built.
+60. Production executable SHA-256 is frozen.
+61. Deployment expects that exact executable.
+62. Production run manifest SHA-256 is frozen.
+63. Input root is frozen.
+64. Threshold root is frozen.
+65. Preseed root is frozen.
+66. Blind/escrow closure is frozen.
+67. Natural input root is frozen.
+68. Operator handoff is complete.
+69. Production runbook is complete.
+70. Blind scientific recovery was not run.
+71. Natural confirmatory recovery was not run.
+72. Voynich recovery was not run.
+73. Full production manifest was not submitted.
+74. Results manifest closes transitively.
+
+
+======================================================================
+136. STOP CONDITIONS
+======================================================================
+
+STOP:
+
+    CONTRACT_IDENTITY_FAILURE
+
+if V1.1 or required parent identities fail.
+
+STOP:
+
+    CONTRACT_DEFECT
+
+if V1.1 remains scientifically ambiguous or internally
+contradictory.
+
+STOP:
+
+    GOLDEN_CONTRACT_CONTRADICTION
+
+if frozen V1.1 normative semantics and golden expected output cannot
+both hold.
+
+STOP:
+
+    INPUT_PROVENANCE_FAILURE
+
+if required immutable source/input identity cannot be reproduced.
+
+STOP:
+
+    BLINDNESS_VIOLATION
+
+if blind truth leaks into unauthorized artifacts or execution.
+
+STOP:
+
+    DAG_CONSTRUCTION_FAILURE
+
+if exact DAG cardinality/identity cannot be reproduced.
+
+STOP:
+
+    EVIDENCE_CONTRACT_FAILURE
+
+if production evidence cannot satisfy/reconstruct the V1.1 evidence
+contract.
+
+STOP:
+
+    DETERMINISM_FAILURE
+
+if scientifically identical executions can produce different
+scientific evidence.
+
+STOP:
+
+    SCIENTIFIC_FIREWALL_VIOLATION
+
+if blind/natural/Voynich/full-production scientific execution occurs
+outside the authorized boundary.
+
+These are mandatory STOP conditions.
+
+
+======================================================================
+137. NON-STOP SCIENTIFIC OUTCOMES
+======================================================================
+
+Do NOT stop implementation merely because an authorized scientific
+procedure can legitimately produce:
+
+    FIT_FAILURE
+    NUMERICAL_FAILURE
+    INDUCTION_CAP
+    GENERATION_FAILURE
+    NOT_ASSESSABLE
+    NOT_REACHED
+    PROTOCOL_VETO.
+
+Those are part of the frozen state machine.
+
+They must be implemented and tested.
+
+
+======================================================================
+138. CAPACITY FAILURE
+======================================================================
+
+If implementation is correct but available infrastructure is
+insufficient:
+
+    TASK86C_V2_CAPACITY_QUALIFIED =
+        NOT_SUPPORTED
+
+    TASK86C_V2_SCIENTIFIC_EXECUTION_READY =
+        NOT_SUPPORTED
+
+Use terminal marker:
+
+    TASK86C_V2_CAPACITY_NOT_READY.
+
+Do not modify science.
+
+
+======================================================================
+139. IMPLEMENTATION INCOMPLETE
+======================================================================
+
+If the contract is valid but production implementation or validation
+is incomplete:
+
+    TASK86C_V2_SCIENTIFIC_EXECUTION_READY =
+        NOT_SUPPORTED
+
+Use:
+
+    TASK86C_V2_SCIENTIFIC_IMPLEMENTATION_NOT_READY.
+
+
+======================================================================
+140. INTEGRITY FAILURE
+======================================================================
+
+For:
+
+    blindness violation;
+    evidence-integrity failure;
+    determinism failure;
+    scientific-firewall violation
+
+use:
+
+    TASK86C_V2_SCIENTIFIC_IMPL_R2_INVALID
+
+and preserve all failure evidence.
+
+
+======================================================================
+141. TERMINAL MARKERS
+======================================================================
+
+Exactly one terminal marker.
+
+Success:
+
+    TASK86C_V2_SCIENTIFIC_EXECUTION_READY_FROZEN
+
+Contract defect:
+
+    TASK86C_V2_V1_1_CONTRACT_DEFECT
+
+Implementation incomplete:
+
+    TASK86C_V2_SCIENTIFIC_IMPLEMENTATION_NOT_READY
+
+Capacity insufficient:
+
+    TASK86C_V2_CAPACITY_NOT_READY
+
+Integrity/firewall failure:
+
+    TASK86C_V2_SCIENTIFIC_IMPL_R2_INVALID.
+
+
+======================================================================
+142. SUCCESSFUL FINAL OUTPUT
+======================================================================
+
+On success print at minimum:
+
+    CONTRACT_VERSION =
+        G1_V2_EXECUTABLE_CONTRACT_V1_1
+
+    CONTRACT_SHA256 =
+        5c3cd272c1dbae9bfe1d7a100155faf102e86d34660da239e1cb31704ad470b0
+
+    PRODUCTION_EXECUTABLE =
+        <absolute/path>
+
+    TASK86C_V2_PRODUCTION_EXECUTABLE_SHA256 =
+        <sha256>
+
+    PRODUCTION_RUN_MANIFEST =
+        <path>
+
+    TASK86C_V2_PRODUCTION_RUN_MANIFEST_SHA256 =
+        <sha256>
+
+    TASK86C_V2_INPUT_ROOT_SHA256 =
+        <sha256>
+
+    TASK86C_V2_THRESHOLD_ROOT_SHA256 =
+        <sha256>
+
+    TASK86C_V2_BLIND_INPUT_ROOT_SHA256 =
+        <sha256>
+
+    TASK86C_V2_BLIND_ESCROW_COMMITMENT =
+        <safe commitment/reference>
+
+    TASK86C_V2_NATURAL_INPUT_ROOT_SHA256 =
+        <sha256>
+
+    TASK86C_V2_PRESEED_ROOT_SHA256 =
+        <sha256>
+
+    DAG_JOB_COUNT =
+        1321152
+
+    DAG_DEPENDENCY_COUNT =
+        2617152
+
+    TASK86C_V2_PROJECTED_CPU_HOURS =
+        <measured projection>
+
+    TASK86C_V2_PROJECTED_EVIDENCE_BYTES =
+        <measured projection>
+
+    TASK86C_V2_REQUIRED_FREE_STORAGE =
+        <qualified requirement>
+
+    TASK86C_V2_RECOMMENDED_WORKER_SLOTS =
+        <qualified operational value>
+
+    TASK86C_V2_CAPACITY_QUALIFIED =
+        SUPPORTED
+
+    DISTRIBUTED_DETERMINISM =
+        SUPPORTED
+
+    TASK86C_V2_SCIENTIFIC_EXECUTION_READY =
+        SUPPORTED
+
+    COORDINATOR_COMMAND =
+        <complete frozen command>
+
+    WORKER_COMMAND_OR_DEPLOYMENT =
+        <complete command/reference>
+
+    PREFLIGHT_CLOSURE_COMMAND =
+        <complete command>
+
+    POST_RUN_CLOSURE_COMMAND =
+        <complete command>
+
+    TERMINAL_MARKER =
+        TASK86C_V2_SCIENTIFIC_EXECUTION_READY_FROZEN.
+
+
+======================================================================
+143. FAILURE FINAL OUTPUT
+======================================================================
+
+On failure print at minimum:
+
+    CONTRACT_VERSION =
+        G1_V2_EXECUTABLE_CONTRACT_V1_1
+
+    TASK86C_V2_SCIENTIFIC_EXECUTION_READY =
+        NOT_SUPPORTED
+
+    FAILURE_CLASS =
+        <exact class>
+
+    BLOCKING_FINDINGS =
+        <exact finding IDs>
+
+    PRODUCTION_RUN_AUTHORIZED =
+        NO
+
+    TERMINAL_MARKER =
+        <exactly one allowed failure marker>.
+
+
+======================================================================
+144. OPERATOR HANDOFF REQUIREMENT
+======================================================================
+
+The successful handoff must allow the operator to execute
+Task86C-v2-run without reading implementation source code and without
+making a scientific decision.
+
+It must provide exact:
+
+    binary path/hash;
+    run-manifest path/hash;
+    input root;
+    threshold root;
+    preseed root;
+    blind-safe root;
+    natural input root;
+    evidence-store path;
+    required free storage;
+    RAM/slot requirements;
+    coordinator command;
+    worker deployment/configuration;
+    preflight verification;
+    runtime health checks;
+    restart procedure;
+    completion verification;
+    post-run immutable freeze procedure.
+
+
+======================================================================
+145. DEFINITION OF DONE
+======================================================================
+
+Task86C-v2-scientific-impl-R2 is complete when:
+
+A production operator can start the frozen G1-v2 experiment using
+only the R2 handoff/runbook and operational resource choices.
+
+The operator cannot alter:
+
+    scientific inputs;
+    candidates;
+    models;
+    RNG;
+    thresholds;
+    DAG;
+    reachability;
+    evidence semantics;
+    aggregation;
+    scientific retry behavior.
+
+Two scientifically identical runs using the frozen artifacts produce
+identical scientific evidence regardless of:
+
+    worker assignment;
+    scheduling order;
+    retry;
+    coordinator restart;
+    supported operational concurrency.
+
+At that point:
+
+    Task86C-v2-run
+
+is authorized.
+
+No additional scientific design task is permitted between successful
+R2 freeze and the production run unless R2 discovers a new mandatory
+contract defect.

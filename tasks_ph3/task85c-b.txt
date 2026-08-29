@@ -1,0 +1,2092 @@
+Task85c-b — G1-v2 Scientific Status and Reachability
+State Machine Resolution
+
+
+PURPOSE
+
+Resolve the expanded G1-v2 contract defect discovered by Task85c-a:
+
+    E01 unregistered SCIENTIFIC_FAILURE
+    E02 registered failures lack reachability
+    E03 generation-failure action contradiction
+    E04 FIT negative-state contradiction
+
+by defining and freezing one complete, deterministic, scientifically
+consistent status/reachability state machine for G1-v2.
+
+This task operates at the scientific contract level.
+
+It is:
+
+    STATUS SEMANTICS RESOLUTION
+    REACHABILITY RESOLUTION
+    STATE-MACHINE FORMALIZATION
+    LIMITED SCIENTIFIC CONTRACT CORRECTION
+    MACHINE-CHECKABLE FREEZE
+
+It is NOT:
+
+    an A17 JSON Schema repair;
+    production implementation;
+    model redesign;
+    candidate-grid redesign;
+    metric redesign;
+    threshold tuning;
+    DAG-size redesign;
+    blind execution;
+    natural-language confirmatory execution;
+    Voynich evaluation.
+
+
+======================================================================
+1. MOTIVATION
+======================================================================
+
+Task86C-v2-scientific-impl-R first demonstrated:
+
+    A17_STATUS_SCHEMA_CONTRADICTION.
+
+Task85c-a then attempted a schema-only repair but discovered that the
+underlying frozen normative status/reachability sources themselves
+are inconsistent.
+
+Task85c-a therefore correctly stopped with:
+
+    A17_STATUS_SCHEMA_CONTRADICTION =
+        EXPANDED
+
+    TASK86C_V2_SCIENTIFIC_IMPL_R2_READY =
+        NOT_SUPPORTED
+
+    TERMINAL_MARKER =
+        TASK85C_A_CONTRACT_DEFECT_EXPANDED
+
+Task85c-b resolves the underlying state-machine contradiction before
+any further schema repair is attempted.
+
+
+======================================================================
+2. AUTHORITATIVE DEFECT REPORT
+======================================================================
+
+Primary defect report:
+
+    research/phase3/task85c-a/
+        TASK85C_A_EXPANDED_DEFECT.md
+
+Task85c-b MUST independently reproduce E01–E04 before modifying any
+normative artifact.
+
+
+======================================================================
+3. EXACT BLOCKING FINDINGS
+======================================================================
+
+The authorized repair scope is exactly:
+
+E01:
+    G1V2_REACHABILITY_CONTRACT.tsv uses SCIENTIFIC_FAILURE,
+    but G1V2_STATUS_REGISTRY.tsv does not register it.
+
+E02:
+    registered statuses
+
+        FIT_FAILURE
+        NUMERICAL_FAILURE
+        INDUCTION_CAP
+        GENERATION_FAILURE
+        PROTOCOL_VETO
+
+    lack explicit reachability rows.
+
+E03:
+    GENERATION_FAILURE requires downstream STRUCTURAL NOT_REACHED
+    according to status semantics, while the generic
+    GENERATION/SCIENTIFIC_FAILURE reachability row requires
+    STRUCTURAL RUN.
+
+E04:
+    reachability uses FIT/FAIL even though FAIL is a scientific
+    negative gate/verifier state and fit/induction/numerical failure
+    must not constitute negative scientific evidence.
+
+Do not broaden the scientific revision beyond what is necessary to
+close these findings.
+
+
+======================================================================
+4. PARENT PROVENANCE
+======================================================================
+
+Preserve the immutable provenance chain:
+
+    Task85b
+        ↓
+    Task85c
+        G1_V2_EXECUTABLE_CONTRACT_V1
+        ↓
+    Task86C-v2-scientific-impl-R
+        A17_STATUS_SCHEMA_CONTRADICTION
+        ↓
+    Task85c-a
+        CONTRACT_DEFECT_EXPANDED E01–E04
+        ↓
+    Task85c-b
+
+Parent executable contract:
+
+    G1_V2_EXECUTABLE_CONTRACT_V1
+
+Parent contract SHA-256:
+
+    275b29c592be6d3cb80c20df9b9348348009d758e2770ed39da0066004b11bca
+
+Parent Task85c-a artifact root:
+
+    736e2aee714f63145d4dece5a1cb0014e070142f5033f97edcbb86ab4a57f2f8
+
+Do not rewrite Task85c, scientific-impl-R, or Task85c-a.
+
+
+======================================================================
+5. CENTRAL SCIENTIFIC INVARIANT
+======================================================================
+
+Freeze the following invariant explicitly:
+
+    EXECUTION/SCIENTIFIC-PROCEDURE FAILURE
+        !=
+    SCIENTIFIC FAIL
+
+`FAIL` means:
+
+    an authorized scientific gate/verifier was successfully evaluated
+    and produced assessable negative evidence.
+
+Failure to obtain valid scientific evidence must never itself become
+evidence that a model/class is scientifically inadequate.
+
+
+======================================================================
+6. THREE DISTINCT SEMANTIC CATEGORIES
+======================================================================
+
+The state machine MUST explicitly distinguish at least:
+
+A. SCIENTIFIC OUTCOME
+
+    PASS
+    FAIL
+
+B. SCIENTIFIC MISSINGNESS / INASSESSABILITY
+
+    NOT_ASSESSABLE
+
+C. EXECUTION/PROCEDURE STATE
+
+    FIT_FAILURE
+    NUMERICAL_FAILURE
+    INDUCTION_CAP
+    GENERATION_FAILURE
+    PROTOCOL_VETO
+    NOT_REACHED
+
+Do not collapse category C into FAIL.
+
+
+======================================================================
+7. PASS
+======================================================================
+
+Define PASS normatively as:
+
+    successful completion of the relevant scientific gate/verifier
+    with assessable evidence satisfying its frozen positive criterion.
+
+PASS MUST NOT be emitted by:
+
+    FIT
+    model serialization
+    generation merely succeeding
+    DAG suppression
+    infrastructure execution.
+
+
+======================================================================
+8. FAIL
+======================================================================
+
+Define FAIL normatively as:
+
+    successful completion of the relevant scientific gate/verifier
+    with assessable evidence failing its frozen scientific criterion.
+
+FAIL MUST NOT mean:
+
+    fit failed;
+    numerical algorithm failed;
+    induction exceeded cap;
+    generation failed;
+    protocol validation failed;
+    job was suppressed;
+    worker failed;
+    evidence is missing.
+
+
+======================================================================
+9. NOT_ASSESSABLE
+======================================================================
+
+Define NOT_ASSESSABLE precisely.
+
+It represents a scientifically specified condition under which the
+requested scientific statistic/verdict cannot be assessed despite
+the relevant procedure reaching the point where that condition can
+be determined.
+
+Examples must follow the existing frozen contract, such as PM6
+saturation/coverage insufficiency where applicable.
+
+Do not use NOT_ASSESSABLE as a generic replacement for every
+execution failure unless that mapping is explicitly justified and
+frozen.
+
+
+======================================================================
+10. NOT_REACHED
+======================================================================
+
+Define NOT_REACHED as a DAG/reachability state only.
+
+It means:
+
+    the planned job/cell exists in the frozen DAG but its scientific
+    computation is suppressed by the frozen upstream state machine.
+
+NOT_REACHED is not:
+
+    PASS;
+    FAIL;
+    NOT_ASSESSABLE;
+    worker failure;
+    retry exhaustion.
+
+It must identify the upstream state/reason that caused suppression.
+
+
+======================================================================
+11. FAILURE STATUSES
+======================================================================
+
+Resolve the exact normative meaning of:
+
+    FIT_FAILURE
+    NUMERICAL_FAILURE
+    INDUCTION_CAP
+    GENERATION_FAILURE
+    PROTOCOL_VETO.
+
+For each define:
+
+    permitted producer/stage;
+    exact semantic meaning;
+    whether it is scientific evidence;
+    whether it contributes negative evidence;
+    immediate downstream actions;
+    final identification implications.
+
+
+======================================================================
+12. FIT_FAILURE
+======================================================================
+
+At minimum preserve the scientific principle:
+
+    FIT_FAILURE does not reject a candidate/class.
+
+Specify exactly which downstream jobs become:
+
+    RUN
+    NOT_REACHED
+
+and how aggregation treats the missing candidate evidence.
+
+
+======================================================================
+13. NUMERICAL_FAILURE
+======================================================================
+
+Define NUMERICAL_FAILURE for every stage where it is reachable.
+
+Do not assume all numerical failures have identical downstream
+behavior if the frozen scientific workflow distinguishes stages.
+
+For each applicable stage freeze downstream transitions explicitly.
+
+
+======================================================================
+14. INDUCTION_CAP
+======================================================================
+
+Define INDUCTION_CAP explicitly for bounded induction procedures such
+as M3 where applicable.
+
+INDUCTION_CAP must not be interpreted as evidence that the scientific
+model family is inadequate.
+
+Freeze its effect on:
+
+    predictive evaluation;
+    generation;
+    structural evaluation;
+    complexity;
+    candidate aggregation;
+    class aggregation;
+    final identifiability.
+
+
+======================================================================
+15. GENERATION_FAILURE
+======================================================================
+
+Resolve E03 explicitly.
+
+There must be exactly one normative answer to:
+
+    GENERATION / GENERATION_FAILURE
+        →
+    STRUCTURAL / ?
+
+Task85c-b must choose and justify the transition from the scientific
+logic of G1-v2.
+
+The final frozen state machine must not simultaneously permit:
+
+    STRUCTURAL RUN
+
+and:
+
+    STRUCTURAL NOT_REACHED
+
+for the same upstream scientific state.
+
+
+======================================================================
+16. PROTOCOL_VETO
+======================================================================
+
+Define PROTOCOL_VETO separately from model inadequacy.
+
+Specify whether it applies to:
+
+    input;
+    evidence;
+    hash/schema validation;
+    dependency validation;
+    other frozen protocol conditions.
+
+Freeze its downstream effect.
+
+A protocol-invalid result must never be converted into scientific
+negative evidence.
+
+
+======================================================================
+17. SCIENTIFIC_FAILURE SYMBOL
+======================================================================
+
+Resolve E01 explicitly.
+
+Choose exactly one of the following approaches, or another
+scientifically equivalent explicitly justified construction:
+
+A. SCIENTIFIC_FAILURE is NOT a real status.
+
+    Remove it from normative reachability and enumerate the concrete
+    failure statuses explicitly.
+
+B. SCIENTIFIC_FAILURE becomes a formally registered aggregate state.
+
+    Define its exact relationship to the concrete statuses and prove
+    that aggregation cannot erase scientifically relevant differences.
+
+The choice MUST be explicit and justified.
+
+Do not leave SCIENTIFIC_FAILURE as an undocumented alias.
+
+
+======================================================================
+18. PREFERRED NORMAL FORM
+======================================================================
+
+Unless a concrete scientific reason requires an aggregate state,
+prefer explicit concrete failure statuses in normative reachability:
+
+    FIT_FAILURE
+    NUMERICAL_FAILURE
+    INDUCTION_CAP
+    GENERATION_FAILURE
+    PROTOCOL_VETO
+
+rather than a lossy SCIENTIFIC_FAILURE wildcard.
+
+This is a design preference, not authorization to ignore contrary
+scientific requirements discovered during the task.
+
+
+======================================================================
+19. STAGE REGISTRY
+======================================================================
+
+Freeze the complete scientific stage registry used by reachability.
+
+At minimum reconcile the conceptual stages:
+
+    FIT
+    PREDICTIVE
+    GENERATION
+    STRUCTURAL
+    COMPLEXITY
+    CANDIDATE_AGGREGATION
+    CONTROL_AGGREGATION
+
+with the exact Task85c DAG.
+
+If F2_METRIC is a distinct normative stage, represent it explicitly.
+
+Do not invent stage aliases implicitly.
+
+
+======================================================================
+20. PRODUCER × STATUS CONTRACT
+======================================================================
+
+For every stage define the complete set of statuses it is permitted
+to emit.
+
+Construct:
+
+    G1V2_STAGE_STATUS_CONTRACT.tsv
+
+Columns at minimum:
+
+    stage
+    status
+    allowed
+    producer_type
+    scientific_category
+    negative_evidence
+    normative_reason
+    source.
+
+
+======================================================================
+21. TOTAL REACHABILITY FUNCTION
+======================================================================
+
+Define reachability as a total deterministic function over every
+reachable:
+
+    (stage, emitted_status, downstream_stage)
+
+returning exactly one action:
+
+    RUN
+    NOT_REACHED
+
+or another explicitly frozen action if scientifically necessary.
+
+No reachable tuple may be unspecified.
+
+
+======================================================================
+22. REACHABILITY ARTIFACT
+======================================================================
+
+Produce a new normative:
+
+    G1V2_REACHABILITY_CONTRACT_V2.tsv
+
+Do not overwrite the V1 reachability artifact.
+
+Columns at minimum:
+
+    upstream_stage
+    upstream_status
+    downstream_stage
+    action
+    downstream_evidence_status_if_suppressed
+    reason_code
+    scientific_effect
+    normative_source.
+
+
+======================================================================
+23. NO WILDCARD AMBIGUITY
+======================================================================
+
+If wildcard/default reachability rows are used, define exact
+precedence and prove that expansion produces one unique explicit
+transition for every reachable tuple.
+
+Prefer a fully expanded table for the frozen machine-readable
+artifact.
+
+
+======================================================================
+24. STATE-MACHINE TOTALITY
+======================================================================
+
+For every allowed stage/status pair, all direct downstream stages in
+the frozen DAG must have a defined action.
+
+Require:
+
+    MISSING_TRANSITIONS = 0.
+
+
+======================================================================
+25. STATE-MACHINE DETERMINISM
+======================================================================
+
+No stage/status/downstream tuple may have more than one action.
+
+Require:
+
+    AMBIGUOUS_TRANSITIONS = 0.
+
+
+======================================================================
+26. STATUS REGISTRY CLOSURE
+======================================================================
+
+Every status appearing anywhere in normative reachability must exist
+in the normative status registry.
+
+Require:
+
+    UNREGISTERED_REACHABILITY_STATUSES = 0.
+
+
+======================================================================
+27. REACHABILITY COVERAGE
+======================================================================
+
+Every registered status that can be emitted by a stage must have
+reachability semantics for every applicable downstream dependency.
+
+Require:
+
+    EMITTABLE_STATUS_WITHOUT_REACHABILITY = 0.
+
+
+======================================================================
+28. DEAD STATUS AUDIT
+======================================================================
+
+Audit registered statuses that no stage can emit.
+
+Every such status must be either:
+
+    intentionally reserved with explicit justification
+
+or:
+
+    removed/superseded through the controlled revision.
+
+Do not preserve accidental dead states silently.
+
+
+======================================================================
+29. IMPOSSIBLE TRANSITION AUDIT
+======================================================================
+
+Detect reachability rows for statuses that their upstream stage is
+not permitted to emit.
+
+Require:
+
+    IMPOSSIBLE_REACHABILITY_ROWS = 0.
+
+
+======================================================================
+30. SCIENTIFIC NEGATIVE-EVIDENCE AUDIT
+======================================================================
+
+For every status verify:
+
+    can_this_status_contribute_negative_evidence?
+
+Require:
+
+    PASS               no
+    FAIL               yes, only through authorized assessable gate
+    NOT_ASSESSABLE     no
+    NOT_REACHED        no
+    FIT_FAILURE        no
+    NUMERICAL_FAILURE  no
+    INDUCTION_CAP      no
+    GENERATION_FAILURE no
+    PROTOCOL_VETO      no
+
+unless the task discovers that an existing frozen scientific rule
+requires a different interpretation.
+
+Any such discovery must be explicitly classified as a larger
+scientific change.
+
+
+======================================================================
+31. E04 REPAIR
+======================================================================
+
+Remove or supersede scientifically invalid FIT/FAIL semantics.
+
+A successful FIT is not automatically PASS.
+
+A failed FIT is not FAIL.
+
+Freeze exact FIT-stage states.
+
+For example, the final design may distinguish:
+
+    FIT_SUCCESS
+    FIT_FAILURE
+    NUMERICAL_FAILURE
+    INDUCTION_CAP
+
+if explicit FIT_SUCCESS is required.
+
+Do not introduce FIT_SUCCESS merely for symmetry if successful fit is
+represented through an evidence type rather than a global status.
+
+The final representation must be unique.
+
+
+======================================================================
+32. SUCCESS STATES
+======================================================================
+
+Audit whether non-gate stages require explicit success statuses.
+
+Examples:
+
+    FIT
+    GENERATION
+    COMPLEXITY.
+
+Do not overload PASS if PASS is reserved for scientific gate
+outcomes.
+
+Choose and freeze one consistent representation:
+
+    explicit procedural success status
+
+or:
+
+    evidence-type success implied by valid record shape
+
+or another uniquely specified design.
+
+This decision is within Task85c-b because E04 proves the current
+representation is incomplete.
+
+
+======================================================================
+33. STATUS TAXONOMY
+======================================================================
+
+Produce a formal taxonomy distinguishing, at minimum:
+
+    gate verdict;
+    assessability;
+    procedure completion/failure;
+    DAG suppression;
+    protocol veto.
+
+Do not force semantically different concepts into a single flat enum
+without defining their allowed producer context.
+
+
+======================================================================
+34. STATUS REGISTRY V2
+======================================================================
+
+Produce:
+
+    G1V2_STATUS_REGISTRY_V2.tsv
+
+with at least:
+
+    status
+    category
+    allowed_producers
+    requires_assessable_statistic
+    scientific_negative_evidence
+    suppresses_downstream
+    terminal_semantics
+    description.
+
+This becomes normative for the subsequent A17 schema task.
+
+
+======================================================================
+35. EVIDENCE TYPE × STATUS MATRIX
+======================================================================
+
+Task85c-b does NOT repair JSON Schemas, but it must provide enough
+scientific semantics for Task85c-c to do so mechanically.
+
+Produce:
+
+    G1V2_EVIDENCE_STATUS_SEMANTICS.tsv
+
+For every evidence type specify:
+
+    permitted statuses;
+    forbidden statuses;
+    scientific meaning.
+
+Field-level JSON constraints remain Task85c-c responsibility.
+
+
+======================================================================
+36. AGGREGATION SEMANTICS
+======================================================================
+
+Freeze how every non-success state affects:
+
+    candidate aggregation;
+    class rejection;
+    minimality;
+    NONE;
+    NOT_IDENTIFIABLE.
+
+No aggregation implementation should have to infer what missing or
+failed evidence means.
+
+
+======================================================================
+37. NONE INVARIANT
+======================================================================
+
+Preserve the frozen principle:
+
+    NONE requires valid assessable inadequacy evidence for every
+    relevant candidate/class required by the contract.
+
+A procedure failure must not help establish NONE.
+
+
+======================================================================
+38. NOT_IDENTIFIABLE INVARIANT
+======================================================================
+
+Preserve the frozen principle:
+
+    missing/unresolved evidence capable of changing the minimum
+    prevents definitive identification.
+
+Specify exactly which failure/missingness states therefore propagate
+toward:
+
+    NOT_IDENTIFIABLE.
+
+
+======================================================================
+39. CLASS REJECTION
+======================================================================
+
+Freeze exactly when a candidate/class is:
+
+    ADEQUATE
+    INADEQUATE
+    UNRESOLVED.
+
+A candidate must not become INADEQUATE solely because:
+
+    fit failed;
+    numerical procedure failed;
+    induction capped;
+    generation failed;
+    protocol veto occurred.
+
+
+======================================================================
+40. M3 ROUTE SEMANTICS
+======================================================================
+
+Audit the interaction of failure states with the special M3 rule:
+
+    exact route
+    approximate route.
+
+Preserve:
+
+    adequate if either route adequate;
+    inadequate only if both assessably inadequate;
+    otherwise unresolved.
+
+For example:
+
+    exact INDUCTION_CAP
+    +
+    approximate assessably inadequate
+
+must have one explicitly frozen class result.
+
+Do not leave this to implementation inference.
+
+
+======================================================================
+41. GENERATION → STRUCTURAL SEMANTICS
+======================================================================
+
+Specify explicitly for:
+
+    successful generation;
+    GENERATION_FAILURE;
+    NUMERICAL_FAILURE if possible;
+    PROTOCOL_VETO if possible
+
+whether each structural/F2 job:
+
+    RUNS
+    or
+    emits NOT_REACHED.
+
+This closes E03 at the actual dependency boundary.
+
+
+======================================================================
+42. FAILURE → COMPLEXITY SEMANTICS
+======================================================================
+
+Define whether complexity can be computed after each relevant
+fit/model failure state.
+
+Do not assume complexity and generation share reachability.
+
+Freeze each transition separately.
+
+
+======================================================================
+43. FAILURE → AGGREGATION SEMANTICS
+======================================================================
+
+Aggregation jobs remain part of the frozen DAG.
+
+Define exactly how aggregation consumes:
+
+    scientific result evidence;
+    NOT_ASSESSABLE;
+    NOT_REACHED;
+    each concrete failure status;
+    PROTOCOL_VETO.
+
+Aggregation must never silently drop a failure record.
+
+
+======================================================================
+44. PROTOCOL VETO VS SCIENTIFIC FAILURE
+======================================================================
+
+Distinguish invalid protocol/evidence from a scientific algorithm
+failure.
+
+If PROTOCOL_VETO invalidates the scientific evidence chain rather
+than merely producing missing evidence, freeze that distinction.
+
+Specify whether final aggregation may proceed and what terminal state
+is produced.
+
+
+======================================================================
+45. INFRASTRUCTURE FAILURE BOUNDARY
+======================================================================
+
+Do not add infrastructure states such as:
+
+    WORKER_LOST
+    LEASE_EXPIRED
+    RETRY
+    COORDINATOR_RESTART
+
+to the scientific status machine.
+
+Those remain operational states.
+
+If infrastructure eventually yields no scientific evidence, its
+treatment must follow the existing execution/evidence integrity
+contract, not become scientific FAIL.
+
+
+======================================================================
+46. DAG INVARIANT
+======================================================================
+
+The planned DAG remains:
+
+    43 candidates
+    192 controls
+
+    1,321,152 jobs
+    2,617,152 dependency edges.
+
+Reachability controls whether a planned job RUNS or emits
+NOT_REACHED; it must not delete planned jobs.
+
+Require:
+
+    DAG_JOB_COUNT = 1321152
+    DAG_DEPENDENCY_COUNT = 2617152.
+
+
+======================================================================
+47. MODEL INVARIANT
+======================================================================
+
+Do not change:
+
+    M0
+    M1
+    M2
+    M3
+    M4
+    M5
+
+algorithms, grids or candidate definitions.
+
+
+======================================================================
+48. METRIC INVARIANT
+======================================================================
+
+Do not change:
+
+    PM1
+    PM2
+    PM4
+    PM5
+    PM6
+
+or the frozen structural metrics/gates.
+
+Task85c-b defines state propagation, not metric thresholds.
+
+
+======================================================================
+49. RNG INVARIANT
+======================================================================
+
+Do not change:
+
+    G1V2-RNG-1
+    root seed
+    namespace registry
+    counters.
+
+Expected underlying RNG registry identity remains unchanged.
+
+
+======================================================================
+50. COMPLEXITY INVARIANT
+======================================================================
+
+Do not change the mathematical complexity/description-length
+contract.
+
+Only define what happens when required complexity evidence cannot be
+produced.
+
+
+======================================================================
+51. CONTROL/CORPUS INVARIANT
+======================================================================
+
+Do not change:
+
+    synthetic control generators;
+    development controls;
+    blind construction;
+    natural corpora;
+    corpus preprocessing;
+    splits.
+
+
+======================================================================
+52. THRESHOLD INVARIANT
+======================================================================
+
+Do not change threshold derivation or practical floors.
+
+No thresholds are calculated in this task.
+
+
+======================================================================
+53. NO JSON SCHEMA REPAIR
+======================================================================
+
+Do NOT produce the final repaired A17 schemas here.
+
+Reason:
+
+    Task85c-b defines WHAT status/reachability semantics are
+    scientifically permitted.
+
+    Task85c-c will define HOW those semantics are enforced by
+    standard JSON Schema.
+
+Keeping these tasks separate prevents machine representation from
+silently determining scientific semantics.
+
+
+======================================================================
+54. NO V1_1 EXECUTABLE CONTRACT YET
+======================================================================
+
+Do not issue:
+
+    G1_V2_EXECUTABLE_CONTRACT_V1_1
+
+as the final executable scientific contract.
+
+Task85c-b freezes a status/reachability sub-contract revision.
+
+The full executable V1_1 refreeze occurs only after Task85c-c
+successfully repairs and exhaustively validates A17 schemas.
+
+
+======================================================================
+55. SUB-CONTRACT VERSION
+======================================================================
+
+Freeze a version such as:
+
+    G1_V2_STATUS_REACHABILITY_CONTRACT_V2
+
+This version is a normative correction layer over:
+
+    G1_V2_EXECUTABLE_CONTRACT_V1
+
+for the limited status/reachability domain.
+
+Task85c-c must consume it explicitly.
+
+
+======================================================================
+56. CHANGE CLASSIFICATION
+======================================================================
+
+For every change relative to Task85c classify:
+
+    DEFECT_CORRECTION
+    NECESSARY_SEMANTIC_COMPLETION
+    NECESSARY_SCIENTIFIC_CHANGE
+
+Expected E01–E04 repairs should normally be the first two.
+
+If a repair changes the central scientific interpretation of model
+adequacy/minimality beyond preserving the already stated principle
+that failures are not negative evidence, flag it explicitly.
+
+
+======================================================================
+57. CHANGE BUDGET
+======================================================================
+
+The authorized semantic-change budget is limited to:
+
+    status taxonomy;
+    producer/status legality;
+    failure representation;
+    reachability transitions;
+    failure/missingness aggregation consequences
+
+required to resolve E01–E04 and make the state machine total.
+
+Changes to any other scientific subsystem are outside scope.
+
+
+======================================================================
+58. STATE-MACHINE MACHINE-READABLE SPEC
+======================================================================
+
+Produce:
+
+    G1V2_STATUS_REACHABILITY_CONTRACT_V2.json
+
+containing at minimum:
+
+    version
+    parent_contract
+    stages
+    statuses
+    status_categories
+    producers
+    transitions
+    aggregation_semantics
+    invariants.
+
+This JSON plus registries is normative.
+
+
+======================================================================
+59. REFERENCE STATE-MACHINE VERIFIER
+======================================================================
+
+Implement an independent reference verifier that loads the
+machine-readable state machine and checks:
+
+    registry closure;
+    producer closure;
+    totality;
+    determinism;
+    transition validity;
+    DAG-stage consistency;
+    negative-evidence invariants;
+    aggregation completeness;
+    E01–E04 regressions.
+
+
+======================================================================
+60. EXHAUSTIVE TRANSITION EXPANSION
+======================================================================
+
+Generate a fully expanded machine table from the normative contract.
+
+For every:
+
+    allowed upstream stage/status
+        ×
+    direct downstream stage
+
+record exactly one transition.
+
+Hash this expanded table.
+
+This prevents wildcard/default interpretation differences.
+
+
+======================================================================
+61. REQUIRED EXPANDED TABLE
+======================================================================
+
+Create:
+
+    G1V2_REACHABILITY_EXPANDED.tsv
+
+with no implicit rules.
+
+It must be reproducibly generated from the normative machine-readable
+contract.
+
+
+======================================================================
+62. GOLDEN STATE-MACHINE CASES
+======================================================================
+
+Create independent golden cases covering at minimum:
+
+    successful assessable PASS;
+    successful assessable FAIL;
+    NOT_ASSESSABLE;
+    FIT_FAILURE;
+    NUMERICAL_FAILURE;
+    INDUCTION_CAP;
+    GENERATION_FAILURE;
+    PROTOCOL_VETO;
+    NOT_REACHED.
+
+Each case must specify expected downstream actions and aggregation
+effect.
+
+
+======================================================================
+63. E01 GOLDEN REGRESSION
+======================================================================
+
+Require one of:
+
+    SCIENTIFIC_FAILURE is formally registered and fully defined
+
+or:
+
+    SCIENTIFIC_FAILURE occurs nowhere in normative state-machine
+    output.
+
+Require:
+
+    E01_UNREGISTERED_STATUS = CLOSED.
+
+
+======================================================================
+64. E02 GOLDEN REGRESSION
+======================================================================
+
+For every concrete registered failure status require complete
+reachability coverage.
+
+Require:
+
+    E02_FAILURE_REACHABILITY_GAPS = CLOSED.
+
+
+======================================================================
+65. E03 GOLDEN REGRESSION
+======================================================================
+
+For:
+
+    GENERATION_FAILURE → STRUCTURAL
+
+require exactly one expected action.
+
+Require:
+
+    E03_GENERATION_FAILURE_CONTRADICTION = CLOSED.
+
+
+======================================================================
+66. E04 GOLDEN REGRESSION
+======================================================================
+
+Require:
+
+    FIT failure cannot produce FAIL scientific evidence.
+
+Test that downstream aggregation cannot interpret a fit failure as
+candidate inadequacy.
+
+Require:
+
+    E04_FIT_NEGATIVE_STATE = CLOSED.
+
+
+======================================================================
+67. FAILURE NON-REJECTION PROPERTY
+======================================================================
+
+Add property tests demonstrating:
+
+For each procedural failure status F:
+
+    replacing an assessably negative scientific gate result with F
+
+must never make a candidate/class MORE rejectable.
+
+It may make the result:
+
+    unresolved
+    NOT_IDENTIFIABLE
+    protocol-invalid
+
+according to the frozen state machine.
+
+It must not create stronger negative scientific evidence.
+
+
+======================================================================
+68. MISSINGNESS MONOTONICITY
+======================================================================
+
+Where applicable, test the invariant:
+
+    loss of valid scientific evidence cannot improve certainty of
+    class rejection or minimum-model identification.
+
+Document exceptions if any are scientifically required.
+
+Any exception must be explicitly justified.
+
+
+======================================================================
+69. NONE SAFETY PROPERTY
+======================================================================
+
+Construct golden/property cases showing that introducing:
+
+    FIT_FAILURE
+    NUMERICAL_FAILURE
+    INDUCTION_CAP
+    GENERATION_FAILURE
+    NOT_ASSESSABLE
+    NOT_REACHED
+
+in place of required assessable inadequacy evidence cannot create
+NONE.
+
+
+======================================================================
+70. IDENTIFICATION SAFETY PROPERTY
+======================================================================
+
+Construct cases showing that missing/failure evidence capable of
+changing the minimum prevents an unsupported definitive recovered
+class.
+
+Expected consequence should normally be:
+
+    NOT_IDENTIFIABLE
+
+unless PROTOCOL_VETO invalidates the run more strongly.
+
+
+======================================================================
+71. M3 FAILURE PROPERTY
+======================================================================
+
+Test all scientifically meaningful combinations of exact/approximate
+M3 route outcomes, including:
+
+    adequate / adequate
+    adequate / inadequate
+    inadequate / inadequate
+    failure / inadequate
+    failure / adequate
+    failure / failure
+    NOT_ASSESSABLE combinations.
+
+Freeze one class-level result for each.
+
+
+======================================================================
+72. PROTOCOL_VETO PROPERTY
+======================================================================
+
+Construct at least one case proving that PROTOCOL_VETO cannot be
+converted into:
+
+    FAIL
+    candidate rejection
+    NONE.
+
+Freeze its actual terminal/aggregation semantics.
+
+
+======================================================================
+73. NOT_REACHED CAUSALITY
+======================================================================
+
+Every NOT_REACHED evidence state must have a valid causal upstream
+transition.
+
+Require that a NOT_REACHED record cannot exist without a frozen
+reason code/upstream state capable of suppressing that job.
+
+
+======================================================================
+74. REASON CODE REGISTRY
+======================================================================
+
+If suppression/failure reasons are machine-visible, freeze:
+
+    G1V2_STATUS_REASON_REGISTRY.tsv
+
+with:
+
+    reason_code
+    status
+    permitted_stage
+    causal_upstream_status
+    scientific_meaning.
+
+
+======================================================================
+75. STATE MACHINE VS EVIDENCE
+======================================================================
+
+Specify separately:
+
+    job execution state
+    evidence type
+    evidence status
+    scientific interpretation.
+
+Do not assume these are synonymous.
+
+The subsequent Task85c-c must be able to derive schema branches from
+this mapping without scientific inference.
+
+
+======================================================================
+76. REACHABILITY VS DEPENDENCY
+======================================================================
+
+Clarify that:
+
+    dependency edge exists in frozen DAG
+
+does not necessarily mean:
+
+    downstream scientific computation runs.
+
+A suppressed downstream job still exists and emits the frozen
+NOT_REACHED evidence representation.
+
+
+======================================================================
+77. CONTROL_AGGREGATION TOTALITY
+======================================================================
+
+Define final control aggregation behavior for every possible
+combination of candidate-level terminal categories that the frozen
+machine can produce.
+
+No valid state-machine output may reach control aggregation with an
+undefined interpretation.
+
+
+======================================================================
+78. PROTOCOL INVALIDITY
+======================================================================
+
+Decide explicitly whether PROTOCOL_VETO:
+
+A. produces a valid scientific terminal result such as
+   NOT_IDENTIFIABLE,
+
+or
+
+B. invalidates the scientific run/cell such that no ordinary final
+   scientific verdict is permitted.
+
+Do not leave this to the future evidence verifier.
+
+This is an authorized Task85c-b decision because the existing
+contract does not uniquely specify it.
+
+
+======================================================================
+79. FINAL VERDICT DOMAIN
+======================================================================
+
+Freeze the complete final verdict domain and its relationship to
+status/reachability.
+
+Preserve at minimum the existing distinctions around:
+
+    recovered class
+    EQUIVALENT_SET / NOT_IDENTIFIABLE
+    NONE
+
+and explicitly specify behavior under unresolved failure evidence.
+
+
+======================================================================
+80. NO CONFIRMATORY DATA
+======================================================================
+
+All state-machine decisions must be made without:
+
+    blind Stage C outcomes;
+    natural-language confirmatory outcomes;
+    Voynich outcomes.
+
+Use only:
+
+    frozen contract logic;
+    synthetic abstract fixtures;
+    open development fixtures where necessary.
+
+
+======================================================================
+81. NO EMPIRICAL TUNING
+======================================================================
+
+Do not choose failure propagation based on which rule:
+
+    recovers synthetic controls better;
+    makes natural language identifiable;
+    produces fewer NOT_IDENTIFIABLE results;
+    improves Voynich classification.
+
+The state machine is a methodological contract, not a fitted object.
+
+
+======================================================================
+82. REQUIRED ARTIFACTS
+======================================================================
+
+Create under:
+
+    research/phase3/task85c-b/
+
+at minimum:
+
+    TASK85C_B_DESIGN.md
+    TASK85C_B_REPORT.md
+
+    TASK85C_B_E01_E04_CLOSURE.tsv
+    TASK85C_B_CHANGE_REGISTER.tsv
+    TASK85C_B_VALIDATION.tsv
+
+    G1V2_STATUS_REGISTRY_V2.tsv
+    G1V2_STAGE_STATUS_CONTRACT.tsv
+    G1V2_STATUS_REASON_REGISTRY.tsv
+
+    G1V2_REACHABILITY_CONTRACT_V2.tsv
+    G1V2_REACHABILITY_EXPANDED.tsv
+
+    G1V2_EVIDENCE_STATUS_SEMANTICS.tsv
+
+    G1V2_STATUS_REACHABILITY_CONTRACT_V2.md
+    G1V2_STATUS_REACHABILITY_CONTRACT_V2.json
+
+    golden/
+        state-machine cases
+        E01 regression
+        E02 regression
+        E03 regression
+        E04 regression
+        aggregation cases
+        M3 route cases
+        NONE safety cases
+        NOT_IDENTIFIABLE safety cases
+
+    reference/
+        state-machine verifier
+        expanded-table generator
+
+    TASK85C_B_RESULTS_MANIFEST.json
+
+and exactly one terminal marker artifact.
+
+
+======================================================================
+83. E01–E04 CLOSURE TABLE
+======================================================================
+
+TASK85C_B_E01_E04_CLOSURE.tsv must contain:
+
+    finding_id
+    original_contradiction
+    resolution
+    changed_artifacts
+    semantic_classification
+    golden_tests
+    verifier_check
+    verdict.
+
+Every E01–E04 verdict must be:
+
+    CLOSED
+
+for successful freeze.
+
+
+======================================================================
+84. CHANGE REGISTER
+======================================================================
+
+TASK85C_B_CHANGE_REGISTER.tsv must record every normative change from
+Task85c V1.
+
+Columns at minimum:
+
+    change_id
+    artifact
+    old_semantics
+    new_semantics
+    reason
+    classification
+    affects_model
+    affects_metric
+    affects_threshold
+    affects_DAG
+    affects_final_interpretation
+    authorized_scope.
+
+
+======================================================================
+85. EXPECTED CHANGE PROFILE
+======================================================================
+
+A successful Task85c-b is expected to change:
+
+    status registry;
+    stage/status legality;
+    reachability;
+    failure aggregation semantics;
+    related status/reachability golden vectors.
+
+It is expected NOT to change:
+
+    model registry;
+    candidate registry;
+    RNG;
+    predictive metric registry;
+    structural metric registry;
+    complexity formulas;
+    controls;
+    corpora;
+    DAG topology/cardinality.
+
+
+======================================================================
+86. HASH INVARIANT AUDIT
+======================================================================
+
+Record SHA-256 before/after for all relevant frozen components.
+
+Unexpected byte changes outside the authorized status/reachability
+domain must be investigated.
+
+Do not silently regenerate unrelated artifacts.
+
+
+======================================================================
+87. PARENT DEFECT CLOSURE
+======================================================================
+
+The Task85c-a expanded-defect artifact remains immutable.
+
+Task85c-b results manifest must reference its hash and artifact root:
+
+    TASK85C_A_ARTIFACT_ROOT_SHA256 =
+        736e2aee714f63145d4dece5a1cb0014e070142f5033f97edcbb86ab4a57f2f8
+
+This provides the reason for the status/reachability revision.
+
+
+======================================================================
+88. MACHINE-READABLE ROOT
+======================================================================
+
+Compute and freeze:
+
+    STATUS_REACHABILITY_CONTRACT_ROOT_SHA256
+
+covering at minimum:
+
+    V2 status registry;
+    stage/status contract;
+    reason registry;
+    V2 reachability;
+    expanded reachability;
+    evidence/status semantics;
+    machine-readable contract;
+    golden state-machine suite.
+
+
+======================================================================
+89. INDEPENDENT IMPLEMENTABILITY TEST
+======================================================================
+
+Perform the conceptual two-implementer test.
+
+Given only the Task85c-b frozen artifacts, two independent
+implementers must reach the same answer for every:
+
+    stage/status legality;
+    downstream RUN/NOT_REACHED action;
+    negative-evidence interpretation;
+    candidate aggregation consequence;
+    class aggregation consequence;
+    final identification consequence.
+
+If either implementer must choose scientific semantics:
+
+    NOT READY.
+
+
+======================================================================
+90. REQUIRED VALIDATION
+======================================================================
+
+Run at minimum:
+
+    parent Task85c validator
+    parent Task85c golden reference
+    Task85c-a expanded-defect reproduction
+
+    Task85c-b state-machine validator
+    Task85c-b expanded-table generator/check
+    Task85c-b golden state-machine suite
+    Task85c-b property tests
+
+    go build ./...
+    go vet ./...
+    go test ./...
+    go test -race ./...
+
+where repository code is affected.
+
+Also:
+
+    git diff --check.
+
+Unavailable checks are:
+
+    NOT_TESTED
+
+not PASS.
+
+
+======================================================================
+91. REQUIRED VALIDATION MATRIX
+======================================================================
+
+TASK85C_B_VALIDATION.tsv must include at minimum:
+
+    parent Task85c identity
+    Task85c-a identity
+    E01 reproduction
+    E02 reproduction
+    E03 reproduction
+    E04 reproduction
+
+    status registry closure
+    producer/status closure
+    stage registry closure
+    reachability totality
+    reachability determinism
+    no unregistered reachability statuses
+    no emitted statuses without reachability
+    no impossible reachability rows
+    no accidental dead statuses
+
+    FAIL scientific semantics
+    FIT failure non-negative semantics
+    numerical failure non-negative semantics
+    induction-cap non-negative semantics
+    generation-failure non-negative semantics
+    protocol-veto semantics
+    NOT_ASSESSABLE semantics
+    NOT_REACHED semantics
+
+    generation-failure structural transition
+    complexity reachability
+    aggregation reachability
+
+    NONE safety
+    NOT_IDENTIFIABLE safety
+    missingness monotonicity
+    M3 route combinations
+
+    DAG job-count invariant
+    DAG dependency-count invariant
+    model invariant
+    candidate invariant
+    RNG invariant
+    metric invariant
+    complexity invariant
+    control/corpus invariant
+    threshold invariant
+
+    independent implementability
+    blind firewall
+    natural confirmatory firewall
+    Voynich firewall
+    results-manifest closure.
+
+
+======================================================================
+92. REQUIRED VERDICTS
+======================================================================
+
+Issue at minimum:
+
+    PARENT_TASK85C_IDENTITY =
+        SUPPORTED / NOT_SUPPORTED
+
+    PARENT_TASK85C_A_DEFECT_IDENTITY =
+        SUPPORTED / NOT_SUPPORTED
+
+    E01_UNREGISTERED_SCIENTIFIC_FAILURE =
+        CLOSED / BLOCKED
+
+    E02_FAILURE_REACHABILITY_GAPS =
+        CLOSED / BLOCKED
+
+    E03_GENERATION_FAILURE_CONTRADICTION =
+        CLOSED / BLOCKED
+
+    E04_FIT_NEGATIVE_STATE_CONTRADICTION =
+        CLOSED / BLOCKED
+
+    STATUS_REGISTRY_CLOSED =
+        SUPPORTED / NOT_SUPPORTED
+
+    STAGE_STATUS_CONTRACT_CLOSED =
+        SUPPORTED / NOT_SUPPORTED
+
+    REACHABILITY_TOTAL =
+        SUPPORTED / NOT_SUPPORTED
+
+    REACHABILITY_DETERMINISTIC =
+        SUPPORTED / NOT_SUPPORTED
+
+    FAILURE_NON_REJECTION =
+        SUPPORTED / NOT_SUPPORTED
+
+    NONE_SAFETY =
+        SUPPORTED / NOT_SUPPORTED
+
+    NOT_IDENTIFIABLE_SAFETY =
+        SUPPORTED / NOT_SUPPORTED
+
+    M3_ROUTE_FAILURE_SEMANTICS =
+        SUPPORTED / NOT_SUPPORTED
+
+    PROTOCOL_VETO_SEMANTICS =
+        SUPPORTED / NOT_SUPPORTED
+
+    DAG_INVARIANT =
+        SUPPORTED / NOT_SUPPORTED
+
+    MODEL_SPACE_UNCHANGED =
+        SUPPORTED / NOT_SUPPORTED
+
+    RNG_UNCHANGED =
+        SUPPORTED / NOT_SUPPORTED
+
+    METRIC_SPACE_UNCHANGED =
+        SUPPORTED / NOT_SUPPORTED
+
+    CONTROL_CORPUS_UNCHANGED =
+        SUPPORTED / NOT_SUPPORTED
+
+    INDEPENDENT_IMPLEMENTABILITY =
+        SUPPORTED / NOT_SUPPORTED
+
+    BLIND_FIREWALL_PRESERVED =
+        SUPPORTED / NOT_SUPPORTED
+
+    NATURAL_CONFIRMATORY_FIREWALL_PRESERVED =
+        SUPPORTED / NOT_SUPPORTED
+
+    VOYNICH_FIREWALL_PRESERVED =
+        SUPPORTED / NOT_SUPPORTED
+
+    TASK85C_C_READY =
+        SUPPORTED / NOT_SUPPORTED.
+
+
+======================================================================
+93. TASK85C_C_READY RULE
+======================================================================
+
+TASK85C_C_READY = SUPPORTED only if ALL hold:
+
+1. Parent Task85c identity is verified.
+2. Task85c-a expanded defect identity is verified.
+3. E01 is CLOSED.
+4. E02 is CLOSED.
+5. E03 is CLOSED.
+6. E04 is CLOSED.
+7. Every normative status is registered.
+8. Every status has a unique category.
+9. Every stage has a complete allowed-status set.
+10. FAIL is limited to assessable negative scientific gates/verifiers.
+11. Procedural failures cannot create negative evidence.
+12. NOT_ASSESSABLE has unique semantics.
+13. NOT_REACHED has unique DAG-suppression semantics.
+14. SCIENTIFIC_FAILURE is either fully formalized or removed.
+15. Every reachable stage/status/downstream tuple has one transition.
+16. No tuple has multiple transitions.
+17. Every concrete failure status has complete reachability.
+18. Generation failure has one structural action.
+19. FIT failure cannot be represented as scientific FAIL.
+20. Complexity reachability is complete.
+21. Aggregation reachability is complete.
+22. Candidate aggregation handles every reachable terminal state.
+23. Control aggregation handles every reachable terminal state.
+24. NONE cannot be caused by missing/failure evidence.
+25. Missing evidence cannot create stronger class rejection.
+26. M3 exact/approx failure combinations are fully defined.
+27. PROTOCOL_VETO semantics are fully defined.
+28. Expanded reachability is reproducible.
+29. DAG remains exactly 1,321,152 jobs.
+30. DAG remains exactly 2,617,152 dependencies.
+31. M0–M5 are unchanged.
+32. Candidate registry is unchanged.
+33. RNG is unchanged.
+34. Metrics/threshold semantics are unchanged.
+35. Complexity formulas are unchanged.
+36. Controls/corpora are unchanged.
+37. Golden state-machine suite passes.
+38. Independent implementability is SUPPORTED.
+39. No blind result was used.
+40. No natural confirmatory result was used.
+41. No Voynich result was used.
+42. Results manifest closes transitively.
+
+
+======================================================================
+94. STOP CONDITIONS
+======================================================================
+
+STOP with:
+
+    TASK85C_B_DEFECT_EXPANDED
+
+if resolution of E01–E04 exposes an additional contradiction outside
+the authorized status/reachability/failure-aggregation domain.
+
+STOP with:
+
+    TASK85C_B_G1V2_REDESIGN_REQUIRED
+
+if a consistent state machine requires changing:
+
+    model definitions;
+    metrics;
+    thresholds;
+    candidate space;
+    central minimum-class question;
+    control design.
+
+STOP with:
+
+    TASK85C_B_STATE_MACHINE_INVALID
+
+if a proposed resolution remains:
+
+    incomplete;
+    nondeterministic;
+    non-total;
+    internally contradictory;
+    unsafe with respect to negative evidence.
+
+Do not silently broaden the task.
+
+
+======================================================================
+95. TERMINAL MARKERS
+======================================================================
+
+Successful status/reachability freeze:
+
+    G1_V2_STATUS_REACHABILITY_CONTRACT_V2_FROZEN
+
+Expanded defect:
+
+    TASK85C_B_DEFECT_EXPANDED
+
+G1-v2 redesign required:
+
+    TASK85C_B_G1V2_REDESIGN_REQUIRED
+
+Invalid/incomplete state machine:
+
+    TASK85C_B_STATE_MACHINE_INVALID
+
+Exactly one terminal marker.
+
+
+======================================================================
+96. SUCCESSFUL FINAL OUTPUT
+======================================================================
+
+On success print:
+
+    E01_UNREGISTERED_SCIENTIFIC_FAILURE =
+        CLOSED
+
+    E02_FAILURE_REACHABILITY_GAPS =
+        CLOSED
+
+    E03_GENERATION_FAILURE_CONTRADICTION =
+        CLOSED
+
+    E04_FIT_NEGATIVE_STATE_CONTRADICTION =
+        CLOSED
+
+    STATUS_REACHABILITY_VERSION =
+        G1_V2_STATUS_REACHABILITY_CONTRACT_V2
+
+    STATUS_REACHABILITY_CONTRACT =
+        <path>
+
+    STATUS_REACHABILITY_CONTRACT_SHA256 =
+        <sha256>
+
+    STATUS_REGISTRY_V2_SHA256 =
+        <sha256>
+
+    STAGE_STATUS_CONTRACT_SHA256 =
+        <sha256>
+
+    REACHABILITY_V2_SHA256 =
+        <sha256>
+
+    EXPANDED_REACHABILITY_SHA256 =
+        <sha256>
+
+    EVIDENCE_STATUS_SEMANTICS_SHA256 =
+        <sha256>
+
+    GOLDEN_STATE_MACHINE_ROOT_SHA256 =
+        <sha256>
+
+    TASK85C_B_ARTIFACT_ROOT_SHA256 =
+        <sha256>
+
+    DAG_JOB_COUNT =
+        1321152
+
+    DAG_DEPENDENCY_COUNT =
+        2617152
+
+    FAILURE_NON_REJECTION =
+        SUPPORTED
+
+    NONE_SAFETY =
+        SUPPORTED
+
+    NOT_IDENTIFIABLE_SAFETY =
+        SUPPORTED
+
+    INDEPENDENT_IMPLEMENTABILITY =
+        SUPPORTED
+
+    TASK85C_C_READY =
+        SUPPORTED
+
+    TERMINAL_MARKER =
+        G1_V2_STATUS_REACHABILITY_CONTRACT_V2_FROZEN
+
+
+======================================================================
+97. FAILURE FINAL OUTPUT
+======================================================================
+
+On failure print:
+
+    TASK85C_C_READY =
+        NOT_SUPPORTED
+
+    UNRESOLVED_FINDINGS =
+        <exact finding IDs>
+
+    EXPANDED_FINDINGS =
+        <new findings if any>
+
+    TERMINAL_MARKER =
+        <exactly one allowed failure marker>.
+
+
+======================================================================
+98. DEFINITION OF DONE
+======================================================================
+
+Task85c-b is complete when an implementation or schema author can
+ask, for every scientifically reachable state:
+
+    "What happened?"
+    "What status is emitted?"
+    "Is this negative scientific evidence?"
+    "Which downstream jobs run?"
+    "Which planned jobs become NOT_REACHED?"
+    "How does candidate aggregation treat it?"
+    "Can the class be rejected?"
+    "Can NONE still be established?"
+    "Does this force NOT_IDENTIFIABLE?"
+    "Does PROTOCOL_VETO invalidate the result?"
+
+and obtain exactly one answer from the frozen machine-readable
+contract without consulting implementation preferences.
+
+Only after that condition is met may Task85c-c translate the state
+machine into enforceable A17 JSON Schemas.

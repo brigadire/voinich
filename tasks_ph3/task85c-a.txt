@@ -1,0 +1,1624 @@
+Task85c-a — A17 Evidence Schema Status Enforcement Repair
+and Controlled Contract Refreeze
+
+
+PURPOSE
+
+Repair the machine-enforceable A17 scientific evidence schemas after
+Task86C-v2-scientific-impl-R demonstrated that the frozen Task85c
+schemas admit status/evidence combinations forbidden by the normative
+G1-v2 scientific contract.
+
+This is a:
+
+    CONTRACT DEFECT CORRECTION
+    SCHEMA ENFORCEMENT REPAIR
+    EXHAUSTIVE CONFORMANCE AUDIT
+    CONTROLLED REFREEZE
+
+task.
+
+It is NOT:
+
+    a G1-v2 redesign;
+    a model redesign;
+    a status-semantics redesign;
+    a reachability redesign;
+    a DAG redesign;
+    threshold tuning;
+    implementation of production handlers;
+    scientific execution;
+    blind execution;
+    natural-language confirmatory execution;
+    Voynich evaluation.
+
+
+======================================================================
+1. DEFECT BEING REPAIRED
+======================================================================
+
+Task86C-v2-scientific-impl-R stopped with:
+
+    CONTRACT_DEFECT =
+        A17_STATUS_SCHEMA_CONTRADICTION
+
+    TASK86C_V2_SCIENTIFIC_EXECUTION_READY =
+        NOT_SUPPORTED
+
+    TERMINAL_MARKER =
+        TASK86C_V2_TASK85C_CONTRACT_DEFECT
+
+The demonstrated defect is that the frozen A17 evidence schemas do
+not enforce the normative status semantics.
+
+Known reproductions include:
+
+    not_reached.schema.json
+        accepts status = PASS
+
+    fit.schema.json
+        accepts status = FAIL
+
+and:
+
+    x-status-rules
+
+is not a standard JSON Schema enforcement keyword.
+
+Therefore two implementations can differ:
+
+    implementation A:
+        treats x-status-rules as normative custom validation
+
+    implementation B:
+        uses a standard JSON Schema validator and accepts documents
+        forbidden by the scientific contract.
+
+This violates independent implementability.
+
+
+======================================================================
+2. AUTHORITATIVE DEFECT EVIDENCE
+======================================================================
+
+Primary defect report:
+
+    research/phase3/task86c-v2-scientific-impl-r/
+        TASK86C_V2_TASK85C_CONTRACT_DEFECT.md
+
+Also preserve the failure closure produced by
+Task86C-v2-scientific-impl-R.
+
+The minimal hash-valid examples in the defect report are regression
+fixtures and MUST remain rejected after repair.
+
+
+======================================================================
+3. PARENT CONTRACT
+======================================================================
+
+Parent scientific contract:
+
+    G1_V2_EXECUTABLE_CONTRACT_V1
+
+Original normative contract SHA-256:
+
+    275b29c592be6d3cb80c20df9b9348348009d758e2770ed39da0066004b11bca
+
+Original Task85c artifact root:
+
+    273913473e3e37d6a776c79b0eb214753a90e9dbaf5d78e186dcb65a0c32c351
+
+Original evidence schema root:
+
+    8462ceb7f34efce1674528af7e69bdbf6855cd4938494d6d5034247245235ed0
+
+Original golden suite root:
+
+    b7443a962a82dd5c0cd67b71e24d8acea73fc9be4863fca4078bc53e468c7e51
+
+These hashes are immutable historical provenance.
+
+DO NOT overwrite or silently replace them.
+
+
+======================================================================
+4. SCIENTIFIC INVARIANT
+======================================================================
+
+The normative scientific semantics of Task85c remain frozen.
+
+Task85c-a MUST NOT change the meaning of:
+
+    PASS
+    FAIL
+    NOT_ASSESSABLE
+    NOT_REACHED
+
+or any scientific failure status.
+
+Task85c-a only makes the machine-readable schemas enforce the
+already frozen semantics.
+
+
+======================================================================
+5. REPAIR CLASSIFICATION
+======================================================================
+
+Classify the change as:
+
+    CONTRACT_DEFECT_CORRECTION
+
+not:
+
+    NECESSARY_SCIENTIFIC_CHANGE.
+
+The report must explicitly verify that the repair changes:
+
+    accepted invalid representations
+
+but does NOT change:
+
+    permitted scientific states;
+    model outputs;
+    thresholds;
+    candidate selection;
+    scientific decision logic.
+
+
+======================================================================
+6. SCOPE
+======================================================================
+
+The primary repair target is A17:
+
+    scientific evidence schemas
+    status-specific constraints
+    canonical machine validation.
+
+Audit all A17 schemas, not only the two schemas that exposed the
+defect.
+
+Do not assume the known reproductions are exhaustive.
+
+
+======================================================================
+7. NO LOCAL PATCH ONLY
+======================================================================
+
+It is insufficient to change only:
+
+    fit.schema.json
+    not_reached.schema.json.
+
+Perform a systematic audit over every frozen scientific evidence
+schema and every frozen status.
+
+The objective is to establish closure of the complete A17 status
+space.
+
+
+======================================================================
+8. NORMATIVE STATUS SOURCE
+======================================================================
+
+Derive the authoritative allowed status semantics from the frozen
+Task85c closure, including:
+
+    G1V2_STATUS_REGISTRY.tsv
+    G1V2_REACHABILITY_CONTRACT.tsv
+    G1V2_EXECUTABLE_CONTRACT.json
+    G1V2_EXECUTABLE_CONTRACT.md
+
+and any other Task85c artifact explicitly referenced as normative.
+
+Do not infer new status combinations from existing permissive JSON
+schemas.
+
+
+======================================================================
+9. STATUS/EVIDENCE MATRIX
+======================================================================
+
+Construct a normative matrix:
+
+    evidence_type × status
+
+For every pair classify:
+
+    ALLOWED
+    FORBIDDEN
+
+For every ALLOWED pair also specify:
+
+    required fields;
+    conditionally required fields;
+    forbidden fields;
+    allowed null fields;
+    dependency requirements;
+    value constraints where status-dependent.
+
+This matrix becomes part of the repaired contract.
+
+
+======================================================================
+10. REQUIRED STATUS MATRIX ARTIFACT
+======================================================================
+
+Create:
+
+    G1V2_EVIDENCE_STATUS_MATRIX.tsv
+
+Columns at minimum:
+
+    evidence_type
+    schema_id
+    status
+    allowed
+    required_fields
+    forbidden_fields
+    nullable_fields
+    dependency_rule
+    normative_source
+    notes.
+
+
+======================================================================
+11. STANDARD JSON SCHEMA ENFORCEMENT
+======================================================================
+
+Scientifically normative restrictions MUST be expressible through
+standard validation semantics of the selected JSON Schema dialect.
+
+Do not rely on unknown extension keywords such as:
+
+    x-status-rules
+
+for enforcement.
+
+Custom annotation keywords may remain for documentation only if they
+have no normative enforcement role.
+
+
+======================================================================
+12. JSON SCHEMA DIALECT
+======================================================================
+
+Freeze the exact JSON Schema dialect used by G1-v2 evidence.
+
+Every schema must declare the appropriate:
+
+    $schema
+
+and, where appropriate:
+
+    $id.
+
+The validator must verify dialect identity.
+
+Do not leave validator behavior dependent on library defaults.
+
+
+======================================================================
+13. STANDARD KEYWORDS
+======================================================================
+
+Use standard schema mechanisms such as, where appropriate:
+
+    const
+    enum
+    oneOf
+    anyOf
+    allOf
+    not
+    if
+    then
+    else
+    required
+    properties
+    additionalProperties
+    unevaluatedProperties
+    dependentRequired
+
+according to the frozen dialect.
+
+Do not introduce custom scientific validation semantics where
+standard JSON Schema can express the rule.
+
+
+======================================================================
+14. STATUS-SPECIFIC BRANCHES
+======================================================================
+
+For evidence types supporting multiple statuses, encode the allowed
+status-specific document shapes explicitly.
+
+Conceptually:
+
+    oneOf:
+        status PASS shape
+        status FAIL shape
+        status NOT_ASSESSABLE shape
+        ...
+
+where applicable.
+
+A document must not validate against a branch representing a
+scientifically different status.
+
+
+======================================================================
+15. SINGLE-STATUS EVIDENCE TYPES
+======================================================================
+
+Evidence types that scientifically permit only one status must
+enforce that status with a standard keyword such as:
+
+    const
+
+or an equivalent standard construct.
+
+For example, if the normative contract permits only:
+
+    NOT_REACHED
+
+for `not_reached` evidence, then:
+
+    status = PASS
+
+must be rejected by the schema itself.
+
+
+======================================================================
+16. REQUIRED/FORBIDDEN FIELD SEMANTICS
+======================================================================
+
+Status enforcement is not limited to the `status` field.
+
+For every allowed status verify the associated payload.
+
+Examples of defects to search for:
+
+    PASS without required metric value;
+    FAIL without required comparison evidence;
+    NOT_ASSESSABLE carrying a forbidden PASS result;
+    NOT_REACHED carrying computed scientific outputs;
+    scientific failure carrying ordinary adequacy evidence;
+    final verdict containing incompatible reason/status fields.
+
+Do not freeze schemas that validate semantically impossible hybrids.
+
+
+======================================================================
+17. NULL VS ABSENT
+======================================================================
+
+Preserve Task85c canonical null/absence rules.
+
+Do not repair schemas by making every field nullable.
+
+For each status-specific field determine whether it must be:
+
+    PRESENT with value;
+    PRESENT as null;
+    ABSENT.
+
+Encode the frozen distinction.
+
+
+======================================================================
+18. ADDITIONAL PROPERTIES
+======================================================================
+
+Audit whether schemas currently allow undeclared fields that can
+carry contradictory scientific information.
+
+Where required for canonical evidence closure, reject scientifically
+undefined properties using the selected standard schema mechanism.
+
+Do not allow a document to smuggle a second scientific outcome
+through an unvalidated property.
+
+
+======================================================================
+19. CROSS-SCHEMA CONSISTENCY
+======================================================================
+
+Audit common fields across all evidence schemas.
+
+At minimum:
+
+    contract_version
+    schema_id
+    job_id
+    candidate_id
+    control_instance_id
+    status
+    dependencies
+    reason
+    content_sha256
+
+where applicable.
+
+Equivalent scientific concepts must not have incompatible schema
+semantics without explicit justification.
+
+
+======================================================================
+20. SCIENTIFIC FAILURE SCHEMA
+======================================================================
+
+Audit:
+
+    scientific_failure.schema.json
+
+particularly carefully.
+
+Verify that:
+
+    ordinary PASS/FAIL adequacy states cannot masquerade as
+    scientific failure;
+
+    failure reason/status combinations are closed;
+
+    failure evidence cannot contain contradictory successful
+    scientific outputs.
+
+
+======================================================================
+21. NOT_REACHED SCHEMA
+======================================================================
+
+Audit and repair:
+
+    not_reached.schema.json
+
+so that only normative NOT_REACHED representation is accepted.
+
+Verify required:
+
+    upstream/dependency information;
+    reason code;
+    provenance/hash fields
+
+and forbidden computed result fields according to the frozen
+contract.
+
+The original:
+
+    status = PASS
+
+reproduction MUST fail.
+
+
+======================================================================
+22. FIT SCHEMA
+======================================================================
+
+Audit and repair:
+
+    fit.schema.json
+
+according to the normative Task85c status semantics.
+
+The original invalid:
+
+    status = FAIL
+
+reproduction MUST fail if FAIL is not a legal fit status under the
+frozen status registry.
+
+Do not reinterpret FAIL to make the old schema valid.
+
+
+======================================================================
+23. ALL OTHER A17 SCHEMAS
+======================================================================
+
+Audit at minimum:
+
+    fitted_model
+    predictive_metric
+    predictive_gate
+    predictive_verdict
+    generation
+    f2_metric
+    structural_family
+    structural_gate
+    structural_verdict
+    complexity
+    minimality
+    final_verdict
+    scientific_failure
+
+in addition to:
+
+    fit
+    not_reached.
+
+No schema receives grandfathered trust merely because no defect has
+yet been observed.
+
+
+======================================================================
+24. EXHAUSTIVE STATUS CONFORMANCE TEST
+======================================================================
+
+Implement an automated test over:
+
+    every evidence schema
+        ×
+    every registered scientific status.
+
+For every pair:
+
+if matrix says ALLOWED:
+    construct a minimal valid evidence object and require ACCEPT.
+
+if matrix says FORBIDDEN:
+    construct a structurally valid object carrying that status and
+    require REJECT.
+
+The test must use a standards-compliant JSON Schema validator.
+
+
+======================================================================
+25. NO CUSTOM-VALIDATOR FALSE CONFIDENCE
+======================================================================
+
+The exhaustive conformance test MUST NOT rely solely on the project's
+custom evidence verifier.
+
+At least one standards-compliant external/library JSON Schema
+validation path must independently enforce the schema.
+
+The purpose is specifically to detect ignored annotation keywords.
+
+
+======================================================================
+26. VALIDATOR IMPLEMENTATION INDEPENDENCE
+======================================================================
+
+Where practical, validate repaired schemas with two independent
+standards-compliant JSON Schema implementations.
+
+If only one implementation is available:
+
+    record SECOND_VALIDATOR = NOT_TESTED
+
+not PASS.
+
+A second implementation is strongly preferred but is not by itself
+required for successful freeze if the selected dialect is standard
+and all normative constraints are expressed in standard keywords.
+
+
+======================================================================
+27. POSITIVE GOLDEN VECTORS
+======================================================================
+
+For every ALLOWED evidence_type × status pair create at least one
+positive golden vector.
+
+Require:
+
+    schema ACCEPT;
+    canonicalization ACCEPT;
+    content-hash verification ACCEPT.
+
+Positive vectors must represent scientifically legal evidence.
+
+
+======================================================================
+28. NEGATIVE GOLDEN VECTORS
+======================================================================
+
+For every FORBIDDEN evidence_type × status pair create a negative
+golden vector or deterministically generated negative case.
+
+Require:
+
+    schema REJECT.
+
+This is mandatory even when a custom semantic verifier would also
+reject it.
+
+
+======================================================================
+29. FIELD-MUTATION NEGATIVE TESTS
+======================================================================
+
+For every ALLOWED status branch mutate at minimum:
+
+    remove required field;
+    add forbidden field;
+    replace status with forbidden status;
+    null a non-null field;
+    populate a must-be-null/absent field;
+    insert contradictory result/reason where applicable.
+
+Require rejection whenever the mutated document violates the
+normative matrix.
+
+
+======================================================================
+30. ORIGINAL DEFECT REGRESSION
+======================================================================
+
+The exact minimal hash-valid reproductions from:
+
+    TASK86C_V2_TASK85C_CONTRACT_DEFECT.md
+
+must become permanent regression tests.
+
+Required:
+
+    OLD_NOT_REACHED_PASS_ACCEPTED = false
+    OLD_FIT_FAIL_ACCEPTED = false.
+
+
+======================================================================
+31. HASH-VALID INVALID EVIDENCE TEST
+======================================================================
+
+The repair must specifically prove that recomputing a valid
+`content_sha256` cannot make a scientifically forbidden evidence
+document schema-valid.
+
+Test sequence:
+
+    construct forbidden status document;
+    canonicalize it correctly;
+    recompute content_sha256 correctly;
+    validate.
+
+Expected:
+
+    REJECT.
+
+Hash validity is not scientific schema validity.
+
+
+======================================================================
+32. CANONICALIZATION INVARIANT
+======================================================================
+
+Do not modify:
+
+    G1V2-CJ-1
+
+unless a genuine independent defect is discovered.
+
+A17 repair should normally change schema acceptance, not canonical
+byte representation.
+
+If canonicalization must change:
+
+    STOP CONTRACT_DEFECT_EXPANDED
+
+and document separately.
+
+
+======================================================================
+33. STATUS SEMANTICS INVARIANT
+======================================================================
+
+Compare pre-repair and repaired normative status matrix.
+
+Required scientific semantic delta:
+
+    NONE.
+
+Required enforcement delta:
+
+    forbidden documents previously accepted
+        →
+    rejected.
+
+If the set of scientifically permitted states changes:
+
+    STOP SCIENTIFIC_CHANGE_REQUIRED.
+
+
+======================================================================
+34. REACHABILITY INVARIANT
+======================================================================
+
+Do not change:
+
+    G1V2_REACHABILITY_CONTRACT.tsv
+
+unless the existing reachability contract itself contradicts the
+normative status semantics.
+
+If such contradiction is discovered:
+
+    STOP CONTRACT_DEFECT_EXPANDED.
+
+Do not repair reachability opportunistically.
+
+
+======================================================================
+35. DAG INVARIANT
+======================================================================
+
+The frozen Task85c DAG must remain scientifically unchanged.
+
+Expected:
+
+    candidates = 43
+    controls = 192
+
+    jobs = 1,321,152
+    dependencies = 2,617,152.
+
+A17 repair must not change DAG topology or cardinality.
+
+If it does:
+
+    STOP SCIENTIFIC_CHANGE_REQUIRED.
+
+
+======================================================================
+36. MODEL INVARIANT
+======================================================================
+
+Do not change:
+
+    M0
+    M1
+    M2
+    M3
+    M4
+    M5
+
+definitions, candidates, grids, numerical algorithms or complexity.
+
+All model-related hashes should remain unchanged unless a transitive
+container artifact necessarily changes because it references the
+schema root.
+
+
+======================================================================
+37. RNG INVARIANT
+======================================================================
+
+Do not change:
+
+    G1V2-RNG-1
+    root seed
+    RNG domain registry
+    counter semantics.
+
+Expected RNG contract SHA-256 remains:
+
+    e47c5a8c62dd8dee34441e4274c0d49d1a7ce4aab0360aff4751cb08b6394a43
+
+unless the hash belongs to a transitive container that must be
+regenerated; the underlying RNG artifact itself must remain
+byte-identical.
+
+
+======================================================================
+38. CONTROL/CORPUS INVARIANT
+======================================================================
+
+Do not change:
+
+    control definitions;
+    synthetic generators;
+    corpus selection;
+    natural-language preprocessing;
+    blind protocol;
+    threshold derivation semantics.
+
+The repair occurs before those production inputs are constructed by
+scientific-impl-R2.
+
+
+======================================================================
+39. GOLDEN SCIENTIFIC INVARIANT
+======================================================================
+
+Existing Task85c golden vectors unrelated to evidence-schema
+acceptance must continue to pass unchanged.
+
+Do not regenerate mathematical golden expected values merely because
+schemas changed.
+
+
+======================================================================
+40. GOLDEN SUITE EXTENSION
+======================================================================
+
+Extend the Task85c golden suite with:
+
+    status/schema positive cases;
+    status/schema forbidden cases;
+    field-mutation cases;
+    original defect regressions.
+
+Distinguish:
+
+    inherited golden vectors
+    new A17 enforcement vectors.
+
+The new golden root will necessarily differ.
+
+
+======================================================================
+41. SCHEMA ROOT REFREEZE
+======================================================================
+
+After repair compute a NEW:
+
+    EVIDENCE_SCHEMA_ROOT_SHA256.
+
+Do not overwrite the historical root:
+
+    8462ceb7f34efce1674528af7e69bdbf6855cd4938494d6d5034247245235ed0.
+
+Record:
+
+    supersedes_schema_root
+    new_schema_root
+    reason =
+        A17_STATUS_SCHEMA_CONTRADICTION.
+
+
+======================================================================
+42. CONTRACT VERSION
+======================================================================
+
+The repaired contract should normally be versioned:
+
+    G1_V2_EXECUTABLE_CONTRACT_V1_1
+
+because scientific semantics remain unchanged while normative
+machine enforcement is corrected.
+
+Do NOT call it G1-v3.
+
+If the repair requires changing scientific semantics rather than
+enforcement:
+
+    STOP SCIENTIFIC_CHANGE_REQUIRED.
+
+
+======================================================================
+43. CONTRACT DOCUMENT UPDATE
+======================================================================
+
+Update the normative executable contract only as required to:
+
+    identify V1_1;
+    identify repaired schema root;
+    explicitly state JSON Schema dialect;
+    state that extension keywords are non-normative annotations;
+    reference the evidence/status matrix;
+    record the controlled defect correction.
+
+Do not rewrite unrelated scientific sections.
+
+
+======================================================================
+44. MACHINE-READABLE CONTRACT UPDATE
+======================================================================
+
+Produce a new machine-readable executable contract corresponding to:
+
+    G1_V2_EXECUTABLE_CONTRACT_V1_1.
+
+Update only fields required by the controlled refreeze.
+
+Verify all unrelated scientific fields against V1.
+
+
+======================================================================
+45. CONTRACT DIFF AUDIT
+======================================================================
+
+Create a semantic diff between:
+
+    V1
+    V1_1.
+
+Classify every changed artifact/field as:
+
+    EXPECTED_A17_REPAIR
+    TRANSITIVE_HASH_CHANGE
+    UNEXPECTED_CHANGE.
+
+Successful freeze requires:
+
+    UNEXPECTED_CHANGE = 0.
+
+
+======================================================================
+46. REQUIRED DIFF ARTIFACT
+======================================================================
+
+Create:
+
+    TASK85C_A_CONTRACT_DIFF.tsv
+
+with at least:
+
+    artifact
+    field_or_region
+    old_hash
+    new_hash
+    change_class
+    reason
+    scientific_semantics_changed
+    verdict.
+
+
+======================================================================
+47. TRANSITIVE REFREEZE
+======================================================================
+
+Produce a new transitive artifact root covering the repaired
+contract.
+
+The new results manifest must reference:
+
+    parent Task85c results manifest;
+    parent contract version/hash;
+    original evidence schema root;
+    defect report/hash;
+    repaired schemas;
+    status matrix;
+    new schema root;
+    extended golden suite;
+    new golden root;
+    V1_1 executable contract;
+    validation evidence;
+    diff audit.
+
+
+======================================================================
+48. HISTORICAL PROVENANCE
+======================================================================
+
+Do not delete or rewrite:
+
+    G1_V2_EXECUTABLE_CONTRACT_V1
+    original Task85c results manifest
+    original schema root
+    Task86C-v2-scientific-impl-R failure report.
+
+The provenance chain must be:
+
+    Task85b
+       ↓
+    Task85c / V1
+       ↓
+    scientific-impl-R
+       ↓
+    A17_STATUS_SCHEMA_CONTRADICTION
+       ↓
+    Task85c-a / V1_1
+       ↓
+    scientific-impl-R2.
+
+
+======================================================================
+49. NO PRODUCTION IMPLEMENTATION
+======================================================================
+
+Do not implement:
+
+    M0–M5 production handlers;
+    production G1-v2 executor;
+    production evidence verifier beyond reference/schema tests;
+    production run manifest.
+
+Those remain responsibilities of:
+
+    Task86C-v2-scientific-impl-R2.
+
+
+======================================================================
+50. NO THRESHOLD CONSTRUCTION
+======================================================================
+
+Do not construct production thresholds.
+
+Threshold semantics remain frozen but actual production threshold
+artifacts belong to the subsequent implementation task.
+
+
+======================================================================
+51. NO BLIND CONSTRUCTION
+======================================================================
+
+Do not construct Stage C blind controls.
+
+The blind escrow schema may be audited for schema consistency, but
+do not create production blind truth or execute recovery.
+
+
+======================================================================
+52. NO NATURAL CONFIRMATORY EXECUTION
+======================================================================
+
+Do not run G1-v2 on the natural-language confirmatory corpora.
+
+Do not use natural-language outcomes to test the schema repair.
+
+
+======================================================================
+53. VOYNICH FIREWALL
+======================================================================
+
+Do not read or evaluate Voynich as part of this task.
+
+No Voynich result may influence the repair.
+
+
+======================================================================
+54. REFERENCE VALIDATOR
+======================================================================
+
+Implement or extend a Task85c-a reference validation tool that:
+
+    loads the status registry;
+    loads the status/evidence matrix;
+    loads every evidence schema;
+    verifies declared JSON Schema dialect;
+    enumerates every schema × status pair;
+    runs positive/negative cases;
+    runs field mutations;
+    runs original defect regressions;
+    verifies canonical hashes;
+    verifies schema-root closure;
+    verifies V1→V1_1 invariants.
+
+
+======================================================================
+55. VALIDATOR MUST FAIL CLOSED
+======================================================================
+
+The Task85c-a validator must fail if:
+
+    a schema lacks $schema;
+    a normative status rule exists only in an ignored extension;
+    an ALLOWED pair has no positive test;
+    a FORBIDDEN pair is accepted;
+    required/forbidden field mutation is accepted;
+    original defect reproduction is accepted;
+    DAG cardinality changes;
+    model/RNG/control semantics change;
+    manifest closure is incomplete.
+
+
+======================================================================
+56. REQUIRED ARTIFACTS
+======================================================================
+
+Create under:
+
+    research/phase3/task85c-a/
+
+at minimum:
+
+    TASK85C_A_DESIGN.md
+    TASK85C_A_REPORT.md
+
+    G1V2_EVIDENCE_STATUS_MATRIX.tsv
+
+    TASK85C_A_SCHEMA_AUDIT.tsv
+    TASK85C_A_CONTRACT_DIFF.tsv
+    TASK85C_A_VALIDATION.tsv
+
+    G1V2_EXECUTABLE_CONTRACT_V1_1.md
+    G1V2_EXECUTABLE_CONTRACT_V1_1.json
+
+    schemas/
+        repaired versioned evidence schemas
+
+    golden/
+        positive status/schema vectors
+        negative status/schema vectors
+        mutation vectors
+        original defect regressions
+
+    reference/
+        exhaustive schema/status validator
+
+    TASK85C_A_RESULTS_MANIFEST.json
+
+and a terminal marker artifact.
+
+
+======================================================================
+57. SCHEMA AUDIT ARTIFACT
+======================================================================
+
+TASK85C_A_SCHEMA_AUDIT.tsv must contain at least:
+
+    schema_id
+    evidence_type
+    old_schema_sha256
+    new_schema_sha256
+    allowed_statuses
+    forbidden_statuses
+    standard_enforcement
+    custom_normative_keywords
+    positive_tests
+    negative_tests
+    mutation_tests
+    verdict.
+
+Successful schemas require:
+
+    custom_normative_keywords = NONE.
+
+
+======================================================================
+58. VALIDATION MATRIX
+======================================================================
+
+TASK85C_A_VALIDATION.tsv must include at minimum:
+
+    parent Task85c closure
+    defect reproduction before repair
+    JSON Schema dialect declaration
+    status matrix completeness
+    all schema/status ALLOWED tests
+    all schema/status FORBIDDEN tests
+    required-field mutations
+    forbidden-field mutations
+    null/absence mutations
+    contradictory-field mutations
+    hash-valid invalid evidence
+    original not_reached/PASS regression
+    original fit/FAIL regression
+    scientific_failure schema audit
+    canonicalization invariant
+    reachability invariant
+    DAG invariant
+    model invariant
+    RNG invariant
+    control/corpus invariant
+    inherited golden suite
+    extended golden suite
+    schema root closure
+    V1→V1_1 semantic diff
+    results-manifest closure
+    blind firewall
+    natural confirmatory firewall
+    Voynich firewall.
+
+
+======================================================================
+59. REQUIRED REPOSITORY CHECKS
+======================================================================
+
+Run at minimum:
+
+    original Task85c validator
+    original Task85c golden reference
+
+    Task85c-a validator
+    Task85c-a exhaustive schema/status tests
+    Task85c-a extended golden reference
+
+    go build ./...
+    go vet ./...
+    go test ./...
+    go test -race ./...
+
+where applicable to repository code.
+
+Also run:
+
+    git diff --check.
+
+Unavailable tooling:
+
+    NOT_TESTED
+
+not PASS.
+
+
+======================================================================
+60. STANDARD VALIDATOR CHECK
+======================================================================
+
+Explicitly record:
+
+    JSON_SCHEMA_DIALECT =
+        <exact dialect>
+
+    JSON_SCHEMA_VALIDATOR =
+        <implementation/version>
+
+    STANDARD_SCHEMA_CONFORMANCE =
+        PASS / FAIL
+
+If a second independent implementation is available:
+
+    SECOND_JSON_SCHEMA_VALIDATOR =
+        <implementation/version>
+
+    CROSS_VALIDATOR_CONFORMANCE =
+        PASS / FAIL
+
+Otherwise:
+
+    CROSS_VALIDATOR_CONFORMANCE =
+        NOT_TESTED.
+
+
+======================================================================
+61. EXHAUSTIVE MATRIX VERDICT
+======================================================================
+
+Issue:
+
+    EVIDENCE_STATUS_MATRIX_COMPLETE =
+        SUPPORTED / NOT_SUPPORTED
+
+SUPPORTED requires every registered evidence type × registered
+status pair to have an explicit normative classification.
+
+
+======================================================================
+62. SCHEMA ENFORCEMENT VERDICT
+======================================================================
+
+Issue:
+
+    STANDARD_SCHEMA_STATUS_ENFORCEMENT =
+        SUPPORTED / NOT_SUPPORTED
+
+SUPPORTED requires:
+
+    every ALLOWED pair accepted;
+    every FORBIDDEN pair rejected;
+    no normative dependency on ignored extension keywords.
+
+
+======================================================================
+63. FIELD SEMANTICS VERDICT
+======================================================================
+
+Issue:
+
+    STATUS_DEPENDENT_FIELD_ENFORCEMENT =
+        SUPPORTED / NOT_SUPPORTED
+
+SUPPORTED requires required/forbidden/null/absent semantics to be
+machine-enforced for every allowed branch.
+
+
+======================================================================
+64. SCIENTIFIC INVARIANCE VERDICT
+======================================================================
+
+Issue:
+
+    SCIENTIFIC_SEMANTICS_UNCHANGED =
+        SUPPORTED / NOT_SUPPORTED
+
+SUPPORTED requires no change to:
+
+    M0–M5;
+    candidate grid;
+    RNG;
+    predictive semantics;
+    structural semantics;
+    complexity/minimality;
+    controls/corpora;
+    reachability;
+    DAG;
+    scientific status meanings.
+
+
+======================================================================
+65. REQUIRED VERDICTS
+======================================================================
+
+Issue at minimum:
+
+    PARENT_TASK85C_IDENTITY =
+        SUPPORTED / NOT_SUPPORTED
+
+    A17_DEFECT_REPRODUCED =
+        SUPPORTED / NOT_SUPPORTED
+
+    EVIDENCE_STATUS_MATRIX_COMPLETE =
+        SUPPORTED / NOT_SUPPORTED
+
+    STANDARD_SCHEMA_STATUS_ENFORCEMENT =
+        SUPPORTED / NOT_SUPPORTED
+
+    STATUS_DEPENDENT_FIELD_ENFORCEMENT =
+        SUPPORTED / NOT_SUPPORTED
+
+    ORIGINAL_DEFECT_REGRESSION =
+        SUPPORTED / NOT_SUPPORTED
+
+    HASH_VALID_INVALID_EVIDENCE_REJECTED =
+        SUPPORTED / NOT_SUPPORTED
+
+    SCIENTIFIC_SEMANTICS_UNCHANGED =
+        SUPPORTED / NOT_SUPPORTED
+
+    CANONICALIZATION_UNCHANGED =
+        SUPPORTED / NOT_SUPPORTED
+
+    REACHABILITY_UNCHANGED =
+        SUPPORTED / NOT_SUPPORTED
+
+    DAG_UNCHANGED =
+        SUPPORTED / NOT_SUPPORTED
+
+    MODEL_SPACE_UNCHANGED =
+        SUPPORTED / NOT_SUPPORTED
+
+    RNG_UNCHANGED =
+        SUPPORTED / NOT_SUPPORTED
+
+    CONTROL_CORPUS_DESIGN_UNCHANGED =
+        SUPPORTED / NOT_SUPPORTED
+
+    GOLDEN_SUITE_EXTENDED =
+        SUPPORTED / NOT_SUPPORTED
+
+    TRANSITIVE_REFREEZE =
+        SUPPORTED / NOT_SUPPORTED
+
+    BLIND_FIREWALL_PRESERVED =
+        SUPPORTED / NOT_SUPPORTED
+
+    NATURAL_CONFIRMATORY_FIREWALL_PRESERVED =
+        SUPPORTED / NOT_SUPPORTED
+
+    VOYNICH_FIREWALL_PRESERVED =
+        SUPPORTED / NOT_SUPPORTED
+
+    TASK86C_V2_SCIENTIFIC_IMPL_R2_READY =
+        SUPPORTED / NOT_SUPPORTED.
+
+
+======================================================================
+66. SUCCESS CRITERIA
+======================================================================
+
+TASK86C_V2_SCIENTIFIC_IMPL_R2_READY = SUPPORTED
+
+only if ALL hold:
+
+1. Original Task85c identity is verified.
+2. A17 defect is independently reproduced before repair.
+3. Complete evidence/status matrix exists.
+4. Every matrix cell has an explicit ALLOWED/FORBIDDEN value.
+5. Every repaired schema declares the frozen JSON Schema dialect.
+6. No scientific enforcement depends on x-* annotation keywords.
+7. Every allowed schema/status pair is accepted.
+8. Every forbidden schema/status pair is rejected.
+9. Status-specific required fields are enforced.
+10. Status-specific forbidden fields are enforced.
+11. Null/absent semantics are enforced.
+12. Contradictory hybrid evidence is rejected.
+13. Original not_reached/PASS reproduction is rejected.
+14. Original fit/FAIL reproduction is rejected.
+15. Hash-valid forbidden evidence remains rejected.
+16. scientific_failure combinations are closed.
+17. Canonicalization is unchanged.
+18. M0–M5 are unchanged.
+19. Candidate registry is unchanged.
+20. RNG contract is unchanged.
+21. Predictive/structural semantics are unchanged.
+22. Complexity/minimality are unchanged.
+23. Controls/corpora are unchanged.
+24. Reachability is unchanged.
+25. DAG remains exactly 1,321,152 jobs.
+26. DAG remains exactly 2,617,152 dependencies.
+27. Existing non-A17 golden vectors still pass.
+28. Extended A17 golden suite passes.
+29. New evidence schema root is frozen.
+30. V1→V1_1 diff contains no unexpected scientific changes.
+31. New transitive results manifest closes.
+32. Blind firewall is preserved.
+33. Natural confirmatory firewall is preserved.
+34. Voynich firewall is preserved.
+
+
+======================================================================
+67. CONTROLLED REFREEZE OUTPUT
+======================================================================
+
+Successful Task85c-a must produce NEW identities for at least:
+
+    G1_V2_EXECUTABLE_CONTRACT_V1_1
+
+    EXECUTABLE_CONTRACT_V1_1_SHA256
+
+    EVIDENCE_SCHEMA_ROOT_V1_1_SHA256
+
+    GOLDEN_SUITE_ROOT_V1_1_SHA256
+
+    TASK85C_A_ARTIFACT_ROOT_SHA256.
+
+Do not expect these hashes to equal V1.
+
+
+======================================================================
+68. UNCHANGED COMPONENT REPORT
+======================================================================
+
+Also explicitly report unchanged identities for components that
+remain byte-identical, especially where applicable:
+
+    candidate registry
+    RNG domain registry
+    control registry
+    corpus registry
+    DAG contract
+    reachability contract
+    model registry
+    predictive registry
+    structural registry
+    complexity contract.
+
+Unexpected hash changes require investigation before freeze.
+
+
+======================================================================
+69. STOP CONDITIONS
+======================================================================
+
+STOP with:
+
+    TASK85C_A_CONTRACT_DEFECT_EXPANDED
+
+if the audit discovers another contradiction that cannot be repaired
+as enforcement of already frozen semantics.
+
+STOP with:
+
+    TASK85C_A_SCIENTIFIC_CHANGE_REQUIRED
+
+if resolving A17 requires changing scientific meaning.
+
+STOP with:
+
+    TASK85C_A_SCHEMA_REPAIR_INVALID
+
+if standard JSON Schema cannot enforce the frozen matrix as designed,
+tests fail, or closure is incomplete.
+
+Do not silently broaden the repair.
+
+
+======================================================================
+70. TERMINAL MARKERS
+======================================================================
+
+Successful controlled refreeze:
+
+    G1_V2_EXECUTABLE_SCIENTIFIC_CONTRACT_V1_1_FROZEN
+
+Expanded contract defect:
+
+    TASK85C_A_CONTRACT_DEFECT_EXPANDED
+
+Scientific redesign required:
+
+    TASK85C_A_SCIENTIFIC_CHANGE_REQUIRED
+
+Invalid/incomplete repair:
+
+    TASK85C_A_SCHEMA_REPAIR_INVALID
+
+Exactly one terminal marker must be issued.
+
+
+======================================================================
+71. SUCCESSFUL FINAL OUTPUT
+======================================================================
+
+On success print:
+
+    A17_STATUS_SCHEMA_CONTRADICTION =
+        REPAIRED
+
+    CONTRACT_VERSION =
+        G1_V2_EXECUTABLE_CONTRACT_V1_1
+
+    PARENT_CONTRACT_VERSION =
+        G1_V2_EXECUTABLE_CONTRACT_V1
+
+    PARENT_CONTRACT_SHA256 =
+        275b29c592be6d3cb80c20df9b9348348009d758e2770ed39da0066004b11bca
+
+    EXECUTABLE_CONTRACT_V1_1 =
+        <path>
+
+    EXECUTABLE_CONTRACT_V1_1_SHA256 =
+        <sha256>
+
+    OLD_EVIDENCE_SCHEMA_ROOT_SHA256 =
+        8462ceb7f34efce1674528af7e69bdbf6855cd4938494d6d5034247245235ed0
+
+    NEW_EVIDENCE_SCHEMA_ROOT_SHA256 =
+        <sha256>
+
+    NEW_GOLDEN_SUITE_ROOT_SHA256 =
+        <sha256>
+
+    TASK85C_A_ARTIFACT_ROOT_SHA256 =
+        <sha256>
+
+    JSON_SCHEMA_DIALECT =
+        <dialect>
+
+    JSON_SCHEMA_VALIDATOR =
+        <validator/version>
+
+    EVIDENCE_STATUS_MATRIX_COMPLETE =
+        SUPPORTED
+
+    STANDARD_SCHEMA_STATUS_ENFORCEMENT =
+        SUPPORTED
+
+    STATUS_DEPENDENT_FIELD_ENFORCEMENT =
+        SUPPORTED
+
+    SCIENTIFIC_SEMANTICS_UNCHANGED =
+        SUPPORTED
+
+    DAG_JOB_COUNT =
+        1321152
+
+    DAG_DEPENDENCY_COUNT =
+        2617152
+
+    TASK86C_V2_SCIENTIFIC_IMPL_R2_READY =
+        SUPPORTED
+
+    TERMINAL_MARKER =
+        G1_V2_EXECUTABLE_SCIENTIFIC_CONTRACT_V1_1_FROZEN
+
+
+======================================================================
+72. FAILURE FINAL OUTPUT
+======================================================================
+
+On failure print:
+
+    A17_STATUS_SCHEMA_CONTRADICTION =
+        UNRESOLVED / EXPANDED / REQUIRES_SCIENTIFIC_CHANGE
+
+    TASK86C_V2_SCIENTIFIC_IMPL_R2_READY =
+        NOT_SUPPORTED
+
+    BLOCKING_FINDINGS =
+        <exact IDs/descriptions>
+
+    TERMINAL_MARKER =
+        <one allowed failure marker>.
+
+
+======================================================================
+73. DEFINITION OF DONE
+======================================================================
+
+Task85c-a is complete when a standards-compliant JSON Schema
+validator, without knowledge of custom x-status-rules, necessarily
+accepts every and only the evidence/status representations permitted
+by the frozen G1-v2 scientific semantics.
+
+The subsequent implementation agent must not need to decide whether:
+
+    JSON Schema
+or
+    prose/x-status-rules
+
+is authoritative for a particular evidence object.
+
+There must be only one machine-enforceable answer.

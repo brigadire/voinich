@@ -1,0 +1,1764 @@
+Task85b — G1-v2 Measurement, Evidence and Distributed Execution Design
+
+
+PURPOSE
+
+Redesign the Phase III G1 token-formation experiment after the
+negative methodological results of:
+
+    Task86R
+    Task85a-v1.1
+    Task86C
+    Task86C-a
+
+and freeze a new G1-v2 experimental contract suitable for a new
+blind positive-control experiment.
+
+Task85b must solve three distinct problems:
+
+1. SCIENTIFIC IDENTIFIABILITY
+
+   G1-v1 returned NONE for every synthetic ground-truth class
+   M0–M5 and for all natural-language controls.
+
+   G1-v2 must be designed so that known generating mechanisms
+   can in principle be recovered and distinguished.
+
+2. EVIDENCE OBSERVABILITY
+
+   Task86C-a established that the frozen Task86C artifacts do not
+   retain enough intermediate evidence to reconstruct why models
+   were rejected.
+
+   G1-v2 must preserve the complete scientific decision path.
+
+3. COMPUTATIONAL SCALABILITY
+
+   Task86C required approximately 12 hours despite execution being
+   distributed over two computers.
+
+   G1-v2 experiments must support manifest-driven, resumable,
+   horizontally scalable distributed computation, preferably
+   reusing the distributed execution mechanism already developed
+   and used in Phase I.
+
+Task85b is a DESIGN / PREREGISTRATION task.
+
+It must NOT execute the full new control experiment and must NOT
+execute a new Voynich experiment.
+
+
+======================================================================
+1. SCIENTIFIC CONTEXT
+======================================================================
+
+Preserve the following historical results exactly.
+
+Task86R:
+
+    G1_MINIMAL_CLASS = NONE
+
+but qualified by:
+
+    TASK86R_CONFIRMATORY_INTEGRITY_QUALIFIED.
+
+Task86C:
+
+    synthetic M0–M5 recovery = 0;
+    natural-language controls = NONE;
+    G1_MEASUREMENT_IDENTIFIABLE = NOT_SUPPORTED;
+    TASK86R_NONE_INTERPRETABILITY = NOT_INTERPRETABLE;
+    G1_V2_REQUIRED = YES.
+
+Task86C-a:
+
+    TASK86C_A_EVIDENCE_INSUFFICIENT.
+
+The Task86C-a result is important:
+
+it does NOT establish that PM6 was the sole cause of failure.
+
+The frozen artifacts do not preserve sufficient PM-by-PM and
+F2-by-F2 evidence to determine latent adequacy or reconstruct
+the exact rejection path.
+
+Do not reinterpret these historical results.
+
+
+======================================================================
+2. AUTHORITATIVE REQUIREMENTS
+======================================================================
+
+Use as primary input:
+
+    research/phase3/task86c-a/TASK85B_REQUIREMENTS.md
+    research/phase3/task86c-a/G1_V2_REQUIREMENTS.tsv
+
+and relevant frozen contracts/reports from:
+
+    Task85
+    Task85a
+    Task85a-v1.1
+    Task86R
+    Task86C
+    Task86C-a.
+
+At minimum preserve the requirements already identified by
+Task86C-a:
+
+1. Persist every PM value, baseline, frozen threshold,
+   finite/availability flag and per-baseline gate outcome.
+
+2. Separate PM6 construction availability, score validity and
+   acceptance.
+
+3. Persist every F2 metric/family result, generation-scale result
+   and NOT_REACHED reason.
+
+4. Separate model evidence from induction caps, convergence
+   failures, generation failures and protocol vetoes.
+
+5. Require known-correct M0–M5 controls to survive an end-to-end
+   pre-freeze validation process.
+
+6. Hash all per-job intermediate artifacts and make decision paths
+   reconstructible without rerunning models.
+
+7. Do not tune thresholds from Task86C controls and do not treat
+   Task86C-a CF1/CF2 as scientific classifications.
+
+Add the distributed-execution requirements defined below.
+
+
+======================================================================
+3. PRIMARY SCIENTIFIC QUESTION
+======================================================================
+
+G1-v2 must answer:
+
+    What is the minimum tested model class sufficient to account
+    for token formation under a validated and identifiable
+    measurement protocol?
+
+Formally:
+
+    G1_MINIMAL_CLASS ∈
+        {M0, M1, M2, M3, M4, M5, NONE, NOT_IDENTIFIABLE}
+
+But unlike G1-v1:
+
+    NONE
+
+must mean:
+
+    tested models were observed and validly rejected,
+
+not:
+
+    some required metric was unavailable,
+    training did not converge,
+    computation hit a cap,
+    generation failed,
+    or the decision path was not recorded.
+
+NOT_IDENTIFIABLE must be a first-class result.
+
+
+======================================================================
+4. MODEL LADDER
+======================================================================
+
+Retain M0–M5 as the initial model ladder unless the audit reveals
+a formal reason that a class cannot be evaluated under G1-v2.
+
+Conceptual ladder:
+
+    M0 — frequency / IID
+    M1 — fixed-order local dependence
+    M2 — variable-memory dependence
+    M3 — deterministic finite-state
+    M4 — probabilistic finite-state
+    M5 — explicit component/rule grammar.
+
+Task85b may correct implementation semantics where required by
+the Task85a-v1.1 audit, but every such change must be explicitly
+classified as:
+
+    EQUIVALENT_IMPLEMENTATION
+
+or:
+
+    SCIENTIFIC_CHANGE.
+
+Do not silently modify M0–M5.
+
+
+======================================================================
+5. MODEL CLASS VS INDUCTION ALGORITHM
+======================================================================
+
+G1-v2 must distinguish:
+
+    MODEL_CLASS_INADEQUATE
+
+from:
+
+    INDUCTION_FAILED.
+
+For M3/M4 in particular:
+
+    failure of a state-merging algorithm;
+    hitting an operation cap;
+    failure to converge
+
+must not automatically imply:
+
+    finite-state class rejected.
+
+Define separate statuses for:
+
+    class evidence;
+    fitting/induction evidence;
+    computational completion.
+
+
+======================================================================
+6. MODEL STATUS TAXONOMY
+======================================================================
+
+Every candidate must terminate with a structured status.
+
+At minimum distinguish:
+
+    FITTED
+
+    TRAINING_FAILED
+    INDUCTION_LIMIT_REACHED
+    CONVERGENCE_FAILED
+
+    METRIC_AVAILABLE
+    METRIC_UNAVAILABLE
+    METRIC_NONFINITE
+
+    PREDICTIVE_PASS
+    PREDICTIVE_FAIL
+    PREDICTIVE_NOT_ASSESSABLE
+
+    GENERATION_SUCCESS
+    GENERATION_FAILED
+    GENERATION_NOT_REACHED
+
+    STRUCTURAL_PASS
+    STRUCTURAL_FAIL
+    STRUCTURAL_NOT_ASSESSABLE
+
+    MODEL_ADEQUATE
+    MODEL_INADEQUATE
+    MODEL_NOT_IDENTIFIABLE.
+
+Do not collapse these into PASS/FAIL.
+
+
+======================================================================
+7. PREDICTIVE ADEQUACY REDESIGN
+======================================================================
+
+Audit the role of:
+
+    PM1
+    PM2
+    PM4
+    PM5
+    PM6.
+
+For each metric specify:
+
+    scientific quantity measured;
+    estimator;
+    baseline;
+    threshold;
+    availability conditions;
+    finite-value conditions;
+    gate semantics;
+    failure semantics.
+
+The design must determine whether each PM is:
+
+    REQUIRED_GATE
+
+    SUPPORTING_EVIDENCE
+
+    DIAGNOSTIC_ONLY.
+
+Do not automatically retain the G1-v1 rule:
+
+    all PMs must be available and pass.
+
+
+======================================================================
+8. PM6 REDESIGN
+======================================================================
+
+PM6 requires special treatment because Task86C showed widespread
+negative-set exhaustion, while Task86C-a could not establish
+whether PM6 alone caused the final failures.
+
+Separate:
+
+    PM6_CONSTRUCTION_AVAILABLE
+    PM6_SCORE_VALID
+    PM6_ACCEPTED.
+
+Failure to construct a negative set must NOT automatically be
+interpreted as evidence against the model.
+
+Task85b must design a negative-token protocol that is:
+
+    mathematically constructible;
+    appropriate under alphabet saturation;
+    applicable across corpus scales;
+    applicable to synthetic controls;
+    applicable to natural languages;
+    applicable to Voynich without Voynich-specific tuning.
+
+Possible alternatives may be evaluated in DESIGN work, but the
+selected definition must be frozen before new blind controls.
+
+Do not choose a PM6 replacement based on which one would make
+Task86R or Task86C pass.
+
+
+======================================================================
+9. SATURATION ANALYSIS
+======================================================================
+
+The new negative-token protocol must explicitly model:
+
+    token length;
+    alphabet size;
+    observed type saturation;
+    candidate negative space.
+
+Before confirmation, prove or empirically validate on development
+controls that the requested negative sample is constructible.
+
+If the valid negative space is insufficient, return:
+
+    NEGATIVE_TEST_NOT_IDENTIFIABLE
+
+rather than:
+
+    MODEL_FAIL.
+
+
+======================================================================
+10. PREDICTIVE GATE SEMANTICS
+======================================================================
+
+Define three-valued or richer logic.
+
+At minimum:
+
+    PASS
+    FAIL
+    NOT_ASSESSABLE.
+
+The overall predictive verdict must distinguish:
+
+    actual evidence of predictive inadequacy
+
+from:
+
+    missing/unavailable measurement.
+
+Define the complete truth table before execution.
+
+
+======================================================================
+11. STRUCTURAL ADEQUACY REDESIGN
+======================================================================
+
+Audit the existing F2 structural criteria.
+
+For every retained F2 metric record:
+
+    metric ID;
+    family;
+    computation;
+    applicability;
+    threshold;
+    baseline;
+    expected artifact;
+    pass/fail/not-assessable semantics.
+
+Preserve the Task85 observation that some F2 CORE metrics are
+skeleton-only and therefore automatically matched by construction.
+
+Such metrics must not count as independent evidence of model
+adequacy.
+
+
+======================================================================
+12. F2 EVIDENCE PRESERVATION
+======================================================================
+
+For every evaluated candidate persist:
+
+    each individual F2 value;
+    corresponding target/control value;
+    distance/effect;
+    threshold;
+    family result;
+    scale result;
+    replicate result;
+    applicability;
+    NOT_REACHED reason.
+
+Never persist only:
+
+    StructuralAdequacy = FAIL.
+
+
+======================================================================
+13. STRUCTURAL GATE LOGIC
+======================================================================
+
+Define before execution:
+
+    metric-level decision;
+    family-level decision;
+    multi-family decision;
+    scale aggregation;
+    replicate aggregation.
+
+A metric being unavailable must not silently become FAIL.
+
+A structural stage not executed must be:
+
+    NOT_REACHED
+
+rather than:
+
+    FAIL.
+
+
+======================================================================
+14. COMPLEXITY AND MINIMALITY
+======================================================================
+
+Define how minimal adequate class is selected.
+
+The procedure must distinguish:
+
+    multiple adequate classes;
+    observational equivalence;
+    insufficient discrimination;
+    true minimal class.
+
+Possible outputs must include:
+
+    UNIQUE_MINIMUM
+    EQUIVALENT_SET
+    ORDER_ONLY
+    NOT_IDENTIFIABLE.
+
+Do not force a single M0–M5 winner when the evidence only supports
+an equivalence class.
+
+
+======================================================================
+15. MODEL RECOVERY REQUIREMENT
+======================================================================
+
+A measurement system intended to identify M0–M5 must first prove
+that it can recover known mechanisms.
+
+Therefore G1-v2 cannot be opened on Voynich until a separate new
+blind control experiment demonstrates acceptable recovery.
+
+Task85b must define quantitative recovery requirements.
+
+
+======================================================================
+16. SYNTHETIC POSITIVE CONTROLS
+======================================================================
+
+The future control experiment must contain new synthetic controls.
+
+Do NOT reuse the exact Task86C synthetic populations as the only
+confirmatory controls because their results are already known.
+
+Use new blind generators/parameters/seeds.
+
+Include:
+
+    M0
+    M1
+    M2
+    M3
+    M4
+    M5.
+
+Prefer multiple independent generators per class.
+
+Ground truth must remain hidden until analysis freeze.
+
+
+======================================================================
+17. INDEPENDENT GENERATORS
+======================================================================
+
+Primary validation must use generators independent from the
+production fitting implementation.
+
+Avoid:
+
+    model implementation testing itself.
+
+For every synthetic generator freeze:
+
+    generator definition;
+    theoretical class;
+    minimal sufficient class;
+    parameters;
+    seed;
+    implementation hash.
+
+
+======================================================================
+18. RECOVERY CRITERIA
+======================================================================
+
+Preregister quantitative criteria for:
+
+    exact-class recovery;
+    minimal-sufficient recovery;
+    equivalence-compatible recovery;
+    NONE rate;
+    NOT_IDENTIFIABLE rate;
+    underfitting;
+    over-complexity.
+
+The criteria must be frozen before synthetic unblinding.
+
+
+======================================================================
+19. NATURAL-LANGUAGE CONTROLS
+======================================================================
+
+Retain natural-language positive controls.
+
+At minimum include typologically distinct languages such as:
+
+    English;
+    Latin;
+    Sanskrit
+
+or justified replacements/additions.
+
+Task85b must define corpus provenance, tokenization, scale matching
+and sampling rules.
+
+The goal is not to discover the true linguistic grammar of those
+languages.
+
+The goal is to establish that G1-v2 can produce meaningful,
+non-degenerate adequacy results on ordinary natural token systems.
+
+
+======================================================================
+20. NO CONTROL TUNING
+======================================================================
+
+Distinguish:
+
+    DEVELOPMENT CONTROLS
+
+from:
+
+    CONFIRMATORY BLIND CONTROLS.
+
+Task85b may use old Task86C results to understand defects.
+
+It may use explicitly designated development data to develop the
+new measurement system.
+
+But final validation must use unseen/frozen blind controls.
+
+Do not tune thresholds on confirmatory controls.
+
+
+======================================================================
+21. VOYNICH FIREWALL
+======================================================================
+
+No Voynich data may be used to:
+
+    choose PM definitions;
+    choose thresholds;
+    select negative-token protocol;
+    choose F2 gates;
+    choose model parameters;
+    tune induction;
+    choose recovery criteria.
+
+G1-v2 must first pass its positive controls.
+
+Only then may a separate future task open Voynich.
+
+
+======================================================================
+22. COMPLETE EVIDENCE CHAIN
+======================================================================
+
+The central G1-v2 reproducibility requirement is:
+
+    every final scientific verdict must be reconstructible
+    without rerunning fitting or generation.
+
+For every candidate preserve:
+
+INPUT
+  ↓
+FIT / INDUCTION
+  ↓
+MODEL ARTIFACT
+  ↓
+PM1...PMn
+  ↓
+INDIVIDUAL PREDICTIVE GATES
+  ↓
+PREDICTIVE VERDICT
+  ↓
+GENERATED ARTIFACTS
+  ↓
+F2 METRICS
+  ↓
+F2 FAMILY GATES
+  ↓
+STRUCTURAL VERDICT
+  ↓
+COMPLEXITY / MINIMALITY
+  ↓
+FINAL VERDICT.
+
+
+======================================================================
+23. INTERMEDIATE ARTIFACT CONTRACT
+======================================================================
+
+For every scientific intermediate artifact record:
+
+    artifact ID;
+    producing job;
+    input hashes;
+    code hash;
+    config hash;
+    seed where applicable;
+    artifact hash;
+    scientific meaning.
+
+The final results manifest must transitively cover the entire
+evidence graph.
+
+
+======================================================================
+24. DECISION-PATH REGENERATION
+======================================================================
+
+Create a verifier capable of rebuilding all:
+
+    metric gates;
+    family gates;
+    adequacy gates;
+    minimality decisions;
+    final verdicts
+
+using only frozen intermediate artifacts.
+
+It must NOT invoke:
+
+    fitting;
+    model induction;
+    corpus generation.
+
+This is a mandatory acceptance test for G1-v2.
+
+
+======================================================================
+25. NEGATIVE VERIFIER TESTS
+======================================================================
+
+The verifier must fail if, for example:
+
+    one PM value is missing;
+    one threshold differs;
+    one artifact hash changes;
+    one F2 result disappears;
+    one unavailable metric is silently treated as FAIL;
+    one model failure is substituted for induction failure.
+
+Include automated negative tests.
+
+
+======================================================================
+26. DISTRIBUTED COMPUTATION REQUIREMENT
+======================================================================
+
+G1-v2 must support horizontally scalable distributed execution.
+
+Motivation:
+
+    Task86C:
+        672 jobs;
+        4032 model executions;
+        approximately 12 hours wall-clock;
+        two computing nodes.
+
+Future G1-v2 controls may be at least as expensive.
+
+Distributed execution is therefore part of the required
+experimental infrastructure.
+
+
+======================================================================
+27. REUSE PHASE-I DISTRIBUTED MECHANISM
+======================================================================
+
+Before implementing new distributed infrastructure:
+
+    locate the distributed computation mechanism used for
+    computationally expensive Phase-I experiments;
+
+    document its architecture;
+
+    identify reusable components;
+
+    determine whether it supports the requirements below.
+
+Prefer extending/reusing that mechanism.
+
+Do not build a parallel scheduler unless the existing mechanism
+cannot satisfy G1-v2 requirements.
+
+Create:
+
+    PHASE1_DISTRIBUTED_EXECUTION_AUDIT.md.
+
+
+======================================================================
+28. EXECUTION ARCHITECTURE
+======================================================================
+
+Target architecture:
+
+                 SCIENTIFIC MANIFEST
+                         │
+                         ▼
+                      JOB DAG
+                         │
+                         ▼
+                  DISTRIBUTED QUEUE
+                   /      |      \
+                  /       |       \
+             worker1   worker2   workerN
+                  \       |       /
+                   \      |      /
+                         ▼
+                IMMUTABLE RESULTS
+                         │
+                         ▼
+                      VERIFIER
+                         │
+                         ▼
+                     AGGREGATOR.
+
+Distributed executor must contain no scientific decision logic.
+
+
+======================================================================
+29. N-WORKER MODEL
+======================================================================
+
+Do not design specifically for:
+
+    local + 10.10.24.105.
+
+These are currently available workers, but the architecture must
+support:
+
+    1 orchestrator + N workers.
+
+Current expected workers include:
+
+    local node;
+    10.10.24.105.
+
+Additional compatible workers must be addable without modifying
+the scientific manifest.
+
+
+======================================================================
+30. JOB GRANULARITY
+======================================================================
+
+Avoid large static assignments such as:
+
+    node A → half experiment
+    node B → other half.
+
+Decompose computation into sufficiently small independent jobs.
+
+Candidate dimensions include:
+
+    corpus;
+    split;
+    model;
+    candidate/hyperparameter;
+    scale;
+    replicate;
+    seed;
+    generation batch;
+    structural evaluation stage.
+
+Exact granularity must preserve scientific semantics.
+
+A job should be small enough to avoid multi-hour stragglers where
+further scientifically valid decomposition is possible.
+
+
+======================================================================
+31. DYNAMIC SCHEDULING
+======================================================================
+
+Use dynamic scheduling / queue claiming / work stealing if
+supported by the Phase-I mechanism.
+
+When a worker completes a job, it should obtain another pending
+job.
+
+This is particularly important because runtime is expected to
+differ strongly between:
+
+    M0/M1
+    M2
+    M3/M4
+    M5.
+
+
+======================================================================
+32. JOB IDENTITY
+======================================================================
+
+Every job must have a deterministic job_id derived from its
+scientific configuration.
+
+At minimum include relevant:
+
+    experiment;
+    protocol version;
+    corpus ID;
+    model;
+    candidate;
+    scale;
+    replicate;
+    seed;
+    stage.
+
+Worker identity must NOT affect job_id.
+
+
+======================================================================
+33. IMMUTABLE JOB BUNDLES
+======================================================================
+
+Each worker receives an immutable job definition containing:
+
+    job_id;
+    input artifact hashes;
+    code/executable hash;
+    config hash;
+    seed;
+    dependency hashes;
+    expected output schema.
+
+Workers must not modify:
+
+    scientific manifest;
+    input corpora;
+    frozen design;
+    thresholds;
+    registries.
+
+
+======================================================================
+34. RESUMABILITY
+======================================================================
+
+Long experiments must be safely resumable.
+
+Completed and verified jobs must never be recomputed merely because:
+
+    orchestrator restarted;
+    worker disappeared;
+    SSH session failed;
+    another worker was added.
+
+Pending/infrastructure-failed jobs may be reassigned.
+
+
+======================================================================
+35. SCIENTIFIC VS INFRASTRUCTURE FAILURE
+======================================================================
+
+Explicitly distinguish:
+
+SCIENTIFIC:
+
+    TRAINING_FAILED
+    INDUCTION_LIMIT_REACHED
+    CONVERGENCE_FAILED
+    NUMERICALLY_UNSTABLE
+    GENERATION_FAILED
+    METRIC_UNAVAILABLE
+
+from INFRASTRUCTURE:
+
+    WORKER_LOST
+    SSH_FAILURE
+    PROCESS_INTERRUPTED
+    RESULT_TRANSFER_FAILED
+    STORAGE_FAILURE.
+
+Scientific failures are results.
+
+Infrastructure failures may be retried with identical job identity.
+
+
+======================================================================
+36. CROSS-NODE DETERMINISM
+======================================================================
+
+Before bulk execution, representative jobs must run on multiple
+nodes.
+
+Include at least representatives of:
+
+    M0/M1
+    M2
+    M3
+    M4
+    M5.
+
+Prefer byte-identical scientific artifacts.
+
+If byte identity is impossible due to justified floating-point
+differences, define canonical representation and numerical
+equivalence before execution.
+
+Do not invent tolerance after observing differences.
+
+
+======================================================================
+37. DUPLICATE EXECUTION
+======================================================================
+
+The scheduler may deliberately execute selected jobs on multiple
+workers.
+
+If results are identical:
+
+    record reproducibility confirmation.
+
+If results conflict:
+
+    quarantine all conflicting copies.
+
+Never choose one result because it appears preferable.
+
+
+======================================================================
+38. DAG EXECUTION
+======================================================================
+
+Support explicit dependencies between stages, e.g.:
+
+    FIT
+      ↓
+    PREDICTIVE
+      ↓
+    GENERATION
+      ↓
+    STRUCTURAL
+      ↓
+    AGGREGATION.
+
+But scientific design determines whether downstream stages may be
+skipped.
+
+Do not let executor policy decide scientific reachability.
+
+
+======================================================================
+39. EVIDENCE COLLECTION AND EARLY STOPPING
+======================================================================
+
+G1-v1 lost evidence partly because aggregate gates obscured
+intermediate results.
+
+Therefore early stopping must be explicitly designed.
+
+For each stage determine whether failure permits skipping later
+scientific computations.
+
+If skipped, preserve:
+
+    NOT_REACHED
+    reason
+    upstream gate
+    dependency.
+
+Where diagnostic evidence is required for validation, compute it
+even if the final candidate is already known to be inadequate.
+
+
+======================================================================
+40. PERFORMANCE TELEMETRY
+======================================================================
+
+Record operationally for each job:
+
+    worker;
+    start time;
+    end time;
+    wall time;
+    CPU time;
+    peak memory;
+    retry count;
+    infrastructure status.
+
+Operational telemetry must not alter scientific outcomes.
+
+
+======================================================================
+41. RUNTIME MODEL
+======================================================================
+
+Use development runs to estimate runtime by:
+
+    model class;
+    scale;
+    stage.
+
+Use runtime predictions only for scheduling and load balancing.
+
+Do not change scientific thresholds or computation limits based on
+confirmatory runtime observations.
+
+
+======================================================================
+42. STRAGGLER ANALYSIS
+======================================================================
+
+Identify which G1-v2 stages can create long-tail jobs.
+
+Especially audit:
+
+    M3/M4 induction;
+    M5 fitting;
+    generation;
+    F2 structural extraction.
+
+Where scientifically possible, design finer decomposition.
+
+Where decomposition is impossible, document the limitation.
+
+
+======================================================================
+43. DISTRIBUTED RESULT MANIFEST
+======================================================================
+
+Every distributed result must include:
+
+    job_id;
+    worker;
+    input hashes;
+    code hash;
+    config hash;
+    seed;
+    dependency hashes;
+    scientific status;
+    infrastructure status;
+    artifact hashes.
+
+Worker metadata is provenance, not scientific configuration.
+
+
+======================================================================
+44. DISTRIBUTED VERIFIER
+======================================================================
+
+Before aggregation verify:
+
+    all required jobs accounted for;
+    no unresolved duplicate conflicts;
+    hashes valid;
+    inputs correct;
+    code revision correct;
+    config correct;
+    seeds correct;
+    dependencies correct;
+    evidence artifacts complete;
+    no post-freeze scientific configuration introduced.
+
+Aggregation must refuse incomplete/unresolved manifests.
+
+
+======================================================================
+45. HORIZONTAL SCALABILITY TEST
+======================================================================
+
+Before the full future Task86C-v2 experiment, define a small
+representative benchmark manifest.
+
+Run with different worker counts where resources permit.
+
+Measure:
+
+    wall-clock time;
+    worker utilization;
+    scheduling overhead;
+    straggler contribution.
+
+Task85b must preregister a reasonable scalability acceptance
+criterion.
+
+The criterion need not require perfect linear speedup.
+
+
+======================================================================
+46. DISTRIBUTED FAILURE TESTS
+======================================================================
+
+The infrastructure validation suite must test:
+
+    worker interruption;
+    orchestrator restart;
+    job retry;
+    worker addition;
+    duplicate execution;
+    conflicting result;
+    corrupt result;
+    missing artifact;
+    wrong executable hash.
+
+The system must recover without changing scientific job identity.
+
+
+======================================================================
+47. CONTROL EXPERIMENT ARCHITECTURE
+======================================================================
+
+Task85b must design the next control experiment, provisionally:
+
+    Task86C-v2
+
+but must NOT execute it.
+
+Task86C-v2 should contain:
+
+    Stage A — infrastructure/preflight validation
+
+    Stage B — development-system verification
+
+    Stage C — blind synthetic controls
+
+    Stage D — blind natural-language controls
+
+    Stage E — unblinding
+
+    Stage F — recovery/identifiability verdict.
+
+
+======================================================================
+48. TASK86C-v2 FIREWALL
+======================================================================
+
+Future control experiment must maintain:
+
+    synthetic ground-truth firewall;
+    confirmatory-control firewall;
+    Voynich firewall.
+
+The final G1-v2 measurement contract must be frozen before
+confirmatory controls are opened.
+
+
+======================================================================
+49. TASK86C-v2 PASS CONDITIONS
+======================================================================
+
+Task85b must define quantitative conditions for:
+
+    MODEL_RECOVERY_VALIDATED
+    NATURAL_LANGUAGE_APPLICABILITY_VALIDATED
+    EVIDENCE_CHAIN_VALIDATED
+    DISTRIBUTED_EXECUTION_VALIDATED.
+
+All required conditions must pass before Voynich execution is
+allowed.
+
+
+======================================================================
+50. NO AUTOMATIC VOYNICH PROGRESSION
+======================================================================
+
+Passing synthetic recovery alone is insufficient.
+
+A future Voynich task is allowed only if:
+
+    synthetic recovery passes;
+    natural-language applicability passes;
+    evidence-chain reconstruction passes;
+    cross-node determinism passes;
+    distributed manifest verification passes.
+
+Otherwise:
+
+    G1-v2 remains unvalidated.
+
+
+======================================================================
+51. FUTURE VOYNICH TASK
+======================================================================
+
+If Task86C-v2 passes, the next experiment may be:
+
+    Task86V — Voynich G1-v2 Validation.
+
+Task85b may define the handoff contract but must not execute
+Task86V.
+
+
+======================================================================
+52. TASK87 RELATION
+======================================================================
+
+Task87/G2 remains blocked.
+
+Do not build G2 on:
+
+    G1-v1 NONE.
+
+Task87 may become eligible only after an interpretable G1-v2
+Voynich result exists.
+
+If validated G1-v2 still yields:
+
+    NONE
+
+or:
+
+    NOT_IDENTIFIABLE
+
+for Voynich, Phase III must explicitly decide whether to proceed
+with residual-first analysis instead of ordinary G2.
+
+
+======================================================================
+53. REQUIRED DESIGN REGISTRIES
+======================================================================
+
+Create at minimum:
+
+    G1V2_MODEL_REGISTRY.tsv
+    G1V2_METRIC_REGISTRY.tsv
+    G1V2_PREDICTIVE_GATE_REGISTRY.tsv
+    G1V2_STRUCTURAL_GATE_REGISTRY.tsv
+    G1V2_FAILURE_REGISTRY.tsv
+    G1V2_COMPLEXITY_CONTRACT.tsv
+    G1V2_EVIDENCE_ARTIFACT_REGISTRY.tsv
+    G1V2_DECISION_STATUS_REGISTRY.tsv
+
+    G1V2_CONTROL_REGISTRY.tsv
+    G1V2_RECOVERY_CRITERIA.tsv
+
+    G1V2_JOB_SCHEMA.tsv
+    G1V2_DISTRIBUTED_EXECUTION_CONTRACT.tsv
+    G1V2_DISTRIBUTED_FAILURE_REGISTRY.tsv.
+
+
+======================================================================
+54. REQUIRED DOCUMENTS
+======================================================================
+
+Create under:
+
+    research/phase3/task85b/
+
+at minimum:
+
+    TASK85B_DESIGN.md
+
+    TASK85B_REQUIREMENTS_TRACEABILITY.tsv
+
+    G1V1_FAILURES_AND_G1V2_RESPONSES.tsv
+
+    PM_REDESIGN.md
+    PM6_NEGATIVE_PROTOCOL.md
+
+    STRUCTURAL_ADEQUACY_V2.md
+    MINIMALITY_AND_IDENTIFIABILITY.md
+
+    EVIDENCE_PRESERVATION_CONTRACT.md
+    DECISION_PATH_CONTRACT.md
+
+    PHASE1_DISTRIBUTED_EXECUTION_AUDIT.md
+    DISTRIBUTED_EXECUTION_DESIGN.md
+
+    TASK86C_V2_CONTROL_DESIGN.md
+    TASK86C_V2_HANDOFF.md
+
+    TASK86V_HANDOFF.md
+
+    TASK85B_RESULTS_MANIFEST.json
+    TASK85B_REPORT.md.
+
+
+======================================================================
+55. REQUIREMENTS TRACEABILITY
+======================================================================
+
+TASK85B_REQUIREMENTS_TRACEABILITY.tsv must map every requirement
+from Task86C-a to:
+
+    requirement ID;
+    source;
+    defect addressed;
+    G1-v2 design response;
+    artifact implementing response;
+    validation method.
+
+Include additional requirements introduced for distributed
+execution.
+
+No Task86C-a requirement may silently disappear.
+
+
+======================================================================
+56. G1-v1 → G1-v2 CHANGE REGISTER
+======================================================================
+
+Create an explicit change register.
+
+For every changed:
+
+    model;
+    PM;
+    threshold;
+    baseline;
+    gate;
+    failure semantic;
+    F2 rule;
+    complexity rule;
+    execution rule
+
+record:
+
+    G1-v1 definition;
+    G1-v2 definition;
+    reason;
+    evidence motivating change;
+    classification:
+
+        SCIENTIFIC_CHANGE
+        SCIENTIFIC_COMPLETION
+        EQUIVALENT_IMPLEMENTATION
+        INFRASTRUCTURE_CHANGE.
+
+
+======================================================================
+57. NO SILENT THRESHOLD CARRYOVER
+======================================================================
+
+Every G1-v1 threshold must be either:
+
+    explicitly retained with justification;
+
+or:
+
+    explicitly replaced with a preregistered derivation rule.
+
+Do not inherit thresholds merely because they already exist.
+
+
+======================================================================
+58. DEVELOPMENT VS CONFIRMATION
+======================================================================
+
+Task85b must clearly partition:
+
+    design/development data
+
+from:
+
+    future confirmatory data.
+
+Old Task86C controls may inform failure analysis.
+
+They must not become the sole evidence that G1-v2 works.
+
+New blind controls are mandatory.
+
+
+======================================================================
+59. IMPLEMENTATION SCOPE
+======================================================================
+
+Task85b may implement infrastructure/prototypes necessary to prove
+that the design is executable.
+
+Allowed examples:
+
+    generic evidence schema;
+    manifest generator;
+    distributed job schema;
+    queue prototype;
+    result verifier;
+    decision-path verifier;
+    Phase-I executor adapter.
+
+Do not run the full control portfolio.
+
+
+======================================================================
+60. DESIGN VALIDATION
+======================================================================
+
+Before freeze perform small non-confirmatory validation demonstrating:
+
+    every PM artifact is persisted;
+    unavailable != fail;
+    model failure != induction failure;
+    F2 evidence is persisted;
+    final verdict can be regenerated;
+    corrupted evidence is detected;
+    distributed job can move between nodes;
+    resume works;
+    duplicate conflict is detected.
+
+These are engineering/design validation tests,
+not scientific results about M0–M5.
+
+
+======================================================================
+61. COMPUTATIONAL BUDGET DESIGN
+======================================================================
+
+Estimate the future Task86C-v2 workload before freeze.
+
+Provide:
+
+    expected number of corpora;
+    candidates;
+    model executions;
+    generation runs;
+    F2 evaluations;
+    approximate CPU-hours;
+    approximate storage;
+    expected wall-clock at:
+
+        1 worker;
+        2 workers;
+        4 workers;
+        8 workers
+
+where estimable.
+
+Use Task86C telemetry as historical input.
+
+The purpose is capacity planning, not reduction of scientific scope.
+
+
+======================================================================
+62. PERFORMANCE GOAL
+======================================================================
+
+Given that Task86C required approximately 12 hours on two nodes,
+G1-v2 must be designed so additional workers can materially reduce
+wall-clock time.
+
+Do not require an arbitrary absolute runtime.
+
+Instead define measurable:
+
+    parallel efficiency;
+    worker utilization;
+    straggler fraction;
+    scheduler overhead.
+
+Freeze acceptable ranges before Task86C-v2.
+
+
+======================================================================
+63. REQUIRED REPORT QUESTIONS
+======================================================================
+
+TASK85B_REPORT.md must answer at minimum:
+
+1. Why was G1-v1 non-identifiable?
+
+2. Which causes are proven and which remain unresolved because
+   Task86C did not preserve sufficient intermediate evidence?
+
+3. Which M0–M5 definitions are retained?
+
+4. Which model semantics change?
+
+5. How does G1-v2 distinguish model inadequacy from induction
+   failure?
+
+6. Which PMs are retained?
+
+7. Which PMs are changed?
+
+8. What replaces/fixes PM6?
+
+9. Why is the new negative protocol constructible?
+
+10. How are unavailable metrics handled?
+
+11. What constitutes PredictiveAdequacy in G1-v2?
+
+12. Which F2 metrics remain discriminating?
+
+13. How is StructuralAdequacy defined?
+
+14. How are skeleton-only metrics handled?
+
+15. How is minimality determined?
+
+16. When is an equivalence set returned?
+
+17. When is NOT_IDENTIFIABLE returned?
+
+18. What exact intermediate evidence is persisted?
+
+19. Can every final verdict be reconstructed without model
+    execution?
+
+20. What negative verifier tests prove this?
+
+21. What synthetic controls will validate G1-v2?
+
+22. How are new controls kept blind?
+
+23. What recovery performance is required?
+
+24. How are natural-language controls used?
+
+25. Why can controls not tune confirmatory thresholds?
+
+26. How is the Voynich firewall enforced?
+
+27. What Phase-I distributed infrastructure existed?
+
+28. Which parts are reused?
+
+29. Why is a new scheduler needed, if one is needed?
+
+30. What is the distributed job unit?
+
+31. Can jobs be moved freely between workers?
+
+32. How does dynamic scheduling work?
+
+33. How does resume work?
+
+34. How are scientific and infrastructure failures distinguished?
+
+35. How is cross-node determinism verified?
+
+36. How are duplicate conflicting results handled?
+
+37. How is the complete evidence chain preserved in distributed
+    execution?
+
+38. What workload is expected for Task86C-v2?
+
+39. How does wall-clock scale with additional workers?
+
+40. What conditions must Task86C-v2 satisfy before Voynich can
+    be opened?
+
+41. What is the exact Task86C-v2 handoff?
+
+42. Is Task87 still blocked?
+
+
+======================================================================
+64. REQUIRED VERDICTS
+======================================================================
+
+Issue at minimum:
+
+    G1V2_MODEL_LADDER_DEFINED =
+        SUPPORTED / NOT_SUPPORTED
+
+    G1V2_PREDICTIVE_PROTOCOL_DEFINED =
+        SUPPORTED / NOT_SUPPORTED
+
+    G1V2_NEGATIVE_PROTOCOL_DEFINED =
+        SUPPORTED / NOT_SUPPORTED
+
+    G1V2_STRUCTURAL_PROTOCOL_DEFINED =
+        SUPPORTED / NOT_SUPPORTED
+
+    G1V2_MINIMALITY_PROTOCOL_DEFINED =
+        SUPPORTED / NOT_SUPPORTED
+
+    G1V2_FAILURE_SEMANTICS_DEFINED =
+        SUPPORTED / NOT_SUPPORTED
+
+    G1V2_EVIDENCE_CHAIN_COMPLETE =
+        SUPPORTED / NOT_SUPPORTED
+
+    G1V2_DECISION_RECONSTRUCTIBLE =
+        SUPPORTED / NOT_SUPPORTED
+
+    G1V2_CONTROL_VALIDATION_DEFINED =
+        SUPPORTED / NOT_SUPPORTED
+
+    G1V2_VOYNICH_FIREWALL_DEFINED =
+        SUPPORTED / NOT_SUPPORTED
+
+    PHASE1_DISTRIBUTED_REUSE =
+        REUSED
+        / PARTIAL
+        / NOT_APPLICABLE
+
+    G1V2_DISTRIBUTED_EXECUTION_DEFINED =
+        SUPPORTED / NOT_SUPPORTED
+
+    G1V2_HORIZONTAL_SCALABILITY_DEFINED =
+        SUPPORTED / NOT_SUPPORTED
+
+    TASK86C_V2_READY =
+        SUPPORTED / NOT_SUPPORTED
+
+    TASK86V_READY =
+        NOT_SUPPORTED
+
+    TASK87_READY =
+        NOT_SUPPORTED.
+
+
+======================================================================
+65. TERMINAL MARKERS
+======================================================================
+
+If the complete G1-v2 scientific and execution contract is
+successfully frozen:
+
+    G1_V2_EXPERIMENT_CONTRACT_FROZEN.
+
+If scientific design cannot be completed without new empirical
+evidence:
+
+    TASK85B_DESIGN_BLOCKED.
+
+If design/provenance integrity is violated:
+
+    TASK85B_INVALID.
+
+Exactly one terminal marker.
+
+
+======================================================================
+66. VALIDATION
+======================================================================
+
+Required:
+
+    Task86C-a requirements traceability;
+    G1-v1/G1-v2 change-register validation;
+    metric registry validation;
+    gate truth-table validation;
+    failure-semantic validation;
+    evidence-schema validation;
+    decision-path regeneration test;
+    negative evidence-corruption tests;
+    control-firewall validation;
+    Voynich-firewall validation;
+    distributed manifest validation;
+    distributed resume test;
+    duplicate-result conflict test;
+    cross-node reproducibility test where infrastructure permits.
+
+If Go code is added:
+
+    go build ./...
+    go vet ./...
+    go test ./...
+    go test -race ./...
+
+Always:
+
+    git diff --check.
+
+
+======================================================================
+67. DEFINITION OF DONE
+======================================================================
+
+Task85b is complete only when:
+
+1. All Task86C-a requirements are traced.
+2. Proven and unresolved G1-v1 failures are separated.
+3. M0–M5 model ladder is explicitly defined.
+4. Every model change is classified.
+5. Predictive metrics are defined.
+6. Every predictive gate has explicit semantics.
+7. PM6 replacement/redesign is frozen.
+8. Negative-set constructibility is addressed.
+9. PASS/FAIL/NOT_ASSESSABLE logic is frozen.
+10. Structural metrics are audited.
+11. Skeleton-only metrics are identified.
+12. Structural gate logic is frozen.
+13. Minimality logic is frozen.
+14. Equivalence semantics are frozen.
+15. NOT_IDENTIFIABLE semantics are frozen.
+16. Model failure and induction failure are separated.
+17. Full evidence artifact schema is frozen.
+18. Every PM intermediate is preserved.
+19. Every F2 intermediate is preserved.
+20. Decision path can be regenerated without fitting.
+21. Negative verifier tests pass.
+22. New synthetic-control design is frozen.
+23. Blind-unblinding protocol is frozen.
+24. Recovery criteria are frozen.
+25. Natural-language-control design is frozen.
+26. Development/confirmation boundary is frozen.
+27. Voynich firewall is frozen.
+28. Phase-I distributed mechanism is located and audited.
+29. Reusable distributed components are identified.
+30. Distributed job schema is frozen.
+31. Dynamic scheduling is defined.
+32. N-worker execution is supported by design.
+33. Resumability is defined and tested.
+34. Scientific/infrastructure failures are separated.
+35. Cross-node determinism contract is frozen.
+36. Duplicate/conflict semantics are frozen.
+37. Distributed evidence preservation is frozen.
+38. Distributed verifier is defined.
+39. Future workload is estimated.
+40. Scalability criteria are frozen.
+41. Task86C-v2 design is complete.
+42. Task86C-v2 pass conditions are frozen.
+43. Task86C_V2_READY is determined.
+44. Task86V remains blocked pending Task86C-v2.
+45. Task87 remains blocked.
+46. Results manifest is complete.
+47. TASK85B_REPORT.md answers all required questions.
+48. Repository validation passes.
+49. Exactly one terminal marker is issued.

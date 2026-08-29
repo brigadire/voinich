@@ -1,0 +1,10 @@
+component	normative_source	implementation	tests	validation_status	notes
+contract identity	G1V2_EXECUTABLE_CONTRACT_V1_1.md	identity validators	Task85c-c validators	PASS	parent identity closes
+execution identity	G1V2_EXECUTION_IDENTITY_ERRATUM_E1	E1 reference validators	Task85c-e suite	PASS	R2-G01/G02/EI01 closed
+corpus/token handling	G1V2_EXECUTABLE_CONTRACT_V1_1.json data.tokens	NOT_IMPLEMENTED	reproduce_empty_token_contract_defect.py	FAIL	PF-SC01
+M0/control generation	V1.1 prose; synthetic generator registry	NOT_IMPLEMENTED	reproduce_empty_token_contract_defect.py	FAIL	initial EOS handling absent
+M1/M4 generation	V1.1 prose; synthetic generator registry	NOT_IMPLEMENTED	NOT_RUN	NOT_TESTED	same reachable class; stop already mandatory
+remaining M0-M5/43 candidates	V1.1 model/candidate registries	NOT_IMPLEMENTED	NOT_RUN	NOT_TESTED	mandatory scientific stop
+PM/F2/thresholds/aggregation	V1.1 metric/complexity contracts	NOT_IMPLEMENTED	NOT_RUN	NOT_TESTED	depends on generated DEVELOPMENT controls
+evidence/reachability	V1.1 schemas; V2 state machine	NOT_IMPLEMENTED	parent validators only	NOT_TESTED	production implementation not reached
+inputs/escrow/DAG/run freeze	V1.1;E1;DAG template	NOT_MATERIALIZED	NOT_RUN	NOT_TESTED	must follow repaired scientific generation

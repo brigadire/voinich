@@ -1,0 +1,26 @@
+component	normative_source	implementation	tests	validation_status
+V1.2 identity	G1_V2_EXECUTABLE_CONTRACT_V1_2.{md,json}	reference identity validators	verify_v1_2_contract.py	SUPPORTED
+generation semantics	G1V2_GENERATION_SEMANTICS_V1.json	Task85c-g Go/Python references	generation validators	SUPPORTED_REFERENCE_ONLY
+PF-SC01	generation golden suite	Task85c-g references	PF-SC01 golden	CLOSED
+corpus/token handling	V1.2 data/generation	NONE in production executor	none	MISSING_HANDLER
+split	V1.2 data.split	NONE in production executor	none	MISSING_HANDLER
+M0	V1.2 M0	NONE in production executor	none	MISSING_HANDLER
+M1	V1.2 M1	NONE in production executor	none	MISSING_HANDLER
+M2	V1.2 M2	NONE in production executor	none	MISSING_HANDLER
+M3 exact	V1.2 M3	NONE in production executor	none	MISSING_HANDLER
+M3 approximate	V1.2 M3	NONE in production executor	none	MISSING_HANDLER
+M4	V1.2 M4	NONE in production executor	none	MISSING_HANDLER
+M5	V1.2 M5	NONE in production executor	none	MISSING_HANDLER
+candidate selection	V1.2 selection	NONE in production executor	none	MISSING_HANDLER
+B1/B2	V1.2 baselines	NONE in production executor	none	MISSING_HANDLER
+PM1/PM2/PM4/PM5/PM6	V1.2 metrics	NONE in production executor	none	MISSING_HANDLER
+generation production integration	G1V2_GENERATION_SEMANTICS_V1	NONE; references not wired to executor	reference tests only	MISSING_HANDLER
+12 F2 metrics	V1.2 structural registry	NONE in production executor	none	MISSING_HANDLER
+structural gates	V1.2 gates	NONE in production executor	none	MISSING_HANDLER
+complexity/minimality	V1.2 decision	partial evidence verifier only	engineering mutations	INCOMPLETE
+status/reachability	status V2	partial older execution stages	internal/g1v2 tests	INCOMPATIBLE_STAGE_MODEL
+NOT_REACHED	status V2	partial evidence types	internal/g1v2 tests	INCOMPLETE
+JobID	V1.2 + E1	older bare SHA-256 identity	internal/g1v2 tests	INCOMPATIBLE_FORMAT_AND_VERSION
+evidence transport	V1.2 evidence contract	internal/g1v2	internal/g1v2 tests	ENGINEERING_SUPPORTED
+coordinator/worker	production task	internal/g1v2	internal/g1v2 tests	ENGINEERING_SUPPORTED
+production executable	complete protocol	cmd/g1v2-executor transport shell	build only	NOT_SUPPORTED

@@ -1,0 +1,34 @@
+check_id	requirement	status	evidence	notes
+V01	parent V1.1 identity	PASS	sha256sum	5c3cd272c1dbae9bfe1d7a100155faf102e86d34660da239e1cb31704ad470b0
+V02	Task85c-c root identity	PASS	results_manifest_validator.py	dc27660d3e03a06f91aaa1c3aa6c48226328457746c9dc819e7c0a355ce8f09c
+V03	R2 failure closure identity	PASS	manifest hash closure	c8fae8e9df6633e3d0514ff5a8d98661e267ba93b13169baffbbf91422753d79
+V04	R2-G01 reproduced	PASS	reference/reproduce_r2_jobid_defect.py	obsolete V1 value
+V05	R2-G02 reproduced	PASS	reference/reproduce_r2_jobid_defect.py	dependencies vs dependency_job_ids
+V06	three-ID divergence	PASS	reference/reproduce_r2_jobid_defect.py	all three exact IDs reproduced
+V07	normative source audit complete	PASS	G1V2_JOBID_NORMATIVE_SOURCE_AUDIT.tsv	machine precedence applied
+V08	precedence resolution	PASS	source audit	machine contract then DAG registry
+V09	contract-version semantics	PASS	field registry	stable scientific baseline V1.1
+V10	dependency field/content/order/empty/duplicates	PASS	field registry	direct unique sorted IDs; required []
+V11	scientific/contract identity separation	PASS	report	patch label excluded from stable baseline value
+V12	patch-version recursion test	PASS	report	V1.1 to V1.1.1 does not recursively change baseline value
+V13	JobID payload closure/formula/canonicalization	PASS	DAG registry audit	formula unchanged; unknown fields forbidden by proposed disposition
+V14	operational/outcome independence	PASS	DAG exclusions audit	unchanged
+V15	complete frozen blind control IDs	FAIL	reference/verify_expanded_defect.py	D01-BLIND-ID-CLOSURE
+V16	independent implementations A/B	NOT_TESTED	mandatory expanded-defect stop	exact complete input universe unavailable
+V17	complete DAG JobID count/uniqueness/collisions	NOT_TESTED	mandatory expanded-defect stop	cannot substitute placeholder blind IDs
+V18	edge reconstruction/dangling/self edges	NOT_TESTED	mandatory expanded-defect stop	resolved blind JobIDs unavailable
+V19	R2-G01/G02/three-ID repaired regressions	NOT_TESTED	mandatory expanded-defect stop	no patch or golden issued
+V20	transitive/evidence/schema golden audit	NOT_TESTED	mandatory expanded-defect stop	golden regeneration forbidden
+V21	status/reachability invariant	PASS	sha256sum	fc1ca07d8123ed5d44bc24ecba98fca54d5b05781ecbaba820d44079319038b9
+V22	candidate invariant	PASS	sha256sum	96b618ab324db77b8402081075241b275f8925c45cdab058ba741e4beed29b58
+V23	RNG invariant	PASS	sha256sum	e47c5a8c62dd8dee34441e4274c0d49d1a7ce4aab0360aff4751cb08b6394a43
+V24	control invariant	PASS	sha256sum	261138beb57a4fd61f87d4c0d341ca97223dac76014739a3a4664266722312e6
+V25	corpus invariant	PASS	sha256sum	db8b49d782f39fe0b5f3b0365d0023e5fc223d5306215be10b636a03123ced03
+V26	DAG topology invariant	PASS	sha256sum	58f11d4749362d25c39cef3224e358015b587e77a3078b0eba00f3d82be2b0e9
+V27	model/metric/complexity invariant	PASS	audit	no parent artifact changed
+V28	V1.1 to V1.1.1 semantic diff	NOT_TESTED	mandatory expanded-defect stop	V1.1.1 not issued
+V29	blind firewall	PASS	action audit	no controls or escrow constructed/inspected
+V30	natural firewall	PASS	action audit	no confirmatory execution
+V31	Voynich firewall	PASS	action audit	no Voynich access
+V32	production firewall	PASS	action audit	no production objects created
+V33	results-manifest closure	PASS	manifest verifier	failure artifact closure only

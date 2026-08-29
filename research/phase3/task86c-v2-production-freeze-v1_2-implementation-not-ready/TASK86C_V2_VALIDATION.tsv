@@ -1,0 +1,36 @@
+check	verdict	detail
+CONTRACT_IDENTITY	SUPPORTED	V1.2 Markdown ec60bb23... and JSON 29e39e0c... verified
+EXECUTION_ERRATUM_IDENTITY	SUPPORTED	dbfb9a4a7101eed7006f751b9c4631b5f0286c3792f9777cc833c5dcfa42a3d3
+STATUS_REACHABILITY_V2_IDENTITY	SUPPORTED	fc1ca07d8123ed5d44bc24ecba98fca54d5b05781ecbaba820d44079319038b9
+R2_G01	CLOSED	regression authority preserved
+R2_G02	CLOSED	regression authority preserved
+EI01	CLOSED	E1 preserved
+PF_SC01	CLOSED	d outcome; one draw
+V1_2_GENERATION_CLOSURE	SUPPORTED	26/26 paths; zero open ambiguities
+GENERATION_PATHS_RESOLVED	26	all Task85c-g paths
+GOLDEN_VALIDATION	SUPPORTED	28 generation vectors
+GENERATION_PROPERTY_TESTS	SUPPORTED	32768 general and 8192 Generator-B cases
+SCIENTIFIC_IMPLEMENTATION	NOT_SUPPORTED	production handlers absent
+SCIENTIFIC_IMPLEMENTATION_COVERAGE	INCOMPLETE	traceability contains missing handlers
+EVIDENCE_CONTRACT	NOT_SUPPORTED	production integration not validated against all V1.2 schemas
+EVIDENCE_ONLY_VERIFIER	NOT_SUPPORTED	partial engineering verifier is not full V1.2 production verifier
+DEVELOPMENT_CALIBRATION	NOT_SUPPORTED	not started after failed pre-materialization gate
+THRESHOLD_FREEZE	NOT_SUPPORTED	not materialized
+BLIND_MATERIALIZATION	NOT_SUPPORTED	zero created
+BLIND_TRUTH_LEAKAGE	0	no blind material exists
+NATURAL_INPUT_CLOSURE	NOT_SUPPORTED	zero created
+CONTROL_INSTANCE_COUNT	0	required 192 not materialized
+DAG_MATERIALIZATION	NOT_SUPPORTED	blocked before JobID creation
+DAG_JOB_COUNT	0	required 1321152
+UNIQUE_JOBID_COUNT	0	required 1321152
+JOBID_COLLISION_COUNT	0	no IDs created
+DAG_DEPENDENCY_COUNT	0	required 2617152
+DANGLING_DEPENDENCY_COUNT	0	no graph created
+DISTRIBUTED_DETERMINISM	NOT_SUPPORTED	only engineering transport tests exist
+RETRY_RESTART_DETERMINISM	NOT_SUPPORTED	not validated with scientific handlers
+CAPACITY_QUALIFIED	NOT_SUPPORTED	actual scientific handlers unavailable
+PRODUCTION_EXECUTABLE_FROZEN	NOT_SUPPORTED	diagnostic transport binary rejected
+RUN_MANIFEST_FROZEN	NOT_SUPPORTED	blocking manifest only
+PRESEED_FROZEN	NOT_SUPPORTED	not materialized
+SCIENTIFIC_FIREWALL	INTACT	no confirmatory material or outcomes accessed
+PRODUCTION_RUN_AUTHORIZED	NO	IMPLEMENTATION_VALIDATION_FAILURE

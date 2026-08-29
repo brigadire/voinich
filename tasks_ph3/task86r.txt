@@ -1,0 +1,1741 @@
+Task86R — G1 Token-Formation Grammar Confirmatory Execution
+
+Цель
+
+Выполнить заново G1-эксперимент Phase III по полностью
+замороженному executable contract Task85-v1.1 и получить
+confirmatory ответ на вопрос:
+
+    Какой минимальный класс формальной генеративной модели
+    достаточен для объяснения TOKEN FORMATION Voynichese?
+
+Task86R является:
+
+    CONFIRMATORY EXECUTION TASK.
+
+Task86R НЕ является:
+
+    design task;
+    exploratory model-development task;
+    hyperparameter-search design task;
+    metric-development task.
+
+Все algorithms, grids, thresholds, calibration procedures,
+seeds, stability rules, adequacy gates и verdict mappings
+должны наследоваться из Task85 + Task85a без изменений.
+
+Основные возможные научные результаты:
+
+    G1_MINIMAL_CLASS =
+        M0 / M1 / M2 / M3 / M4 / M5
+        / INCONCLUSIVE / NONE
+
+    TOKEN_FORMATION_DEPTH =
+        FREQUENCY_ONLY
+        / LOCAL_MARKOV
+        / VARIABLE_MEMORY
+        / FINITE_STATE
+        / EXPLICIT_RULE_SYSTEM
+        / NOT_IDENTIFIABLE
+
+    EXPLICIT_RULE_GRAMMAR_REQUIRED =
+        SUPPORTED
+        / NOT_SUPPORTED
+        / INCONCLUSIVE.
+
+Финальный experiment marker:
+
+    TOKEN_GRAMMAR_FROZEN
+
+если confirmatory experiment валиден и завершён.
+
+Если выполнение невозможно без изменения frozen
+scientific contract:
+
+    TASK86R_EXPERIMENT_BLOCKED.
+
+Если contract был нарушен после начала confirmatory
+execution:
+
+    TASK86R_EXPERIMENT_INVALID.
+
+
+======================================================================
+1. AUTHORITATIVE CONTRACT
+======================================================================
+
+Использовать:
+
+    Task85-v1 scientific design
+        +
+    Task85a executable completion
+        =
+    Task85-v1.1.
+
+Обязательные authoritative Task85a artifacts включают:
+
+    TASK85A_DESIGN.md
+    TASK85A_TARGET_BLINDNESS_AUDIT.md
+
+    G1_EXECUTABLE_CONTRACT.json
+    G1_ALGORITHM_REGISTRY.tsv
+    G1_HYPERPARAMETER_GRID.tsv
+
+    M2_HYPERPARAMETER_GRID.tsv
+    M4_HYPERPARAMETER_GRID.tsv
+    M5_HYPERPARAMETER_GRID.tsv
+
+    G1_CALIBRATION_CONTRACT.md
+    G1_STABILITY_CONTRACT.md
+    G1_TRANSCRIPTION_STABILITY_CONTRACT.md
+
+    G1_FAILURE_THRESHOLDS.tsv
+
+    NEGATIVE_TOKEN_PROTOCOL.md
+    PM5_CALIBRATION_SPEC.md
+    PM6_DISCRIMINATION_SPEC.md
+
+    G1_ADEQUACY_GATES.md
+    G1_MODEL_LADDER_CONTRACT.md
+    G1_SEED_CONTRACT.md
+
+    TASK86_BLOCKER_REGRESSION.tsv
+    TASK86R_HANDOFF.md
+
+    GRAMMAR_EXPERIMENT_CONTRACT_V1.1_FROZEN.
+
+При конфликте prose и machine-readable contract
+действовать согласно Task85a conflict/preflight policy.
+
+Не выбирать собственную интерпретацию.
+
+
+======================================================================
+2. HISTORICAL TASK86 STATUS
+======================================================================
+
+Исходный Task86 сохранить неизменным:
+
+    TASK86_EXPERIMENT_BLOCKED.
+
+Не переиспользовать его как успешный Task86 run.
+
+Task86R является новым execution experiment,
+основанным на исправленном preregistration V1.1.
+
+Provenance chain:
+
+    Task85
+        →
+    Task86 BLOCKED
+        →
+    Task85a V1.1 FROZEN
+        →
+    Task86R.
+
+
+======================================================================
+3. NO SCIENTIFIC DESIGN CHANGES
+======================================================================
+
+Task86R запрещено изменять:
+
+    model classes M0–M5;
+    algorithms;
+    hyperparameter grids;
+    corpora;
+    corpus split;
+    scoring units;
+    MFC generators;
+    MFC population counts;
+    thresholds;
+    threshold derivation;
+    generation scales;
+    replicate checkpoints;
+    stopping rules;
+    convergence tolerances;
+    negative-token protocol;
+    PM5 definition;
+    PM6 definition;
+    F2 definitions;
+    adequacy gates;
+    complexity accounting;
+    minimality rule;
+    model-ladder rule;
+    TOKEN_FORMATION_DEPTH mapping;
+    transcription-stability rule;
+    seed contract.
+
+Неудобный результат не является основанием
+для изменения contract.
+
+
+======================================================================
+4. MANDATORY PREFLIGHT
+======================================================================
+
+До любой MFC generation выполнить:
+
+    python3 research/phase3/task85a/validate_contract.py --self-test
+
+Все девять preflight flags должны быть:
+
+    SUPPORTED.
+
+Минимум:
+
+    CONTRACT_COMPLETE
+    ALL_GRIDS_FINITE
+    ALL_THRESHOLDS_DEFINED
+    ALL_GATES_EXECUTABLE
+    NEGATIVE_PROTOCOL_COMPLETE
+    PM5_COMPLETE
+    PM6_COMPLETE
+    SEED_CONTRACT_COMPLETE
+    TASK86_BLOCKERS_RESOLVED.
+
+Если хотя бы один flag != SUPPORTED:
+
+    STOP.
+
+Не запускать calibration.
+Не запускать Voynich fitting.
+
+Terminal result:
+
+    TASK86R_EXPERIMENT_BLOCKED.
+
+
+======================================================================
+5. AUTHORITATIVE INPUT VERIFICATION
+======================================================================
+
+До experiment проверить:
+
+    Task85 hashes;
+    Task85a hashes;
+    V1.1 manifest;
+    authoritative corpus hashes;
+    frozen split hashes;
+    executable-contract hash;
+    candidate-grid hash.
+
+Использовать только authoritative corpora,
+зафиксированные V1.1 manifest.
+
+Split не регенерировать.
+
+Требовать byte-identical frozen Task85 split.
+
+
+======================================================================
+6. G1 INFORMATION FIREWALL
+======================================================================
+
+Model input ограничен:
+
+    TOKEN;
+    GLYPH;
+    COMPONENT;
+    TOKEN-internal POSITION.
+
+Запрещено использовать как predictors:
+
+    neighboring TOKENs;
+    LINE position;
+    PAGE;
+    FOLIO;
+    recto/verso;
+    SECTION;
+    Currier class;
+    locus identity;
+    illustration;
+    manuscript semantics;
+    any G2/G3 STRUCTURAL_STATE.
+
+Metadata используется только для:
+
+    split;
+    provenance;
+    reporting.
+
+
+======================================================================
+7. EXECUTION LEDGER
+======================================================================
+
+С первого шага вести immutable/append-only
+execution ledger.
+
+Для каждого job сохранить минимум:
+
+    job_id
+    stage
+    model_class
+    candidate_id
+    corpus/control
+    transcription
+    partition
+    scale
+    replicate
+    seed
+    input hashes
+    config hash
+    code revision
+    start/end status
+    output hashes
+    failure class.
+
+Failed jobs не удалять.
+
+
+======================================================================
+8. STAGE A — MFC CALIBRATION
+======================================================================
+
+MFC calibration обязательно выполняется
+до первого Voynich fit.
+
+Использовать ровно:
+
+    MFC0 = IID_GLYPH
+    MFC1 = ORDER2_MARKOV
+    MFC2 = SIX_STATE_PFSA.
+
+Для каждого:
+
+    16 independent populations.
+
+Каждая population:
+
+    DEVELOPMENT analogue = 20,000 TOKENs
+    VALIDATION analogue  = 5,000 TOKENs
+    HELDOUT analogue     = 5,000 TOKENs.
+
+Generators не должны использовать
+Voynich-derived parameters.
+
+
+======================================================================
+9. COMPLETE CALIBRATION GRID
+======================================================================
+
+Запустить полный frozen 84-candidate pipeline
+для MFC populations.
+
+Expected calibration fitting workload:
+
+    3 × 16 × 84
+        =
+    4,032 pipeline fits.
+
+Не сокращать grid по результатам.
+
+Не удалять failed candidates.
+
+Все deviations должны быть classified
+через frozen failure registry.
+
+
+======================================================================
+10. MATERIALIZE CALIBRATION THRESHOLDS
+======================================================================
+
+Вычислить frozen MFC q0.95 quantities
+строго по G1_CALIBRATION_CONTRACT.md.
+
+Для scalar x_1...x_16:
+
+    center = sample median
+
+    dispersion =
+        nearest-rank q0.95 of
+        abs(x_i - median).
+
+Использовать maximum applicable
+generator-specific dispersion
+как threshold согласно contract.
+
+Запрещены:
+
+    interpolation;
+    tail switching;
+    manual threshold choice;
+    post-calibration adjustment.
+
+
+======================================================================
+11. CALIBRATION FREEZE
+======================================================================
+
+До первого Voynich fit создать:
+
+    G1_CALIBRATION_FROZEN.
+
+Freeze должен содержать:
+
+    all MFC input hashes;
+    generator/config hashes;
+    population hashes;
+    all materialized thresholds;
+    job-ledger hash;
+    code revision;
+    result hashes.
+
+После freeze calibration thresholds
+неизменяемы.
+
+
+======================================================================
+12. CALIBRATION FAILURE
+======================================================================
+
+Если calibration содержит nonfinite input
+или иное условие, которое frozen contract
+определяет как invalid calibration:
+
+    STOP.
+
+Не переходить к Voynich fitting.
+
+Не заменять failed population.
+
+Не выбирать другой threshold.
+
+Terminal status:
+
+    TASK86R_EXPERIMENT_BLOCKED
+
+или другой methodological status,
+если exact mapping уже задан V1.1.
+
+
+======================================================================
+13. STAGE B — VOYNICH DEVELOPMENT FIT
+======================================================================
+
+Только после:
+
+    G1_CALIBRATION_FROZEN
+
+разрешён первый Voynich fit.
+
+Fit выполнить независимо для:
+
+    ZL3b
+    IT2a.
+
+Использовать только:
+
+    DEVELOPMENT.
+
+Выполнить все 84 frozen candidate rows
+для каждой transcription.
+
+Expected primary fit count:
+
+    84 × 2 = 168.
+
+
+======================================================================
+14. MODEL CLASSES
+======================================================================
+
+Исполнить ровно frozen:
+
+    M0 — frequency/IID formation
+    M1 — fixed-order GLYPH Markov
+    M2 — variable-order Markov
+    M3 — deterministic finite-state
+    M4 — probabilistic finite-state
+    M5 — component/rule grammar.
+
+Не добавлять:
+
+    M6;
+    neural model;
+    alternate PPM;
+    alternate state-merging algorithm;
+    alternate M5 decomposition;
+    hand-designed grammar.
+
+
+======================================================================
+15. MODEL ARTIFACTS
+======================================================================
+
+Для каждого fitted candidate сохранить
+serializable model artifact.
+
+Он должен позволять независимо:
+
+    score;
+    generate where required;
+    calculate complexity;
+    reproduce reported metrics.
+
+Artifact должен содержать/ссылаться минимум на:
+
+    candidate id;
+    model class;
+    transcription;
+    parameters;
+    alphabet;
+    states/rules/components;
+    lexicon;
+    exceptions;
+    StructureCost;
+    LexiconCost;
+    ExceptionCost;
+    total Complexity;
+    input hashes;
+    config hash;
+    source revision.
+
+
+======================================================================
+16. DEVELOPMENT IS NOT EVIDENCE
+======================================================================
+
+DEVELOPMENT разрешено использовать только
+согласно frozen contract.
+
+Не изменять candidate grid на основании
+DEVELOPMENT results.
+
+Не создавать новый candidate,
+если DEVELOPMENT показывает очевидный gap.
+
+Такой gap документировать как:
+
+    exploratory observation / future work.
+
+
+======================================================================
+17. STAGE C — VALIDATION
+======================================================================
+
+После полного DEVELOPMENT fitting
+выполнить frozen VALIDATION procedure.
+
+VALIDATION используется для:
+
+    candidate selection within class;
+    frozen failure checks;
+    complexity/minimality preparation
+
+строго в пределах V1.1 rules.
+
+Не читать HELDOUT.
+
+
+======================================================================
+18. CLASS-WISE SELECTION
+======================================================================
+
+Для каждого M0–M5 и каждой transcription
+выбрать candidate только по frozen
+VALIDATION selection rule.
+
+Не выбирать global winner.
+
+Сохранить все candidates и их statuses.
+
+Создать:
+
+    G1_MODEL_SELECTION.tsv.
+
+
+======================================================================
+19. PRE-HELDOUT SELECTION FREEZE
+======================================================================
+
+До первого HELDOUT access создать:
+
+    GRAMMAR_MODEL_SELECTION_FROZEN.
+
+Freeze должен содержать минимум:
+
+    Task85 freeze identity;
+    Task85a V1.1 freeze identity;
+    calibration freeze hash;
+    corpus hashes;
+    split hash;
+    executable contract hash;
+    code revision;
+    selected candidate ids;
+    model artifact hashes;
+    candidate-grid hash;
+    metric definitions;
+    thresholds;
+    scales;
+    replicate rules;
+    seed-contract identity.
+
+
+======================================================================
+20. HELDOUT ACCESS AUDIT
+======================================================================
+
+До freeze из section 19 подтвердить:
+
+    heldout_model_fit = false
+    heldout_scoring = false
+    heldout_F2 = false
+    heldout_model_selection = false.
+
+Если HELDOUT был открыт преждевременно:
+
+    do not continue as confirmatory experiment.
+
+Issue:
+
+    TASK86R_EXPERIMENT_INVALID.
+
+
+======================================================================
+21. STAGE D — HELDOUT CONFIRMATION
+======================================================================
+
+После GRAMMAR_MODEL_SELECTION_FROZEN
+открыть HELDOUT.
+
+Никакой дальнейший:
+
+    candidate selection;
+    hyperparameter tuning;
+    threshold tuning;
+    algorithm change
+
+не допускается.
+
+Оценить все retained frozen candidates
+на HELDOUT независимо для ZL3b и IT2a.
+
+
+======================================================================
+22. PRIMARY PREDICTIVE METRICS
+======================================================================
+
+Вычислить frozen:
+
+    PM1
+    PM2
+    PM4
+    PM5
+    PM6.
+
+PM3:
+
+    reporting only.
+
+Использовать frozen scoring unit
+для каждого model class.
+
+Не заменять metric из-за неудобной
+межклассовой сравнимости.
+
+
+======================================================================
+23. PM5
+======================================================================
+
+Использовать frozen top-label ECE.
+
+Ten bins:
+
+    [0,.1]
+    (.1,.2]
+    ...
+    (.9,1.0].
+
+Для каждого scored event:
+
+    confidence =
+        maximum predictive probability;
+
+    predicted label =
+        code-point-order tie-break;
+
+    correctness =
+        1 iff predicted == observed.
+
+Вычислить ровно frozen PM5 functional.
+
+Никакого adaptive binning.
+
+
+======================================================================
+24. NEGATIVE TOKEN GENERATION
+======================================================================
+
+Создать negatives исключительно через:
+
+    NEGATIVE_TOKEN_PROTOCOL.md.
+
+Не использовать:
+
+    arbitrary random garbage;
+    manually chosen invalid forms;
+    adversarial examples designed after fitting.
+
+Matching и seed derivation
+должны быть frozen.
+
+
+======================================================================
+25. PM6
+======================================================================
+
+Score whole TOKEN:
+
+    log P(TOKEN | fitted G1).
+
+Compute occurrence-weighted pooled ROC AUC:
+
+    AUC =
+      (wins + 0.5*ties)
+      /
+      (N_positive * N_negative).
+
+Не агрегировать TOKEN types.
+Не удалять duplicates.
+
+Использовать frozen matched-pair bootstrap
+только для reporting uncertainty.
+
+
+======================================================================
+26. PREDICTIVE ADEQUACY
+======================================================================
+
+Применить executable frozen gate.
+
+Required:
+
+    PM1 lower
+    PM2 lower
+    PM5 lower
+    PM4 higher
+    PM6 higher
+
+относительно required baseline(s).
+
+Каждый improvement должен:
+
+    be strict;
+    exceed maximum applicable MFC q0.95 threshold;
+    pass on both transcriptions;
+    be at least DIRECTION_STABLE.
+
+Все пять metrics обязательны.
+
+Иначе:
+
+    PredictiveAdequacy(G) = FAIL.
+
+
+======================================================================
+27. COMPLEXITY
+======================================================================
+
+Для каждого candidate использовать:
+
+    Complexity(G)
+      =
+    StructureCost
+      +
+    LexiconCost
+      +
+    ExceptionCost.
+
+Не исключать lexicon или exceptions.
+
+Сохранить также:
+
+    state count;
+    rule count;
+    component count;
+    free parameter count
+
+как secondary diagnostics.
+
+
+======================================================================
+28. MEMORIZATION AUDIT
+======================================================================
+
+Применить frozen:
+
+    MEMORIZATION_DOMINATED
+
+criterion.
+
+Использовать exact V1.1 threshold/derivation.
+
+Модель с memorization failure
+не может стать G1_min.
+
+Не переинтерпретировать большой lexicon
+как productive grammar.
+
+
+======================================================================
+29. COMPLEXITY GROWTH
+======================================================================
+
+Использовать nested DEVELOPMENT leaf prefixes:
+
+    0.25
+    0.50
+    0.75
+    1.00.
+
+Fit Theil-Sen slope:
+
+    log2 Complexity
+        ~
+    log2 scored units.
+
+Использовать frozen deterministic
+1,000-resample percentile bootstrap.
+
+`COMPLEXITY_UNBOUNDED` только по frozen rule.
+
+
+======================================================================
+30. STAGE E — GENERATIVE VALIDATION
+======================================================================
+
+Для каждого surviving candidate
+генерировать independent synthetic
+TOKEN populations.
+
+Frozen scales:
+
+    0.5
+    1.0
+    2.0.
+
+Generated count:
+
+    max(1, floor(scale*N + 0.5)).
+
+Scale 1.0 является primary.
+
+
+======================================================================
+31. REPLICATES
+======================================================================
+
+Frozen checkpoints:
+
+    4
+    8
+    16
+    32.
+
+Минимум:
+
+    8 replicates.
+
+Максимум:
+
+    32 replicates.
+
+Не выбирать replicate count вручную.
+
+
+======================================================================
+32. CONVERGENCE
+======================================================================
+
+Начиная с checkpoint 8,
+для каждой applicable metric/scale сравнить
+median с предыдущим checkpoint.
+
+Pass iff:
+
+    abs(current - previous)
+        <=
+    1e-4
+        +
+    0.01 * max(abs(current), abs(previous)).
+
+Stop после двух consecutive passing comparisons.
+
+Earliest stop:
+
+    16.
+
+Если к 32 convergence отсутствует:
+
+    NON_CONVERGED
+        →
+    NUMERICALLY_UNSTABLE.
+
+
+======================================================================
+33. RUN VARIATION
+======================================================================
+
+На 32 replicates вычислить frozen CV.
+
+Если:
+
+    mean != 0:
+        sample_sd / abs(mean)
+
+иначе:
+
+        sample_sd.
+
+Value > 0.25:
+
+    excessive run variation
+
+с последствиями согласно frozen failure contract.
+
+
+======================================================================
+34. G1 FINGERPRINT VALIDATION
+======================================================================
+
+Вычислить только семь inherited
+G1 Fingerprint V2 metrics:
+
+EDIT FAMILY:
+
+    EF1_GIANT_COMPONENT_SHARE
+    EF1_ISOLATE_SHARE
+    EF2_GLOBAL_CLUSTERING
+    EF3_DEGREE_FREQUENCY_SPEARMAN
+
+LEXICAL PARADIGM FAMILY:
+
+    LP1_RULE_SUPPORT_GINI
+    LP4_PREFIX_ATTACHMENT_NMI
+    LP4_SUFFIX_ATTACHMENT_NMI.
+
+Не добавлять новые G1 metrics.
+
+
+======================================================================
+35. METRIC PASS
+======================================================================
+
+At matched scale and frozen stopping checkpoint:
+
+    metric PASS
+
+iff:
+
+    abs(
+        median_generated
+        -
+        HELDOUT
+    )
+    <=
+    max_applicable_MFC_q95_distance.
+
+Equality passes.
+
+Unavailable/degenerate metric:
+
+    FAIL.
+
+Не исключать такую metric post hoc.
+
+
+======================================================================
+36. FAMILY PASS
+======================================================================
+
+EDIT FAMILY:
+
+    at least 3 / 4 metrics PASS.
+
+LEXICAL PARADIGM FAMILY:
+
+    at least 2 / 3 metrics PASS.
+
+Обе families должны пройти:
+
+    on ZL3b;
+    on IT2a;
+    with at least direction stability.
+
+Только тогда:
+
+    StructuralAdequacy(G) = PASS.
+
+
+======================================================================
+37. MULTI-SCALE SUFFICIENCY
+======================================================================
+
+Для final sufficiency дополнительно требуется:
+
+    convergence;
+    no registered failure;
+    all enumerated seeds retained;
+    same gate result at scales:
+        0.5
+        1.0
+        2.0.
+
+Не считать scale 1.0 достаточным
+для final sufficiency.
+
+
+======================================================================
+38. CROSS-TRANSCRIPTION STABILITY
+======================================================================
+
+Для effect e относительно baseline:
+
+    D =
+      abs(e_ZL3b - e_IT2a)
+      /
+      max(
+        abs(e_ZL3b),
+        abs(e_IT2a),
+        1e-12
+      ).
+
+Classify exactly:
+
+TRANSCRIPTION_STABLE:
+
+    direction agrees
+    AND
+    D <= 0.20.
+
+DIRECTION_STABLE:
+
+    nonzero direction agrees
+    AND
+    D > 0.20.
+
+TRANSCRIPTION_SENSITIVE:
+
+    direction differs
+    OR
+    either value nonfinite
+    OR
+    exactly one value zero.
+
+
+======================================================================
+39. G1 SUFFICIENCY
+======================================================================
+
+Для каждого candidate определить:
+
+    PredictiveAdequacy
+    StructuralAdequacy
+    convergence
+    failure status
+    scale stability
+    transcription stability.
+
+Не вводить новый composite score.
+
+Candidate является sufficient
+только согласно frozen conjunction.
+
+
+======================================================================
+40. MINIMALITY
+======================================================================
+
+Minimality вычислить отдельно
+для ZL3b и IT2a.
+
+Рассматривать только candidates,
+прошедшие обе adequacy gates.
+
+Primary quantity:
+
+    Complexity(G).
+
+Candidates equivalent when:
+
+    abs(C_a - C_b)
+        <=
+    max(
+        1 bit,
+        1e-6 * min(C_a,C_b)
+    ).
+
+Within equivalent set prefer:
+
+    lower model rank M0...M5
+
+then:
+
+    candidate id.
+
+Не объединять complexity
+двух transcriptions.
+
+
+======================================================================
+41. CROSS-TRANSCRIPTION FINAL CLASS
+======================================================================
+
+Final G1 class существует только если
+transcription-specific minimality procedures
+выбирают один и тот же M0–M5 class.
+
+Если classes различаются:
+
+    G1_MINIMAL_CLASS = INCONCLUSIVE
+
+и:
+
+    TOKEN_FORMATION_DEPTH =
+        NOT_IDENTIFIABLE.
+
+Не выбирать majority/better-looking transcription.
+
+
+======================================================================
+42. MODEL LADDER
+======================================================================
+
+Проверить frozen edges:
+
+    M0 → M1
+    M1 → M2
+    M2 → M3
+    M2 → M4
+
+и затем finite-state parent → M5.
+
+Для edge использовать:
+
+    total description length
+        =
+    Task85 Complexity
+        +
+    HELDOUT PM1.
+
+Применить frozen
+REPRESENTATIONAL_GAIN rule.
+
+
+======================================================================
+43. FINITE-STATE PARENT
+======================================================================
+
+M3 и M4 сравнить согласно
+frozen minimality rule.
+
+Если оба adequate:
+
+    использовать adequate result
+    с меньшей transcription-specific
+    description length.
+
+Если neither adequate:
+
+    сравнить M5 с M2
+
+и явно записать skipped finite-state edge.
+
+Не создавать новый intermediate model.
+
+
+======================================================================
+44. REPRESENTATIONAL GAIN
+======================================================================
+
+`REPRESENTATIONAL_GAIN = SUPPORTED`
+только если child:
+
+    passes both adequacy gates;
+
+    lowers total description length
+    beyond maximum applicable MFC q0.95
+    improvement threshold;
+
+    does so on both transcriptions;
+
+    is at least direction-stable;
+
+    regresses no structural family.
+
+Exact equality:
+
+    NOT SUPPORTED.
+
+Missing/nonfinite required measurement:
+
+    INCONCLUSIVE.
+
+
+======================================================================
+45. TOKEN FORMATION DEPTH
+======================================================================
+
+Применить frozen mapping:
+
+    M0 → FREQUENCY_ONLY
+    M1 → LOCAL_MARKOV
+    M2 → VARIABLE_MEMORY
+    M3/M4 → FINITE_STATE
+    M5 → EXPLICIT_RULE_SYSTEM.
+
+Return:
+
+    NOT_IDENTIFIABLE
+
+если:
+
+    no adequate candidate;
+    transcription classes differ;
+    required ladder edge is INCONCLUSIVE;
+    selected-class gain over parent
+        is unsupported.
+
+
+======================================================================
+46. EXPLICIT RULE GRAMMAR
+======================================================================
+
+Set:
+
+    EXPLICIT_RULE_GRAMMAR_REQUIRED = SUPPORTED
+
+только если M5:
+
+    passes both adequacy gates
+
+AND
+
+    beats every adequate M0–M4 candidate
+    under frozen gain rule.
+
+Set:
+
+    NOT_SUPPORTED
+
+если существует adequate M0–M4 candidate
+и ни один M5 не превосходит его
+по frozen rule.
+
+Иначе:
+
+    INCONCLUSIVE.
+
+
+======================================================================
+47. INTERPRETATION BOUNDARY
+======================================================================
+
+Даже:
+
+    EXPLICIT_RULE_GRAMMAR_REQUIRED = SUPPORTED
+
+НЕ означает:
+
+    Voynichese is natural language;
+    COMPONENT = morpheme;
+    M5 rules = linguistic grammar;
+    manuscript contains plaintext;
+    manuscript contains semantics.
+
+Это означает только:
+
+    simpler frozen G1 model classes
+    were insufficient to explain the
+    preregistered TOKEN-formation evidence.
+
+
+======================================================================
+48. UNEXPLAINED G1 STRUCTURE
+======================================================================
+
+Отдельно определить:
+
+    G1_UNEXPLAINED_STRUCTURE =
+        PRESENT
+        / NOT_DETECTED
+        / INCONCLUSIVE
+
+строго из frozen adequacy/failure results.
+
+Не использовать qualitative token examples
+для verdict.
+
+
+======================================================================
+49. FAILURE LEDGER
+======================================================================
+
+Использовать только frozen failure classes.
+
+Минимум:
+
+    TRAINING_FAILED
+    NON_GENERATIVE
+    NUMERICALLY_UNSTABLE
+    HELDOUT_DEGENERATE
+    COMPLEXITY_UNBOUNDED
+    MEMORIZATION_DOMINATED
+    STRUCTURAL_VALIDATION_FAILED.
+
+Каждый failure сохранить.
+
+Не заменять failed candidate новым.
+
+
+======================================================================
+50. DETERMINISM
+======================================================================
+
+Проверить representative/all required outputs
+согласно frozen determinism contract.
+
+Минимум:
+
+    process restart;
+    worker-count variation;
+    GOMAXPROCS variation;
+    deterministic candidate order;
+    deterministic seed derivation;
+    sorted map iteration before
+        floating-point accumulation;
+    sorted serialization.
+
+Required regenerated artifacts
+должны быть byte-identical.
+
+
+======================================================================
+51. BUG POLICY
+======================================================================
+
+После HELDOUT opening допустим только
+implementation bug fix,
+если scientific semantics неизменны.
+
+Требуется:
+
+    document bug;
+    regression test;
+    symmetric recomputation
+        всех affected candidates.
+
+Если fix требует изменения:
+
+    algorithm;
+    grid;
+    metric;
+    threshold;
+    gate;
+    split;
+    seed rule;
+    complexity definition;
+
+experiment invalid:
+
+    TASK86R_EXPERIMENT_INVALID.
+
+
+======================================================================
+52. REQUIRED RESULT TABLES
+======================================================================
+
+Создать минимум:
+
+research/phase3/task86r/
+
+    TASK86R_EXECUTION_LEDGER.tsv
+
+    G1_CALIBRATION_RESULTS.tsv
+    G1_CALIBRATION_THRESHOLDS.tsv
+    G1_CALIBRATION_MANIFEST.json
+
+    G1_MODEL_FITS.tsv
+    G1_MODEL_SELECTION.tsv
+
+    G1_PREDICTIVE_RESULTS.tsv
+    G1_COMPLEXITY_RESULTS.tsv
+    G1_COMPLEXITY_GROWTH.tsv
+
+    G1_NEGATIVE_TOKEN_RESULTS.tsv
+    G1_PM5_RESULTS.tsv
+    G1_PM6_RESULTS.tsv
+
+    G1_GENERATION_RESULTS.tsv
+    G1_GENERATION_STABILITY.tsv
+
+    G1_F2_RESULTS.tsv
+    G1_FAMILY_VALIDATION.tsv
+
+    G1_TRANSCRIPTION_STABILITY.tsv
+    G1_MODEL_LADDER.tsv
+
+    G1_FAILURE_LEDGER.tsv
+
+    G1_SELECTED_MODELS.json
+
+    TASK86R_RESULTS_MANIFEST.json.
+
+
+======================================================================
+53. REQUIRED FREEZE ARTIFACTS
+======================================================================
+
+Создать в соответствующий момент:
+
+    G1_CALIBRATION_FROZEN
+
+и:
+
+    GRAMMAR_MODEL_SELECTION_FROZEN.
+
+Они являются обязательными provenance boundaries.
+
+Нельзя создать их задним числом
+после HELDOUT evaluation.
+
+
+======================================================================
+54. REQUIRED REPORTS
+======================================================================
+
+Создать минимум:
+
+    TASK86R_EXECUTION.md
+
+    G1_CALIBRATION_REPORT.md
+
+    G1_MODEL_SELECTION_REPORT.md
+
+    G1_HELDOUT_REPORT.md
+
+    G1_GENERATIVE_VALIDATION_REPORT.md
+
+    TASK86R_REPORT.md
+
+    TASK87_HANDOFF.md.
+
+
+======================================================================
+55. TASK86R REPORT QUESTIONS
+======================================================================
+
+TASK86R_REPORT.md должен ответить минимум:
+
+1. Прошёл ли V1.1 preflight?
+
+2. Все ли authoritative inputs совпали
+   с frozen hashes?
+
+3. Был ли MFC выполнен до первого Voynich fit?
+
+4. Были ли calibration thresholds frozen
+   до Voynich fitting?
+
+5. Сколько из 4,032 calibration jobs успешно выполнено?
+
+6. Были ли какие-либо MFC failures?
+
+7. Все ли 84 candidates были выполнены
+   отдельно для ZL3b и IT2a?
+
+8. Какие candidates failed и почему?
+
+9. Какие candidates выбраны на VALIDATION
+   внутри M0–M5?
+
+10. Был ли selection freeze создан
+    до HELDOUT opening?
+
+11. Какие candidates проходят PredictiveAdequacy?
+
+12. Какие candidates проходят StructuralAdequacy?
+
+13. Какие candidates проходят обе gates?
+
+14. Какие models признаны
+    MEMORIZATION_DOMINATED?
+
+15. Какие models признаны
+    COMPLEXITY_UNBOUNDED?
+
+16. Какие models не сходятся при generation?
+
+17. Насколько результаты устойчивы
+    между ZL3b и IT2a?
+
+18. Совпадает ли minimal class
+    между transcriptions?
+
+19. Каков G1_MINIMAL_CLASS?
+
+20. Каковы результаты model ladder?
+
+21. На каком edge прекращается
+    поддерживаемый representational gain?
+
+22. Каков TOKEN_FORMATION_DEPTH?
+
+23. Требуется ли explicit rule grammar?
+
+24. Есть ли productive formation evidence
+    сверх memorized lexicon?
+
+25. Какая G1 structure остаётся необъяснённой?
+
+26. Какие результаты являются PRIMARY,
+    а какие только diagnostic?
+
+27. Есть ли основания передавать frozen G1
+    в Task87?
+
+28. Каков финальный Task86R marker?
+
+
+======================================================================
+56. REQUIRED VERDICTS
+======================================================================
+
+Выдать минимум:
+
+    V1_1_PREFLIGHT =
+        SUPPORTED / NOT_SUPPORTED
+
+    CALIBRATION_VALID =
+        SUPPORTED / NOT_SUPPORTED
+
+    CALIBRATION_BEFORE_VOYNICH =
+        SUPPORTED / NOT_SUPPORTED
+
+    CALIBRATION_FROZEN =
+        SUPPORTED / NOT_SUPPORTED
+
+    G1_MODEL_SPACE_EXECUTED =
+        SUPPORTED / PARTIAL / NOT_SUPPORTED
+
+    MODEL_SELECTION_BEFORE_HELDOUT =
+        SUPPORTED / NOT_SUPPORTED
+
+    HELDOUT_FIREWALL_PRESERVED =
+        SUPPORTED / NOT_SUPPORTED
+
+    G1_PREDICTIVE_STRUCTURE =
+        SUPPORTED / PARTIAL / NOT_SUPPORTED
+
+    G1_STRUCTURAL_REPRODUCTION =
+        SUPPORTED / PARTIAL / NOT_SUPPORTED
+
+    G1_PRODUCTIVE_FORMATION =
+        SUPPORTED / PARTIAL / NOT_SUPPORTED
+
+    G1_CROSS_TRANSCRIPTION_STABILITY =
+        TRANSCRIPTION_STABLE
+        / DIRECTION_STABLE
+        / TRANSCRIPTION_SENSITIVE
+        / INCONCLUSIVE
+
+    G1_GRAMMAR_SUFFICIENT =
+        SUPPORTED / PARTIAL / NOT_SUPPORTED
+
+    G1_MINIMAL_CLASS =
+        M0 / M1 / M2 / M3 / M4 / M5
+        / INCONCLUSIVE / NONE
+
+    TOKEN_FORMATION_DEPTH =
+        FREQUENCY_ONLY
+        / LOCAL_MARKOV
+        / VARIABLE_MEMORY
+        / FINITE_STATE
+        / EXPLICIT_RULE_SYSTEM
+        / NOT_IDENTIFIABLE
+
+    EXPLICIT_RULE_GRAMMAR_REQUIRED =
+        SUPPORTED / NOT_SUPPORTED / INCONCLUSIVE
+
+    G1_UNEXPLAINED_STRUCTURE =
+        PRESENT / NOT_DETECTED / INCONCLUSIVE
+
+    TASK87_READY =
+        SUPPORTED / NOT_SUPPORTED.
+
+
+======================================================================
+57. TASK87 HANDOFF
+======================================================================
+
+Если Task86R валиден, TASK87_HANDOFF.md должен передать:
+
+    selected/frozen G1 models;
+    exact artifact hashes;
+    transcription-specific models;
+    G1_MINIMAL_CLASS;
+    equivalence set if relevant;
+    TOKEN_FORMATION_DEPTH;
+    predictive results;
+    structural results;
+    complexity;
+    generation stability;
+    transcription stability;
+    failure ledger;
+    unexplained G1 structure.
+
+Если:
+
+    G1_MINIMAL_CLASS = INCONCLUSIVE
+
+но существует frozen viable equivalence set,
+не выбирать искусственного winner.
+
+Передать весь viable set.
+
+
+======================================================================
+58. TASK87 READINESS
+======================================================================
+
+TASK87_READY может быть SUPPORTED,
+если Task86R experiment валиден и существует
+научно корректный frozen G1 result,
+включая допустимый frozen viable set.
+
+`INCONCLUSIVE` не обязательно блокирует Task87,
+если Task85 nested-model contract позволяет
+продолжить со всем equivalence set.
+
+Но если:
+
+    no usable G1 representation exists
+
+или:
+
+    experiment BLOCKED/INVALID,
+
+то:
+
+    TASK87_READY = NOT_SUPPORTED.
+
+
+======================================================================
+59. FINAL MARKER
+======================================================================
+
+Если confirmatory experiment полностью выполнен,
+provenance/firewalls сохранены и результат frozen:
+
+    TOKEN_GRAMMAR_FROZEN.
+
+Этот marker допустим также для корректного
+отрицательного/неидентифицирующего научного результата,
+если frozen contract позволяет передать его дальше.
+
+Если execution остановлен до получения
+scientific evidence из-за невозможности
+исполнить contract:
+
+    TASK86R_EXPERIMENT_BLOCKED.
+
+Если confirmatory integrity нарушена:
+
+    TASK86R_EXPERIMENT_INVALID.
+
+Не использовать BLOCKED/INVALID
+как scientific verdict о Voynichese.
+
+
+======================================================================
+60. VALIDATION
+======================================================================
+
+Обязательно:
+
+    V1.1 validator self-test;
+    authoritative hash verification;
+    split identity verification;
+    calibration-before-Voynich audit;
+    calibration freeze verification;
+    candidate enumeration verification;
+    HELDOUT access audit;
+    model-selection freeze verification;
+    seed ledger verification;
+    result-manifest verification;
+    deterministic regeneration verification.
+
+Для Go code:
+
+    go build ./...
+    go vet ./...
+    go test ./...
+    go test -race ./...
+
+Всегда:
+
+    git diff --check.
+
+
+======================================================================
+61. DEFINITION OF DONE
+======================================================================
+
+Task86R завершён только когда:
+
+1. Task85-v1 verified.
+2. Task85a V1.1 verified.
+3. Nine preflight flags are SUPPORTED.
+4. Authoritative corpus hashes verified.
+5. Frozen split verified unchanged.
+6. Execution ledger initialized.
+7. G1 firewall verified.
+8. All MFC generators verified.
+9. 16 populations generated for each MFC.
+10. Full 84-candidate calibration pipeline attempted.
+11. All calibration failures documented.
+12. MFC q0.95 thresholds materialized.
+13. Calibration validity determined.
+14. G1_CALIBRATION_FROZEN created before Voynich fitting.
+15. All 84 candidates attempted on ZL3b DEVELOPMENT.
+16. All 84 candidates attempted on IT2a DEVELOPMENT.
+17. All failures retained.
+18. VALIDATION evaluation completed.
+19. Class-wise candidates selected.
+20. G1_MODEL_SELECTION.tsv created.
+21. GRAMMAR_MODEL_SELECTION_FROZEN created.
+22. HELDOUT access audit proves no premature opening.
+23. HELDOUT confirmatory evaluation completed.
+24. PM1/PM2/PM4/PM5/PM6 computed.
+25. Negative-token experiment completed.
+26. Complexity accounting completed.
+27. Memorization audit completed.
+28. Complexity-growth audit completed.
+29. Synthetic generation completed at required scales.
+30. Replicate convergence evaluated.
+31. Numerical stability evaluated.
+32. Seven G1 F2 metrics evaluated.
+33. Edit-family gate evaluated.
+34. Lexical-paradigm-family gate evaluated.
+35. PredictiveAdequacy determined.
+36. StructuralAdequacy determined.
+37. Multi-scale sufficiency determined.
+38. Cross-transcription stability determined.
+39. Minimal candidate/class determined separately per transcription.
+40. Cross-transcription minimal class determined.
+41. Model ladder evaluated.
+42. REPRESENTATIONAL_GAIN determined for required edges.
+43. TOKEN_FORMATION_DEPTH determined.
+44. EXPLICIT_RULE_GRAMMAR_REQUIRED determined.
+45. G1_UNEXPLAINED_STRUCTURE determined.
+46. Failure ledger complete.
+47. Determinism tests pass.
+48. TASK86R_REPORT.md complete.
+49. TASK87_HANDOFF.md complete.
+50. TASK87_READY determined.
+51. Results manifest complete.
+52. Repository validation passes.
+53. Exactly one appropriate terminal marker issued.

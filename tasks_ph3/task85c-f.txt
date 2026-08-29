@@ -1,0 +1,1227 @@
+Task85c-f — G1-v2 Nonempty Token Generation Semantics,
+RNG Consumption Resolution and Scientific Contract V1.2 Refreeze
+
+
+PURPOSE
+
+Resolve the genuine scientific-contract defect:
+
+    PF-SC01-EMPTY-TOKEN-GENERATION
+
+discovered during:
+
+    Task86C-v2-production-freeze.
+
+The frozen G1-v2 V1.1 protocol requires generated tokens to be
+nonempty, but at least one reachable frozen generation path permits
+<EOS> to be selected before any glyph has been emitted.
+
+For the frozen M0_GEN_A case:
+
+    DRAW0_U53     = 0.92848667210989588
+    DRAW0_OUTCOME = <EOS>
+
+At least two reasonable implementations produce different
+deterministic corpora:
+
+    retry / consume next RNG draw
+        → first glyph = a
+
+    conditional renormalization
+        → first glyph = d.
+
+Because generated DEVELOPMENT controls determine calibration and
+thresholds, this ambiguity can propagate to scientific verdicts.
+
+Therefore PF-SC01 is a SCIENTIFIC_CONTRACT_DEFECT.
+
+Task85c-f must:
+
+    reproduce PF-SC01;
+    audit the complete frozen generation apparatus for the same
+    defect class;
+    define mathematically explicit nonempty-generation semantics;
+    define exact RNG-consumption semantics;
+    produce boundary golden vectors;
+    demonstrate that every affected generation path is uniquely
+    reproducible;
+    issue a narrowly revised scientific contract V1.2.
+
+This is a scientific-contract repair.
+
+It is NOT production execution.
+
+
+======================================================================
+1. AUTHORITATIVE INPUTS
+======================================================================
+
+Parent scientific contract:
+
+    G1_V2_EXECUTABLE_CONTRACT_V1_1
+
+SHA-256:
+
+    5c3cd272c1dbae9bfe1d7a100155faf102e86d34660da239e1cb31704ad470b0
+
+Task85c-c artifact root:
+
+    dc27660d3e03a06f91aaa1c3aa6c48226328457746c9dc819e7c0a355ce8f09c
+
+Status/reachability contract:
+
+    G1_V2_STATUS_REACHABILITY_CONTRACT_V2
+
+SHA-256:
+
+    fc1ca07d8123ed5d44bc24ecba98fca54d5b05781ecbaba820d44079319038b9
+
+Execution identity erratum:
+
+    G1V2_EXECUTION_IDENTITY_ERRATUM_E1
+
+SHA-256:
+
+    dbfb9a4a7101eed7006f751b9c4631b5f0286c3792f9777cc833c5dcfa42a3d
+
+Task85c-e artifact root:
+
+    cc4860f8326080d433e3eae10b8370c542f030196b3af6ba614265294fd26ec6
+
+Production-freeze failure root:
+
+    be4ca9eb12dead138b936a257d9bfd9dd44afd982d87b3185b32be4f429616a2
+
+Known closed findings:
+
+    R2-G01 = CLOSED
+    R2-G02 = CLOSED
+    EI01    = CLOSED.
+
+These findings MUST remain closed.
+
+
+======================================================================
+2. BLOCKING DEFECT
+======================================================================
+
+Open finding:
+
+    PF-SC01-EMPTY-TOKEN-GENERATION.
+
+Observed reachable state:
+
+    generator = M0_GEN_A
+    token_length = 0
+    RNG draw = 0.92848667210989588
+    sampled outcome = <EOS>.
+
+Frozen invariant:
+
+    emitted token must be nonempty.
+
+V1.1 does not uniquely specify what happens next.
+
+
+======================================================================
+3. REQUIRED REPRODUCTION
+======================================================================
+
+Before modifying the contract, independently reproduce PF-SC01.
+
+Record:
+
+    generator;
+    frozen input;
+    RNG identity;
+    exact RNG state/seed derivation;
+    U53 value;
+    symbol distribution;
+    cumulative intervals;
+    selected symbol;
+    current token length;
+    violated invariant.
+
+Then implement at least the two currently admissible interpretations:
+
+    A. retry / rejection;
+    B. conditional renormalization.
+
+Record:
+
+    draws consumed;
+    resulting first glyph;
+    resulting token prefix;
+    resulting RNG state.
+
+Expected reproduction includes:
+
+    retry → a
+    conditional → d.
+
+If this cannot be reproduced:
+
+    STOP PF_SC01_NOT_REPRODUCIBLE.
+
+
+======================================================================
+4. SCOPE OF THE REPAIR
+======================================================================
+
+Do NOT repair only M0_GEN_A.
+
+Audit every frozen mechanism capable of emitting generated tokens.
+
+At minimum inspect:
+
+    M0 generation;
+    M1 generation;
+    M2 generation;
+    M3 exact generation;
+    M3 approximate generation;
+    M4 generation;
+    M5 generation;
+    Generator A;
+    Generator B;
+    any shared generation helper;
+    any synthetic-control generator.
+
+The audit must determine whether equivalent boundary ambiguity can
+occur elsewhere.
+
+
+======================================================================
+5. SPECIAL-SYMBOL AUDIT
+======================================================================
+
+For every generation path identify the roles of:
+
+    BOS
+    EOS
+    UNK
+    ordinary glyphs
+    any model-specific sentinel/state symbol.
+
+For every symbol classify whether it may be:
+
+    context-only;
+    sampled;
+    emitted;
+    token-initial;
+    token-internal;
+    token-terminal.
+
+No special symbol may have an implicit role.
+
+
+======================================================================
+6. GENERATION STATE MACHINE
+======================================================================
+
+Define an explicit scientific generation state machine.
+
+At minimum distinguish:
+
+    BEFORE_TOKEN
+    INSIDE_TOKEN
+    TOKEN_COMPLETE
+
+and any additional states genuinely required by a frozen model.
+
+For each state define:
+
+    allowed sampled outcomes;
+    allowed emitted outcomes;
+    transition semantics;
+    termination semantics;
+    RNG consumption semantics.
+
+The state machine must make empty-token behavior impossible or
+explicitly defined.
+
+
+======================================================================
+7. CENTRAL SCIENTIFIC QUESTION
+======================================================================
+
+Resolve:
+
+    What is the exact probability law for generation when EOS has
+    positive model probability but EOS is structurally forbidden
+    because no glyph has yet been emitted?
+
+The answer must be mathematical, not an implementation convention.
+
+
+======================================================================
+8. DISTRIBUTION SEMANTICS
+======================================================================
+
+Evaluate the scientifically admissible alternatives, including at
+minimum:
+
+    rejection sampling from the original distribution;
+
+    direct sampling from the conditional distribution
+
+        P(X = g | X != EOS).
+
+Determine whether they define the same abstract probability law.
+
+If equivalent as distributions, state that explicitly.
+
+Do not infer deterministic RNG equivalence from distributional
+equivalence.
+
+
+======================================================================
+9. RNG CONSUMPTION IS SCIENTIFICALLY NORMATIVE
+======================================================================
+
+Because the experiment freezes deterministic RNG streams, the
+contract must specify not only the abstract probability distribution
+but also the exact mapping:
+
+    RNG stream
+        →
+    generated corpus.
+
+Therefore freeze:
+
+    number of draws consumed;
+    conditions causing another draw;
+    whether rejected draws advance RNG state;
+    whether conditional distributions reuse the same U53;
+    mapping from U53 to categorical outcome;
+    boundary comparison rules.
+
+There must be exactly one generated corpus for a given frozen input
+and RNG identity.
+
+
+======================================================================
+10. NO POST-HOC CHOICE FROM OBSERVED OUTCOME
+======================================================================
+
+The repair MUST NOT justify its rule by:
+
+    preferring a;
+    preferring d;
+    producing more convenient DEVELOPMENT thresholds;
+    producing better control recovery;
+    resembling Voynich more closely;
+    improving downstream metrics.
+
+The observed:
+
+    a versus d
+
+difference is diagnostic evidence only.
+
+The normative rule must be justified from the mathematical
+semantics of constrained generation.
+
+
+======================================================================
+11. REQUIRED DECISION PRINCIPLE
+======================================================================
+
+Select one general generation rule applicable independently of the
+specific observed RNG value.
+
+The rule must behave identically for:
+
+    observed defect fixture;
+    arbitrary seeds;
+    all applicable models;
+    all applicable controls.
+
+No fixture-specific exception is permitted.
+
+
+======================================================================
+12. PREFERRED FORM OF RESOLUTION
+======================================================================
+
+Where a symbol is structurally impossible in the current generation
+state, define the sampling distribution over the set of currently
+admissible outcomes.
+
+Conceptually:
+
+    A(s) = set of admissible outcomes in generation state s
+
+    P_s(x) =
+        P(x) / Σ[y ∈ A(s)] P(y),   x ∈ A(s).
+
+Then consume exactly one frozen categorical RNG draw from P_s.
+
+This provides:
+
+    an explicit conditional probability law;
+    one RNG draw per categorical decision;
+    no hidden rejection-loop consumption.
+
+HOWEVER:
+
+This is a proposed methodological resolution, not permission to
+override a contradictory higher-precedence frozen model definition.
+
+The task must verify that this interpretation is compatible with
+the intended M0–M5 probability semantics.
+
+If not:
+
+    STOP SCIENTIFIC_CONTRACT_DEFECT_EXPANDED.
+
+
+======================================================================
+13. ZERO-MASS CONDITION
+======================================================================
+
+Explicitly define behavior if:
+
+    Σ[y ∈ A(s)] P(y) = 0.
+
+This must not be left to implementation.
+
+Classify whether such a state is:
+
+    impossible by construction;
+    numerical failure;
+    generation failure;
+    another existing frozen status.
+
+Do not invent a new scientific status unless unavoidable.
+
+
+======================================================================
+14. FLOATING-POINT SEMANTICS
+======================================================================
+
+Preserve the frozen numerical rules unless repair requires otherwise.
+
+Categorical renormalization must specify exact:
+
+    binary64 operations;
+    summation order;
+    normalization order;
+    cumulative construction;
+    comparison convention.
+
+Use existing V1.1 numerical semantics wherever they already provide
+an answer.
+
+
+======================================================================
+15. EOS SEMANTICS
+======================================================================
+
+Explicitly define EOS behavior at:
+
+    zero emitted glyphs;
+    one emitted glyph;
+    multiple emitted glyphs;
+    maximum generation length if applicable.
+
+The contract must uniquely determine whether EOS:
+
+    is inadmissible;
+    terminates token;
+    triggers failure;
+    is forced.
+
+No implicit boundary behavior remains.
+
+
+======================================================================
+16. BOS SEMANTICS
+======================================================================
+
+Explicitly confirm whether BOS is:
+
+    context-only
+
+or can ever enter a sampling support.
+
+If BOS cannot be emitted, enforce that in the scientific generation
+state machine.
+
+
+======================================================================
+17. UNK SEMANTICS
+======================================================================
+
+Explicitly define generation behavior for UNK.
+
+Determine whether UNK:
+
+    may be sampled;
+    may be emitted;
+    represents a generated glyph;
+    is forbidden in generated synthetic corpora.
+
+The answer must follow the existing vocabulary/model semantics.
+
+Do not leave it implementation-defined.
+
+
+======================================================================
+18. MAXIMUM-LENGTH SEMANTICS
+======================================================================
+
+Audit every generator for maximum-token-length behavior.
+
+If maximum length is reached before EOS, define exactly whether:
+
+    EOS is forced;
+    token terminates structurally;
+    generation fails;
+    another frozen behavior applies.
+
+This must use zero additional random choices unless explicitly
+defined otherwise.
+
+
+======================================================================
+19. EMPTY-CORPUS / EMPTY-TOKEN CLOSURE
+======================================================================
+
+Audit separately:
+
+    empty token;
+    empty line;
+    empty generated corpus
+
+where applicable.
+
+Do not assume fixing empty token automatically resolves all
+zero-length generation states.
+
+
+======================================================================
+20. ALL-MODEL AUDIT MATRIX
+======================================================================
+
+Create:
+
+    G1V2_GENERATION_BOUNDARY_AUDIT.tsv
+
+with at least:
+
+    generator
+    model_family
+    state
+    sampled_support
+    forbidden_symbols
+    reachable
+    current_semantics
+    ambiguity
+    V1.2_semantics
+    RNG_consumption
+    test_vector
+    status.
+
+Every generation path must be classified.
+
+
+======================================================================
+21. GENERATOR A/B INDEPENDENCE
+======================================================================
+
+Preserve the frozen independence requirements between Generator A
+and Generator B.
+
+The boundary rule may be shared as a protocol-level generation
+semantic.
+
+Do not accidentally make Generator B dependent on Generator A's
+implementation.
+
+
+======================================================================
+22. SCIENTIFIC RNG ALGORITHM
+======================================================================
+
+Do NOT change:
+
+    G1V2-RNG-1
+
+unless an independent defect in the RNG algorithm itself is found.
+
+The intended repair concerns:
+
+    interpretation/consumption of its draws during constrained
+    generation,
+
+not the PRNG.
+
+
+======================================================================
+23. RNG DOMAIN SEPARATION
+======================================================================
+
+Preserve all existing frozen RNG domain separation.
+
+No seed/domain may be changed merely to avoid the observed first
+EOS draw.
+
+Specifically forbidden:
+
+    seed bumping;
+    retry with another seed;
+    domain renaming to obtain another first outcome;
+    discarding the problematic fixture.
+
+
+======================================================================
+24. BOUNDARY GOLDEN VECTORS
+======================================================================
+
+Create normative golden vectors covering at minimum:
+
+    EOS at zero token length;
+    EOS after one glyph;
+    EOS after multiple glyphs;
+    forbidden special symbol;
+    U53 immediately below categorical boundary;
+    U53 exactly at representable boundary where applicable;
+    U53 immediately above boundary;
+    zero admissible mass;
+    maximum token length;
+    deterministic repeated generation.
+
+Include exact:
+
+    input probabilities;
+    admissible support;
+    U53;
+    expected outcome;
+    emitted bytes;
+    RNG draws consumed;
+    resulting RNG position/state identity.
+
+
+======================================================================
+25. PF-SC01 GOLDEN VECTOR
+======================================================================
+
+The exact discovered case MUST become a permanent regression vector:
+
+    case =
+        PF-SC01-EMPTY-TOKEN-GENERATION
+
+    generator =
+        M0_GEN_A
+
+    draw0_u53 =
+        0.92848667210989588
+
+    draw0_original_outcome =
+        <EOS>
+
+    token_length_before =
+        0
+
+    normative_v1_2_action =
+        <exact frozen action>
+
+    normative_first_emitted_glyph =
+        <exact glyph>
+
+    normative_rng_draws_consumed =
+        <exact integer>.
+
+This vector must be independently reproducible.
+
+
+======================================================================
+26. CROSS-IMPLEMENTATION VALIDATION
+======================================================================
+
+Implement at least two independent reference paths for the repaired
+categorical-generation semantics.
+
+They must agree byte-for-byte on all golden vectors.
+
+Do not derive one implementation by calling the other.
+
+
+======================================================================
+27. DEVELOPMENT CONTROL IMPACT
+======================================================================
+
+Using non-confirmatory construction only, determine which
+DEVELOPMENT control bytes differ between:
+
+    V1.1 admissible interpretations
+
+and:
+
+    proposed V1.2 semantics.
+
+This is an impact audit, not permission to select the rule based on
+downstream performance.
+
+
+======================================================================
+28. NO THRESHOLD OPTIMIZATION
+======================================================================
+
+Do NOT compare candidate V1.2 rules by resulting:
+
+    thresholds;
+    model recovery;
+    PASS rates;
+    F2 agreement;
+    final class.
+
+The choice of semantics must be made before such downstream
+scientific consequences are examined.
+
+
+======================================================================
+29. CONTROL IMPACT ROOT
+======================================================================
+
+After the rule is frozen, it is permitted to regenerate disposable
+DEVELOPMENT fixtures solely to verify deterministic closure.
+
+Do not materialize production blind controls.
+
+Do not generate production escrow.
+
+
+======================================================================
+30. SCIENTIFIC CONTRACT REVISION
+======================================================================
+
+If PF-SC01 is successfully resolved, issue:
+
+    G1_V2_EXECUTABLE_CONTRACT_V1_2.
+
+V1.2 must incorporate the repaired generation semantics directly.
+
+Do not rely on an execution erratum for this repair.
+
+This is a scientific-contract change.
+
+
+======================================================================
+31. V1.2 SCOPE
+======================================================================
+
+V1.2 must differ from V1.1 only where required transitively by the
+generation repair.
+
+Expected changed areas include:
+
+    generation state semantics;
+    admissible sampling support;
+    RNG consumption semantics at constrained boundaries;
+    special-symbol generation rules;
+    generation golden vectors;
+    affected hashes;
+    affected explanatory text.
+
+Expected unchanged areas include:
+
+    candidate registry;
+    M0–M5 fitted probability definitions except generation boundary
+        interpretation;
+    split semantics;
+    PM definitions;
+    bootstrap/permutation counts;
+    F2 definitions;
+    structural decision rules;
+    complexity/minimality;
+    status/reachability except where already applicable;
+    final decision rules;
+    E1 scientific/execution identity boundary.
+
+
+======================================================================
+32. MACHINE-READABLE CONTRACT
+======================================================================
+
+Produce a self-contained machine-readable V1.2 contract.
+
+A second independent implementer must be able to determine the
+generated byte sequence from:
+
+    model state;
+    generation state;
+    RNG stream;
+
+without consulting implementation code.
+
+
+======================================================================
+33. CONTRACT DIFF
+======================================================================
+
+Create:
+
+    G1V2_V1_1_TO_V1_2_SCIENTIFIC_DIFF.tsv
+
+Every semantic change must be classified:
+
+    REQUIRED_PF_SC01_REPAIR
+    TRANSITIVE_CLARIFICATION
+    TRANSITIVE_HASH_CHANGE
+    UNEXPECTED_SCIENTIFIC_CHANGE.
+
+Successful completion requires:
+
+    UNEXPECTED_SCIENTIFIC_CHANGE = 0.
+
+
+======================================================================
+34. E1 PRESERVATION
+======================================================================
+
+Preserve:
+
+    G1V2_EXECUTION_IDENTITY_ERRATUM_E1
+
+unless a direct contradiction with V1.2 is discovered.
+
+Require:
+
+    scientific identity independent of escrow key;
+    scientific identity independent of literal blind_id;
+    G1V2-RNG-1 remains scientific randomness source.
+
+Do not reopen EI01.
+
+
+======================================================================
+35. STATUS/REACHABILITY PRESERVATION
+======================================================================
+
+Preserve:
+
+    G1_V2_STATUS_REACHABILITY_CONTRACT_V2
+
+unless PF-SC01 reveals a genuinely unavoidable status-semantic
+contradiction.
+
+Prefer mapping zero-admissible-mass conditions to an already frozen
+procedure-failure status if consistent.
+
+Do not introduce a new status merely for convenience.
+
+
+======================================================================
+36. GOLDEN SUITE REFREEZE
+======================================================================
+
+Create a V1.2 golden suite containing:
+
+    all still-valid inherited scientific vectors;
+    updated vectors affected by generation semantics;
+    new PF-SC01 regression vectors;
+    new generation-boundary vectors.
+
+Preserve historical V1.1 vectors as provenance.
+
+Do not silently overwrite V1.1 artifacts.
+
+
+======================================================================
+37. FULL GENERATION CLOSURE TEST
+======================================================================
+
+Run bounded exhaustive/property-based tests over generation boundary
+states.
+
+At minimum verify:
+
+    no generated token is empty;
+    no forbidden sentinel is emitted;
+    identical input + RNG gives identical bytes;
+    every RNG draw has defined consumption semantics;
+    every termination path is defined;
+    no generator contains implementation-choice branches.
+
+
+======================================================================
+38. STATIC AMBIGUITY AUDIT
+======================================================================
+
+Search the complete V1.2 generation specification for phrases or
+machine states equivalent to:
+
+    implementation-defined;
+    retry as needed;
+    choose another;
+    resample if invalid;
+    normalize appropriately;
+    handle EOS;
+    skip invalid outcome;
+    equivalent method;
+    unspecified.
+
+Any such scientifically consequential ambiguity must be resolved.
+
+
+======================================================================
+39. SECOND-IMPLEMENTER TEST
+======================================================================
+
+Provide the V1.2 machine contract and golden inputs to an independent
+implementation path.
+
+Require:
+
+    identical generated bytes;
+    identical RNG consumption;
+    identical boundary transitions.
+
+If independent implementation requires an unstated scientific
+choice:
+
+    STOP SCIENTIFIC_CONTRACT_DEFECT_REMAINS.
+
+
+======================================================================
+40. PRODUCTION FIREWALL
+======================================================================
+
+Task85c-f MUST NOT:
+
+    generate the production escrow key;
+    materialize the 144 production blind controls;
+    materialize the production DAG;
+    execute natural confirmatory controls;
+    evaluate Voynich;
+    inspect confirmatory outcomes;
+    tune the generation rule using downstream results.
+
+The previously reported scientific firewall must remain intact.
+
+
+======================================================================
+41. REQUIRED DIRECTORY
+======================================================================
+
+Create:
+
+    research/phase3/task85c-f/
+
+
+======================================================================
+42. REQUIRED ARTIFACTS
+======================================================================
+
+At minimum:
+
+    TASK85C_F_DESIGN.md
+    TASK85C_F_REPORT.md
+
+    TASK85C_F_PF_SC01_REPRODUCTION.md
+
+    G1V2_GENERATION_BOUNDARY_AUDIT.tsv
+    G1V2_GENERATION_STATE_MACHINE.md
+    G1V2_GENERATION_STATE_MACHINE.json
+
+    G1V2_GENERATION_GOLDEN_VECTORS.json
+    G1V2_PF_SC01_REGRESSION.json
+
+    G1V2_V1_1_TO_V1_2_SCIENTIFIC_DIFF.tsv
+
+    G1_V2_EXECUTABLE_CONTRACT_V1_2.md
+    G1_V2_EXECUTABLE_CONTRACT_V1_2.json
+
+    TASK85C_F_VALIDATION.tsv
+    TASK85C_F_RESULTS_MANIFEST.json
+
+    reference/
+        generation_reference_1.*
+        generation_reference_2.*
+        verify_generation_boundaries.*
+        verify_pf_sc01.*
+        verify_v1_2_contract.*
+
+and exactly one terminal marker.
+
+
+======================================================================
+43. REQUIRED VALIDATION VERDICTS
+======================================================================
+
+Report at minimum:
+
+    PARENT_V1_1_IDENTITY =
+        SUPPORTED / NOT_SUPPORTED
+
+    E1_IDENTITY =
+        SUPPORTED / NOT_SUPPORTED
+
+    STATUS_REACHABILITY_V2_IDENTITY =
+        SUPPORTED / NOT_SUPPORTED
+
+    PF_SC01_REPRODUCED =
+        YES / NO
+
+    PF_SC01 =
+        CLOSED / OPEN
+
+    GENERATION_PATHS_AUDITED =
+        <count>
+
+    GENERATION_AMBIGUITIES_OPEN =
+        <count>
+
+    NONEMPTY_TOKEN_SEMANTICS =
+        FROZEN / AMBIGUOUS
+
+    RNG_CONSUMPTION_SEMANTICS =
+        FROZEN / AMBIGUOUS
+
+    SPECIAL_SYMBOL_SEMANTICS =
+        FROZEN / AMBIGUOUS
+
+    PF_SC01_GOLDEN =
+        PASS / FAIL
+
+    CROSS_IMPLEMENTATION_GENERATION =
+        PASS / FAIL
+
+    NONEMPTY_GENERATION_PROPERTY =
+        PASS / FAIL
+
+    SCIENTIFIC_DESIGN_CHANGE_SCOPE =
+        NARROW / EXPANDED
+
+    UNEXPECTED_SCIENTIFIC_CHANGE =
+        <count>
+
+    SCIENTIFIC_FIREWALL =
+        INTACT / VIOLATED
+
+    V1_2_READY =
+        SUPPORTED / NOT_SUPPORTED
+
+    PRODUCTION_FREEZE_RETRY_READY =
+        SUPPORTED / NOT_SUPPORTED.
+
+
+======================================================================
+44. SUCCESS GATE
+======================================================================
+
+V1_2_READY = SUPPORTED only if:
+
+1. Parent V1.1 identity passes.
+2. E1 identity passes.
+3. Status/reachability V2 identity passes.
+4. PF-SC01 is reproduced.
+5. PF-SC01 is closed.
+6. Every generation path has been audited.
+7. No scientifically consequential generation ambiguity remains.
+8. Nonempty-token semantics are explicit.
+9. RNG-consumption semantics are explicit.
+10. EOS semantics are explicit.
+11. BOS semantics are explicit.
+12. UNK semantics are explicit.
+13. Maximum-length semantics are explicit.
+14. Zero-admissible-mass behavior is explicit.
+15. PF-SC01 golden passes.
+16. Boundary goldens pass.
+17. Independent implementations agree.
+18. Generated-token nonempty property passes.
+19. No forbidden sentinel emission remains.
+20. G1V2-RNG-1 itself is unchanged unless separately justified.
+21. Candidate registry is unchanged.
+22. PM definitions are unchanged.
+23. F2 definitions are unchanged.
+24. Decision rules are unchanged.
+25. E1 remains valid.
+26. R2-G01/G02/EI01 remain closed.
+27. Unexpected scientific change count is zero.
+28. Scientific firewall remains intact.
+29. Production blind controls were not created.
+30. Confirmatory outcomes were not inspected.
+
+
+======================================================================
+45. STOP CONDITIONS
+======================================================================
+
+STOP SCIENTIFIC_CONTRACT_DEFECT_EXPANDED
+
+if the audit discovers another unresolved generation ambiguity that
+cannot be repaired under one coherent general rule.
+
+STOP SCIENTIFIC_CONTRACT_DEFECT_REMAINS
+
+if V1.2 still permits multiple scientific implementations producing
+different generated corpora from identical frozen inputs/RNG.
+
+STOP UNEXPECTED_SCIENTIFIC_CHANGE
+
+if repair requires changing unrelated scientific components.
+
+STOP SCIENTIFIC_FIREWALL_VIOLATION
+
+if confirmatory information is accessed or used to select the
+repair.
+
+
+======================================================================
+46. SUCCESS TERMINAL MARKER
+======================================================================
+
+On success:
+
+    G1_V2_EXECUTABLE_SCIENTIFIC_CONTRACT_V1_2_FROZEN.
+
+
+======================================================================
+47. FAILURE TERMINAL MARKERS
+======================================================================
+
+Expanded defect:
+
+    TASK85C_F_SCIENTIFIC_CONTRACT_DEFECT_EXPANDED
+
+Unresolved generation semantics:
+
+    TASK85C_F_SCIENTIFIC_CONTRACT_DEFECT_REMAINS
+
+Unexpected scientific change:
+
+    TASK85C_F_UNEXPECTED_SCIENTIFIC_CHANGE
+
+Firewall violation:
+
+    TASK85C_F_SCIENTIFIC_FIREWALL_VIOLATION
+
+Validation failure:
+
+    TASK85C_F_V1_2_VALIDATION_FAILED.
+
+
+======================================================================
+48. SUCCESSFUL FINAL OUTPUT
+======================================================================
+
+On success print at minimum:
+
+    PARENT_CONTRACT_VERSION =
+        G1_V2_EXECUTABLE_CONTRACT_V1_1
+
+    NEW_CONTRACT_VERSION =
+        G1_V2_EXECUTABLE_CONTRACT_V1_2
+
+    NEW_CONTRACT_SHA256 =
+        <sha256>
+
+    PF_SC01 =
+        CLOSED
+
+    NONEMPTY_TOKEN_GENERATION =
+        FROZEN
+
+    RNG_CONSUMPTION_SEMANTICS =
+        FROZEN
+
+    SPECIAL_SYMBOL_SEMANTICS =
+        FROZEN
+
+    PF_SC01_NORMATIVE_ACTION =
+        <action>
+
+    PF_SC01_FIRST_EMITTED_GLYPH =
+        <glyph>
+
+    PF_SC01_RNG_DRAWS_CONSUMED =
+        <count>
+
+    GENERATION_GOLDEN_ROOT_SHA256 =
+        <sha256>
+
+    E1_COMPATIBILITY =
+        SUPPORTED
+
+    R2_G01 =
+        CLOSED
+
+    R2_G02 =
+        CLOSED
+
+    EI01 =
+        CLOSED
+
+    UNEXPECTED_SCIENTIFIC_CHANGE =
+        0
+
+    SCIENTIFIC_FIREWALL =
+        INTACT
+
+    TASK85C_F_ARTIFACT_ROOT_SHA256 =
+        <sha256>
+
+    PRODUCTION_FREEZE_RETRY_READY =
+        SUPPORTED
+
+    TERMINAL_MARKER =
+        G1_V2_EXECUTABLE_SCIENTIFIC_CONTRACT_V1_2_FROZEN.
+
+
+======================================================================
+49. NEXT STEP
+======================================================================
+
+After successful Task85c-f:
+
+    repeat Task86C-v2-production-freeze
+
+using:
+
+    G1_V2_EXECUTABLE_CONTRACT_V1_2
+        +
+    G1V2_EXECUTION_IDENTITY_ERRATUM_E1
+        +
+    G1_V2_STATUS_REACHABILITY_CONTRACT_V2.
+
+Do NOT create production controls or thresholds during Task85c-f.
+
+Do NOT automatically create Task85c-g.
+
+If the repeated production freeze encounters a harmless
+implementation/provenance ambiguity, resolve it locally under E1.
+
+Only a newly demonstrated ambiguity capable of changing scientific
+data or verdict justifies another scientific-contract repair.
+
+
+======================================================================
+50. DEFINITION OF DONE
+======================================================================
+
+Task85c-f is complete when the following function is unique:
+
+    frozen model state
+        +
+    frozen generation state
+        +
+    frozen G1V2-RNG-1 stream
+        →
+    exact generated corpus bytes.
+
+In particular, no implementer may choose between:
+
+    retry;
+    rejection;
+    conditional renormalization;
+    forced symbol;
+    skipped draw;
+    reused draw
+
+unless that behavior is explicitly prescribed by V1.2.
+
+The repair is successful only when a second implementation can
+generate byte-identical output without making any unstated
+scientific choice.

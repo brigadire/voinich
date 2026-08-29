@@ -1,0 +1,1146 @@
+Task85c-e — G1-v2 Blind Control Identity Boundary Resolution
+and Execution-Identity Decoupling
+
+
+PURPOSE
+
+Resolve the execution-identity defect:
+
+    EI01-BLIND-ID-ALGORITHM
+
+discovered by:
+
+    Task86C-v2-scientific-impl-R2R.
+
+The frozen artifacts currently constrain blind-control construction
+through both:
+
+    G1V2-RNG-1
+
+and:
+
+    HMAC with a secret escrow key
+
+without uniquely specifying their composition, exact truth-record
+serialization, or HMAC message framing.
+
+Multiple technically valid interpretations therefore produce
+different:
+
+    blind control_instance_id
+        →
+    concrete JobID
+        →
+    run-instance DAG identity.
+
+Task85c-e must resolve this defect WITHOUT turning opaque execution
+identifiers into scientific variables.
+
+The task must establish a clean boundary between:
+
+    SCIENTIFIC BLIND-CONTROL IDENTITY
+
+and:
+
+    OPAQUE EXECUTION IDENTIFICATION.
+
+It must determine which properties must be frozen because they can
+change scientific data or scientific verdict, and which properties
+need only be deterministic, collision-safe, blind-safe and recorded
+as implementation provenance.
+
+This task is a narrow methodological repair.
+
+It is NOT a new scientific design.
+
+
+======================================================================
+1. INPUT STATE
+======================================================================
+
+Parent scientific contract:
+
+    G1_V2_EXECUTABLE_CONTRACT_V1_1
+
+SHA-256:
+
+    5c3cd272c1dbae9bfe1d7a100155faf102e86d34660da239e1cb31704ad470b0
+
+Task85c-c artifact root:
+
+    dc27660d3e03a06f91aaa1c3aa6c48226328457746c9dc819e7c0a355ce8f09c
+
+Status/reachability contract:
+
+    G1_V2_STATUS_REACHABILITY_CONTRACT_V2
+
+Task85c-d established:
+
+    R2-G01 = CLOSED
+
+        scientific identity version =
+            G1_V2_EXECUTABLE_CONTRACT_V1_1
+
+    R2-G02 = CLOSED
+
+        canonical dependency field =
+            dependency_job_ids.
+
+Task86C-v2-scientific-impl-R2R established:
+
+    EI01-BLIND-ID-ALGORITHM = OPEN
+
+    TASK86C_V2_SCIENTIFIC_EXECUTION_READY =
+        NOT_SUPPORTED.
+
+
+======================================================================
+2. REQUIRED INITIAL REPRODUCTION
+======================================================================
+
+Before changing any artifact, reproduce EI01.
+
+Demonstrate at least two admissible interpretations of the current
+frozen artifacts that:
+
+    generate the same intended scientific blind control
+
+but produce different:
+
+    blind control_instance_id
+
+and therefore different:
+
+    JobID.
+
+Record exact competing interpretations and resulting identifiers.
+
+If EI01 cannot be reproduced:
+
+    STOP EI01_NOT_REPRODUCIBLE.
+
+
+======================================================================
+3. CENTRAL METHODOLOGICAL QUESTION
+======================================================================
+
+Determine separately:
+
+A. What uniquely defines the scientific content of a blind control?
+
+B. What is required merely to assign an opaque identifier to that
+   already-defined control?
+
+These MUST NOT remain conflated.
+
+
+======================================================================
+4. SCIENTIFIC-IMPACT TEST
+======================================================================
+
+For every identity-related requirement apply:
+
+    If two implementations differ only in this property,
+    while preserving the exact same blind scientific corpus,
+    truth, parameters, RNG realization and blindness,
+    can the difference change any scientific metric,
+    gate or final verdict?
+
+If YES:
+
+    SCIENTIFIC_NORMATIVE.
+
+If NO:
+
+    EXECUTION_PROVENANCE.
+
+Record the classification and justification.
+
+
+======================================================================
+5. REQUIRED CLASSIFICATION TABLE
+======================================================================
+
+Create:
+
+    G1V2_BLIND_IDENTITY_BOUNDARY.tsv
+
+with at least:
+
+    requirement
+    current source
+    scientific effect
+    blindness effect
+    integrity effect
+    reproducibility effect
+    classification
+    justification.
+
+Classification domain:
+
+    SCIENTIFIC_NORMATIVE
+    BLINDNESS_NORMATIVE
+    INTEGRITY_NORMATIVE
+    EXECUTION_PROVENANCE.
+
+
+======================================================================
+6. SCIENTIFIC BLIND-CONTROL CONTENT
+======================================================================
+
+Freeze as scientific-normative all properties necessary to determine
+the actual synthetic corpus and its scientific truth.
+
+This includes, where required by V1.1:
+
+    generator class;
+    generator parameters;
+    scientific seed identity;
+    G1V2-RNG-1 use;
+    corpus size;
+    generated token sequence;
+    scientific class/truth required for later recovery assessment.
+
+Do not weaken any frozen control-generation semantics.
+
+
+======================================================================
+7. RNG ROLE
+======================================================================
+
+Explicitly determine and document the role of:
+
+    G1V2-RNG-1.
+
+The expected role is scientific:
+
+    it determines the reproducible random realization of the blind
+    synthetic control.
+
+It MUST NOT become dependent on:
+
+    escrow key;
+    HMAC output;
+    blind ID;
+    JobID;
+    worker;
+    coordinator;
+    execution order.
+
+Require:
+
+    SCIENTIFIC_CONTROL_GENERATION_INDEPENDENT_OF_OPAQUE_ID = YES.
+
+
+======================================================================
+8. ESCROW ROLE
+======================================================================
+
+Explicitly determine the role of the escrow mechanism.
+
+Escrow exists to:
+
+    conceal truth during blind execution;
+    commit the hidden truth;
+    permit later authenticated recovery/unblinding.
+
+Escrow MUST NOT determine the scientific content of the control
+unless the existing scientific protocol explicitly requires that
+behavior.
+
+
+======================================================================
+9. HMAC ROLE
+======================================================================
+
+Determine whether HMAC is scientifically normative or an
+identity/blindness/integrity mechanism.
+
+If changing only HMAC framing while preserving:
+
+    identical scientific corpus;
+    identical hidden truth;
+    identical scientific RNG realization;
+    identical blindness
+
+cannot change scientific outcome, then HMAC framing MUST NOT be
+classified as scientific semantics.
+
+
+======================================================================
+10. BLIND ID ROLE
+======================================================================
+
+Define:
+
+    blind_id
+
+as an opaque identifier unless contrary scientific necessity is
+demonstrated.
+
+The identifier must provide the properties actually required by the
+protocol, such as:
+
+    stable association;
+    opacity;
+    uniqueness/collision resistance;
+    escrow lookup;
+    auditability.
+
+Its literal byte value must not itself carry scientific meaning.
+
+
+======================================================================
+11. SCIENTIFIC IDENTITY DECOUPLING
+======================================================================
+
+A scientific blind-control identity must be definable independently
+of its opaque public identifier.
+
+Conceptually:
+
+    scientific_control
+        =
+    F(
+        generator,
+        parameters,
+        scientific RNG identity,
+        generated corpus,
+        frozen scientific metadata
+    )
+
+while:
+
+    blind_id
+        =
+    OPAQUE_ID(
+        sealed truth / commitment material
+    ).
+
+Do not allow:
+
+    blind_id → scientific RNG
+    blind_id → generated corpus
+    JobID → scientific RNG.
+
+
+======================================================================
+12. EXECUTION IDENTITY PRINCIPLE
+======================================================================
+
+Freeze the following methodological rule:
+
+    Different opaque identifiers for otherwise scientifically
+    identical run instances do not constitute different scientific
+    experiments.
+
+They MAY constitute different execution instances.
+
+This distinction must be represented explicitly in provenance.
+
+
+======================================================================
+13. JOBID CONSEQUENCE
+======================================================================
+
+JobID is an execution identifier.
+
+A change in JobID caused solely by:
+
+    opaque blind ID;
+    serialization;
+    HMAC framing;
+    run-instance materialization
+
+does not constitute a scientific-result change if the underlying
+scientific job identity is unchanged.
+
+Therefore:
+
+    concrete JobID set is RUN-INSTANCE PROVENANCE,
+
+not a prerequisite scientific hypothesis.
+
+
+======================================================================
+14. JOBID SCIENTIFIC BINDING
+======================================================================
+
+JobID must nevertheless bind unambiguously to the underlying
+scientific job for a concrete run.
+
+For one materialized run:
+
+    one job → one JobID.
+
+Require:
+
+    no collisions;
+    no duplicate scientific job under different JobIDs inside the
+    same frozen run;
+    complete dependency closure.
+
+These are execution-integrity requirements.
+
+
+======================================================================
+15. NO PRE-RUN CONCRETE JOBID REQUIREMENT
+======================================================================
+
+Remove any methodological requirement that the literal concrete
+JobIDs of blind jobs be known before blind instances are
+materialized.
+
+What must be frozen beforehand is:
+
+    scientific experiment;
+    run-materialization procedure;
+    JobID derivation procedure sufficient for execution integrity.
+
+The resulting literal IDs are provenance of the materialized run.
+
+
+======================================================================
+16. BLIND-ID ALGORITHM
+======================================================================
+
+Define one implementation-level blind-ID algorithm sufficient for:
+
+    deterministic run materialization;
+    blindness;
+    uniqueness;
+    escrow lookup;
+    reproducibility.
+
+The algorithm MUST be documented and frozen for a concrete run.
+
+It need not be elevated to scientific semantics merely because its
+output enters JobID.
+
+
+======================================================================
+17. DEFAULT RESOLUTION
+======================================================================
+
+Unless contradicted by higher-precedence frozen scientific semantics,
+use a simple explicit opaque-ID construction:
+
+    truth_record =
+        deterministic serialization of the minimum escrow lookup
+        record required by the existing protocol
+
+    blind_id =
+        first 20 lowercase hex characters of
+        HMAC-SHA256(
+            escrow_key,
+            domain_separator || framed_truth_record
+        ).
+
+The exact serialization/framing must be specified for
+reproducibility of the run, but classified according to the
+scientific-impact test.
+
+
+======================================================================
+18. DOMAIN SEPARATION
+======================================================================
+
+If HMAC is retained, use an explicit domain separator unique to the
+blind-ID operation.
+
+For example:
+
+    ASCII "G1V2-BLIND-ID"
+
+followed by unambiguous framing.
+
+The exact chosen representation must be recorded.
+
+Do not reuse scientific RNG domain separation for HMAC identity.
+
+
+======================================================================
+19. TRUTH RECORD
+======================================================================
+
+Define the minimum truth record required to:
+
+    identify the blind control;
+    verify its hidden generating truth after unblind;
+    associate it with the visible blind ID.
+
+Do not include irrelevant operational metadata.
+
+
+======================================================================
+20. TRUTH RECORD CONTENT
+======================================================================
+
+Include only fields required by the frozen blind protocol, such as:
+
+    generator identity/class;
+    frozen generating parameters;
+    scientific seed identity;
+    generated content hash;
+    any frozen truth label needed for recovery evaluation.
+
+Exact field inventory must be justified from existing scientific
+requirements.
+
+Do not invent new scientific truth variables.
+
+
+======================================================================
+21. FRAMING
+======================================================================
+
+Choose one unambiguous deterministic framing for the opaque-ID HMAC.
+
+Acceptable approaches include:
+
+    existing canonical G1V2 serialization;
+
+or:
+
+    explicit length-prefixed field framing.
+
+The choice must:
+
+    have one representation per truth record;
+    be independently reproducible;
+    reject ambiguity.
+
+Its choice is implementation/integrity semantics unless scientific
+impact is demonstrated.
+
+
+======================================================================
+22. ESCROW KEY
+======================================================================
+
+Escrow key generation must be cryptographically secure and
+independent of scientific RNG.
+
+A different valid escrow key may produce different opaque blind IDs
+for the same scientific controls without changing the scientific
+experiment.
+
+Record this explicitly.
+
+
+======================================================================
+23. REPRODUCIBILITY MODEL
+======================================================================
+
+Distinguish two kinds of reproducibility:
+
+SCIENTIFIC REPRODUCIBILITY
+
+    Another implementation can regenerate/evaluate the same
+    scientific protocol and obtain statistically equivalent
+    experiment behavior.
+
+RUN REPRODUCIBILITY
+
+    Given the archived run provenance and authorized escrow
+    material, the exact concrete run can be reconstructed and
+    audited.
+
+Do not require the second to define the first.
+
+
+======================================================================
+24. BLINDNESS
+======================================================================
+
+The visible blind ID must not disclose:
+
+    generator family;
+    class;
+    parameters;
+    seed;
+    expected recovery result.
+
+Perform an explicit leakage audit.
+
+
+======================================================================
+25. COLLISION HANDLING
+======================================================================
+
+Define deterministic fail-closed collision behavior.
+
+If two distinct escrow truth records produce the same truncated
+blind ID:
+
+    abort blind-set materialization.
+
+Do not resolve by suffixing or silently regenerating an ID.
+
+
+======================================================================
+26. CONTROL CONTENT HASH
+======================================================================
+
+The generated blind corpus must have its own cryptographic content
+hash independent of:
+
+    blind ID;
+    HMAC;
+    JobID.
+
+This provides a direct provenance binding to the scientific data.
+
+
+======================================================================
+27. ESCROW BINDING
+======================================================================
+
+The sealed escrow record must bind at minimum:
+
+    blind ID
+        ↔
+    scientific truth
+        ↔
+    generated content hash.
+
+After authorized unblind this relation must be independently
+verifiable.
+
+
+======================================================================
+28. NO UNBLINDING
+======================================================================
+
+Task85c-e must NOT construct the real 144-control production blind
+set.
+
+Use synthetic non-production fixtures and disposable test keys.
+
+Do not create the production escrow key.
+
+
+======================================================================
+29. NO PRODUCTION JOBIDS
+======================================================================
+
+Task85c-e must NOT require or construct the final production JobID
+set.
+
+Use test instances only.
+
+The concrete production JobID graph belongs to run materialization.
+
+
+======================================================================
+30. TEST VECTORS
+======================================================================
+
+Create non-secret test vectors covering:
+
+    identical scientific control + identical escrow key
+        → identical blind ID;
+
+    identical scientific control + different escrow key
+        → potentially different blind ID
+        but identical scientific control identity;
+
+    changed scientific seed
+        → changed scientific control identity;
+
+    changed generated corpus
+        → changed content hash;
+
+    changed HMAC framing
+        → different execution identity is possible
+        without scientific-identity change;
+
+    blind-ID collision
+        → fail closed.
+
+
+======================================================================
+31. EI01 REGRESSION
+======================================================================
+
+Create a permanent EI01 regression test.
+
+The old ambiguity:
+
+    G1V2-RNG-1 versus HMAC/escrow
+
+must no longer permit two interpretations of which mechanism
+determines scientific control content.
+
+Require:
+
+    G1V2-RNG-1
+        → scientific random control generation
+
+    escrow/HMAC
+        → blindness/integrity/opaque identification.
+
+If the existing higher-precedence scientific contract demonstrably
+requires another relationship:
+
+    STOP SCIENTIFIC_CONTRACT_DEFECT.
+
+
+======================================================================
+32. R2-G01/G02 PRESERVATION
+======================================================================
+
+Preserve:
+
+    R2-G01 = CLOSED
+    R2-G02 = CLOSED.
+
+Do not reopen JobID version/dependency-field issues.
+
+Their regression tests remain required.
+
+
+======================================================================
+33. NO SCIENTIFIC CHANGE
+======================================================================
+
+Task85c-e is not authorized to change:
+
+    M0–M5;
+    43 candidates;
+    RNG scientific draws;
+    control distributions;
+    DEVELOPMENT/VALIDATION/HELDOUT;
+    PM definitions;
+    bootstrap/permutation counts;
+    F2 definitions;
+    threshold algorithms;
+    complexity/minimality;
+    status/reachability;
+    final decision rules.
+
+
+======================================================================
+34. IMPACT AUDIT
+======================================================================
+
+Produce a machine-readable audit of every Task85c-e change.
+
+Each change must be classified:
+
+    SCIENTIFIC_NORMATIVE_CLARIFICATION
+    BLINDNESS_NORMATIVE
+    INTEGRITY_NORMATIVE
+    EXECUTION_PROVENANCE
+    DOCUMENTATION
+    TRANSITIVE_HASH_ONLY
+    UNEXPECTED_SCIENTIFIC_CHANGE.
+
+Successful completion requires:
+
+    UNEXPECTED_SCIENTIFIC_CHANGE = 0.
+
+
+======================================================================
+35. CONTRACT PATCH POLICY
+======================================================================
+
+Do NOT automatically issue a new full scientific contract version.
+
+Preferred outcome:
+
+    V1.1 remains the frozen scientific protocol;
+
+    Task85c-e issues a normative execution/blindness erratum
+    describing the scientific/execution identity boundary.
+
+Only if a genuinely scientific ambiguity is discovered may a new
+scientific contract revision be required.
+
+
+======================================================================
+36. EXECUTION ERRATUM
+======================================================================
+
+On successful non-scientific resolution create:
+
+    G1V2_EXECUTION_IDENTITY_ERRATUM_E1.md
+    G1V2_EXECUTION_IDENTITY_ERRATUM_E1.json.
+
+It must state explicitly:
+
+    R2-G01 resolution;
+    R2-G02 resolution;
+    EI01 resolution;
+    scientific identity boundary;
+    blind-ID role;
+    escrow role;
+    JobID role;
+    run-materialization rule.
+
+
+======================================================================
+37. ERRATUM PRECEDENCE
+======================================================================
+
+For execution-identity questions only, freeze:
+
+    V1.1 scientific semantics
+        >
+    E1 execution-identity erratum
+        >
+    implementation
+        >
+    historical conflicting golden/example material.
+
+E1 MUST NOT override scientific semantics.
+
+
+======================================================================
+38. GOLDEN POLICY
+======================================================================
+
+Do not regenerate the complete scientific golden suite merely
+because opaque IDs can differ.
+
+Split validation conceptually into:
+
+    SCIENTIFIC GOLDENS
+
+and:
+
+    EXECUTION/PROVENANCE FIXTURES.
+
+An opaque identifier fixture must not be allowed to override
+scientific semantics.
+
+
+======================================================================
+39. REQUIRED ARTIFACT DIRECTORY
+======================================================================
+
+Create:
+
+    research/phase3/task85c-e/
+
+
+======================================================================
+40. REQUIRED ARTIFACTS
+======================================================================
+
+At minimum:
+
+    TASK85C_E_DESIGN.md
+
+    TASK85C_E_REPORT.md
+
+    TASK85C_E_EI01_REPRODUCTION.md
+
+    G1V2_BLIND_IDENTITY_BOUNDARY.tsv
+
+    G1V2_EXECUTION_IDENTITY_ERRATUM_E1.md
+    G1V2_EXECUTION_IDENTITY_ERRATUM_E1.json
+
+    G1V2_BLIND_ID_TEST_VECTORS.json
+
+    TASK85C_E_IMPACT_AUDIT.tsv
+    TASK85C_E_VALIDATION.tsv
+
+    reference/
+        blind_id_fixture_generator.*
+        verify_blind_identity_boundary.*
+        verify_ei01_regression.*
+        verify_execution_erratum.*
+
+    TASK85C_E_RESULTS_MANIFEST.json
+
+and exactly one terminal marker.
+
+
+======================================================================
+41. REQUIRED VALIDATION
+======================================================================
+
+Validate at minimum:
+
+    parent V1.1 identity;
+    status/reachability identity;
+
+    R2-G01 remains CLOSED;
+    R2-G02 remains CLOSED;
+
+    EI01 reproduced before repair;
+    EI01 closed after repair;
+
+    scientific RNG independent of escrow key;
+    scientific RNG independent of blind ID;
+    scientific corpus independent of opaque identifier;
+
+    blind ID deterministic for fixed run inputs;
+    blind ID opaque;
+    collision fail-closed;
+    escrow binding verifiable;
+
+    scientific identity independent of HMAC framing;
+    scientific identity independent of escrow-key value;
+
+    JobID execution/scientific boundary explicit;
+
+    no production blind set generated;
+    no production escrow key generated;
+    no production DAG generated;
+
+    no model/metric/status/RNG scientific change;
+
+    results-manifest closure.
+
+
+======================================================================
+42. REQUIRED VERDICTS
+======================================================================
+
+Issue:
+
+    PARENT_V1_1_IDENTITY =
+        SUPPORTED / NOT_SUPPORTED
+
+    R2_G01 =
+        CLOSED / OPEN
+
+    R2_G02 =
+        CLOSED / OPEN
+
+    EI01_BLIND_ID_ALGORITHM =
+        CLOSED / OPEN
+
+    SCIENTIFIC_CONTROL_IDENTITY =
+        CLOSED / AMBIGUOUS
+
+    OPAQUE_BLIND_ID_ROLE =
+        CLOSED / AMBIGUOUS
+
+    RNG_ESCROW_SEPARATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    BLINDNESS_PROTOCOL =
+        SUPPORTED / NOT_SUPPORTED
+
+    EXECUTION_IDENTITY_BOUNDARY =
+        SUPPORTED / NOT_SUPPORTED
+
+    SCIENTIFIC_DESIGN_UNCHANGED =
+        SUPPORTED / NOT_SUPPORTED
+
+    UNEXPECTED_SCIENTIFIC_CHANGE =
+        0 / <count>
+
+    PRODUCTION_MATERIALIZATION_READY =
+        SUPPORTED / NOT_SUPPORTED.
+
+
+======================================================================
+43. SUCCESS GATE
+======================================================================
+
+PRODUCTION_MATERIALIZATION_READY = SUPPORTED
+
+only if:
+
+1. Parent V1.1 identity passes.
+2. EI01 is reproduced.
+3. R2-G01 remains closed.
+4. R2-G02 remains closed.
+5. Scientific blind-control identity is uniquely defined.
+6. G1V2-RNG-1 has one scientific role.
+7. Escrow has one blindness/integrity role.
+8. HMAC does not determine scientific random content.
+9. Blind ID is explicitly opaque.
+10. Scientific identity is independent of blind-ID bytes.
+11. Scientific identity is independent of escrow-key value.
+12. Exact-run provenance remains reproducible.
+13. Blind ID collision handling is fail-closed.
+14. Escrow binding is verifiable.
+15. EI01 regression passes.
+16. No model changes.
+17. No metric changes.
+18. No scientific RNG changes.
+19. No control-distribution changes.
+20. No status/reachability changes.
+21. No decision-rule changes.
+22. Unexpected scientific change count is zero.
+23. No production blind controls were generated.
+24. No production escrow key was generated.
+25. No production experiment was run.
+
+
+======================================================================
+44. STOP CONDITIONS
+======================================================================
+
+STOP SCIENTIFIC_CONTRACT_DEFECT
+
+if resolving EI01 requires a choice capable of changing:
+
+    scientific control contents;
+    control distribution;
+    scientific RNG realization;
+    scientific metric;
+    gate;
+    final verdict.
+
+STOP BLINDNESS_CONTRACT_DEFECT
+
+if the frozen requirements cannot simultaneously provide:
+
+    opaque identity;
+    sealed truth;
+    later verifiable unblind.
+
+STOP DEFECT_SCOPE_EXPANDED
+
+only if a newly discovered contradiction can materially affect
+scientific outcome or blindness integrity.
+
+Do NOT use DEFECT_SCOPE_EXPANDED for ordinary implementation details
+such as:
+
+    JSON field spelling;
+    harmless serialization choices;
+    filenames;
+    storage paths;
+    literal opaque IDs.
+
+
+======================================================================
+45. SUCCESS TERMINAL MARKER
+======================================================================
+
+On success:
+
+    TERMINAL_MARKER =
+        G1V2_EXECUTION_IDENTITY_BOUNDARY_E1_FROZEN.
+
+
+======================================================================
+46. FAILURE TERMINAL MARKERS
+======================================================================
+
+Scientific ambiguity:
+
+    TASK85C_E_SCIENTIFIC_CONTRACT_DEFECT
+
+Blindness ambiguity:
+
+    TASK85C_E_BLINDNESS_CONTRACT_DEFECT
+
+Materially expanded defect:
+
+    TASK85C_E_CONTRACT_DEFECT_EXPANDED
+
+Validation failure:
+
+    TASK85C_E_EXECUTION_IDENTITY_REPAIR_INVALID.
+
+
+======================================================================
+47. SUCCESSFUL FINAL OUTPUT
+======================================================================
+
+Print at minimum:
+
+    PARENT_CONTRACT_VERSION =
+        G1_V2_EXECUTABLE_CONTRACT_V1_1
+
+    R2_G01 =
+        CLOSED
+
+    R2_G02 =
+        CLOSED
+
+    EI01_BLIND_ID_ALGORITHM =
+        CLOSED
+
+    SCIENTIFIC_RANDOMNESS_SOURCE =
+        G1V2-RNG-1
+
+    BLIND_ID_ROLE =
+        OPAQUE_EXECUTION_IDENTIFIER
+
+    ESCROW_ROLE =
+        BLINDNESS_AND_TRUTH_COMMITMENT
+
+    JOBID_ROLE =
+        RUN_EXECUTION_IDENTIFIER_BOUND_TO_SCIENTIFIC_JOB
+
+    SCIENTIFIC_IDENTITY_DEPENDS_ON_ESCROW_KEY =
+        NO
+
+    SCIENTIFIC_IDENTITY_DEPENDS_ON_BLIND_ID_BYTES =
+        NO
+
+    SCIENTIFIC_DESIGN_UNCHANGED =
+        SUPPORTED
+
+    UNEXPECTED_SCIENTIFIC_CHANGE =
+        0
+
+    EXECUTION_IDENTITY_ERRATUM =
+        G1V2_EXECUTION_IDENTITY_ERRATUM_E1
+
+    EXECUTION_IDENTITY_ERRATUM_SHA256 =
+        <sha256>
+
+    TASK85C_E_ARTIFACT_ROOT_SHA256 =
+        <sha256>
+
+    PRODUCTION_MATERIALIZATION_READY =
+        SUPPORTED
+
+    TERMINAL_MARKER =
+        G1V2_EXECUTION_IDENTITY_BOUNDARY_E1_FROZEN.
+
+
+======================================================================
+48. DEFINITION OF DONE
+======================================================================
+
+Task85c-e is complete when:
+
+    the scientific blind-control generation process is uniquely
+    defined;
+
+    the blindness/escrow mechanism is uniquely defined at the level
+    required for integrity;
+
+    opaque blind IDs are explicitly separated from scientific
+    identity;
+
+    concrete JobIDs are recognized as run-instance provenance rather
+    than scientific variables;
+
+    EI01 can no longer block execution merely because two harmless
+    opaque-ID serializations would produce different literal IDs;
+
+    no scientific model, statistic, threshold, RNG realization,
+    control distribution or decision rule has changed.
+
+After successful completion, production preparation may materialize:
+
+    escrow key
+        →
+    blind controls
+        →
+    opaque blind IDs
+        →
+    concrete JobIDs
+        →
+    complete DAG
+        →
+    immutable run manifest
+
+without another scientific-contract refreeze.
+
+The next production task must STOP only for a defect capable of
+changing scientific results, blindness integrity, or the
+one-to-one integrity of the concrete run — not for harmless
+differences in opaque execution representation.

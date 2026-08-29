@@ -1,0 +1,15 @@
+ambiguity_id	source	affected_generator	affected_model	affected_state	competing_interpretations	scientific_effect	RNG_effect	corpus_byte_effect	resolution	justification	tests	status
+G-A01	Task85c-f PF-SC01	all streaming	M0-M4	BEFORE_TOKEN	retry vs condition	empty token/different law	1 vs >=2 draws	different prefix	conditional admissible support, route primitive	structural conditioning; no hidden rejection	PF-SC01	RESOLVED
+G-A02	V1.1 prose/registry	all	M0-M5	categorical	UTF8 vs row/map order	different symbol	same count	different bytes	explicit arrays; maps UTF8; fitted ordinary+UNK+EOS	preserves explicit scientific rows	ORDER-01	RESOLVED
+G-A03	V1.1 numeric	all	M0-M5	categorical	cumulative arithmetic choices	boundary selection	same	different at boundary	canonical binary64 Neumaier CDF and final bin	extends frozen numeric profile	CAT-*	RESOLVED
+G-A04	Generator B	B race	M0,M2,M3,M5	categorical	race enumeration/u0/ties	different sample	variable	different	local positive outcomes; u0=inf; canonical tie	standard exponential clocks with explicit realization	RACE-*	RESOLVED
+G-A05	Generator B	M1_GEN_B	M1	categorical	alias construction choices	different sample	ambiguous	different	sorted-queue Walker algorithm; exactly two draws	deterministic standard formulation	ALIAS-*	RESOLVED
+G-A06	Generator B	M4_GEN_B	M4	matrix rows	row/order choices	different state/emission	ambiguous	different	identified canonical rows and one-draw CDF	matches frozen cumulative intent	CUM-*	RESOLVED
+G-A07	V1.1 cap	all	M0-M5	length 64	fail vs legal/force EOS	success differs	extra draw possible	different	64 legal structural completion, no draw	reconciles M5 support through 64	LEN-*	RESOLVED
+G-A08	V1.1 M5	M5 A/B	M5	attempt	0..1023 vs retries	failure boundary	different	different	1024 total attempts indexed 0..1023	literal cap, minimal convention	M5-ATTEMPT	RESOLVED
+G-A09	V1.1 M5	M5 A/B	M5	components	draw ordering/reset	different proposal	different	different	frozen branch draw order; monotone global draw; no rollback	executable branch semantics	M5-DRAWS	RESOLVED
+G-A10	V1.1 corpus	all	all	serialization	delimiters/final LF	same tokens	none	different hashes	NFC UTF8 one-token-per-line LF including final	simple canonical stream	SER-*	RESOLVED
+G-A11	V1.1 symbols	all	M0-M5	all	BOS/EOS/UNK roles	sentinel leakage	draw support differs	different	machine role table and U+FFFD emission	follows model vocabulary	SYMBOL-*	RESOLVED
+G-A12	constrained rows	all	M0-M5	any	zero mass handling	loop/failure	undefined	none/hang	GENERATION_FAILURE before draw	existing compatible status	ZERO-MASS	RESOLVED
+G-A13	RNG registry	all	M0-M5	all	draw/counter allocation	same law	different trace	different	monotone global draw_index per corpus	execution-independent identity	RNG-TRACE	RESOLVED
+G-A14	corpus completion	all	all	CORPUS_COMPLETE	zero count/end draw	different validity	extra draw	different	positive requested count; structural completion	control architecture already positive	CORPUS-END	RESOLVED

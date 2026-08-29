@@ -1,0 +1,1209 @@
+PHASE3_GOALS
+Voynich Generative Structure, Information Residual,
+and Mechanism Identifiability
+
+
+======================================================================
+1. MOTIVATION
+======================================================================
+
+Phase I established that the Voynich Manuscript (VM) exhibits
+strong constrained formation and non-trivial statistical structure,
+while tested simple transformation mechanisms were insufficient
+to identify its origin.
+
+Phase II tested whether this structure could be explained by
+external-memory mechanisms motivated by Giovanni Fontana,
+historical shorthand/abbreviation, selective extraction,
+natural-text controls, or simple null mechanisms.
+
+The authoritative Phase II result is:
+
+    BEST_SUPPORTED_CLASS = INCONCLUSIVE
+
+    MECHANISM_IDENTIFICATION_FROM_F2 =
+        NOT_IDENTIFIABLE
+
+The principal methodological limitation was:
+
+    direct model/target coverage = 3 / 13 CORE metrics,
+
+all belonging to one edit-related family.
+
+At the same time, questions inherited from Phase I remain unresolved:
+
+    Can Voynichese be described by a compact formal grammar?
+
+    How much of the corpus is predictable from such a grammar?
+
+    What structured information remains after grammar-conditioned
+    regularities are removed?
+
+    Can constrained meaningful and constrained message-free
+    generation be distinguished?
+
+Phase III addresses these two limitations jointly.
+
+
+======================================================================
+2. CENTRAL OBJECTIVE
+======================================================================
+
+The objective of Phase III is to determine:
+
+    whether the observed structure of Voynichese can be explained
+    by a compact generative system,
+
+and:
+
+    whether competing generating mechanisms become identifiable
+    when they are required to reproduce manuscript-scale structure
+    rather than token-stream statistics alone.
+
+Phase III therefore studies:
+
+    STRUCTURE
+        +
+    INFORMATION
+        +
+    GENERATION
+        +
+    IDENTIFIABILITY.
+
+
+======================================================================
+3. TWO RESEARCH LINES
+======================================================================
+
+Phase III consists of two initially independent research lines.
+
+
+LINE A:
+
+    VOYNICH GENERATIVE GRAMMAR
+    AND INFORMATION RESIDUAL
+
+
+LINE B:
+
+    SYNTHETIC MANUSCRIPT GENERATION
+    AND MULTI-FAMILY FINGERPRINT COVERAGE
+
+
+The lines must initially remain independent.
+
+They may be combined only after each line has produced
+a frozen and independently validated result.
+
+
+======================================================================
+4. LINE A — CENTRAL QUESTION
+======================================================================
+
+Line A asks:
+
+    How small a formal generative system is sufficient
+    to reproduce the measurable local structure of Voynichese?
+
+This is NOT initially a linguistic grammar claim.
+
+"Grammar" means:
+
+    a formally specified probabilistic or deterministic
+    generative system over observable transcription units.
+
+The grammar must not assume that:
+
+    glyph = letter;
+    token = word;
+    line = sentence;
+    token component = morpheme;
+    generated sequence = natural language.
+
+
+======================================================================
+5. GRAMMAR LEVELS
+======================================================================
+
+Investigate at least three potentially distinct levels:
+
+G1 — TOKEN FORMATION
+
+    Which combinations of glyphs/components form valid
+    or probable tokens?
+
+G2 — TOKEN SEQUENCE
+
+    How does surrounding token context constrain
+    token choice and token form?
+
+G3 — STRUCTURAL CONDITIONING
+
+    How do line position, boundaries, locus,
+    local regime and higher structural state
+    change those distributions?
+
+Do not assume beforehand that these require
+one unified grammar.
+
+
+======================================================================
+6. GRAMMAR DISCOVERY
+======================================================================
+
+Candidate grammars must be inferred from training data.
+
+Evaluation must use held-out VM data:
+
+    V_train → G
+
+followed by:
+
+    G → prediction(V_test)
+
+and/or:
+
+    G → synthetic corpus.
+
+No grammar may be selected solely because it reproduces
+statistics measured on the same data used to construct it.
+
+
+======================================================================
+7. GRAMMAR MODEL CLASSES
+======================================================================
+
+Phase III should compare multiple formal model classes
+rather than selecting one representation in advance.
+
+Candidate classes may include, subject to preregistration:
+
+    finite-state models;
+    probabilistic finite-state models;
+    variable-order Markov models;
+    probabilistic grammars;
+    rule-based token formation models;
+    hierarchical/state-conditioned models;
+    other compact generative descriptions.
+
+Model complexity must be explicitly measured.
+
+No neural language model should serve as the primary
+scientific grammar unless an interpretable complexity
+and comparison contract is defined beforehand.
+
+
+======================================================================
+8. MINIMALITY
+======================================================================
+
+The objective is not maximum fit.
+
+The scientific quantity of interest is the trade-off:
+
+    explanatory power
+        vs
+    model complexity.
+
+Define:
+
+    G_min
+
+as the smallest validated model that reproduces
+a preregistered set of structural properties
+within declared tolerances.
+
+Possible complexity measures may include:
+
+    number of states;
+    number of rules;
+    number of free parameters;
+    description length;
+    grammar entropy.
+
+The metric must be frozen before final comparison.
+
+
+======================================================================
+9. HELD-OUT PREDICTION
+======================================================================
+
+Grammar quality must not be evaluated only
+by token likelihood/perplexity.
+
+Evaluation should include:
+
+    unseen-token handling;
+    token-form distribution;
+    edit-family structure;
+    lexical/paradigm structure;
+    local transitions;
+    repetition;
+    positional distributions;
+    boundary behavior;
+
+and other directly applicable frozen
+Fingerprint V2 properties.
+
+The grammar must reproduce joint structure,
+not merely token frequencies.
+
+
+======================================================================
+10. GENERATIVE VALIDATION
+======================================================================
+
+After grammar freeze, generate synthetic corpora:
+
+    G → V_synthetic.
+
+Then compute applicable Fingerprint V2 metrics:
+
+    F2(V_synthetic)
+
+and compare against held-out VM:
+
+    F2(V_synthetic)
+        vs
+    F2(V_test).
+
+A grammar that predicts likelihood well
+but fails the structural fingerprint
+must not be considered sufficient.
+
+
+======================================================================
+11. INFORMATION RESIDUAL
+======================================================================
+
+After obtaining a validated grammar G,
+define the information unexplained by G.
+
+Conceptually:
+
+    V = G + R
+
+where:
+
+    G = predictable generative structure;
+    R = residual information.
+
+The objective is to characterize R,
+not to assume that it represents plaintext.
+
+
+======================================================================
+12. RESIDUAL ENTROPY
+======================================================================
+
+Estimate quantities such as:
+
+    H(V)
+
+    H(V | G)
+
+and the reduction:
+
+    ΔH_G = H(V) - H(V | G).
+
+Where appropriate, use predictive
+or description-length equivalents
+rather than naïve entropy estimators.
+
+The estimator and nulls must be frozen
+before scientific evaluation.
+
+
+======================================================================
+13. RESIDUAL STRUCTURE
+======================================================================
+
+Test whether residual R retains reproducible dependence at:
+
+    token scale;
+    neighboring-token scale;
+    line scale;
+    page scale;
+    folio scale;
+    section scale;
+    positional scale;
+    local-regime scale.
+
+The critical distinction is:
+
+    low residual entropy
+
+versus:
+
+    structured residual information.
+
+
+======================================================================
+14. INFORMATION CHANNEL QUESTION
+======================================================================
+
+Ask:
+
+    After accounting for the generative grammar,
+    does the remaining sequence contain statistically
+    structured degrees of freedom?
+
+Possible outcomes include:
+
+A.
+
+    Grammar explains most measurable structure
+    and residual resembles matched nulls.
+
+B.
+
+    Grammar explains token formation,
+    but substantial structured residual remains.
+
+C.
+
+    Grammar itself cannot compactly explain
+    the observed structure.
+
+These outcomes have different implications
+for the competing hypotheses.
+
+
+======================================================================
+15. MEANINGFUL VS MESSAGE-FREE GENERATION
+======================================================================
+
+Phase III must attempt to operationalize the distinction between:
+
+    constrained information-bearing generation
+
+and:
+
+    constrained message-free generation.
+
+This must NOT depend on knowing a plaintext.
+
+Possible discriminators must be formulated
+as statistical hypotheses and validated
+against controls before application to VM.
+
+
+======================================================================
+16. MESSAGE-FREE GENERATORS
+======================================================================
+
+Construct preregistered message-free generators
+capable of reproducing the frozen grammar.
+
+They may use:
+
+    stochastic rule choice;
+    constrained token formation;
+    local state;
+    positional state;
+    hierarchical state;
+
+but must contain no hidden plaintext/message.
+
+Generate multiple independent corpora:
+
+    M_1, M_2, ... M_n
+
+from independent seeds.
+
+
+======================================================================
+17. FINGERPRINT-PRESERVING NULL GENERATION
+======================================================================
+
+A central Phase III experiment should ask:
+
+    Can independently generated meaningless corpora
+    repeatedly reproduce the VM fingerprint?
+
+Formally:
+
+    M_i ~ G_null
+
+and test whether:
+
+    F(M_i) ≈ F(V)
+
+for many independent i.
+
+This directly addresses the unresolved
+Phase I question of meaningless generation.
+
+
+======================================================================
+18. REPEATABILITY CRITERION
+======================================================================
+
+A message-free explanation becomes substantially stronger if:
+
+    many independently generated documents
+
+reproduce:
+
+    multiple independent fingerprint families
+
+without:
+
+    target-specific tuning;
+    seed selection;
+    post-hoc parameter adjustment.
+
+One successful synthetic document
+is insufficient evidence.
+
+
+======================================================================
+19. LINE B — CENTRAL QUESTION
+======================================================================
+
+Line B asks:
+
+    Can competing mechanism classes generate
+    manuscript-scale structure sufficient for
+    genuine multi-family comparison with VM?
+
+The goal is to remove the primary
+Phase II bottleneck:
+
+    3 / 13 CORE direct coverage.
+
+
+======================================================================
+20. SYNTHETIC MANUSCRIPT OBJECT
+======================================================================
+
+Define a generic manuscript representation
+that can contain at minimum:
+
+    glyphs;
+    tokens;
+    physical lines;
+    line boundaries;
+    pages;
+    folios;
+    recto/verso relation;
+    loci;
+    sections/regimes;
+    2D positional coordinates where justified.
+
+Every structural element must have provenance:
+
+    GENERATED_BY_MECHANISM
+
+or:
+
+    INTRODUCED_BY_ASSEMBLER.
+
+
+======================================================================
+21. NO SYNTHETIC SEMANTICS
+======================================================================
+
+The assembler must not silently invent
+scientifically meaningful manuscript structure.
+
+For example:
+
+    splitting every N tokens into lines
+
+does not automatically create evidence
+about physical-line structure.
+
+Metrics dependent on assembler-created
+structure must remain classified separately
+unless the mechanism itself generates that structure.
+
+
+======================================================================
+22. GENERATIVE HIERARCHY
+======================================================================
+
+Where possible, mechanisms should generate structure through:
+
+    mechanism → token
+    mechanism → line
+    mechanism → page
+    mechanism → folio
+    mechanism → manuscript
+
+rather than:
+
+    token stream → arbitrary formatting.
+
+The scientific question is whether manuscript organization
+can emerge from or be required by the generating mechanism.
+
+
+======================================================================
+23. STRUCTURAL SCALE
+======================================================================
+
+Candidate mechanisms should be evaluated separately at:
+
+    token;
+    local sequence;
+    line;
+    page;
+    folio;
+    manuscript
+
+scales.
+
+A mechanism may succeed at one scale
+and fail at another.
+
+This distinction must remain visible.
+
+
+======================================================================
+24. TARGET COVERAGE
+======================================================================
+
+The principal quantitative goal of Line B is to increase:
+
+    DIRECT CORE COVERAGE.
+
+Phase III should aim for:
+
+    multiple independent F2 families
+
+rather than merely a larger number
+of correlated metrics.
+
+The desired progression is:
+
+    3/13 one-family
+        →
+    multi-family direct coverage.
+
+
+======================================================================
+25. COVERAGE IS NOT FIT
+======================================================================
+
+Increasing coverage is a methodological success,
+not evidence for a hypothesis.
+
+A mechanism that becomes directly measurable
+on 10/13 CORE metrics but strongly disagrees
+with the VM is scientifically more informative
+than one matching 3/13.
+
+
+======================================================================
+26. COMPETING GENERATING CLASSES
+======================================================================
+
+Line B should retain at least the major classes
+already frozen by Phase II:
+
+    NATURAL_TEXT
+    SIMPLE_NULL
+    FONTANA_EXTERNAL_MEMORY
+    HISTORICAL_SHORTHAND
+    SELECTIVE_EXTRACTION.
+
+Phase III may additionally admit:
+
+    FORMAL_GRAMMAR
+    MESSAGE_FREE_GENERATOR
+
+after Line A freezes them.
+
+New mechanism classes must be preregistered
+before target comparison.
+
+
+======================================================================
+27. NATURAL-TEXT MANUSCRIPT CONTROL
+======================================================================
+
+Natural text must be promoted from a token-stream
+control to an appropriately structured document control.
+
+The purpose is to determine which F2 properties arise from:
+
+    language;
+
+versus:
+
+    ordinary document organization;
+
+versus:
+
+    VM-specific structure.
+
+Formatting must be historically or procedurally justified,
+not tuned to the VM.
+
+
+======================================================================
+28. SHORTHAND EXTENSION
+======================================================================
+
+Phase II disfavored one BDD abbreviation tradition.
+
+Phase III must not reinterpret this as:
+
+    shorthand globally rejected.
+
+If shorthand is revisited, use independent
+historical traditions with paired or otherwise
+recoverable expansion evidence.
+
+This should test:
+
+    cross-tradition stability
+
+which Phase II could not establish.
+
+
+======================================================================
+29. EXTERNAL-MEMORY EXTENSION
+======================================================================
+
+Fontana mechanisms may be extended to manuscript scale
+only when the extension is explicitly classified as:
+
+    SOURCE_ATTESTED
+
+    SOURCE_CONSTRAINED_RECONSTRUCTION
+
+or:
+
+    GENERALIZED_EXTERNAL_MEMORY.
+
+Do not attribute modern hierarchical constructions
+to Fontana without historical evidence.
+
+
+======================================================================
+30. TRAJECTORY PROBLEM
+======================================================================
+
+Phase II lacked a valid frozen Fontana
+before→after F2 trajectory.
+
+Phase III should attempt to construct
+properly preregistered transformation trajectories
+for mechanism classes where the concept is meaningful:
+
+    input
+        →
+    mechanism
+        →
+    manuscript-scale output.
+
+Endpoint similarity alone remains insufficient.
+
+
+======================================================================
+31. NULLS
+======================================================================
+
+Every mechanism family requires
+mechanism-appropriate matched nulls.
+
+Nulls should preserve nuisance properties such as:
+
+    length;
+    token frequency;
+    line length;
+    page size;
+    positional distribution;
+    hierarchy size;
+
+as appropriate.
+
+A mechanism is not supported merely because
+it is closer to VM than another complex mechanism.
+
+
+======================================================================
+32. LINE A / LINE B FIREWALL
+======================================================================
+
+Before Line A freeze:
+
+    Line B must not tune manuscript mechanisms
+    using grammar results.
+
+Before Line B model freeze:
+
+    Line A must not choose grammar according
+    to which mechanism class it favors.
+
+The two lines should converge only after
+their primary models are frozen.
+
+
+======================================================================
+33. CONVERGENCE
+======================================================================
+
+After both lines are independently frozen,
+construct a common hypothesis space:
+
+    H_N:
+        natural-language document
+
+    H_F:
+        Fontana/external-memory mechanism
+
+    H_S:
+        historical shorthand
+
+    H_A:
+        selective extraction
+
+    H_G:
+        formal generative grammar
+
+    H_M:
+        constrained message-free generation
+
+plus declared nulls.
+
+
+======================================================================
+34. MULTI-FAMILY COMPARISON
+======================================================================
+
+For each frozen class compute the largest
+honest direct F2 intersection.
+
+Compare by:
+
+    metric;
+    family;
+    structural scale;
+    transcription;
+    corpus;
+    seed.
+
+Do not collapse all evidence immediately
+into one scalar distance.
+
+
+======================================================================
+35. IDENTIFIABILITY — SECOND TEST
+======================================================================
+
+Repeat the Phase II identifiability question
+only after expanded coverage:
+
+    MECHANISM_IDENTIFICATION_FROM_F2_V3.
+
+Possible outcomes:
+
+    CLASS_IDENTIFIABLE
+    FAMILY_IDENTIFIABLE
+    MULTIPLE_CLASSES_COMPATIBLE
+    NOT_IDENTIFIABLE.
+
+A repeated NOT_IDENTIFIABLE under substantially
+expanded multi-family coverage would itself be
+a stronger scientific result than Phase II's
+coverage-limited non-identifiability.
+
+
+======================================================================
+36. GRAMMAR IDENTIFIABILITY
+======================================================================
+
+Separately determine whether the grammar itself
+is identifiable.
+
+If several structurally different grammars
+produce indistinguishable held-out predictions
+and fingerprints:
+
+    GRAMMAR_NOT_IDENTIFIABLE.
+
+Do not select one merely because it is
+more intuitively linguistic.
+
+
+======================================================================
+37. COMPRESSION / DESCRIPTION LENGTH
+======================================================================
+
+Where statistically appropriate, compare:
+
+    raw description length of VM
+
+against:
+
+    grammar + residual
+
+and:
+
+    mechanism + state + residual.
+
+Conceptually:
+
+    L(V)
+
+versus:
+
+    L(G) + L(V | G).
+
+This provides a principled measure
+of how much structure the model actually explains.
+
+The coding scheme must be frozen
+before final target evaluation.
+
+
+======================================================================
+38. INFORMATION ACCOUNTING
+======================================================================
+
+For each mechanism/model explicitly account for:
+
+    information in observable symbols;
+    information in model parameters;
+    information in external state;
+    information in convention/key;
+    information in residual;
+    information lost by transformation.
+
+This extends the recovery accounting
+developed in Phases I–II.
+
+
+======================================================================
+39. TRANSCRIPTION ROBUSTNESS
+======================================================================
+
+All applicable primary results must be checked
+against both authoritative VM transcriptions.
+
+A Phase III conclusion should distinguish:
+
+    TRANSCRIPTION_STABLE
+    DIRECTION_STABLE
+    TRANSCRIPTION_SENSITIVE.
+
+
+======================================================================
+40. HIERARCHICAL HELD-OUT TESTS
+======================================================================
+
+Random token splits are insufficient.
+
+Where possible, use progressively stronger held-out units:
+
+    token;
+    line;
+    page;
+    folio;
+    section.
+
+This tests whether a grammar or mechanism
+generalizes across manuscript structure
+rather than memorizing local distributions.
+
+
+======================================================================
+41. TARGET BLINDNESS
+======================================================================
+
+Mechanism parameters, grammar model classes,
+complexity penalties, nulls, distance functions,
+support gates, and comparison rules must be frozen
+before final target evaluation.
+
+Exploratory VM work is permitted only when explicitly
+separated from confirmatory evaluation.
+
+
+======================================================================
+42. EXPLORATORY / CONFIRMATORY SEPARATION
+======================================================================
+
+Phase III should explicitly contain:
+
+    DISCOVERY
+
+and:
+
+    CONFIRMATION
+
+stages.
+
+Discovery may use training partitions.
+
+Confirmatory partitions must remain untouched
+until:
+
+    model;
+    parameters;
+    metrics;
+    nulls;
+    thresholds;
+    decision rules
+
+are frozen.
+
+
+======================================================================
+43. NEGATIVE RESULTS
+======================================================================
+
+Phase III must treat the following as valid outcomes:
+
+    no compact grammar exists;
+
+    grammar predicts local structure
+    but not manuscript hierarchy;
+
+    residual remains highly structured;
+
+    message-free generators reproduce F2;
+
+    message-free generators fail F2;
+
+    manuscript-scale mechanisms diverge more
+    strongly from VM as coverage increases;
+
+    generating classes remain non-identifiable.
+
+No task should require a positive mechanism verdict.
+
+
+======================================================================
+44. CLAIM BOUNDARIES
+======================================================================
+
+A successful formal grammar does NOT establish:
+
+    natural language;
+    meaning;
+    plaintext;
+    authorship.
+
+A low information residual does NOT establish:
+
+    meaningless text.
+
+A message-free generator matching F2 does NOT establish:
+
+    VM is meaningless.
+
+An external-memory model matching F2 does NOT establish:
+
+    VM is external memory.
+
+A natural-text model matching F2 does NOT establish:
+
+    VM is natural language.
+
+These are compatibility and discrimination experiments.
+
+
+======================================================================
+45. PRIMARY RESEARCH QUESTIONS
+======================================================================
+
+Phase III should answer, as far as evidence permits:
+
+RQ1.
+Can Voynichese be represented by a compact,
+held-out validated formal grammar?
+
+RQ2.
+What is the minimum sufficient grammar?
+
+RQ3.
+How much information remains after conditioning
+on that grammar?
+
+RQ4.
+Is the residual statistically structured?
+
+RQ5.
+Can message-free generators repeatedly reproduce
+the same multi-family fingerprint?
+
+RQ6.
+Can competing mechanisms generate manuscript-scale
+rather than token-stream structure?
+
+RQ7.
+How much of Fingerprint V2/V3 becomes directly
+comparable after manuscript-scale generation?
+
+RQ8.
+Does expanded multi-family coverage make
+generating classes identifiable?
+
+RQ9.
+Can formal grammar and message-free generation
+be statistically distinguished?
+
+RQ10.
+Which observed VM properties remain unexplained
+by every tested model?
+
+
+======================================================================
+46. SUCCESS CRITERIA
+======================================================================
+
+Phase III is scientifically successful even if
+no origin class is identified.
+
+Success requires obtaining reliable answers to:
+
+    how compressible/predictable the formal structure is;
+
+    whether a compact grammar exists;
+
+    what residual remains;
+
+    whether message-free reproduction is possible;
+
+    whether manuscript-scale models can be built;
+
+    whether direct fingerprint coverage expands;
+
+    whether increased coverage increases discrimination.
+
+
+======================================================================
+47. EXPECTED SCIENTIFIC PRODUCTS
+======================================================================
+
+Phase III should ultimately produce:
+
+    VOYNICH_GRAMMAR_SPEC
+
+    VOYNICH_GRAMMAR_VALIDATION
+
+    GRAMMAR_MINIMALITY_ANALYSIS
+
+    INFORMATION_RESIDUAL_ANALYSIS
+
+    MESSAGE_FREE_GENERATION_PORTFOLIO
+
+    SYNTHETIC_MANUSCRIPT_SPEC
+
+    MANUSCRIPT_SCALE_MECHANISM_PORTFOLIO
+
+    FINGERPRINT_V3 or F2_MULTI_FAMILY_EXTENSION
+        if scientifically justified
+
+    MULTI_FAMILY_COMPARISON
+
+    MECHANISM_IDENTIFIABILITY_REPORT
+
+    PHASE3_SCIENTIFIC_REPORT.
+
+
+======================================================================
+48. RELATION TO PREVIOUS PHASES
+======================================================================
+
+Phase I asked:
+
+    What statistical structure does the VM have,
+    and what broad mechanism classes remain possible?
+
+Phase II asked:
+
+    Is that structure compatible with
+    external-memory, shorthand, extraction,
+    natural, or null mechanisms?
+
+and discovered:
+
+    mechanism identification is blocked by
+    narrow model/fingerprint intersection.
+
+Phase III asks:
+
+    What generative rules explain the structure,
+    what information remains beyond those rules,
+    and can mechanism classes be distinguished
+    when they are required to reproduce the
+    manuscript at its actual structural scale?
+
+
+======================================================================
+49. PHASE III CENTRAL LOGIC
+======================================================================
+
+The intended scientific logic is:
+
+             PHASE I
+       measured structure
+              │
+              ▼
+            PHASE II
+     mechanism compatibility
+              │
+              ▼
+       NOT_IDENTIFIABLE
+         because 3/13 CORE
+              │
+       ┌──────┴──────┐
+       │             │
+       ▼             ▼
+    LINE A          LINE B
+
+ grammar +          synthetic
+ residual           manuscript
+       │             │
+       ▼             ▼
+ formal/message-    multi-family
+ free models        F2 coverage
+       │             │
+       └──────┬──────┘
+              ▼
+      FROZEN MODEL SPACE
+              │
+              ▼
+       MULTI-FAMILY
+       CONFIRMATORY
+        COMPARISON
+              │
+              ▼
+       IDENTIFIABILITY
+          VERDICT
+
+
+======================================================================
+50. PHASE III FINAL QUESTION
+======================================================================
+
+The final question of Phase III is not:
+
+    "What is the Voynich Manuscript?"
+
+That remains too broad.
+
+The final testable question is:
+
+    Can the observable statistical and manuscript-scale
+    structure of the Voynich Manuscript be explained by
+    a compact generative model, and does the remaining
+    evidence distinguish information-bearing,
+    external-memory, natural-language, shorthand,
+    selective-extraction, and message-free generating
+    classes?
+
+If the answer remains no, Phase III must determine why:
+
+    insufficient measurement;
+
+    insufficient model coverage;
+
+    genuine statistical equifinality;
+
+    or information inaccessible without semantics/context.

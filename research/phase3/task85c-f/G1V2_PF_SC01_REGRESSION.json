@@ -1,0 +1,29 @@
+{
+  "case": "PF-SC01-EMPTY-TOKEN-GENERATION",
+  "generator": "M0_GEN_A",
+  "frozen_input": {
+    "outcomes": ["a", "b", "c", "d", "<EOS>"],
+    "probabilities": ["0.28", "0.22", "0.18", "0.12", "0.20"],
+    "root_seed_hex": "6f5a9c731de248b480c66b237ace215044689c5fa2f593e510b73dce18a49027",
+    "namespace": "g1v2/control/generate",
+    "counters": [0, 0, 0, 0]
+  },
+  "observed_v1_1": {
+    "draw0_digest": "edb14d737bdf70ce62ff1a28cfbdcc6f05a1fc904a34ff493da64264578f6794",
+    "draw0_u53": "0.92848667210989588",
+    "draw0_original_outcome": "<EOS>",
+    "token_length_before": 0,
+    "violated_invariant": "generated token is nonempty"
+  },
+  "admissible_v1_1_interpretations": {
+    "retry": {"draws_consumed_before_first_glyph": 2, "first_emitted_glyph": "a", "next_draw_index": 2},
+    "conditional": {"draws_consumed_before_first_glyph": 1, "first_emitted_glyph": "d", "next_draw_index": 1}
+  },
+  "candidate_repair": {
+    "action": "condition_on_currently_admissible_support_and_use_draw0_once",
+    "first_emitted_glyph": "d",
+    "draws_consumed": 1,
+    "next_rng_identity": {"counters": [0, 0, 0, 1]}
+  },
+  "normative_status": "CANDIDATE_ONLY_NOT_FROZEN_BECAUSE_DEFECT_EXPANDED"
+}

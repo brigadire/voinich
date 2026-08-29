@@ -1,0 +1,21 @@
+check_id	requirement	status	evidence	notes
+V01	V1.1 contract SHA-256	PASS	sha256sum	5c3cd272c1dbae9bfe1d7a100155faf102e86d34660da239e1cb31704ad470b0
+V02	Task85c-c artifact root	PASS	results_manifest_validator.py	dc27660d3e03a06f91aaa1c3aa6c48226328457746c9dc819e7c0a355ce8f09c
+V03	evidence schema root	PASS	TASK85C_C_RESULTS_MANIFEST.json	4744ca82532cd47a0d02bb680796b26a11ceca57d6229f0b312df69a103f784b
+V04	V1.1 golden root	PASS	TASK85C_C_RESULTS_MANIFEST.json	967e63f9c3ba66d99cbff4da83c819d705f1f14c4ace923dbcd1cb8e7dfd1ff8
+V05	V2 state machine	PASS	verify_state_machine.py	13 statuses, 7 stages, 45 transitions
+V06	Task85c-c cross-artifact validator	PASS	cross_artifact_validator.py	validator reports zero contradictions but does not compare inherited JobID payload identity to V1.1
+V07	JobID contract version	FAIL	reproduce_golden_contract_contradiction.py	R2-G01
+V08	JobID dependency field	FAIL	reproduce_golden_contract_contradiction.py	R2-G02
+V09	complete V1.1 golden verifier	NOT_TESTED	Ajv dependency unavailable locally	independently reproduced frozen JOBID contradiction already mandates stop
+V10	production scientific golden tests	NOT_TESTED	mandatory stop	no handlers implemented
+V11	go build/vet/test/race	NOT_TESTED	mandatory stop	no production implementation created
+V12	input/threshold/blind/natural/preseed closure	NOT_TESTED	mandatory stop	no production objects created
+V13	DAG and manifest reconstruction	NOT_TESTED	mandatory stop	contradictory JobID identity
+V14	local/distributed/retry fixtures	NOT_TESTED	mandatory stop	no production executable
+V15	capacity qualification	NOT_TESTED	mandatory stop	no production handlers
+V16	Ansible validation	NOT_TESTED	mandatory stop	deployment not changed
+V17	blind execution firewall	PASS	audit of actions	no blind construction, execution, or unblinding
+V18	natural-confirmatory execution firewall	PASS	audit of actions	no confirmatory execution
+V19	Voynich execution firewall	PASS	audit of actions	no Voynich execution
+V20	full-production-run firewall	PASS	audit of actions	manifest not built or submitted

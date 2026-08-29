@@ -1,0 +1,12 @@
+check	status	detail
+corrected_M0_FIT	PASS	denominator=9; probabilities 1/3,2/9,1/9,1/3
+corrected_M0_UNSEEN	PASS	alpha=1 unseen maps to UNK=1/9
+normalization	PASS	exact rational sum=1
+EOS_count	PASS	one per DEVELOPMENT token
+alpha_zero	PASS	zero-count UNK has zero probability/NOT_ASSESSABLE
+positive_alpha	PASS	all complete outcomes positive
+unseen_validation	PASS	map to fitted UNK
+unseen_heldout	PASS	map to fitted UNK
+independent_implementations	PASS	Python Decimal and Go binary64 agree on semantics
+property_cases	PASS	32768/32768
+second_implementer_choices	PASS	0

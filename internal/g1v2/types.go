@@ -13,18 +13,21 @@ import (
 	"strings"
 
 	"golang.org/x/text/unicode/norm"
+	"zcore.dev/voinich/internal/g1v2science"
 )
 
 const (
-	Experiment       = "g1v2/task86c-v2"
-	ProtocolVersion  = "g1v2-execution-v1"
-	SchemaVersion    = "g1v2-evidence-v1"
-	CanonicalVersion = "canonical-json-nfc-v1"
+	Experiment        = "g1v2/task86c-v2"
+	ProtocolVersion   = "g1v2-execution-v1"
+	SchemaVersion     = "g1v2-evidence-v1"
+	SchemaVersionV121 = g1v2science.EvidenceContract
+	CanonicalVersion  = "canonical-json-nfc-v1"
 )
 
 var validStages = map[string]bool{
 	"FIT": true, "PREDICTIVE": true, "GENERATION": true,
-	"STRUCTURAL": true, "AGGREGATION": true,
+	"STRUCTURAL": true, "AGGREGATION": true, "F2_METRIC": true,
+	"COMPLEXITY": true, "CANDIDATE_AGGREGATION": true, "CONTROL_AGGREGATION": true,
 }
 
 // JobBundle is the immutable scientific portion leased to a worker. DependsOn
@@ -116,6 +119,13 @@ func (j JobBundle) identity() identity {
 }
 
 func (j JobBundle) ComputedID() (string, error) {
+	if j.Work.Kind == "g1v2-science-v1_2_1" {
+		var p SciencePayload
+		if err := json.Unmarshal([]byte(j.Work.Payload), &p); err != nil {
+			return "", err
+		}
+		return g1v2science.E3JobID(p.Request.Job)
+	}
 	b, err := canonicalJSON(j.identity())
 	if err != nil {
 		return "", err

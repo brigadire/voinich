@@ -1,0 +1,65 @@
+{
+  "schema": "task86c-v2-production-freeze-results-v1_2-attempt",
+  "status": "IMPLEMENTATION_VALIDATION_FAILURE",
+  "updated_task_sha256": "5afa19cd44adacf5af81c37f909ea7f76dd8934be81a879e3d6661da04d918b1",
+  "authority": {
+    "contract_version": "G1_V2_EXECUTABLE_CONTRACT_V1_2",
+    "contract_markdown_sha256": "ec60bb23e55ce157fe954b5cafc63d22ab70ecec390822cb63f9ae273142c639",
+    "contract_machine_json_sha256": "29e39e0c25dc8033f784480fdc537e3ede9eeb69baa0607c9f249d796d6b42dc",
+    "generation_semantics_sha256": "45d533f8b83b24c77a96836fa5c2ef95f9b948003bd2ed725fc2ea97e010b310",
+    "generation_golden_sha256": "143954667073a2c10f1bd59ce98b9c93dd84b50632bb67ea80d0d92449480acb",
+    "task85c_g_artifact_root_sha256": "609ca0fbb0cdada89a775972191ef0a6e1899791f63ee6104f517fe6e3a96b91",
+    "execution_identity_erratum_sha256": "dbfb9a4a7101eed7006f751b9c4631b5f0286c3792f9777cc833c5dcfa42a3d3",
+    "status_reachability_v2_sha256": "fc1ca07d8123ed5d44bc24ecba98fca54d5b05781ecbaba820d44079319038b9"
+  },
+  "generation_validation": {
+    "pf_sc01": "CLOSED",
+    "paths_resolved": 26,
+    "goldens_passed": 28,
+    "general_property_cases_passed": 32768,
+    "generator_b_property_cases_passed": 8192,
+    "go_python_differential": "PASS",
+    "second_implementer_unstated_choices": 0
+  },
+  "implementation_validation": {
+    "engineering_go_tests": "PASS",
+    "diagnostic_candidate_sha256": "8057ce12068a0bc3a11554fd759b358a854918d67049ce5709507405ab27b4b3",
+    "diagnostic_candidate_frozen_as_production": false,
+    "scientific_implementation": "NOT_SUPPORTED",
+    "scientific_implementation_coverage": "INCOMPLETE"
+  },
+  "materialization": {
+    "development_controls": 0,
+    "blind_controls": 0,
+    "natural_controls": 0,
+    "escrow_key_generated": false,
+    "jobids": 0,
+    "dag_jobs": 0,
+    "dag_edges": 0,
+    "production_dag_submitted": false
+  },
+  "artifacts_excluding_manifest": [
+    {"path":"TASK86C_V2_BLIND_SAFE_MANIFEST.tsv","sha256":"e3b7440c698bfc627187be3c87997473ff8626618da5df2307166f47e9bbd7a8"},
+    {"path":"TASK86C_V2_CAPACITY_BENCHMARK.tsv","sha256":"2c00ef99088eac8bd5b6f866607f880bec10e502ff5aa15d5164cdf7a2710daa"},
+    {"path":"TASK86C_V2_CAPACITY_REPORT.md","sha256":"437afd4a7ccc8641306b6e3018446b24a477ccedf6a2ed329603c0f0a3f392a8"},
+    {"path":"TASK86C_V2_DAG_AUDIT.json","sha256":"69893d440ed037f67b64cf7e8ae81577094bf3766e6e9fec284cd7eed2d6be57"},
+    {"path":"TASK86C_V2_IMPLEMENTATION_NOT_READY","sha256":"940f546db6f152d9f2c509f33158cca6bdb0e5cfc0a2db4b089d41f3979a9423"},
+    {"path":"TASK86C_V2_IMPLEMENTATION_TRACEABILITY.tsv","sha256":"72c58b2443ad5482fa506258b3e684392f4b9c02ddabc1fada98b15c6d213ee2"},
+    {"path":"TASK86C_V2_INPUT_MANIFEST.tsv","sha256":"3ace260fef22fde9346045ff8f81ff269fdff68a373d2c1cfa96b9272b2fd9a9"},
+    {"path":"TASK86C_V2_NATURAL_INPUT_MANIFEST.tsv","sha256":"d31ee35f084fe236ebca351321691605f597fb9223508411eddcd229d4b083a0"},
+    {"path":"TASK86C_V2_OPERATOR_HANDOFF.md","sha256":"bd25d2f51f4376c66f4b2f483b32aab078bd396dcfd8f3a667b7170e3901d76c"},
+    {"path":"TASK86C_V2_PRESEED_MANIFEST.tsv","sha256":"0e2df678cb904b8e2a845112a2378c7f355a442739c23115a8dfd541393e82d8"},
+    {"path":"TASK86C_V2_PRODUCTION_FREEZE_DESIGN.md","sha256":"83bd5f974fdfc1b6e35e396a3ddbb7e6544ed09a33c59a3480d065a992785527"},
+    {"path":"TASK86C_V2_PRODUCTION_FREEZE_REPORT.md","sha256":"df0df8eea8927b6df5d5172dda6798e170597dfdc03266db2fb0a49cc827403a"},
+    {"path":"TASK86C_V2_RUNBOOK.md","sha256":"ca91e3c79b69c1985533bb85fd6a8e2705997785b5e440a595bbda81aea9e6bf"},
+    {"path":"TASK86C_V2_RUN_MANIFEST.json","sha256":"835dd580180409f86c943f841fe1dacf2874b86d20eb547efae538ef951225ef"},
+    {"path":"TASK86C_V2_THRESHOLD_MANIFEST.tsv","sha256":"24308dc407bae0e5c20f94f96c12d290860e6c911bcad8ce55ee04dfd37f2f08"},
+    {"path":"TASK86C_V2_VALIDATION.tsv","sha256":"dd75f13a024a87ec7555771ff7dcac5a3e8e47ec5fdafd8e2cca29b2a494b219"},
+    {"path":"reference/verify_pre_materialization.py","sha256":"3d82d0592bc54e9a57d97f1edd2a8c9ffcc5d16f33bcb504803991d4f4bc91f4"}
+  ],
+  "artifact_root_excluding_manifest_sha256": "9af5c6addeab2eb3d41e3573ffa85891c0641fbe659df04af5641f49987b939c",
+  "artifact_root_definition": "sha256 of sha256sum-format lines for every regular file except this manifest, repository-relative paths sorted bytewise",
+  "scientific_firewall": "INTACT",
+  "production_run_authorized": "NO",
+  "terminal_marker": "TASK86C_V2_IMPLEMENTATION_NOT_READY"
+}

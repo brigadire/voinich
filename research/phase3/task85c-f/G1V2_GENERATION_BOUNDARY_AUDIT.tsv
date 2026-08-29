@@ -1,0 +1,26 @@
+generator	model_family	state	sampled_support	forbidden_symbols	reachable	current_semantics	ambiguity	V1.2_semantics	RNG_consumption	test_vector	status
+FITTED_M0	M0	BEFORE_TOKEN	glyph,UNK,EOS	BOS	YES	inverse-CDF until EOS	EOS can terminate empty; outcome order conflict	candidate conditional support excludes EOS	one draw proposed	PF-SC01	OPEN_EXPANDED
+FITTED_M1	M1 exact orders 1-3	BEFORE_TOKEN	glyph,UNK,EOS	BOS	YES	M0 boundaries	EOS can terminate empty	candidate conditional support excludes EOS	one draw proposed	EOS-ZERO	OPEN_EXPANDED
+FITTED_M2	M2 PST	BEFORE_TOKEN	glyph,UNK,EOS	BOS	YES	longest retained suffix then root	EOS can terminate empty	candidate conditional support excludes EOS	one draw proposed	EOS-ZERO	OPEN_EXPANDED
+FITTED_M3_EXACT	M3 exact	BEFORE_TOKEN	row outcomes	BOS	YES	start-state row	start row may contain EOS for fitted model	candidate conditional support excludes EOS	one draw proposed	EOS-ZERO	OPEN_EXPANDED
+FITTED_M3_APPROX	M3 approximate	BEFORE_TOKEN	row outcomes	BOS	YES	start-state row	merge can leave EOS at start	candidate conditional support excludes EOS	one draw proposed	EOS-ZERO	OPEN_EXPANDED
+FITTED_M4	M4 HMM	BEFORE_TOKEN	initial state then emission	BOS	YES	sample pi then emission	initial/emission draw indexing and initial EOS	candidate condition emission after sampled state	pi draw plus one emission draw proposed	EOS-ZERO	OPEN_EXPANDED
+FITTED_M5	M5 grammar	WHOLE_TOKEN	rule,exception,productive derivation	BOS,EOS,UNK	YES	nonempty stem; invalid/overlength retry	attempt counter/reset allocation unspecified	retain nonempty whole-token law	not uniquely specified	MAX-LENGTH	OPEN_EXPANDED
+M0_GEN_A	M0	BEFORE_TOKEN	a,b,c,d,EOS	BOS	YES	sequential inverse-CDF	PF-SC01 and list-vs-UTF8 order	candidate conditional a,b,c,d	one U53 proposed	PF-SC01	OPEN_EXPANDED
+M0_GEN_B	M0	BEFORE_TOKEN	complete finite outcomes	BOS	YES	exponential-race phrase	outcome set, draw count, u=0 and ties unspecified	cannot freeze narrowly	not unique	PF-SC01	OPEN_EXPANDED
+M1_GEN_A	M1	BEFORE_TOKEN	a,b,c,d,EOS	BOS	YES	sequential inverse-CDF	EOS boundary only	candidate conditional glyph support	one U53 proposed	EOS-ZERO	OPEN_EXPANDED
+M1_GEN_B	M1	BEFORE_TOKEN	a,b,c,d,EOS	BOS	YES	Walker alias phrase	alias table construction and per-decision draw mapping absent	cannot freeze narrowly	not unique	EOS-ZERO	OPEN_EXPANDED
+M2_GEN_A	M2	BEFORE_TOKEN	context glyphs,root remainder,EOS	BOS	YES	sequential inverse-CDF	order of EOS insertion/remainder normalization incomplete	candidate conditional glyph support	one U53 proposed	EOS-ZERO	OPEN_EXPANDED
+M2_GEN_B	M2	BEFORE_TOKEN	complete derivations	BOS	YES	exponential-race phrase	draw allocation and derivation enumeration absent	cannot freeze narrowly	not unique	EOS-ZERO	OPEN_EXPANDED
+M3_GEN_A	M3	BEFORE_TOKEN	a,b	BOS,EOS	YES	inverse-CDF explicit start row	none at first state; global cap still ambiguous	unchanged start support	one U53	BELOW-BOUNDARY	OPEN_EXPANDED
+M3_GEN_B	M3	BEFORE_TOKEN	complete finite paths	BOS,EOS	YES	exponential-race phrase	draw allocation and path enumeration absent	cannot freeze narrowly	not unique	BELOW-BOUNDARY	OPEN_EXPANDED
+M4_GEN_A	M4	BEFORE_TOKEN	pi then emission including EOS	BOS	YES	cumulative rows	pi/emission counter indexing absent	condition emission support	pi draw plus one emission draw proposed	EOS-ZERO	OPEN_EXPANDED
+M4_GEN_B	M4	BEFORE_TOKEN	pi then emission including EOS	BOS	YES	cumulative matrix rows phrase	matrix traversal and counter indexing absent	cannot freeze narrowly	not unique	EOS-ZERO	OPEN_EXPANDED
+M5_GEN_A	M5	WHOLE_TOKEN	mixture then components	BOS,EOS,UNK	YES	inverse-CDF; retry invalid/overlength	attempt draw/counter reset absent	would retain nonempty stem rule	not unique	MAX-LENGTH	OPEN_EXPANDED
+M5_GEN_B	M5	WHOLE_TOKEN	complete derivations	BOS,EOS,UNK	YES	exponential-race phrase	enumeration, ties, u=0, attempts absent	cannot freeze narrowly	not unique	MAX-LENGTH	OPEN_EXPANDED
+SHARED_INVERSE_CDF	M0-M5/A	ANY_CATEGORICAL	row outcomes	state-dependent	YES	UTF-8-sorted wording	registry list order conflicts for special symbols	filter frozen identity order then normalize proposed	one U53 proposed	EXACT-BOUNDARY	OPEN_EXPANDED
+SHARED_EXPONENTIAL_RACE	B routes	ANY_CATEGORICAL	finite outcomes/derivations	state-dependent	YES	-ln(u)/weight phrase	u=0, zero weights, ties, outcome enumeration, draw identity absent	no narrow completion available	not unique	FORBIDDEN-BOS	OPEN_EXPANDED
+SHARED_WALKER_ALIAS	M1/B	ANY_CATEGORICAL	alias buckets	state-dependent	YES	Walker alias phrase	no table builder, rounding, bucket/order, or draw allocation	no narrow completion available	not unique	EXACT-BOUNDARY	OPEN_EXPANDED
+SHARED_M4_CUMULATIVE	M4/B	BEFORE_TOKEN,INSIDE_TOKEN	pi,emission,transition	BOS	YES	cumulative matrix rows phrase	row order and draw sequence not specified	no narrow completion available	not unique	EOS-AFTER-ONE	OPEN_EXPANDED
+SHARED_ATTEMPT_CAP	M0-M5	AT_LIMIT	model-dependent	BOS	YES	64 without EOS failure; 1024 attempts	cap check timing and attempt-counter reset conflict/incomplete	would need new explicit transition	not unique	MAX-LENGTH	OPEN_EXPANDED
+CORPUS_SERIALIZER	all synthetic	TOKEN_COMPLETE	NFC token glyphs	BOS,EOS literal,UNK literal	YES	ordered nonempty tokens	token delimiter, line policy and final newline absent	would need byte serialization rule	zero draws	DETERMINISTIC-REPEAT	OPEN_EXPANDED

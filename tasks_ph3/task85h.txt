@@ -1,0 +1,2462 @@
+Task85c-h — G1-v2 V1.2 Production Scientific Implementation,
+Handler Closure and Pre-Materialization Validation
+
+
+PURPOSE
+
+Implement and independently validate the complete production
+scientific execution layer required by:
+
+    G1_V2_EXECUTABLE_CONTRACT_V1_2
+
+without materializing any production controls, thresholds, escrow,
+JobIDs, DAG, or confirmatory results.
+
+Task86C-v2-production-freeze reached its mandatory
+pre-materialization gate and stopped with:
+
+    IMPLEMENTATION_VALIDATION_FAILURE
+
+because the current:
+
+    cmd/g1v2-executor
+
+and:
+
+    internal/g1v2
+
+implement execution/evidence transport but do not implement the
+complete frozen scientific protocol.
+
+The current executor explicitly lacks production scientific
+implementations for at least:
+
+    corpus scientific processing;
+    fitting;
+    M0–M5;
+    generation;
+    predictive metrics;
+    F2 metrics;
+    scientific gates;
+    scientific aggregation.
+
+Its stage model and JobID implementation also predate the frozen
+V1.2 + E1 execution contract.
+
+Task85c-h must close this implementation gap.
+
+It MUST NOT make new scientific choices.
+
+Success means:
+
+    every scientific operation required for production execution
+    has an implementation traceable to frozen V1.2;
+
+    every production handler is independently validated;
+
+    the production executor uses the frozen V1.2 stage and JobID
+    semantics;
+
+    bounded non-confirmatory end-to-end execution succeeds;
+
+    Task86C-v2-production-freeze can be restarted from its
+    pre-materialization gate.
+
+Success does NOT mean:
+
+    production controls have been created;
+    thresholds have been calibrated;
+    production executable has been finally frozen;
+    capacity has been finally qualified;
+    production DAG has been materialized;
+    production execution has started.
+
+
+======================================================================
+1. AUTHORITATIVE SCIENTIFIC CONTRACT
+======================================================================
+
+Scientific contract:
+
+    G1_V2_EXECUTABLE_CONTRACT_V1_2
+
+Markdown SHA-256:
+
+    ec60bb23e55ce157fe954b5cafc63d22ab70ecec390822cb63f9ae273142c639
+
+Machine JSON SHA-256:
+
+    29e39e0c25dc8033f784480fdc537e3ede9eeb69baa0607c9f249d796d6b42dc
+
+Generation semantics:
+
+    G1V2_GENERATION_SEMANTICS_V1
+
+SHA-256:
+
+    45d533f8b83b24c77a96836fa5c2ef95f9b948003bd2ed725fc2ea97e010b310
+
+Generation golden suite SHA-256:
+
+    143954667073a2c10f1bd59ce98b9c93dd84b50632bb67ea80d0d92449480acb
+
+Task85c-g artifact root SHA-256:
+
+    609ca0fbb0cdada89a775972191ef0a6e1899791f63ee6104f517fe6e3a96b91
+
+
+======================================================================
+2. OTHER NORMATIVE AUTHORITIES
+======================================================================
+
+Execution identity:
+
+    G1V2_EXECUTION_IDENTITY_ERRATUM_E1
+
+SHA-256:
+
+    dbfb9a4a7101eed7006f751b9c4631b5f0286c3792f9777cc833c5dcfa42a3d
+
+Status/reachability:
+
+    G1_V2_STATUS_REACHABILITY_CONTRACT_V2
+
+SHA-256:
+
+    fc1ca07d8123ed5d44bc24ecba98fca54d5b05781ecbaba820d44079319038b9
+
+Evidence schema root:
+
+    4744ca82532cd47a0d02bb680796b26a11ceca57d6229f0b312df69a103f784b
+
+
+======================================================================
+3. NORMATIVE PRECEDENCE
+======================================================================
+
+For scientific behavior use the frozen V1.2 precedence:
+
+    G1_V2_EXECUTABLE_CONTRACT_V1_2.json
+
+        >
+
+    G1V2_GENERATION_SEMANTICS_V1.json
+    and normative machine registries
+
+        >
+
+    G1V2_GENERATION_GOLDEN_SUITE_V1.json
+
+        >
+
+    explanatory Markdown.
+
+For execution-identity questions that do not alter scientific
+semantics:
+
+    G1V2_EXECUTION_IDENTITY_ERRATUM_E1
+
+applies.
+
+Implementation code is NEVER normative over these artifacts.
+
+
+======================================================================
+4. INPUT FAILURE STATE
+======================================================================
+
+The immediately preceding production-freeze attempt established:
+
+    CONTRACT_IDENTITY = SUPPORTED
+
+    PF_SC01 = CLOSED
+
+    GENERATION_PATHS_RESOLVED = 26 / 26
+
+    GENERATION_GOLDENS = 28 PASS
+
+    GENERAL_PROPERTY_TESTS = 32768 PASS
+
+    GENERATOR_B_PROPERTY_TESTS = 8192 PASS
+
+    GO_PYTHON_DIFFERENTIAL = PASS
+
+    SCIENTIFIC_FIREWALL = INTACT
+
+but:
+
+    SCIENTIFIC_IMPLEMENTATION = NOT_SUPPORTED
+
+    SCIENTIFIC_IMPLEMENTATION_COVERAGE = INCOMPLETE
+
+    PRODUCTION_RUN_AUTHORIZED = NO.
+
+No production materialization occurred.
+
+
+======================================================================
+5. KNOWN IMPLEMENTATION DEFECT
+======================================================================
+
+The current:
+
+    cmd/g1v2-executor
+
+is an engineering/execution transport implementation, not the
+complete production scientific executor.
+
+The current:
+
+    internal/g1v2
+
+similarly does not provide complete:
+
+    model fitting;
+    scientific generation;
+    threshold derivation;
+    corpus scientific processing;
+    PM/F2 evaluation;
+    gate evaluation.
+
+Task85c-h must not treat existing transport functionality as proof
+of scientific implementation.
+
+
+======================================================================
+6. LEGACY EXECUTOR MUST NOT DEFINE SCIENCE
+======================================================================
+
+Existing code may be:
+
+    reused;
+    extended;
+    refactored;
+    wrapped;
+
+where consistent with V1.2.
+
+But legacy behavior must not override the frozen contract.
+
+Specifically, current generalized stages such as:
+
+    STRUCTURAL
+    AGGREGATION
+
+must not substitute for the frozen production stages where V1.2/V2
+requires distinct scientific job identities.
+
+
+======================================================================
+7. NO SCIENTIFIC REDESIGN
+======================================================================
+
+Task85c-h MUST NOT redesign:
+
+    M0;
+    M1;
+    M2;
+    M3 exact;
+    M3 approximate;
+    M4;
+    M5;
+
+    43-candidate registry;
+
+    corpus semantics;
+
+    DEVELOPMENT / VALIDATION / HELDOUT split;
+
+    model selection;
+
+    G1V2-RNG-1;
+
+    generation semantics;
+
+    Generator A;
+
+    Generator B;
+
+    B1 / B2;
+
+    PM1;
+    PM2;
+    PM4;
+    PM5;
+    PM6;
+
+    F2 metrics;
+
+    structural families/gates;
+
+    complexity;
+
+    minimality/equivalence;
+
+    status/reachability;
+
+    final verdict logic.
+
+Implementation must follow the frozen definitions exactly.
+
+
+======================================================================
+8. IMPLEMENTATION CHOICE POLICY
+======================================================================
+
+No scientific component may remain:
+
+    NOT_IMPLEMENTED
+    PLACEHOLDER
+    STUB
+    TODO_SCIENCE
+    IMPLEMENTER_CHOICE.
+
+Ordinary engineering choices are permitted where they cannot affect:
+
+    scientific inputs;
+    scientific RNG;
+    floating-point operation order where normative;
+    model result;
+    metric;
+    evidence;
+    gate;
+    status;
+    final verdict.
+
+Examples of permitted engineering choices include:
+
+    package decomposition;
+    internal non-scientific data structures;
+    logging;
+    telemetry;
+    profiling;
+    transport buffering;
+
+provided scientific behavior remains identical.
+
+
+======================================================================
+9. CONTRACT DEFECT POLICY
+======================================================================
+
+Do NOT silently invent missing scientific semantics.
+
+If implementation reveals two or more contract-compatible
+interpretations capable of producing different:
+
+    scientific corpus;
+    fitted model;
+    generated corpus;
+    metric;
+    status;
+    gate;
+    evidence;
+    verdict;
+
+record the smallest reproducible fixture and:
+
+    STOP SCIENTIFIC_CONTRACT_DEFECT.
+
+Do not fix such a defect inside Task85c-h.
+
+
+======================================================================
+10. IMPLEMENTATION DEFECT POLICY
+======================================================================
+
+If code disagrees with a uniquely defined V1.2 behavior:
+
+    this is an implementation defect.
+
+Fix the code.
+
+Add a regression test.
+
+Continue Task85c-h.
+
+Do NOT create Task85c-i merely because implementation code was
+wrong.
+
+
+======================================================================
+11. SCIENTIFIC PACKAGE BOUNDARY
+======================================================================
+
+Create or establish a clear scientific implementation layer
+separate from execution transport.
+
+Recommended conceptual separation:
+
+    scientific/
+        corpus
+        rng
+        models
+        baselines
+        predictive
+        generation
+        structural
+        complexity
+        aggregation
+
+    execution/
+        jobs
+        coordinator
+        workers
+        evidence transport
+        leases
+        cache
+        retries
+
+Exact package names are engineering choices.
+
+The separation of scientific semantics from execution metadata is
+mandatory.
+
+
+======================================================================
+12. CORPUS IMPLEMENTATION
+======================================================================
+
+Implement frozen V1.2 corpus semantics:
+
+    ordered nonempty NFC tokens;
+
+    Unicode scalar glyphs;
+
+    BOS/EOS/UNK roles;
+
+    DEVELOPMENT vocabulary;
+
+    non-DEVELOPMENT → UNK;
+
+    occurrence-preserving split;
+
+    60/20/20 boundaries;
+
+    no refit after VALIDATION selection.
+
+Validate exact token/glyph/vocabulary identities.
+
+
+======================================================================
+13. NUMERICAL CONTRACT
+======================================================================
+
+Implement all frozen numerical rules.
+
+At minimum:
+
+    IEEE-754 binary64;
+
+    round-to-nearest ties-to-even;
+
+    base-2 logarithms;
+
+    Neumaier compensated summation;
+
+    prescribed scientific ordering;
+
+    type-7 quantiles;
+
+    exact strict comparisons;
+
+    no unstated epsilon;
+
+    canonical scientific-real evidence representation.
+
+No FMA-dependent or parallel-reduction-dependent scientific result
+is permitted.
+
+
+======================================================================
+14. RNG IMPLEMENTATION
+======================================================================
+
+Implement and validate:
+
+    G1V2-RNG-1.
+
+Require exact frozen:
+
+    root;
+    namespace framing;
+    counters;
+    U53 derivation;
+    bounded integer generation;
+    domain separation.
+
+Execution properties must never enter scientific RNG identity.
+
+
+======================================================================
+15. M0 IMPLEMENTATION
+======================================================================
+
+Implement complete M0:
+
+    fitting;
+    scoring;
+    validation selection support;
+    HELDOUT evaluation;
+    generation interface;
+    complexity inputs;
+    evidence production.
+
+Validate against frozen fixtures.
+
+
+======================================================================
+16. M1 IMPLEMENTATION
+======================================================================
+
+Implement exact orders:
+
+    1
+    2
+    3
+
+with frozen:
+
+    BOS padding;
+    additive-alpha rows;
+    suffix backoff;
+    order-0 fallback;
+    zero-mass behavior;
+    generation semantics.
+
+
+======================================================================
+17. M2 IMPLEMENTATION
+======================================================================
+
+Implement frozen PST likelihood-gain algorithm.
+
+Require exact:
+
+    context construction;
+    candidate depths;
+    outgoing-count requirement;
+    gain calculation;
+    additive-0.5 parent probabilities;
+    bottom-up pruning;
+    strict threshold;
+    equality behavior;
+    longest-retained-suffix scoring/generation.
+
+
+======================================================================
+18. M3 EXACT IMPLEMENTATION
+======================================================================
+
+Implement the exact M3 route.
+
+Require:
+
+    deterministic topology representation;
+    prefix-tree acceptor construction;
+    canonical BFS state IDs;
+    exact exhaustive topology enumeration;
+    accepting-state enumeration;
+    DEVELOPMENT reproducibility check;
+    additive-0.5 rows;
+    exact selection order;
+    big-integer operation-bound precheck;
+    1e8 cap;
+    INDUCTION_CAP semantics.
+
+No heuristic pruning.
+
+
+======================================================================
+19. M3 APPROXIMATE IMPLEMENTATION
+======================================================================
+
+Implement frozen approximate M3 route.
+
+Require exact:
+
+    candidate state pairs;
+    recursive determinization;
+    accepting conflict handling;
+    weighted JS divergence;
+    normalization;
+    pair tie breaking;
+    merge rule;
+    state-cap behavior;
+    1e7 operation count;
+    route result semantics.
+
+
+======================================================================
+20. M4 IMPLEMENTATION
+======================================================================
+
+Implement frozen discrete HMM.
+
+Require:
+
+    state grid;
+    8 restarts;
+    frozen initialization;
+    scaled forward/backward;
+    expected counts;
+    additive-alpha M-step;
+    500-iteration cap;
+    convergence rule;
+    numerical-failure rule;
+    restart selection;
+    generation semantics.
+
+
+======================================================================
+21. M5 IMPLEMENTATION
+======================================================================
+
+Implement the complete V1.2 M5 semantics.
+
+Require exact:
+
+    split enumeration;
+    nonempty stem;
+    component support;
+    triple selection;
+    retained rules;
+    literal exceptions;
+    productive backoff;
+    mixture weights;
+    probability evaluation;
+    decomposition ordering;
+    generation;
+    attempts 0..1023;
+    counter semantics;
+    RNG consumption;
+    length-64 behavior;
+    GENERATION_FAILURE on exhaustion.
+
+Use V1.2 generation semantics, not superseded V1.1 prose.
+
+
+======================================================================
+22. CANDIDATE REGISTRY
+======================================================================
+
+Implement all:
+
+    43 frozen candidates.
+
+Create machine validation proving:
+
+    IMPLEMENTED_CANDIDATE_COUNT = 43
+    MISSING_CANDIDATE_COUNT = 0
+    EXTRA_CANDIDATE_COUNT = 0.
+
+No candidate may be silently skipped because it is expensive.
+
+
+======================================================================
+23. MODEL SELECTION
+======================================================================
+
+Implement exact frozen selection:
+
+    fit DEVELOPMENT;
+
+    score/select on VALIDATION;
+
+    minimum PM2;
+
+    then complexity bits;
+
+    then candidate_id;
+
+    no refit;
+
+    evaluate selected frozen fit on HELDOUT.
+
+Add tie and nonfinite regression fixtures.
+
+
+======================================================================
+24. BASELINE B1
+======================================================================
+
+Implement B1 exactly.
+
+Include the special M0 development-null bootstrap semantics.
+
+Do not replace it with model-vs-itself zero.
+
+
+======================================================================
+25. BASELINE B2
+======================================================================
+
+Implement B2 exactly as frozen:
+
+    candidate in Mj
+        →
+    validation-selected candidate of M(j-1)
+
+for j > 0.
+
+Do not condition B2 identity on later adequacy.
+
+
+======================================================================
+26. PM1 IMPLEMENTATION
+======================================================================
+
+Implement frozen HELDOUT PM1 semantics used by description length
+and model evaluation.
+
+Validate scoring units and normalization.
+
+
+======================================================================
+27. PM2 IMPLEMENTATION
+======================================================================
+
+Implement:
+
+    2000 DEVELOPMENT paired occurrence bootstraps;
+
+    one-sided empirical p-value;
+
+    family definition;
+
+    Holm step-down alpha .05;
+
+    q95 null threshold;
+
+    practical floor;
+
+    strict comparison semantics.
+
+RNG and ordering must be deterministic.
+
+
+======================================================================
+28. PM4 IMPLEMENTATION
+======================================================================
+
+Implement PM4 as supporting metric according to the frozen metric
+registry.
+
+Do not accidentally turn PM4 into a predictive gate.
+
+
+======================================================================
+29. PM5 IMPLEMENTATION
+======================================================================
+
+Implement exact adaptive-bin ECE.
+
+Require:
+
+    realized next-glyph/EOS events;
+
+    assigned probability confidence;
+
+    label semantics;
+
+    sort order;
+
+    bins of 40;
+
+    equal-confidence extension;
+
+    final-bin merge;
+
+    frozen boundaries;
+
+    minimum five bins;
+
+    occurrence-weighted ECE.
+
+
+======================================================================
+30. PM6 IMPLEMENTATION
+======================================================================
+
+Implement complete PM6.
+
+Require:
+
+    complement construction;
+
+    lexicographic rank/unrank;
+
+    uniform complement ranks;
+
+    eligible HELDOUT lengths;
+
+    one negative per positive occurrence;
+
+    saturation exclusion;
+
+    coverage >= 80%;
+
+    >=100 pairs;
+
+    >=2 lengths;
+
+    AUC with half ties;
+
+    weighted aggregation;
+
+    2000 bootstrap replicates;
+
+    type-7 q0.05 LCB;
+
+    2000 paired permutations;
+
+    type-7 q0.95;
+
+    strict PASS rules;
+
+    NOT_ASSESSABLE semantics.
+
+
+======================================================================
+31. GENERATION IMPLEMENTATION
+======================================================================
+
+Implement:
+
+    G1V2_GENERATION_SEMANTICS_V1
+
+as the production generation layer.
+
+All:
+
+    26 generation paths
+
+must be reachable through production handlers where applicable.
+
+
+======================================================================
+32. GENERATION GOLDEN VALIDATION
+======================================================================
+
+Before any broader validation require:
+
+    GENERATION_PATHS = 26 / 26
+    GENERATION_GOLDENS = 28 / 28 PASS
+    PF_SC01 = CLOSED.
+
+Preserve the Task85c-g property/differential suite.
+
+
+======================================================================
+33. GENERATOR A
+======================================================================
+
+Implement Generator A according to frozen V1.2 semantics.
+
+It may use shared canonical scientific primitives where permitted.
+
+It must not call production fitting in a way prohibited by the
+control design.
+
+
+======================================================================
+34. GENERATOR B
+======================================================================
+
+Implement Generator B independently according to V1.2.
+
+Require exact frozen:
+
+    exponential race;
+    Walker alias;
+    cumulative-row sampling;
+    ordering;
+    U53 allocation;
+    ties;
+    length;
+    serialization.
+
+Generator B must not call Generator A.
+
+
+======================================================================
+35. GENERATOR INDEPENDENCE TEST
+======================================================================
+
+Perform static and dynamic checks demonstrating:
+
+    GENERATOR_B_CALLS_GENERATOR_A = 0
+
+and the reverse where required.
+
+Shared canonical parsing/RNG/numerical primitives are allowed only
+where frozen protocol permits.
+
+
+======================================================================
+36. F2 IMPLEMENTATION
+======================================================================
+
+Implement all 12 frozen F2 metrics:
+
+    EF1_GIANT_COMPONENT_SHARE
+    EF1_ISOLATE_SHARE
+    EF2_GLOBAL_CLUSTERING
+    EF3_DEGREE_FREQUENCY_SPEARMAN
+
+    LP1_RULE_SUPPORT_GINI
+    LP4_PREFIX_ATTACHMENT_NMI
+    LP4_SUFFIX_ATTACHMENT_NMI
+
+    HR1_FOLIO_VARIANCE_SHARE
+    HR1_LOCUS_VARIANCE_SHARE
+    HR1_SECTION_VARIANCE_SHARE
+
+    LS1_LINE_LENGTH_CV
+
+    PF5_WITHIN_FOLIO_PROGRESSION.
+
+Require:
+
+    F2_IMPLEMENTED = 12 / 12.
+
+
+======================================================================
+37. STRUCTURAL REPLICATES
+======================================================================
+
+Implement frozen structural generation/evaluation at:
+
+    2,000
+    8,000
+    32,000 tokens
+
+with:
+
+    4 replicates.
+
+Implement ordinary median and frozen dispersion semantics.
+
+
+======================================================================
+38. STRUCTURAL THRESHOLD SUPPORT
+======================================================================
+
+Implement the code capable of deriving frozen DEVELOPMENT structural
+thresholds:
+
+    2000 occurrence bootstraps;
+    absolute distances;
+    q0.95;
+    practical floors;
+    MAD dispersion thresholds.
+
+Do NOT derive the actual production thresholds in Task85c-h.
+
+
+======================================================================
+39. STRUCTURAL FAMILY GATES
+======================================================================
+
+Implement:
+
+    EDIT
+    LEXICAL_PARADIGM
+
+exact assessability/PASS rules at every scale.
+
+SKELETON remains diagnostic with zero gate weight.
+
+
+======================================================================
+40. STRUCTURAL VERDICT
+======================================================================
+
+Implement exact:
+
+    PASS
+    FAIL
+    NOT_ASSESSABLE
+
+semantics for structural evaluation.
+
+Missing evidence must not silently become FAIL.
+
+
+======================================================================
+41. COMPLEXITY IMPLEMENTATION
+======================================================================
+
+Implement frozen complexity bit accounting.
+
+Require:
+
+    utf8code;
+    Elias gamma;
+    binary32 probability quantization;
+    canonical sorted structures;
+    canonical BFS state numbering;
+    model-specific bit formulas.
+
+No implementation-derived tolerance.
+
+
+======================================================================
+42. DESCRIPTION LENGTH
+======================================================================
+
+Implement:
+
+    description length =
+        model complexity bits
+        +
+        HELDOUT PM1.
+
+Validate units and deterministic arithmetic.
+
+
+======================================================================
+43. EQUIVALENCE GRAPH
+======================================================================
+
+Implement frozen equivalence edges:
+
+    abs(delta)
+        <=
+    max(
+        1,
+        DEVELOPMENT type-7 q95 paired delta
+    ).
+
+Do not calculate production calibration values in Task85c-h.
+
+
+======================================================================
+44. MINIMALITY
+======================================================================
+
+Implement the frozen minimality logic.
+
+Require correct handling of:
+
+    lower rejected classes;
+    adequate components;
+    singleton recovery;
+    multi-member EQUIVALENT_SET;
+    NONE;
+    NOT_IDENTIFIABLE.
+
+
+======================================================================
+45. ADEQUACY
+======================================================================
+
+Implement exact candidate adequacy.
+
+Adequacy requires all frozen prerequisites, including:
+
+    successful fit;
+    successful required generation;
+    predictive PASS;
+    structural PASS;
+    complete required hashes.
+
+Procedure failure must not count as scientific inadequacy.
+
+
+======================================================================
+46. STATUS/REACHABILITY
+======================================================================
+
+Implement:
+
+    G1_V2_STATUS_REACHABILITY_CONTRACT_V2
+
+without reinterpretation.
+
+All 13 frozen statuses must be represented.
+
+
+======================================================================
+47. PROCEDURE FAILURE VS SCIENTIFIC FAIL
+======================================================================
+
+Preserve the central invariant:
+
+    execution/procedure failure
+        !=
+    scientific FAIL.
+
+PASS/FAIL are reserved for assessable scientific gate/verifier
+outcomes as frozen by V2.
+
+
+======================================================================
+48. REACHABILITY
+======================================================================
+
+Implement exact reachability and suppression rules.
+
+All planned jobs conceptually exist.
+
+Suppressed scientific cells must produce:
+
+    NOT_REACHED
+
+through the frozen evidence semantics.
+
+
+======================================================================
+49. MULTI-DEPENDENCY PRECEDENCE
+======================================================================
+
+Implement frozen suppression precedence and tie behavior.
+
+Do not rely on nondeterministic dependency iteration order.
+
+
+======================================================================
+50. SCIENTIFIC AGGREGATION
+======================================================================
+
+Implement:
+
+    candidate aggregation;
+    control aggregation;
+    class/final scientific aggregation
+
+according to frozen semantics.
+
+Aggregation must operate from evidence/status objects rather than
+hidden in-memory scientific state.
+
+
+======================================================================
+51. FINAL VERDICT
+======================================================================
+
+Implement exact final verdict domain including:
+
+    RECOVERED_M0
+    RECOVERED_M1
+    RECOVERED_M2
+    RECOVERED_M3
+    RECOVERED_M4
+    RECOVERED_M5
+    NONE
+    NOT_IDENTIFIABLE
+    PROTOCOL_INVALID
+
+as defined by the frozen contracts.
+
+
+======================================================================
+52. EVIDENCE EMISSION
+======================================================================
+
+Every scientific production handler must emit evidence compatible
+with the frozen evidence contract.
+
+Validate:
+
+    schema;
+    canonicalization;
+    status;
+    reason;
+    scientific payload;
+    content hash.
+
+
+======================================================================
+53. EVIDENCE-ONLY VERIFICATION
+======================================================================
+
+The evidence-only verifier must reconstruct:
+
+    gates;
+    adequacy;
+    complexity/minimality;
+    aggregation;
+    final verdict
+
+without importing model fitting or relying on executor memory.
+
+
+======================================================================
+54. SEPARATION TEST
+======================================================================
+
+Add a build/static test proving that the evidence-only verifier does
+not import or call scientific fitting/generation implementation.
+
+
+======================================================================
+55. PRODUCTION STAGE MODEL
+======================================================================
+
+Replace or supersede the legacy executor stage model with the exact
+production DAG stages:
+
+    FIT
+    PREDICTIVE
+    GENERATION
+    F2_METRIC
+    COMPLEXITY
+    CANDIDATE_AGGREGATION
+    CONTROL_AGGREGATION.
+
+Do not use generalized:
+
+    STRUCTURAL
+    AGGREGATION
+
+as production scientific job identities.
+
+
+======================================================================
+56. STAGE REGRESSION
+======================================================================
+
+Require:
+
+    PRODUCTION_STAGE_COUNT = 7
+
+and exact bytewise identities for the seven stage names.
+
+Add a regression test preventing return to the legacy stage model.
+
+
+======================================================================
+57. JOBID IMPLEMENTATION
+======================================================================
+
+Implement frozen V1.2 + E1 JobID semantics.
+
+Use:
+
+    G1_V2_EXECUTABLE_CONTRACT_V1_2
+
+as scientific contract identity.
+
+Use canonical dependency field:
+
+    dependency_job_ids.
+
+
+======================================================================
+58. JOBID FORMAT
+======================================================================
+
+Production JobIDs must follow the frozen format:
+
+    j-
+        +
+    first 40 lowercase hexadecimal characters
+    of the frozen SHA-256 JobID construction.
+
+The current full bare SHA-256 format must not be used for production
+scientific jobs.
+
+
+======================================================================
+59. JOBID INPUT BOUNDARY
+======================================================================
+
+JobID must bind the frozen scientific job identity.
+
+It must not depend on:
+
+    hostname;
+    worker;
+    coordinator;
+    lease;
+    retry count;
+    execution order;
+    wall-clock time.
+
+
+======================================================================
+60. E1 BOUNDARY
+======================================================================
+
+Preserve:
+
+    blind_id =
+        opaque execution identifier
+
+and:
+
+    JobID =
+        concrete run execution identifier.
+
+Task85c-h must implement the function correctly but MUST NOT create
+production blind IDs or production JobIDs.
+
+
+======================================================================
+61. JOBID FIXTURES
+======================================================================
+
+Use disposable/open fixtures to validate:
+
+    canonical payload;
+    dependency_job_ids;
+    contract version;
+    deterministic JobID;
+    exact format;
+    retry identity.
+
+No production blind instance is needed.
+
+
+======================================================================
+62. EXECUTOR HANDLER REGISTRY
+======================================================================
+
+Create an explicit production handler registry.
+
+At minimum map:
+
+    FIT
+        → fitting handler
+
+    PREDICTIVE
+        → predictive handler
+
+    GENERATION
+        → generation handler
+
+    F2_METRIC
+        → F2 handler
+
+    COMPLEXITY
+        → complexity handler
+
+    CANDIDATE_AGGREGATION
+        → candidate aggregation handler
+
+    CONTROL_AGGREGATION
+        → control aggregation handler.
+
+
+======================================================================
+63. HANDLER COVERAGE
+======================================================================
+
+For every handler prove:
+
+    implementation exists;
+    frozen input schema exists;
+    frozen output/evidence schema exists;
+    tests exist;
+    bounded fixture exists.
+
+Require:
+
+    REQUIRED_HANDLER_COUNT =
+        <exact count derived from registry>
+
+    IMPLEMENTED_HANDLER_COUNT =
+        REQUIRED_HANDLER_COUNT
+
+    MISSING_HANDLER_COUNT =
+        0.
+
+
+======================================================================
+64. IMPLEMENTATION TRACEABILITY
+======================================================================
+
+Create:
+
+    TASK85C_H_IMPLEMENTATION_TRACEABILITY.tsv
+
+with at least:
+
+    component_id
+    scientific_authority
+    implementation_package
+    implementation_symbol
+    unit_test
+    golden_test
+    bounded_fixture
+    evidence_type
+    status.
+
+Every normative scientific component must have a row or explicit
+parent-child mapping.
+
+
+======================================================================
+65. TRACEABILITY CLOSURE
+======================================================================
+
+Require:
+
+    TRACEABILITY_UNMAPPED_COMPONENTS = 0
+    TRACEABILITY_MISSING_IMPLEMENTATIONS = 0
+    TRACEABILITY_MISSING_TESTS = 0.
+
+
+======================================================================
+66. FROZEN GOLDEN VALIDATION
+======================================================================
+
+Run every applicable frozen V1.2 golden suite against the actual
+production scientific implementation.
+
+Reference-only success is insufficient.
+
+The Go production implementation itself must pass.
+
+
+======================================================================
+67. GENERATION REGRESSION
+======================================================================
+
+At minimum preserve:
+
+    PF-SC01;
+    26 generation paths;
+    28 generation goldens;
+    32,768 generation property cases;
+    8,192 Generator B property cases.
+
+These tests must now exercise production scientific code where
+applicable.
+
+
+======================================================================
+68. INDEPENDENT REFERENCE VALIDATION
+======================================================================
+
+Compare production implementation against the independent reference
+implementations where available.
+
+Require exact agreement on frozen:
+
+    outputs;
+    statuses;
+    RNG consumption;
+    generated bytes;
+    metric values where reference fixtures exist.
+
+
+======================================================================
+69. NUMERICAL DETERMINISM
+======================================================================
+
+Run the same bounded scientific fixture under different:
+
+    concurrency;
+    goroutine scheduling;
+    worker count where locally emulated;
+    iteration order perturbations of non-normative maps.
+
+Scientific evidence must remain byte-identical.
+
+
+======================================================================
+70. RACE TESTING
+======================================================================
+
+Run:
+
+    go test -race
+
+over scientific and execution integration packages where feasible.
+
+Race freedom alone is not proof of scientific determinism, but race
+failures block completion.
+
+
+======================================================================
+71. BOUNDED SCIENTIFIC FIXTURE
+======================================================================
+
+Create one or more disposable OPEN fixtures sufficient to exercise
+all seven production stages.
+
+They must not be production controls.
+
+They may use:
+
+    tiny artificial corpora;
+    open Task85c development fixtures;
+    deliberately constructed edge cases.
+
+
+======================================================================
+72. FIXTURE SCALE
+======================================================================
+
+Fixtures may be reduced in size where necessary for implementation
+validation.
+
+Reduction must not alter the production algorithms.
+
+Only fixture input size may be reduced.
+
+
+======================================================================
+73. EXPENSIVE ROUTES
+======================================================================
+
+Exercise bounded but real code paths for:
+
+    M3 exact;
+    M3 approximate;
+    M4;
+    PM2;
+    PM5;
+    PM6;
+    Generator B;
+    F2.
+
+Do not replace expensive algorithms with mocks in the scientific
+validation path.
+
+
+======================================================================
+74. FAILURE FIXTURES
+======================================================================
+
+Explicitly validate:
+
+    FIT_FAILURE;
+    NUMERICAL_FAILURE;
+    INDUCTION_CAP;
+    GENERATION_FAILURE;
+    PROTOCOL_VETO;
+    NOT_ASSESSABLE;
+    NOT_REACHED
+
+where reachable through disposable fixtures.
+
+
+======================================================================
+75. SCIENTIFIC FAIL FIXTURES
+======================================================================
+
+Separately validate genuine:
+
+    PASS
+    FAIL
+
+scientific outcomes.
+
+Ensure procedure failures cannot enter this domain.
+
+
+======================================================================
+76. END-TO-END OPEN EXECUTION
+======================================================================
+
+Execute a bounded OPEN scientific graph through the actual executor.
+
+Require:
+
+    real handler dispatch;
+    real scientific implementation;
+    real evidence creation;
+    real evidence validation;
+    real reachability;
+    real aggregation.
+
+Transport-only dummy handlers do not satisfy this requirement.
+
+
+======================================================================
+77. LOCAL END-TO-END CLOSURE
+======================================================================
+
+For the bounded graph require:
+
+    every planned fixture JobID accounted for;
+    every expected evidence object present;
+    NOT_REACHED evidence present where applicable;
+    no conflicting evidence;
+    aggregations complete;
+    evidence-only verifier PASS.
+
+
+======================================================================
+78. DISTRIBUTED BOUNDED FIXTURE
+======================================================================
+
+If the existing coordinator/worker infrastructure is available,
+run a bounded OPEN graph through it.
+
+This validates integration of the new scientific handlers with the
+existing execution transport.
+
+No production material is permitted.
+
+
+======================================================================
+79. DISTRIBUTED SCIENTIFIC IDENTITY
+======================================================================
+
+Compare local and distributed fixture results.
+
+Require scientific evidence byte identity.
+
+Operational telemetry may differ.
+
+
+======================================================================
+80. RETRY/LEASE INTEGRATION
+======================================================================
+
+Using OPEN fixtures test:
+
+    worker interruption;
+    lease expiration;
+    retry;
+    coordinator restart.
+
+Scientific JobID and evidence must remain unchanged.
+
+
+======================================================================
+81. DUPLICATE EVIDENCE
+======================================================================
+
+Validate:
+
+    identical duplicate publication
+        → accepted/harmless according to frozen transport rules;
+
+    conflicting same-JobID publication
+        → quarantine/fail closed.
+
+Scientific handlers must not weaken this behavior.
+
+
+======================================================================
+82. NO PRODUCTION CALIBRATION
+======================================================================
+
+Task85c-h MUST NOT materialize the actual:
+
+    12 production DEVELOPMENT controls.
+
+It may use existing open/disposable fixtures for tests.
+
+Actual production DEVELOPMENT materialization belongs to:
+
+    Task86C-v2-production-freeze.
+
+
+======================================================================
+83. NO PRODUCTION THRESHOLDS
+======================================================================
+
+Do not produce:
+
+    TASK86C_V2_THRESHOLD_MANIFEST.tsv
+
+with real production values.
+
+Do not freeze:
+
+    TASK86C_V2_THRESHOLD_ROOT_SHA256.
+
+Threshold algorithms must be implemented and tested, but production
+thresholds remain unmaterialized.
+
+
+======================================================================
+84. NO ESCROW
+======================================================================
+
+Task85c-h MUST NOT create:
+
+    production escrow key;
+    production escrow mapping;
+    production blind IDs.
+
+
+======================================================================
+85. NO PRODUCTION BLIND CONTROLS
+======================================================================
+
+Require:
+
+    PRODUCTION_BLIND_CONTROLS_CREATED = 0.
+
+
+======================================================================
+86. NO NATURAL CONFIRMATORY MATERIALIZATION
+======================================================================
+
+Do not materialize the production:
+
+    36 natural confirmatory instances.
+
+Their preprocessing/selection code may be implemented and tested
+using non-production fixtures if required.
+
+
+======================================================================
+87. NO PRODUCTION JOBIDS
+======================================================================
+
+Do not create the concrete production JobID set.
+
+Use disposable JobID fixtures only.
+
+
+======================================================================
+88. NO PRODUCTION DAG
+======================================================================
+
+Do not materialize:
+
+    1,321,152 production jobs
+
+or:
+
+    2,617,152 production edges.
+
+DAG construction code may be implemented and validated using
+bounded artificial graphs.
+
+
+======================================================================
+89. NO PRODUCTION RUN MANIFEST
+======================================================================
+
+Do not freeze the final:
+
+    TASK86C_V2_RUN_MANIFEST.json.
+
+A fixture run manifest is permitted if clearly marked non-production.
+
+
+======================================================================
+90. NO FINAL CAPACITY QUALIFICATION
+======================================================================
+
+Task85c-h is not responsible for final production capacity
+qualification.
+
+However, after handlers exist, it SHOULD collect preliminary
+performance measurements useful to the later production-freeze.
+
+Label them:
+
+    NON_PRODUCTION_IMPLEMENTATION_BENCHMARK.
+
+They must not authorize production.
+
+
+======================================================================
+91. NO FINAL PRODUCTION EXECUTABLE FREEZE
+======================================================================
+
+Task85c-h may build a complete candidate production executor.
+
+It MUST NOT declare:
+
+    TASK86C_V2_PRODUCTION_EXECUTABLE_SHA256
+
+final for the run.
+
+The final executable freeze belongs to production-freeze after all
+required validations and capacity checks.
+
+
+======================================================================
+92. CANDIDATE EXECUTABLE
+======================================================================
+
+Build a Linux/amd64 candidate executable containing the complete
+scientific handler layer.
+
+Record:
+
+    source tree identity;
+    dirty status;
+    Go version;
+    module state;
+    build flags;
+    GOOS;
+    GOARCH;
+    SHA-256.
+
+Call it explicitly:
+
+    SCIENTIFIC_IMPLEMENTATION_CANDIDATE
+
+not:
+
+    PRODUCTION_EXECUTABLE.
+
+
+======================================================================
+93. EXISTING TRANSPORT PRESERVATION
+======================================================================
+
+Preserve working execution infrastructure where compatible:
+
+    mTLS;
+    coordinator;
+    workers;
+    leases;
+    retry;
+    content-addressed cache;
+    atomic evidence publication;
+    conflict quarantine.
+
+Do not rewrite transport unnecessarily merely because scientific
+handlers are being added.
+
+
+======================================================================
+94. LEGACY HANDLER REMOVAL
+======================================================================
+
+Any engineering-only placeholder handler capable of being invoked
+under a production scientific stage must be:
+
+    removed;
+    isolated to explicit test mode;
+    or made impossible to select in production mode.
+
+Production handler dispatch must fail closed on missing scientific
+implementation.
+
+
+======================================================================
+95. PRODUCTION MODE
+======================================================================
+
+Introduce or validate an explicit production-scientific execution
+mode if needed.
+
+In that mode:
+
+    every scientific stage resolves only to validated scientific
+    handlers;
+
+    engineering sha256-chain/test handlers cannot satisfy a
+    scientific job.
+
+
+======================================================================
+96. FAIL-CLOSED HANDLER DISPATCH
+======================================================================
+
+Unknown:
+
+    stage;
+    model;
+    metric;
+    candidate;
+    evidence type
+
+must fail closed.
+
+No default generic scientific handler.
+
+
+======================================================================
+97. EVIDENCE SCHEMA VALIDATION
+======================================================================
+
+Every bounded fixture evidence object must pass the frozen Draft
+2020-12 evidence schema applicable to its type.
+
+No custom normative schema keywords.
+
+
+======================================================================
+98. CANONICALIZATION VALIDATION
+======================================================================
+
+Validate:
+
+    G1V2-CJ-1
+
+against scientific evidence produced by actual handlers.
+
+Hashing/canonicalization must not depend on map insertion order.
+
+
+======================================================================
+99. CROSS-ARCHITECTURE POLICY
+======================================================================
+
+Production target is:
+
+    Linux/amd64.
+
+If tests are also run elsewhere, differences are diagnostic only.
+
+The frozen candidate must pass on Linux/amd64.
+
+
+======================================================================
+100. IMPLEMENTATION COMPLETENESS AUDIT
+======================================================================
+
+Perform static repository searches for indicators such as:
+
+    TODO
+    FIXME
+    panic("not implemented")
+    NOT_IMPLEMENTED
+    PLACEHOLDER
+    STUB
+    dummy
+    test-only
+    sha256-chain
+
+within production scientific dispatch paths.
+
+Every hit must be classified.
+
+Require:
+
+    UNRESOLVED_PRODUCTION_SCIENCE_PLACEHOLDERS = 0.
+
+
+======================================================================
+101. CONTRACT-CODE TRACE AUDIT
+======================================================================
+
+For every normative V1.2 scientific section identify the production
+code implementing it.
+
+A prose statement such as:
+
+    "implemented by model package"
+
+without concrete symbols/tests is insufficient.
+
+
+======================================================================
+102. SECOND IMPLEMENTER REVIEW
+======================================================================
+
+Perform an independent review of the implementation against machine
+contract and registries.
+
+The reviewer must not infer correctness merely from tests written by
+the implementation author.
+
+Record:
+
+    SECOND_IMPLEMENTER_UNSTATED_SCIENTIFIC_CHOICES.
+
+Require:
+
+    0.
+
+
+======================================================================
+103. FIREWALL
+======================================================================
+
+Task85c-h MUST NOT access or evaluate:
+
+    production blind truth;
+    production blind recovery;
+    natural confirmatory recovery;
+    Voynich.
+
+No production blind set should exist yet.
+
+
+======================================================================
+104. FIREWALL RESULT
+======================================================================
+
+Require:
+
+    SCIENTIFIC_FIREWALL = INTACT.
+
+
+======================================================================
+105. REQUIRED DIRECTORY
+======================================================================
+
+Create:
+
+    research/phase3/task85c-h/
+
+
+======================================================================
+106. REQUIRED ARTIFACTS
+======================================================================
+
+At minimum create:
+
+    TASK85C_H_DESIGN.md
+    TASK85C_H_REPORT.md
+
+    TASK85C_H_IMPLEMENTATION_TRACEABILITY.tsv
+    TASK85C_H_HANDLER_REGISTRY.tsv
+    TASK85C_H_COMPONENT_COVERAGE.tsv
+
+    TASK85C_H_GOLDEN_VALIDATION.tsv
+    TASK85C_H_EVIDENCE_VALIDATION.tsv
+    TASK85C_H_JOBID_VALIDATION.tsv
+    TASK85C_H_STAGE_VALIDATION.tsv
+
+    TASK85C_H_OPEN_FIXTURE_MANIFEST.tsv
+    TASK85C_H_OPEN_FIXTURE_RESULTS.tsv
+
+    TASK85C_H_DISTRIBUTED_FIXTURE_REPORT.md
+    TASK85C_H_IMPLEMENTATION_BENCHMARK.tsv
+
+    TASK85C_H_CANDIDATE_EXECUTABLE_MANIFEST.json
+
+    TASK85C_H_VALIDATION.tsv
+    TASK85C_H_RESULTS_MANIFEST.json
+
+and exactly one terminal marker.
+
+
+======================================================================
+107. RESULTS MANIFEST
+======================================================================
+
+TASK85C_H_RESULTS_MANIFEST.json must bind transitively:
+
+    V1.2 contract identities;
+    generation semantics;
+    generation golden suite;
+    E1;
+    status/reachability V2;
+    evidence schema root;
+    source tree;
+    implementation traceability;
+    handler registry;
+    component coverage;
+    golden validation;
+    evidence validation;
+    stage validation;
+    JobID validation;
+    bounded fixture;
+    distributed fixture where performed;
+    candidate executable;
+    validation report.
+
+Do not bind nonexistent production material as though it had been
+created.
+
+
+======================================================================
+108. REQUIRED VERDICTS
+======================================================================
+
+Report at minimum:
+
+    CONTRACT_V1_2_IDENTITY =
+        SUPPORTED / NOT_SUPPORTED
+
+    GENERATION_SEMANTICS_IDENTITY =
+        SUPPORTED / NOT_SUPPORTED
+
+    GENERATION_GOLDEN_IDENTITY =
+        SUPPORTED / NOT_SUPPORTED
+
+    E1_IDENTITY =
+        SUPPORTED / NOT_SUPPORTED
+
+    STATUS_REACHABILITY_V2_IDENTITY =
+        SUPPORTED / NOT_SUPPORTED
+
+    EVIDENCE_SCHEMA_IDENTITY =
+        SUPPORTED / NOT_SUPPORTED
+
+    PF_SC01 =
+        CLOSED / OPEN
+
+    GENERATION_PATHS =
+        <resolved>/<total>
+
+    CANDIDATES_IMPLEMENTED =
+        <count>/43
+
+    PRODUCTION_STAGES_IMPLEMENTED =
+        <count>/7
+
+    F2_METRICS_IMPLEMENTED =
+        <count>/12
+
+    SCIENTIFIC_HANDLER_COVERAGE =
+        COMPLETE / INCOMPLETE
+
+    TRACEABILITY_UNMAPPED_COMPONENTS =
+        <count>
+
+    UNRESOLVED_PRODUCTION_SCIENCE_PLACEHOLDERS =
+        <count>
+
+    GOLDEN_VALIDATION =
+        PASS / FAIL
+
+    EVIDENCE_VALIDATION =
+        PASS / FAIL
+
+    EVIDENCE_ONLY_VERIFIER =
+        PASS / FAIL
+
+    JOBID_V1_2_E1 =
+        PASS / FAIL
+
+    STAGE_MODEL_V1_2 =
+        PASS / FAIL
+
+    LOCAL_OPEN_END_TO_END =
+        PASS / FAIL
+
+    DISTRIBUTED_OPEN_END_TO_END =
+        PASS / FAIL / NOT_RUN_WITH_JUSTIFICATION
+
+    DISTRIBUTED_SCIENTIFIC_IDENTITY =
+        PASS / FAIL / NOT_APPLICABLE
+
+    RETRY_RESTART_DETERMINISM =
+        PASS / FAIL / NOT_RUN_WITH_JUSTIFICATION
+
+    SECOND_IMPLEMENTER_UNSTATED_SCIENTIFIC_CHOICES =
+        <count>
+
+    PRODUCTION_ESCROW_KEY_CREATED =
+        YES / NO
+
+    PRODUCTION_BLIND_CONTROLS_CREATED =
+        <count>
+
+    PRODUCTION_NATURAL_CONTROLS_CREATED =
+        <count>
+
+    PRODUCTION_JOBIDS_CREATED =
+        <count>
+
+    PRODUCTION_DAG_CREATED =
+        YES / NO
+
+    SCIENTIFIC_FIREWALL =
+        INTACT / VIOLATED
+
+    PRODUCTION_FREEZE_RETRY_READY =
+        SUPPORTED / NOT_SUPPORTED.
+
+
+======================================================================
+109. SUCCESS GATE
+======================================================================
+
+PRODUCTION_FREEZE_RETRY_READY = SUPPORTED only if ALL hold:
+
+1. V1.2 identity passes.
+2. Generation semantics identity passes.
+3. Generation golden identity passes.
+4. E1 identity passes.
+5. Status/reachability V2 identity passes.
+6. Evidence schema identity passes.
+7. PF-SC01 remains CLOSED.
+8. All 26 generation paths remain resolved.
+9. All 43 candidates are implemented.
+10. All 7 production stages are implemented.
+11. All 12 F2 metrics are implemented.
+12. M0 implementation is complete.
+13. M1 implementation is complete.
+14. M2 implementation is complete.
+15. M3 exact implementation is complete.
+16. M3 approximate implementation is complete.
+17. M4 implementation is complete.
+18. M5 implementation is complete.
+19. B1 implementation is complete.
+20. B2 implementation is complete.
+21. PM1 implementation is complete.
+22. PM2 implementation is complete.
+23. PM4 implementation is complete.
+24. PM5 implementation is complete.
+25. PM6 implementation is complete.
+26. Generator A implementation is complete.
+27. Generator B implementation is complete.
+28. Structural threshold derivation code exists.
+29. Structural family/gate implementation is complete.
+30. Complexity implementation is complete.
+31. Minimality implementation is complete.
+32. Status/reachability implementation is complete.
+33. Candidate aggregation is complete.
+34. Control aggregation is complete.
+35. Final verdict implementation is complete.
+36. Scientific handler coverage is COMPLETE.
+37. Traceability unmapped count is zero.
+38. Unresolved production science placeholders count is zero.
+39. Frozen golden validation passes.
+40. Evidence validation passes.
+41. Evidence-only verifier passes.
+42. V1.2/E1 JobID tests pass.
+43. V1.2 stage-model tests pass.
+44. Local bounded open end-to-end passes.
+45. Distributed bounded fixture passes if infrastructure is available;
+    otherwise explicit operational justification is recorded and the
+    later production-freeze must perform it before authorization.
+46. Retry/restart determinism is validated where infrastructure is
+    available.
+47. Second implementer reports zero unstated scientific choices.
+48. Candidate Linux/amd64 executable builds successfully.
+49. Production escrow key was not created.
+50. Production blind controls created = 0.
+51. Production natural controls created = 0.
+52. Production JobIDs created = 0.
+53. Production DAG was not created.
+54. Production thresholds were not frozen.
+55. Confirmatory outcomes were not inspected.
+56. Voynich was not evaluated.
+57. Scientific firewall remains intact.
+
+
+======================================================================
+110. STOP CONDITIONS
+======================================================================
+
+SCIENTIFIC_CONTRACT_DEFECT
+
+Use only if implementation reveals a genuine unresolved ambiguity
+inside the frozen scientific authorities capable of changing
+scientific results.
+
+Do not use for ordinary implementation bugs.
+
+
+IMPLEMENTATION_VALIDATION_FAILURE
+
+Use if scientific code cannot be made to match the frozen contract,
+goldens or required fixtures.
+
+
+DETERMINISM_FAILURE
+
+Use if scientifically identical bounded executions produce
+different scientific outputs/evidence.
+
+
+EVIDENCE_VALIDATION_FAILURE
+
+Use if actual scientific handlers cannot emit valid frozen evidence
+or evidence-only reconstruction fails.
+
+
+SCIENTIFIC_FIREWALL_VIOLATION
+
+Use if prohibited confirmatory information is accessed or production
+materialization occurs outside the authorized boundary.
+
+
+======================================================================
+111. FAILURE POLICY
+======================================================================
+
+On ordinary implementation defect:
+
+    fix;
+    add regression;
+    rerun affected validation;
+    continue.
+
+Do NOT terminate Task85c-h merely because code initially fails a
+golden.
+
+Terminate only if the defect cannot be corrected within the frozen
+contract or a STOP condition above is reached.
+
+
+======================================================================
+112. TERMINAL MARKERS
+======================================================================
+
+Success:
+
+    TASK85C_H_V1_2_SCIENTIFIC_IMPLEMENTATION_READY
+
+Scientific contract defect:
+
+    TASK85C_H_SCIENTIFIC_CONTRACT_DEFECT
+
+Implementation validation failure:
+
+    TASK85C_H_IMPLEMENTATION_VALIDATION_FAILED
+
+Determinism failure:
+
+    TASK85C_H_DETERMINISM_FAILURE
+
+Evidence failure:
+
+    TASK85C_H_EVIDENCE_VALIDATION_FAILED
+
+Firewall violation:
+
+    TASK85C_H_SCIENTIFIC_FIREWALL_VIOLATION.
+
+Exactly one terminal marker must be emitted.
+
+
+======================================================================
+113. SUCCESSFUL FINAL OUTPUT
+======================================================================
+
+On success print at minimum:
+
+    SCIENTIFIC_CONTRACT_VERSION =
+        G1_V2_EXECUTABLE_CONTRACT_V1_2
+
+    SCIENTIFIC_CONTRACT_MARKDOWN_SHA256 =
+        ec60bb23e55ce157fe954b5cafc63d22ab70ecec390822cb63f9ae273142c639
+
+    SCIENTIFIC_CONTRACT_MACHINE_SHA256 =
+        29e39e0c25dc8033f784480fdc537e3ede9eeb69baa0607c9f249d796d6b42dc
+
+    GENERATION_SEMANTICS_SHA256 =
+        45d533f8b83b24c77a96836fa5c2ef95f9b948003bd2ed725fc2ea97e010b310
+
+    GENERATION_GOLDEN_SHA256 =
+        143954667073a2c10f1bd59ce98b9c93dd84b50632bb67ea80d0d92449480acb
+
+    PF_SC01 =
+        CLOSED
+
+    GENERATION_PATHS =
+        26/26
+
+    CANDIDATES_IMPLEMENTED =
+        43/43
+
+    PRODUCTION_STAGES_IMPLEMENTED =
+        7/7
+
+    F2_METRICS_IMPLEMENTED =
+        12/12
+
+    SCIENTIFIC_HANDLER_COVERAGE =
+        COMPLETE
+
+    TRACEABILITY_UNMAPPED_COMPONENTS =
+        0
+
+    UNRESOLVED_PRODUCTION_SCIENCE_PLACEHOLDERS =
+        0
+
+    GOLDEN_VALIDATION =
+        PASS
+
+    EVIDENCE_VALIDATION =
+        PASS
+
+    EVIDENCE_ONLY_VERIFIER =
+        PASS
+
+    JOBID_V1_2_E1 =
+        PASS
+
+    STAGE_MODEL_V1_2 =
+        PASS
+
+    LOCAL_OPEN_END_TO_END =
+        PASS
+
+    DISTRIBUTED_OPEN_END_TO_END =
+        <PASS or justified status>
+
+    RETRY_RESTART_DETERMINISM =
+        <PASS or justified status>
+
+    SECOND_IMPLEMENTER_UNSTATED_SCIENTIFIC_CHOICES =
+        0
+
+    SCIENTIFIC_IMPLEMENTATION_CANDIDATE =
+        <path>
+
+    SCIENTIFIC_IMPLEMENTATION_CANDIDATE_SHA256 =
+        <sha256>
+
+    PRODUCTION_ESCROW_KEY_CREATED =
+        NO
+
+    PRODUCTION_BLIND_CONTROLS_CREATED =
+        0
+
+    PRODUCTION_NATURAL_CONTROLS_CREATED =
+        0
+
+    PRODUCTION_JOBIDS_CREATED =
+        0
+
+    PRODUCTION_DAG_CREATED =
+        NO
+
+    SCIENTIFIC_FIREWALL =
+        INTACT
+
+    TASK85C_H_ARTIFACT_ROOT_SHA256 =
+        <sha256>
+
+    PRODUCTION_FREEZE_RETRY_READY =
+        SUPPORTED
+
+    NEXT_TASK =
+        Task86C-v2-production-freeze
+
+    TERMINAL_MARKER =
+        TASK85C_H_V1_2_SCIENTIFIC_IMPLEMENTATION_READY.
+
+
+======================================================================
+114. DEFINITION OF DONE
+======================================================================
+
+Task85c-h is complete when the frozen V1.2 experiment has a complete,
+tested production scientific implementation but no concrete
+production experiment has yet been materialized.
+
+The following mapping must be executable:
+
+    frozen V1.2 scientific job
+        →
+    exact production scientific handler
+        →
+    deterministic scientific computation
+        →
+    valid frozen evidence
+        →
+    evidence-only reconstruction.
+
+And the execution layer must implement:
+
+    FIT
+    PREDICTIVE
+    GENERATION
+    F2_METRIC
+    COMPLEXITY
+    CANDIDATE_AGGREGATION
+    CONTROL_AGGREGATION
+
+with V1.2 + E1 JobID semantics.
+
+At completion there must be no scientific decision left to the
+production-freeze implementer.
+
+Task86C-v2-production-freeze may then:
+
+    materialize DEVELOPMENT controls;
+    calculate and freeze production thresholds;
+    create escrow;
+    create blind controls;
+    create natural confirmatory controls;
+    materialize concrete JobIDs and complete DAG;
+    perform final distributed validation;
+    qualify production capacity;
+    freeze the final executable;
+    freeze the production run manifest.
+
+Task85c-h itself must stop before those actions.

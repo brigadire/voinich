@@ -12,6 +12,8 @@ import (
 	"sync"
 	"syscall"
 	"time"
+
+	"zcore.dev/voinich/internal/g1v2science"
 )
 
 type Compatibility struct {
@@ -175,6 +177,9 @@ func ExecuteEngineering(ctx context.Context, j JobBundle) (ScientificResult, err
 	if err := j.Validate(); err != nil {
 		return ScientificResult{}, err
 	}
+	if j.Work.Kind == "g1v2-science-v1_2_1" {
+		return executeScience(j)
+	}
 	if j.Work.Kind != "sha256-chain-v1" {
 		return ScientificResult{}, fmt.Errorf("unsupported engineering work kind %q", j.Work.Kind)
 	}
@@ -202,6 +207,35 @@ func ExecuteEngineering(ctx context.Context, j JobBundle) (ScientificResult, err
 	}{hex.EncodeToString(b), j.Work.Iterations, j.Model, j.Stage})
 	a := Artifact{Name: "engineering_result", Hash: HashBytes(payload), Data: payload}
 	return ScientificResult{SchemaVersion, j.JobID, append([]string(nil), j.InputHashes...), append([]string(nil), j.DependencyHashes...), j.CodeHash, j.ConfigHash, j.Seed, "EVIDENCE_COMPLETE", []Artifact{a}}, nil
+}
+
+type SciencePayload struct {
+	CandidateRegistry   string                  `json:"candidate_registry"`
+	GenerationAuthority string                  `json:"generation_authority"`
+	StatusAuthority     string                  `json:"status_authority"`
+	EvidenceRegistry    string                  `json:"evidence_registry"`
+	Request             g1v2science.WorkRequest `json:"request"`
+}
+
+func executeScience(j JobBundle) (ScientificResult, error) {
+	var p SciencePayload
+	if err := json.Unmarshal([]byte(j.Work.Payload), &p); err != nil {
+		return ScientificResult{}, err
+	}
+	a, err := g1v2science.LoadAuthority(p.CandidateRegistry, p.GenerationAuthority, p.StatusAuthority, p.EvidenceRegistry)
+	if err != nil {
+		return ScientificResult{}, err
+	}
+	r, err := g1v2science.Execute(a, p.Request)
+	if err != nil {
+		return ScientificResult{}, err
+	}
+	b, err := g1v2science.CanonicalJSON(r)
+	if err != nil {
+		return ScientificResult{}, err
+	}
+	artifact := Artifact{Name: "g1v2_v1_2_1_scientific_evidence", Hash: HashBytes(b), Data: b}
+	return ScientificResult{SchemaVersionV121, j.JobID, append([]string{}, j.InputHashes...), append([]string{}, j.DependencyHashes...), j.CodeHash, j.ConfigHash, j.Seed, r.Status, []Artifact{artifact}}, nil
 }
 
 func RunWorkers(ctx context.Context, c *Coordinator, workers int, info Compatibility) error {

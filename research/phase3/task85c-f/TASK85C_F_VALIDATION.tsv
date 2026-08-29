@@ -1,0 +1,23 @@
+check	verdict	detail
+PARENT_V1_1_IDENTITY	SUPPORTED	5c3cd272c1dbae9bfe1d7a100155faf102e86d34660da239e1cb31704ad470b0
+E1_IDENTITY	SUPPORTED	dbfb9a4a7101eed7006f751b9c4631b5f0286c3792f9777cc833c5dcfa42a3d3
+STATUS_REACHABILITY_V2_IDENTITY	SUPPORTED	fc1ca07d8123ed5d44bc24ecba98fca54d5b05781ecbaba820d44079319038b9
+PF_SC01_REPRODUCED	YES	retry emits a; conditional emits d
+PF_SC01	OPEN	candidate boundary repair cannot be issued as complete V1.2
+GENERATION_PATHS_AUDITED	25	7 fitted, 12 synthetic, 6 shared/serialization paths
+GENERATION_AMBIGUITIES_OPEN	8	distinct consequential ambiguity classes
+NONEMPTY_TOKEN_SEMANTICS	AMBIGUOUS	candidate rule is not authoritative
+RNG_CONSUMPTION_SEMANTICS	AMBIGUOUS	Generator B and M5 allocation unresolved
+SPECIAL_SYMBOL_SEMANTICS	AMBIGUOUS	candidate BOS/EOS/UNK rule not authoritative
+PF_SC01_GOLDEN	PASS	diagnostic candidate vector reproduced independently
+BOUNDARY_GOLDENS	PASS	8 candidate categorical vectors agree
+CROSS_IMPLEMENTATION_GENERATION	FAIL	full Generator B/corpus byte mapping unavailable
+NONEMPTY_GENERATION_PROPERTY	FAIL	cannot establish over every frozen route
+SCIENTIFIC_DESIGN_CHANGE_SCOPE	EXPANDED	five changes beyond narrow PF-SC01 repair would be required
+UNEXPECTED_SCIENTIFIC_CHANGE	5	blocked choices recorded in diff; none applied
+SCIENTIFIC_FIREWALL	INTACT	no production or confirmatory material accessed
+R2_G01	CLOSED	unchanged
+R2_G02	CLOSED	unchanged
+EI01	CLOSED	E1 preserved
+V1_2_READY	NOT_SUPPORTED	expanded-defect stop
+PRODUCTION_FREEZE_RETRY_READY	NOT_SUPPORTED	no frozen V1.2 exists

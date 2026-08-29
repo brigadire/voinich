@@ -1,0 +1,11 @@
+field_name	required	forbidden	type	canonical_representation	ordering	semantic_source	scientific_identity_role	notes
+contract_version	YES	NO	string	G1_V2_EXECUTABLE_CONTRACT_V1_1	N/A	V1.1 machine contract	scientific baseline binding	patch label V1.1.1 is not substituted
+control_instance_id	YES	NO	string	NFC UTF-8 nonempty	N/A	DAG registry	control identity	D01: exact blind values unavailable
+candidate_id	YES	NO	string	registry candidate ID	N/A	DAG registry	candidate identity	43 frozen values
+stage	YES	NO	string	one of seven stage IDs	N/A	DAG registry	stage identity	outcome independent
+scale_or_null	YES	NO	integer or null	2000;8000;32000 or null	N/A	DAG registry	generation/F2 axis	null outside applicable stages
+replicate_or_null	YES	NO	integer or null	0..3 or null	N/A	DAG registry	replicate axis	null outside applicable stages
+metric_id_or_null	YES	NO	string or null	frozen metric ID or null	N/A	DAG registry	F2 axis	null outside F2
+dependency_job_ids	YES	NO	array of strings	present as [] for no parents	ascending UTF-8 bytewise JobID	DAG registry	direct DAG parents only	duplicates/self/dangling rejected
+dependencies	NO	YES	N/A	forbidden	N/A	obsolete golden	NONE	R2-G02 regression
+operational_or_outcome_fields	NO	YES	N/A	forbidden	N/A	DAG exclusions	NONE	host/retry/lease/time/order/status/output forbidden

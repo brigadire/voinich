@@ -1,0 +1,27 @@
+check_id	requirement	status	evidence	notes
+V01	parent V1.1 identity	PASS	Task85c-c results validator	5c3cd272c1dbae9bfe1d7a100155faf102e86d34660da239e1cb31704ad470b0
+V02	status/reachability identity	PASS	Task85c-b state-machine verifier	fc1ca07d8123ed5d44bc24ecba98fca54d5b05781ecbaba820d44079319038b9
+V03	R2-G01 remains CLOSED	PASS	E1 JSON/validator	G1_V2_EXECUTABLE_CONTRACT_V1_1
+V04	R2-G02 remains CLOSED	PASS	E1 JSON/validator	dependency_job_ids
+V05	EI01 reproduced before repair	PASS	R2R reproducer; TASK85C_E_EI01_REPRODUCTION.md	two blind IDs and two JobIDs
+V06	EI01 closed after repair	PASS	verify_ei01_regression.py	CONTROL_GENERATE scientific; HMAC opaque
+V07	scientific RNG independent of escrow key	PASS	boundary and fixture vectors	same scientific identity under two keys
+V08	scientific RNG independent of blind ID	PASS	E1 closed field sets	blind_id forbidden from scientific identity
+V09	scientific corpus independent of opaque ID	PASS	E1 ordering/content hash	corpus and hash precede HMAC
+V10	blind ID deterministic for fixed inputs	PASS	FIXED-A/FIXED-A-REPEAT	identical ID/HMAC/JobID
+V11	blind ID opaque	PASS	E1 visible field audit	20 keyed hex chars; no truth-bearing fields
+V12	collision fail-closed	PASS	COLLISION-ABORT fixture	distinct records with forced collision abort
+V13	escrow binding verifiable	PASS	fixture full HMAC and scientific identity recomputation	closed truth schema
+V14	scientific identity independent of HMAC framing	PASS	EI01 regression	unframed ID differs; scientific hash unchanged
+V15	scientific identity independent of escrow-key value	PASS	DIFFERENT-KEY fixture	scientific hash identical; opaque ID differs
+V16	JobID execution/scientific boundary explicit	PASS	E1 JSON/Markdown	one-to-one per run; literal bytes non-scientific
+V17	boundary classification complete	PASS	verify_blind_identity_boundary.py	all four classification domains used
+V18	test vectors	PASS	blind_id_fixture_generator.py	6 non-production cases
+V19	truth-record field closure	PASS	EI01 regression	unknown/blind_id field rejected
+V20	key length/independence contract	PASS	EI01 regression	32-byte disposable keys; invalid length rejected
+V21	no production blind set	PASS	action audit	only artificial fixture records
+V22	no production escrow key	PASS	action audit	only literal disposable fixture keys
+V23	no production DAG/JobIDs	PASS	action audit	only isolated artificial FIT fixtures
+V24	no model/metric/status/RNG scientific change	PASS	hash invariants and impact audit	parent files unchanged
+V25	unexpected scientific change	PASS	TASK85C_E_IMPACT_AUDIT.tsv	0
+V26	results-manifest closure	PASS	manifest closure verifier	all E1 artifacts bound

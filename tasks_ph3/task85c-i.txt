@@ -1,0 +1,2220 @@
+Task85c-i — G1-v2 V1.2 Evidence Schema and Execution-Identity
+Integration Refreeze
+
+
+PURPOSE
+
+Resolve the two authority-integration defects discovered by Task85c-h:
+
+    H-SC01-EVIDENCE-CONTRACT-VERSION
+    H-SC02-E1-JOBID-SCIENTIFIC-VERSION
+
+and produce a coherent V1.2-compatible evidence and execution-identity
+authority layer without changing the scientific semantics of:
+
+    G1_V2_EXECUTABLE_CONTRACT_V1_2.
+
+Task85c-h established that production scientific implementation cannot
+begin because the currently frozen authorities require mutually
+exclusive scientific contract-version identities:
+
+    current scientific contract:
+        G1_V2_EXECUTABLE_CONTRACT_V1_2
+
+    all 15 frozen evidence schemas:
+        G1_V2_EXECUTABLE_CONTRACT_V1_1
+
+    E1 contract_version:
+        G1_V2_EXECUTABLE_CONTRACT_V1_1
+
+    E1 jobid.scientific_identity_version:
+        G1_V2_EXECUTABLE_CONTRACT_V1_1.
+
+No implementation may choose between these values.
+
+Task85c-i must repair the authority integration layer so that one
+scientific V1.2 job has one unambiguous:
+
+    scientific contract identity;
+    JobID scientific identity;
+    evidence contract identity;
+    evidence schema family;
+    canonical evidence representation.
+
+The repair must preserve the already frozen V1.2 scientific content.
+
+No production scientific handlers are implemented by this task.
+
+No production materialization is performed by this task.
+
+
+======================================================================
+1. AUTHORITATIVE INPUTS
+======================================================================
+
+Current scientific contract:
+
+    G1_V2_EXECUTABLE_CONTRACT_V1_2
+
+Markdown SHA-256:
+
+    ec60bb23e55ce157fe954b5cafc63d22ab70ecec390822cb63f9ae273142c639
+
+Machine JSON SHA-256:
+
+    29e39e0c25dc8033f784480fdc537e3ede9eeb69baa0607c9f249d796d6b42dc
+
+Generation semantics:
+
+    G1V2_GENERATION_SEMANTICS_V1
+
+SHA-256:
+
+    45d533f8b83b24c77a96836fa5c2ef95f9b948003bd2ed725fc2ea97e010b310
+
+Generation golden root:
+
+    143954667073a2c10f1bd59ce98b9c93dd84b50632bb67ea80d0d92449480acb
+
+Task85c-g artifact root:
+
+    609ca0fbb0cdada89a775972191ef0a6e1899791f63ee6104f517fe6e3a96b91
+
+
+======================================================================
+2. EXISTING EXECUTION-IDENTITY AUTHORITY
+======================================================================
+
+Existing execution-identity supplement:
+
+    G1V2_EXECUTION_IDENTITY_ERRATUM_E1
+
+SHA-256:
+
+    dbfb9a4a7101eed7006f751b9c4631b5f0286c3792f9777cc833c5dcfa42a3d3
+
+E1 successfully resolved:
+
+    EI01-BLIND-ID-ALGORITHM.
+
+The following E1 scientific boundary remains valid:
+
+    SCIENTIFIC_RANDOMNESS_SOURCE =
+        G1V2-RNG-1
+
+    BLIND_ID_ROLE =
+        OPAQUE_EXECUTION_IDENTIFIER
+
+    ESCROW_ROLE =
+        BLINDNESS_AND_TRUTH_COMMITMENT
+
+    JOBID_ROLE =
+        RUN_EXECUTION_IDENTIFIER_BOUND_TO_SCIENTIFIC_JOB
+
+    SCIENTIFIC_IDENTITY_DEPENDS_ON_ESCROW_KEY =
+        NO
+
+    SCIENTIFIC_IDENTITY_DEPENDS_ON_BLIND_ID_BYTES =
+        NO.
+
+Task85c-i must preserve these semantics.
+
+
+======================================================================
+3. STATUS/REACHABILITY AUTHORITY
+======================================================================
+
+Status/reachability authority:
+
+    G1_V2_STATUS_REACHABILITY_CONTRACT_V2
+
+SHA-256:
+
+    fc1ca07d8123ed5d44bc24ecba98fca54d5b05781ecbaba820d44079319038b9
+
+Task85c-i is not authorized to alter its scientific semantics.
+
+
+======================================================================
+4. CURRENT EVIDENCE AUTHORITY
+======================================================================
+
+Current evidence schema root:
+
+    4744ca82532cd47a0d02bb680796b26a11ceca57d6229f0b312df69a103f784b
+
+Current evidence schema count:
+
+    15.
+
+Task85c-h established:
+
+    V1_2_COMPATIBLE_SCHEMA_COUNT = 0.
+
+All 15 schemas require literal:
+
+    contract_version =
+        G1_V2_EXECUTABLE_CONTRACT_V1_1.
+
+This schema set remains valid historical V1.1 provenance.
+
+It must not be silently modified in place.
+
+
+======================================================================
+5. TASK85C-H DEFECT AUTHORITY
+======================================================================
+
+Task85c-h artifact root:
+
+    eb7939fa6d7c20f698143a163cfeb315da69ae547809e4d64a5632f26543ed42
+
+Task85c-h results manifest SHA-256:
+
+    c9c54c9b5c20dd746ace32ab3a3a9dc916a8ceae00710481e8226314db2ea795
+
+Terminal marker:
+
+    TASK85C_H_SCIENTIFIC_CONTRACT_DEFECT.
+
+
+======================================================================
+6. H-SC01 MUST BE REPRODUCED
+======================================================================
+
+Finding:
+
+    H-SC01-EVIDENCE-CONTRACT-VERSION.
+
+Reproduce the smallest Task85c-h fixture.
+
+Start from the frozen positive V1.1 generation-success evidence object.
+
+Require:
+
+    original object with:
+        contract_version =
+            G1_V2_EXECUTABLE_CONTRACT_V1_1
+
+        → ACCEPT by frozen V1.1 schema.
+
+Change ONLY:
+
+    contract_version =
+        G1_V2_EXECUTABLE_CONTRACT_V1_2.
+
+Require reproduction of:
+
+    → REJECT by all applicable frozen V1.1 schema branches.
+
+If this cannot be reproduced:
+
+    STOP TASK85C_I_PARENT_DEFECT_NOT_REPRODUCED.
+
+
+======================================================================
+7. H-SC02 MUST BE REPRODUCED
+======================================================================
+
+Finding:
+
+    H-SC02-E1-JOBID-SCIENTIFIC-VERSION.
+
+Reproduce that E1 machine authority contains:
+
+    contract_version =
+        G1_V2_EXECUTABLE_CONTRACT_V1_1
+
+and:
+
+    jobid.scientific_identity_version =
+        G1_V2_EXECUTABLE_CONTRACT_V1_1.
+
+Demonstrate that substituting:
+
+    G1_V2_EXECUTABLE_CONTRACT_V1_2
+
+changes canonical JobID input and therefore JobID identity.
+
+If this cannot be reproduced:
+
+    STOP TASK85C_I_PARENT_DEFECT_NOT_REPRODUCED.
+
+
+======================================================================
+8. DEFECT CLASSIFICATION
+======================================================================
+
+Classify both findings explicitly.
+
+Expected classification:
+
+    H-SC01 =
+        AUTHORITY_INTEGRATION_DEFECT
+
+    H-SC02 =
+        AUTHORITY_INTEGRATION_DEFECT.
+
+They affect:
+
+    scientific identity labels;
+    canonical evidence bytes;
+    evidence hashes;
+    JobID bytes;
+    schema acceptance;
+    one-to-one run integrity.
+
+They do NOT, by themselves, alter:
+
+    model probability;
+    generated scientific corpus;
+    RNG realization;
+    PM value;
+    F2 value;
+    threshold algorithm;
+    gate result;
+    final verdict semantics.
+
+This distinction must be validated rather than assumed.
+
+
+======================================================================
+9. CENTRAL REPAIR PRINCIPLE
+======================================================================
+
+The current scientific contract identity is:
+
+    G1_V2_EXECUTABLE_CONTRACT_V1_2.
+
+Every new production artifact representing execution of that contract
+must bind the same scientific contract identity unless an explicitly
+versioned provenance field states otherwise.
+
+Therefore the target integration invariant is:
+
+    scientific contract
+        =
+    JobID scientific identity
+        =
+    evidence scientific contract identity
+        =
+    evidence schema version binding
+        =
+    G1_V2_EXECUTABLE_CONTRACT_V1_2.
+
+
+======================================================================
+10. DO NOT REWRITE HISTORY
+======================================================================
+
+Do NOT mutate historical V1.1 evidence schemas in place.
+
+Do NOT mutate E1 in place.
+
+Preserve:
+
+    V1.1 evidence schema root;
+    V1.1 evidence goldens;
+    E1;
+    Task85c-e;
+    Task85c-h defect fixtures
+
+as immutable provenance.
+
+Issue new versioned artifacts.
+
+
+======================================================================
+11. V1.2 EVIDENCE SCHEMA FAMILY
+======================================================================
+
+Create a complete V1.2-compatible evidence schema family corresponding
+to all 15 frozen evidence types.
+
+Every new schema must require:
+
+    contract_version =
+        G1_V2_EXECUTABLE_CONTRACT_V1_2
+
+where that field denotes the scientific contract being executed.
+
+Do not simply permit:
+
+    [V1.1, V1.2]
+
+in one ambiguous schema unless a strong normative reason exists.
+
+Preferred design:
+
+    V1.1 evidence
+        → V1.1 schema family
+
+    V1.2 evidence
+        → V1.2 schema family.
+
+Cross-version mixing must fail closed.
+
+
+======================================================================
+12. EVIDENCE SCHEMA COUNT
+======================================================================
+
+Require:
+
+    V1_2_EVIDENCE_SCHEMA_COUNT = 15.
+
+Every V1.1 evidence type must have an explicitly mapped V1.2
+counterpart unless the frozen V1.2 scientific protocol proves that a
+type is obsolete.
+
+Any missing/extra type requires explicit audit.
+
+
+======================================================================
+13. EVIDENCE SEMANTICS PRESERVATION
+======================================================================
+
+For each V1.1 → V1.2 schema pair classify every difference.
+
+Expected mandatory difference:
+
+    contract_version literal:
+        V1.1 → V1.2.
+
+Other differences are permitted only when transitively required by
+already frozen V1.2 scientific semantics.
+
+Create:
+
+    G1V2_EVIDENCE_V1_1_TO_V1_2_DIFF.tsv.
+
+For each schema record:
+
+    schema_id
+    V1.1 SHA
+    V1.2 SHA
+    changed paths
+    change classification
+    scientific semantic effect
+    justification.
+
+
+======================================================================
+14. NO UNRELATED EVIDENCE REDESIGN
+======================================================================
+
+Task85c-i MUST NOT opportunistically redesign:
+
+    evidence payload structure;
+    scientific fields;
+    statuses;
+    reasons;
+    metric representation;
+    aggregation representation;
+    canonical numerical representation.
+
+If an unrelated schema defect is discovered:
+
+    record it;
+
+and if scientifically consequential:
+
+    STOP TASK85C_I_SCOPE_EXPANDED.
+
+Do not bundle unrelated redesign into this repair.
+
+
+======================================================================
+15. STANDARD SCHEMA VALIDATION
+======================================================================
+
+The V1.2 evidence schemas must remain valid:
+
+    JSON Schema Draft 2020-12.
+
+No custom normative keywords may be required for acceptance.
+
+Use the same independent standards-based validation discipline as
+Task85c-c.
+
+
+======================================================================
+16. MUTUAL EXCLUSIVITY
+======================================================================
+
+Preserve the requirement that evidence schema branches are mutually
+exclusive where required by the frozen evidence architecture.
+
+An evidence object must not accidentally validate as two incompatible
+scientific evidence types.
+
+
+======================================================================
+17. STATUS MATRIX COMPATIBILITY
+======================================================================
+
+Validate every V1.2 schema against:
+
+    G1_V2_STATUS_REACHABILITY_CONTRACT_V2.
+
+Require exact compatibility of:
+
+    evidence type;
+    stage;
+    allowed status;
+    reason semantics;
+    reachability.
+
+Task85c-i must not reopen the E01–E04 defects resolved by Task85c-b.
+
+
+======================================================================
+18. EVIDENCE REASON REGISTRY
+======================================================================
+
+Audit whether the existing reason registry is version-neutral or
+contains V1.1 contract bindings.
+
+If version-neutral:
+
+    preserve unchanged.
+
+If literal V1.1 binding exists:
+
+    produce a narrowly versioned V1.2-compatible successor.
+
+No reason semantics may change.
+
+
+======================================================================
+19. EVIDENCE PAYLOAD CONTRACT
+======================================================================
+
+Audit the evidence payload contract for literal V1.1 scientific
+identity.
+
+If the only required change is current contract-version binding,
+issue a V1.2-compatible successor.
+
+Do not alter scientific payload semantics.
+
+
+======================================================================
+20. SCHEMA REGISTRY
+======================================================================
+
+Create a V1.2 schema registry mapping every evidence type to exactly
+one V1.2 schema.
+
+Require:
+
+    duplicate evidence type mappings = 0
+    missing mappings = 0
+    ambiguous mappings = 0.
+
+
+======================================================================
+21. NEW EVIDENCE SCHEMA ROOT
+======================================================================
+
+Compute a new immutable root:
+
+    G1V2_V1_2_EVIDENCE_SCHEMA_ROOT_SHA256 =
+        <sha256>.
+
+The old root:
+
+    4744ca82532cd47a0d02bb680796b26a11ceca57d6229f0b312df69a103f784b
+
+must remain the historical V1.1 evidence schema root.
+
+Never relabel the old root as V1.2-compatible.
+
+
+======================================================================
+22. EVIDENCE VERSION IDENTITY
+======================================================================
+
+Define explicit version names for the evidence layer.
+
+Recommended:
+
+    G1V2_EVIDENCE_CONTRACT_V1_2
+
+or another deterministic versioned name.
+
+The exact name is an implementation/provenance choice unless an
+existing higher-precedence registry already determines it.
+
+Whatever name is selected must be frozen and hash-bound.
+
+
+======================================================================
+23. E2 EXECUTION-IDENTITY SUPPLEMENT
+======================================================================
+
+Issue:
+
+    G1V2_EXECUTION_IDENTITY_ERRATUM_E2
+
+as the current execution-identity authority for V1.2 production
+execution.
+
+E2 supersedes E1 only where V1.2 integration requires a current
+scientific contract-version binding.
+
+E1 remains historical authority for the issue it originally resolved.
+
+
+======================================================================
+24. E2 MUST PRESERVE E1 SCIENTIFIC BOUNDARY
+======================================================================
+
+E2 must preserve:
+
+    SCIENTIFIC_RANDOMNESS_SOURCE =
+        G1V2-RNG-1
+
+    BLIND_ID_ROLE =
+        OPAQUE_EXECUTION_IDENTIFIER
+
+    ESCROW_ROLE =
+        BLINDNESS_AND_TRUTH_COMMITMENT
+
+    JOBID_ROLE =
+        RUN_EXECUTION_IDENTIFIER_BOUND_TO_SCIENTIFIC_JOB
+
+    SCIENTIFIC_IDENTITY_DEPENDS_ON_ESCROW_KEY =
+        NO
+
+    SCIENTIFIC_IDENTITY_DEPENDS_ON_BLIND_ID_BYTES =
+        NO.
+
+Require:
+
+    EI01 = CLOSED.
+
+
+======================================================================
+25. E2 CURRENT CONTRACT IDENTITY
+======================================================================
+
+For V1.2 production execution freeze:
+
+    current scientific contract identity =
+        G1_V2_EXECUTABLE_CONTRACT_V1_2.
+
+E2 must bind JobID scientific identity accordingly.
+
+
+======================================================================
+26. E2 JOBID SCIENTIFIC IDENTITY
+======================================================================
+
+Freeze:
+
+    jobid.scientific_identity_version =
+        G1_V2_EXECUTABLE_CONTRACT_V1_2.
+
+This field must not remain V1.1 for jobs executing V1.2.
+
+
+======================================================================
+27. E2 CONTRACT_VERSION FIELD
+======================================================================
+
+Audit the meaning of E1's own:
+
+    contract_version
+
+field.
+
+Distinguish explicitly between:
+
+    version of the execution-identity specification itself
+
+and:
+
+    scientific contract identity to which it applies.
+
+Do not overload one field with both meanings if that caused the
+current defect.
+
+Prefer explicit machine fields such as:
+
+    execution_identity_spec_version
+    scientific_contract_version
+
+if compatible with the surrounding authority architecture.
+
+
+======================================================================
+28. NO AMBIGUOUS VERSION FIELD
+======================================================================
+
+After E2, an implementer must not need to ask whether:
+
+    contract_version
+
+means:
+
+    V1.1 because E1 was created under V1.1
+
+or:
+
+    V1.2 because the scientific job executes V1.2.
+
+Every version field must have one documented semantic role.
+
+
+======================================================================
+29. JOBID FUNCTION PRESERVATION
+======================================================================
+
+Do not redesign the JobID hash function.
+
+Preserve the frozen construction except for the necessary current
+scientific identity binding.
+
+Production format remains:
+
+    j-
+        +
+    first 40 lowercase hexadecimal characters
+    of the frozen SHA-256 construction.
+
+Canonical dependency field remains:
+
+    dependency_job_ids.
+
+
+======================================================================
+30. JOBID SCIENTIFIC INPUT
+======================================================================
+
+Freeze the V1.2 scientific JobID input so that it includes the
+correct V1.2 scientific contract identity.
+
+Do not include:
+
+    hostname;
+    worker;
+    coordinator;
+    retry count;
+    lease;
+    scheduling order;
+    wall-clock time.
+
+
+======================================================================
+31. JOBID / BLIND-ID DECOUPLING
+======================================================================
+
+Preserve the Task85c-e boundary:
+
+    changing a valid escrow key may change opaque blind IDs;
+
+but MUST NOT change:
+
+    scientific control content;
+    scientific RNG realization;
+    scientific truth.
+
+Concrete JobIDs may change when opaque run-instance identity changes,
+without thereby defining a different scientific experiment.
+
+Do not reopen this distinction.
+
+
+======================================================================
+32. CROSS-VERSION JOBID REGRESSION
+======================================================================
+
+Create a non-secret fixture representing the same abstract job under:
+
+    V1.1 scientific identity
+
+and:
+
+    V1.2 scientific identity.
+
+Require:
+
+    V1.1 JobID != V1.2 JobID.
+
+This is expected because the scientific contract identity differs.
+
+Record exact canonical input and expected JobIDs.
+
+
+======================================================================
+33. SAME-VERSION JOBID DETERMINISM
+======================================================================
+
+For the V1.2 fixture require:
+
+    repeated construction
+        →
+    identical canonical payload
+        →
+    identical JobID.
+
+Test across at least two independent implementations.
+
+
+======================================================================
+34. V1.1 EVIDENCE REGRESSION
+======================================================================
+
+Historical V1.1 positive evidence must continue to validate against:
+
+    V1.1 evidence schemas.
+
+It must not be retroactively invalidated by Task85c-i.
+
+
+======================================================================
+35. V1.2 EVIDENCE POSITIVE REGRESSION
+======================================================================
+
+Construct disposable V1.2 evidence fixtures for every evidence type.
+
+Require:
+
+    V1.2 evidence
+        →
+    ACCEPT by exactly the intended V1.2 schema branch.
+
+
+======================================================================
+36. V1.1 → V1.2 NEGATIVE REGRESSION
+======================================================================
+
+For each applicable fixture require:
+
+    V1.1 evidence
+        →
+    REJECT by V1.2 schema family
+
+when the contract identity is incompatible.
+
+
+======================================================================
+37. V1.2 → V1.1 NEGATIVE REGRESSION
+======================================================================
+
+Require:
+
+    V1.2 evidence
+        →
+    REJECT by V1.1 schema family.
+
+This permanently closes H-SC01 by making version separation explicit
+rather than ambiguous.
+
+
+======================================================================
+38. MIXED-IDENTITY REGRESSION
+======================================================================
+
+Create fixtures where:
+
+    evidence contract_version = V1.2
+
+but:
+
+    JobID scientific identity = V1.1
+
+and the inverse.
+
+Require:
+
+    FAIL CLOSED.
+
+No mixed scientific identity artifact may be accepted.
+
+
+======================================================================
+39. HASH REGRESSION
+======================================================================
+
+Demonstrate explicitly that:
+
+    V1.1 evidence bytes/hash
+
+and:
+
+    otherwise equivalent V1.2 evidence bytes/hash
+
+differ because scientific contract identity differs.
+
+This difference is expected provenance/integrity behavior.
+
+
+======================================================================
+40. SCIENTIFIC-SEMANTIC INVARIANCE
+======================================================================
+
+For corresponding V1.1/V1.2 integration fixtures where the underlying
+scientific payload is intentionally held constant, demonstrate that
+the repair does NOT alter:
+
+    scientific numeric payload;
+    scientific status;
+    scientific reason;
+    generated token bytes;
+    RNG trace;
+    metric value;
+    gate outcome.
+
+Only version/identity/hash consequences may differ.
+
+
+======================================================================
+41. V1.2 CONTRACT INTEGRATION
+======================================================================
+
+V1.2 currently binds historical V1.1 evidence authority.
+
+Task85c-i must produce an explicit integration artifact making the
+V1.2-compatible evidence schema root and E2 the authorities for
+future V1.2 production execution.
+
+
+======================================================================
+42. DO NOT SILENTLY EDIT V1.2
+======================================================================
+
+Do not mutate:
+
+    G1_V2_EXECUTABLE_CONTRACT_V1_2.md
+    G1_V2_EXECUTABLE_CONTRACT_V1_2.json
+
+in place.
+
+Their published hashes must remain valid provenance.
+
+
+======================================================================
+43. V1.2 INTEGRATION SUPPLEMENT
+======================================================================
+
+Preferred solution:
+
+    G1V2_V1_2_INTEGRATION_SUPPLEMENT_I1
+
+which binds:
+
+    G1_V2_EXECUTABLE_CONTRACT_V1_2
+    +
+    V1.2 evidence schema root
+    +
+    G1V2_EXECUTION_IDENTITY_ERRATUM_E2
+    +
+    G1_V2_STATUS_REACHABILITY_CONTRACT_V2
+    +
+    G1V2_GENERATION_SEMANTICS_V1.
+
+This supplement repairs authority integration without pretending that
+M0–M5 or generation changed again.
+
+
+======================================================================
+44. I1 ROLE
+======================================================================
+
+I1 is normative only for cross-artifact integration questions such as:
+
+    which evidence schema root applies to V1.2;
+    which execution-identity supplement applies;
+    which scientific contract version enters JobID;
+    which evidence contract version is legal.
+
+I1 MUST NOT override V1.2 scientific semantics.
+
+
+======================================================================
+45. NO V1.3 BY DEFAULT
+======================================================================
+
+Do NOT issue:
+
+    G1_V2_EXECUTABLE_CONTRACT_V1_3
+
+merely because evidence schemas and execution-identity bindings require
+V1.2 integration.
+
+V1.3 is required only if Task85c-i discovers that resolving H-SC01 or
+H-SC02 necessarily changes scientific semantics capable of changing
+scientific data, metrics, gates or verdicts.
+
+Expected outcome:
+
+    SCIENTIFIC_CONTRACT_VERSION =
+        G1_V2_EXECUTABLE_CONTRACT_V1_2
+
+remains unchanged.
+
+
+======================================================================
+46. CHANGE CLASSIFICATION
+======================================================================
+
+Create:
+
+    G1V2_TASK85C_I_CHANGE_CLASSIFICATION.tsv.
+
+Classify every change as one of:
+
+    EVIDENCE_VERSION_BINDING
+    EVIDENCE_SCHEMA_VERSIONING
+    EVIDENCE_HASH_TRANSITIVE_CHANGE
+    EXECUTION_IDENTITY_VERSION_BINDING
+    JOBID_TRANSITIVE_CHANGE
+    CROSS_ARTIFACT_INTEGRATION
+    SCIENTIFIC_SEMANTIC_CHANGE.
+
+Success requires:
+
+    SCIENTIFIC_SEMANTIC_CHANGE = 0.
+
+
+======================================================================
+47. GENERATION SEMANTICS MUST REMAIN IDENTICAL
+======================================================================
+
+Require exact identity of:
+
+    G1V2_GENERATION_SEMANTICS_V1
+
+SHA-256:
+
+    45d533f8b83b24c77a96836fa5c2ef95f9b948003bd2ed725fc2ea97e010b310.
+
+No generation repair belongs in Task85c-i.
+
+
+======================================================================
+48. GENERATION GOLDENS MUST REMAIN IDENTICAL
+======================================================================
+
+Require exact identity of generation golden root:
+
+    143954667073a2c10f1bd59ce98b9c93dd84b50632bb67ea80d0d92449480acb.
+
+Require:
+
+    PF_SC01 = CLOSED
+    GENERATION_PATHS = 26/26.
+
+
+======================================================================
+49. CANDIDATE REGISTRY MUST REMAIN IDENTICAL
+======================================================================
+
+Require no candidate-registry change.
+
+The frozen 43-candidate scientific design remains authoritative.
+
+
+======================================================================
+50. PM/F2 MUST REMAIN IDENTICAL
+======================================================================
+
+Require no changes to:
+
+    PM1
+    PM2
+    PM4
+    PM5
+    PM6
+
+or the 12 F2 metrics.
+
+
+======================================================================
+51. DECISION LOGIC MUST REMAIN IDENTICAL
+======================================================================
+
+Require no changes to:
+
+    predictive gate;
+    structural gate;
+    adequacy;
+    complexity;
+    equivalence;
+    minimality;
+    final verdict.
+
+Task85c-i repairs identity integration only.
+
+
+======================================================================
+52. STATUS/REACHABILITY MUST REMAIN IDENTICAL
+======================================================================
+
+Require:
+
+    G1_V2_STATUS_REACHABILITY_CONTRACT_V2
+
+SHA unchanged.
+
+No new status should be necessary.
+
+
+======================================================================
+53. E1 HISTORICAL VALIDITY
+======================================================================
+
+Do not declare E1 "wrong".
+
+E1 was frozen against the then-current V1.1 execution context.
+
+Task85c-i must state explicitly:
+
+    E1 remains historical V1.1 execution-identity authority;
+
+    E2 is the V1.2 execution-identity authority.
+
+
+======================================================================
+54. PRECEDENCE AFTER TASK85C-I
+======================================================================
+
+Freeze explicit precedence.
+
+For scientific semantics:
+
+    G1_V2_EXECUTABLE_CONTRACT_V1_2 machine authority
+        >
+    V1.2 normative scientific registries
+        >
+    generation semantics/goldens
+        >
+    explanatory prose.
+
+For V1.2 cross-artifact integration:
+
+    G1V2_V1_2_INTEGRATION_SUPPLEMENT_I1.
+
+For V1.2 execution identity:
+
+    G1V2_EXECUTION_IDENTITY_ERRATUM_E2.
+
+For V1.2 evidence validation:
+
+    new V1.2 evidence schema registry/root.
+
+Historical V1.1 artifacts cannot override these for a V1.2 run.
+
+
+======================================================================
+55. CIRCULAR AUTHORITY CHECK
+======================================================================
+
+Audit the new authority graph for cycles.
+
+For example, avoid:
+
+    I1 → E2 → I1
+
+or:
+
+    V1.2 schema registry → I1 → schema registry
+
+where neither artifact can be independently identified.
+
+Every normative artifact must have a deterministic hash closure.
+
+
+======================================================================
+56. AUTHORITY GRAPH
+======================================================================
+
+Create:
+
+    G1V2_V1_2_AUTHORITY_GRAPH.json
+
+containing nodes and directed precedence/binding edges for:
+
+    V1.2 contract;
+    generation semantics;
+    generation goldens;
+    status/reachability V2;
+    E2;
+    V1.2 evidence schema registry/root;
+    I1.
+
+Require:
+
+    cycles = 0
+    unresolved authority edges = 0.
+
+
+======================================================================
+57. EVIDENCE-ONLY VERIFIER UPDATE
+======================================================================
+
+Update or provide a V1.2-compatible evidence-only verifier capable of
+validating disposable V1.2 evidence under the new schema root.
+
+This task does NOT require production scientific handlers.
+
+Use synthetic/disposable evidence fixtures.
+
+
+======================================================================
+58. VERIFIER VERSION SEPARATION
+======================================================================
+
+The verifier must know which schema family applies from explicit
+frozen authority.
+
+It must not:
+
+    try V1.1;
+    if failure, try V1.2
+
+as an ambiguous heuristic.
+
+Version selection must be deterministic.
+
+
+======================================================================
+59. FAIL-CLOSED UNKNOWN VERSION
+======================================================================
+
+Evidence with:
+
+    unknown contract_version
+
+must fail closed.
+
+Evidence with a known version but wrong schema root must fail closed.
+
+
+======================================================================
+60. STANDARD VALIDATOR CROSS-CHECK
+======================================================================
+
+Validate V1.2 evidence schemas with at least two independent
+Draft-2020-12-capable validation paths where feasible.
+
+Preserve the standards-based validation discipline established by
+Task85c-c.
+
+
+======================================================================
+61. SCHEMA MUTATION TESTS
+======================================================================
+
+For each evidence type mutate at least:
+
+    contract_version;
+    status;
+    evidence type discriminator;
+    required scientific payload field.
+
+Require rejection where appropriate.
+
+Specifically require all V1.2→V1.1 and V1.1→V1.2 version mutations to
+fail.
+
+
+======================================================================
+62. JOBID INDEPENDENT IMPLEMENTATIONS
+======================================================================
+
+Implement V1.2/E2 JobID fixture calculation independently in at least
+two implementations.
+
+Require byte-identical:
+
+    canonical JobID payload;
+    resulting JobID.
+
+
+======================================================================
+63. H-SC01 PERMANENT REGRESSION
+======================================================================
+
+Create:
+
+    G1V2_H_SC01_REGRESSION.json.
+
+It must record:
+
+    historical V1.1 fixture;
+    historical V1.1 acceptance;
+    historical V1.2 rejection under old schemas;
+    repaired V1.2 fixture;
+    acceptance under new V1.2 schemas;
+    rejection under V1.1 schemas.
+
+Require:
+
+    H_SC01 = CLOSED.
+
+
+======================================================================
+64. H-SC02 PERMANENT REGRESSION
+======================================================================
+
+Create:
+
+    G1V2_H_SC02_REGRESSION.json.
+
+It must record:
+
+    E1 V1.1 scientific identity;
+    E2 V1.2 scientific identity;
+    canonical V1.1 fixture input;
+    canonical V1.2 fixture input;
+    V1.1 JobID;
+    V1.2 JobID;
+    expected inequality.
+
+Require:
+
+    H_SC02 = CLOSED.
+
+
+======================================================================
+65. EI01 PERMANENT REGRESSION
+======================================================================
+
+Re-run the Task85c-e EI01 boundary regression.
+
+Require:
+
+    EI01 = CLOSED.
+
+E2 must not accidentally reintroduce dependence of scientific
+randomness/content on escrow or blind ID.
+
+
+======================================================================
+66. R2-G01 / R2-G02 REGRESSION
+======================================================================
+
+Require:
+
+    R2_G01 = CLOSED
+    R2_G02 = CLOSED.
+
+In particular:
+
+    current scientific identity = V1.2
+
+and canonical dependency field remains:
+
+    dependency_job_ids.
+
+
+======================================================================
+67. PF-SC01 REGRESSION
+======================================================================
+
+Re-run the frozen V1.2 PF-SC01 golden.
+
+Require:
+
+    PF_SC01 = CLOSED.
+
+This verifies that identity integration did not alter generation.
+
+
+======================================================================
+68. CROSS-ARTIFACT CONSISTENCY VALIDATOR
+======================================================================
+
+Create a validator that checks at minimum:
+
+    V1.2 current contract identity;
+    I1 target contract identity;
+    E2 target scientific identity;
+    evidence schema allowed contract identity;
+    JobID scientific identity;
+    status/reachability identity binding where applicable.
+
+All must form one coherent V1.2 authority closure.
+
+
+======================================================================
+69. REQUIRED CONSISTENCY INVARIANT
+======================================================================
+
+For future V1.2 production execution require:
+
+    V1.2 scientific contract
+        ==
+    I1 scientific contract
+        ==
+    E2 scientific contract
+        ==
+    JobID scientific identity
+        ==
+    evidence contract_version
+        ==
+    V1.2 schema family binding.
+
+Any mismatch:
+
+    FAIL CLOSED.
+
+
+======================================================================
+70. NO PRODUCTION HANDLER IMPLEMENTATION
+======================================================================
+
+Task85c-i MUST NOT implement the missing production:
+
+    M0–M5 fitting;
+    PM;
+    F2;
+    generation dispatch;
+    gates;
+    aggregation.
+
+That work remains Task85c-h after this repair succeeds.
+
+Small reference code for schema/JobID validation is permitted.
+
+
+======================================================================
+71. NO PRODUCTION MATERIALIZATION
+======================================================================
+
+Task85c-i MUST NOT create:
+
+    production DEVELOPMENT controls;
+    production thresholds;
+    production escrow key;
+    production blind controls;
+    production natural controls;
+    production blind IDs;
+    production JobIDs;
+    production DAG;
+    production run manifest.
+
+
+======================================================================
+72. NO CONFIRMATORY EXECUTION
+======================================================================
+
+Task85c-i MUST NOT execute:
+
+    blind recovery;
+    natural confirmatory recovery;
+    Voynich evaluation.
+
+No confirmatory outcome may influence the repair.
+
+
+======================================================================
+73. SCIENTIFIC FIREWALL
+======================================================================
+
+Require:
+
+    SCIENTIFIC_FIREWALL = INTACT.
+
+
+======================================================================
+74. SECRET MATERIAL
+======================================================================
+
+No production secret material is needed.
+
+Require:
+
+    PRODUCTION_ESCROW_KEY_CREATED = NO.
+
+
+======================================================================
+75. TEST FIXTURES
+======================================================================
+
+Use only:
+
+    historical frozen evidence fixtures;
+    disposable artificial fixtures;
+    non-secret JobID fixtures;
+    open generation regression fixtures.
+
+No production control instance is necessary.
+
+
+======================================================================
+76. NO DOWNSTREAM PERFORMANCE SELECTION
+======================================================================
+
+Do not choose schema/E2 design based on:
+
+    model recovery;
+    thresholds;
+    control performance;
+    final verdict.
+
+This task has no reason to compute them.
+
+
+======================================================================
+77. VERSIONING AUDIT
+======================================================================
+
+Audit all normative artifacts transitively referenced by V1.2 for
+literal:
+
+    G1_V2_EXECUTABLE_CONTRACT_V1_1
+
+bindings.
+
+Classify each occurrence as:
+
+    HISTORICAL_CORRECT
+    MUST_VERSION_TO_V1_2
+    NONNORMATIVE
+    DEFECT.
+
+Do not stop after repairing only the two already known locations if
+another authority-level V1.1 binding would recreate the same conflict.
+
+
+======================================================================
+78. VERSIONING AUDIT SCOPE
+======================================================================
+
+The audit must include at minimum:
+
+    evidence schemas;
+    schema registry;
+    evidence payload contract;
+    evidence status semantics;
+    reason registry;
+    evidence-only verifier configuration;
+    JobID contract;
+    DAG contract;
+    E1;
+    V1.2 machine authority references;
+    golden registries;
+    integration/precedence tables.
+
+
+======================================================================
+79. SAME DEFECT CLASS POLICY
+======================================================================
+
+If additional literal V1.1 bindings are discovered within the same
+V1.2 evidence/execution-identity integration defect class:
+
+    register them;
+    repair them;
+    continue.
+
+Do NOT stop merely because H-SC03, H-SC04, etc. are discovered in
+the same integration layer.
+
+
+======================================================================
+80. OUT-OF-SCOPE DEFECT POLICY
+======================================================================
+
+STOP only if the audit discovers an ambiguity or contradiction that
+can alter:
+
+    model semantics;
+    scientific RNG realization;
+    generated corpus;
+    PM/F2 values;
+    thresholds;
+    gates;
+    adequacy;
+    minimality;
+    final verdict.
+
+Then emit:
+
+    TASK85C_I_SCIENTIFIC_SCOPE_EXPANDED.
+
+Do not resolve such a defect here.
+
+
+======================================================================
+81. NO REPRESENTATIONAL RECURSION
+======================================================================
+
+Do not create another repair task for harmless questions such as:
+
+    filename;
+    directory name;
+    JSON whitespace;
+    nonnormative Markdown wording;
+    internal validator implementation.
+
+Choose deterministic representations, record them and continue.
+
+Only normative identity/integrity ambiguity matters here.
+
+
+======================================================================
+82. REQUIRED DIRECTORY
+======================================================================
+
+Create:
+
+    research/phase3/task85c-i/
+
+
+======================================================================
+83. REQUIRED ARTIFACTS
+======================================================================
+
+At minimum:
+
+    TASK85C_I_DESIGN.md
+    TASK85C_I_REPORT.md
+
+    G1V2_V1_2_VERSION_BINDING_AUDIT.tsv
+    G1V2_TASK85C_I_CHANGE_CLASSIFICATION.tsv
+    G1V2_EVIDENCE_V1_1_TO_V1_2_DIFF.tsv
+
+    G1V2_V1_2_EVIDENCE_SCHEMA_REGISTRY.json
+    G1V2_V1_2_EVIDENCE_SCHEMA_ROOT.json
+
+    evidence-schemas-v1_2/
+        <15 normative schemas>
+
+    G1V2_EXECUTION_IDENTITY_ERRATUM_E2.md
+    G1V2_EXECUTION_IDENTITY_ERRATUM_E2.json
+
+    G1V2_V1_2_INTEGRATION_SUPPLEMENT_I1.md
+    G1V2_V1_2_INTEGRATION_SUPPLEMENT_I1.json
+
+    G1V2_V1_2_AUTHORITY_GRAPH.json
+
+    G1V2_H_SC01_REGRESSION.json
+    G1V2_H_SC02_REGRESSION.json
+
+    TASK85C_I_SCHEMA_VALIDATION.tsv
+    TASK85C_I_JOBID_VALIDATION.tsv
+    TASK85C_I_CROSS_ARTIFACT_VALIDATION.tsv
+    TASK85C_I_VALIDATION.tsv
+
+    TASK85C_I_RESULTS_MANIFEST.json
+
+    reference/
+        reproduce_h_sc01.*
+        reproduce_h_sc02.*
+        verify_evidence_schemas_v1_2.*
+        verify_cross_version_evidence.*
+        verify_jobid_e2.*
+        verify_authority_graph.*
+        verify_cross_artifact_closure.*
+        verify_task85c_i_manifest.*
+
+and exactly one terminal marker.
+
+
+======================================================================
+84. REQUIRED HASHES
+======================================================================
+
+Freeze at minimum:
+
+    V1.2 evidence schema root;
+    V1.2 evidence schema registry;
+    E2 Markdown;
+    E2 machine JSON;
+    I1 Markdown;
+    I1 machine JSON;
+    authority graph;
+    H-SC01 regression;
+    H-SC02 regression;
+    validation;
+    Task85c-i artifact root.
+
+
+======================================================================
+85. ARTIFACT ROOT
+======================================================================
+
+Define the Task85c-i artifact-root construction explicitly.
+
+Use deterministic:
+
+    repository-relative path;
+    bytewise path ordering;
+    SHA-256;
+    manifest exclusion rule.
+
+The results manifest must state the root definition.
+
+
+======================================================================
+86. REQUIRED VALIDATION MATRIX
+======================================================================
+
+At minimum validate:
+
+    parent V1.2 Markdown identity;
+    parent V1.2 machine identity;
+    generation semantics identity;
+    generation golden identity;
+    Task85c-g root;
+    E1 historical identity;
+    status/reachability V2 identity;
+    historical V1.1 evidence schema root;
+    Task85c-h root;
+    Task85c-h results manifest;
+
+    H-SC01 reproduction;
+    H-SC02 reproduction;
+
+    15/15 V1.2 schemas;
+    Draft 2020-12 compliance;
+    mutual exclusivity;
+    status matrix compatibility;
+    reason compatibility;
+    payload compatibility;
+
+    V1.1 positive evidence;
+    V1.2 positive evidence;
+    cross-version negative evidence;
+    mixed-identity negative evidence;
+
+    E2;
+    E1 boundary preservation;
+    V1.2 JobID;
+    cross-version JobID difference;
+    same-version JobID determinism;
+
+    I1;
+    authority graph;
+    no cycles;
+    no unresolved edges;
+
+    R2-G01;
+    R2-G02;
+    EI01;
+    PF-SC01;
+
+    no scientific semantic change;
+    firewall;
+    results-manifest closure.
+
+
+======================================================================
+87. REQUIRED VERDICTS
+======================================================================
+
+Report at minimum:
+
+    PARENT_V1_2_IDENTITY =
+        SUPPORTED / NOT_SUPPORTED
+
+    GENERATION_SEMANTICS_IDENTITY =
+        SUPPORTED / NOT_SUPPORTED
+
+    GENERATION_GOLDEN_IDENTITY =
+        SUPPORTED / NOT_SUPPORTED
+
+    STATUS_REACHABILITY_V2_IDENTITY =
+        SUPPORTED / NOT_SUPPORTED
+
+    HISTORICAL_E1_IDENTITY =
+        SUPPORTED / NOT_SUPPORTED
+
+    HISTORICAL_V1_1_EVIDENCE_ROOT =
+        SUPPORTED / NOT_SUPPORTED
+
+    TASK85C_H_IDENTITY =
+        SUPPORTED / NOT_SUPPORTED
+
+    H_SC01_REPRODUCED =
+        YES / NO
+
+    H_SC02_REPRODUCED =
+        YES / NO
+
+    H_SC01 =
+        CLOSED / OPEN
+
+    H_SC02 =
+        CLOSED / OPEN
+
+    V1_2_EVIDENCE_SCHEMA_COUNT =
+        <count>
+
+    V1_2_EVIDENCE_SCHEMA_VALID =
+        <count>
+
+    V1_2_EVIDENCE_SCHEMA_ROOT_SHA256 =
+        <sha256>
+
+    V1_1_POSITIVE_REGRESSION =
+        PASS / FAIL
+
+    V1_2_POSITIVE_REGRESSION =
+        PASS / FAIL
+
+    CROSS_VERSION_NEGATIVE_REGRESSION =
+        PASS / FAIL
+
+    MIXED_IDENTITY_NEGATIVE_REGRESSION =
+        PASS / FAIL
+
+    E2 =
+        FROZEN / NOT_FROZEN
+
+    E2_SHA256 =
+        <sha256>
+
+    E2_SCIENTIFIC_IDENTITY =
+        G1_V2_EXECUTABLE_CONTRACT_V1_2 / <other>
+
+    I1 =
+        FROZEN / NOT_FROZEN
+
+    I1_SHA256 =
+        <sha256>
+
+    AUTHORITY_GRAPH_CYCLES =
+        <count>
+
+    AUTHORITY_GRAPH_UNRESOLVED_EDGES =
+        <count>
+
+    R2_G01 =
+        CLOSED / OPEN
+
+    R2_G02 =
+        CLOSED / OPEN
+
+    EI01 =
+        CLOSED / OPEN
+
+    PF_SC01 =
+        CLOSED / OPEN
+
+    GENERATION_PATHS =
+        <resolved>/<total>
+
+    SCIENTIFIC_SEMANTIC_CHANGE =
+        <count>
+
+    PRODUCTION_ESCROW_KEY_CREATED =
+        YES / NO
+
+    PRODUCTION_BLIND_CONTROLS_CREATED =
+        <count>
+
+    PRODUCTION_NATURAL_CONTROLS_CREATED =
+        <count>
+
+    PRODUCTION_JOBIDS_CREATED =
+        <count>
+
+    PRODUCTION_DAG_CREATED =
+        YES / NO
+
+    SCIENTIFIC_FIREWALL =
+        INTACT / VIOLATED
+
+    TASK85C_H_RETRY_READY =
+        SUPPORTED / NOT_SUPPORTED.
+
+
+======================================================================
+88. SUCCESS GATE
+======================================================================
+
+TASK85C_H_RETRY_READY = SUPPORTED only if ALL hold:
+
+1. Parent V1.2 Markdown identity passes.
+2. Parent V1.2 machine identity passes.
+3. Generation semantics identity passes.
+4. Generation golden identity passes.
+5. Status/reachability V2 identity passes.
+6. Historical E1 identity passes.
+7. Historical V1.1 evidence root identity passes.
+8. Task85c-h failure identity passes.
+9. H-SC01 is reproduced.
+10. H-SC02 is reproduced.
+11. H-SC01 is CLOSED.
+12. H-SC02 is CLOSED.
+13. Exactly 15 required V1.2 evidence schemas exist.
+14. All 15 V1.2 schemas pass Draft 2020-12 validation.
+15. Schema branches satisfy required mutual exclusivity.
+16. Status/reachability compatibility passes.
+17. Evidence reason semantics remain compatible.
+18. Evidence payload scientific semantics remain compatible.
+19. Historical V1.1 positive regressions pass.
+20. V1.2 positive regressions pass.
+21. V1.1 evidence is rejected by V1.2 family where version-incompatible.
+22. V1.2 evidence is rejected by V1.1 family.
+23. Mixed evidence/JobID identity fails closed.
+24. New V1.2 evidence schema root is frozen.
+25. E2 is frozen.
+26. E2 binds scientific identity to V1.2.
+27. E2 preserves E1 blind/escrow/scientific-RNG boundary.
+28. V1.2 JobID fixture passes.
+29. Cross-version JobIDs differ as expected.
+30. Same-version JobID is deterministic.
+31. I1 is frozen.
+32. I1 binds V1.2 + E2 + V1.2 evidence root + V2 + generation semantics.
+33. Authority graph has zero cycles.
+34. Authority graph has zero unresolved normative edges.
+35. R2-G01 remains CLOSED.
+36. R2-G02 remains CLOSED.
+37. EI01 remains CLOSED.
+38. PF-SC01 remains CLOSED.
+39. Generation paths remain 26/26.
+40. Generation semantics SHA remains unchanged.
+41. Generation golden root remains unchanged.
+42. Candidate scientific design remains unchanged.
+43. PM/F2 semantics remain unchanged.
+44. Decision logic remains unchanged.
+45. Status/reachability SHA remains unchanged.
+46. SCIENTIFIC_SEMANTIC_CHANGE = 0.
+47. No production escrow key was created.
+48. Production blind controls created = 0.
+49. Production natural controls created = 0.
+50. Production JobIDs created = 0.
+51. Production DAG was not created.
+52. No confirmatory execution occurred.
+53. Voynich was not evaluated.
+54. Scientific firewall remains intact.
+55. Results-manifest/hash closure passes.
+
+
+======================================================================
+89. STOP CONDITIONS
+======================================================================
+
+TASK85C_I_PARENT_DEFECT_NOT_REPRODUCED
+
+if H-SC01 or H-SC02 cannot be reproduced from the frozen parent
+artifacts.
+
+
+TASK85C_I_SCOPE_EXPANDED
+
+if resolution requires changing scientific semantics outside
+evidence/execution-identity integration, including models,
+generation, metrics, gates or verdict logic.
+
+
+TASK85C_I_AUTHORITY_INTEGRATION_DEFECT_REMAINS
+
+if one or more normative V1.2 authority bindings remain mutually
+inconsistent after attempted repair.
+
+
+TASK85C_I_SCHEMA_VALIDATION_FAILED
+
+if the V1.2 evidence family cannot satisfy the required standard
+schema/status/mutual-exclusivity validation.
+
+
+TASK85C_I_EXECUTION_IDENTITY_VALIDATION_FAILED
+
+if E2 cannot uniquely and deterministically bind V1.2 scientific
+identity while preserving the E1 boundary.
+
+
+TASK85C_I_CROSS_ARTIFACT_VALIDATION_FAILED
+
+if I1/authority graph cannot produce a single acyclic V1.2 authority
+closure.
+
+
+TASK85C_I_UNEXPECTED_SCIENTIFIC_CHANGE
+
+if:
+
+    SCIENTIFIC_SEMANTIC_CHANGE > 0.
+
+
+TASK85C_I_SCIENTIFIC_FIREWALL_VIOLATION
+
+if prohibited production/confirmatory material is accessed or
+created.
+
+
+======================================================================
+90. SAME-CLASS DEFECT HANDLING
+======================================================================
+
+Do NOT terminate Task85c-i merely because the version-binding audit
+finds additional defects of the same class as H-SC01/H-SC02.
+
+For example:
+
+    another evidence registry contains literal V1.1;
+    a verifier config contains literal V1.1;
+    a DAG identity registry contains literal V1.1.
+
+If repairing it requires only coherent V1.2 identity integration:
+
+    assign finding ID;
+    add to audit;
+    repair;
+    add regression;
+    continue.
+
+The purpose of Task85c-i is to close this defect class as a whole.
+
+
+======================================================================
+91. TERMINAL MARKERS
+======================================================================
+
+Success:
+
+    G1V2_V1_2_EVIDENCE_EXECUTION_INTEGRATION_I1_FROZEN
+
+Parent defect not reproduced:
+
+    TASK85C_I_PARENT_DEFECT_NOT_REPRODUCED
+
+Scientific scope expanded:
+
+    TASK85C_I_SCIENTIFIC_SCOPE_EXPANDED
+
+Authority integration remains defective:
+
+    TASK85C_I_AUTHORITY_INTEGRATION_DEFECT_REMAINS
+
+Schema validation failure:
+
+    TASK85C_I_SCHEMA_VALIDATION_FAILED
+
+Execution identity validation failure:
+
+    TASK85C_I_EXECUTION_IDENTITY_VALIDATION_FAILED
+
+Cross-artifact validation failure:
+
+    TASK85C_I_CROSS_ARTIFACT_VALIDATION_FAILED
+
+Unexpected scientific change:
+
+    TASK85C_I_UNEXPECTED_SCIENTIFIC_CHANGE
+
+Firewall violation:
+
+    TASK85C_I_SCIENTIFIC_FIREWALL_VIOLATION.
+
+Exactly one terminal marker must be emitted.
+
+
+======================================================================
+92. SUCCESSFUL FINAL OUTPUT
+======================================================================
+
+On success print at minimum:
+
+    SCIENTIFIC_CONTRACT_VERSION =
+        G1_V2_EXECUTABLE_CONTRACT_V1_2
+
+    SCIENTIFIC_CONTRACT_MARKDOWN_SHA256 =
+        ec60bb23e55ce157fe954b5cafc63d22ab70ecec390822cb63f9ae273142c639
+
+    SCIENTIFIC_CONTRACT_MACHINE_SHA256 =
+        29e39e0c25dc8033f784480fdc537e3ede9eeb69baa0607c9f249d796d6b42dc
+
+    GENERATION_SEMANTICS_SHA256 =
+        45d533f8b83b24c77a96836fa5c2ef95f9b948003bd2ed725fc2ea97e010b310
+
+    GENERATION_GOLDEN_ROOT_SHA256 =
+        143954667073a2c10f1bd59ce98b9c93dd84b50632bb67ea80d0d92449480acb
+
+    H_SC01 =
+        CLOSED
+
+    H_SC02 =
+        CLOSED
+
+    V1_2_EVIDENCE_SCHEMA_COUNT =
+        15
+
+    V1_2_EVIDENCE_SCHEMA_ROOT_SHA256 =
+        <sha256>
+
+    EXECUTION_IDENTITY_AUTHORITY =
+        G1V2_EXECUTION_IDENTITY_ERRATUM_E2
+
+    E2_SHA256 =
+        <sha256>
+
+    E2_SCIENTIFIC_IDENTITY =
+        G1_V2_EXECUTABLE_CONTRACT_V1_2
+
+    INTEGRATION_AUTHORITY =
+        G1V2_V1_2_INTEGRATION_SUPPLEMENT_I1
+
+    I1_SHA256 =
+        <sha256>
+
+    AUTHORITY_GRAPH_CYCLES =
+        0
+
+    AUTHORITY_GRAPH_UNRESOLVED_EDGES =
+        0
+
+    V1_1_POSITIVE_REGRESSION =
+        PASS
+
+    V1_2_POSITIVE_REGRESSION =
+        PASS
+
+    CROSS_VERSION_NEGATIVE_REGRESSION =
+        PASS
+
+    MIXED_IDENTITY_NEGATIVE_REGRESSION =
+        PASS
+
+    R2_G01 =
+        CLOSED
+
+    R2_G02 =
+        CLOSED
+
+    EI01 =
+        CLOSED
+
+    PF_SC01 =
+        CLOSED
+
+    GENERATION_PATHS =
+        26/26
+
+    SCIENTIFIC_SEMANTIC_CHANGE =
+        0
+
+    SCIENTIFIC_FIREWALL =
+        INTACT
+
+    PRODUCTION_ESCROW_KEY_CREATED =
+        NO
+
+    PRODUCTION_BLIND_CONTROLS_CREATED =
+        0
+
+    PRODUCTION_NATURAL_CONTROLS_CREATED =
+        0
+
+    PRODUCTION_JOBIDS_CREATED =
+        0
+
+    PRODUCTION_DAG_CREATED =
+        NO
+
+    TASK85C_I_ARTIFACT_ROOT_SHA256 =
+        <sha256>
+
+    TASK85C_H_RETRY_READY =
+        SUPPORTED
+
+    NEXT_TASK =
+        Task85c-h
+
+    TERMINAL_MARKER =
+        G1V2_V1_2_EVIDENCE_EXECUTION_INTEGRATION_I1_FROZEN.
+
+
+======================================================================
+93. FAILURE OUTPUT
+======================================================================
+
+On failure print at minimum:
+
+    SCIENTIFIC_CONTRACT_VERSION =
+        G1_V2_EXECUTABLE_CONTRACT_V1_2
+
+    FAILURE_CLASS =
+        <exact class>
+
+    BLOCKING_FINDINGS =
+        <finding IDs>
+
+    H_SC01 =
+        CLOSED / OPEN
+
+    H_SC02 =
+        CLOSED / OPEN
+
+    SCIENTIFIC_SEMANTIC_CHANGE =
+        <count>
+
+    SCIENTIFIC_FIREWALL =
+        <state>
+
+    TASK85C_H_RETRY_READY =
+        NOT_SUPPORTED
+
+    TERMINAL_MARKER =
+        <exact terminal marker>.
+
+
+======================================================================
+94. DEFINITION OF DONE
+======================================================================
+
+Task85c-i is complete when V1.2 has one coherent evidence and
+execution-identity authority closure:
+
+    G1_V2_EXECUTABLE_CONTRACT_V1_2
+            │
+            ├── G1V2_GENERATION_SEMANTICS_V1
+            │
+            ├── G1_V2_STATUS_REACHABILITY_CONTRACT_V2
+            │
+            ├── G1V2_EXECUTION_IDENTITY_ERRATUM_E2
+            │       └── JobID scientific identity = V1.2
+            │
+            └── V1.2 EVIDENCE SCHEMA FAMILY
+                    └── evidence contract identity = V1.2
+
+bound by:
+
+    G1V2_V1_2_INTEGRATION_SUPPLEMENT_I1.
+
+For every future V1.2 production job:
+
+    scientific contract identity
+        =
+    JobID scientific identity
+        =
+    evidence contract identity
+        =
+    schema-family scientific identity
+        =
+    G1_V2_EXECUTABLE_CONTRACT_V1_2.
+
+At the same time:
+
+    scientific models remain unchanged;
+    generation remains unchanged;
+    RNG remains unchanged;
+    PM/F2 remain unchanged;
+    gates remain unchanged;
+    final decision logic remains unchanged;
+    E1 blindness boundary remains preserved.
+
+No production experiment has yet been materialized.
+
+After successful completion, repeat:
+
+    Task85c-h
+
+from its initial authority-consistency gate.
+
+Only after Task85c-h successfully implements and validates the complete
+production scientific layer may:
+
+    Task86C-v2-production-freeze
+
+be attempted again.
+

@@ -19,6 +19,10 @@ var ScientificStatuses = map[string]bool{
 	"GENERATION_NOT_REACHED": true, "STRUCTURAL_PASS": true,
 	"STRUCTURAL_FAIL": true, "STRUCTURAL_NOT_ASSESSABLE": true,
 	"EVIDENCE_COMPLETE": true,
+	"PASS":              true, "FAIL": true, "NOT_ASSESSABLE": true, "FIT_SUCCESS": true,
+	"COMPLEXITY_SUCCESS": true, "AGGREGATION_SUCCESS": true, "FIT_FAILURE": true,
+	"NUMERICAL_FAILURE": true, "INDUCTION_CAP": true, "GENERATION_FAILURE": true,
+	"PROTOCOL_VETO": true, "NOT_REACHED": true,
 }
 
 type Artifact struct {
@@ -75,7 +79,11 @@ func (r ScientificResult) Validate(j JobBundle) error {
 	if err := j.Validate(); err != nil {
 		return err
 	}
-	if r.SchemaVersion != SchemaVersion || r.ProducingJobID != j.JobID || r.CodeHash != j.CodeHash || r.ConfigHash != j.ConfigHash || r.Seed != j.Seed {
+	expected := SchemaVersion
+	if j.Work.Kind == "g1v2-science-v1_2_1" {
+		expected = SchemaVersionV121
+	}
+	if r.SchemaVersion != expected || r.ProducingJobID != j.JobID || r.CodeHash != j.CodeHash || r.ConfigHash != j.ConfigHash || r.Seed != j.Seed {
 		return fmt.Errorf("result identity/closure mismatch")
 	}
 	if strings.Join(r.InputHashes, ",") != strings.Join(j.InputHashes, ",") || strings.Join(r.DependencyHashes, ",") != strings.Join(j.DependencyHashes, ",") {

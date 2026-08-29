@@ -1,0 +1,10 @@
+change_id	artifact_or_rule	classification	scientific_bytes_or_semantics_changed	justification	status
+E01	scientific/opaque identity boundary	SCIENTIFIC_NORMATIVE_CLARIFICATION	NO	preserves V1.1 generators and RNG; separates identity roles	PASS
+E02	closed escrow truth record	BLINDNESS_NORMATIVE	NO	minimum existing truth needed for sealed lookup/unblind	PASS
+E03	domain-separated HMAC framing	INTEGRITY_NORMATIVE	NO	literal opaque bytes cannot affect metrics/verdict	PASS
+E04	32-byte OS CSPRNG escrow key	BLINDNESS_NORMATIVE	NO	independent of scientific RNG	PASS
+E05	collision abort	INTEGRITY_NORMATIVE	NO	prevents ambiguous lookup	PASS
+E06	blind ID and JobID role	EXECUTION_PROVENANCE	NO	concrete run identifiers only	PASS
+E07	R2-G01/G02 preservation	DOCUMENTATION	NO	retains prior machine-precedence resolution	PASS
+E08	parent artifacts	TRANSITIVE_HASH_ONLY	NO	unchanged and referenced by hash	PASS
+E09	unexpected scientific change	UNEXPECTED_SCIENTIFIC_CHANGE	NO	none found	PASS

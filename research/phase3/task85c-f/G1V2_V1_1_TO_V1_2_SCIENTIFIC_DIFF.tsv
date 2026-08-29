@@ -1,0 +1,13 @@
+area	V1.1	candidate_V1.2	classification	status
+BEFORE_TOKEN	EOS may be selected at length zero	condition on non-EOS admissible support	REQUIRED_PF_SC01_REPAIR	CANDIDATE_ONLY
+RNG boundary consumption	retry/reuse/skip not selected	one U53 from conditional support	REQUIRED_PF_SC01_REPAIR	CANDIDATE_ONLY
+zero admissible mass	unspecified	GENERATION_FAILURE before a draw	TRANSITIVE_CLARIFICATION	CANDIDATE_ONLY
+BOS/UNK roles	partially described	BOS never sampled; UNK emits U+FFFD	TRANSITIVE_CLARIFICATION	CANDIDATE_ONLY
+Generator B algorithm	algorithm names only	would require tables, ordering, counters and ties	UNEXPECTED_SCIENTIFIC_CHANGE	BLOCKED
+outcome ordering	UTF-8-sorted conflicts with explicit list	would require selecting precedence	UNEXPECTED_SCIENTIFIC_CHANGE	BLOCKED
+maximum length	length 64 without EOS fails; M5 supports up to 64	would require exact check timing per route	UNEXPECTED_SCIENTIFIC_CHANGE	BLOCKED
+M5 retries	successive counters at most 1024	would require exact attempt/draw allocation	UNEXPECTED_SCIENTIFIC_CHANGE	BLOCKED
+corpus serialization	ordered token abstraction only	would require exact delimiter/final-byte rule	UNEXPECTED_SCIENTIFIC_CHANGE	BLOCKED
+candidate registry	96b618ab324db77b8402081075241b275f8925c45cdab058ba741e4beed29b58	unchanged	TRANSITIVE_HASH_CHANGE	UNCHANGED
+PM/F2/decision rules	frozen	unchanged	TRANSITIVE_HASH_CHANGE	UNCHANGED
+E1	dbfb9a4a7101eed7006f751b9c4631b5f0286c3792f9777cc833c5dcfa42a3d3	unchanged	TRANSITIVE_HASH_CHANGE	UNCHANGED

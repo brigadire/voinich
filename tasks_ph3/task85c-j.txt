@@ -1,0 +1,2821 @@
+Task85c-j — G1-v2 M0 Additive-Smoothing Outcome-Space Resolution,
+Scientific Golden Repair and Contract V1.2.x Refreeze
+
+
+PURPOSE
+
+Resolve the scientific-contract defect discovered by Task85c-h:
+
+    H-SC03-M0-UNK-PROBABILITY-CONTRADICTION
+
+and produce one complete, internally consistent and executable
+scientific authority for M0 probability construction.
+
+Task85c-h demonstrated that the currently frozen authorities cannot
+simultaneously satisfy:
+
+    M0-FIT
+
+and:
+
+    M0-UNSEEN
+
+for the same M0 additive-alpha model.
+
+For the frozen DEVELOPMENT fixture:
+
+    tokens = ab, a
+    alpha = 1
+
+the mandatory inherited M0-FIT golden specifies:
+
+    p(a)   = 0.375
+    p(b)   = 0.250
+    p(EOS) = 0.375
+
+with:
+
+    denominator = 8.
+
+These probabilities sum to:
+
+    1.000
+
+and therefore leave:
+
+    p(UNK) = 0.
+
+At the same time:
+
+    M0-UNSEEN
+
+requires an unseen glyph mapped to UNK to have positive probability
+when:
+
+    alpha > 0.
+
+The V1.2 M0 definition independently specifies the outcome space:
+
+    {development glyphs, UNK, EOS}
+
+and additive-alpha smoothing.
+
+For the same fixture this gives:
+
+    counts:
+        a   = 2
+        b   = 1
+        UNK = 0
+        EOS = 2
+
+    number of outcomes = 4
+    observed event count = 5
+
+    denominator =
+        5 + alpha * 4
+        =
+        9
+
+and therefore:
+
+    p(a)   = 3/9
+    p(b)   = 2/9
+    p(UNK) = 1/9
+    p(EOS) = 3/9.
+
+The two constructions cannot both be normative.
+
+The choice changes:
+
+    fitted-model bytes;
+    predictive probabilities;
+    RNG-to-symbol generation mapping;
+    generated corpora;
+    complexity inputs where dependent;
+    candidate comparisons;
+    potentially minimality and final verdict.
+
+Therefore Task85c-j is a scientific-contract repair.
+
+It MUST resolve and freeze the scientific semantics before
+Task85c-h implementation resumes.
+
+Task85c-j MUST NOT implement the production scientific executor.
+
+Task85c-j MUST NOT perform production materialization.
+
+Task85c-j MUST NOT inspect confirmatory outcomes or Voynich data.
+
+
+======================================================================
+1. PARENT SCIENTIFIC AUTHORITY
+======================================================================
+
+Current parent scientific contract:
+
+    G1_V2_EXECUTABLE_CONTRACT_V1_2
+
+Markdown SHA-256:
+
+    ec60bb23e55ce157fe954b5cafc63d22ab70ecec390822cb63f9ae273142c639
+
+Machine JSON SHA-256:
+
+    29e39e0c25dc8033f784480fdc537e3ede9eeb69baa0607c9f249d796d6b42dc
+
+
+======================================================================
+2. CURRENT GENERATION AUTHORITY
+======================================================================
+
+Generation semantics:
+
+    G1V2_GENERATION_SEMANTICS_V1
+
+SHA-256:
+
+    45d533f8b83b24c77a96836fa5c2ef95f9b948003bd2ed725fc2ea97e010b310
+
+Generation state machine SHA-256:
+
+    aea10f4b117488e5ed60e259b392d32248ba0c18de89e91dd3f9f62b7add406a
+
+Current generation golden root:
+
+    143954667073a2c10f1bd59ce98b9c93dd84b50632bb67ea80d0d92449480acb
+
+Generation serialization SHA-256:
+
+    c1aaf434b8bd3e5c4284d9a98ee86820b863c98331d03936e40efb6bf2b23974
+
+
+======================================================================
+3. CURRENT V1.2 INTEGRATION AUTHORITY
+======================================================================
+
+Integration authority:
+
+    G1V2_V1_2_INTEGRATION_SUPPLEMENT_I1
+
+Machine SHA-256:
+
+    35ecf0bfc9a9c27bb63d33b074bc399dd9256692620ee06a54e592e0d1e867b2
+
+Execution identity:
+
+    G1V2_EXECUTION_IDENTITY_ERRATUM_E2
+
+Machine SHA-256:
+
+    cfaa8c1cb787380baca5a391d077e5d2b855df8bba767ad5b601457e06eb0070
+
+Evidence schema root:
+
+    39c4c3bee96ee58ddd38552cbb16fdc2f994a390b86a6645e1420c3cb67eca81
+
+Status/reachability:
+
+    G1_V2_STATUS_REACHABILITY_CONTRACT_V2
+
+SHA-256:
+
+    fc1ca07d8123ed5d44bc24ecba98fca54d5b05781ecbaba820d44079319038b9
+
+
+======================================================================
+4. TASK85C-I PARENT
+======================================================================
+
+Task85c-i artifact root:
+
+    4dca7e3bf3d28ad1852ac0ebfee3ae6f4e4410227a1e57d491587874a126f84c
+
+Task85c-i results manifest SHA-256:
+
+    fdfbcdfdb54f8eed538185a612f9e26aaab2e634d64674526cb4b7734979bcba
+
+Task85c-i terminal marker:
+
+    G1V2_V1_2_EVIDENCE_EXECUTION_INTEGRATION_I1_FROZEN.
+
+
+======================================================================
+5. TASK85C-H DEFECT AUTHORITY
+======================================================================
+
+Task85c-h artifact root:
+
+    fd884d6bd386ef8e19b4b6c83b654d61a936bade427bbdcca41bd88fbe164355
+
+Task85c-h finding:
+
+    H-SC03-M0-UNK-PROBABILITY-CONTRADICTION
+
+Task85c-h terminal marker:
+
+    TASK85C_H_SCIENTIFIC_CONTRACT_DEFECT.
+
+The failure package MUST be treated as immutable provenance.
+
+
+======================================================================
+6. H-SC03 MUST FIRST BE REPRODUCED
+======================================================================
+
+Before changing any scientific artifact, independently reproduce:
+
+    H-SC03-M0-UNK-PROBABILITY-CONTRADICTION.
+
+Use the smallest frozen fixture:
+
+    DEVELOPMENT tokens:
+        ab
+        a
+
+    alpha:
+        1.
+
+Reproduce the mandatory inherited M0-FIT result:
+
+    denominator = 8
+
+    p(a)   = 0.375
+    p(b)   = 0.250
+    p(EOS) = 0.375
+
+    stated mass = 1.000
+    remaining UNK mass = 0.
+
+Also reproduce the mandatory M0-UNSEEN requirement:
+
+    alpha > 0
+        →
+    p(UNK) > 0.
+
+Also independently reconstruct the V1.2 additive-alpha result over:
+
+    {a,b,UNK,EOS}
+
+as:
+
+    denominator = 9
+
+    p(a)   = 1/3
+    p(b)   = 2/9
+    p(UNK) = 1/9
+    p(EOS) = 1/3.
+
+If H-SC03 cannot be reproduced from frozen parent artifacts:
+
+    STOP TASK85C_J_PARENT_DEFECT_NOT_REPRODUCED.
+
+
+======================================================================
+7. DEFECT CLASSIFICATION
+======================================================================
+
+Classify H-SC03 explicitly as:
+
+    SCIENTIFIC_CONTRACT_DEFECT.
+
+It is NOT:
+
+    an implementation defect;
+    an evidence-version defect;
+    an execution-identity defect;
+    a serializer defect;
+    a harmless golden typo
+
+unless that conclusion can be proven without making a scientific
+choice.
+
+The repair changes normative M0 probability semantics/goldens and
+therefore requires a scientific refreeze.
+
+
+======================================================================
+8. REPAIR SCOPE
+======================================================================
+
+Task85c-j is authorized to modify ONLY scientific semantics and
+transitive artifacts necessary to make M0 additive smoothing
+unambiguous and executable.
+
+Authorized scope:
+
+    M0 outcome-space definition;
+    M0 additive-alpha denominator;
+    M0 count construction;
+    M0 UNK semantics;
+    M0 EOS semantics;
+    M0 probability normalization;
+    M0 unseen-event probability;
+    M0 fitted-model probability representation;
+    M0 predictive use of probabilities;
+    M0 generation use of probabilities;
+    M0 Generator A/B inputs;
+    M0 complexity inputs if transitively affected;
+    M0 goldens;
+    M0-related generation goldens;
+    transitive scientific hashes;
+    transitive integration bindings.
+
+Do not alter unrelated scientific semantics.
+
+
+======================================================================
+9. OUT OF SCOPE
+======================================================================
+
+Task85c-j MUST NOT redesign:
+
+    M1;
+    M2;
+    M3;
+    M4;
+    M5;
+
+    candidate grid;
+    corpus split;
+    candidate-selection rule;
+
+    PM1;
+    PM2;
+    PM4;
+    PM5;
+    PM6;
+
+    F2 definitions;
+    structural metrics;
+    structural families;
+
+    threshold methodology;
+    multiplicity;
+    bootstrap counts;
+    permutation counts;
+
+    complexity methodology except unavoidable M0 transitive values;
+
+    equivalence criterion;
+    minimality;
+    final verdict logic;
+
+    status/reachability semantics;
+
+    evidence semantic structure;
+
+    blind-control architecture;
+    natural-control architecture;
+
+    production DAG cardinality.
+
+
+======================================================================
+10. PRIMARY SCIENTIFIC QUESTION
+======================================================================
+
+Freeze one answer to:
+
+    What is the complete categorical outcome space to which
+    M0 additive-alpha smoothing is applied?
+
+The answer must explicitly determine whether:
+
+    UNK
+
+is part of the normalized M0 categorical distribution.
+
+
+======================================================================
+11. REQUIRED CONSISTENCY INVARIANT
+======================================================================
+
+The final M0 semantics must satisfy simultaneously:
+
+    probabilities sum to exactly one under the frozen numerical
+    semantics;
+
+    every outcome included in additive-alpha smoothing receives its
+    mathematically implied probability;
+
+    UNK unseen behavior agrees with fitting;
+
+    prediction agrees with fitted-model serialization;
+
+    generation agrees with the same fitted distribution;
+
+    Generator A and Generator B use scientifically equivalent M0
+    distributions;
+
+    no separate hidden normalization exists.
+
+
+======================================================================
+12. EXPECTED RESOLUTION CANDIDATE
+======================================================================
+
+The parent V1.2 definition and M0-UNSEEN strongly imply the following
+candidate resolution:
+
+    M0 outcome space =
+        DEVELOPMENT ordinary glyph outcomes
+        + UNK
+        + EOS.
+
+For alpha > 0:
+
+    every member of that outcome space receives additive-alpha
+    pseudocount alpha.
+
+Thus for outcome set V and event counts c(x):
+
+    denominator =
+        sum_x c(x)
+        +
+        alpha * |V|
+
+and:
+
+    p(x) =
+        (c(x) + alpha)
+        /
+        denominator.
+
+For the H-SC03 fixture:
+
+    V = {a,b,UNK,EOS}
+
+    denominator = 9
+
+    p(a)   = 3/9
+    p(b)   = 2/9
+    p(UNK) = 1/9
+    p(EOS) = 3/9.
+
+This is the expected repair candidate.
+
+However, Task85c-j MUST validate it against the entire frozen M0
+scientific surface before freezing it.
+
+Do not select it merely because it repairs one golden.
+
+
+======================================================================
+13. NO POST-HOC PERFORMANCE CHOICE
+======================================================================
+
+Do NOT compare competing M0 interpretations using:
+
+    blind controls;
+    natural confirmatory controls;
+    Voynich;
+    final recovery performance;
+    downstream verdict quality.
+
+The resolution must follow internal scientific consistency and the
+pre-existing design intent, not empirical preference.
+
+
+======================================================================
+14. COMPLETE M0 SCIENTIFIC SURFACE AUDIT
+======================================================================
+
+Audit every normative M0-related rule and golden transitively
+reachable from V1.2.
+
+Do not stop after finding the known M0-FIT fixture.
+
+The audit must cover at minimum:
+
+    vocabulary construction;
+    UNK mapping;
+    EOS counting;
+    BOS treatment;
+    additive-alpha smoothing;
+    fitting;
+    fitted-model serialization;
+    unseen prediction;
+    VALIDATION prediction;
+    HELDOUT prediction;
+    PM inputs;
+    generation;
+    Generator A;
+    Generator B;
+    categorical ordering;
+    admissible-support filtering;
+    generation renormalization;
+    token termination;
+    complexity;
+    model-bit accounting;
+    evidence fixtures;
+    model goldens;
+    generation goldens.
+
+
+======================================================================
+15. M0 NORMATIVE OCCURRENCE INVENTORY
+======================================================================
+
+Create:
+
+    G1V2_M0_NORMATIVE_OCCURRENCE_INVENTORY.tsv
+
+For every M0-related normative occurrence record:
+
+    artifact;
+    artifact SHA;
+    section/path/key;
+    rule/golden ID;
+    semantic role;
+    current behavior;
+    H-SC03 relevance;
+    repair required;
+    resulting authority.
+
+
+======================================================================
+16. SAME-CLASS DEFECT POLICY
+======================================================================
+
+If the audit finds additional M0 contradictions caused by the same
+outcome-space/UNK/additive-smoothing defect:
+
+    assign H-SC04, H-SC05, ... finding IDs;
+    record;
+    resolve;
+    add regressions;
+    continue.
+
+Do NOT create Task85c-k merely because the same M0 defect appears in
+another golden or registry.
+
+
+======================================================================
+17. EXPANDED SCIENTIFIC DEFECT POLICY
+======================================================================
+
+If the audit discovers a scientifically consequential ambiguity
+outside the authorized M0 probability surface:
+
+    record the smallest reproducer;
+    do not resolve it here;
+    STOP TASK85C_J_SCIENTIFIC_SCOPE_EXPANDED.
+
+Examples:
+
+    M1 smoothing contradiction;
+    M3 search ambiguity;
+    PM threshold contradiction;
+    F2 formula ambiguity;
+    final-decision ambiguity.
+
+
+======================================================================
+18. M0 VOCABULARY
+======================================================================
+
+Freeze the exact M0 vocabulary construction.
+
+It must specify:
+
+    ordinary DEVELOPMENT glyphs;
+    UNK;
+    EOS;
+    BOS role.
+
+Explicitly state whether BOS is:
+
+    context-only
+
+and therefore not an M0 predicted categorical outcome.
+
+No implementer inference is permitted.
+
+
+======================================================================
+19. M0 ORDINARY GLYPH ORDER
+======================================================================
+
+Freeze ordinary glyph ordering using the already frozen V1.2
+canonical ordering.
+
+Do not alter ordering merely because probabilities are repaired.
+
+
+======================================================================
+20. SPECIAL-SYMBOL ORDER
+======================================================================
+
+Freeze the exact categorical position of:
+
+    UNK
+    EOS
+
+relative to ordinary glyphs.
+
+The order must be compatible with the frozen generation semantics and
+must uniquely determine:
+
+    inverse-CDF boundaries;
+    exponential-race outcome enumeration;
+    fitted-model serialization;
+    canonical probability vectors.
+
+
+======================================================================
+21. M0 EVENT COUNTING
+======================================================================
+
+Freeze exact event counting.
+
+For each DEVELOPMENT token define exactly which events contribute to:
+
+    ordinary glyph counts;
+    EOS count;
+    UNK count.
+
+For DEVELOPMENT fitting, if all DEVELOPMENT glyphs define the ordinary
+vocabulary:
+
+    observed UNK count is normally 0
+
+but UNK still receives alpha pseudocount if it belongs to the
+categorical outcome space.
+
+State this explicitly.
+
+
+======================================================================
+22. EOS COUNT
+======================================================================
+
+Freeze:
+
+    one EOS event per fitted token
+
+if that is the existing V1.2 semantics.
+
+Verify this against all M0 goldens.
+
+
+======================================================================
+23. UNK COUNT
+======================================================================
+
+Distinguish:
+
+    observed UNK count
+
+from:
+
+    UNK pseudocount.
+
+Do not incorrectly infer:
+
+    observed UNK count = 0
+        →
+    p(UNK) = 0
+
+when additive-alpha smoothing includes UNK.
+
+
+======================================================================
+24. ADDITIVE-ALPHA DENOMINATOR
+======================================================================
+
+Freeze an exact machine-readable denominator equation.
+
+For outcome space V:
+
+    D =
+        N
+        +
+        alpha * |V|
+
+where N is the exact frozen number of fitted categorical events,
+if this is the selected resolution.
+
+No golden may use a denominator derived from a different implicit
+outcome-space cardinality.
+
+
+======================================================================
+25. ALPHA DOMAIN
+======================================================================
+
+Audit and preserve the frozen alpha candidate/grid semantics.
+
+Do not change alpha values to repair H-SC03.
+
+H-SC03 must be resolved through coherent probability semantics, not
+retuning.
+
+
+======================================================================
+26. ALPHA = 0
+======================================================================
+
+Explicitly define the alpha=0 boundary if alpha=0 is permitted anywhere
+in the frozen candidate grid or test surface.
+
+Specify:
+
+    unseen UNK probability;
+    zero-count outcomes;
+    generation behavior;
+    prediction behavior.
+
+If alpha=0 is impossible by frozen design, state that and test the
+registry accordingly.
+
+
+======================================================================
+27. POSITIVE ALPHA
+======================================================================
+
+For every:
+
+    alpha > 0
+
+freeze whether:
+
+    p(UNK) > 0.
+
+The M0-FIT and M0-UNSEEN rules must agree.
+
+
+======================================================================
+28. NORMALIZATION
+======================================================================
+
+Require under frozen binary64/Neumaier semantics that the categorical
+probability vector is normalized according to the contract.
+
+Define how any numerical normalization check is performed.
+
+Do not introduce an extra scientific renormalization step unless
+already required by frozen semantics.
+
+
+======================================================================
+29. FITTED MODEL
+======================================================================
+
+Freeze the M0 fitted-model representation consistently with the
+repaired probability construction.
+
+The model must preserve enough information to reproduce:
+
+    prediction;
+    generation;
+    complexity;
+    evidence.
+
+No downstream handler may reconstruct a different distribution.
+
+
+======================================================================
+30. PREDICTION
+======================================================================
+
+Freeze prediction for:
+
+    known glyph;
+    unseen glyph mapped to UNK;
+    EOS.
+
+The same fitted probability vector must be authoritative.
+
+
+======================================================================
+31. UNSEEN MAPPING
+======================================================================
+
+Explicitly preserve the frozen rule:
+
+    non-DEVELOPMENT glyph
+        →
+    UNK
+
+where applicable.
+
+Prediction after mapping must use:
+
+    p(UNK)
+
+from the fitted M0 model.
+
+
+======================================================================
+32. VALIDATION/HELDOUT
+======================================================================
+
+Audit M0 behavior when VALIDATION or HELDOUT contains glyphs absent
+from DEVELOPMENT.
+
+Require one deterministic result.
+
+No zero-probability accidental path may coexist with the frozen
+positive-alpha unseen rule.
+
+
+======================================================================
+33. PM TRANSITIVE AUDIT
+======================================================================
+
+Determine which PM values consume M0 probabilities.
+
+Do NOT change PM definitions.
+
+Update only M0-derived expected golden values transitively changed by
+the repaired fitted model.
+
+Record each such change.
+
+
+======================================================================
+34. GENERATION
+======================================================================
+
+Audit M0 generation against the repaired fitted distribution.
+
+Generation must use the same scientific probabilities as prediction,
+subject only to the already frozen V1.2 generation-state admissibility
+rules.
+
+
+======================================================================
+35. ADMISSIBLE-SUPPORT FILTERING
+======================================================================
+
+Preserve V1.2 generation semantics:
+
+    filter admissible outcomes;
+    preserve frozen order;
+    renormalize once
+
+where state constraints require it.
+
+Do not confuse this generation-time conditional renormalization with
+M0 fitting normalization.
+
+
+======================================================================
+36. GENERATOR A
+======================================================================
+
+Recompute all M0 Generator A goldens transitively affected by the M0
+probability repair.
+
+Algorithm remains:
+
+    direct inverse-CDF
+
+as already frozen.
+
+Do not change Generator A algorithm.
+
+
+======================================================================
+37. GENERATOR B
+======================================================================
+
+Recompute all M0 Generator B goldens transitively affected by the M0
+probability repair.
+
+Algorithm remains the frozen independent:
+
+    fully ordered exponential race
+
+for M0.
+
+Do not change Generator B algorithm.
+
+
+======================================================================
+38. GENERATOR INDEPENDENCE
+======================================================================
+
+Require:
+
+    Generator B does not call Generator A.
+
+The repair may alter shared scientific probability input, but must not
+collapse the two generation implementations into one algorithm.
+
+
+======================================================================
+39. RNG SEMANTICS
+======================================================================
+
+Do NOT change:
+
+    G1V2-RNG-1;
+    root RNG seed;
+    domain separation;
+    U53 construction;
+    draw indexing;
+    RNG consumption rules.
+
+The mapping from an existing draw to an M0 outcome may change because
+the probability vector changed.
+
+That is an expected transitive scientific consequence.
+
+
+======================================================================
+40. PF-SC01 AUDIT
+======================================================================
+
+Re-run PF-SC01 under the repaired M0 probability semantics.
+
+Do not assume its previously frozen expected output remains unchanged.
+
+Determine whether PF-SC01:
+
+    is unaffected;
+
+or:
+
+    changes transitively because its M0 categorical probabilities
+    change.
+
+If affected, update its expected scientific result explicitly as part
+of the same scientific refreeze.
+
+Do NOT preserve the old expected `d` merely for backward compatibility
+if the repaired M0 model mathematically implies another result.
+
+
+======================================================================
+41. GENERATION PATH AUDIT
+======================================================================
+
+Audit all:
+
+    26 generation paths
+
+for dependence on the repaired M0 probability construction.
+
+Expected:
+
+    M1–M5 algorithmic semantics unchanged.
+
+M0-derived golden bytes may change.
+
+Report:
+
+    GENERATION_PATHS_AUDITED = 26/26.
+
+
+======================================================================
+42. CORPUS SERIALIZATION
+======================================================================
+
+Do NOT change canonical corpus serialization:
+
+    NFC UTF-8;
+    one token per line;
+    LF after every token including final token.
+
+Only generated token content may change transitively.
+
+
+======================================================================
+43. COMPLEXITY AUDIT
+======================================================================
+
+Determine whether M0 model-bit complexity depends on:
+
+    number of categorical outcomes;
+    probability parameters;
+    vocabulary cardinality.
+
+If the corrected explicit inclusion of UNK changes frozen M0
+complexity values, update the affected goldens transitively.
+
+Do not redesign the complexity formula.
+
+
+======================================================================
+44. DESCRIPTION LENGTH AUDIT
+======================================================================
+
+Recompute disposable M0 description-length goldens if changed by:
+
+    fitted-model complexity;
+    HELDOUT PM1.
+
+Do not alter:
+
+    description length =
+        complexity + HELDOUT PM1.
+
+
+======================================================================
+45. CANDIDATE GRID
+======================================================================
+
+Require exact identity of the frozen:
+
+    43 candidate specifications.
+
+Task85c-j MUST NOT add/remove candidates.
+
+
+======================================================================
+46. MODEL-SELECTION RULE
+======================================================================
+
+Require unchanged:
+
+    fit DEVELOPMENT;
+    select by smallest VALIDATION PM2;
+    then complexity;
+    then candidate ID;
+    no refit;
+    HELDOUT evaluation.
+
+M0 probability repair may change numerical results in future execution,
+but not the selection rule.
+
+
+======================================================================
+47. NO DOWNSTREAM THRESHOLD CALIBRATION
+======================================================================
+
+Do NOT recompute production DEVELOPMENT calibration thresholds.
+
+Task85c-j repairs the scientific contract before production
+materialization.
+
+Any small calculations required for goldens are:
+
+    CONTRACT_VALIDATION_ONLY.
+
+
+======================================================================
+48. GOLDEN CLASSIFICATION
+======================================================================
+
+Classify every existing M0-related golden as:
+
+    UNAFFECTED
+    TRANSITIVELY_CHANGED
+    DEFECTIVE_AND_REPLACED
+    OBSOLETE_BY_REPAIR.
+
+No M0 golden may be silently dropped.
+
+
+======================================================================
+49. GOLDEN DIFF
+======================================================================
+
+Create:
+
+    G1V2_M0_GOLDEN_DIFF.tsv
+
+with at least:
+
+    golden_id;
+    old artifact;
+    old expected value/hash;
+    new expected value/hash;
+    classification;
+    reason;
+    scientific consequence.
+
+
+======================================================================
+50. M0-FIT PERMANENT REGRESSION
+======================================================================
+
+Create a permanent corrected regression for:
+
+    tokens = ab,a
+    alpha = 1.
+
+If the expected resolution is confirmed, require exactly:
+
+    outcomes:
+        a
+        b
+        UNK
+        EOS
+
+    counts:
+        a   = 2
+        b   = 1
+        UNK = 0
+        EOS = 2
+
+    denominator:
+        9
+
+    probabilities:
+        a   = 3/9
+        b   = 2/9
+        UNK = 1/9
+        EOS = 3/9.
+
+Record canonical binary64/canonical-decimal values according to the
+frozen numerical contract.
+
+
+======================================================================
+51. M0-UNSEEN PERMANENT REGRESSION
+======================================================================
+
+For the same fitted model, provide an unseen glyph not in DEVELOPMENT.
+
+Require:
+
+    glyph → UNK
+
+and for alpha=1:
+
+    predicted probability = 1/9
+
+if the expected resolution is frozen.
+
+
+======================================================================
+52. NORMALIZATION REGRESSION
+======================================================================
+
+Require:
+
+    sum of M0 categorical probabilities = 1
+
+under the frozen summation semantics.
+
+Test multiple vocabulary sizes and alpha values.
+
+
+======================================================================
+53. EMPTY-COUNT OUTCOME REGRESSION
+======================================================================
+
+Test an outcome with:
+
+    observed count = 0
+
+and:
+
+    alpha > 0.
+
+Require positive probability exactly according to the frozen formula.
+
+
+======================================================================
+54. EOS REGRESSION
+======================================================================
+
+Provide multi-token fixtures verifying exact EOS count and probability.
+
+Ensure EOS and UNK cannot accidentally share or omit pseudocounts.
+
+
+======================================================================
+55. VOCABULARY-SIZE REGRESSION
+======================================================================
+
+Use multiple DEVELOPMENT vocabularies.
+
+Verify denominator changes with the complete frozen outcome-space
+cardinality, including special predicted outcomes.
+
+
+======================================================================
+56. UNSEEN VALIDATION REGRESSION
+======================================================================
+
+Construct DEVELOPMENT/VALIDATION fixture where VALIDATION contains a
+glyph absent from DEVELOPMENT.
+
+Require deterministic:
+
+    map to UNK
+        →
+    positive probability for alpha > 0.
+
+
+======================================================================
+57. UNSEEN HELDOUT REGRESSION
+======================================================================
+
+Repeat for HELDOUT.
+
+Require the same fitted-model semantics.
+
+
+======================================================================
+58. GENERATION REGRESSIONS
+======================================================================
+
+For M0 create fixed-RNG vectors testing draws:
+
+    below first CDF boundary;
+    exactly adjacent to representable boundary cases where meaningful;
+    inside each ordinary-glyph interval;
+    inside UNK interval where admissible;
+    inside EOS interval where admissible;
+    near 1.
+
+Test both Generator A and Generator B according to their respective
+algorithms.
+
+
+======================================================================
+59. GENERATION STATE REGRESSIONS
+======================================================================
+
+Verify states where UNK or EOS may be:
+
+    admissible;
+    inadmissible
+
+according to frozen V1.2 generation semantics.
+
+Conditional filtering must produce exactly the frozen one-time
+renormalization.
+
+
+======================================================================
+60. PROPERTY TESTS
+======================================================================
+
+Run broad deterministic property tests over M0.
+
+At minimum vary:
+
+    vocabulary size;
+    token count;
+    token lengths;
+    alpha;
+    zero-count outcomes;
+    unseen VALIDATION glyphs;
+    unseen HELDOUT glyphs.
+
+Properties include:
+
+    probabilities nonnegative;
+    normalization;
+    positive alpha → positive probability for every smoothed outcome;
+    prediction/generation share fitted probabilities;
+    deterministic serialization.
+
+
+======================================================================
+61. TWO INDEPENDENT IMPLEMENTATIONS
+======================================================================
+
+Implement the repaired M0 probability construction independently in
+at least two implementations/languages.
+
+They must independently derive:
+
+    counts;
+    outcome order;
+    denominator;
+    probability vector;
+    unseen probability;
+    representative predictive values;
+    representative generation boundaries.
+
+Require exact agreement under the frozen numerical representation.
+
+
+======================================================================
+62. SECOND-IMPLEMENTER CHALLENGE
+======================================================================
+
+Give the proposed repaired authority to a second implementation path.
+
+Ask explicitly:
+
+    Is UNK included in the M0 normalized outcome space?
+
+    Does UNK receive alpha when observed count is zero?
+
+    Does EOS receive alpha?
+
+    What is N?
+
+    What is |V|?
+
+    What is the denominator?
+
+    What happens to an unseen VALIDATION glyph?
+
+    What probabilities are used by generation?
+
+Success requires:
+
+    M0_UNSTATED_SCIENTIFIC_CHOICES = 0.
+
+
+======================================================================
+63. CONTRACT VERSIONING
+======================================================================
+
+Because H-SC03 changes a normative scientific golden/probability
+interpretation, do NOT silently mutate:
+
+    G1_V2_EXECUTABLE_CONTRACT_V1_2.
+
+Issue a new immutable scientific revision.
+
+Preferred version:
+
+    G1_V2_EXECUTABLE_CONTRACT_V1_2_1
+
+if the repository versioning convention permits patch scientific
+revisions.
+
+Alternative:
+
+    G1_V2_EXECUTABLE_CONTRACT_V1_3
+
+only if existing contract-version rules require integer minor
+progression.
+
+The chosen versioning rule must be documented.
+
+Do NOT overwrite V1.2 in place.
+
+
+======================================================================
+64. VERSIONING PRINCIPLE
+======================================================================
+
+The new revision must state explicitly:
+
+    parent =
+        G1_V2_EXECUTABLE_CONTRACT_V1_2
+
+    scientific change =
+        M0 additive-smoothing outcome-space consistency repair
+
+    trigger =
+        H-SC03-M0-UNK-PROBABILITY-CONTRADICTION.
+
+Do not claim:
+
+    SCIENTIFIC_SEMANTIC_CHANGE = 0.
+
+This task intentionally performs a narrowly scoped scientific semantic
+repair.
+
+Instead report its exact bounded scope.
+
+
+======================================================================
+65. SCIENTIFIC CHANGE COUNT
+======================================================================
+
+Create:
+
+    G1V2_TASK85C_J_SCIENTIFIC_CHANGE.tsv
+
+listing every normative scientific change.
+
+Success requires:
+
+    every change traceable to H-SC03 or a same-class M0 consequence;
+    unrelated scientific changes = 0.
+
+
+======================================================================
+66. SELF-CONTAINED CONTRACT
+======================================================================
+
+The new scientific revision must be executable without requiring an
+implementer to infer the corrected M0 semantics from Task85c-j prose.
+
+Update all necessary machine-readable scientific authorities so that
+a fresh implementer sees one coherent rule.
+
+
+======================================================================
+67. MACHINE AUTHORITY
+======================================================================
+
+The new machine contract must explicitly encode the repaired M0
+outcome-space and additive-smoothing semantics.
+
+Do not rely solely on Markdown explanation.
+
+
+======================================================================
+68. M0 MACHINE SEMANTICS
+======================================================================
+
+Machine authority must determine at minimum:
+
+    predicted outcome construction;
+    ordinary outcome ordering;
+    UNK inclusion;
+    EOS inclusion;
+    BOS exclusion/context role;
+    event-count definition;
+    pseudocount rule;
+    denominator;
+    unseen mapping;
+    probability representation.
+
+
+======================================================================
+69. GOLDEN SUITE REVISION
+======================================================================
+
+Issue a new immutable golden suite/root incorporating corrected M0
+goldens and all transitive expected changes.
+
+Historical golden root:
+
+    143954667073a2c10f1bd59ce98b9c93dd84b50632bb67ea80d0d92449480acb
+
+remains provenance and MUST NOT be overwritten.
+
+
+======================================================================
+70. GENERATION SEMANTICS VERSIONING
+======================================================================
+
+Determine whether:
+
+    G1V2_GENERATION_SEMANTICS_V1
+
+itself contains an incorrect M0 probability definition or merely
+consumes the fitted distribution.
+
+If its normative algorithm is unchanged and only the upstream fitted
+M0 probability vector changes:
+
+    preserve its semantic version and hash if bytes are unchanged.
+
+If it contains normative M0 values/rules that must change:
+
+    issue a new immutable generation-semantics revision.
+
+Do not change it unnecessarily.
+
+
+======================================================================
+71. GENERATION STATE MACHINE
+======================================================================
+
+Preserve the generation state machine unless H-SC03 logically requires
+a change.
+
+Expected:
+
+    state-machine semantics unchanged.
+
+Any state-machine change requires explicit justification.
+
+
+======================================================================
+72. SERIALIZATION AUTHORITY
+======================================================================
+
+Preserve generation serialization unless affected by an actual
+normative contradiction.
+
+Expected:
+
+    serialization unchanged.
+
+
+======================================================================
+73. EVIDENCE SCHEMAS
+======================================================================
+
+Audit the V1.2 evidence schemas for literal scientific contract-version
+binding.
+
+The current V1.2 evidence family requires:
+
+    G1_V2_EXECUTABLE_CONTRACT_V1_2.
+
+A new scientific contract version therefore requires a corresponding
+new evidence binding before Task85c-h can emit evidence under the new
+contract.
+
+Do not recreate H-SC01.
+
+
+======================================================================
+74. EVIDENCE SCHEMA REVISION
+======================================================================
+
+If the new contract version differs from V1.2, create a versioned
+evidence schema family/root compatible with the new scientific
+contract.
+
+Scientific evidence payload semantics should remain unchanged except
+for:
+
+    scientific contract-version binding
+
+unless H-SC03 transitively requires otherwise.
+
+Preserve historical V1.2 schemas.
+
+
+======================================================================
+75. EXECUTION IDENTITY REVISION
+======================================================================
+
+E2 binds JobID scientific identity to:
+
+    G1_V2_EXECUTABLE_CONTRACT_V1_2.
+
+A new scientific contract version therefore requires a new immutable
+execution-identity integration revision.
+
+Do not recreate H-SC02.
+
+
+======================================================================
+76. E3 OR SUCCESSOR
+======================================================================
+
+Issue a successor such as:
+
+    G1V2_EXECUTION_IDENTITY_ERRATUM_E3
+
+binding:
+
+    jobid.scientific_identity_version =
+        <new scientific contract version>.
+
+Preserve all E2/E1 scientific boundaries:
+
+    G1V2-RNG-1 unchanged;
+    blind ID opaque;
+    escrow independent of science;
+    scientific identity independent of escrow key;
+    scientific identity independent of blind-ID bytes.
+
+
+======================================================================
+77. INTEGRATION SUPPLEMENT REVISION
+======================================================================
+
+I1 binds V1.2 + E2 + V1.2 evidence schemas.
+
+Therefore issue a new immutable integration supplement, for example:
+
+    G1V2_V1_2_1_INTEGRATION_SUPPLEMENT_I2
+
+or corresponding versioned name.
+
+It must bind:
+
+    new scientific contract;
+    current generation semantics;
+    current generation goldens;
+    status/reachability V2;
+    new execution identity authority;
+    new evidence schema root.
+
+
+======================================================================
+78. NO PARTIAL AUTHORITY REFREEZE
+======================================================================
+
+Task85c-j is not successful if M0 is scientifically repaired but the
+resulting authority closure still mixes:
+
+    old contract identity;
+    new contract identity;
+    old JobID scientific identity;
+    new evidence contract identity.
+
+Future Task85c-h must receive one coherent authority closure.
+
+
+======================================================================
+79. AUTHORITY GRAPH
+======================================================================
+
+Create a new machine-readable authority graph for the repaired
+scientific revision.
+
+Require:
+
+    cycles = 0
+    unresolved normative edges = 0
+    mixed scientific contract identities = 0.
+
+
+======================================================================
+80. TRANSITIVE VERSION-BINDING AUDIT
+======================================================================
+
+Search all normative artifacts transitively required by Task85c-h for
+literal:
+
+    G1_V2_EXECUTABLE_CONTRACT_V1_2.
+
+Classify each as:
+
+    HISTORICAL_CORRECT
+    MUST_REBIND_TO_NEW_CONTRACT
+    VERSION_NEUTRAL
+    NONNORMATIVE.
+
+Repair all:
+
+    MUST_REBIND_TO_NEW_CONTRACT
+
+within Task85c-j.
+
+Do not defer obvious H-SC01/H-SC02 repetitions to another task.
+
+
+======================================================================
+81. STATUS/REACHABILITY
+======================================================================
+
+Expected:
+
+    G1_V2_STATUS_REACHABILITY_CONTRACT_V2
+
+remains scientifically unchanged.
+
+Preserve its hash unless version-binding mechanics genuinely require
+a successor.
+
+Do not alter the 13 statuses, seven stages or 45 transitions.
+
+
+======================================================================
+82. EVIDENCE SEMANTICS
+======================================================================
+
+Expected:
+
+    evidence payload scientific structure unchanged.
+
+Only contract-version/schema bindings should change transitively.
+
+If H-SC03 requires changing evidence fields beyond probability values
+naturally carried by existing schemas, document why.
+
+
+======================================================================
+83. JOBID ALGORITHM
+======================================================================
+
+Do NOT redesign the JobID algorithm.
+
+Only the scientific contract identity input changes transitively.
+
+Require cross-version JobIDs to differ as expected.
+
+
+======================================================================
+84. RNG IDENTITY
+======================================================================
+
+Do NOT change scientific RNG identity merely because M0 probability
+boundaries change.
+
+Require:
+
+    SCIENTIFIC_RANDOMNESS_SOURCE =
+        G1V2-RNG-1.
+
+
+======================================================================
+85. CONTROL ARCHITECTURE
+======================================================================
+
+Do NOT change:
+
+    12 open DEVELOPMENT controls;
+    144 blind synthetic controls;
+    36 natural confirmatory controls;
+    total = 192.
+
+No controls are materialized here.
+
+
+======================================================================
+86. DAG CARDINALITY
+======================================================================
+
+Do NOT change frozen future production cardinality:
+
+    candidate fits:
+        8,256
+
+    predictive:
+        8,256
+
+    generation:
+        99,072
+
+    F2 metric:
+        1,188,864
+
+    complexity:
+        8,256
+
+    candidate aggregation:
+        8,256
+
+    control aggregation:
+        192
+
+    total:
+        1,321,152
+
+    dependency edges:
+        2,617,152
+
+    terminal cells:
+        8,256.
+
+
+======================================================================
+87. H-SC03 PERMANENT REGRESSION
+======================================================================
+
+Create:
+
+    G1V2_H_SC03_REGRESSION.json
+
+containing:
+
+    historical contradictory M0-FIT fixture;
+    historical M0-UNSEEN fixture;
+    contradiction reproduction;
+    repaired M0 semantics;
+    corrected expected vector;
+    denominator;
+    UNK probability;
+    normalization proof;
+    predictive unseen proof;
+    affected generation vectors;
+    old/new authority hashes.
+
+Require:
+
+    H_SC03 = CLOSED.
+
+
+======================================================================
+88. HISTORICAL NEGATIVE REGRESSION
+======================================================================
+
+Preserve the old contradictory vector as a negative historical
+regression.
+
+A validator for the new authority must reject a model that uses:
+
+    denominator = 8
+
+while simultaneously claiming the repaired four-outcome M0
+additive-alpha semantics.
+
+
+======================================================================
+89. NEW POSITIVE REGRESSION
+======================================================================
+
+The corrected M0-FIT vector must validate under the new scientific
+authority.
+
+If expected resolution is confirmed:
+
+    denominator = 9
+    p(UNK) = 1/9.
+
+Require:
+
+    PASS.
+
+
+======================================================================
+90. CROSS-AUTHORITY REGRESSION
+======================================================================
+
+Ensure:
+
+    old scientific authority + old historical golden
+
+remains identifiable as historical provenance;
+
+and:
+
+    new scientific authority + corrected golden
+
+forms the only current production authority.
+
+Do not allow mixed old/new combinations to pass closure validation.
+
+
+======================================================================
+91. H-SC01 REGRESSION
+======================================================================
+
+After evidence-version rebinding require:
+
+    H_SC01 = CLOSED.
+
+New scientific evidence must validate only against the appropriate
+new schema family.
+
+
+======================================================================
+92. H-SC02 REGRESSION
+======================================================================
+
+After execution-identity rebinding require:
+
+    H_SC02 = CLOSED.
+
+JobID scientific identity must equal the new scientific contract
+version.
+
+
+======================================================================
+93. EI01 REGRESSION
+======================================================================
+
+Require:
+
+    EI01 = CLOSED.
+
+No M0 repair may make scientific content dependent on escrow/blind ID.
+
+
+======================================================================
+94. R2-G01 / R2-G02 REGRESSION
+======================================================================
+
+Require:
+
+    R2_G01 = CLOSED
+    R2_G02 = CLOSED.
+
+Canonical dependency field remains:
+
+    dependency_job_ids.
+
+
+======================================================================
+95. PF-SC01 STATUS
+======================================================================
+
+Report one of:
+
+    PF_SC01 =
+        CLOSED_UNCHANGED
+
+or:
+
+    PF_SC01 =
+        CLOSED_UPDATED_TRANSITIVELY.
+
+Do not report simply CLOSED without documenting whether its expected
+M0 generation result changed.
+
+
+======================================================================
+96. GOLDEN ROOT
+======================================================================
+
+Freeze:
+
+    NEW_SCIENTIFIC_GOLDEN_ROOT_SHA256 =
+        <sha256>.
+
+The root must include all corrected/transitively updated scientific
+goldens required by the new authority.
+
+
+======================================================================
+97. SCIENTIFIC CONTRACT HASHES
+======================================================================
+
+Freeze:
+
+    NEW_SCIENTIFIC_CONTRACT_MARKDOWN_SHA256 =
+        <sha256>
+
+    NEW_SCIENTIFIC_CONTRACT_MACHINE_SHA256 =
+        <sha256>.
+
+
+======================================================================
+98. EVIDENCE ROOT
+======================================================================
+
+If contract-version rebinding requires new schemas, freeze:
+
+    NEW_EVIDENCE_SCHEMA_ROOT_SHA256 =
+        <sha256>.
+
+
+======================================================================
+99. EXECUTION IDENTITY HASH
+======================================================================
+
+Freeze:
+
+    NEW_EXECUTION_IDENTITY_MACHINE_SHA256 =
+        <sha256>.
+
+
+======================================================================
+100. INTEGRATION AUTHORITY HASH
+======================================================================
+
+Freeze:
+
+    NEW_INTEGRATION_AUTHORITY_MACHINE_SHA256 =
+        <sha256>.
+
+
+======================================================================
+101. AUTHORITY CLOSURE ROOT
+======================================================================
+
+Create a deterministic root binding all normative artifacts needed by
+the repaired scientific contract:
+
+    TASK85C_J_AUTHORITY_CLOSURE_ROOT_SHA256 =
+        <sha256>.
+
+
+======================================================================
+102. DIFFERENTIAL VALIDATION
+======================================================================
+
+Validate old vs new M0 semantics on OPEN/disposable fixtures.
+
+For every changed result classify the causal chain:
+
+    M0 outcome-space repair
+        →
+    fitted probability change
+        →
+    predictive/generation/complexity change
+        →
+    changed golden.
+
+No unexplained changed scientific output is acceptable.
+
+
+======================================================================
+103. UNRELATED FAMILY INVARIANCE
+======================================================================
+
+Using appropriate fixed disposable fixtures, prove that Task85c-j
+does not alter the normative definitions of:
+
+    M1
+    M2
+    M3
+    M4
+    M5.
+
+Their authority hashes should remain unchanged wherever they are
+separate immutable artifacts.
+
+
+======================================================================
+104. PM/F2 INVARIANCE
+======================================================================
+
+Require exact scientific-definition invariance for:
+
+    PM1
+    PM2
+    PM4
+    PM5
+    PM6
+
+and:
+
+    all 12 F2 metrics.
+
+M0-derived numerical golden outputs may change; formulas/rules may not.
+
+
+======================================================================
+105. DECISION-LOGIC INVARIANCE
+======================================================================
+
+Require no change to:
+
+    predictive gate;
+    structural gate;
+    adequacy;
+    equivalence;
+    minimality;
+    final verdict semantics.
+
+
+======================================================================
+106. SCIENTIFIC FIREWALL
+======================================================================
+
+Task85c-j MUST NOT inspect:
+
+    production blind truth;
+    blind recovery;
+    natural confirmatory recovery;
+    Voynich outcomes.
+
+Require:
+
+    SCIENTIFIC_FIREWALL = INTACT.
+
+
+======================================================================
+107. NO PRODUCTION MATERIALIZATION
+======================================================================
+
+At completion require:
+
+    PRODUCTION_ESCROW_KEY_CREATED = NO
+    PRODUCTION_OPEN_CONTROLS_MATERIALIZED = 0
+    PRODUCTION_BLIND_CONTROLS_MATERIALIZED = 0
+    PRODUCTION_NATURAL_CONTROLS_MATERIALIZED = 0
+    PRODUCTION_JOBIDS_CREATED = 0
+    PRODUCTION_DAG_CREATED = NO.
+
+
+======================================================================
+108. NO TASK85C-H IMPLEMENTATION
+======================================================================
+
+Do not implement production:
+
+    M0–M5 handlers;
+    PM handlers;
+    F2 handlers;
+    production scientific dispatcher
+
+as part of Task85c-j.
+
+Small independent reference implementations required to validate the
+new scientific contract are allowed.
+
+Production implementation resumes only in Task85c-h.
+
+
+======================================================================
+109. REFERENCE IMPLEMENTATIONS
+======================================================================
+
+Reference implementations must be clearly marked:
+
+    CONTRACT_REFERENCE_ONLY
+
+and must not become an accidental production scientific handler.
+
+
+======================================================================
+110. REQUIRED DIRECTORY
+======================================================================
+
+Create:
+
+    research/phase3/task85c-j/
+
+
+======================================================================
+111. REQUIRED ARTIFACTS
+======================================================================
+
+At minimum:
+
+    TASK85C_J_DESIGN.md
+    TASK85C_J_REPORT.md
+
+    TASK85C_J_H_SC03_REPRODUCTION.json
+    TASK85C_J_M0_AUDIT.tsv
+    G1V2_M0_NORMATIVE_OCCURRENCE_INVENTORY.tsv
+    G1V2_M0_GOLDEN_DIFF.tsv
+    G1V2_TASK85C_J_SCIENTIFIC_CHANGE.tsv
+
+    G1V2_M0_SEMANTICS.json
+    G1V2_H_SC03_REGRESSION.json
+
+    <new scientific contract>.md
+    <new scientific contract>.json
+
+    <new scientific golden suite/registry>
+    <new evidence schema registry/root if required>
+    <new execution-identity authority>.md
+    <new execution-identity authority>.json
+    <new integration supplement>.md
+    <new integration supplement>.json
+
+    G1V2_TASK85C_J_AUTHORITY_GRAPH.json
+    G1V2_TASK85C_J_VERSION_BINDING_AUDIT.tsv
+
+    TASK85C_J_M0_VALIDATION.tsv
+    TASK85C_J_GENERATION_VALIDATION.tsv
+    TASK85C_J_CROSS_VERSION_VALIDATION.tsv
+    TASK85C_J_AUTHORITY_VALIDATION.tsv
+    TASK85C_J_VALIDATION.tsv
+
+    TASK85C_J_RESULTS_MANIFEST.json
+
+    reference/
+        reproduce_h_sc03.*
+        m0_reference_impl_a.*
+        m0_reference_impl_b.*
+        verify_m0_goldens.*
+        verify_m0_properties.*
+        verify_m0_generation.*
+        verify_cross_version_authority.*
+        verify_authority_graph.*
+        verify_task85c_j_manifest.*
+
+and exactly one terminal marker.
+
+
+======================================================================
+112. REQUIRED VALIDATION
+======================================================================
+
+At minimum validate:
+
+    parent V1.2 identity;
+    Task85c-h failure identity;
+    H-SC03 reproduction;
+
+    complete M0 normative audit;
+    complete M0 golden audit;
+
+    corrected M0-FIT;
+    corrected M0-UNSEEN;
+    normalization;
+    EOS counting;
+    zero-count outcomes;
+    unseen VALIDATION;
+    unseen HELDOUT;
+
+    Generator A;
+    Generator B;
+    Generator independence;
+    RNG identity;
+    generation paths 26/26 audit;
+
+    complexity transitive audit;
+    PM transitive audit;
+
+    two independent M0 implementations;
+    property tests;
+    second-implementer challenge;
+
+    new contract closure;
+    new golden root;
+    evidence version binding;
+    execution identity binding;
+    integration supplement;
+    authority graph;
+
+    H-SC01;
+    H-SC02;
+    H-SC03;
+    EI01;
+    R2-G01;
+    R2-G02;
+    PF-SC01;
+
+    unrelated-family invariance;
+    PM/F2 definition invariance;
+    decision-logic invariance;
+
+    firewall;
+    no production materialization;
+    results-manifest closure.
+
+
+======================================================================
+113. PROPERTY TEST SCALE
+======================================================================
+
+Run at least:
+
+    32,768
+
+deterministic M0 probability/property cases.
+
+Run at least:
+
+    8,192
+
+deterministic M0 generation differential cases across Generator A/B
+semantics where applicable.
+
+These counts may be increased but not reduced without explicit
+validation justification.
+
+
+======================================================================
+114. REQUIRED VERDICTS
+======================================================================
+
+Report at minimum:
+
+    PARENT_V1_2_IDENTITY =
+        SUPPORTED / NOT_SUPPORTED
+
+    TASK85C_H_FAILURE_IDENTITY =
+        SUPPORTED / NOT_SUPPORTED
+
+    H_SC03_REPRODUCED =
+        YES / NO
+
+    H_SC03 =
+        CLOSED / OPEN
+
+    M0_OUTCOME_SPACE =
+        <exact ordered definition>
+
+    M0_UNK_INCLUDED_IN_SMOOTHING =
+        YES / NO
+
+    M0_EOS_INCLUDED_IN_SMOOTHING =
+        YES / NO
+
+    M0_BOS_PREDICTED_OUTCOME =
+        YES / NO
+
+    M0_DENOMINATOR_RULE =
+        <exact rule>
+
+    H_SC03_FIXTURE_DENOMINATOR =
+        <value>
+
+    H_SC03_FIXTURE_P_UNK =
+        <value>
+
+    M0_NORMATIVE_OCCURRENCES_AUDITED =
+        <count>/<count>
+
+    M0_GOLDENS_AUDITED =
+        <count>/<count>
+
+    M0_PROPERTY_TESTS =
+        <pass>/<total>
+
+    M0_GENERATION_DIFFERENTIAL_TESTS =
+        <pass>/<total>
+
+    SECOND_IMPLEMENTER_UNSTATED_M0_CHOICES =
+        <count>
+
+    GENERATION_PATHS_AUDITED =
+        <count>/26
+
+    NEW_SCIENTIFIC_CONTRACT_VERSION =
+        <version>
+
+    NEW_SCIENTIFIC_CONTRACT_MACHINE_SHA256 =
+        <sha256>
+
+    NEW_SCIENTIFIC_GOLDEN_ROOT_SHA256 =
+        <sha256>
+
+    NEW_EVIDENCE_SCHEMA_ROOT_SHA256 =
+        <sha256>
+
+    NEW_EXECUTION_IDENTITY_AUTHORITY =
+        <name>
+
+    NEW_EXECUTION_IDENTITY_MACHINE_SHA256 =
+        <sha256>
+
+    NEW_INTEGRATION_AUTHORITY =
+        <name>
+
+    NEW_INTEGRATION_AUTHORITY_MACHINE_SHA256 =
+        <sha256>
+
+    AUTHORITY_GRAPH_CYCLES =
+        <count>
+
+    AUTHORITY_GRAPH_UNRESOLVED_EDGES =
+        <count>
+
+    MIXED_SCIENTIFIC_IDENTITIES =
+        <count>
+
+    H_SC01 =
+        CLOSED / OPEN
+
+    H_SC02 =
+        CLOSED / OPEN
+
+    EI01 =
+        CLOSED / OPEN
+
+    R2_G01 =
+        CLOSED / OPEN
+
+    R2_G02 =
+        CLOSED / OPEN
+
+    PF_SC01 =
+        CLOSED_UNCHANGED /
+        CLOSED_UPDATED_TRANSITIVELY /
+        OPEN
+
+    UNRELATED_SCIENTIFIC_CHANGES =
+        <count>
+
+    SCIENTIFIC_FIREWALL =
+        INTACT / VIOLATED
+
+    PRODUCTION_MATERIALIZATION_OCCURRED =
+        YES / NO
+
+    TASK85C_H_RETRY_READY =
+        SUPPORTED / NOT_SUPPORTED.
+
+
+======================================================================
+115. SUCCESS GATE
+======================================================================
+
+TASK85C_H_RETRY_READY = SUPPORTED only if ALL hold:
+
+1. Parent V1.2 identities pass.
+2. Task85c-h failure identity passes.
+3. H-SC03 is independently reproduced.
+4. Complete M0 normative occurrence audit is complete.
+5. Complete M0 golden audit is complete.
+6. One exact M0 outcome-space definition is frozen.
+7. UNK smoothing semantics are explicit.
+8. EOS smoothing semantics are explicit.
+9. BOS role is explicit.
+10. M0 event-count rule is explicit.
+11. M0 denominator rule is explicit.
+12. M0-FIT and M0-UNSEEN are mutually consistent.
+13. H-SC03 corrected fixture passes.
+14. M0 probabilities normalize.
+15. Positive-alpha zero-count outcomes behave consistently.
+16. Unseen VALIDATION mapping passes.
+17. Unseen HELDOUT mapping passes.
+18. Prediction and fitted model agree.
+19. Generation and fitted model agree.
+20. Generator A validation passes.
+21. Generator B validation passes.
+22. Generator B remains independent.
+23. RNG semantics remain unchanged.
+24. Generation paths audited 26/26.
+25. All M0-affected goldens are classified.
+26. All defective/transitively changed M0 goldens are updated.
+27. No affected golden is silently omitted.
+28. Complexity transitive audit passes.
+29. PM transitive audit passes.
+30. >=32,768 M0 property tests pass.
+31. >=8,192 generation differential tests pass.
+32. Independent implementations agree.
+33. Second-implementer unstated M0 choices = 0.
+34. H-SC03 = CLOSED.
+35. New immutable scientific contract revision is frozen.
+36. New machine scientific authority is frozen.
+37. New scientific golden root is frozen.
+38. Historical V1.2 contract remains immutable.
+39. Historical old golden root remains immutable.
+40. New evidence binding is coherent with new contract.
+41. New execution identity is coherent with new contract.
+42. New integration supplement is coherent with new contract.
+43. Authority graph cycles = 0.
+44. Authority graph unresolved edges = 0.
+45. Mixed scientific identities = 0.
+46. H-SC01 remains CLOSED.
+47. H-SC02 remains CLOSED.
+48. EI01 remains CLOSED.
+49. R2-G01 remains CLOSED.
+50. R2-G02 remains CLOSED.
+51. PF-SC01 is CLOSED_UNCHANGED or CLOSED_UPDATED_TRANSITIVELY.
+52. M1–M5 definitions are unchanged.
+53. PM definitions are unchanged.
+54. F2 definitions are unchanged.
+55. status/reachability semantics are unchanged.
+56. decision logic is unchanged.
+57. candidate count remains 43.
+58. control architecture remains 12+144+36=192.
+59. future DAG cardinality remains 1,321,152.
+60. future dependency-edge count remains 2,617,152.
+61. unrelated scientific changes = 0.
+62. scientific firewall = INTACT.
+63. production materialization occurred = NO.
+64. production escrow key created = NO.
+65. production blind controls created = 0.
+66. production natural controls created = 0.
+67. production JobIDs created = 0.
+68. production DAG created = NO.
+69. no confirmatory outcomes were inspected.
+70. Voynich was not evaluated.
+71. results-manifest closure passes.
+
+
+======================================================================
+116. STOP — PARENT DEFECT NOT REPRODUCED
+======================================================================
+
+STOP:
+
+    TASK85C_J_PARENT_DEFECT_NOT_REPRODUCED
+
+if H-SC03 cannot be reproduced from immutable parent artifacts.
+
+
+======================================================================
+117. STOP — SCIENTIFIC SCOPE EXPANDED
+======================================================================
+
+STOP:
+
+    TASK85C_J_SCIENTIFIC_SCOPE_EXPANDED
+
+if a scientifically consequential defect outside the authorized M0
+probability/outcome-space surface is required to complete the repair.
+
+
+======================================================================
+118. STOP — M0 CONTRACT REMAINS AMBIGUOUS
+======================================================================
+
+STOP:
+
+    TASK85C_J_M0_CONTRACT_AMBIGUOUS
+
+if after the authorized audit there remain two or more scientifically
+valid M0 interpretations capable of changing scientific output.
+
+
+======================================================================
+119. STOP — VALIDATION FAILURE
+======================================================================
+
+STOP:
+
+    TASK85C_J_VALIDATION_FAILURE
+
+if one exact M0 semantics is frozen but reference implementations,
+goldens, properties or transitive validation do not agree with it.
+
+
+======================================================================
+120. STOP — AUTHORITY CLOSURE FAILURE
+======================================================================
+
+STOP:
+
+    TASK85C_J_AUTHORITY_CLOSURE_FAILURE
+
+if the scientific M0 repair succeeds locally but the resulting
+contract/evidence/JobID/integration authorities cannot form one
+consistent versioned closure.
+
+
+======================================================================
+121. STOP — UNEXPECTED SCIENTIFIC CHANGE
+======================================================================
+
+STOP:
+
+    TASK85C_J_UNEXPECTED_SCIENTIFIC_CHANGE
+
+if Task85c-j changes scientific semantics outside the explicitly
+authorized M0 repair and its unavoidable transitive consequences.
+
+
+======================================================================
+122. STOP — FIREWALL
+======================================================================
+
+STOP:
+
+    TASK85C_J_SCIENTIFIC_FIREWALL_VIOLATION
+
+if production/confirmatory/Voynich material is created, accessed or
+used.
+
+
+======================================================================
+123. SAME-CLASS CONTINUE RULE
+======================================================================
+
+Do NOT stop merely because additional defects are found in:
+
+    M0 fit goldens;
+    M0 unseen goldens;
+    M0 predictive goldens;
+    M0 generation goldens;
+    M0 complexity goldens
+
+when they arise from the same inconsistent treatment of UNK/outcome
+space/additive-alpha smoothing.
+
+Resolve the entire M0 defect class in this task.
+
+
+======================================================================
+124. NO IMPLEMENTATION STOP
+======================================================================
+
+Task85c-j is a design/refreeze task.
+
+Do not attempt to finish Task85c-h production implementation here.
+
+The success criterion is an unambiguous scientific authority, not a
+production executor.
+
+
+======================================================================
+125. TERMINAL MARKERS
+======================================================================
+
+Success:
+
+    G1V2_M0_ADDITIVE_SMOOTHING_SCIENTIFIC_REPAIR_J_FROZEN
+
+Failure:
+
+    TASK85C_J_PARENT_DEFECT_NOT_REPRODUCED
+
+    TASK85C_J_SCIENTIFIC_SCOPE_EXPANDED
+
+    TASK85C_J_M0_CONTRACT_AMBIGUOUS
+
+    TASK85C_J_VALIDATION_FAILURE
+
+    TASK85C_J_AUTHORITY_CLOSURE_FAILURE
+
+    TASK85C_J_UNEXPECTED_SCIENTIFIC_CHANGE
+
+    TASK85C_J_SCIENTIFIC_FIREWALL_VIOLATION.
+
+Exactly one terminal marker must be emitted.
+
+
+======================================================================
+126. SUCCESSFUL FINAL OUTPUT
+======================================================================
+
+On success print at minimum:
+
+    PARENT_SCIENTIFIC_CONTRACT =
+        G1_V2_EXECUTABLE_CONTRACT_V1_2
+
+    H_SC03_REPRODUCED =
+        YES
+
+    H_SC03 =
+        CLOSED
+
+    M0_OUTCOME_SPACE =
+        <exact ordered outcome-space rule>
+
+    M0_UNK_INCLUDED_IN_SMOOTHING =
+        <YES/NO>
+
+    M0_EOS_INCLUDED_IN_SMOOTHING =
+        <YES/NO>
+
+    M0_BOS_PREDICTED_OUTCOME =
+        <YES/NO>
+
+    M0_DENOMINATOR_RULE =
+        <exact rule>
+
+    H_SC03_FIXTURE_DENOMINATOR =
+        <value>
+
+    H_SC03_FIXTURE_P_UNK =
+        <value>
+
+    M0_NORMATIVE_OCCURRENCES_AUDITED =
+        <count>/<count>
+
+    M0_GOLDENS_AUDITED =
+        <count>/<count>
+
+    M0_PROPERTY_TESTS =
+        <pass>/<total>
+
+    M0_GENERATION_DIFFERENTIAL_TESTS =
+        <pass>/<total>
+
+    SECOND_IMPLEMENTER_UNSTATED_M0_CHOICES =
+        0
+
+    GENERATION_PATHS_AUDITED =
+        26/26
+
+    NEW_SCIENTIFIC_CONTRACT_VERSION =
+        <version>
+
+    NEW_SCIENTIFIC_CONTRACT_MARKDOWN_SHA256 =
+        <sha256>
+
+    NEW_SCIENTIFIC_CONTRACT_MACHINE_SHA256 =
+        <sha256>
+
+    NEW_SCIENTIFIC_GOLDEN_ROOT_SHA256 =
+        <sha256>
+
+    NEW_EVIDENCE_SCHEMA_ROOT_SHA256 =
+        <sha256>
+
+    NEW_EXECUTION_IDENTITY_AUTHORITY =
+        <name>
+
+    NEW_EXECUTION_IDENTITY_MACHINE_SHA256 =
+        <sha256>
+
+    NEW_INTEGRATION_AUTHORITY =
+        <name>
+
+    NEW_INTEGRATION_AUTHORITY_MACHINE_SHA256 =
+        <sha256>
+
+    TASK85C_J_AUTHORITY_CLOSURE_ROOT_SHA256 =
+        <sha256>
+
+    AUTHORITY_GRAPH_CYCLES =
+        0
+
+    AUTHORITY_GRAPH_UNRESOLVED_EDGES =
+        0
+
+    MIXED_SCIENTIFIC_IDENTITIES =
+        0
+
+    H_SC01 =
+        CLOSED
+
+    H_SC02 =
+        CLOSED
+
+    EI01 =
+        CLOSED
+
+    R2_G01 =
+        CLOSED
+
+    R2_G02 =
+        CLOSED
+
+    PF_SC01 =
+        CLOSED_UNCHANGED /
+        CLOSED_UPDATED_TRANSITIVELY
+
+    UNRELATED_SCIENTIFIC_CHANGES =
+        0
+
+    SCIENTIFIC_FIREWALL =
+        INTACT
+
+    PRODUCTION_MATERIALIZATION_OCCURRED =
+        NO
+
+    PRODUCTION_ESCROW_KEY_CREATED =
+        NO
+
+    PRODUCTION_BLIND_CONTROLS_MATERIALIZED =
+        0
+
+    PRODUCTION_NATURAL_CONTROLS_MATERIALIZED =
+        0
+
+    PRODUCTION_JOBIDS_CREATED =
+        0
+
+    PRODUCTION_DAG_CREATED =
+        NO
+
+    TASK85C_J_ARTIFACT_ROOT_SHA256 =
+        <sha256>
+
+    TASK85C_H_RETRY_READY =
+        SUPPORTED
+
+    NEXT_TASK =
+        Task85c-h
+
+    TERMINAL_MARKER =
+        G1V2_M0_ADDITIVE_SMOOTHING_SCIENTIFIC_REPAIR_J_FROZEN.
+
+
+======================================================================
+127. FAILURE OUTPUT
+======================================================================
+
+On failure print at minimum:
+
+    PARENT_SCIENTIFIC_CONTRACT =
+        G1_V2_EXECUTABLE_CONTRACT_V1_2
+
+    FAILURE_CLASS =
+        <exact failure class>
+
+    BLOCKING_FINDINGS =
+        <finding IDs>
+
+    H_SC03_REPRODUCED =
+        YES / NO
+
+    H_SC03 =
+        CLOSED / OPEN
+
+    M0_REPAIR_STATE =
+        <state>
+
+    UNRELATED_SCIENTIFIC_CHANGES =
+        <count>
+
+    SCIENTIFIC_FIREWALL =
+        <state>
+
+    PRODUCTION_MATERIALIZATION_OCCURRED =
+        YES / NO
+
+    TASK85C_H_RETRY_READY =
+        NOT_SUPPORTED
+
+    TERMINAL_MARKER =
+        <exact terminal marker>.
+
+
+======================================================================
+128. DEFINITION OF DONE
+======================================================================
+
+Task85c-j is complete when there is exactly one executable scientific
+meaning for M0 additive-alpha smoothing.
+
+A fresh independent implementer must be able to determine, without
+guessing:
+
+    which outcomes M0 predicts;
+    whether UNK belongs to the outcome space;
+    whether EOS belongs to the outcome space;
+    whether BOS is predicted;
+    how events are counted;
+    how many pseudocounts are added;
+    what denominator is used;
+    what probability an unseen glyph receives;
+    how VALIDATION/HELDOUT unseen glyphs are handled;
+    what probability vector prediction uses;
+    what probability vector generation uses;
+    how Generator A consumes that vector;
+    how Generator B consumes that vector;
+    how affected M0 complexity is calculated.
+
+The historical contradiction:
+
+    M0-FIT denominator 8
+        versus
+    positive-alpha M0-UNSEEN
+
+must remain preserved as provenance but must no longer exist in the
+current production scientific authority.
+
+The repaired authority must be versioned and immutable.
+
+All transitive scientific identities must agree on the new contract:
+
+    scientific contract
+        =
+    evidence contract identity
+        =
+    JobID scientific identity
+        =
+    integration authority identity.
+
+No production experiment has been materialized.
+
+Successful completion authorizes only a restart of:
+
+    Task85c-h
+
+against the new frozen authority closure.
+
+It does NOT authorize:
+
+    Task86C-v2-production-freeze
+
+or:
+
+    Task86C-v2-run
+
+directly.

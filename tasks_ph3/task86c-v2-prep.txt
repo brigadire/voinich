@@ -1,0 +1,1505 @@
+Task86C-v2-prep — G1-v2 Distributed Execution and Evidence
+Infrastructure Readiness
+
+
+PURPOSE
+
+Implement and validate the computational infrastructure required
+to execute the frozen Task86C-v2 blind scientific experiment.
+
+Task86C-v2-prep is an ENGINEERING / EXECUTION-READINESS task.
+
+It must transform the frozen Task85b execution design into a
+working distributed system capable of executing the future
+Task86C-v2 scientific manifest without modifying the scientific
+contract during the blind experiment.
+
+The task must:
+
+1. implement the G1-v2 scientific-manifest / DAG adapter;
+
+2. integrate it with the existing Phase-I mTLS lease executor;
+
+3. implement the immutable evidence-bundle/result layer;
+
+4. implement the evidence-only decision-path verifier;
+
+5. validate cross-node deterministic execution;
+
+6. validate restart/resume/retry semantics;
+
+7. validate duplicate/conflict/corruption handling;
+
+8. benchmark horizontal scalability;
+
+9. estimate practical compute capacity for Task86C-v2;
+
+10. prove that the resulting infrastructure is ready for the
+    large blind scientific computation.
+
+Task86C-v2-prep MUST NOT execute the Task86C-v2 blind scientific
+control experiment.
+
+Primary terminal question:
+
+    Can the frozen G1-v2 experiment now be executed as a
+    large distributed computation without changing its
+    scientific definitions, evidence contract, or execution
+    semantics?
+
+
+======================================================================
+1. AUTHORITATIVE CONTRACT
+======================================================================
+
+The authoritative scientific/execution contract is frozen by:
+
+    research/phase3/task85b/
+
+especially:
+
+    TASK85B_DESIGN.md
+    TASK85B_REPORT.md
+
+    G1V2_JOB_SCHEMA.tsv
+    G1V2_DISTRIBUTED_EXECUTION_CONTRACT.tsv
+    G1V2_DISTRIBUTED_FAILURE_REGISTRY.tsv
+
+    G1V2_EVIDENCE_ARTIFACT_REGISTRY.tsv
+    G1V2_DECISION_STATUS_REGISTRY.tsv
+
+    EVIDENCE_PRESERVATION_CONTRACT.md
+    DECISION_PATH_CONTRACT.md
+
+    PHASE1_DISTRIBUTED_EXECUTION_AUDIT.md
+    DISTRIBUTED_EXECUTION_DESIGN.md
+
+    TASK86C_V2_CONTROL_DESIGN.md
+    TASK86C_V2_HANDOFF.md.
+
+Task85b terminal state:
+
+    G1_V2_EXPERIMENT_CONTRACT_FROZEN
+
+with:
+
+    TASK86C_V2_READY = SUPPORTED
+    PHASE1_DISTRIBUTED_REUSE = PARTIAL.
+
+Task86C-v2-prep implements this frozen contract.
+
+It must not redesign it.
+
+
+======================================================================
+2. SCIENTIFIC FREEZE
+======================================================================
+
+The following are read-only:
+
+    M0–M5 definitions;
+    PM definitions;
+    PM6-v2 protocol;
+    thresholds/threshold derivation rules;
+    predictive truth tables;
+    structural metrics;
+    structural family rules;
+    complexity/minimality semantics;
+    failure semantics;
+    evidence semantics;
+    control design;
+    recovery criteria.
+
+No scientific modification is allowed merely to simplify
+distributed execution.
+
+If implementation reveals that the frozen scientific contract
+cannot be executed as specified:
+
+    STOP;
+
+    document the blocking conflict;
+
+    issue preparation failure.
+
+Do not silently repair the scientific design.
+
+
+======================================================================
+3. VOYNICH FIREWALL
+======================================================================
+
+Task86C-v2-prep MUST NOT access Voynich corpus data.
+
+Do not:
+
+    fit M0–M5 to Voynich;
+    compute PM values for Voynich;
+    compute F2 against Voynich;
+    load IVTFF target data;
+    use Voynich values for infrastructure fixtures;
+    derive thresholds from Voynich.
+
+Infrastructure tests must use:
+
+    synthetic engineering fixtures;
+    open development fixtures;
+    explicitly non-confirmatory controls.
+
+Any accidental target access invalidates the task.
+
+
+======================================================================
+4. CONFIRMATORY CONTROL FIREWALL
+======================================================================
+
+Do not open future blind Task86C-v2 confirmatory ground truth.
+
+Do not consume:
+
+    confirmatory generator mappings;
+    escrowed theoretical classes;
+    future blind result mappings.
+
+Task86C-v2-prep may generate its own small engineering fixtures.
+
+These fixtures:
+
+    are not confirmatory controls;
+    do not contribute to recovery evidence;
+    may be fully known to the implementation agent.
+
+
+======================================================================
+5. PHASE-I EXECUTOR REUSE
+======================================================================
+
+Use the Phase-I distributed mechanism identified by Task85b:
+
+    internal/conditionalregime/remote.go
+    internal/pki
+    internal/conditionalregime/*_executor.go
+    pipeline-orchestrate
+    ansible/roles/voynich_worker
+
+and the relevant distributed execution documentation.
+
+Reuse, where applicable:
+
+    mTLS coordinator;
+    project CA / worker identity;
+    pull-by-lease execution;
+    lease expiry;
+    dynamic job claiming;
+    content-addressed input cache;
+    checkpoint/resume;
+    persistent worker lifecycle;
+    deterministic JobID concepts;
+    deterministic reduction;
+    worker deployment machinery.
+
+Do NOT build a second scheduler unless a frozen Task85b
+requirement cannot be implemented using the existing executor.
+
+Any required extension must be documented.
+
+
+======================================================================
+6. REQUIRED G1-v2 ADAPTER
+======================================================================
+
+Implement a G1-v2 adapter mapping:
+
+    G1-v2 scientific manifest
+            ↓
+        executable DAG
+            ↓
+      Phase-I lease executor.
+
+The adapter must understand the frozen G1-v2 job schema.
+
+Expected job stages include:
+
+    FIT
+    PREDICTIVE
+    GENERATION
+    STRUCTURAL
+    AGGREGATION
+
+plus any frozen reachability/evidence jobs required by Task85b.
+
+The adapter must NOT contain scientific gate logic.
+
+
+======================================================================
+7. SCIENTIFIC MANIFEST IS CANONICAL
+======================================================================
+
+The scientific manifest is the sole authority for:
+
+    which jobs exist;
+    job dependencies;
+    inputs;
+    code/config hashes;
+    seeds;
+    expected outputs;
+    scientific reachability.
+
+The executor may decide:
+
+    where;
+    when;
+    in what order
+
+a ready job runs.
+
+It may NOT decide:
+
+    whether a scientific job should exist;
+    whether a model passes;
+    whether a downstream scientific stage is relevant.
+
+
+======================================================================
+8. DETERMINISTIC JOB IDENTITY
+======================================================================
+
+Implement the Task85b JobID contract.
+
+Scientific JobID must depend only on the frozen scientific job
+configuration and its dependencies.
+
+It must NOT depend on:
+
+    worker hostname;
+    IP address;
+    worker certificate identity;
+    lease ID;
+    attempt number;
+    execution time;
+    scheduling order.
+
+The identical scientific job submitted to different workers must
+have the identical JobID.
+
+
+======================================================================
+9. IMMUTABLE JOB BUNDLE
+======================================================================
+
+Each leased job must receive an immutable bundle containing at
+minimum:
+
+    job_id;
+    experiment/protocol version;
+    stage;
+    corpus/input IDs;
+    model/candidate identity;
+    scale/replicate where applicable;
+    seed where applicable;
+    input hashes;
+    dependency hashes;
+    executable/code hash;
+    scientific config hash;
+    expected output schema.
+
+Worker must validate the bundle before execution.
+
+
+======================================================================
+10. WORKER SCIENTIFIC ISOLATION
+======================================================================
+
+Workers are execution engines.
+
+Workers MUST NOT:
+
+    alter scientific configuration;
+    derive thresholds;
+    select candidates;
+    modify seeds;
+    modify corpus splits;
+    apply final scientific gates;
+    choose a preferred duplicate result.
+
+Workers return facts/evidence.
+
+Scientific decisions belong to the frozen verifier/aggregator.
+
+
+======================================================================
+11. EVIDENCE BUNDLE IMPLEMENTATION
+======================================================================
+
+Implement the Task85b immutable evidence bundle.
+
+Every result must contain or reference:
+
+    producing JobID;
+    input hashes;
+    dependency hashes;
+    code hash;
+    config hash;
+    seed;
+    schema version;
+    scientific status;
+    produced artifact hashes.
+
+Evidence must be content-addressed.
+
+Publication must be atomic:
+
+    temporary output
+        ↓
+    schema/hash validation
+        ↓
+    content-addressed publication
+        ↓
+    verified JobID index.
+
+
+======================================================================
+12. COMPLETE EVIDENCE PRESERVATION
+======================================================================
+
+Infrastructure must be capable of preserving the complete frozen
+G1-v2 evidence chain:
+
+INPUT
+  ↓
+FIT / INDUCTION
+  ↓
+MODEL
+  ↓
+PM RECORDS
+  ↓
+PREDICTIVE GATES
+  ↓
+PREDICTIVE VERDICT
+  ↓
+GENERATION
+  ↓
+F2 RECORDS
+  ↓
+STRUCTURAL GATES
+  ↓
+STRUCTURAL VERDICT
+  ↓
+COMPLEXITY / MINIMALITY
+  ↓
+FINAL VERDICT.
+
+No stage may replace detailed evidence with only an aggregate
+PASS/FAIL record.
+
+
+======================================================================
+13. NOT_REACHED SUPPORT
+======================================================================
+
+Every planned downstream scientific cell must be representable as:
+
+    result evidence
+
+or:
+
+    NOT_REACHED
+        reason
+        upstream gate/job
+        dependency hash.
+
+Missing output is not equivalent to NOT_REACHED.
+
+Executor interruption must not produce NOT_REACHED.
+
+Only frozen scientific reachability rules may do so.
+
+
+======================================================================
+14. EVIDENCE-ONLY VERIFIER
+======================================================================
+
+Implement the production evidence-only verifier specified by
+Task85b.
+
+The verifier must consume frozen evidence records and registries.
+
+It MUST NOT invoke:
+
+    fitting;
+    induction;
+    corpus generation;
+    model execution.
+
+It must reconstruct:
+
+    individual PM gates;
+    PredictiveAdequacy;
+    F2 metric/family/scale gates;
+    StructuralAdequacy;
+    complexity/minimality;
+    final verdict.
+
+
+======================================================================
+15. VERDICT REGENERATION
+======================================================================
+
+For complete engineering fixtures:
+
+    originally aggregated verdict
+
+must equal:
+
+    evidence-only regenerated verdict.
+
+Prefer byte-identical canonical output.
+
+A mismatch is a hard verification failure.
+
+
+======================================================================
+16. NEGATIVE VERIFIER TESTS
+======================================================================
+
+At minimum test mutation of:
+
+    PM value;
+    PM threshold;
+    PM availability;
+    artifact byte/hash;
+    F2 record;
+    seed;
+    config hash;
+    code hash;
+    dependency;
+    scientific status.
+
+Also test:
+
+    unavailable → FAIL substitution;
+    induction failure → model inadequacy substitution;
+    missing artifact;
+    conflicting duplicate.
+
+All must fail closed.
+
+
+======================================================================
+17. THREE-VALUED SEMANTICS TEST
+======================================================================
+
+Explicitly prove:
+
+    FAIL != NOT_ASSESSABLE
+    FAIL != NOT_REACHED
+    INDUCTION_FAILED != MODEL_INADEQUATE
+    INFRASTRUCTURE_FAILED != SCIENTIFIC_FAILED.
+
+This is mandatory because G1-v1 collapsed these distinctions.
+
+
+======================================================================
+18. PM6 INFRASTRUCTURE FIXTURE
+======================================================================
+
+Implement engineering fixtures for PM6-v2 covering:
+
+    ordinary complement;
+    saturated length;
+    mixed saturated/unsaturated lengths;
+    alphabet size 1;
+    Unicode alphabet;
+    duplicate draws with replacement;
+    large |A|^l;
+    insufficient coverage.
+
+Verify that saturation yields:
+
+    NEGATIVE_TEST_NOT_IDENTIFIABLE
+
+where specified,
+
+not:
+
+    MODEL_FAIL.
+
+This validates implementation only.
+
+It is not scientific recovery evidence.
+
+
+======================================================================
+19. DISTRIBUTED DEPLOYMENT
+======================================================================
+
+Deploy the Phase-I coordinator/worker mechanism in the intended
+G1-v2 configuration.
+
+At minimum validate the currently available infrastructure.
+
+The architecture must remain:
+
+    1 coordinator + N workers.
+
+Do not encode assumptions about a fixed two-node topology.
+
+
+======================================================================
+20. CURRENT COMPUTE NODES
+======================================================================
+
+The currently known additional compute host:
+
+    10.10.24.105
+
+may be used.
+
+The local machine may also act as:
+
+    coordinator;
+    worker;
+    or both
+
+according to the existing Phase-I architecture.
+
+Do not place host identity into scientific configuration.
+
+
+======================================================================
+21. WORKER COMPATIBILITY CHECK
+======================================================================
+
+Before accepting a worker verify:
+
+    authentication;
+    architecture/platform compatibility;
+    executable/code hash;
+    required runtime;
+    available storage;
+    required corpus/input cache access;
+    protocol version.
+
+An incompatible worker must not receive scientific jobs.
+
+
+======================================================================
+22. DYNAMIC SCHEDULING
+======================================================================
+
+Validate pull/lease dynamic scheduling.
+
+Do not statically assign:
+
+    machine A → one half
+    machine B → other half.
+
+A worker completing a job must be able to claim another ready job.
+
+Lease expiry must allow another compatible worker to execute the
+same JobID.
+
+
+======================================================================
+23. RESUME TEST
+======================================================================
+
+Create a representative multi-stage engineering manifest.
+
+Run part of it.
+
+Interrupt the coordinator.
+
+Restart.
+
+Required:
+
+    verified jobs are not recomputed;
+    unfinished jobs resume/requeue;
+    dependency state is reconstructed;
+    final result is identical to uninterrupted execution.
+
+
+======================================================================
+24. WORKER LOSS TEST
+======================================================================
+
+Terminate/disconnect a worker while it owns a lease.
+
+Verify:
+
+    lease expires;
+    identical JobID becomes available;
+    another worker executes it;
+    no scientific failure is recorded merely because worker died;
+    no duplicate scientific job identity is created.
+
+
+======================================================================
+25. INFRASTRUCTURE RETRY
+======================================================================
+
+Infrastructure failures may retry.
+
+Examples:
+
+    worker lost;
+    SSH/network interruption;
+    process killed externally;
+    result transfer interrupted;
+    temporary storage failure.
+
+Retry must use the identical JobID and scientific bundle.
+
+
+======================================================================
+26. SCIENTIFIC FAILURE NO-RETRY
+======================================================================
+
+Engineering fixtures must demonstrate that statuses representing
+scientific outcomes are not automatically retried merely to obtain
+a different result.
+
+Examples:
+
+    TRAINING_FAILED;
+    INDUCTION_LIMIT_REACHED;
+    CONVERGENCE_FAILED;
+    NUMERICALLY_UNSTABLE;
+    METRIC_UNAVAILABLE.
+
+They are evidence, not infrastructure errors.
+
+
+======================================================================
+27. DUPLICATE EXECUTION
+======================================================================
+
+Deliberately execute selected identical jobs on multiple workers.
+
+If canonical scientific results are identical:
+
+    accept one scientific result identity;
+    preserve provenance for all copies;
+    record reproducibility confirmation.
+
+Do not discard duplicate provenance.
+
+
+======================================================================
+28. CONFLICTING DUPLICATE
+======================================================================
+
+Inject or produce a controlled conflicting duplicate.
+
+Required behavior:
+
+    quarantine all conflicting copies;
+    block dependent jobs where appropriate;
+    block aggregation;
+    expose explicit conflict status.
+
+Never select one result opportunistically.
+
+
+======================================================================
+29. CORRUPTION TEST
+======================================================================
+
+Corrupt a returned evidence artifact.
+
+Verifier must detect:
+
+    content hash mismatch
+
+and reject/quarantine it.
+
+The corrupted result must never satisfy JobID completion.
+
+
+======================================================================
+30. WRONG-CODE TEST
+======================================================================
+
+Attempt execution/result submission with an incorrect executable
+or code hash.
+
+It must not be accepted into the frozen result graph.
+
+
+======================================================================
+31. CROSS-NODE DETERMINISM
+======================================================================
+
+Run representative G1-v2 engineering jobs independently on
+multiple nodes.
+
+Include representatives of:
+
+    M0/M1
+    M2
+    M3
+    M4
+    M5.
+
+Where relevant include:
+
+    predictive;
+    generation;
+    structural
+
+stages.
+
+
+======================================================================
+32. DETERMINISM CRITERION
+======================================================================
+
+Use the frozen Task85b canonical representation.
+
+Byte identity is required unless a metric has an explicitly frozen
+numerical-equivalence contract.
+
+No new tolerance may be introduced after observing differences.
+
+For every representative duplicate record:
+
+    JobID;
+    workers;
+    artifact hashes;
+    byte-identical status;
+    tolerance contract if applicable;
+    verdict.
+
+
+======================================================================
+33. CROSS-NODE FAILURE
+======================================================================
+
+If scientifically equivalent jobs produce conflicting results
+outside the frozen equivalence contract:
+
+    do not proceed to bulk scientific computation.
+
+Investigate and fix the implementation.
+
+If fixing requires changing the frozen scientific contract:
+
+    preparation fails;
+    return to design task.
+
+
+======================================================================
+34. JOB GRANULARITY VALIDATION
+======================================================================
+
+Validate the Task85b job decomposition:
+
+    FIT
+    PREDICTIVE
+    GENERATION
+    STRUCTURAL
+    AGGREGATION.
+
+Measure actual runtime distribution.
+
+Identify jobs likely to become stragglers.
+
+Especially inspect:
+
+    M3 induction;
+    M4 induction;
+    M5 search;
+    generation batches;
+    EDIT structural extraction.
+
+
+======================================================================
+35. GENERATION BATCH SIZE
+======================================================================
+
+Validate whether the frozen target of approximately:
+
+    5–20 minutes per generation batch
+
+is practically achieved.
+
+If a job is much longer, determine whether it can be decomposed
+without changing scientific semantics.
+
+Engineering-only granularity changes are allowed if consistent
+with the frozen Task85b execution contract.
+
+Scientific limits must not be changed.
+
+
+======================================================================
+36. STAGE-A SCALABILITY BENCHMARK
+======================================================================
+
+Construct one representative frozen engineering benchmark manifest.
+
+Execute the SAME manifest with:
+
+    1 worker
+    2 workers
+    4 workers
+
+and:
+
+    8 workers where available.
+
+"Worker" means an independently scheduling execution worker,
+not necessarily a physical host, provided this matches the
+Phase-I executor semantics and does not create artificial
+oversubscription.
+
+Document physical hosts and effective compute slots separately.
+
+
+======================================================================
+37. SCALABILITY ACCEPTANCE
+======================================================================
+
+Use the already frozen Task85b thresholds.
+
+At four workers require:
+
+    parallel efficiency >= 0.60
+
+    worker utilization >= 0.70
+        while sufficient ready work exists
+
+    scheduler/transfer overhead <= 10%
+        CPU-equivalent
+
+    straggler contribution <= 25%
+        wall-clock.
+
+Do not change these thresholds based on benchmark results.
+
+
+======================================================================
+38. RESOURCE SATURATION
+======================================================================
+
+The scalability benchmark must distinguish scheduler scalability
+from hardware oversubscription.
+
+Record:
+
+    physical cores;
+    effective worker slots;
+    RAM;
+    storage;
+    network constraints.
+
+A 4-worker test on insufficient hardware must not be presented as
+evidence that the scheduler fails to scale.
+
+
+======================================================================
+39. OPERATIONAL TELEMETRY
+======================================================================
+
+For every execution attempt record:
+
+    worker identity;
+    host;
+    lease ID/history;
+    UTC start/end;
+    wall time;
+    CPU time;
+    peak RSS;
+    transfer bytes;
+    retry count;
+    infrastructure status.
+
+Operational telemetry must remain outside the scientific payload
+hash.
+
+
+======================================================================
+40. TASK86C-v2 CAPACITY PROJECTION
+======================================================================
+
+After actual benchmark measurements, update the capacity estimate
+for the future Task86C-v2 run.
+
+Task85b estimated approximately:
+
+    216 corpus instances;
+    ~15,552 candidate fits;
+    up to 5,184 generation batches;
+    ~36,288 family-scale F2 evaluations;
+    330–380 CPU-hours;
+    60–100 GB immutable storage.
+
+Do not change scientific workload.
+
+Use measured Stage-A data to estimate actual:
+
+    CPU-hours;
+    storage;
+    network transfer;
+    wall time;
+    worker utilization.
+
+
+======================================================================
+41. CAPACITY SCENARIOS
+======================================================================
+
+Provide estimated wall-clock for practical configurations such as:
+
+    1 node
+    2 nodes
+    4 nodes
+    8 nodes
+
+and/or:
+
+    N effective worker slots.
+
+Separate:
+
+    physical nodes
+
+from:
+
+    scheduler workers.
+
+State assumptions about:
+
+    cores;
+    memory;
+    disk;
+    network.
+
+
+======================================================================
+42. CLUSTER SIZING RECOMMENDATION
+======================================================================
+
+Produce a recommendation for the scientific Task86C-v2 run:
+
+    minimum practical configuration;
+    recommended configuration;
+    diminishing-return configuration.
+
+Example form only:
+
+    minimum: ...
+    recommended: ...
+    beyond ... workers additional scaling is weak.
+
+Do not choose based solely on theoretical CPU count;
+use measured benchmark data.
+
+
+======================================================================
+43. STORAGE READINESS
+======================================================================
+
+Given the expected 60–100 GB immutable evidence volume, verify:
+
+    available capacity;
+    atomic publication;
+    content-addressed layout;
+    temporary-output requirements;
+    cleanup policy for invalid temporary files;
+    retention of valid evidence.
+
+Scientific evidence must remain delete-free through freeze.
+
+
+======================================================================
+44. NETWORK/CACHE READINESS
+======================================================================
+
+Validate Phase-I content-addressed caching for G1-v2 inputs.
+
+Repeated workers must not repeatedly transfer large immutable
+inputs unnecessarily.
+
+Measure cache:
+
+    cold behavior;
+    warm behavior;
+    cache hit rate;
+    transfer volume.
+
+Cache behavior must not affect scientific result identity.
+
+
+======================================================================
+45. SECURITY / AUTHENTICATION
+======================================================================
+
+Validate existing mTLS worker authentication.
+
+Confirm:
+
+    trusted worker accepted;
+    unknown worker rejected;
+    revoked/invalid identity rejected where supported;
+    result is associated with authenticated worker provenance.
+
+Worker certificate identity is operational provenance only.
+
+
+======================================================================
+46. NO SCIENTIFIC RESULT FROM PREP
+======================================================================
+
+Task86C-v2-prep MUST NOT issue:
+
+    MODEL_RECOVERY_VALIDATED;
+    NATURAL_LANGUAGE_APPLICABILITY_VALIDATED;
+    G1_MINIMAL_CLASS;
+    any Voynich grammar verdict.
+
+Engineering M0–M5 fixtures cannot be used as scientific evidence
+for G1-v2 validity.
+
+
+======================================================================
+47. SCIENTIFIC HANDOFF BOUNDARY
+======================================================================
+
+If preparation passes, the scientific Task86C-v2 must be able to
+start from:
+
+    frozen Task85b scientific contract
+
+plus:
+
+    frozen Task86C-v2-prep execution implementation.
+
+Task86C-v2 should not need to redesign:
+
+    scheduler;
+    worker protocol;
+    evidence format;
+    JobID;
+    verifier;
+    retry semantics;
+    duplicate semantics;
+    distributed aggregation.
+
+
+======================================================================
+48. FREEZE IMPLEMENTATION CLOSURE
+======================================================================
+
+Before declaring compute readiness, freeze:
+
+    coordinator revision/hash;
+    worker revision/hash;
+    G1-v2 adapter revision/hash;
+    verifier revision/hash;
+    schemas;
+    executor config;
+    canonical serialization version;
+    deployment configuration;
+    compatibility requirements.
+
+Future Task86C-v2 may use additional workers, but they must run
+compatible frozen execution code.
+
+
+======================================================================
+49. ADDING FUTURE WORKERS
+======================================================================
+
+Prove or document the procedure for adding a worker after prep.
+
+Adding a compatible worker must require no change to:
+
+    scientific manifest;
+    JobIDs;
+    seeds;
+    thresholds;
+    evidence semantics;
+    aggregation.
+
+Only operational worker inventory changes.
+
+
+======================================================================
+50. REQUIRED ARTIFACTS
+======================================================================
+
+Create at minimum under:
+
+    research/phase3/task86c-v2-prep/
+
+the following:
+
+    TASK86C_V2_PREP_DESIGN.md
+
+    PHASE1_EXECUTOR_INTEGRATION.md
+    G1V2_EXECUTOR_ADAPTER.md
+
+    EXECUTION_COMPONENT_MANIFEST.json
+    WORKER_COMPATIBILITY_CONTRACT.md
+
+    ENGINEERING_FIXTURE_MANIFEST.json
+
+    EVIDENCE_VERIFIER_VALIDATION.tsv
+    NEGATIVE_VERIFIER_TESTS.tsv
+
+    DISTRIBUTED_FAILURE_TESTS.tsv
+    RESUME_TEST_RESULTS.tsv
+    DUPLICATE_EXECUTION_RESULTS.tsv
+    CONFLICT_QUARANTINE_RESULTS.tsv
+
+    CROSS_NODE_DETERMINISM.tsv
+
+    SCALABILITY_BENCHMARK_MANIFEST.json
+    SCALABILITY_RESULTS.tsv
+
+    JOB_RUNTIME_PROFILE.tsv
+    RESOURCE_PROFILE.tsv
+    CACHE_NETWORK_PROFILE.tsv
+
+    TASK86C_V2_CAPACITY_ESTIMATE.md
+    TASK86C_V2_CLUSTER_RECOMMENDATION.md
+
+    TASK86C_V2_PREP_VALIDATION.tsv
+
+    TASK86C_V2_SCIENTIFIC_HANDOFF.md
+
+    TASK86C_V2_PREP_REPORT.md
+    TASK86C_V2_PREP_RESULTS_MANIFEST.json.
+
+
+======================================================================
+51. RESULTS MANIFEST
+======================================================================
+
+TASK86C_V2_PREP_RESULTS_MANIFEST.json must transitively cover:
+
+    implementation hashes;
+    fixture manifests;
+    evidence bundles;
+    verifier outputs;
+    negative tests;
+    distributed failure tests;
+    duplicate tests;
+    determinism results;
+    benchmark manifests;
+    benchmark results;
+    capacity calculations;
+    validation results.
+
+Operational logs may be referenced separately if large, but their
+hashes must be recorded where they support readiness claims.
+
+
+======================================================================
+52. REQUIRED VERDICTS
+======================================================================
+
+Issue at minimum:
+
+    G1V2_EXECUTOR_ADAPTER_IMPLEMENTED =
+        SUPPORTED / NOT_SUPPORTED
+
+    G1V2_EVIDENCE_BUNDLE_IMPLEMENTED =
+        SUPPORTED / NOT_SUPPORTED
+
+    G1V2_EVIDENCE_VERIFIER_IMPLEMENTED =
+        SUPPORTED / NOT_SUPPORTED
+
+    G1V2_DECISION_REGENERATION_VALIDATED =
+        SUPPORTED / NOT_SUPPORTED
+
+    PHASE1_EXECUTOR_INTEGRATION =
+        SUPPORTED / NOT_SUPPORTED
+
+    DISTRIBUTED_RESUME_VALIDATED =
+        SUPPORTED / NOT_SUPPORTED
+
+    WORKER_LOSS_RECOVERY_VALIDATED =
+        SUPPORTED / NOT_SUPPORTED
+
+    SCIENTIFIC_INFRA_FAILURE_SEPARATION_VALIDATED =
+        SUPPORTED / NOT_SUPPORTED
+
+    DUPLICATE_EXECUTION_VALIDATED =
+        SUPPORTED / NOT_SUPPORTED
+
+    CONFLICT_QUARANTINE_VALIDATED =
+        SUPPORTED / NOT_SUPPORTED
+
+    CORRUPTION_DETECTION_VALIDATED =
+        SUPPORTED / NOT_SUPPORTED
+
+    CROSS_NODE_DETERMINISM_VALIDATED =
+        SUPPORTED / NOT_SUPPORTED
+
+    HORIZONTAL_SCALABILITY_VALIDATED =
+        SUPPORTED / NOT_SUPPORTED
+
+    STORAGE_READINESS =
+        SUPPORTED / NOT_SUPPORTED
+
+    WORKER_EXPANSION_VALIDATED =
+        SUPPORTED / NOT_SUPPORTED
+
+    VOYNICH_FIREWALL_PRESERVED =
+        SUPPORTED / NOT_SUPPORTED
+
+    CONFIRMATORY_FIREWALL_PRESERVED =
+        SUPPORTED / NOT_SUPPORTED
+
+    TASK86C_V2_COMPUTE_READY =
+        SUPPORTED / NOT_SUPPORTED.
+
+
+======================================================================
+53. COMPUTE-READY RULE
+======================================================================
+
+TASK86C_V2_COMPUTE_READY = SUPPORTED
+
+only if all mandatory infrastructure verdicts are SUPPORTED.
+
+In particular it requires:
+
+    adapter implementation;
+    evidence bundle implementation;
+    evidence-only verification;
+    decision regeneration;
+    Phase-I executor integration;
+    resume;
+    worker-loss recovery;
+    scientific/infrastructure failure separation;
+    duplicate handling;
+    conflict quarantine;
+    corruption detection;
+    cross-node determinism;
+    scalability acceptance;
+    storage readiness;
+    worker expansion;
+    both firewalls.
+
+Do not issue SUPPORTED merely because ordinary jobs run
+successfully on two machines.
+
+
+======================================================================
+54. TERMINAL MARKERS
+======================================================================
+
+If:
+
+    TASK86C_V2_COMPUTE_READY = SUPPORTED
+
+issue exactly:
+
+    TASK86C_V2_COMPUTE_READY_FROZEN.
+
+If the infrastructure is implemented but one or more mandatory
+readiness gates fail:
+
+    TASK86C_V2_PREPARATION_FAILED.
+
+If the frozen Task85b contract had to be scientifically changed,
+or a firewall/integrity boundary was violated:
+
+    TASK86C_V2_PREPARATION_INVALID.
+
+Exactly one terminal marker.
+
+
+======================================================================
+55. REPORT QUESTIONS
+======================================================================
+
+TASK86C_V2_PREP_REPORT.md must answer at minimum:
+
+1. Which Phase-I distributed components were reused?
+
+2. Which G1-v2-specific components had to be implemented?
+
+3. Was a new scheduler required? If yes, why?
+
+4. How is the scientific manifest compiled into executable jobs?
+
+5. How is JobID generated?
+
+6. Can the same JobID execute on arbitrary compatible workers?
+
+7. Does worker identity affect scientific output?
+
+8. How are evidence bundles published?
+
+9. Can the full decision path be regenerated without fitting or
+   generation?
+
+10. Did all negative verifier tests fail closed?
+
+11. Is NOT_ASSESSABLE preserved distinctly from FAIL?
+
+12. Is NOT_REACHED preserved distinctly from missing output?
+
+13. Are scientific failures distinguished from infrastructure
+    failures?
+
+14. What happens when a worker disappears?
+
+15. What happens when the coordinator restarts?
+
+16. Are completed jobs reused after restart?
+
+17. What happens with identical duplicates?
+
+18. What happens with conflicting duplicates?
+
+19. Is corruption detected?
+
+20. Is a wrong executable/config rejected?
+
+21. Are representative M0–M5 results reproducible across nodes?
+
+22. Are results byte-identical? If not, which frozen numerical
+    equivalence rules apply?
+
+23. How granular are actual jobs?
+
+24. Which stages produce stragglers?
+
+25. What are measured runtimes by model/stage?
+
+26. What scalability was observed with 1/2/4 workers?
+
+27. Were the frozen scalability criteria passed?
+
+28. How much CPU is now estimated for Task86C-v2?
+
+29. How much storage is required?
+
+30. What network/cache behavior was observed?
+
+31. What is the estimated wall-clock at practical cluster sizes?
+
+32. What is the minimum practical cluster?
+
+33. What cluster configuration is recommended?
+
+34. At what size do diminishing returns become significant?
+
+35. Can additional workers be added without changing the
+    scientific manifest?
+
+36. Are mTLS/authentication semantics preserved?
+
+37. Was the Voynich firewall preserved?
+
+38. Was the confirmatory-control firewall preserved?
+
+39. Is the cluster ready for the full Task86C-v2 computation?
+
+40. Exactly what frozen implementation/configuration is handed
+    to Task86C-v2?
+
+
+======================================================================
+56. REPOSITORY VALIDATION
+======================================================================
+
+Required:
+
+    verify Task85b terminal marker;
+    verify Task85b manifest;
+    verify all authoritative registry hashes;
+
+    validate engineering manifest;
+    validate all evidence schemas;
+    validate JobID determinism;
+    validate evidence closure;
+    validate decision regeneration;
+    validate negative verifier tests;
+    validate distributed failure tests;
+    validate cross-node results;
+    validate scalability calculations;
+    validate results-manifest closure.
+
+If Go code is added:
+
+    go build ./...
+    go vet ./...
+    go test ./...
+    go test -race ./...
+
+Always:
+
+    git diff --check.
+
+
+======================================================================
+57. DEFINITION OF DONE
+======================================================================
+
+Task86C-v2-prep is complete only when:
+
+1. Task85b frozen contract is verified.
+2. Scientific contract remains unchanged.
+3. Voynich firewall is preserved.
+4. Confirmatory-control firewall is preserved.
+5. Phase-I executor is operational.
+6. G1-v2 manifest adapter is implemented.
+7. G1-v2 DAG executes.
+8. Deterministic JobID is implemented.
+9. Immutable job bundles are implemented.
+10. Worker scientific isolation is verified.
+11. Evidence bundles are implemented.
+12. Atomic content-addressed publication works.
+13. Complete evidence preservation is demonstrated.
+14. NOT_REACHED semantics are implemented.
+15. Evidence-only verifier is implemented.
+16. Decision regeneration succeeds.
+17. Negative verifier tests fail closed.
+18. Three-valued semantics are validated.
+19. PM6 engineering fixtures pass.
+20. Current workers are deployed/validated.
+21. Worker compatibility checks work.
+22. Dynamic leasing works.
+23. Coordinator restart/resume works.
+24. Worker-loss recovery works.
+25. Infrastructure retry works.
+26. Scientific outcomes are not improperly retried.
+27. Identical duplicate execution works.
+28. Duplicate provenance is retained.
+29. Conflicting duplicates are quarantined.
+30. Corrupt evidence is rejected.
+31. Wrong-code/config evidence is rejected.
+32. Cross-node M0/M1 is validated.
+33. Cross-node M2 is validated.
+34. Cross-node M3 is validated.
+35. Cross-node M4 is validated.
+36. Cross-node M5 is validated.
+37. Job granularity is measured.
+38. Stragglers are identified.
+39. Frozen scalability benchmark is executed.
+40. 1-worker result is recorded.
+41. 2-worker result is recorded.
+42. 4-worker result is recorded.
+43. Scalability acceptance criteria pass.
+44. Hardware oversubscription is excluded as a confound.
+45. Operational telemetry is complete.
+46. Cache/network behavior is measured.
+47. Storage readiness is established.
+48. Task86C-v2 capacity estimate is updated.
+49. Minimum cluster configuration is determined.
+50. Recommended cluster configuration is determined.
+51. Worker expansion procedure is validated/documented.
+52. Implementation/config hash closure is frozen.
+53. Scientific handoff is written.
+54. Results manifest is complete.
+55. TASK86C_V2_PREP_REPORT.md answers all required questions.
+56. Repository validation passes.
+57. TASK86C_V2_COMPUTE_READY is determined.
+58. Exactly one terminal marker is issued.
