@@ -65,8 +65,16 @@ type preflightSnapshot struct {
 	GOARCH     string              `json:"goarch"`
 }
 
+// requiredFrozenArtifacts enumerates every mandatory frozen protocol
+// artifact named by task section 3 ("global freeze manifest; metric
+// registry; USC specification; calibration panel; calibration scales;
+// rarefaction protocol; distribution output contract; bootstrap protocol;
+// VM reference v2"), expanded to the concrete files that realize each
+// category.
 var requiredFrozenArtifacts = []string{
 	"GLOBAL_FREEZE_REPORT.md",
+	"METRIC_REGISTRY.md",
+	"USC_SPEC.md",
 	"CALIBRATION_PANEL_SPEC.md",
 	"CALIBRATION_PANEL_REPORT.md",
 	"CALIBRATION_SCALES.tsv",
@@ -78,6 +86,52 @@ var requiredFrozenArtifacts = []string{
 	"VM_REFERENCE_V2.fingerprint.json",
 	"VM_REFERENCE_V2_MANIFEST.json",
 	"VM_REFERENCE_RECONCILIATION.md",
+}
+
+// lookupFrozenArtifactHash resolves the SHA-256 GLOBAL_FREEZE_MANIFEST.json
+// binds for a mandatory artifact name. Most artifacts are bound directly
+// under their own filename key; VM_REFERENCE_V2.tsv and
+// VM_REFERENCE_V2.fingerprint.json are bound under the nested
+// "VM_REFERENCE_V2" object instead (reference_tsv_sha256 /
+// fingerprint_json_sha256), which the manifest documents as intentional and
+// is what notation.VerifyFrozenVMReference actually checks. ok=false means
+// no binding of any kind was found (a genuine gap); errMsg!="" means a
+// binding was found but is malformed.
+func lookupFrozenArtifactHash(fm freezeManifest, name string) (want string, ok bool, errMsg string) {
+	switch name {
+	case "VM_REFERENCE_V2.tsv", "VM_REFERENCE_V2.fingerprint.json":
+		raw, present := fm.Artifacts["VM_REFERENCE_V2"]
+		if !present {
+			return "", false, ""
+		}
+		var vm struct {
+			ReferenceTSVSHA256    string `json:"reference_tsv_sha256"`
+			FingerprintJSONSHA256 string `json:"fingerprint_json_sha256"`
+		}
+		if err := json.Unmarshal(raw, &vm); err != nil {
+			return "", false, "VM_REFERENCE_V2 nested binding is malformed: " + err.Error()
+		}
+		if name == "VM_REFERENCE_V2.tsv" {
+			if len(vm.ReferenceTSVSHA256) != 64 {
+				return "", false, "VM_REFERENCE_V2.reference_tsv_sha256 does not have a direct SHA-256 binding"
+			}
+			return vm.ReferenceTSVSHA256, true, ""
+		}
+		if len(vm.FingerprintJSONSHA256) != 64 {
+			return "", false, "VM_REFERENCE_V2.fingerprint_json_sha256 does not have a direct SHA-256 binding"
+		}
+		return vm.FingerprintJSONSHA256, true, ""
+	default:
+		raw, present := fm.Artifacts[name]
+		if !present {
+			return "", false, ""
+		}
+		var s string
+		if err := json.Unmarshal(raw, &s); err != nil || len(s) != 64 {
+			return "", false, name + " does not have a direct SHA-256 binding"
+		}
+		return s, true, ""
+	}
 }
 
 func productionPreflightCmd(args []string) error {
@@ -225,14 +279,13 @@ func verifyGlobalFreezeGate(base string) preflightGate {
 			freezeGate.Errors = append(freezeGate.Errors, "freeze status must be frozen=true and initial authorization=false")
 		}
 		for _, name := range requiredFrozenArtifacts {
-			rawHash, ok := fm.Artifacts[name]
-			if !ok {
-				freezeGate.Errors = append(freezeGate.Errors, name+" is absent from GLOBAL_FREEZE_MANIFEST.json")
+			want, ok, errMsg := lookupFrozenArtifactHash(fm, name)
+			if errMsg != "" {
+				freezeGate.Errors = append(freezeGate.Errors, errMsg)
 				continue
 			}
-			var want string
-			if err := json.Unmarshal(rawHash, &want); err != nil || len(want) != 64 {
-				freezeGate.Errors = append(freezeGate.Errors, name+" does not have a direct SHA-256 binding")
+			if !ok {
+				freezeGate.Errors = append(freezeGate.Errors, name+" is absent from GLOBAL_FREEZE_MANIFEST.json")
 				continue
 			}
 			got, err := notation.FileSHA256(filepath.Join(base, name))
