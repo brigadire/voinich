@@ -150,6 +150,39 @@ func TestRarefyRejectsUndersizedCorpus(t *testing.T) {
 	}
 }
 
+// TestRunRarefactionRowOrderDeterministic is a regression test for a real
+// bug found via task run03's production-run-execute reproducibility check
+// on real C01/C02/C06 data: the three accumulation-curve rows
+// (A2_BIGRAM_TYPES/A3_TRIGRAM_TYPES/AT_TRANSITION_TYPES) per
+// checkpoint/replicate were emitted by ranging over an anonymous
+// map[string]float64 literal, so their relative ROW ORDER in
+// RAREFACTION.tsv (and RAREFACTION_SUMMARY.tsv, whose row order follows
+// first-seen order) varied per process even though every value was
+// byte-identical — silently breaking the byte-for-byte reproducibility
+// requirement. The fix emits curves in a fixed literal order.
+func TestRunRarefactionRowOrderDeterministic(t *testing.T) {
+	rs := syntheticLinedCorpus(60, 6)
+	var first []RarefactionRow
+	for i := 0; i < 10; i++ {
+		rows, _, err := RunRarefaction(rs, "SYN-RAREFY", "SYN-R1", []int{100, 200}, 5, BaseSeed)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if i == 0 {
+			first = rows
+			continue
+		}
+		if len(rows) != len(first) {
+			t.Fatalf("run %d: row count %d, want %d", i, len(rows), len(first))
+		}
+		for j := range rows {
+			if rows[j] != first[j] {
+				t.Fatalf("run %d: row %d differs (or is out of order): %+v vs %+v", i, j, rows[j], first[j])
+			}
+		}
+	}
+}
+
 func TestPercentileMonotone(t *testing.T) {
 	v := []float64{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
 	if percentile(v, 0) != 1 || percentile(v, 1) != 10 {

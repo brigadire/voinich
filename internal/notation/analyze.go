@@ -178,8 +178,13 @@ func lineMetrics(rs []Record) []Metric {
 		last[r.Token]++
 		freq[r.Token]++
 	}
-	var tc, sc []float64
+	lineKeys := make([]string, 0, len(lineTokens))
 	for k := range lineTokens {
+		lineKeys = append(lineKeys, k)
+	}
+	sort.Strings(lineKeys)
+	var tc, sc []float64
+	for _, k := range lineKeys {
 		tc = append(tc, float64(lineTokens[k]))
 		sc = append(sc, float64(lineSymbols[k]))
 	}

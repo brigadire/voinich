@@ -193,7 +193,12 @@ func RunRarefaction(rs []Record, corpusID, representationID string, checkpoints 
 				}
 			}
 			a2, a3, at := AccumulationCounts(draw.Records)
-			for id, v := range map[string]float64{"A2_BIGRAM_TYPES": float64(a2), "A3_TRIGRAM_TYPES": float64(a3), "AT_TRANSITION_TYPES": float64(at)} {
+			curveValues := []struct {
+				id string
+				v  float64
+			}{{"A2_BIGRAM_TYPES", float64(a2)}, {"A3_TRIGRAM_TYPES", float64(a3)}, {"AT_TRANSITION_TYPES", float64(at)}}
+			for _, curve := range curveValues {
+				id, v := curve.id, curve.v
 				record("CURVE", id, "", n, draw.ActualN, rep, structSeed, Metric{Value: v, Status: Comparable})
 				k := key{"CURVE", id, "", n}
 				if _, ok := values[k]; !ok {
