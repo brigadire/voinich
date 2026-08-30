@@ -70,6 +70,12 @@ func TestStagesMatchRepository(t *testing.T) {
 		// stage contract.
 		"task82b-run":       true,
 		"task82b-aggregate": true,
+		// Exploratory positional-numeral experiment; outputs are frozen under
+		// research/numeric and are not part of the Task49 production DAG.
+		"numeric-test": true,
+		// Descriptive structural catalog and frozen query tool; outputs are
+		// frozen under research/structure_catalog, outside the Task49 DAG.
+		"vm-structure": true,
 	}
 	for _, e := range entries {
 		if !e.IsDir() {

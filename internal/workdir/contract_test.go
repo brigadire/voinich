@@ -48,10 +48,12 @@ func TestAllPipelineCommandsUseWorkdirContract(t *testing.T) {
 		// the same class again, added for Task82b: independent research
 		// entry points with an explicit -out flag, no frozen Task49 stage
 		// contract, and no relation to the numbered Stage1-28 pipeline.
+		// numeric-test is likewise an exploratory research CLI; its frozen
+		// deliverables are under research/numeric rather than workdir.
 		if base := filepath.Base(filepath.Dir(path)); base == "codex_prepare" || base == "codex_orientation" ||
 			base == "tei-abbr-extract" || base == "generic-glyph-filter" || base == "ivtff-x7-extract" ||
 			base == "task82b-run" || base == "task82b-aggregate" || base == "fingerprint-v2-verify" ||
-			base == "g1v2-executor" {
+			base == "g1v2-executor" || base == "numeric-test" || base == "vm-structure" {
 			continue
 		}
 		parsed, err := parser.ParseFile(token.NewFileSet(), path, nil, parser.ImportsOnly)
