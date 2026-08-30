@@ -1,0 +1,619 @@
+{
+  "schema_version": "notation-fingerprint-1.0",
+  "corpus_id": "C06-JLSDD-SECURE",
+  "representation_id": "MUSIC-R1",
+  "input_sha256": "8521706b957601ec682d2e280299f746f4a03eba4414eac5b046d1bc4de54cfc",
+  "record_count": 13117,
+  "metrics": [
+    {
+      "metric_id": "G01_ALPHABET_SIZE",
+      "family": "G",
+      "value": 33,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "G02_INITIAL_RESTRICTION_DENSITY",
+      "family": "G",
+      "value": 0.9393939393939394,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "G03_FINAL_RESTRICTION_DENSITY",
+      "family": "G",
+      "value": 0.45454545454545453,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "G04_BIGRAM_OCCUPANCY",
+      "family": "G",
+      "value": 0.09182736455463728,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "G05_TRIGRAM_OCCUPANCY",
+      "family": "G",
+      "value": 0.007874892172412834,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "G06_SYMBOL_CONDITIONAL_ENTROPY_NORM",
+      "family": "G",
+      "value": 0.3902363280073538,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "G07_HIGHER_ORDER_ENTROPY_REDUCTION",
+      "family": "G",
+      "value": 0.0850530278000956,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "G08_MEAN_SYMBOLS_PER_TOKEN",
+      "family": "G",
+      "value": 4.046580773042616,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "T01_MEAN_TOKEN_LENGTH",
+      "family": "T",
+      "value": 4.046580773042616,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "T02_TOKEN_LENGTH_SD",
+      "family": "T",
+      "value": 0.5841897518868213,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "T03_UNIQUE_TOKEN_RATIO",
+      "family": "T",
+      "value": 0.02759777388122284,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "T04_HAPAX_RATIO",
+      "family": "T",
+      "value": 0.212707182320442,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "T05_PREFIX_DIVERSITY",
+      "family": "T",
+      "value": 0.0055248618784530384,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "T06_SUFFIX_DIVERSITY",
+      "family": "T",
+      "value": 0.049723756906077346,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "T07_EDIT_GRAPH_DENSITY",
+      "family": "T",
+      "value": 0.03679160098559863,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "T08_EDIT_GRAPH_GIANT_SHARE",
+      "family": "T",
+      "value": 0.9917127071823204,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "T09_EDIT_GRAPH_CLUSTERING",
+      "family": "T",
+      "value": 0.35852948821614544,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "T10_EDIT_DEGREE_FREQUENCY_SPEARMAN",
+      "family": "T",
+      "value": 0.5354119893013614,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "T11_POSITIONAL_RESTRICTION_DENSITY",
+      "family": "T",
+      "value": 0.5959595959595959,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "S01_TRANSITION_DENSITY",
+      "family": "S",
+      "regime": "FREQ_GE_5",
+      "value": 0.11345,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "S02_TRANSITION_ZERO_DENSITY",
+      "family": "S",
+      "regime": "FREQ_GE_5",
+      "value": 0.88655,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "S03_TRANSITION_ENTROPY_NORM",
+      "family": "S",
+      "regime": "FREQ_GE_5",
+      "value": 0.7420053993637689,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "S06_PREFERRED_TRANSITION_FRACTION",
+      "family": "S",
+      "regime": "FREQ_GE_5",
+      "value": 0.14698162729658792,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "S07_DEPLETED_TRANSITION_FRACTION",
+      "family": "S",
+      "regime": "FREQ_GE_5",
+      "value": 0.4199475065616798,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "S08_HIGHER_ORDER_PREDICTIVE_GAIN",
+      "family": "S",
+      "regime": "FREQ_GE_5",
+      "value": 0.4297419944120413,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "S01_TRANSITION_DENSITY",
+      "family": "S",
+      "regime": "FREQ_GE_10",
+      "value": 0.16880341880341881,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "S02_TRANSITION_ZERO_DENSITY",
+      "family": "S",
+      "regime": "FREQ_GE_10",
+      "value": 0.8311965811965811,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "S03_TRANSITION_ENTROPY_NORM",
+      "family": "S",
+      "regime": "FREQ_GE_10",
+      "value": 0.7686435964216168,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "S06_PREFERRED_TRANSITION_FRACTION",
+      "family": "S",
+      "regime": "FREQ_GE_10",
+      "value": 0.14728682170542637,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "S07_DEPLETED_TRANSITION_FRACTION",
+      "family": "S",
+      "regime": "FREQ_GE_10",
+      "value": 0.4160206718346253,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "S08_HIGHER_ORDER_PREDICTIVE_GAIN",
+      "family": "S",
+      "regime": "FREQ_GE_10",
+      "value": 0.44556688426630936,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "S01_TRANSITION_DENSITY",
+      "family": "S",
+      "regime": "TOP_100",
+      "value": 0.3073,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "S02_TRANSITION_ZERO_DENSITY",
+      "family": "S",
+      "regime": "TOP_100",
+      "value": 0.6927,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "S03_TRANSITION_ENTROPY_NORM",
+      "family": "S",
+      "regime": "TOP_100",
+      "value": 0.8112567776585455,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "S06_PREFERRED_TRANSITION_FRACTION",
+      "family": "S",
+      "regime": "TOP_100",
+      "value": 0.14285714285714285,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "S07_DEPLETED_TRANSITION_FRACTION",
+      "family": "S",
+      "regime": "TOP_100",
+      "value": 0.42857142857142855,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "S08_HIGHER_ORDER_PREDICTIVE_GAIN",
+      "family": "S",
+      "regime": "TOP_100",
+      "value": 0.4650103571353382,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "S01_TRANSITION_DENSITY",
+      "family": "S",
+      "regime": "TOP_250",
+      "value": 0.07648,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "S02_TRANSITION_ZERO_DENSITY",
+      "family": "S",
+      "regime": "TOP_250",
+      "value": 0.92352,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "S03_TRANSITION_ENTROPY_NORM",
+      "family": "S",
+      "regime": "TOP_250",
+      "value": 0.71676616043152,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "S06_PREFERRED_TRANSITION_FRACTION",
+      "family": "S",
+      "regime": "TOP_250",
+      "value": 0.15649867374005305,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "S07_DEPLETED_TRANSITION_FRACTION",
+      "family": "S",
+      "regime": "TOP_250",
+      "value": 0.41114058355437666,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "S08_HIGHER_ORDER_PREDICTIVE_GAIN",
+      "family": "S",
+      "regime": "TOP_250",
+      "value": 0.41349101323910153,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "S01_TRANSITION_DENSITY",
+      "family": "S",
+      "regime": "MATCHED_VOCAB",
+      "value": 0.03831537498855346,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "S02_TRANSITION_ZERO_DENSITY",
+      "family": "S",
+      "regime": "MATCHED_VOCAB",
+      "value": 0.9616846250114466,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "S03_TRANSITION_ENTROPY_NORM",
+      "family": "S",
+      "regime": "MATCHED_VOCAB",
+      "value": 0.6758764552422349,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "S06_PREFERRED_TRANSITION_FRACTION",
+      "family": "S",
+      "regime": "MATCHED_VOCAB",
+      "value": 0.15508021390374332,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "S07_DEPLETED_TRANSITION_FRACTION",
+      "family": "S",
+      "regime": "MATCHED_VOCAB",
+      "value": 0.40641711229946526,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "S08_HIGHER_ORDER_PREDICTIVE_GAIN",
+      "family": "S",
+      "regime": "MATCHED_VOCAB",
+      "value": 0.387240276613304,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "S04_REPEATED_BIGRAM_TYPES",
+      "family": "S",
+      "value": 2075,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "S05_REPEATED_TRIGRAM_TYPES",
+      "family": "S",
+      "value": 1673,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "L01_LINE_TOKEN_COUNT_MEAN",
+      "family": "L",
+      "value": 23.46511627906977,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "L02_LINE_SYMBOL_COUNT_MEAN",
+      "family": "L",
+      "value": 94.95348837209302,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "L03_BOUNDARY_SPECIALIZATION",
+      "family": "L",
+      "value": 0.6464088397790055,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "L04_POSITION_PROGRESSION",
+      "family": "L",
+      "value": 0.040405315761239985,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "L05_LINE_ASYMMETRY",
+      "family": "L",
+      "value": 0.2189633609773735,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "L06_SAME_LINE_COOCCURRENCE_DENSITY",
+      "family": "L",
+      "regime": "FREQ_GE_5",
+      "value": 0.5152763819095477,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "L07_SAME_LINE_NONCOOCCURRENCE_DENSITY",
+      "family": "L",
+      "regime": "FREQ_GE_5",
+      "value": 0.4847236180904523,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "L06_SAME_LINE_COOCCURRENCE_DENSITY",
+      "family": "L",
+      "regime": "FREQ_GE_10",
+      "value": 0.6503722084367246,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "L07_SAME_LINE_NONCOOCCURRENCE_DENSITY",
+      "family": "L",
+      "regime": "FREQ_GE_10",
+      "value": 0.3496277915632754,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "L06_SAME_LINE_COOCCURRENCE_DENSITY",
+      "family": "L",
+      "regime": "TOP_100",
+      "value": 0.8587878787878788,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "L07_SAME_LINE_NONCOOCCURRENCE_DENSITY",
+      "family": "L",
+      "regime": "TOP_100",
+      "value": 0.14121212121212123,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "L06_SAME_LINE_COOCCURRENCE_DENSITY",
+      "family": "L",
+      "regime": "TOP_250",
+      "value": 0.38650602409638557,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "L07_SAME_LINE_NONCOOCCURRENCE_DENSITY",
+      "family": "L",
+      "regime": "TOP_250",
+      "value": 0.6134939759036144,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "L06_SAME_LINE_COOCCURRENCE_DENSITY",
+      "family": "L",
+      "regime": "MATCHED_VOCAB",
+      "value": 0.21973952036240646,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "L07_SAME_LINE_NONCOOCCURRENCE_DENSITY",
+      "family": "L",
+      "regime": "MATCHED_VOCAB",
+      "value": 0.7802604796375936,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "D_LINE_COHERENCE",
+      "family": "D",
+      "value": 0.272626960910521,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "D_LINE_EXCLUSIVITY",
+      "family": "D",
+      "value": 0.24585635359116023,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "D_LINE_VARIANCE_SHARE",
+      "family": "D",
+      "value": 0.06480314953335634,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "D_LINE_PROGRESSION",
+      "family": "D",
+      "value": -0.000029239366758766673,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "D_SECTION_COHERENCE",
+      "family": "D",
+      "status": "NOT_COMPARABLE",
+      "reason": "section not observed"
+    },
+    {
+      "metric_id": "D_SECTION_EXCLUSIVITY",
+      "family": "D",
+      "status": "NOT_COMPARABLE",
+      "reason": "section not observed"
+    },
+    {
+      "metric_id": "D_SECTION_VARIANCE_SHARE",
+      "family": "D",
+      "status": "NOT_COMPARABLE",
+      "reason": "section not observed"
+    },
+    {
+      "metric_id": "D_SECTION_PROGRESSION",
+      "family": "D",
+      "status": "NOT_COMPARABLE",
+      "reason": "section not observed"
+    },
+    {
+      "metric_id": "D_PAGE_COHERENCE",
+      "family": "D",
+      "value": 0.28719885986162774,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "D_PAGE_EXCLUSIVITY",
+      "family": "D",
+      "value": 0.3397790055248619,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "D_PAGE_VARIANCE_SHARE",
+      "family": "D",
+      "value": 0.022786459428048262,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "D_PAGE_PROGRESSION",
+      "family": "D",
+      "value": -0.00008426055617015786,
+      "status": "COMPARABLE"
+    },
+    {
+      "metric_id": "D_LOCUS_COHERENCE",
+      "family": "D",
+      "status": "NOT_COMPARABLE",
+      "reason": "locus not observed"
+    },
+    {
+      "metric_id": "D_LOCUS_EXCLUSIVITY",
+      "family": "D",
+      "status": "NOT_COMPARABLE",
+      "reason": "locus not observed"
+    },
+    {
+      "metric_id": "D_LOCUS_VARIANCE_SHARE",
+      "family": "D",
+      "status": "NOT_COMPARABLE",
+      "reason": "locus not observed"
+    },
+    {
+      "metric_id": "D_LOCUS_PROGRESSION",
+      "family": "D",
+      "status": "NOT_COMPARABLE",
+      "reason": "locus not observed"
+    }
+  ],
+  "curves": [
+    {
+      "curve_id": "A2_BIGRAM_TYPES",
+      "checkpoint": 5000,
+      "value": 91,
+      "status": "COMPARABLE"
+    },
+    {
+      "curve_id": "A3_TRIGRAM_TYPES",
+      "checkpoint": 5000,
+      "value": 235,
+      "status": "COMPARABLE"
+    },
+    {
+      "curve_id": "AT_TRANSITION_TYPES",
+      "checkpoint": 5000,
+      "value": 2702,
+      "status": "COMPARABLE"
+    },
+    {
+      "curve_id": "A2_BIGRAM_TYPES",
+      "checkpoint": 10000,
+      "value": 96,
+      "status": "COMPARABLE"
+    },
+    {
+      "curve_id": "A3_TRIGRAM_TYPES",
+      "checkpoint": 10000,
+      "value": 276,
+      "status": "COMPARABLE"
+    },
+    {
+      "curve_id": "AT_TRANSITION_TYPES",
+      "checkpoint": 10000,
+      "value": 4373,
+      "status": "COMPARABLE"
+    },
+    {
+      "curve_id": "A2_BIGRAM_TYPES",
+      "checkpoint": 20000,
+      "status": "NOT_COMPARABLE",
+      "reason": "corpus smaller than checkpoint"
+    },
+    {
+      "curve_id": "A3_TRIGRAM_TYPES",
+      "checkpoint": 20000,
+      "status": "NOT_COMPARABLE",
+      "reason": "corpus smaller than checkpoint"
+    },
+    {
+      "curve_id": "AT_TRANSITION_TYPES",
+      "checkpoint": 20000,
+      "status": "NOT_COMPARABLE",
+      "reason": "corpus smaller than checkpoint"
+    },
+    {
+      "curve_id": "A2_BIGRAM_TYPES",
+      "checkpoint": 39380,
+      "status": "NOT_COMPARABLE",
+      "reason": "corpus smaller than checkpoint"
+    },
+    {
+      "curve_id": "A3_TRIGRAM_TYPES",
+      "checkpoint": 39380,
+      "status": "NOT_COMPARABLE",
+      "reason": "corpus smaller than checkpoint"
+    },
+    {
+      "curve_id": "AT_TRANSITION_TYPES",
+      "checkpoint": 39380,
+      "status": "NOT_COMPARABLE",
+      "reason": "corpus smaller than checkpoint"
+    }
+  ],
+  "metadata": {
+    "analyzer": "generic/no-corpus-branches",
+    "metric_registry_version": "generic-metrics-1.0"
+  }
+}
