@@ -227,9 +227,17 @@ func productionCorpusValidateCmd(args []string) error {
 	if m.FullPanelReady != (ready == 9) {
 		errs = append(errs, "FULL_CANDIDATE_PANEL_READY mismatch")
 	}
-	marker, markerErr := os.ReadFile(filepath.Join(base, "PRODUCTION_COMPARATIVE_RUN_AUTHORIZED"))
-	if m.Authorized || markerErr != nil || strings.TrimSpace(string(marker)) != "false" {
-		errs = append(errs, "comparative run authorization must remain false")
+	// m.Authorized mirrors PRODUCTION_CORPUS_MANIFEST.json's own frozen
+	// PRODUCTION_COMPARATIVE_RUN_AUTHORIZED field, which must permanently
+	// read false: the corpus selection was frozen before any production
+	// authorization existed, and that historical fact never changes. This
+	// is deliberately NOT a check of the live
+	// research/comparative_notation/PRODUCTION_COMPARATIVE_RUN_AUTHORIZED
+	// marker file — that marker legitimately becomes true once
+	// production-run-preflight authorizes a run, and corpus-subset
+	// validation must keep passing at every later lifecycle stage too.
+	if m.Authorized {
+		errs = append(errs, "PRODUCTION_CORPUS_MANIFEST.json's frozen authorization field must remain false")
 	}
 	result := map[string]any{
 		"schema_version": "production-corpus-bundle-validation-2.0", "manifest_sha256": notation.BytesSHA256(b),

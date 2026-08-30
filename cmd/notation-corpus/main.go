@@ -70,12 +70,14 @@ func run(args []string) error {
 		return globalFreezeVerifyCmd(args[1:])
 	case "global-freeze-bind":
 		return globalFreezeBindCmd(args[1:])
+	case "production-run-execute":
+		return productionRunExecuteCmd(args[1:])
 	default:
 		return usage()
 	}
 }
 func usage() error {
-	return fmt.Errorf("usage: notation-corpus acquire|normalize|validate|analyze|compare-vm|report|compare-classes|vm-adapter|rarefy|bootstrap|distributions|metric-output-types|calibrate|production-preflight|bdd-usc|musicxml-usc|production-corpus-validate|production-run-preflight|global-freeze-verify|global-freeze-bind")
+	return fmt.Errorf("usage: notation-corpus acquire|normalize|validate|analyze|compare-vm|report|compare-classes|vm-adapter|rarefy|bootstrap|distributions|metric-output-types|calibrate|production-preflight|bdd-usc|musicxml-usc|production-corpus-validate|production-run-preflight|global-freeze-verify|global-freeze-bind|production-run-execute")
 }
 
 // guardNotUnauthorizedCandidate refuses any corpus_id in the ten frozen
