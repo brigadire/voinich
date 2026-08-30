@@ -1,0 +1,22 @@
+{
+  "schema_version": "production-corpus-validation-1.0",
+  "candidate_id": "C06",
+  "status": "PASS",
+  "source_documents": 79,
+  "representations": {
+    "MUSIC-R1": {"records": 13117, "usc_schema": "PASS"},
+    "MUSIC-R2": {"records": 11785, "usc_schema": "PASS", "voice_sequence_isolation": "PASS"},
+    "MUSIC-R3": {"records": 12475, "usc_schema": "PASS"}
+  },
+  "checks": {
+    "stable_ordering": "PASS",
+    "boundary_preservation": "PASS",
+    "empty_tokens": 0,
+    "invalid_missing_levels": 0,
+    "duplicate_token_ids": 0,
+    "non_contiguous_token_indices": 0,
+    "unhandled_cursor_constructs": 0,
+    "source_traceability": "document filename + measure + source event ordinal retained",
+    "comparative_metrics_executed": false
+  }
+}

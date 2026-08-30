@@ -1,0 +1,13 @@
+{
+  "schema_version": "production-extraction-policy-1.0",
+  "candidate_id": "C02",
+  "version": "bdd-koeln-cod119-books-06-07-11-12-13-v1",
+  "frozen": true,
+  "inclusion": "all running body text in locally archived BDD TEI books 06, 07, 11, 12, and 13, diplomatic abbreviation branch",
+  "exclusion": ["teiHeader", "table of contents divs", "notes", "running headers/footers", "marginal labels", "deleted text", "punctuation elements"],
+  "ordering": "lexicographic source filename, then XML document order",
+  "boundaries": "TEI book/page/column/physical-line; absent values remain unobserved",
+  "damaged_uncertain": "retain readable supplied/sic/unclear content; empty damage contributes no token",
+  "duplicates": "no deduplication",
+  "subset_reason": "same complete paired five-book snapshot as C01; fixed before comparative analysis"
+}

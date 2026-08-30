@@ -1,0 +1,15 @@
+{
+  "generator_id": "CAL-IID",
+  "version": "1.0",
+  "implementation": "internal/notation/calibration.go:CalibrationGenerators()[0]",
+  "parameters": {
+    "alphabet_size": 24,
+    "alphabet": "a..x (24 lowercase letters, ASCII a+i)",
+    "symbol_draw": "uniform independent draw from the alphabet",
+    "token_length_distribution": "poissonish(mean=5)",
+    "lines_per_corpus_hint": 800
+  },
+  "seed_schedule": "SeedFor(base_seed=20260830, generator_id, \"SYNTHETIC-TOKEN\", \"CALIBRATION\", checkpoint, replicate_index)",
+  "intended_preserved_properties": ["symbol frequency marginal (uniform)"],
+  "intended_destroyed_properties": ["all sequence structure", "all token-internal structure beyond length"]
+}

@@ -1,0 +1,19 @@
+{
+  "schema_version": "production-normalization-profile-1.0",
+  "candidate_id": "C01",
+  "profile_id": "bdd-expanded-usc-1.0",
+  "frozen": true,
+  "source_format": "TEI P5 XML",
+  "unicode": "NFC",
+  "case": "Unicode lowercase",
+  "whitespace": "Unicode whitespace separates tokens",
+  "punctuation": "Unicode punctuation/symbol elements separate tokens and are not symbols",
+  "abbreviations": "select expan branch; never infer an expansion absent from TEI",
+  "editorial_markup": "exclude note/fw/label/toc/del; retain readable supplied/sic/unclear/add text",
+  "ligatures_combining_marks": "retain source Unicode, then NFC",
+  "boundaries": "book=section, pb=page, cb=locus, lb=physical_line",
+  "line_break_no": "split surface token at the physical line boundary; no cross-line adjacency is invented",
+  "tokenization": "maximal non-whitespace, non-punctuation, non-symbol Unicode runs",
+  "symbols": "ordered Unicode rune sequence of normalized token",
+  "unsupported_constructs": "hard error; audited conversion reports zero"
+}

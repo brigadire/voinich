@@ -1,0 +1,292 @@
+{
+  "run_id": "CNS-PROD01-20260830",
+  "valid": false,
+  "gates": [
+    {
+      "id": "software_revision",
+      "passed": false,
+      "detail": "worktree is dirty; executable/frozen artifacts are not bound to the recorded commit",
+      "errors": [
+        "worktree is dirty; executable/frozen artifacts are not bound to the recorded commit"
+      ]
+    },
+    {
+      "id": "global_freeze",
+      "passed": false,
+      "detail": "global freeze contract is incomplete or inconsistent",
+      "errors": [
+        "GLOBAL_FREEZE_REPORT.md is absent from GLOBAL_FREEZE_MANIFEST.json",
+        "CALIBRATION_PANEL_SPEC.md is absent from GLOBAL_FREEZE_MANIFEST.json",
+        "CALIBRATION_PANEL_REPORT.md is absent from GLOBAL_FREEZE_MANIFEST.json",
+        "VM_REFERENCE_V2.tsv is absent from GLOBAL_FREEZE_MANIFEST.json",
+        "VM_REFERENCE_V2.fingerprint.json is absent from GLOBAL_FREEZE_MANIFEST.json",
+        "VM_REFERENCE_V2_MANIFEST.json is absent from GLOBAL_FREEZE_MANIFEST.json",
+        "VM_REFERENCE_RECONCILIATION.md is absent from GLOBAL_FREEZE_MANIFEST.json"
+      ]
+    },
+    {
+      "id": "production_candidates",
+      "passed": false,
+      "detail": "one or more C01-C09 candidates lack frozen production inputs or readiness",
+      "errors": [
+        "C01: production_ready=true, source_provenance, source_version, input_checksums, normalization_profile, USC_input",
+        "C02: production_ready=true, source_provenance, source_version, input_checksums, normalization_profile, USC_input",
+        "C03: production_ready=true, source_provenance, source_version, input_checksums, normalization_profile, USC_input",
+        "C04: production_ready=true, source_provenance, source_version, input_checksums, normalization_profile, USC_input",
+        "C05: production_ready=true, source_provenance, source_version, input_checksums, normalization_profile, USC_input",
+        "C06: production_ready=true, source_provenance, source_version, input_checksums, normalization_profile, USC_input",
+        "C07: production_ready=true, source_provenance, source_version, input_checksums, normalization_profile, USC_input",
+        "C08: production_ready=true, source_provenance, source_version, input_checksums, normalization_profile, USC_input",
+        "C09: production_ready=true, source_provenance, source_version, input_checksums, normalization_profile, USC_input"
+      ]
+    },
+    {
+      "id": "vm_reference_reproduction",
+      "passed": false,
+      "detail": "blocked by earlier freeze/input gates",
+      "errors": [
+        "not executed"
+      ]
+    },
+    {
+      "id": "minimal_prerun_reproducibility",
+      "passed": false,
+      "detail": "blocked before candidate computation",
+      "errors": [
+        "not executed"
+      ]
+    },
+    {
+      "id": "unit_integration_and_A1_A10",
+      "passed": true,
+      "detail": "passed"
+    },
+    {
+      "id": "go_vet",
+      "passed": true,
+      "detail": "passed"
+    }
+  ],
+  "candidates": [
+    {
+      "class_id": "C01",
+      "plan_path": "research/comparative_notation/experiments/C01/EXPERIMENT_PLAN.json",
+      "plan_sha256": "37e919b78f329505895dc6515c72f17f15c800b961264c253ea7a7a03c9a796b",
+      "plan_status": "PREPARATION_ONLY",
+      "production_ready": false,
+      "corpora": [
+        "C01-BDD-EXP",
+        "C01-CATMUS"
+      ],
+      "representations": [
+        "LATIN-DIPLOMATIC",
+        "LATIN-EXPANDED"
+      ],
+      "input_files": [],
+      "missing_fields": [
+        "production_ready=true",
+        "source_provenance",
+        "source_version",
+        "input_checksums",
+        "normalization_profile",
+        "USC_input"
+      ]
+    },
+    {
+      "class_id": "C02",
+      "plan_path": "research/comparative_notation/experiments/C02/EXPERIMENT_PLAN.json",
+      "plan_sha256": "b16e97eaf40eed1258e47b77826f8949ec1c2641fe2b980638ff861738fd6e01",
+      "plan_status": "PREPARATION_ONLY",
+      "production_ready": false,
+      "corpora": [
+        "C02-BDD-DIP",
+        "C02-ABBR",
+        "C02-CATMUS"
+      ],
+      "representations": [
+        "LATIN-DIPLOMATIC",
+        "LATIN-EXPANDED"
+      ],
+      "input_files": [],
+      "missing_fields": [
+        "production_ready=true",
+        "source_provenance",
+        "source_version",
+        "input_checksums",
+        "normalization_profile",
+        "USC_input"
+      ]
+    },
+    {
+      "class_id": "C03",
+      "plan_path": "research/comparative_notation/experiments/C03/EXPERIMENT_PLAN.json",
+      "plan_sha256": "aab912dcb2dc510db42f269f341d7e41eddd4eca2ede4704b3ee25a0d84348e6",
+      "plan_status": "BLOCKED_SOURCE",
+      "production_ready": false,
+      "corpora": [
+        "C03-TIRONIAN",
+        "C03-BDD-AUX"
+      ],
+      "representations": [
+        "SHORTHAND-DIPLOMATIC",
+        "SHORTHAND-EXPANDED"
+      ],
+      "input_files": [],
+      "missing_fields": [
+        "production_ready=true",
+        "source_provenance",
+        "source_version",
+        "input_checksums",
+        "normalization_profile",
+        "USC_input"
+      ]
+    },
+    {
+      "class_id": "C04",
+      "plan_path": "research/comparative_notation/experiments/C04/EXPERIMENT_PLAN.json",
+      "plan_sha256": "234eb48367e74ff7dfb1c758e78ed6e578fc3616743ae911bed50af6acd46532",
+      "plan_status": "PREPARATION_ONLY",
+      "production_ready": false,
+      "corpora": [
+        "C04-DECODE-MONO",
+        "C04-DECODE-HOMO",
+        "C04-DECODE-NOM"
+      ],
+      "representations": [
+        "CIPHER-SIGNS",
+        "CIPHER-PLAINTEXT"
+      ],
+      "input_files": [],
+      "missing_fields": [
+        "production_ready=true",
+        "source_provenance",
+        "source_version",
+        "input_checksums",
+        "normalization_profile",
+        "USC_input"
+      ]
+    },
+    {
+      "class_id": "C05",
+      "plan_path": "research/comparative_notation/experiments/C05/EXPERIMENT_PLAN.json",
+      "plan_sha256": "e32bd2e945d33ba9c6bc14200971e6e557aad9be7d2a58efcb9757353acde18c",
+      "plan_status": "BLOCKED_TRANSCRIPTION_LICENSE",
+      "production_ready": false,
+      "corpora": [
+        "C05-NAL635"
+      ],
+      "representations": [
+        "CIPHER-SIGNS",
+        "CIPHER-PLAINTEXT"
+      ],
+      "input_files": [],
+      "missing_fields": [
+        "production_ready=true",
+        "source_provenance",
+        "source_version",
+        "input_checksums",
+        "normalization_profile",
+        "USC_input"
+      ]
+    },
+    {
+      "class_id": "C06",
+      "plan_path": "research/comparative_notation/experiments/C06/EXPERIMENT_PLAN.json",
+      "plan_sha256": "8e8b82fb03f0b1aa90eaca3c4182de492a95f39f4e14f6e02349239e4f10a7a5",
+      "plan_status": "PREPARATION_ONLY",
+      "production_ready": false,
+      "corpora": [
+        "C06-MEI-SAMPLES",
+        "C06-JLSDD"
+      ],
+      "representations": [
+        "MUSIC-R1",
+        "MUSIC-R2",
+        "MUSIC-R3"
+      ],
+      "input_files": [],
+      "missing_fields": [
+        "production_ready=true",
+        "source_provenance",
+        "source_version",
+        "input_checksums",
+        "normalization_profile",
+        "USC_input"
+      ]
+    },
+    {
+      "class_id": "C07",
+      "plan_path": "research/comparative_notation/experiments/C07/EXPERIMENT_PLAN.json",
+      "plan_sha256": "4c14adb89fac32985a7670d70b85055bb1cb97f813ecb273a7e94498adcd9fef",
+      "plan_status": "BLOCKED_LICENSE",
+      "production_ready": false,
+      "corpora": [
+        "C07-ECOLM-FR",
+        "C07-ECOLM-IT",
+        "C07-ECOLM-DE"
+      ],
+      "representations": [
+        "TAB-R1",
+        "TAB-R2"
+      ],
+      "input_files": [],
+      "missing_fields": [
+        "production_ready=true",
+        "source_provenance",
+        "source_version",
+        "input_checksums",
+        "normalization_profile",
+        "USC_input"
+      ]
+    },
+    {
+      "class_id": "C08",
+      "plan_path": "research/comparative_notation/experiments/C08/EXPERIMENT_PLAN.json",
+      "plan_sha256": "38d0ddf71c6e50dd64423128172181b88d8a8c977d02369b32ca3dc15f3ac6ec",
+      "plan_status": "BLOCKED_SOURCE_SELECTION",
+      "production_ready": false,
+      "corpora": [
+        "C08-MENSURATION"
+      ],
+      "representations": [
+        "NUMERIC-RECORD"
+      ],
+      "input_files": [],
+      "missing_fields": [
+        "production_ready=true",
+        "source_provenance",
+        "source_version",
+        "input_checksums",
+        "normalization_profile",
+        "USC_input"
+      ]
+    },
+    {
+      "class_id": "C09",
+      "plan_path": "research/comparative_notation/experiments/C09/EXPERIMENT_PLAN.json",
+      "plan_sha256": "54e98a3cd3b613dfed2a3c9e659d72c13249cdf239dcdbcd25d58e53665234d2",
+      "plan_status": "BLOCKED_SOURCE_SELECTION",
+      "production_ready": false,
+      "corpora": [
+        "C09-HISTTABLE"
+      ],
+      "representations": [
+        "TABLE-CELL"
+      ],
+      "input_files": [],
+      "missing_fields": [
+        "production_ready=true",
+        "source_provenance",
+        "source_version",
+        "input_checksums",
+        "normalization_profile",
+        "USC_input"
+      ]
+    }
+  ],
+  "git_commit": "f6fc78efed8399044ed73069e0637e387d5fa5a9",
+  "git_dirty": true,
+  "go_version": "go1.26.4-X:nodwarf5",
+  "goos": "linux",
+  "goarch": "amd64"
+}

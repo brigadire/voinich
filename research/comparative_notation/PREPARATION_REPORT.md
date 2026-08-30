@@ -1,0 +1,108 @@
+# Comparative notation study — preparation report
+
+Status: `EXPERIMENT_PREPARATION_ONLY`  
+Comparative results: none generated.
+
+## 1. Prepared classes
+
+All ten independent experiment units C01–C10 have source requirements,
+dimensional declarations, representation lists, and isolated JSON plans under
+`experiments/C01` … `experiments/C10`. Each plan has its own corpus list and
+future result root. No global ranking/winner artifact exists.
+
+| Class | Concrete source state | G/T/S | L | D | Separate production readiness |
+|---|---|---|---|---|---|
+| C01 Latin | BDD expanded local; CATMuS discovered | comparable after normalization | BDD yes; CATMuS by sample | observed levels only | blocked by license/version freeze |
+| C02 abbreviated Latin | BDD diplomatic/expanded local; Abbreviationes and CATMuS discovered | comparable | source-observed | source-observed | strongest acquisition starting point; still unauthorized |
+| C03 shorthand | no qualifying running-text corpus; BDD auxiliary only | pending source | pending | pending | blocked B05 |
+| C04 cipher | DECODE mono/homophonic/nomenclator candidates | comparable after stratification | varies, never imputed | metadata-dependent | blocked B07/B08 |
+| C05 Fontana | BnF NAL 635 facsimile and prior source dossier | comparable after scholarly transcription | source-observed | folio/section observed | blocked transcription rights/completeness |
+| C06 mensural music | MEI samples and JLSDD discovered | MUSIC-R1/R2/R3 independently | only encoded physical systems | work/voice/staff only when justified | blocked adapter decisions B09 |
+| C07 tablature | ECOLM French/Italian/German candidates | TAB-R1/R2 independently | encoded physical systems | piece/source hierarchy | blocked license and profiles B07/B10 |
+| C08 numeric | deterministic fixture only | fixture-tested | fixture only | fixture only | historical source selection blocked |
+| C09 tables | deterministic fixture only | fixture-tested | source row required | table/row/column | historical source selection blocked |
+| C10 synthetic | IID/shuffle fixtures; remaining generators planned | fixture-tested | generator-declared | generator-declared | calibration parameters blocked B11 |
+
+The full registry is `CORPUS_SOURCE_REGISTRY.tsv`. It reuses the existing BDD,
+Fontana, notation-audit, and frozen VM research instead of duplicating it.
+
+## 2. Representations and USC
+
+USC 1.0 is implemented as ordered JSONL tokens with explicit observed/NULL
+Document→Section→Page→Locus→Physical line→Token→Symbol levels and stable IDs.
+Arbitrary attributes preserve multidimensional data without adding semantic
+branches to the analyzer. Source, representation, and analysis are strictly
+separated.
+
+Registered paired views cover diplomatic↔expanded Latin/shorthand,
+ciphertext↔plaintext, and the future notation delta. MUSIC-R1 event, MUSIC-R2
+interval, MUSIC-R3 pitch×duration, TAB-R1 simultaneity group, and TAB-R2 course
+event are explicit and cannot be selected post hoc. Music and tablature
+dimensionality files explain tokens, symbols, systems, voices/courses, and
+simultaneity preservation.
+
+## 3. Tooling
+
+`cmd/notation-corpus` provides fail-closed `acquire`, `normalize`, `validate`,
+`analyze`, `compare-vm`, `report`, and prepared `compare-classes` commands.
+Acquisition creates immutable `raw/` data plus `SOURCE_PROVENANCE.json`;
+normalization writes only caller-selected derived output. Fixture analysis
+creates a SHA-linked `RUN_MANIFEST.json`.
+
+The generic package `internal/notation` implements USC validation, adapters,
+G/T/S/L/D scalar fingerprints, support regimes, accumulation checkpoints,
+label-invariant edit graphs, missing-level statuses, notation deltas,
+pre-frozen scalar comparison, JS/Wasserstein/normalized-curve distances, and
+separate family distances. It emits no primary total. VM and cross-class calls
+are doubly locked by CLI authorization and the repository `false` flag.
+
+## 4. Metrics and comparability
+
+`METRIC_REGISTRY.md` freezes the required metric families, supports
+frequency≥5/frequency≥10/top100/top250/matched-553, checkpoints
+5k/10k/20k/39380, and distance choices. Raw symbol/token/sequence metrics are
+generally comparable after representation validation. L is wholly
+`NOT_COMPARABLE` without observed physical lines. Every missing D level creates
+explicit `NOT_COMPARABLE` rows and never a penalty or imputed boundary.
+
+The existing frozen VM catalog supplies several direct scalar mappings. The
+remaining generic VM metrics, calibration scales, rarefaction sampling design,
+and distribution serialization are deliberately stopped in B01–B04 rather
+than chosen after candidate inspection.
+
+## 5. Adapter and validation results
+
+Seventeen adapter/representation fixtures cover C01–C10, including all three
+music and both tablature representations. Every fixture has 24 inspectable
+source units, expected USC, generated USC, and a manifest. Tests verify exact
+generated bytes, token/symbol counts, ordering, page/line hierarchy, NULL
+levels, mandatory music fields, and retained tablature/music simultaneity.
+
+Metamorphic tests passed:
+
+- M1 bijective symbol renaming preserves the complete generic fingerprint;
+- M2 duplication preserves the scale-free density/probability core (explicitly
+  excluding known sample-size diversity estimators);
+- M3 token-order shuffle preserves G/T and changes S;
+- M4 within-token shuffle preserves lengths and changes symbol adjacency;
+- M5 line-block shuffle preserves G/T/S/L and changes document progression;
+- M6 page-block shuffle preserves lower grammar and changes page progression.
+
+The fixture-only MUSIC-R3 CLI pipeline `normalize → validate → analyze →
+report` passed and produced a run manifest in a temporary directory.
+`compare-vm` refused execution as required. The complete repository test suite
+`go test ./...` passed with loopback enabled for pre-existing remote-worker
+tests.
+
+## 6. Readiness decision
+
+The reproducible architecture, class isolation, schemas, source registry,
+fixtures, generic analyzer/comparator, paired delta, and future cross-class
+executable are prepared. No class is authorized for a production comparative
+run in this task. C01/C02 are closest to acquisition readiness because local
+BDD material exists; C03, C08, and C09 require source selection; other classes
+require the source/licensing and representation freezes listed in
+`PREPARATION_BLOCKERS.md`. Resolving those blockers must precede production,
+not be informed by candidate distances.
+
+PRODUCTION_COMPARATIVE_RUN_AUTHORIZED=false

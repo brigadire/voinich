@@ -1,0 +1,40 @@
+{
+  "base_seed": 20260830,
+  "bootstrap_replicate_ids": "0..199",
+  "candidate_order": [
+    "C01",
+    "C02",
+    "C03",
+    "C04",
+    "C05",
+    "C06",
+    "C07",
+    "C08",
+    "C09"
+  ],
+  "checkpoint_order": [
+    5000,
+    10000,
+    20000,
+    39380
+  ],
+  "executable": false,
+  "metric_order": [
+    "G",
+    "T",
+    "S",
+    "L",
+    "D"
+  ],
+  "rarefaction_replicate_ids": "0..99",
+  "run_id": "CNS-PROD01-20260830",
+  "schema_version": "production-run-manifest-1.0",
+  "seed_derivation": "SHA-256(base_seed,corpus_id,representation_id,family_group,checkpoint,replicate_index); first 8 bytes non-negative int64",
+  "software": {
+    "git_commit": "f6fc78efed8399044ed73069e0637e387d5fa5a9",
+    "git_dirty": true,
+    "go_version": "go1.26.4-X:nodwarf5",
+    "goarch": "amd64",
+    "goos": "linux"
+  }
+}

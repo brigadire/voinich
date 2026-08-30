@@ -1,0 +1,12 @@
+{
+  "generator_id": "CAL-TOKEN-SHUFFLE",
+  "version": "1.0",
+  "implementation": "internal/notation/calibration.go:DeriveShuffleCorpus (case \"CAL-TOKEN-SHUFFLE\") calling internal/notation/transform.go:ShuffleTokenOrder",
+  "parameters": {
+    "base_corpus": "this replicate's own CAL-MARKOV1 draw at the same checkpoint (never VM or a candidate)",
+    "transform": "within each physical-line block, Fisher-Yates shuffle token order (blocks visited in sorted-key order for determinism); token_index is renumbered 0..n-1 per block"
+  },
+  "seed_schedule": "SeedFor(base_seed=20260830, generator_id, \"SYNTHETIC-TOKEN\", \"CALIBRATION\", checkpoint, replicate_index)",
+  "intended_preserved_properties": ["token-frequency marginal", "line/document boundaries"],
+  "intended_destroyed_properties": ["sequence (transition) order"]
+}

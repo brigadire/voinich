@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "notation-source-provenance-1.0",
+  "type": "object",
+  "required": ["source_url", "retrieved_at", "version", "license", "files"],
+  "properties": {
+    "source_url": {"type": "string"},
+    "retrieved_at": {"type": "string"},
+    "version": {"type": "string"},
+    "license": {"type": "string"},
+    "files": {"type": "array", "items": {"type": "object", "required": ["original_filename", "sha256"], "properties": {"original_filename": {"type": "string"}, "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}}}
+  }
+}

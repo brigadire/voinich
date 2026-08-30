@@ -1,0 +1,26 @@
+{
+  "schema_version": "extraction-policy-1.0",
+  "candidate_id": "C06",
+  "policy_id": "C06-JLSDD-SECURE-ALL-1.0",
+  "source_revision": "64bc7461dc564163cab84894bda263e4501b1a0a",
+  "included": [
+    "all regular *.xml files directly under Josquin (secure)/XML",
+    "all regular *.xml files directly under La Rue (secure)/XML"
+  ],
+  "excluded": [
+    "all not-secure attribution directories",
+    "Sibelius, MIDI, PDF, and Humdrum parallel serializations",
+    "templates and non-score files except LICENSE and README retained inside the raw subset archive"
+  ],
+  "selection_basis": "the repository's pre-existing secure attribution labels and MusicXML availability; no content statistic or comparative result was inspected",
+  "observed_counts": {
+    "josquin_secure_musicxml": 33,
+    "la_rue_secure_musicxml": 46,
+    "total_documents": 79,
+    "repository_readme_claimed_total": 77
+  },
+  "discrepancy_policy": "retain all 79 files matching the frozen path rule; do not silently discard the two files beyond the README's 33+44 claim",
+  "ordering": "archive entry path, then source event order under normalization profile C06-JLSDD-MUSICXML-1.0",
+  "duplication": "no byte-identical MusicXML files were found; filenames remain independent source documents",
+  "version": "1.0"
+}

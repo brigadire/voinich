@@ -1,0 +1,63 @@
+{
+  "schema_version": "production-corpus-selection-1.0",
+  "selection_version": "production-corpus-selection-v1",
+  "git_revision": "f6fc78efed8399044ed73069e0637e387d5fa5a9",
+  "git_revision_scope": "base revision plus the SHA-256-bound artifacts in this selection; worktree was not clean",
+  "frozen_at": "2026-08-30T14:04:30Z",
+  "selection_basis": "source, licensing, role, transcription feasibility, and frozen-protocol applicability only; no comparative metric was executed or inspected",
+  "GLOBAL_COMPARISON_PROTOCOL_FROZEN": true,
+  "FULL_CANDIDATE_PANEL_READY": false,
+  "PRODUCTION_CORPUS_SUBSET_FROZEN": true,
+  "PRODUCTION_CORPUS_INCLUDED_COUNT": 3,
+  "PRODUCTION_COMPARATIVE_RUN_AUTHORIZED": false,
+  "included": ["C01", "C02", "C06"],
+  "excluded": {
+    "C03": {
+      "reason": "EXCLUDED_SOURCE_UNAVAILABLE: no suitable machine-readable Tironian running text and no feasible independently validated 5,000-token derived transcription",
+      "decision_record": {"path":"C03_SOURCE_DECISION.md","sha256":"3a60ec5386b9d20290d1489d7adc9d5f9e28ab98ff33ced8487b3a817bc65b1b"}
+    },
+    "C04": {
+      "reason": "EXCLUDED_LICENSE: LICENSE_UNRESOLVED for DECODE record content and derived USC",
+      "decision_record": {"path":"C04_LICENSE_REVIEW.md","sha256":"e1858eda8317d45a4ec93bb274b8bb0b0dafc5dfab19aff649308c0e847443c2"}
+    },
+    "C05": {
+      "reason": "EXCLUDED_LICENSE: LICENSE_UNRESOLVED for the required complete Fontana transcription",
+      "decision_record": {"path":"C05_LICENSE_REVIEW.md","sha256":"b465de4f5072dee226b30a69ae73db5486d64edb97d879d105270900a6ed10f5"}
+    },
+    "C07": {
+      "reason": "EXCLUDED_LICENSE: LICENSE_UNRESOLVED for ECOLM corpus content, local analysis, and derived USC",
+      "decision_record": {"path":"C07_LICENSE_REVIEW.md","sha256":"1b6f260cf5efa6ddfb046753d1e0098d2a1b63d75eada7aa55a1e9f5f15d083c"}
+    },
+    "C08": {
+      "reason": "EXCLUDED_ROLE_MISMATCH: DReMAR is Roman-numeral accounting prose, not the preregistered positional-number control",
+      "decision_record": {"path":"C08_SOURCE_DECISION.md","sha256":"8bc29c3c41a3242061ea5f602e5658338bb201fddfb5480110bca396e8b3aeb5"}
+    }
+  },
+  "deferred": {
+    "C09": {
+      "reason": "rights-cleared images exist, but a preregistered, double-keyed, uncertainty-aware cell transcription of sufficient size does not",
+      "decision_record": {"path":"C09_SOURCE_DECISION.md","sha256":"833bf74617af0e8f96ef27bf3f4b240099b1328891f08b10c2a6a87fdea8365e"}
+    }
+  },
+  "candidate_manifests": {
+    "C01":{"path":"production_corpus/C01/candidate_manifest.json","sha256":"77630d3a79e1459e312f80d7e61ec94e2dd67aa3131143a49a31935ab88b1c63","size_bytes":807},
+    "C02":{"path":"production_corpus/C02/candidate_manifest.json","sha256":"7d09489bfd56049136671ff4ad603cb68b09998e8c0a5271030d683e18a1b4c5","size_bytes":809},
+    "C03":{"path":"production_corpus/C03/candidate_manifest.json","sha256":"e00f11a5e2e14126e7e6c4a34773203a22eb6e302468b6888b5e0582cdcb34aa","size_bytes":422},
+    "C04":{"path":"production_corpus/C04/candidate_manifest.json","sha256":"efd2b8e27d5b5424d8ca6c9c677325b1031cb0885fcd4ff6a9c1aa07d28453cf","size_bytes":423},
+    "C05":{"path":"production_corpus/C05/candidate_manifest.json","sha256":"c6690bea94b530f6f58f55f9cf02120e48269cf8af21c5a4ed00fd6cacaae0dd","size_bytes":401},
+    "C06":{"path":"production_corpus/C06/candidate_manifest.json","sha256":"d2051922b943ca18f97b26bc635dd358df11b58d3002a7bd821e5129ab9fc4d9","size_bytes":1547},
+    "C07":{"path":"production_corpus/C07/candidate_manifest.json","sha256":"fbecd972b8271ef66edf74c4ff0350fa241e2da4e072abffca54322a0b10cc24","size_bytes":425},
+    "C08":{"path":"production_corpus/C08/candidate_manifest.json","sha256":"83ba38bf8f5efb7e8539764a587d18c83ffed29570570ebbb9da06138250a457","size_bytes":390},
+    "C09":{"path":"production_corpus/C09/candidate_manifest.json","sha256":"1c8c334bfcae1c6c6446fb45c89579ac93715c43e0f7b3d7b17750f1b56df651","size_bytes":391}
+  },
+  "panel_assessment": {
+    "multiple_notation_families": true,
+    "not_single_source_family": true,
+    "families": ["paired Latin manuscript text", "Renaissance symbolic polyphony"],
+    "source_families": ["BDD-KOELN-COD-119", "JLSDD"],
+    "frozen_protocol_applicable": true,
+    "metric_minimum_assessment": "Candidate-vs-VM raw metrics and observed-size bootstrap have no panel-count minimum. Every included USC has >=10,000 records, so 5,000 and 10,000 rarefaction checkpoints apply; 20,000 and 39,380 are explicitly NOT_COMPARABLE under the frozen protocol. No within-class distribution is claimed because that procedure requires >=3 independent corpora in one class.",
+    "limitations_recorded": true
+  },
+  "freeze_rule": "selection changes require a new version and source-level justification; comparative results must never add, remove, replace, or defer a candidate"
+}

@@ -53,7 +53,8 @@ func TestAllPipelineCommandsUseWorkdirContract(t *testing.T) {
 		if base := filepath.Base(filepath.Dir(path)); base == "codex_prepare" || base == "codex_orientation" ||
 			base == "tei-abbr-extract" || base == "generic-glyph-filter" || base == "ivtff-x7-extract" ||
 			base == "task82b-run" || base == "task82b-aggregate" || base == "fingerprint-v2-verify" ||
-			base == "g1v2-executor" || base == "numeric-test" || base == "vm-structure" {
+			base == "g1v2-executor" || base == "numeric-test" || base == "vm-structure" ||
+			base == "notation-corpus" { // Independent comparative-notation research CLI; caller-chosen isolated outputs.
 			continue
 		}
 		parsed, err := parser.ParseFile(token.NewFileSet(), path, nil, parser.ImportsOnly)

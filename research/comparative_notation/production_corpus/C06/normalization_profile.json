@@ -1,0 +1,32 @@
+{
+  "schema_version": "normalization-profile-1.0",
+  "candidate_id": "C06",
+  "profile_id": "C06-JLSDD-MUSICXML-1.0",
+  "source_format": "MusicXML 3.0 score-partwise",
+  "unicode_normalization": "NONE; XML character decoding only; generated notation tokens use ASCII",
+  "document_order": "UTF-8 bytewise lexical order of archive entry path",
+  "event_order": "measure ordinal, exact rational onset, part id, voice id, source event ordinal",
+  "boundaries": {
+    "document": "one secure-duo MusicXML file",
+    "section": "unobserved for R1/R3; source part/voice/staff sequence for R2",
+    "page": "MusicXML print/@new-page, numbered from one",
+    "locus": "unobserved",
+    "physical_line": "MusicXML print/@new-page or print/@new-system, numbered from one"
+  },
+  "events": {
+    "notes": "retained",
+    "rests": "retained in MUSIC-R1, reset interval continuity in MUSIC-R2, excluded from MUSIC-R3",
+    "chords": "members retain the preceding event onset and a source_chord_member attribute",
+    "ties": "notated segments remain separate MUSIC-R1/R3 events; tie type is preserved in MUSIC-R1",
+    "grace_or_zero_duration": "fail closed",
+    "backup_forward": "applied exactly to the per-measure MusicXML cursor"
+  },
+  "representations": {
+    "MUSIC-R1": "one notated note/rest event; ordered symbols are kind, pitch class and register when pitched, exact quarter-duration fraction, explicit accidental, tie state",
+    "MUSIC-R2": "signed semitone interval between consecutive pitched events in the same document/part/voice/staff; rests reset continuity; source voice is an observed sequence section",
+    "MUSIC-R3": "one pitched event represented by exact spelled pitch times exact quarter-duration fraction"
+  },
+  "metadata_policy": "lyrics, credits, beams, stems, colors, engraving coordinates, MIDI instruments, and editorial display metadata are excluded because they are outside frozen MUSIC-R1/R2/R3 semantics",
+  "missing_uncertain_policy": "no reading is inferred; incomplete pitch, absent duration/divisions, negative cursor, or absent initial encoded page/system boundary fails conversion",
+  "version": "1.0"
+}

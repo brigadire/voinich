@@ -1,0 +1,37 @@
+{
+  "schema_version": "notation-source-provenance-1.0",
+  "candidate_id": "C06",
+  "source": {
+    "name": "JLSDD (Josquin La Rue Secure Duos Dataset)",
+    "provider": "ELVIS Project / SIMSSA",
+    "repository": "https://github.com/ELVIS-Project/mass-duos-corpus-josquin-larue",
+    "revision": "64bc7461dc564163cab84894bda263e4501b1a0a",
+    "revision_date": "2019-04-10T14:08:02Z",
+    "upstream_archive_url": "https://codeload.github.com/ELVIS-Project/mass-duos-corpus-josquin-larue/tar.gz/refs/heads/master",
+    "upstream_archive_sha256": "3634f3848ee317dc15e77721a2f2e2062fdeeab9f7f129fa1aabd31aa14653ef"
+  },
+  "license": {
+    "status": "LICENSE_ACCEPTED",
+    "identifier": "GPL-3.0",
+    "evidence": "LICENSE in the frozen upstream revision and repository license metadata",
+    "local_storage": true,
+    "normalization_and_machine_analysis": true,
+    "derived_usc_redistribution": "GPL-3.0-compatible terms and source attribution required",
+    "derived_statistics_redistribution": true
+  },
+  "acquisition": {
+    "retrieved_at": "2026-08-30T14:04:30Z",
+    "method": "download upstream revision archive, select every secure MusicXML by frozen path rule, retain LICENSE/README, create deterministic tar.gz with sorted names, epoch mtime and numeric uid/gid zero",
+    "raw_path": "production_corpus/C06/raw/jlsdd-secure-musicxml.tar.gz",
+    "raw_sha256": "1149fe616062e7d40a068a62fe8727ad6248ee8c44708e848eccdfc1c99ce64e",
+    "raw_size_bytes": 277206,
+    "media_type": "application/gzip"
+  },
+  "subset": {
+    "policy": "production_corpus/C06/extraction_policy.json",
+    "documents": 79,
+    "representation_ids": ["MUSIC-R1", "MUSIC-R2", "MUSIC-R3"]
+  },
+  "citation": "Cumming, McKay, Stuchbery, and Fujinaga (2018), Methodologies for Creating Symbolic Corpora of Western Music before 1600",
+  "immutable": true
+}

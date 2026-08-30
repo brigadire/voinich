@@ -1,0 +1,11 @@
+{
+  "schema_version": "production-corpus-reproducibility-1.0",
+  "candidate_id": "C06",
+  "status": "BITWISE_PASS",
+  "command": "go run ./cmd/notation-corpus musicxml-usc --input research/comparative_notation/production_corpus/C06/raw/jlsdd-secure-musicxml.tar.gz --output-dir OUTPUT --corpus-id C06-JLSDD-SECURE",
+  "independent_output_directory": "/tmp/c06-reproduction",
+  "comparison": "cmp for all three USC files",
+  "runs": 2,
+  "byte_identical": true,
+  "comparative_metrics_executed": false
+}

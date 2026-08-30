@@ -1,0 +1,14 @@
+{
+  "generator_id": "CAL-MARKOV2",
+  "version": "1.0",
+  "implementation": "internal/notation/calibration.go:CalibrationGenerators()[2]",
+  "parameters": {
+    "alphabet_size": 24,
+    "transition_matrix": "one Dirichlet(concentration=0.3) row per observed (symbol,symbol) context, cached lazily and frozen for the corpus's own seed",
+    "token_length_distribution": "poissonish(mean=5)",
+    "lines_per_corpus_hint": 800
+  },
+  "seed_schedule": "SeedFor(base_seed=20260830, generator_id, \"SYNTHETIC-TOKEN\", \"CALIBRATION\", checkpoint, replicate_index)",
+  "intended_preserved_properties": ["second-order symbol transition structure"],
+  "intended_destroyed_properties": ["third-order and higher symbol structure", "token-internal structure beyond length"]
+}

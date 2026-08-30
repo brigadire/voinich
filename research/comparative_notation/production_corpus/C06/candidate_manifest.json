@@ -1,0 +1,20 @@
+{
+  "schema_version": "production-candidate-bundle-1.0",
+  "candidate_id": "C06",
+  "selection_status": "INCLUDED",
+  "source_version": "JLSDD revision 64bc7461dc564163cab84894bda263e4501b1a0a; all secure MusicXML",
+  "source_family": "JLSDD",
+  "adapter": [
+    {"path":"cmd/notation-corpus/musicxml.go","sha256":"7e3fafd8e60e8b35cbb61d89b28694876d2acb7345b4cb71e325133e5bb0e6c9","size_bytes":13634},
+    {"path":"internal/notation/types.go","sha256":"97cac2aa5b8dd84046df79fc366df6aeb99823c34ebb99c967a8afcee476b105","size_bytes":5728}
+  ],
+  "representation_ids": ["MUSIC-R1","MUSIC-R2","MUSIC-R3"],
+  "usc": [
+    {"representation_id":"MUSIC-R1","path":"production_corpus/C06/usc/MUSIC-R1/corpus.usc.jsonl","sha256":"8521706b957601ec682d2e280299f746f4a03eba4414eac5b046d1bc4de54cfc","records":13117},
+    {"representation_id":"MUSIC-R2","path":"production_corpus/C06/usc/MUSIC-R2/corpus.usc.jsonl","sha256":"4653040ed06d37b3599ed2f098e24664d3070e08027dcb7fe297844a13d89efd","records":11785},
+    {"representation_id":"MUSIC-R3","path":"production_corpus/C06/usc/MUSIC-R3/corpus.usc.jsonl","sha256":"6a48ac028f1181c39a9a1c89fc347cd5fa88105fc4cac755f357fd5bf21173d9","records":12475}
+  ],
+  "validation":{"path":"production_corpus/C06/validation/validation.json","sha256":"164b424d30d6a18ec111a4d492530997185e3862fdcd9ec48157d8ae16b6d346"},
+  "reproducibility":{"path":"production_corpus/C06/reproducibility.json","sha256":"a58be78b216bdb7f60dfacf14a9b97a09d1c8393b60af68379a0d4137dcf7bf2","status":"BITWISE_PASS"},
+  "production_ready": true
+}

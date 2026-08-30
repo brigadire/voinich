@@ -1,0 +1,68 @@
+{
+  "schema_version": "production-corpus-manifest-2.0",
+  "global_corpus_version": "production-corpus-subset-v1",
+  "created_at": "2026-08-30T14:04:30Z",
+  "GLOBAL_COMPARISON_PROTOCOL_FROZEN": true,
+  "FULL_CANDIDATE_PANEL_READY": false,
+  "PRODUCTION_CORPUS_SUBSET_FROZEN": true,
+  "PRODUCTION_CORPUS_INCLUDED_COUNT": 3,
+  "PRODUCTION_COMPARATIVE_RUN_AUTHORIZED": false,
+  "selection": {"path":"PRODUCTION_CORPUS_SELECTION.json","sha256":"d802859a84760f1ec550a13f44a7da2aeecf95564cd5671fa0645aa752d56b17","size_bytes":4852},
+  "candidate_order": ["C01","C02","C03","C04","C05","C06","C07","C08","C09"],
+  "candidates": [
+    {
+      "candidate_id":"C01","selection_status":"INCLUDED","candidate_manifest":{"path":"production_corpus/C01/candidate_manifest.json","sha256":"77630d3a79e1459e312f80d7e61ec94e2dd67aa3131143a49a31935ab88b1c63","size_bytes":807},
+      "raw_inputs":[
+        {"path":"data_test/bdd-tei/koeln-edd-c-119/koeln-edd-c-119-06.xml","sha256":"1f56c24bab234b17a8c86ea115ca1aeda2b1005e6683fba3870d0bf2e6ab0e87","size_bytes":530532},
+        {"path":"data_test/bdd-tei/koeln-edd-c-119/koeln-edd-c-119-07.xml","sha256":"583ef5f30a256b0599115948be037920a66dc6a28bdb3b9decbc46b98573f389","size_bytes":370606},
+        {"path":"data_test/bdd-tei/koeln-edd-c-119/koeln-edd-c-119-11.xml","sha256":"9a85e7d96c788b444bb35c4a5c7ab532e93a5106abc72301c640234c86689410","size_bytes":724802},
+        {"path":"data_test/bdd-tei/koeln-edd-c-119/koeln-edd-c-119-12.xml","sha256":"cc6b53f7af7e7afaa16009e1adf4bc5b155fdd44c7681b11085184669f6d9e5b","size_bytes":311927},
+        {"path":"data_test/bdd-tei/koeln-edd-c-119/koeln-edd-c-119-13.xml","sha256":"fd0839be172434ba5bbc171076491e5a3c60dcd64c20c1fe422bb4989d534642","size_bytes":238754}
+      ],
+      "extraction_policy":{"path":"production_corpus/C01/extraction_policy.json","sha256":"a2fd7d9150ab14139d7574e3b79d0458d296bd5ad14a681a98ea7f22cb25a9dd","size_bytes":836},
+      "normalization_profile":{"path":"production_corpus/C01/normalization_profile.json","sha256":"d553046409f504fe5526353730a5fa71d6bf5002a6de17c9419eae66a399173c","size_bytes":1034},
+      "usc":[{"path":"production_corpus/C01/usc/corpus.usc.jsonl","sha256":"ea5d9f9f0d1d2735662f49955b2cddbebdaaa32e1c2d507a6c4edaca85967173","records":19132,"size_bytes":8472223}],
+      "provenance":{"path":"production_corpus/C01/provenance.json","sha256":"346d1a83af9299a6a449b5385b0acdd23c171f940e90f60a5c72dcb9f785d56c","size_bytes":2291},
+      "validation_status":"PASS","reproducibility_status":"BITWISE_PASS","production_ready":true
+    },
+    {
+      "candidate_id":"C02","selection_status":"INCLUDED","candidate_manifest":{"path":"production_corpus/C02/candidate_manifest.json","sha256":"7d09489bfd56049136671ff4ad603cb68b09998e8c0a5271030d683e18a1b4c5","size_bytes":809},
+      "raw_inputs":[
+        {"path":"data_test/bdd-tei/koeln-edd-c-119/koeln-edd-c-119-06.xml","sha256":"1f56c24bab234b17a8c86ea115ca1aeda2b1005e6683fba3870d0bf2e6ab0e87","size_bytes":530532},
+        {"path":"data_test/bdd-tei/koeln-edd-c-119/koeln-edd-c-119-07.xml","sha256":"583ef5f30a256b0599115948be037920a66dc6a28bdb3b9decbc46b98573f389","size_bytes":370606},
+        {"path":"data_test/bdd-tei/koeln-edd-c-119/koeln-edd-c-119-11.xml","sha256":"9a85e7d96c788b444bb35c4a5c7ab532e93a5106abc72301c640234c86689410","size_bytes":724802},
+        {"path":"data_test/bdd-tei/koeln-edd-c-119/koeln-edd-c-119-12.xml","sha256":"cc6b53f7af7e7afaa16009e1adf4bc5b155fdd44c7681b11085184669f6d9e5b","size_bytes":311927},
+        {"path":"data_test/bdd-tei/koeln-edd-c-119/koeln-edd-c-119-13.xml","sha256":"fd0839be172434ba5bbc171076491e5a3c60dcd64c20c1fe422bb4989d534642","size_bytes":238754}
+      ],
+      "extraction_policy":{"path":"production_corpus/C02/extraction_policy.json","sha256":"bbe8658a7cdbd9821fd15b825e43cf4ca7fd495e170b9f8abe45bdc892362803","size_bytes":844},
+      "normalization_profile":{"path":"production_corpus/C02/normalization_profile.json","sha256":"c572c44f93f25aa984416eac264dfc7a143817cb23474675fcd82e0fbdfda3e7","size_bytes":1091},
+      "usc":[{"path":"production_corpus/C02/usc/corpus.usc.jsonl","sha256":"b64d350d36e22f9f76dbbc31ba531953b18970109fbbe3273952b086b8064f84","records":19121,"size_bytes":8477399}],
+      "provenance":{"path":"production_corpus/C02/provenance.json","sha256":"985c6fb4a0862cbacd4a3ddfa873fc1f791cd4d8b10f6027345e158dcfdc1d4d","size_bytes":2296},
+      "validation_status":"PASS","reproducibility_status":"BITWISE_PASS","production_ready":true
+    },
+    {"candidate_id":"C03","selection_status":"EXCLUDED_SOURCE_UNAVAILABLE","candidate_manifest":{"path":"production_corpus/C03/candidate_manifest.json","sha256":"e00f11a5e2e14126e7e6c4a34773203a22eb6e302468b6888b5e0582cdcb34aa","size_bytes":422},"decision_record":{"path":"C03_SOURCE_DECISION.md","sha256":"3a60ec5386b9d20290d1489d7adc9d5f9e28ab98ff33ced8487b3a817bc65b1b"},"validation_status":"NOT_RUN","reproducibility_status":"NOT_RUN","production_ready":false,"reason":"source/transcription unavailable"},
+    {"candidate_id":"C04","selection_status":"EXCLUDED_LICENSE","candidate_manifest":{"path":"production_corpus/C04/candidate_manifest.json","sha256":"efd2b8e27d5b5424d8ca6c9c677325b1031cb0885fcd4ff6a9c1aa07d28453cf","size_bytes":423},"decision_record":{"path":"C04_LICENSE_REVIEW.md","sha256":"e1858eda8317d45a4ec93bb274b8bb0b0dafc5dfab19aff649308c0e847443c2"},"validation_status":"NOT_RUN","reproducibility_status":"NOT_RUN","production_ready":false,"reason":"LICENSE_UNRESOLVED"},
+    {"candidate_id":"C05","selection_status":"EXCLUDED_LICENSE","candidate_manifest":{"path":"production_corpus/C05/candidate_manifest.json","sha256":"c6690bea94b530f6f58f55f9cf02120e48269cf8af21c5a4ed00fd6cacaae0dd","size_bytes":401},"decision_record":{"path":"C05_LICENSE_REVIEW.md","sha256":"b465de4f5072dee226b30a69ae73db5486d64edb97d879d105270900a6ed10f5"},"validation_status":"NOT_RUN","reproducibility_status":"NOT_RUN","production_ready":false,"reason":"LICENSE_UNRESOLVED"},
+    {
+      "candidate_id":"C06","selection_status":"INCLUDED","candidate_manifest":{"path":"production_corpus/C06/candidate_manifest.json","sha256":"d2051922b943ca18f97b26bc635dd358df11b58d3002a7bd821e5129ab9fc4d9","size_bytes":1547},
+      "adapter":[
+        {"path":"cmd/notation-corpus/musicxml.go","sha256":"7e3fafd8e60e8b35cbb61d89b28694876d2acb7345b4cb71e325133e5bb0e6c9","size_bytes":13634},
+        {"path":"internal/notation/types.go","sha256":"97cac2aa5b8dd84046df79fc366df6aeb99823c34ebb99c967a8afcee476b105","size_bytes":5728}
+      ],
+      "raw_inputs":[{"path":"production_corpus/C06/raw/jlsdd-secure-musicxml.tar.gz","sha256":"1149fe616062e7d40a068a62fe8727ad6248ee8c44708e848eccdfc1c99ce64e","size_bytes":277206}],
+      "extraction_policy":{"path":"production_corpus/C06/extraction_policy.json","sha256":"d94c8d67811419c14728f70216f260bd2b46b0f0c2e464e3aa16b8163a985c58","size_bytes":1287},
+      "normalization_profile":{"path":"production_corpus/C06/normalization_profile.json","sha256":"a9674e7a9c1991d4edd1f3e63002318c68605e82cd32ed0adb0ad3fa77529c2c","size_bytes":2137},
+      "usc":[
+        {"path":"production_corpus/C06/usc/MUSIC-R1/corpus.usc.jsonl","sha256":"8521706b957601ec682d2e280299f746f4a03eba4414eac5b046d1bc4de54cfc","records":13117,"size_bytes":9728614},
+        {"path":"production_corpus/C06/usc/MUSIC-R2/corpus.usc.jsonl","sha256":"4653040ed06d37b3599ed2f098e24664d3070e08027dcb7fe297844a13d89efd","records":11785,"size_bytes":7806802},
+        {"path":"production_corpus/C06/usc/MUSIC-R3/corpus.usc.jsonl","sha256":"6a48ac028f1181c39a9a1c89fc347cd5fa88105fc4cac755f357fd5bf21173d9","records":12475,"size_bytes":8370843}
+      ],
+      "provenance":{"path":"production_corpus/C06/provenance.json","sha256":"3ddbbdb0b9746f2cdcd0ec319545ac716a5edf2d129c84d4e881dd0177267680","size_bytes":1836},
+      "decision_record":{"path":"C06_CORPUS_DECISION.md","sha256":"b61ae6ba64095d46404dd9005a7b89c14b495616bfab39e98fb92b14c81ca583"},
+      "validation_status":"PASS","reproducibility_status":"BITWISE_PASS","production_ready":true
+    },
+    {"candidate_id":"C07","selection_status":"EXCLUDED_LICENSE","candidate_manifest":{"path":"production_corpus/C07/candidate_manifest.json","sha256":"fbecd972b8271ef66edf74c4ff0350fa241e2da4e072abffca54322a0b10cc24","size_bytes":425},"decision_record":{"path":"C07_LICENSE_REVIEW.md","sha256":"1b6f260cf5efa6ddfb046753d1e0098d2a1b63d75eada7aa55a1e9f5f15d083c"},"validation_status":"NOT_RUN","reproducibility_status":"NOT_RUN","production_ready":false,"reason":"LICENSE_UNRESOLVED"},
+    {"candidate_id":"C08","selection_status":"EXCLUDED_ROLE_MISMATCH","candidate_manifest":{"path":"production_corpus/C08/candidate_manifest.json","sha256":"83ba38bf8f5efb7e8539764a587d18c83ffed29570570ebbb9da06138250a457","size_bytes":390},"decision_record":{"path":"C08_SOURCE_DECISION.md","sha256":"8bc29c3c41a3242061ea5f602e5658338bb201fddfb5480110bca396e8b3aeb5"},"validation_status":"NOT_RUN","reproducibility_status":"NOT_RUN","production_ready":false,"reason":"available DReMAR source does not satisfy positional-number role"},
+    {"candidate_id":"C09","selection_status":"DEFERRED","candidate_manifest":{"path":"production_corpus/C09/candidate_manifest.json","sha256":"1c8c334bfcae1c6c6446fb45c89579ac93715c43e0f7b3d7b17750f1b56df651","size_bytes":391},"decision_record":{"path":"C09_SOURCE_DECISION.md","sha256":"833bf74617af0e8f96ef27bf3f4b240099b1328891f08b10c2a6a87fdea8365e"},"validation_status":"NOT_RUN","reproducibility_status":"NOT_RUN","production_ready":false,"reason":"independent cell transcription deferred"}
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "schema_version": "global-freeze-manifest-1.0",
+  "task": "Comparative Notation Study — Global Freeze Completion (B01-B04)",
+  "base_seed": 20260830,
+  "artifacts": {
+    "COMPARATIVE_EXPERIMENT_SPEC.md": "c2a929e55f88beb8c2c07d51a770e9d45f6ef0d47e50f08ed4f1eb4a47f260de",
+    "METRIC_REGISTRY.md": "1b9d8c0c0b0d284bfad055148c57ac48977f487dff4c9f635755d7de3554eb5a",
+    "RAREFACTION_PROTOCOL.md": "d235ffecfcf609d5e89b3e4e5fc28e89c65e115d931f276dacf75491517b9672",
+    "RAREFACTION_SCHEMA.md": "868a68a1628ab8cdd375c1596e938a9fbcd03c841b650ec632e976f6d78550d2",
+    "DISTRIBUTION_OUTPUT_CONTRACT.md": "8b83ee83ab2d648b0bc03bf12a600668e3391198a1b1d26b44129297444df4bd",
+    "BOOTSTRAP_PROTOCOL.md": "707e2facccc535dd22b52135b76084a86a5e12b50dd6dccfc8dd2d4a6c50dd81",
+    "CALIBRATION_GENERATORS": {
+      "sha256": "f13e08120331bb2cabe785d9f9e3ac078124a2b015cb7fb224abf9765970bc48",
+      "note": "SHA-256 of the concatenation of CALIBRATION_GENERATORS/*.json in sorted filename order (CAL-CGRAMMAR, CAL-HIERARCHY-SHUFFLE, CAL-IID, CAL-LINE-SHUFFLE, CAL-MARKOV1, CAL-MARKOV2, CAL-TOKEN-SHUFFLE, CAL-WITHIN-TOKEN-SHUFFLE)"
+    },
+    "CALIBRATION_SCALES.tsv": "30539a09f287b8b3902ecc875538b3c07b52bcd4659c44e7d853cd354c7453f7",
+    "VM_REFERENCE_V2": {
+      "reference_tsv_sha256": "a62950ecf350cdf01f3fc09c2d8c7be4947382f9351311e6714a95bde87f230b",
+      "fingerprint_json_sha256": "90d2254a7c9ab25c3c1a3167d3f0f4f6afc69689d3f3477e46486484fd938f42",
+      "note": "fingerprint_json_sha256 is the output_sha256 recorded in VM_REFERENCE_V2_MANIFEST.json and is what notation.VerifyFrozenVMReference checks; reference_tsv_sha256 is the human-readable projection"
+    },
+    "comparator": {
+      "package": "zcore.dev/voinich/internal/notation",
+      "cli": "zcore.dev/voinich/cmd/notation-corpus",
+      "analyzer_version": "notation-analyzer-1.0",
+      "metric_registry_version": "generic-metrics-1.0",
+      "metric_registry_hash": "955ec7d44c12f953933304e96eaee9fbff2ef4f860ee46a00b68d3b30cc48bdb"
+    }
+  },
+  "protocol_status": {
+    "GLOBAL_COMPARISON_PROTOCOL_FROZEN": true,
+    "PRODUCTION_COMPARATIVE_RUN_AUTHORIZED": false
+  }
+}

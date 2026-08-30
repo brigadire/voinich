@@ -1,0 +1,12 @@
+{
+  "generator_id": "CAL-LINE-SHUFFLE",
+  "version": "1.0",
+  "implementation": "internal/notation/calibration.go:DeriveShuffleCorpus (case \"CAL-LINE-SHUFFLE\") calling internal/notation/transform.go:ShuffleLines",
+  "parameters": {
+    "base_corpus": "this replicate's own CAL-MARKOV1 draw at the same checkpoint (never VM or a candidate)",
+    "transform": "group records into whole physical-line blocks, Fisher-Yates shuffle the block order, concatenate; token content and order inside each line is untouched"
+  },
+  "seed_schedule": "SeedFor(base_seed=20260830, generator_id, \"SYNTHETIC-TOKEN\", \"CALIBRATION\", checkpoint, replicate_index)",
+  "intended_preserved_properties": ["within-line structure (token order, token content)"],
+  "intended_destroyed_properties": ["document/line progression order"]
+}

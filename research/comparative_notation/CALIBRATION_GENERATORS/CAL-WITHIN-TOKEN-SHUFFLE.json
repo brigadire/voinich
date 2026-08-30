@@ -1,0 +1,12 @@
+{
+  "generator_id": "CAL-WITHIN-TOKEN-SHUFFLE",
+  "version": "1.0",
+  "implementation": "internal/notation/calibration.go:DeriveShuffleCorpus (case \"CAL-WITHIN-TOKEN-SHUFFLE\") calling internal/notation/transform.go:ShuffleWithinTokens",
+  "parameters": {
+    "base_corpus": "this replicate's own CAL-MARKOV1 draw at the same checkpoint (never VM or a candidate)",
+    "transform": "Fisher-Yates shuffle the symbol order within every token independently; token string is rejoined from the shuffled symbols"
+  },
+  "seed_schedule": "SeedFor(base_seed=20260830, generator_id, \"SYNTHETIC-TOKEN\", \"CALIBRATION\", checkpoint, replicate_index)",
+  "intended_preserved_properties": ["token length distribution", "token sequence order"],
+  "intended_destroyed_properties": ["within-token symbol order (symbol adjacency)"]
+}

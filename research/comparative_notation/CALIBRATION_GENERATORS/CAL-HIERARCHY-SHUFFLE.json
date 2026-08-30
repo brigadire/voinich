@@ -1,0 +1,12 @@
+{
+  "generator_id": "CAL-HIERARCHY-SHUFFLE",
+  "version": "1.0",
+  "implementation": "internal/notation/calibration.go:DeriveShuffleCorpus (case \"CAL-HIERARCHY-SHUFFLE\") calling internal/notation/transform.go:ShufflePages",
+  "parameters": {
+    "base_corpus": "this replicate's own CAL-MARKOV1 draw at the same checkpoint (never VM or a candidate)",
+    "transform": "group records into whole page blocks (document+page key), Fisher-Yates shuffle the block order, concatenate; lower (line-internal) grammar is untouched"
+  },
+  "seed_schedule": "SeedFor(base_seed=20260830, generator_id, \"SYNTHETIC-TOKEN\", \"CALIBRATION\", checkpoint, replicate_index)",
+  "intended_preserved_properties": ["lower (line-internal) grammar"],
+  "intended_destroyed_properties": ["hierarchy/page progression order"]
+}

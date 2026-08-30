@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "notation-run-manifest-1.0",
+  "type": "object",
+  "required": ["schema_version", "source_sha256", "corpus_id", "representation_id", "adapter_version", "analyzer_version", "metric_registry_version", "parameters", "random_seed", "command", "started_at_utc", "outputs"],
+  "properties": {
+    "schema_version": {"const": "notation-run-manifest-1.0"},
+    "source_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "corpus_id": {"type": "string"},
+    "representation_id": {"type": "string"},
+    "adapter_version": {"type": "string"},
+    "analyzer_version": {"type": "string"},
+    "metric_registry_version": {"type": "string"},
+    "parameters": {"type": "object"},
+    "random_seed": {"type": "integer"},
+    "command": {"type": "array", "items": {"type": "string"}},
+    "started_at_utc": {"type": "string"},
+    "outputs": {"type": "object", "additionalProperties": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+  },
+  "additionalProperties": true
+}

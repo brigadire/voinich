@@ -1,0 +1,19 @@
+{
+  "generator_id": "CAL-CGRAMMAR",
+  "version": "1.0",
+  "implementation": "internal/notation/calibration.go:CalibrationGenerators()[3]",
+  "parameters": {
+    "alphabet_size": 24,
+    "symbol_classes": {
+      "initial_class": "alphabet[0:8]",
+      "medial_class": "alphabet[8:16]",
+      "final_class": "alphabet[16:24]"
+    },
+    "production_rule": "position 0 always draws uniformly from initial_class; every later position draws from final_class with probability 0.35, else uniformly from medial_class",
+    "token_length_distribution": "poissonish(mean=5)",
+    "lines_per_corpus_hint": 800
+  },
+  "seed_schedule": "SeedFor(base_seed=20260830, generator_id, \"SYNTHETIC-TOKEN\", \"CALIBRATION\", checkpoint, replicate_index)",
+  "intended_preserved_properties": ["a frozen three-slot (initial/medial/final symbol-class) production grammar"],
+  "intended_destroyed_properties": ["everything not expressible by the three-slot grammar (e.g. within-class ordering structure)"]
+}

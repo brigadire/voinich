@@ -76,6 +76,8 @@ func TestStagesMatchRepository(t *testing.T) {
 		// Descriptive structural catalog and frozen query tool; outputs are
 		// frozen under research/structure_catalog, outside the Task49 DAG.
 		"vm-structure": true,
+		// Independent, preparation-locked comparative-notation workflow.
+		"notation-corpus": true,
 	}
 	for _, e := range entries {
 		if !e.IsDir() {
