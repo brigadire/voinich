@@ -350,13 +350,29 @@ func (r reproducibilityResult) markdown() string {
 var scientificOutputDirs = []string{"candidates", "distributions", "rarefaction", "bootstrap", "vm_comparison", "aggregate", "calibration"}
 
 func runReproducibilityCheck(opts productionRunOptions, primaryBundle, primaryRunID string) (reproducibilityResult, error) {
+	// The second pass must never write inside the repository's git working
+	// tree: when the primary bundle uses the default in-repo location
+	// (research/comparative_notation/production_runs/<RUN_ID>/), that
+	// directory is itself untracked at this point (not yet committed),
+	// which would make the second pass's own clean_git_revision check fail
+	// closed on the primary pass's own output — a self-inflicted false
+	// negative, not a real reproducibility problem. A system temp
+	// directory keeps the second pass's git view identical to the
+	// primary's and is removed once the byte-for-byte comparison is done.
+	secondDir, err := os.MkdirTemp("", "cns-prod-repro-*")
+	if err != nil {
+		return reproducibilityResult{Pass: false, Errors: []string{"cannot create reproducibility scratch dir: " + err.Error()}}, nil
+	}
+	defer os.RemoveAll(secondDir)
+	if err := os.Remove(secondDir); err != nil { // executeProductionRun refuses to run into an existing dir
+		return reproducibilityResult{Pass: false, Errors: []string{err.Error()}}, nil
+	}
 	secondRunID := primaryRunID + "-REPRO"
-	secondDir := primaryBundle + "-REPRO"
 	second := productionRunOptions{Repo: opts.Repo, OutDirOverride: secondDir, RunIDOverride: secondRunID, SkipReproducibility: true}
 	if _, err := executeProductionRun(second); err != nil {
 		return reproducibilityResult{Pass: false, Errors: []string{"second pass failed: " + err.Error()}}, nil
 	}
-	res := reproducibilityResult{SecondPassRunID: secondRunID, SecondPassDir: mustRel(opts.Repo, secondDir), Pass: true}
+	res := reproducibilityResult{SecondPassRunID: secondRunID, SecondPassDir: "(temporary, outside the repository; removed after comparison)", Pass: true}
 	for _, sub := range scientificOutputDirs {
 		primarySub := filepath.Join(primaryBundle, sub)
 		secondSub := filepath.Join(secondDir, sub)
