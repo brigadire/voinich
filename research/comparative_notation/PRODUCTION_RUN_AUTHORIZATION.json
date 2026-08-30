@@ -1,6 +1,6 @@
 {
   "GLOBAL_COMPARISON_PROTOCOL_FROZEN": true,
-  "PRODUCTION_COMPARATIVE_RUN_AUTHORIZED": false,
+  "PRODUCTION_COMPARATIVE_RUN_AUTHORIZED": true,
   "PRODUCTION_CORPUS_INCLUDED": [
     "C01",
     "C02",
@@ -15,7 +15,7 @@
     },
     "global_freeze_manifest": {
       "path": "research/comparative_notation/GLOBAL_FREEZE_MANIFEST.json",
-      "sha256": "e72d07fa62c497be7a50ce3d3de30f9097c1bf0e747e7255abe519a377698b0a"
+      "sha256": "e59bfaf744be6c05ee987b90c33bf619037db815fd258c3d9a2050ca018b793c"
     },
     "production_corpus_manifest": {
       "path": "research/comparative_notation/PRODUCTION_CORPUS_MANIFEST.json",
@@ -27,12 +27,9 @@
     },
     "production_run_manifest": {
       "path": "research/comparative_notation/PRODUCTION_RUN_MANIFEST.json",
-      "sha256": "2843eaa160d2f25859653f09e1103f14a5ab106e963be5fd35ca6e0b66b46d81"
+      "sha256": "135cb505268ce3e6c4d51fd3214579891d04b9138582f7699ba5b9cbf8897a5c"
     }
   },
-  "blockers": [
-    "global_freeze (global freeze contract is incomplete or inconsistent: GLOBAL_FREEZE_REPORT.md is absent from GLOBAL_FREEZE_MANIFEST.json; USC_SPEC.md is absent from GLOBAL_FREEZE_MANIFEST.json; CALIBRATION_PANEL_SPEC.md is absent from GLOBAL_FREEZE_MANIFEST.json; CALIBRATION_PANEL_REPORT.md is absent from GLOBAL_FREEZE_MANIFEST.json; VM_REFERENCE_V2_MANIFEST.json is absent from GLOBAL_FREEZE_MANIFEST.json; VM_REFERENCE_RECONCILIATION.md is absent from GLOBAL_FREEZE_MANIFEST.json)"
-  ],
   "gates": [
     {
       "id": "corpus_subset_and_candidate_bundles",
@@ -41,16 +38,8 @@
     },
     {
       "id": "global_freeze",
-      "passed": false,
-      "detail": "global freeze contract is incomplete or inconsistent",
-      "errors": [
-        "GLOBAL_FREEZE_REPORT.md is absent from GLOBAL_FREEZE_MANIFEST.json",
-        "USC_SPEC.md is absent from GLOBAL_FREEZE_MANIFEST.json",
-        "CALIBRATION_PANEL_SPEC.md is absent from GLOBAL_FREEZE_MANIFEST.json",
-        "CALIBRATION_PANEL_REPORT.md is absent from GLOBAL_FREEZE_MANIFEST.json",
-        "VM_REFERENCE_V2_MANIFEST.json is absent from GLOBAL_FREEZE_MANIFEST.json",
-        "VM_REFERENCE_RECONCILIATION.md is absent from GLOBAL_FREEZE_MANIFEST.json"
-      ]
+      "passed": true,
+      "detail": "all mandatory frozen artifacts are manifest-bound, unchanged, and internally consistent"
     },
     {
       "id": "representation_independence",
@@ -65,7 +54,7 @@
     {
       "id": "clean_git_revision",
       "passed": true,
-      "detail": "git status --porcelain is empty; commit 743589101f3edaad743a57cc7ef5eb598ea0df5f"
+      "detail": "git status --porcelain is empty; commit c595c311566305c6f28c63ac025f42df4096ef6a"
     },
     {
       "id": "go_test_including_A1_A10",
@@ -88,9 +77,9 @@
       "detail": "two independent technical pre-runs over C01,C02,C06 (loading, USC validation, structural traversal, seed schedule) produced byte-identical serialized output"
     }
   ],
-  "git_commit": "743589101f3edaad743a57cc7ef5eb598ea0df5f",
+  "git_commit": "c595c311566305c6f28c63ac025f42df4096ef6a",
   "git_dirty": false,
-  "reason": "mandatory preflight gates failed; no production computation started",
+  "reason": "all mandatory preflight gates passed for the frozen C01,C02,C06 subset",
   "run_id": "CNS-PROD01-20260830",
   "schema_version": "production-run-authorization-2.0"
 }

@@ -5,10 +5,10 @@ Run: `CNS-PROD01-20260830`. Scope: preflight and authorization decision for the 
 | Gate | Status | Detail |
 |---|---|---|
 | `corpus_subset_and_candidate_bundles` | PASS | PRODUCTION_CORPUS_SELECTION/MANIFEST/STATUS/SHA256SUMS and C01,C02,C06 bundles (provenance, policy, normalization, USC, validation, reproducibility, checksums) are valid |
-| `global_freeze` | FAIL | global freeze contract is incomplete or inconsistent: GLOBAL_FREEZE_REPORT.md is absent from GLOBAL_FREEZE_MANIFEST.json; USC_SPEC.md is absent from GLOBAL_FREEZE_MANIFEST.json; CALIBRATION_PANEL_SPEC.md is absent from GLOBAL_FREEZE_MANIFEST.json; CALIBRATION_PANEL_REPORT.md is absent from GLOBAL_FREEZE_MANIFEST.json; VM_REFERENCE_V2_MANIFEST.json is absent from GLOBAL_FREEZE_MANIFEST.json; VM_REFERENCE_RECONCILIATION.md is absent from GLOBAL_FREEZE_MANIFEST.json |
+| `global_freeze` | PASS | all mandatory frozen artifacts are manifest-bound, unchanged, and internally consistent |
 | `representation_independence` | PASS | MUSIC-R1/R2/R3 are three representations of one candidate C06, never treated as independent candidate corpora |
 | `statistical_protocol_applicable_at_n3` | PASS | every frozen-mandatory procedure applies at N=3; the only inapplicable procedure (within-class distribution) is frozen-conditional on >=3 independent corpora per class, never mandatory |
-| `clean_git_revision` | PASS | git status --porcelain is empty; commit 743589101f3edaad743a57cc7ef5eb598ea0df5f |
+| `clean_git_revision` | PASS | git status --porcelain is empty; commit c595c311566305c6f28c63ac025f42df4096ef6a |
 | `go_test_including_A1_A10` | PASS | passed |
 | `go_vet` | PASS | passed |
 | `run_manifest_frozen` | PASS | PRODUCTION_RUN_MANIFEST.json is explicit for candidates=C01,C02,C06 with no runtime-default parameters |
@@ -34,11 +34,7 @@ MUSIC-R1, MUSIC-R2, MUSIC-R3 are three frozen representations of the single cand
 GLOBAL_COMPARISON_PROTOCOL_FROZEN=true
 PRODUCTION_CORPUS_SUBSET_FROZEN=true
 PRODUCTION_CORPUS_INCLUDED=C01,C02,C06
-PRODUCTION_COMPARATIVE_RUN_AUTHORIZED=false
+PRODUCTION_COMPARATIVE_RUN_AUTHORIZED=true
 PRODUCTION_COMPARATIVE_RUN_COMPLETED=false
 PRODUCTION_COMPARATIVE_RUN_VALID=false
 ```
-
-## Blockers
-
-- global_freeze (global freeze contract is incomplete or inconsistent: GLOBAL_FREEZE_REPORT.md is absent from GLOBAL_FREEZE_MANIFEST.json; USC_SPEC.md is absent from GLOBAL_FREEZE_MANIFEST.json; CALIBRATION_PANEL_SPEC.md is absent from GLOBAL_FREEZE_MANIFEST.json; CALIBRATION_PANEL_REPORT.md is absent from GLOBAL_FREEZE_MANIFEST.json; VM_REFERENCE_V2_MANIFEST.json is absent from GLOBAL_FREEZE_MANIFEST.json; VM_REFERENCE_RECONCILIATION.md is absent from GLOBAL_FREEZE_MANIFEST.json)
