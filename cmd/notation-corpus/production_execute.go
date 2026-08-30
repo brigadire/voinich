@@ -55,6 +55,38 @@ func (r revalidationResult) ok() bool {
 // and cross-checks existing frozen/authorization state; it never rewrites
 // PRODUCTION_RUN_AUTHORIZATION.json or performs a new authorization
 // decision.
+// runOutputDirPrefix is the one directory the production-run pipeline is
+// itself allowed to have modified/created inside the repository at
+// revalidation time: it holds nothing but generated run bundles, one per
+// run id, and is exactly what this command is in the middle of writing —
+// including, for the independent reproducibility second pass, the
+// not-yet-committed primary pass's own bundle. Ignoring status lines under
+// it is not a weaker clean-tree check on the actual frozen inputs (code,
+// protocol, corpus): every one of those still fails revalidation on any
+// real change, since none of them live under this path.
+const runOutputDirPrefix = "research/comparative_notation/production_runs/"
+
+// filterOutRunOutputStatusLines drops `git status --porcelain` lines whose
+// path falls under runOutputDirPrefix, so a run bundle in progress never
+// makes its own (or a nested reproducibility pass's) revalidation fail
+// closed on itself.
+func filterOutRunOutputStatusLines(status string) string {
+	var kept []string
+	for _, line := range strings.Split(status, "\n") {
+		trimmed := strings.TrimSpace(line)
+		if trimmed == "" {
+			continue
+		}
+		fields := strings.Fields(trimmed)
+		path := fields[len(fields)-1]
+		if strings.HasPrefix(path, runOutputDirPrefix) {
+			continue
+		}
+		kept = append(kept, line)
+	}
+	return strings.Join(kept, "\n")
+}
+
 func revalidateAuthorization(repo string) revalidationResult {
 	base := filepath.Join(repo, "research", "comparative_notation")
 	var r revalidationResult
@@ -125,8 +157,9 @@ func revalidateAuthorization(repo string) revalidationResult {
 		r.GitCommit = strings.TrimSpace(commit)
 	}
 	status, err := commandOutput(repo, "git", "status", "--porcelain")
-	if err != nil || strings.TrimSpace(status) != "" {
-		r.Errors = append(r.Errors, "working tree is not clean at execution time:\n"+status)
+	dirty := strings.TrimSpace(filterOutRunOutputStatusLines(status))
+	if err != nil || dirty != "" {
+		r.Errors = append(r.Errors, "working tree is not clean at execution time:\n"+dirty)
 	} else {
 		r.WorktreeClean = true
 	}
