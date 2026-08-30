@@ -1,0 +1,72 @@
+{
+  "schema_version": "production-technical-prerun-1.0",
+  "run_id": "CNS-PROD01-20260830",
+  "note": "Technical smoke pre-run only: loading, USC validation, structural traversal, and seed-schedule derivation for C01,C02,C06. No structural, rarefaction, bootstrap, distribution, calibration, or VM-comparison metric was computed or saved.",
+  "base_seed": 20260830,
+  "checkpoints": [
+    5000,
+    10000,
+    20000,
+    39380
+  ],
+  "rarefaction_replicates": 100,
+  "bootstrap_replicates": 200,
+  "representations": [
+    {
+      "candidate_id": "C01",
+      "representation_id": "LATIN-EXPANDED",
+      "usc_path": "production_corpus/C01/usc/corpus.usc.jsonl",
+      "input_sha256": "ea5d9f9f0d1d2735662f49955b2cddbebdaaa32e1c2d507a6c4edaca85967173",
+      "record_count": 19132,
+      "structural_block_count": 3393,
+      "physical_lines_observed": false,
+      "seed_count": 1000,
+      "seed_schedule_sha256": "ab2cbf1fe00a7965ae0b2f0886a9fbb8c6828da85cebfbc194ed8be09afc2fab"
+    },
+    {
+      "candidate_id": "C02",
+      "representation_id": "LATIN-DIPLOMATIC",
+      "usc_path": "production_corpus/C02/usc/corpus.usc.jsonl",
+      "input_sha256": "b64d350d36e22f9f76dbbc31ba531953b18970109fbbe3273952b086b8064f84",
+      "record_count": 19121,
+      "structural_block_count": 3393,
+      "physical_lines_observed": false,
+      "seed_count": 1000,
+      "seed_schedule_sha256": "cd58b55effebf7ae25e31021bcb5dd12ae88bd7567211f248b784d1ddfba0e54"
+    },
+    {
+      "candidate_id": "C06",
+      "representation_id": "MUSIC-R1",
+      "usc_path": "production_corpus/C06/usc/MUSIC-R1/corpus.usc.jsonl",
+      "input_sha256": "8521706b957601ec682d2e280299f746f4a03eba4414eac5b046d1bc4de54cfc",
+      "record_count": 13117,
+      "structural_block_count": 559,
+      "physical_lines_observed": true,
+      "seed_count": 1000,
+      "seed_schedule_sha256": "eb12f977749fac6816007cafc4935351b82e09db7bb0de72e586b8a29453e23f"
+    },
+    {
+      "candidate_id": "C06",
+      "representation_id": "MUSIC-R2",
+      "usc_path": "production_corpus/C06/usc/MUSIC-R2/corpus.usc.jsonl",
+      "input_sha256": "4653040ed06d37b3599ed2f098e24664d3070e08027dcb7fe297844a13d89efd",
+      "record_count": 11785,
+      "structural_block_count": 1118,
+      "physical_lines_observed": true,
+      "seed_count": 1000,
+      "seed_schedule_sha256": "483a55c0955f1017b988ce2ec34d95cccad1868be3954c20d0a728c6e6fc9329"
+    },
+    {
+      "candidate_id": "C06",
+      "representation_id": "MUSIC-R3",
+      "usc_path": "production_corpus/C06/usc/MUSIC-R3/corpus.usc.jsonl",
+      "input_sha256": "6a48ac028f1181c39a9a1c89fc347cd5fa88105fc4cac755f357fd5bf21173d9",
+      "record_count": 12475,
+      "structural_block_count": 559,
+      "physical_lines_observed": true,
+      "seed_count": 1000,
+      "seed_schedule_sha256": "f48c65dbac72240bbec741d7ea280660e7829e64ff356754dd3bdd34188cff91"
+    }
+  ],
+  "overall_technical_output_sha256": "2eea660270039b285b7a2c7a20b9cb31fcad830e8377495be4e7b0488b534645"
+}
