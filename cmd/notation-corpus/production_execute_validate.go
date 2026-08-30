@@ -291,8 +291,16 @@ func aggregatesEqual(a, b aggregateResult) bool {
 		if !ok || ra.Status != rb.Status || ra.ComparableCount != rb.ComparableCount || ra.HasDistance != rb.HasDistance {
 			return false
 		}
-		if ra.HasDistance && math.Abs(ra.MeanDistance-rb.MeanDistance) > 1e-9 {
-			return false
+		if ra.HasDistance {
+			// The recomputed side round-trips every value through the
+			// written TSV's %.12g text formatting, so exact float64
+			// equality is not expected; tolerance is relative (12
+			// significant digits, matching notation.WriteComparisonTSV's
+			// own format verb), never a scientific approximation.
+			scale := math.Max(1, math.Max(math.Abs(ra.MeanDistance), math.Abs(rb.MeanDistance)))
+			if math.Abs(ra.MeanDistance-rb.MeanDistance) > scale*1e-9 {
+				return false
+			}
 		}
 	}
 	return true

@@ -185,17 +185,25 @@ func executeProductionRun(opts productionRunOptions) (productionRunSummary, erro
 		return productionRunSummary{}, err
 	}
 
-	report := buildRunReport(identity, results, validation, repro, completed, valid, mustRel(repo, bundleRoot))
-	reportPath := filepath.Join(base, "PRODUCTION_COMPARATIVE_RUN_REPORT.md")
-	if err := os.WriteFile(reportPath, []byte(report), 0644); err != nil {
-		return productionRunSummary{}, err
-	}
-	if err := updateComparativeRunManifest(repo, base, runID, identity.GitCommit, completed, valid, bundleRoot); err != nil {
-		return productionRunSummary{}, err
-	}
-
 	summary.Valid = valid
-	summary.ReportPath = mustRel(repo, reportPath)
+
+	// The shared, repository-level status files (PRODUCTION_COMPARATIVE_RUN_REPORT.md,
+	// PRODUCTION_COMPARATIVE_RUN_MANIFEST.json) describe THE canonical production
+	// run, not any individual pass. Only the canonical invocation — the one
+	// writing into the default production_runs/<RUN_ID>/ location, not a
+	// reproducibility second pass or a test run pointed at a scratch
+	// directory via --out-dir/--run-id — is allowed to update them.
+	if opts.OutDirOverride == "" {
+		report := buildRunReport(identity, results, validation, repro, completed, valid, mustRel(repo, bundleRoot))
+		reportPath := filepath.Join(base, "PRODUCTION_COMPARATIVE_RUN_REPORT.md")
+		if err := os.WriteFile(reportPath, []byte(report), 0644); err != nil {
+			return productionRunSummary{}, err
+		}
+		if err := updateComparativeRunManifest(repo, base, runID, identity.GitCommit, completed, valid, bundleRoot); err != nil {
+			return productionRunSummary{}, err
+		}
+		summary.ReportPath = mustRel(repo, reportPath)
+	}
 	return summary, nil
 }
 
