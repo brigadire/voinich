@@ -24,15 +24,6 @@ type preflightGate struct {
 	Errors []string `json:"errors,omitempty"`
 }
 
-type freezeManifest struct {
-	SchemaVersion  string                     `json:"schema_version"`
-	Artifacts      map[string]json.RawMessage `json:"artifacts"`
-	ProtocolStatus struct {
-		Frozen     bool `json:"GLOBAL_COMPARISON_PROTOCOL_FROZEN"`
-		Authorized bool `json:"PRODUCTION_COMPARATIVE_RUN_AUTHORIZED"`
-	} `json:"protocol_status"`
-}
-
 type experimentPlan struct {
 	ClassID         string   `json:"class_id"`
 	Status          string   `json:"status"`
@@ -65,73 +56,15 @@ type preflightSnapshot struct {
 	GOARCH     string              `json:"goarch"`
 }
 
-// requiredFrozenArtifacts enumerates every mandatory frozen protocol
-// artifact named by task section 3 ("global freeze manifest; metric
-// registry; USC specification; calibration panel; calibration scales;
-// rarefaction protocol; distribution output contract; bootstrap protocol;
-// VM reference v2"), expanded to the concrete files that realize each
-// category.
-var requiredFrozenArtifacts = []string{
-	"GLOBAL_FREEZE_REPORT.md",
-	"METRIC_REGISTRY.md",
-	"USC_SPEC.md",
-	"CALIBRATION_PANEL_SPEC.md",
-	"CALIBRATION_PANEL_REPORT.md",
-	"CALIBRATION_SCALES.tsv",
-	"RAREFACTION_PROTOCOL.md",
-	"RAREFACTION_SCHEMA.md",
-	"DISTRIBUTION_OUTPUT_CONTRACT.md",
-	"BOOTSTRAP_PROTOCOL.md",
-	"VM_REFERENCE_V2.tsv",
-	"VM_REFERENCE_V2.fingerprint.json",
-	"VM_REFERENCE_V2_MANIFEST.json",
-	"VM_REFERENCE_RECONCILIATION.md",
-}
-
-// lookupFrozenArtifactHash resolves the SHA-256 GLOBAL_FREEZE_MANIFEST.json
-// binds for a mandatory artifact name. Most artifacts are bound directly
-// under their own filename key; VM_REFERENCE_V2.tsv and
-// VM_REFERENCE_V2.fingerprint.json are bound under the nested
-// "VM_REFERENCE_V2" object instead (reference_tsv_sha256 /
-// fingerprint_json_sha256), which the manifest documents as intentional and
-// is what notation.VerifyFrozenVMReference actually checks. ok=false means
-// no binding of any kind was found (a genuine gap); errMsg!="" means a
-// binding was found but is malformed.
-func lookupFrozenArtifactHash(fm freezeManifest, name string) (want string, ok bool, errMsg string) {
-	switch name {
-	case "VM_REFERENCE_V2.tsv", "VM_REFERENCE_V2.fingerprint.json":
-		raw, present := fm.Artifacts["VM_REFERENCE_V2"]
-		if !present {
-			return "", false, ""
-		}
-		var vm struct {
-			ReferenceTSVSHA256    string `json:"reference_tsv_sha256"`
-			FingerprintJSONSHA256 string `json:"fingerprint_json_sha256"`
-		}
-		if err := json.Unmarshal(raw, &vm); err != nil {
-			return "", false, "VM_REFERENCE_V2 nested binding is malformed: " + err.Error()
-		}
-		if name == "VM_REFERENCE_V2.tsv" {
-			if len(vm.ReferenceTSVSHA256) != 64 {
-				return "", false, "VM_REFERENCE_V2.reference_tsv_sha256 does not have a direct SHA-256 binding"
-			}
-			return vm.ReferenceTSVSHA256, true, ""
-		}
-		if len(vm.FingerprintJSONSHA256) != 64 {
-			return "", false, "VM_REFERENCE_V2.fingerprint_json_sha256 does not have a direct SHA-256 binding"
-		}
-		return vm.FingerprintJSONSHA256, true, ""
-	default:
-		raw, present := fm.Artifacts[name]
-		if !present {
-			return "", false, ""
-		}
-		var s string
-		if err := json.Unmarshal(raw, &s); err != nil || len(s) != 64 {
-			return "", false, name + " does not have a direct SHA-256 binding"
-		}
-		return s, true, ""
+// requiredFrozenArtifactNames mirrors notation.RequiredGlobalFreezeArtifacts
+// (the authoritative list, task run02 section 1), for callers that only
+// need artifact names (e.g. test coverage assertions).
+func requiredFrozenArtifactNames() []string {
+	names := make([]string, len(notation.RequiredGlobalFreezeArtifacts))
+	for i, s := range notation.RequiredGlobalFreezeArtifacts {
+		names[i] = s.Path
 	}
+	return names
 }
 
 func productionPreflightCmd(args []string) error {
@@ -264,35 +197,24 @@ func assessProductionPreflight(repo string, runTests bool) (preflightSnapshot, e
 // state. It is shared by the full-panel preflight and the frozen-subset
 // production run preflight, since the global protocol freeze is identical
 // for both.
+// verifyGlobalFreezeGate delegates to notation.VerifyGlobalFreezeManifest
+// (schema, duplicate/missing paths, every mandatory SHA-256 binding) and
+// notation.GlobalFreezeCrossReferenceChecks (internal consistency between
+// frozen artifacts, task run02 section 2) — the single source of truth also
+// used directly by `notation-corpus global-freeze-verify`.
 func verifyGlobalFreezeGate(base string) preflightGate {
-	freezeRaw, freezeErr := os.ReadFile(filepath.Join(base, "GLOBAL_FREEZE_MANIFEST.json"))
-	var fm freezeManifest
-	if freezeErr == nil {
-		freezeErr = json.Unmarshal(freezeRaw, &fm)
-	}
-	freezeGate := preflightGate{ID: "global_freeze", Passed: true, Detail: "all mandatory frozen artifacts are manifest-bound and unchanged"}
-	if freezeErr != nil {
-		freezeGate.Passed = false
-		freezeGate.Errors = append(freezeGate.Errors, freezeErr.Error())
+	freezeGate := preflightGate{ID: "global_freeze", Passed: true, Detail: "all mandatory frozen artifacts are manifest-bound, unchanged, and internally consistent"}
+	bindingErrs, err := notation.VerifyGlobalFreezeManifest(base)
+	if err != nil {
+		freezeGate.Errors = append(freezeGate.Errors, err.Error())
 	} else {
-		if !fm.ProtocolStatus.Frozen || fm.ProtocolStatus.Authorized {
-			freezeGate.Errors = append(freezeGate.Errors, "freeze status must be frozen=true and initial authorization=false")
-		}
-		for _, name := range requiredFrozenArtifacts {
-			want, ok, errMsg := lookupFrozenArtifactHash(fm, name)
-			if errMsg != "" {
-				freezeGate.Errors = append(freezeGate.Errors, errMsg)
-				continue
-			}
-			if !ok {
-				freezeGate.Errors = append(freezeGate.Errors, name+" is absent from GLOBAL_FREEZE_MANIFEST.json")
-				continue
-			}
-			got, err := notation.FileSHA256(filepath.Join(base, name))
-			if err != nil || got != want {
-				freezeGate.Errors = append(freezeGate.Errors, fmt.Sprintf("%s hash mismatch: got=%s want=%s error=%v", name, got, want, err))
-			}
-		}
+		freezeGate.Errors = append(freezeGate.Errors, bindingErrs...)
+	}
+	crossErrs, err := notation.GlobalFreezeCrossReferenceChecks(base)
+	if err != nil {
+		freezeGate.Errors = append(freezeGate.Errors, err.Error())
+	} else {
+		freezeGate.Errors = append(freezeGate.Errors, crossErrs...)
 	}
 	freezeGate.Passed = len(freezeGate.Errors) == 0
 	if !freezeGate.Passed {

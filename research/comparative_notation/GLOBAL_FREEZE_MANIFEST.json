@@ -1,34 +1,183 @@
 {
-  "schema_version": "global-freeze-manifest-1.0",
-  "task": "Comparative Notation Study — Global Freeze Completion (B01-B04)",
+  "schema_version": "global-freeze-manifest-2.0",
+  "task": "Comparative Notation Study — Global Freeze Completion (B01-B04) + Cryptographic Binding Completion (run02)",
   "base_seed": 20260830,
-  "artifacts": {
-    "COMPARATIVE_EXPERIMENT_SPEC.md": "c2a929e55f88beb8c2c07d51a770e9d45f6ef0d47e50f08ed4f1eb4a47f260de",
-    "METRIC_REGISTRY.md": "1b9d8c0c0b0d284bfad055148c57ac48977f487dff4c9f635755d7de3554eb5a",
-    "RAREFACTION_PROTOCOL.md": "d235ffecfcf609d5e89b3e4e5fc28e89c65e115d931f276dacf75491517b9672",
-    "RAREFACTION_SCHEMA.md": "868a68a1628ab8cdd375c1596e938a9fbcd03c841b650ec632e976f6d78550d2",
-    "DISTRIBUTION_OUTPUT_CONTRACT.md": "8b83ee83ab2d648b0bc03bf12a600668e3391198a1b1d26b44129297444df4bd",
-    "BOOTSTRAP_PROTOCOL.md": "707e2facccc535dd22b52135b76084a86a5e12b50dd6dccfc8dd2d4a6c50dd81",
-    "CALIBRATION_GENERATORS": {
-      "sha256": "f13e08120331bb2cabe785d9f9e3ac078124a2b015cb7fb224abf9765970bc48",
-      "note": "SHA-256 of the concatenation of CALIBRATION_GENERATORS/*.json in sorted filename order (CAL-CGRAMMAR, CAL-HIERARCHY-SHUFFLE, CAL-IID, CAL-LINE-SHUFFLE, CAL-MARKOV1, CAL-MARKOV2, CAL-TOKEN-SHUFFLE, CAL-WITHIN-TOKEN-SHUFFLE)"
-    },
-    "CALIBRATION_SCALES.tsv": "30539a09f287b8b3902ecc875538b3c07b52bcd4659c44e7d853cd354c7453f7",
-    "VM_REFERENCE_V2": {
-      "reference_tsv_sha256": "a62950ecf350cdf01f3fc09c2d8c7be4947382f9351311e6714a95bde87f230b",
-      "fingerprint_json_sha256": "90d2254a7c9ab25c3c1a3167d3f0f4f6afc69689d3f3477e46486484fd938f42",
-      "note": "fingerprint_json_sha256 is the output_sha256 recorded in VM_REFERENCE_V2_MANIFEST.json and is what notation.VerifyFrozenVMReference checks; reference_tsv_sha256 is the human-readable projection"
-    },
-    "comparator": {
-      "package": "zcore.dev/voinich/internal/notation",
-      "cli": "zcore.dev/voinich/cmd/notation-corpus",
-      "analyzer_version": "notation-analyzer-1.0",
-      "metric_registry_version": "generic-metrics-1.0",
-      "metric_registry_hash": "955ec7d44c12f953933304e96eaee9fbff2ef4f860ee46a00b68d3b30cc48bdb"
-    }
+  "freeze_generation_id": "CNS-FREEZE-20260830",
+  "binding_completed_at": "2026-08-30T15:17:19Z",
+  "comparator": {
+    "package": "zcore.dev/voinich/internal/notation",
+    "cli": "zcore.dev/voinich/cmd/notation-corpus",
+    "analyzer_version": "notation-analyzer-1.0",
+    "metric_registry_version": "generic-metrics-1.0",
+    "metric_registry_hash": "955ec7d44c12f953933304e96eaee9fbff2ef4f860ee46a00b68d3b30cc48bdb"
   },
+  "artifacts": [
+    {
+      "path": "BOOTSTRAP_PROTOCOL.md",
+      "sha256": "707e2facccc535dd22b52135b76084a86a5e12b50dd6dccfc8dd2d4a6c50dd81",
+      "role": "distribution_bootstrap",
+      "schema_version": "bootstrap-protocol-1.0"
+    },
+    {
+      "path": "CALIBRATION_DIAGNOSTICS.json",
+      "sha256": "fed3cfd3c2c79b72ea2874f7c08b6bfc03c7196a2ae26cdea74450273634a06f",
+      "role": "calibration"
+    },
+    {
+      "path": "CALIBRATION_GENERATORS",
+      "sha256": "f13e08120331bb2cabe785d9f9e3ac078124a2b015cb7fb224abf9765970bc48",
+      "role": "calibration"
+    },
+    {
+      "path": "CALIBRATION_PANEL_REPORT.md",
+      "sha256": "161791b40dc146db6d10fd234f2726854486d2d6adf7e5023f96ee673e5f59cc",
+      "role": "calibration"
+    },
+    {
+      "path": "CALIBRATION_PANEL_SPEC.md",
+      "sha256": "a063149116f2f59d135ded5710fe4399344c05ef0ca6f936b857cb9c7ac2b7c7",
+      "role": "calibration"
+    },
+    {
+      "path": "CALIBRATION_SCALES.tsv",
+      "sha256": "30539a09f287b8b3902ecc875538b3c07b52bcd4659c44e7d853cd354c7453f7",
+      "role": "calibration",
+      "schema_version": "calibration-scales-1.0"
+    },
+    {
+      "path": "COMPARATIVE_EXPERIMENT_SPEC.md",
+      "sha256": "c2a929e55f88beb8c2c07d51a770e9d45f6ef0d47e50f08ed4f1eb4a47f260de",
+      "role": "protocol"
+    },
+    {
+      "path": "COMPARATIVE_STUDY_GOALS.md",
+      "sha256": "98ccc3b54d7a11d1c00c5944e94e8e38704980a139b8e092d3863cd22dc80b9a",
+      "role": "protocol"
+    },
+    {
+      "path": "COMPARISON_PROTOCOL.md",
+      "sha256": "fe071b2ad6505ceba5924eb7e7f38453122793fcaa84ddb9e1c0133a656899a7",
+      "role": "protocol"
+    },
+    {
+      "path": "DISTRIBUTION_OUTPUT_CONTRACT.md",
+      "sha256": "8b83ee83ab2d648b0bc03bf12a600668e3391198a1b1d26b44129297444df4bd",
+      "role": "distribution_bootstrap"
+    },
+    {
+      "path": "GLOBAL_FREEZE_REPORT.md",
+      "sha256": "fb4aaaa892963e59f88635890139d2187c20bfaffd19ba8fa145b33569057c9c",
+      "role": "report"
+    },
+    {
+      "path": "METRIC_OUTPUT_TYPES.tsv",
+      "sha256": "89f47f2c5cc6ff018441981f2a334b0b40c7154fe94036e5df3a5424235b707a",
+      "role": "distribution_bootstrap"
+    },
+    {
+      "path": "METRIC_REGISTRY.md",
+      "sha256": "1b9d8c0c0b0d284bfad055148c57ac48977f487dff4c9f635755d7de3554eb5a",
+      "role": "metric_registry",
+      "schema_version": "generic-metrics-1.0"
+    },
+    {
+      "path": "PAIRED_NOTATION_PROTOCOL.md",
+      "sha256": "a785cbf81e1dd0840fb105149780c0b83a5bf8d9b876e99c0f1e29fcfc63b83f",
+      "role": "protocol"
+    },
+    {
+      "path": "RAREFACTION_PROTOCOL.md",
+      "sha256": "d235ffecfcf609d5e89b3e4e5fc28e89c65e115d931f276dacf75491517b9672",
+      "role": "rarefaction",
+      "schema_version": "rarefaction-protocol-1.0"
+    },
+    {
+      "path": "RAREFACTION_SCHEMA.md",
+      "sha256": "868a68a1628ab8cdd375c1596e938a9fbcd03c841b650ec632e976f6d78550d2",
+      "role": "rarefaction",
+      "schema_version": "rarefaction-protocol-1.0"
+    },
+    {
+      "path": "REPRESENTATION_REGISTRY.md",
+      "sha256": "b500f0935bbfbf8ca6ab8ca883ee81be969c6e5dc9290577d6e0088b107fb27f",
+      "role": "protocol"
+    },
+    {
+      "path": "RESULT_CONTRACT.md",
+      "sha256": "d7c24c975c1a9ffb7ca0c58101cc3ecfde67b553b722b872f00a8b2b55355de8",
+      "role": "protocol"
+    },
+    {
+      "path": "USC_SPEC.md",
+      "sha256": "65f3edbdac60cb4bf45005c9a64c2d6e02390ad6b5d402147746089f05d74b59",
+      "role": "usc_specification",
+      "schema_version": "usc-1.0"
+    },
+    {
+      "path": "VALIDATION_PROTOCOL.md",
+      "sha256": "1391ee1a27db09eec89d42ff17eacae45ec83f89a24b41a6d380bb027c05a79e",
+      "role": "protocol"
+    },
+    {
+      "path": "VM_ACCUMULATION_CURVES_V2.tsv",
+      "sha256": "9e5831a1eb40eb68d1d60679c51a337aae9d75caecd9793f93281a016d2e6845",
+      "role": "vm_reference"
+    },
+    {
+      "path": "VM_BOOTSTRAP_V2.tsv",
+      "sha256": "928caca9b8af9d8bb50497af5854261d6f66ada17d39af3298ec97d9be7460de",
+      "role": "vm_reference"
+    },
+    {
+      "path": "VM_COMPARISON_TEMPLATE.md",
+      "sha256": "94dc043aac683e3af0b4d2599b62ab5c6ac9a54f79350c552e2506bcb07204cf",
+      "role": "vm_reference"
+    },
+    {
+      "path": "VM_DISTRIBUTIONS_V2.tsv",
+      "sha256": "6b44531ecd9448dd97a81b286f8f72657a3db23151e1f0ca9c8c2446380f693f",
+      "role": "vm_reference"
+    },
+    {
+      "path": "VM_RAREFACTION_V2.tsv",
+      "sha256": "b9698a4bc941286d9496db73f579b59d88f51887f61a30943135b83ed3cc6a34",
+      "role": "vm_reference"
+    },
+    {
+      "path": "VM_RAREFACTION_V2_RAW.tsv",
+      "sha256": "d2b41ba520df0bd05dffdfa9cf818249aa265beb783a87b7041f71725a934053",
+      "role": "vm_reference"
+    },
+    {
+      "path": "VM_REFERENCE_CONTRACT.md",
+      "sha256": "b183cc8f6a2786200eaf491bbccd48b56ec8b4d614a5adfaac28ec74b7bd4afd",
+      "role": "vm_reference"
+    },
+    {
+      "path": "VM_REFERENCE_RECONCILIATION.md",
+      "sha256": "44f72d9d4ba432a16eb5794e4b0696c5b20e05651954982299fdf74cb9ecd617",
+      "role": "vm_reference"
+    },
+    {
+      "path": "VM_REFERENCE_V2.fingerprint.json",
+      "sha256": "90d2254a7c9ab25c3c1a3167d3f0f4f6afc69689d3f3477e46486484fd938f42",
+      "role": "vm_reference"
+    },
+    {
+      "path": "VM_REFERENCE_V2.tsv",
+      "sha256": "a62950ecf350cdf01f3fc09c2d8c7be4947382f9351311e6714a95bde87f230b",
+      "role": "vm_reference"
+    },
+    {
+      "path": "VM_REFERENCE_V2_MANIFEST.json",
+      "sha256": "c1428b087ab195c782d9606b9d6c03a5286996dc6039e7fa56ac359f7b1de0ea",
+      "role": "vm_reference",
+      "schema_version": "vm-reference-v2-manifest-1.0"
+    }
+  ],
   "protocol_status": {
     "GLOBAL_COMPARISON_PROTOCOL_FROZEN": true,
+    "GLOBAL_FREEZE_CRYPTOGRAPHICALLY_BOUND": true,
     "PRODUCTION_COMPARATIVE_RUN_AUTHORIZED": false
   }
 }

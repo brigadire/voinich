@@ -76,7 +76,7 @@ func TestMandatoryFreezeBindingsIncludeProductionContract(t *testing.T) {
 		"VM_REFERENCE_V2_MANIFEST.json":    false,
 		"VM_REFERENCE_RECONCILIATION.md":   false,
 	}
-	for _, name := range requiredFrozenArtifacts {
+	for _, name := range requiredFrozenArtifactNames() {
 		if _, ok := want[name]; ok {
 			want[name] = true
 		}
