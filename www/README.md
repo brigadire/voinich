@@ -1,4 +1,4 @@
-# Voynich Phase I/II publication site
+# Voynich research publication site
 
 This directory is the complete static publication root for
 `https://voynich.lite.systems/`. It has no runtime dependencies, application
@@ -23,10 +23,10 @@ private/research working paths.
 
 ## Release identity
 
-- publication release: `publication-site-v1.0.0`
-- publication date: `2026-08-25`
+- publication release: `publication-site-v1.1.0`
+- publication date: `2026-08-30`
 - canonical scientific language: English
-- scientific scope: frozen Phase I and Phase II only
+- scientific scope: frozen Phase I/II synthesis plus Structural Catalog V1
 - research-source commit: `56e0a1e97362ac7c2791e9ec1b1574e57ed71570`
 
 The public artifact list is `artifacts/RELEASE_MANIFEST.json`; individual

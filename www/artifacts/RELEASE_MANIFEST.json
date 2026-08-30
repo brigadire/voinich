@@ -1,25 +1,33 @@
 {
   "schema_version": 1,
-  "release_id": "publication-site-v1.0.0",
-  "publication_date": "2026-08-25",
+  "release_id": "publication-site-v1.1.0",
+  "publication_date": "2026-08-30",
   "canonical_language": "en",
   "site_url": "https://voynich.lite.systems/",
   "research_source_commit": "56e0a1e97362ac7c2791e9ec1b1574e57ed71570",
-  "scientific_scope": "Frozen Phase I and Phase II synthesis; no new scientific computation",
+  "scientific_scope": "Frozen Phase I and Phase II synthesis plus the descriptive VM Structural Catalog V1; the catalog does not perform mechanism identification",
   "phase1_release": "phase1-v1.0-rc1",
   "phase2_synthesis": "Task84",
   "phase2_authoritative_fingerprint": "Task83b deterministic Fingerprint V2.1 refreeze",
   "phase2_authoritative_comparison": "Task83r",
+  "structural_catalog": {
+    "schema_version": "vm-structural-catalog-v1",
+    "primary_corpus_sha256": "f46f4190af65b85d145ec5bb957c1f56029b567e4bef12ac7baa1797f358d692",
+    "catalog_manifest_sha256": "b25985d66d07cd78485ede2eb2f11d62028db0528a68f3f2f30c9f1f193b481b",
+    "master_rule_count": 690751,
+    "observed_zero_policy": "Every enumerated zero remains an explicit corpus rule independent of inferred statistical status",
+    "mechanism_interpretation": "NOT_PERFORMED"
+  },
   "terminal_results": {
     "BEST_SUPPORTED_CLASS": "INCONCLUSIVE",
     "MECHANISM_IDENTIFICATION_FROM_F2": "NOT_IDENTIFIABLE"
   },
   "primary_limitation": "3/13 CORE direct metrics in one edit family",
   "checksums_file": "SHA256SUMS",
-  "artifact_count": 20,
+  "artifact_count": 30,
   "license_note": "Project code license is included for provenance. Documentation and scientific-content rights are not silently reassigned by this publication package.",
   "data_availability": {
-    "public_now": "Curated reports, summaries, registries, maps, references, manifests and provenance guides in this directory",
+    "public_now": "Curated reports, summaries, registries, maps, references, manifests, provenance guides and the complete deterministic structural-catalog bundle in this directory",
     "third_party": "ZL3b/IT2a transcriptions, IVTT and certain natural/historical controls; acquire from named authorities",
     "restricted_pending_review": "Unreviewed generated artifacts, exploratory analyses, internal task and agent material",
     "planned_repository_release": "Source code and additional frozen evidence after deliberate review",

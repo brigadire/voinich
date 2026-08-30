@@ -1,5 +1,17 @@
 # Publication site changelog
 
+## Presentation correction — 2026-08-30
+
+- Restricted sticky table positioning to column headers inside `thead`; row headers in `tbody` now remain in normal flow and no longer overlap informational cells in desktop browsers.
+- No scientific content, metric, status or downloadable research artifact was changed.
+
+## publication-site-v1.1.0 — 2026-08-30
+
+- Published Structural Catalog V1 as a new descriptive research section, without changing the frozen Phase I/II mechanism verdicts.
+- Added concrete glyph, token, transition, line and document findings; preserved every observed zero as a first-class corpus rule.
+- Added the complete deterministic catalog bundle, compressed master catalog, transition complement, selected compact TSVs and checksums.
+- Updated navigation, methods, release metadata, citation wording and data-availability boundaries. Third-party corpus bytes remain excluded.
+
 ## Editorial correction — 2026-08-28
 
 - Expanded *Burchards Dekret Digital* (BDD) before the abbreviation first appears and identified the paired Latin abbreviation corpus used in the historical-shorthand test.
