@@ -1,0 +1,8 @@
+test_id	role	visual_inputs	textual_inputs	sample_rule	statistic	null	permutation_constraints	multiple_testing_family	decision_use
+V2_PRIMARY_MISSING_AWARE_GLOBAL	primary	all 15 frozen descriptors	all 10 frozen metrics	pair overlap >=5 observed dims	Mantel-style correlation of normalized distance matrices	within-section block permutation	exact <=8 blocks; otherwise 10000; physical-leaf blocks preserved	primary separate	primary only
+V2_DESCRIPTOR_WISE	secondary	one frozen descriptor at a time	all 10 frozen metrics	descriptor observed	binary/ordinal/categorical predeclared statistic	within-section block permutation	section; physical-leaf blocks preserved	BH descriptor-wise	secondary
+V2_FAMILY_WISE	secondary	original schema families	all 10 frozen metrics	family observed dimensions	family distance association	within-section block permutation	section; physical-leaf blocks preserved	BH family-wise	secondary
+V2_SECTION_CONSISTENCY	secondary	all frozen descriptors	all frozen metrics	section-specific usable pages	sign/direction and support	same frozen null	section-stratified	none	diagnostic
+V2_CONFONDER_RESTRICTED	secondary	all frozen descriptors	all frozen metrics + frozen metadata	estimable restricted strata	incremental residual association	restricted exchangeability	section×compatible-quire where estimable	none	limitation-aware
+V2_NEGATIVE_WRONG_PAGE	control	frozen vectors	frozen metrics	all eligible	primary statistic	wrong-page assignment	within-section blocks	none	validity control
+V2_NEGATIVE_SYNTHETIC	control	deterministic frequency-matched neutral descriptor	frozen metrics	all eligible	descriptor statistic	independent synthetic labels	section blocks	none	validity control

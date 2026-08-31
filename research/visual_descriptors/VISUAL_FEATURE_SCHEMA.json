@@ -1,0 +1,403 @@
+{
+  "schema_id": "VM-PAGE-VISUAL",
+  "version": "1.0.0",
+  "frozen": true,
+  "annotation_unit": "exact IVTFF page/panel ID",
+  "common_states": [
+    "UNCERTAIN",
+    "NOT_APPLICABLE",
+    "NOT_VISIBLE",
+    "IMAGE_MISSING"
+  ],
+  "descriptors": [
+    {
+      "id": "COMP_ILLUSTRATION_REGIONS",
+      "name": "Distinct illustration regions",
+      "family": "composition",
+      "type": "ordinal",
+      "definition": "Number category of spatially separated non-writing illustration regions.",
+      "allowed_values": [
+        "0",
+        "1",
+        "MULTIPLE",
+        "UNCERTAIN",
+        "NOT_VISIBLE",
+        "IMAGE_MISSING"
+      ],
+      "missing_policy": "Common policy.",
+      "ambiguity_policy": "Touching components forming one composition count once; any two or more separated regions are MULTIPLE.",
+      "unit": "page/panel",
+      "annotation_instructions": "Count regions separated by clear whitespace or running-writing blocks; record 0, 1, or MULTIPLE.",
+      "positive_examples": [
+        "Four separated marginal motifs are 4+."
+      ],
+      "negative_examples": [
+        "Leaves of one plant are not separate regions."
+      ],
+      "not_applicable_rule": "Never."
+    },
+    {
+      "id": "COMP_CENTRAL_ILLUSTRATION",
+      "name": "Central illustration",
+      "family": "composition",
+      "type": "binary",
+      "definition": "A major illustration overlaps the central third of the unit.",
+      "allowed_values": [
+        "PRESENT",
+        "ABSENT",
+        "UNCERTAIN",
+        "NOT_VISIBLE",
+        "IMAGE_MISSING"
+      ],
+      "missing_policy": "Common policy.",
+      "ambiguity_policy": "Use UNCERTAIN for clipped panels.",
+      "unit": "page/panel",
+      "annotation_instructions": "Use the unit bounds, not the physical spread bounds.",
+      "positive_examples": [
+        "A major circle centered in the panel."
+      ],
+      "negative_examples": [
+        "Only marginal stars."
+      ],
+      "not_applicable_rule": "Never."
+    },
+    {
+      "id": "OBJ_PLANT_LIKE",
+      "name": "Plant-like object count",
+      "family": "object_count",
+      "type": "ordinal",
+      "definition": "Count of major forms with a stem/root/leaf-like branching silhouette, without botanical identification.",
+      "allowed_values": [
+        "0",
+        "1",
+        "2-3",
+        "4+",
+        "UNCERTAIN",
+        "NOT_VISIBLE",
+        "IMAGE_MISSING"
+      ],
+      "missing_policy": "Common policy.",
+      "ambiguity_policy": "Detached fragments count separately only when spatially isolated.",
+      "unit": "page/panel",
+      "annotation_instructions": "Count major objects, not leaves.",
+      "positive_examples": [
+        "One stem-root composition is 1."
+      ],
+      "negative_examples": [
+        "A purely geometric radial diagram is 0."
+      ],
+      "not_applicable_rule": "Never."
+    },
+    {
+      "id": "OBJ_HUMAN_LIKE",
+      "name": "Human-like figure count",
+      "family": "object_count",
+      "type": "ordinal",
+      "definition": "Count of forms with an apparent head and torso/limb configuration.",
+      "allowed_values": [
+        "0",
+        "1",
+        "2-3",
+        "4+",
+        "UNCERTAIN",
+        "NOT_VISIBLE",
+        "IMAGE_MISSING"
+      ],
+      "missing_policy": "Common policy.",
+      "ambiguity_policy": "Borderline anthropomorphic marks are UNCERTAIN.",
+      "unit": "page/panel",
+      "annotation_instructions": "Do not infer identity, sex or action.",
+      "positive_examples": [
+        "Five repeated head-and-torso forms are 4+."
+      ],
+      "negative_examples": [
+        "A star with rays is 0."
+      ],
+      "not_applicable_rule": "Never."
+    },
+    {
+      "id": "OBJ_CONTAINER_LIKE",
+      "name": "Container-like object count",
+      "family": "object_count",
+      "type": "ordinal",
+      "definition": "Count of bounded receptacle-like forms with a rim/body or enclosed pool-like boundary.",
+      "allowed_values": [
+        "0",
+        "1",
+        "2-3",
+        "4+",
+        "UNCERTAIN",
+        "NOT_VISIBLE",
+        "IMAGE_MISSING"
+      ],
+      "missing_policy": "Common policy.",
+      "ambiguity_policy": "Do not decide what a container holds.",
+      "unit": "page/panel",
+      "annotation_instructions": "Count visually separate receptacle forms.",
+      "positive_examples": [
+        "Three rim-and-body forms are 2-3."
+      ],
+      "negative_examples": [
+        "An unbounded color wash is 0."
+      ],
+      "not_applicable_rule": "Never."
+    },
+    {
+      "id": "OBJ_STAR_LIKE",
+      "name": "Star-like symbols present",
+      "family": "object_count",
+      "type": "categorical",
+      "definition": "Presence of one or more discrete symbols with at least five salient rays or petal-like points.",
+      "allowed_values": [
+        "0",
+        "1+",
+        "UNCERTAIN",
+        "NOT_VISIBLE",
+        "IMAGE_MISSING"
+      ],
+      "missing_policy": "Common policy.",
+      "ambiguity_policy": "Do not estimate a count in dense groups; record 1+ whenever any qualifying symbol is visible.",
+      "unit": "page/panel",
+      "annotation_instructions": "Code shape presence only.",
+      "positive_examples": [
+        "A margin with ten ray symbols is 4+."
+      ],
+      "negative_examples": [
+        "A round dot is 0."
+      ],
+      "not_applicable_rule": "Never."
+    },
+    {
+      "id": "OBJ_CIRCULAR_UNITS",
+      "name": "Major circular unit count",
+      "family": "object_count",
+      "type": "ordinal",
+      "definition": "Count of major circle/ring-centered diagram units.",
+      "allowed_values": [
+        "0",
+        "1",
+        "2-3",
+        "4+",
+        "UNCERTAIN",
+        "NOT_VISIBLE",
+        "IMAGE_MISSING"
+      ],
+      "missing_policy": "Common policy.",
+      "ambiguity_policy": "Nested rings sharing one center are one unit.",
+      "unit": "page/panel",
+      "annotation_instructions": "Count centers, not rings.",
+      "positive_examples": [
+        "Three separate wheels are 2-3."
+      ],
+      "negative_examples": [
+        "Three concentric rings are 1."
+      ],
+      "not_applicable_rule": "Never."
+    },
+    {
+      "id": "GEO_RADIAL",
+      "name": "Radial organization",
+      "family": "geometry",
+      "type": "binary",
+      "definition": "Major visual elements are arranged around a common apparent center.",
+      "allowed_values": [
+        "PRESENT",
+        "ABSENT",
+        "UNCERTAIN",
+        "NOT_VISIBLE",
+        "IMAGE_MISSING"
+      ],
+      "missing_policy": "Common policy.",
+      "ambiguity_policy": "Require a visually dominant center.",
+      "unit": "page/panel",
+      "annotation_instructions": "Ignore inferred astronomical meaning.",
+      "positive_examples": [
+        "Spokes radiate from one center."
+      ],
+      "negative_examples": [
+        "Parallel rows."
+      ],
+      "not_applicable_rule": "Never."
+    },
+    {
+      "id": "GEO_CONCENTRIC",
+      "name": "Concentric organization",
+      "family": "geometry",
+      "type": "binary",
+      "definition": "Two or more major closed contours share an apparent center.",
+      "allowed_values": [
+        "PRESENT",
+        "ABSENT",
+        "UNCERTAIN",
+        "NOT_VISIBLE",
+        "IMAGE_MISSING"
+      ],
+      "missing_policy": "Common policy.",
+      "ambiguity_policy": "Distorted but clearly nested contours may be PRESENT.",
+      "unit": "page/panel",
+      "annotation_instructions": "Require at least two nested contours.",
+      "positive_examples": [
+        "Nested rings."
+      ],
+      "negative_examples": [
+        "Separate circles."
+      ],
+      "not_applicable_rule": "Never."
+    },
+    {
+      "id": "GEO_BRANCHING",
+      "name": "Branching organization",
+      "family": "geometry",
+      "type": "binary",
+      "definition": "A major form splits hierarchically into two or more branches.",
+      "allowed_values": [
+        "PRESENT",
+        "ABSENT",
+        "UNCERTAIN",
+        "NOT_VISIBLE",
+        "IMAGE_MISSING"
+      ],
+      "missing_policy": "Common policy.",
+      "ambiguity_policy": "Repeated adjacent strokes without a parent stem are ABSENT.",
+      "unit": "page/panel",
+      "annotation_instructions": "Shape only; plant interpretation is unnecessary.",
+      "positive_examples": [
+        "A trunk dividing into stems."
+      ],
+      "negative_examples": [
+        "Radial spokes with no hierarchy."
+      ],
+      "not_applicable_rule": "Never."
+    },
+    {
+      "id": "FIG_RELATION",
+      "name": "Figure relation",
+      "family": "figure_interaction",
+      "type": "categorical",
+      "definition": "Spatial relation among human-like figures.",
+      "allowed_values": [
+        "ISOLATED",
+        "INTERACTING",
+        "MIXED",
+        "UNCERTAIN",
+        "NOT_APPLICABLE",
+        "NOT_VISIBLE",
+        "IMAGE_MISSING"
+      ],
+      "missing_policy": "NOT_APPLICABLE when fewer than two figures are visible.",
+      "ambiguity_policy": "Interaction requires touch, shared enclosure or visible connector.",
+      "unit": "page/panel",
+      "annotation_instructions": "Do not name the activity.",
+      "positive_examples": [
+        "Two figures sharing a bounded region are INTERACTING."
+      ],
+      "negative_examples": [
+        "Separated figures with no shared structure are ISOLATED."
+      ],
+      "not_applicable_rule": "Fewer than two visible human-like figures."
+    },
+    {
+      "id": "FIG_ENCLOSED",
+      "name": "Figures in enclosures",
+      "family": "figure_interaction",
+      "type": "binary_na",
+      "definition": "At least one human-like figure lies substantially inside a bounded compartment or receptacle form.",
+      "allowed_values": [
+        "PRESENT",
+        "ABSENT",
+        "UNCERTAIN",
+        "NOT_APPLICABLE",
+        "NOT_VISIBLE",
+        "IMAGE_MISSING"
+      ],
+      "missing_policy": "NOT_APPLICABLE when no figures are visible.",
+      "ambiguity_policy": "Border contact alone is UNCERTAIN.",
+      "unit": "page/panel",
+      "annotation_instructions": "Describe containment only.",
+      "positive_examples": [
+        "A torso inside a closed pool boundary."
+      ],
+      "negative_examples": [
+        "A figure standing beside a circle."
+      ],
+      "not_applicable_rule": "No visible human-like figure."
+    },
+    {
+      "id": "TXT_RADIAL",
+      "name": "Radially arranged writing",
+      "family": "text_image_space",
+      "type": "binary",
+      "definition": "Writing baselines visibly follow radial or circular paths around a center.",
+      "allowed_values": [
+        "PRESENT",
+        "ABSENT",
+        "UNCERTAIN",
+        "NOT_VISIBLE",
+        "IMAGE_MISSING"
+      ],
+      "missing_policy": "Common policy.",
+      "ambiguity_policy": "Code baseline geometry without reading signs.",
+      "unit": "page/panel",
+      "annotation_instructions": "Curved circular baselines are sufficient.",
+      "positive_examples": [
+        "Writing follows a ring."
+      ],
+      "negative_examples": [
+        "Horizontal writing beside a circle."
+      ],
+      "not_applicable_rule": "Never."
+    },
+    {
+      "id": "VIS_DENSITY",
+      "name": "Visual mark density",
+      "family": "complexity",
+      "type": "ordinal",
+      "definition": "Density of non-writing illustrative marks within the unit.",
+      "allowed_values": [
+        "LOW",
+        "MEDIUM",
+        "HIGH",
+        "UNCERTAIN",
+        "NOT_VISIBLE",
+        "IMAGE_MISSING"
+      ],
+      "missing_policy": "Common policy.",
+      "ambiguity_policy": "Judge filled area and line concentration jointly.",
+      "unit": "page/panel",
+      "annotation_instructions": "LOW=sparse/none; MEDIUM=one developed motif; HIGH=dense multi-region marks.",
+      "positive_examples": [
+        "Dense foldout diagram is HIGH."
+      ],
+      "negative_examples": [
+        "Dense running writing alone remains LOW."
+      ],
+      "not_applicable_rule": "Never."
+    },
+    {
+      "id": "VIS_COMPLEXITY",
+      "name": "Structural complexity",
+      "family": "complexity",
+      "type": "ordinal",
+      "definition": "Number of visually distinct structural relations among major non-writing elements.",
+      "allowed_values": [
+        "LOW",
+        "MEDIUM",
+        "HIGH",
+        "UNCERTAIN",
+        "NOT_VISIBLE",
+        "IMAGE_MISSING"
+      ],
+      "missing_policy": "Common policy.",
+      "ambiguity_policy": "Use explicit anchors: one/no relation LOW, 2-3 MEDIUM, 4+ HIGH.",
+      "unit": "page/panel",
+      "annotation_instructions": "Relations include nesting, branching, linking, enclosure and repetition.",
+      "positive_examples": [
+        "Nested, radial and repeated elements are HIGH."
+      ],
+      "negative_examples": [
+        "A single unconnected motif is LOW."
+      ],
+      "not_applicable_rule": "Never."
+    }
+  ]
+}

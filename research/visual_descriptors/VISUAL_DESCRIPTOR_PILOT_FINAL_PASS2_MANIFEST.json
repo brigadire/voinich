@@ -1,0 +1,67 @@
+{
+  "pass_id": "PILOT_FINAL_PASS_B",
+  "schema_id": "VM-PAGE-VISUAL",
+  "schema_version": "1.0.0-rc",
+  "created_utc": "2026-08-31T10:23:16Z",
+  "unit_count": 24,
+  "descriptor_count": 21,
+  "randomization": {
+    "method": "GNU coreutils shuf over pilot_ids.txt before image inspection",
+    "order_locked_before_coding": true,
+    "order": [
+      "f87r", "f115v", "f10v", "f81r", "f1r", "f2r",
+      "f88r", "f75r", "f66r", "f96v", "f57v", "f78v",
+      "f106v", "f73v", "f71r", "f99r", "f116v", "f69r",
+      "f111r", "f76r", "f30v", "f103r", "f20r", "f84v"
+    ]
+  },
+  "hash_algorithm": "SHA-256",
+  "input_hashes": {
+    "VISUAL_FEATURE_SCHEMA.json": "51e96162b533179acd70f7e50bf7f04e7eaae3e0c373e13f2a8a721a0fc1aa75",
+    "VISUAL_DESCRIPTOR_ANNOTATION_PROTOCOL.md": "ac9e1cbb72f4d82c41caa7f896f3c63b99d3272abfb7893fe664eff41f6d19df",
+    "page_identification.tsv": "7106bf5aa45105ff6bc0101ec2fc7959473dcd739ada98bb78e97be719485660",
+    "image_index.tsv": "1630a55570312d1455146263e12103abc177fc149b52395c11f25004db79f137",
+    "pilot_ids.txt": "d851bfba6cbc1886de1f4da9bb905898df90508f165e6a3cdc773882e0058fb5",
+    "VISUAL_PANEL_CROP_REGISTRY.tsv": "a22ef07c661f7abad86f618c16f2820f98e6415d394737ec7b11eb455a792761"
+  },
+  "image_hashes_by_page_id": {
+    "f87r": {"canvas_oid": "1006232", "sha256": "b6c76add1e0390153787b872d155ef274fca79e770169034f8bddd4935b68d83"},
+    "f115v": {"canvas_oid": "1006275", "sha256": "22e071e0a4ebab4c4b3ecf7f6b9976ef0b2cb7eb6d3fecd3407d4912208904e0"},
+    "f10v": {"canvas_oid": "1006095", "sha256": "056ff8a87d40c66a61903fcafe77d51bceac303eafa72175961702175e896202"},
+    "f81r": {"canvas_oid": "1006220", "sha256": "9a8dd053e001ba90b572a1fc13bdc48efc2f110968db7c25c189f88f854cf7f9"},
+    "f1r": {"canvas_oid": "1006076", "sha256": "572d3195f5f6bf4bbb11897d16ac3a4699236a11d5c2a37f7bddbf6722f07bea"},
+    "f2r": {"canvas_oid": "1006078", "sha256": "4f0f3bb945c5327c120c057d1bf9e4997149d1dcda2e53e6604485eb57a5f753"},
+    "f88r": {"canvas_oid": "1037112", "sha256": "53d2117154bcb25e25de12a925bca58dda317cec04020ccb493c9cd1dc17be1f"},
+    "f75r": {"canvas_oid": "1006208", "sha256": "ce502398afd68c29f6bae469100f8977ba7575b8c08651a54f1220b4938eaf81"},
+    "f66r": {"canvas_oid": "1006192", "sha256": "26b2cd035f1f0a58800fba0e7573329e18df6b162d318bc0a9eaa5bec9c32254"},
+    "f96v": {"canvas_oid": "1006245", "sha256": "a83b10a455f59a03b4e783a5e8db009c16e976169af3b8c4812aeeceee898ff1"},
+    "f57v": {"canvas_oid": "1006187", "sha256": "978d303e9a96632c996ec4d14427d0f420de9a791093bae42bcb25f0e07a0ae5"},
+    "f78v": {"canvas_oid": "1006215", "sha256": "cf1a9be7171c431d03bc2059b9497e048cf104c9c738897bfc49a8209c39a9fc"},
+    "f106v": {"canvas_oid": "1006261", "sha256": "172671b56a75e0a0682cea9faf704dd36507a8c08e7dc551e00efd1bc53fa727"},
+    "f73v": {"canvas_oid": "1006207", "sha256": "d1cc22a0bd099f112d0470918d20b531be7c2ebd762cd149ab6726568e6c432a"},
+    "f71r": {"canvas_oid": "1006202", "sha256": "790c140b1d1a7c128048eeb01dc07e15c0f21606f170574aabe8d2ffdab4450b"},
+    "f99r": {"canvas_oid": "1006246", "sha256": "299c35e3be00bc191e0797f4d7acd8f85fd845f8aa4380e50aeea0bacf2c37dd"},
+    "f116v": {"canvas_oid": "1006277", "sha256": "a135d1f792b722d196c30c5ea3b4afdffcb0982bfb4d7490ee7d5405fba7ecab"},
+    "f69r": {"canvas_oid": "1006198", "sha256": "ef078d8221a211852e2406b8bd3d7f00f0a96497474581329caf225ea8e487ca"},
+    "f111r": {"canvas_oid": "1006266", "sha256": "e242fb52d9e0d92897e1eba31da82dcce6f196667be8912d4e44a618bc83664c"},
+    "f76r": {"canvas_oid": "1006210", "sha256": "5fbfc99e1b3b0c505df48fe6a9daca5731e6069f119aef40afc01713fe921f69"},
+    "f30v": {"canvas_oid": "1006133", "sha256": "f912af2e1d00770feef669fc15d193bd8ffd85fa979c35b416b1b11234f95db0"},
+    "f103r": {"canvas_oid": "1006254", "sha256": "0e65dc65a97553ec6ef10951f4f73b545fd8c15deaa1869aaf25d7420b7bc6db"},
+    "f20r": {"canvas_oid": "1006112", "sha256": "94c31ebf908ee1c0c12b5eea02c885277ef9c6d0490640e6a5ee3c9a373ce449"},
+    "f84v": {"canvas_oid": "1006227", "sha256": "28a7df696879d22b7e29f5474ea64fc44d9b37d5236ab6c5cd07781173bf28b4"}
+  },
+  "output_hashes": {
+    "PILOT_FINAL_PASS_B.tsv": "84aaebf6b3b8d1cfeb544279e343231f138da9852f9e306d3a16515a0a089852"
+  },
+  "validation": {
+    "row_count": 24,
+    "unique_page_ids": 24,
+    "pilot_set_exact_match": true,
+    "column_count": 22,
+    "all_21_descriptor_values_in_schema_domains": true,
+    "panel_crop_status": "not_applicable_to_selected_units"
+  },
+  "attestation": "This pass was produced independently from a fresh randomized order. Each of the 24 source JPEGs was inspected anew under the 1.0.0-rc protocol. Only the six permitted common files and JPEGs under /tmp/voinich-images were consulted; no repository files, earlier pass files, reliability outputs, final_pass_a, or old pass directories were accessed. No other pass was exposed during coding.",
+  "locked": true,
+  "lock_mode": "0444"
+}
