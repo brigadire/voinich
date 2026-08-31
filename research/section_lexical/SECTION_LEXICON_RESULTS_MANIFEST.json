@@ -1,0 +1,67 @@
+{
+  "analysis": "section-specific-lexical",
+  "version": "1.0.0",
+  "seed": 20260831,
+  "thresholds": [
+    [
+      2,
+      2
+    ],
+    [
+      3,
+      2
+    ],
+    [
+      5,
+      3
+    ],
+    [
+      10,
+      3
+    ]
+  ],
+  "inputs_frozen": true,
+  "inputs": {
+    "experiments/fingerprint-v2-task79-v1/canonical-out/occurrence_metadata.jsonl": "ba0342e15d8c468ec4e9f741e97cdb4a11938fe1f0ae3ac4338b73aaf1bd773a",
+    "data/ZL3b-n.txt": "bf5b6d4ac1e3a51b1847a9c388318d609020441ccd56984c901c32b09beccafc",
+    "research/visual_context/VISUAL_CONTEXT_TAXONOMY.tsv": "ac4b3a7c4f95a7154a793c6b79743e759a6505d266d99f77ad6712fa089de6cb",
+    "research/visual_context/VISUAL_CONTEXT_PAGE_FINGERPRINTS.tsv": "38768c974a85eb541295edbb18b2ad047c18778e052ac8e791a5f999b6e4449d",
+    "research/section-lexical/main.py": "37647d30d0ea1f33201e1be2ffe486c6eec044e8db38bd142d52688de792cb15",
+    "research/section_lexical/SECTION_LEXICON_EXPERIMENT_PROTOCOL.md": "e6f4408d2168ad5f529e8b4c1e412fc4b90df8069167a3af3adf370f4d971897"
+  },
+  "outputs": [
+    "SECTION_EXCLUSIVE_TOKENS.tsv",
+    "SECTION_LEXICAL_DISTANCES.tsv",
+    "SECTION_LEXICON_CLASSIFICATION.tsv",
+    "SECTION_LEXICON_CONFOUNDER_ANALYSIS.tsv",
+    "SECTION_LEXICON_CORPUS_SUMMARY.tsv",
+    "SECTION_LEXICON_EXISTING_EVIDENCE_AUDIT.md",
+    "SECTION_LEXICON_EXPERIMENT_PROTOCOL.md",
+    "SECTION_LEXICON_INPUT_MANIFEST.json",
+    "SECTION_LEXICON_MUTUAL_INFORMATION.tsv",
+    "SECTION_LEXICON_PAGE_REGISTRY.tsv",
+    "SECTION_LEXICON_PAIRWISE.tsv",
+    "SECTION_LEXICON_RAREFACTION.tsv",
+    "SECTION_LEXICON_REPLICATION.tsv",
+    "SECTION_LEXICON_REPORT.md",
+    "SECTION_LEXICON_REPRODUCIBILITY_REPORT.md",
+    "SECTION_LEXICON_RESULTS_MANIFEST.json",
+    "SECTION_TOKEN_ENRICHMENT.tsv",
+    "test_main.py"
+  ],
+  "status": {
+    "SECTION_LEXICON_INPUTS_FROZEN": true,
+    "SECTION_LEXICON_PROTOCOL_FROZEN": true,
+    "SECTION_LEXICON_PRODUCTION_RUN_EXECUTED": true,
+    "SECTION_LEXICON_PRODUCTION_RUN_VALID": true,
+    "SECTION_LEXICON_REPRODUCIBLE": true,
+    "V1_OUTCOMES_USED_FOR_FEATURE_SELECTION": false,
+    "STRUCTURE_MODEL_UPDATED": false,
+    "STRUCTURE_PUBLICATION_UPDATE_PREPARED": false
+  },
+  "decision": {
+    "SECTION_LEXICAL_MODEL": "L2_DISTRIBUTIONAL_SPECIALIZATION",
+    "SECTION_EXCLUSIVE_VOCABULARY": "LIMITED",
+    "SECTION_ENRICHED_VOCABULARY": "STRONG"
+  }
+}

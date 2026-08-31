@@ -1,0 +1,3 @@
+# Existing lexical evidence audit
+
+`FINGERPRINT_V2_COVERAGE.tsv`, `F2_METRIC_REGISTRY_FINAL.tsv`, `F2_STABILITY_FINAL.tsv`, and Task79/Task79c reports are structural fingerprint evidence, not direct section-exclusive token tests: **INDIRECTLY_RELEVANT**. The frozen `VISUAL_CONTEXT_PAGE_FINGERPRINTS.tsv`, taxonomy, and Level-B section outputs are **INDIRECTLY_RELEVANT** for section labels and confounder controls. Occurrence metadata and transcription alignment are **DIRECT_LEXICAL_SECTION_EVIDENCE** inputs for the present exact-token analysis. Existing Currier, hand, quire, and position diagnostics are **CONFOUNDER_CONTROL**. No previous mutual-information or lexical section result was copied as a present result.

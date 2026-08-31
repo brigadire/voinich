@@ -1,0 +1,5 @@
+# Section-specific lexical protocol
+
+Primary unit is the exact frozen token string from Task79 occurrence metadata. Broad sections come only from the pre-existing visual taxonomy; no section label is inferred from tokens. Thresholds are fixed at (occurrences, physical leaves) = (2,2), (3,2), (5,3), (10,3). Enrichment uses smoothed log-odds with count-based normal approximation and Benjamini–Hochberg correction. Split-half replication assigns physical leaves deterministically by SHA-256 parity. Rarefaction samples pages, not tokens, at the smallest section page target with seeds 11, 22, and 33.
+
+Distributional diagnostics are Jensen–Shannon divergence, weighted Jaccard, and token–section mutual information with 1,000 page-block label permutations (`seed=20260831`). Classification is a predeclared multinomial Naive Bayes diagnostic with leave-one-quire-out intent; unavailable quire-held-out implementation is reported as non-identifiable rather than replaced post hoc. Confounders are retained as diagnostics. No semantic normalization, stemming, phonetic merging, or textual outcome selection is performed.
