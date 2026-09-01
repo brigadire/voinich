@@ -1,0 +1,68 @@
+experiment_id: astro-token-formation-m1-v1
+freeze_date: 2026-09-01
+seed: 20260901
+inputs:
+  term_corpus: ASTRO_TERM_CORPUS.tsv
+  split: ASTRO_LABEL_TRAIN_TEST_SPLIT.tsv
+  m0_rule_space: TOKEN_FORMATION_RULE_SPACE.md
+  m0_models: TOKEN_FORMATION_MODELS.tsv
+  occurrence_metadata: experiments/fingerprint-v2-task79-v1/canonical-out/occurrence_metadata.jsonl
+corpus_extension: NONE
+source_segmentation: GREEDY_LONGEST_PRIORITY
+target_segmentation: GREEDY_LONGEST_PRIORITY
+mapping:
+  output_lengths: [1, 2]
+  allow_many_to_one: true
+  allow_one_to_many: true
+  allow_deletion: false
+  allow_insertion: false
+  positional_rules: NONE
+preprocessing:
+  lexical_selector: [FULL_JOIN, DROP_AL, HEAD, TAIL]
+  case_ending: [KEEP, STRIP_LATIN]
+  orthography: [IDENTITY, IJ_UV, ARABIC_LATIN, VELAR_COLLAPSE]
+  vowel_rule: [KEEP, DELETE_FINAL, COLLAPSE_A, CONTRACT_INTERNAL]
+  abbreviation: [NONE, SUSPEND_1, SUSPEND_2, PREFIX_3, PREFIX_4]
+search:
+  algorithm: DETERMINISTIC_COMPATIBILITY_BEAM_V1
+  beam_width_per_pipeline: 64
+  finalist_states_per_pipeline: 4
+  deduplicate_equivalent_preprocessed_corpora: true
+  ranking: COVERAGE_THEN_REGULARIZED_SCORE_THEN_SIGNATURE
+  exact_search_claimed: false
+  retained_models: 25
+scoring:
+  train_coverage_weight: 1.0
+  mapping_count_penalty: 0.010
+  one_to_two_penalty: 0.005
+  source_digraph_penalty: 0.005
+  many_to_one_excess_penalty: 0.005
+  preprocessing_complexity_penalty: 0.010
+  ambiguity_excess_penalty: 0.005
+bands:
+  strong:
+    train_coverage_min: 0.70
+    heldout_coverage_min: 0.50
+    null_advantage_min: 0.10
+    empirical_p_max: 0.05
+    mapping_size_max: 18
+    total_complexity_max: 25
+  partial:
+    train_coverage_min: 0.40
+    heldout_coverage_min: 0.30
+    null_advantage_min: 0.05
+    empirical_p_max: 0.10
+    mapping_size_max: 16
+    total_complexity_max: 22
+  predictive:
+    heldout_coverage_min: 0.6666666667
+    require_both_heldout_classes: true
+null:
+  controls: [RANDOM_VOYNICH_SET, SHUFFLED_TERMS, PSEUDODICTIONARY]
+  replicates_per_control: 100
+  statistic: MAXIMUM_REGULARIZED_SCORE_OVER_COMPLETE_BOUNDED_M1_SEARCH
+  coverage_statistic: MAXIMUM_TRAIN_COVERAGE_OVER_COMPLETE_BOUNDED_M1_SEARCH
+assignment:
+  matching: ANONYMOUS_ONE_TO_ONE_WITHIN_CLASS
+  equivalent_edges: FORCED_EDGE_MAXIMUM_MATCHING_TEST
+  multiplicity_count_cap: 1000000000

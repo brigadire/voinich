@@ -76,6 +76,23 @@ The audited IVTT v2.4 returns status `3` after a successful conversion; the
 bootstrap accepts only status `0` or `3` and still requires the exact expected
 output SHA-256, so a nonconforming result cannot pass silently.
 
+## Stolfi labels and titles inventory
+
+- **Purpose:** independent label-status checks, including cross-section reuse
+  of token forms identified as Astronomical labels.
+- **Identity:** Jorge Stolfi, `labtit-98-07-20.idx`, the machine-readable
+  release linked from *A large list of labels and titles* (last edited
+  1998-07-20).
+- **Authoritative source:**
+  `https://www.ic.unicamp.br/~stolfi/EXPORT/voynich/98-02-01-lotsa-labels/labtit-98-07-20.idx`.
+- **Acquire:** download the file yourself and place it at
+  `data/stolfi-labtit-98-07-20.idx`.
+- **Source SHA-256:**
+  `cb210aaa75dfd2e9d86e63fd4cff1684acdfc2669bd6a6f9969f4e6bfe10071c`;
+  91,861 bytes; 1,485 pipe-delimited records; Latin-1/ASCII-compatible text.
+- **Redistribution:** `EXTERNAL_NOT_REDISTRIBUTED`; the source is locally
+  acquired and ignored because redistribution terms were not established.
+
 ## Bundled controls
 
 `data_test/pg2097-2.txt` (Doyle, Project Gutenberg; SHA-256

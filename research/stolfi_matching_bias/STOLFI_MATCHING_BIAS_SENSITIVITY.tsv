@@ -1,0 +1,7 @@
+analysis_type	scenario	potential_added_token_occurrences	hapax_count_or_expectation	total_occurrences	hapax_fraction	conditioned_background_fraction	difference	enrichment_ratio	direction	notes
+UNMATCHED_BOUND	PESSIMISTIC_ALL_NON_HAPAX	77	0.000000000	189	0.423280423	0.603673298	-0.180392875	0.701174666	NON_POSITIVE	all potential unmatched token occurrences assigned non-hapax
+UNMATCHED_BOUND	OPTIMISTIC_ALL_HAPAX	77	77.000000000	189	0.830687831	0.603673298	0.227014533	1.376055282	POSITIVE	all potential unmatched token occurrences assigned hapax
+UNMATCHED_BOUND	PANEL_FAMILY_BACKGROUND_IMPUTATION	77	45.693929788	189	0.665047248	0.603673298	0.061373949	1.101667491	POSITIVE	within each panel/family cell, use that panel's full-corpus hapax rate; no label outcome used
+CONFIRMED_SUBSET	HIGH_COVERAGE_SERIES	0	50	68	0.735294118	0.631241176	0.104052941	1.164838647	POSITIVE	p_upper=0.026297370; panel.group series with >=80% physical-coordinate coverage: f67r1.S,f67r2.L,f68r1.S,f68r2.S
+CONFIRMED_SUBSET	WITHOUT_F68V2	0	72	99	0.727272727	0.614942424	0.112330303	1.182668000	POSITIVE	p_upper=0.006699330; confirmed labels excluding f68v2
+CONFIRMED_SUBSET	STAR_SUBSET	0	46	54	0.851851852	0.690924074	0.160927778	1.232916733	POSITIVE	p_upper=0.001899810; confirmed STAR label token occurrences
