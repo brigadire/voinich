@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html>
+<head>
+	  <meta name="robots" content="index,follow" /> 
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link rel="stylesheet" type="text/css" href="css/styles.css">
+	<link rel="stylesheet" type="text/css" href="css/print.css" media="print">
+	<!-- ######################## Hier CMG-Zählung als Titel eintragen -->
+	<title>Pedanii Dioscuridis Anazarbei De materia medica</title>	
+	 <!-- Matomo -->
+	<script type="text/javascript">
+          var _paq = window._paq || [];
+          /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+        _paq.push(["setVisitorCookieTimeout", "604800"]);
+        _paq.push(["setSessionCookieTimeout", "0"]);
+        _paq.push(['trackPageView']);
+        _paq.push(['enableLinkTracking']);
+        (function() {
+          var u="https://piwik.bbaw.de/";
+          _paq.push(['setTrackerUrl', u+'matomo.php']);
+          _paq.push(['setSiteId', '60']);
+          var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+          g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+        })();
+    </script>
+	  <noscript><img src="https://piwik.bbaw.de/matomo.php?idsite=60&amp;rec=1" style="border:0;" alt="" /></noscript>
+	  <!-- End Matomo Code -->
+</head>
+<body>
+
+		<div id="header">
+		<ul id="nav2">
+			
+			<li><a href="/kontakt" id="linkKontakt" title="Kontakt">Kontakt</a></li>
+			<li><a href="/impressum" id="linkImpressum" title="Impressum">Impressum</a></li>
+			<li><a href="/datenschutz" id="linkDatenschutz" title="Datenschutz">Datenschutz</a></li>
+		</ul>
+		<div id="header-text">
+		<!--<h1>Testversion - Diglib-Bilder direkt aufrufen</h1>-->
+			<h1>
+				<a href="wa_dioscurides_mat_med_lib_1_2.php">
+				<!-- ################# Hier Angabe zu Text, Band etc. gem. Muster:-->
+				<!-- ################# Hippocratis De aere aquis locis, <br>edidit et in linguam Germanicam vertit H. Diller, <br>CMG I 1,2, editio altera lucis ope expressa, Berlin 1999-->							 
+				Pedanii Dioscuridis Anazarbei De materia medica, <br>hrsg.&nbsp;v. M.&nbsp;Wellmann, Bd.&nbsp;I: Libri I et II, Berlin 1907				</a>
+			</h1>
+		</div>
+		<a href="http://cmg.bbaw.de" id="logo-cmg"><img src="images/logo-cmg.gif" width="190" height="82" title="Zur Startseite des CMG" alt="Corpus Medicorum Graecorum/Latinorum"></a>
+		<a href="http://www.bbaw.de" id="logo-bbaw"><img src="images/logo-bbaw.svg" width="200" height="90" title="Zur Startseite der BBAW" alt="Berlin-Brandenburgische Akademie der Wissenschaften"></a>
+	</div>
+	<p id="aktuelleURL"></p>
+	
+	<ul id="navigation" class="navbar">
+				<li class="menu-haupt icon">
+			<img src="images/hide.png" id="seitenkopf-umschalter" alt="" width="16" height="16" title="Seitenkopf verbergen/anzeigen">
+		</li>
+		<li class="menu-haupt">
+			<ul id="editionen" class="dropdown">
+				<li class="firstchild">
+					Editionen online
+					<ul>
+						<li class="trenner"><a href="editionen.html">Übersicht</a></li> 
+						<li class="trenner"><a href="#nogo">Konkordanzen</a>
+							<ul>
+								<li><a href="kuehn.php">Kühn-Konkordanz (Galen)</a></li>
+								<li><a href="littre.php">Littré-Konkordanz (Hippokrates)</a></li>
+							</ul>
+						</li>
+						
+						<li><a href="#nogo">CMG</a>
+							<ul>
+								<li><a href="#nogo">I Hippocrates</a>
+									<ul>
+										<li><a href="cmg_01_01.php">I 1</a>
+											<ul>
+												<li><a href="cmg_01_01.php?p=13">Ind.</a></li>
+												<li><a href="cmg_01_01.php?p=16">Jus</a></li>
+												<li><a href="cmg_01_01.php?p=19">Lex</a></li>
+												<li><a href="cmg_01_01.php?p=21">de Arte</a></li>
+												<li><a href="cmg_01_01.php?p=32">Medic.</a></li>
+												<li><a href="cmg_01_01.php?p=37">Decent.</a></li>
+												<li><a href="cmg_01_01.php?p=42">Praec.</a></li>
+												<li><a href="cmg_01_01.php?p=48">Vet.Med.</a></li>
+												<li><a href="cmg_01_01.php?p=68">Aër.</a></li>
+												<li><a href="cmg_01_01.php?p=91">Alim.</a></li>
+												<li><a href="cmg_01_01.php?p=97">Liqu.</a></li>
+												<li><a href="cmg_01_01.php?p=103">Flat.</a></li> 
+											</ul>
+										</li>
+										<li><a href="cmg_01_01_02.php">I 1,2 Aër.</a></li>
+										<li><a href="cmg_01_01_03.php">I 1,3 Nat.Hom.</a></li> 
+										<li><a href="cmg_01_02_01.php">I 2,1</a>
+											<ul>
+												<li><a href="cmg_01_02_01.php?p=78">Oct.</a></li>
+												<li><a href="cmg_01_02_01.php?p=122">Septim.(Sp.)</a></li>
+											</ul>
+										</li>
+										<li><a href="cmg_01_02_02.php">I 2,2 Superf.</a></li>
+										<li><a href="cmg_01_02_03.php">I 2,3 Morb.</a></li>
+										<li><a href="cmg_01_02_04.php">I 2,4 Salubr.</a></li>
+										<li><a href="cmg_01_03_01.php">I 3,1 Hum.</a></li>
+										<li><a href="cmg_01_04_01.php">I 4,1 Vuln.Cap.</a></li>
+									</ul>
+								</li>
+								
+								<li><a href="cmg_02.php">II Aretaeus</a></li>
+								
+								<li><a href="#nogo">III Rufus</a>
+									<ul>
+										<li><a href="cmg_03_01.php">III 1 Ren.Ves.</a></li> 
+									</ul>
+								</li>
+								
+								<li><a href="cmg_04.php">IV Soranus</a>
+									<ul>
+										<li><a href="cmg_04.php?p=25">Gyn.</a></li>
+										<li><a href="cmg_04.php?p=177">S.Fract.</a></li>
+										<li><a href="cmg_04.php?p=181">Fasc.</a></li>
+										<li><a href="cmg_04.php?p=197">Vit.Hipp.</a></li>
+									</ul>
+								</li>
+								
+								<li><a href="#nogo">V Galenus</a>
+									<ul>
+										<li><a href="cmg_05_01_01.php">V 1,1</a>
+											<ul>
+												<li><a href="cmg_05_01_01.php?p=92">Opt.Doc.</a></li>
+												<li><a href="cmg_05_01_01.php?p=114">Protr.</a></li>
+											</ul>
+										</li>
+										<li><a href="cmg_05_01_02.php">V 1,2 Hipp.Elem.</a></li>
+										<li><a href="cmg_05_01_03.php">V 1,3 Const.Art.Med.</a></li>
+										<li><a href="cmg_05_02_01.php">V 2,1 Ut.Diss.</a></li>
+										<li><a href="cmg_05_03_01.php">V 3,1 Sem.</a></li>
+										<li><a href="cmg_05_03_02.php">V 3,2 Prop.Plac.</a></li>
+										<li><a href="cmg_05_03_03.php">V 3,3 Foet.Form.</a></li>
+										<li><a href="cmg_05_04_01_01.php">V 4,1,1</a>
+											<ul>
+												<li><a href="cmg_05_04_01_01.php?p=19">Aff.Dig.</a></li>
+												<li><a href="cmg_05_04_01_01.php?p=57">Pecc.Dig.</a></li>
+												<li><a href="cmg_05_04_01_01.php?p=87">At.Bil.</a></li>
+											</ul>
+										</li>
+										<li><a href="cmg_05_04_01_02.php">V 4,1,2 Plac.Hipp.Plat.</a></li>
+										<li><a href="cmg_05_04_02.php">V 4,2 </a>
+											<ul>
+												<li><a href="cmg_05_04_02.php?p=67">San.Tu.</a></li>
+												<li><a href="cmg_05_04_02.php?p=265">Alim.Fac.</a></li>
+												<li><a href="cmg_05_04_02.php?p=453">Bon.Mal.Suc.</a></li>
+												<li><a href="cmg_05_04_02.php?p=497">Vict.At.</a></li>
+												<li><a href="cmg_05_04_02.php?p=519">Ptis.</a></li>
+											</ul> 
+										</li> 
+										<li><a href="cmg_05_05_01.php">V 5,1 Sympt.Diff.</a></li>
+										<li><a href="cmg_05_06_01_01.php">V 6,1,1 Loc.Aff. I-II</a></li>
+										<li><a href="cmg_05_06_01_03.php">V 6,1,3 Loc.Aff. V-VI</a></li>
+										<li><a href="cmg_05_08_01.php">V 8,1 Praen.</a></li>
+										<li><a href="cmg_05_09_01.php">V 9,1</a>
+											<ul>
+												<li><a href="cmg_05_09_01.php?p=51">Hipp.Nat.Hom.</a></li>
+												<li><a href="cmg_05_09_01.php?p=165">Hipp.Vict.Acut.</a></li>
+												<li><a href="cmg_05_09_01.php?p=417">Hipp.Morb.Acut.</a></li>
+											</ul>
+										</li>
+										<li><a href="cmg_05_09_02.php">V 9,2</a>
+											<ul>
+												<li><a href="cmg_05_09_02.php?p=37">Hipp.Prorrh.</a></li>
+												<li><a href="cmg_05_09_02.php?p=215">Com.Hipp.</a></li>
+												<li><a href="cmg_05_09_02.php?p=231">Hipp.Prog.</a></li>
+											</ul>
+										</li>
+										<li><a href="cmg_05_10_01.php">V 10,1 Hipp.Epid. I. II</a></li>
+										<li><a href="cmg_05_10_02_01.php">V 10,2,1 Hipp.Epid. III</a></li>
+										<li><a href="cmg_05_10_02_02.php">V 10,2,2 Hipp.Epid. VI</a></li>
+										<li><a href="cmg_05_10_02_03.php">V 10,2,3 Hipp.Epid.Ind.</a></li>
+										<li><a href="cmg_05_10_02_04.php">V 10,2,4</a>
+											<ul>
+												<li><a href="cmg_05_10_02_04.php?p=9">Hipp.Epid.Ind.arab.</a></li>
+												<li><a href="cmg_05_10_02_04.php?p=121">Hipp.Epid. II (Sim.)</a></li>
+											</ul>
+										</li>
+										<li><a href="cmg_05_10_03.php">V 10,3</a>
+											<ul>
+												<li><a href="cmg_05_10_03.php?p=45">Adv.Lyc.</a></li>
+												<li><a href="cmg_05_10_03.php?p=75">Adv.Jul.</a></li>
+											</ul>
+										</li>
+										<li><a href="cmg_05_12_06.php">V 12,6 In Aph. VI</a></li>
+											
+										<li><a href="cmg_05_13_01.php">V 13,1 Voc.Hipp.</a></li>
+
+										<li><a href="cmg_05_13_02.php">V 13,2 [Gal.] Def.Med.</a></li>
+									</ul>
+								</li>
+								
+								<li><a href="#nogo">VI Oribasius</a>
+									<ul>
+										<li><a href="cmg_06_01_01.php">VI 1,1 Coll.Med. 1-8</a></li>
+										<li><a href="cmg_06_01_02.php">VI 1,2 Coll.Med. 9-16</a></li>
+										<li><a href="cmg_06_02_01.php">VI 2,1 Coll. Med. 24-25. 43-48</a></li>
+										<li><a href="cmg_06_02_02.php">VI 2,2 Coll.Med. 49-50, Inc., Ecl.</a></li> 
+										<li>
+											<a href="cmg_06_03.php">VI 3</a>
+											<ul>
+												<li><a href="cmg_06_03.php?p=13">Syn.</a></li>
+												<li><a href="cmg_06_03.php?p=327">Eun.</a></li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+								
+								<li><a href="#nogo">VIII Aëtius</a>
+									<ul>
+										<li><a href="cmg_08_01.php">VIII 1 L.Med. I-IV</a></li>
+										<li><a href="cmg_08_02.php">VIII 2 L.Med. V-VIII</a></li>
+									</ul>
+								</li>
+								
+								<li><a href="#nogo">IX Paulus Aegineta</a>
+									<ul>
+										<li><a href="cmg_09_01.php">IX 1 L. I-IV</a></li>
+										<li><a href="cmg_09_02.php">IX 2 L. V-VIII</a></li>
+									</ul>
+								</li>
+								
+								<li><a href="#nogo">X Med.Min.</a>
+									<ul>
+										<li><a href="cmg_10_01_01.php">X 1,1 Philumenus Ven.</a></li>
+										<li><a href="cmg_10_04.php">X 4 Leo Nat.Hom.Syn.</a></li>
+									</ul>
+								</li>
+								
+								<li><a href="#nogo">XI Comm.Min.</a>
+									<ul>
+										<li><a href="cmg_11_01_01.php">XI 1,1 Apollon.Cit. Hipp.Art.</a></li>
+										<li><a href="cmg_11_01_02.php">XI 1,2 Steph.Phil. Hipp.Progn.</a></li>
+										<li><a href="cmg_11_01_03_01.php">XI 1,3,1 Steph.Ath. Hipp.Aph. I-II</a></li>
+										<li><a href="cmg_11_01_03_02.php">XI 1,3,2 Steph.Ath. Hipp.Aph. III-IV</a></li>
+										<li><a href="cmg_11_01_03_03.php">XI 1,3,3 Steph.Ath. Hipp.Aph. V-VI</a></li>
+										<li><a href="cmg_11_01_04.php">XI 1,4</a>
+											<ul>
+												<li><a href="cmg_11_01_04.php?p=28">Jo.Alex. Hipp.Epid. VI frg.</a></li>
+												<li><a href="cmg_11_01_04.php?p=122">Anon. Hipp.Epid. VI frg.</a></li>
+												<li><a href="cmg_11_01_04.php?p=130">Jo.Alex. Hipp.Nat.Puer.</a></li>
+											</ul>
+										</li>
+										<li><a href="cmg_11_02_01.php">XI 2,1 [Galen] Hipp.Septim.</a></li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+
+						<li><a href="#nogo">Suppl.</a>
+							<ul>
+								<li><a href="suppl_01.php">I Galen Plat.Tim.</a></li>
+								<li><a href="suppl_02.php">II Galen Caus.Proc.</a></li>
+								<li><a href="suppl_03.php">III Galen Cons.</a></li>
+								<li><a href="suppl_04.php">IV Rufus Quest.Med.</a></li>
+								<li><a href="suppl_05.php">V Galen Inst.Od.</a></li>
+								<li><a href="suppl_06.php">VI Kollesch Kl.Schr.</a></li>
+							</ul>
+						</li>
+
+						<li><a href="#nogo">Suppl. Or.</a>
+							<ul>
+								<li><a href="suppl_or_01.php">I Galen Hipp.Off.Med.</a></li> 
+								<li><a href="suppl_or_02.php">II Galen</a>
+									<ul>
+										<li><a href="suppl_or_02.php?p=24">Part.Art.Med. (arab.)</a></li>
+										<li><a href="suppl_or_02.php?p=52">Caus.Cont. (arab.)</a></li>
+										<li><a href="suppl_or_02.php?p=76">Di.Hipp.Morb.Ac. (arab.)</a></li>
+										<li><a href="suppl_or_02.php?p=119">Part.Art.Med. (lat.)</a></li>
+										<li><a href="suppl_or_02.php?p=133">Caus.Cont. (lat.)</a></li>
+									</ul>
+								</li>
+								<li><a href="suppl_or_03.php">III Galen Part.Hom.Diff.</a></li>
+								<li><a href="suppl_or_04.php">IV Galen Opt.Med.Cogn.</a></li>
+								<li><a href="suppl_or_05_01.php">V 1 Galen Hipp.Epid. I</a></li>
+								<li><a href="suppl_or_05_02.php">V 2 Galen Hipp.Epid. II</a></li>
+								<li><a href="suppl_or_05_03.php">V 3 Galen Hipp.Epid. VI</a></li>
+							</ul>
+						</li>
+
+						<li><a href="#nogo">CML</a>
+							<ul>
+								<li><a href="cml_01.php">I Celsus</a></li>
+								<li><a href="cml_02_01.php">II 1 Scribonius Largus Comp.</a></li>
+								<li><a href="cml_02_03.php">II 3 Q.Serenus L.Med.</a></li>
+								<li><a href="cml_03.php">III Plin.Sec. Med.L. III</a></li>
+								<li><a href="cml_04.php">IV</a>
+									<ul>
+										<li><a href="cml_04.php?p=29">Ant.Mus. Herb.Vett.</a></li>
+										<li><a href="cml_04.php?p=41">Ps.Apul. Herb.</a></li>
+										<li><a href="cml_04.php?p=255">Anon. Tax.</a></li>
+										<li><a href="cml_04.php?p=261">Sex.Plac. L.Med.An.</a></li>
+									</ul>
+								</li>
+								<li><a href="cml_05.php?p=2">V Marcellus Medicam.</a></li>
+								<li><a href="cml_06_01.php?p=2">VI Cael.Aurel.</a>
+									<ul>
+										<li><a href="cml_06_01.php?p=20">Cel.Pass.</a></li>
+										<li><a href="cml_06_01.php?p=426">Tard.Pass.</a></li>
+									</ul>
+								</li>
+								<li><a href="cml_08_01.php">VIII Anthimus Observ.Cib.</a></li>
+							</ul>
+						</li>
+
+						<li class="trenner"><a href="#nogo">Weitere Ausgaben</a>
+						  <ul>
+						      <li><a href="#nogo">Texte</a>
+							<ul>
+							     <li><a href="#nogo">Aetius Amidenus</a>
+							         <ul>
+									               <li><a href="wa_Athena_23_1911.php">Aetii Amideni Liber medicinalis IX, hrsg. v. S. Zervos, Athena 23 (1911), S. 265-392</a></li>
+									               <li><a href="wa_Aetios_Logos_12.php">Aetii Amideni Liber medicinalis XII, hrsg. v. G. A. Kostomoires, Paris 1892</a></li>
+									               <li><a href="wa_Athena_18_1905.php">Aetii Amideni Liber medicinalis XIII, hrsg. v. S. Zervos, Athena 18 (1905), S. 241-302 (S. 273-276 Zählung übersprungen)</a></li>
+										<li><a href="wa_Athena_21_1909.php">Aetii Amideni Liber medicinalis XV, hrsg. v. S. Zervos, Athena 21 (1909), S. 3-144</a></li>
+										<li><a href="wa_Aetios_Logos_16.php">Aetii Amideni Liber medicinalis XVI, hrsg. v. S. Zervos, Leipzig 1901</a></li>
+								</ul>
+							     </li>
+							     <li><a href="#nogo">Alexander Trallianus</a>
+							         <ul>
+									               <li><a href="wa_Alex_Trall_Puschmann_01.php">Alexander von Tralles, ed. Th. Puschmann, Bd. I, Wien 1878</a></li>
+									               <li><a href="wa_Alex_Trall_Puschmann_02.php">Alexander von Tralles, ed. Th. Puschmann, Bd. II, Wien 1879</a></li>									               
+								</ul>
+							     </li>
+							     <li><a href="wa_anon_lond.php">Anon. Lond. (Diels)</a></li>
+							     <li><a href="wa_dioscurides_mat_med_lib_5_crat_sext_nig_simpl.php?p=145">Crateuas Fr. (Wellm.)</a></li>
+							     <li><a href="#nogo">Dioscurides</a>
+							         <ul>
+										<li><a href="wa_dioscurides_mat_med_lib_1_2.php">Mat. Med. Lib. I-II (Wellm.)</a></li>
+										<li><a href="wa_dioscurides_mat_med_lib_3_4.php">Mat. Med. Lib. III-IV (Wellm.)</a></li>
+										<li><a href="wa_dioscurides_mat_med_lib_5_crat_sext_nig_simpl.php">Mat. Med. Lib. V (Wellm.)</a></li>
+										<li><a href="wa_dioscurides_mat_med_lib_5_crat_sext_nig_simpl.php?p=157">Simpl. (Wellm.)</a></li>
+								</ul>
+							     </li>
+							     <li><a href="publiweitereausgaben_galen.html">Galenus</a>
+									<!--<ul>
+										<li><a href="wa_galen_an_ut.php">An. Ut. (Wagner)</a></li>
+										<li><a href="wa_simon_anatomie_bd_1.php">Anat. Admin. (Simon, Bd. I)</a></li>
+										<li><a href="wa_simon_gal_sieben_buecher_anatom.php">Anat. Admin. (Simon, Bd. II)</a></li>
+										<li><a href="wa_galen_art_sang.php">Art. Sang. (Albr.)</a></li>
+										<li><a href="wa_galen_opt_corp_const.php?p=16">Bon. Hab. (Helmr.)</a></li>
+										<li><a href="wa_galen_capt_dict.php">Capt. Dict. (Gabler)</a></li>
+										<li><a href="wa_dietz_gal_dissec_musc.php">Consuet. (Dietz)</a></li>
+										<li><a href="wa_mueller_ueber_galens_werk_vom_wiss_Beweis.php">Demonstr. (Müller)</a></li>
+										<li><a href="wa_minor_gal_diff_resp.php">Diff.Resp. (Minor)</a></li>
+										<li><a href="wa_dietz_gal_dissec_musc.php">Dissect. Musc. (Dietz)</a></li>
+										<li><a href="wa_galen_hist_phil.php">Hist. Phil. (Diels)</a></li>
+										<li><a href="wa_galen_inst_log.php">Inst. Log. (Kalbfl.)</a></li>												
+										<li><a href="wa_gal_medizin_namen.php">Nom. Med. (Meyerhof-Schacht)</a></li>
+										<li><a href="wa_galen_opt_corp_const.php">Opt. Corp. Const. (Helmr.)</a></li>
+										<li><a href="wa_galen_part_phil.php">Part. Phil. (Wellm.)</a></li>
+										<li><a href="wa_galen_parv_pil.php">Parv. Pil. (Schaefer)</a></li>
+										<li><a href="wa_galen_qual_inc.php">Qual. Inc. (Westenb.)</a></li>
+										<li><a href="wa_gossen_gal_synops_puls.php">Syn.Puls. (Gossen)</a></li>										
+										<li><a href="wa_galen_temp_kalb.php">Temp. (Kalbfl.)</a></li>
+										<li><a href="wa_galen_temp.php">Temp. (Helmr.)</a></li>
+										<li><a href="wa_galen_usu_part_1.php">Usu Part. I (Helmr.)</a></li>
+										<li><a href="wa_galen_usu_part_2.php">Usu Part. II (Helmr.)</a></li>
+										<li><a href="wa_galen_ut_resp.php">Ut. Resp. (Noll)</a></li>
+										<li><a href="wa_galen_vict_att.php">Vict. Att. (Kalbfl.)</a></li>										
+										<li><a href="wa_galen_scripta_min_1.php">Scripta min. I (Marqu.)</a>
+											<ul>
+												<li><a href="wa_galen_scripta_min_1.php?p=67">Anim. Pass.</a></li>
+												<li><a href="wa_galen_scripta_min_1.php?p=148">Opt. Doc.</a></li>
+												<li><a href="wa_galen_scripta_min_1.php?p=159">Parv. Pil.</a></li>
+												<li><a href="wa_galen_scripta_min_1.php?p=169">Protr.</a></li>
+											</ul>
+										</li>
+										<li><a href="wa_galen_scripta_min_2.php">Scripta min. II (Müller)</a>
+											<ul>
+												<li><a href="wa_galen_scripta_min_2.php?p=95">Opt. Med.</a></li>
+												<li><a href="wa_galen_scripta_min_2.php?p=103">Consuet.</a></li>
+												<li><a href="wa_galen_scripta_min_2.php?p=126">QAM</a></li>
+												<li><a href="wa_galen_scripta_min_2.php?p=174">Ord. Lib. Prop.</a></li>
+												<li><a href="wa_galen_scripta_min_2.php?p=185">Lib. Prop.</a></li>
+											</ul>
+										</li>
+										<li><a href="wa_galen_scripta_min_3.php">Scripta min. III (Helmr.)</a>
+											<ul>
+												<li><a href="wa_galen_scripta_min_3.php?p=11">Sect. Int.</a></li>
+												<li><a href="wa_galen_scripta_min_3.php?p=43">Thrasyb.</a></li>
+												<li><a href="wa_galen_scripta_min_3.php?p=111">Nat. Fac.</a></li>
+											</ul>
+										</li>
+									</ul>-->
+								</li>
+								<li><a href="#nogo">Hippocrates</a>
+									<ul>
+										<li><a href="wa_hippocrates_op_1.php">Op. I (Kühlewein)</a>
+											<ul>
+												<li><a href="wa_hippocrates_op_1.php?p=135">Vet. Med.</a></li>
+												<li><a href="wa_hippocrates_op_1.php?p=167">Äer.</a></li>
+												<li><a href="wa_hippocrates_op_1.php?p=212">Prog.</a></li>
+												<li><a href="wa_hippocrates_op_1.php?p=243">Vict. Acut.</a></li>
+												<li><a href="wa_hippocrates_op_1.php?p=280">Vict. Acut. (Sp.)</a></li>
+												<li><a href="wa_hippocrates_op_1.php?p=314">Epid. I</a></li>
+												<li><a href="wa_hippocrates_op_1.php?p=349">Epid. II</a></li>
+											</ul>
+										</li>
+										<li><a href="wa_hippocrates_op_2.php">Op. II (Kühlewein)</a>
+											<ul>
+												<li><a href="wa_hippocrates_op_2.php?p=17">Vuln. Cap.</a></li>
+												<li><a href="wa_hippocrates_op_2.php?p=46">Off. Med.</a></li>
+												<li><a href="wa_hippocrates_op_2.php?p=62">Fract.</a></li>
+												<li><a href="wa_hippocrates_op_2.php?p=127">de Art.</a></li>
+												<li><a href="wa_hippocrates_op_2.php?p=261">Mochl.</a></li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+								<li><a href="wa_dioscurides_mat_med_lib_5_crat_sext_nig_simpl.php?p=152">Sext. Nig. Fr. (Wellm.)</a></li>
+								<li><a href="wa_prisc_eupor.php">Theod. Eupor. (Rose)</a></li>
+								<li><a href="wa_Physici_Medici_Graeci_Ideler_01.php">Physici et medici graeci I ed. Ideler</a></li>
+								<li><a href="wa_Physici_Medici_Graeci_Ideler_02.php">Physici et medici graeci II ed. Ideler</a></li>
+							</ul>
+						</li>
+					
+				<li><a href="#nogo">Übersetzungen</a>
+				    			<ul>							            
+								<li><a href="publiuebersetzungen.html">Galenus</a>
+									<!--<ul>
+										<li><a href="wu_Gal_allgemeineTherapie_Beek.php">Meth. Med. (Beek [Übers. I,5-9])</a></li>
+										<li><a href="wu_Gal_Therapie_Meyer.php">Meth. Med. (Meyer [Übers. II,1-4])</a></li>
+										<li><a href="wu_Gal_allgemeineTherapie_Carney.php">Meth. Med. (Carney [Übers. III,1-3])</a></li>
+										<li><a href="wu_Gal_WunduGeschwuersheilung_Glaser.php">Meth. Med. (Glaser [Übers. IV,1-3])</a></li>
+										<li><a href="wa_Gal_Fieberbehandlung_Voigt.php">Meth. Med. (Voigt [Übers. VII,1-4])</a></li>
+										<li><a href="wu_Gal_DiaetetPhysikTherapie_Beck.php">Meth. Med. (Beck [Übers. VII,5-9])</a></li>
+										<li><a href="wa_Gal_saefteverduennende_Diaet.php">Vict. Att. (Frieboes u. Kobert [Übers.])</a></li>
+									</ul>-->
+								</li>
+						        </ul>
+				<li><a href="publistudien.html">Studien</a>		
+						</li>
+					</ul>
+				</li>
+						
+				<!-- <li class="trenner"><a href="https://cmg.bbaw.de/startseite/arbeitsmittel/werkverzeichnisse/" target="_blank"> Werkverzeichnisse</a>-->
+				    
+				</li>
+						
+
+						<li class="trenner"><a href="#nogo">Hss. Kat. (Diels)</a>
+							<ul>
+								<li><a href="diels_01.php">Vorbemerkungen</a></li>
+								<li><a href="diels_02.php">Hippokrates und Galen</a></li>
+								<li><a href="diels_03.php">Übrige griech. Ärzte</a></li>
+								<li><a href="diels_04.php">Erster Nachtrag</a></li>
+							</ul>
+						</li>
+						
+						<li class="trenner"><a href="editionen_dfg-viewer.html">DFG-Viewer</a></li>
+						
+						<!-- BIBLIOGRAPHIEN<li><a href="#nogo">Bibliographien</a>
+							<ul>
+              <li><a href="online-publikationen/Hippokrates-Bibliographie.pdf" target="_blank">Hippokrates-Bibliographie (Fichtner)</a></li>
+              <li><a href="online-publikationen/Galen-Bibliographie.pdf" target="_blank">Galen-Bibliographie (Fichtner)</a></li>
+							</ul>
+						</li>ENDE BIBLIOGRPAPHIEN-->
+					</ul>
+				</li>
+			</ul>
+		</li>
+		<li class="menu-haupt">
+			<span class="nav-filler">&nbsp;&nbsp;&gt;&nbsp;&nbsp;</span>
+		</li>
+		<li class="menu-haupt">
+			<ul id="inhaltsverzeichnis" class="dropdown">
+				<li class="firstchild">
+					Dioscurides Mat.Med. Lib. I-II
+					<ul>
+					<!-- ################# Hier das Inhaltsverzeichnis nachbilden; Seiten stehen in () bzw. nach =-->
+						<li><a href="javascript:InhaltInFrame(1, true);">Tituli paginae</a></li>
+						<li><a href="javascript:InhaltInFrame(5, true);">Conspectus codicum</a></li>
+						<li><a href="javascript:InhaltInFrame(5, true);">Conspectus siglorum</a></li>
+						<li><a href="javascript:InhaltInFrame(7, true);">Textus</a>
+						<ul>
+						<li><a href="javascript:InhaltInFrame(7, true);">Lib.&nbsp;1</a></li>
+						<li><a href="javascript:InhaltInFrame(127, true);">Lib.&nbsp;2</a></li>
+						</ul>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+<!--Hier beginnt einheitliche Navigationsleiste-->
+				<li class="menu-haupt menu-gruppe">
+			<form name="Seitenzahlabfrage" onsubmit="return event.type=='click';" id="seitenzahlabfrage">					
+				<label for="seite">Seite:</label>
+				<input type="text" name="seite" id="seite" class="menu_a" size="11" maxlength="10" style="float: left;" title="Bitte lateinische oder arabische Seitenzahl eingeben"/>
+				<button id="seiteSubmit" name="OK" type="submit" title="Seite laden" value="OK" class="text">OK</button>
+			</form>
+		</li>
+		<li class="menu-haupt icon menu-gruppe"> <!--Zurück-->
+			<a title="10 Seiten zurück blättern" id="button10Zurueck"><img src="images/document-page-previous-10.png" alt=""/></a>
+		</li>
+		<li class="menu-haupt icon"> <!--Zurück-->
+			<a title="Zurück blättern" id="buttonZurueck"><img src="images/document-page-previous.png" alt=""/></a>
+		</li>
+		<li class="menu-haupt icon"> <!--Vor-->
+			<a title="Vorwärts blättern" id="buttonVor"><img src="images/document-page-next.png" alt=""/></a>
+		</li>
+		<li class="menu-haupt icon"> <!--Vor-->
+			<a title="10 Seiten vorwärts blättern" id="button10Vor"><img src="images/document-page-next-10.png" alt=""/></a>
+		</li>
+		<li class="menu-haupt icon menu-gruppe"> <!--Einseitig-->
+			<a title="Eine Seite anzeigen" id="buttonEinseitig"><img src="images/document.png" alt=""/></a>
+		</li>
+		<li class="menu-haupt icon"> <!--Zweiseitig-->
+			<a title="Zwei Seiten anzeigen" id="buttonZweiseitig"><img src="images/document-view.png" alt=""/></a>
+		</li>
+		<li class="menu-haupt icon menu-gruppe"> <!-- Addenda & Korrigenda -->
+			<a title="Addenda und Korrigenda anzeigen" id="buttonAddKorr"><img src="images/corrigenda_v1.png" alt=""/></a>
+		</li>
+		<li class="menu-haupt icon addKorr"> <!--Addenda Zurück-->
+			<a title="Zurück blättern" id="addKorr_buttonZurueck"><img src="images/document-corrigenda-previous.png" alt=""/></a>
+		</li>
+		<li class="menu-haupt icon addKorr"> <!--Addenda Vor-->
+			<a title="Vorwärts blättern" id="addKorr_buttonVor"><img src="images/document-corrigenda-next.png" alt=""/></a>
+		</li>
+		<li class="menu-haupt icon menu-gruppe"> <!--Vergrößern-->
+			<a title="Vergrößern" id="buttonZoomIn"><img src="images/magnifier-zoom-in.png" alt="" height="22" width="22"/></a>
+		</li>
+		<li class="menu-haupt icon"> <!--Verkleinern-->
+			<a title="Verkleinern" id="buttonZoomOut"><img src="images/magnifier-zoom-out.png" alt="" height="22" width="22"/></a>
+		</li>
+		<li class="menu-haupt icon"> <!--Einpassen-->
+			<a title="An Fenstergröße anpassen" id="buttonEinpassen"><img src="images/magnifier-zoom-fit.png" alt="" height="22" width="22"/></a>
+		</li>
+		<!--<li class="menu-haupt icon menu-gruppe">--> <!--Drucken-->
+			<!--<a title="Seite drucken" id="buttonPrint" rel="#printinfo"><img src="images/printer.png" alt=""/></a>
+		</li>-->		
+		<li class="menu-haupt icon menu-gruppe">
+			<a id="showOptions" title="Zusätzliche Tools anzeigen"><img src="images/plus.png" alt=""/></a>
+		</li>
+		<li class="menu-haupt icon markOpt"><!--Markierungen setzen (Toolbar)-->
+			<a id="setPoint" title="Punkt markieren"><img src="images/marker.png" alt=""/></a>
+		</li>
+		<li class="menu-haupt icon markOpt"> <!--Ausschnitt markieren-->
+			<a id="setSelection" title="Ausschnitt markieren"><img src="images/selection.png" alt=""/></a>
+		</li>
+		<li class="menu-haupt icon markOpt"> <!--Markierung löschen-->
+			<a id="deletePoint" title="Letzte Markierung entfernen"><img src="images/cross.png" alt=""/></a>
+		</li>
+		<li class="menu-haupt icon markOpt"> <!--Link zur Seite (Toolbar)-->
+			<a title="Link zu dieser Seite" id="buttonLinkbar"><img src="images/chain.png" alt=""/></a>
+		</li>		
+		
+		<li class="menu-haupt icon menu-gruppe"> <!--PDF-->
+			<a title="PDF aufrufen" id="buttonPrintPDF" ><img src="images/pdficon_small.png" alt=""/></a>
+		</li>
+			
+<!--link DFG-Viewer-->
+		<li class="menu-haupt iconpdf menu-gruppe">
+		<a href="http://dfg-viewer.de/show/?tx_dlf[page]=1&tx_dlf[id]=http%3A%2F%2Fcmg.bbaw.de%2Fepubl%2Fonline%2Fmets%2Fwa_dioscurides_mat_med_lib_1_2.xml&tx_dlf[double]=0&cHash=1" target="_blank" alt="DFG-Viewer" title="DFG-Viewer"><img src="images/ubhd_dfgviewer.gif" alt="DFG-Viewer"  width="16" height="16"/></a>
+		</li>
+				
+		<li class="menu-haupt icon menu-gruppe"><!--Hilfe-->
+			<a title="Hilfe" id="buttonHilfe" href="hilfe.html"><img src="images/question-white.png" alt=""/></a>
+		</li>
+	</ul>
+		<noscript>
+		<div id="javascript-warning">
+			<p>Ihr Browser unterstützt kein JavaScript oder Sie haben JavaScript deaktiviert.</p>
+			<p><strong>Für die korrekte Anzeige dieser Seite benötigen Sie einen Browser mit aktiver JavaScript-Unterstützung. Wir empfehlen <a href="http://getfirefox.com" title="Firefox herunterladen" style="text-decoration: underline;">Mozilla Firefox</a>.</strong></p>
+		</div>
+	</noscript>
+	<div id="toolbar-linkinfo" class="toolbar">
+		<form>
+			<a class="close-bar" title="Toolbar schließen"><img src="images/cross-white.png" width="16" height="16" alt="Toolbar schließen"></a>
+			<label for="linkinfo" title="Kopieren sie diesen Link, um direkt auf diese Seite/n mit der/den gewählten Markierung/en zugreifen zu können">Um direkt auf diese Seite und Markierungen(en) zugreifen zu können, nutzen Sie bitte diesen Link:</label><br>
+			<input type="text" name="linkinfo" id="linkinfo"><span> …</span>
+		</form>
+	</div>
+	<div id="printinfo" class="overlay">
+		<div style="width: 40%; float: right;">
+			<p style="margin-top: 20px;">
+				<br>Please use your browser’s print preview button to print (File&nbsp;→&nbsp;Print Preview) and adjust the settings for page layout and zoom in order to ensure that the entire selected image appears on the page. 
+			</p>
+			<p>
+				To print a facing-page view, we suggest using the <i>landscape</i> page layout setting.
+			</p>
+			<p>
+				For well readable printouts we recommend to enlarge the image at least 3 times (press the <img src="images/magnifier-zoom-in.png"> button 3 times) and set up "Scale" in the print preview of your browser (File&nbsp;→&nbsp;Print Preview) to "Shrink To Fit".
+			</p>
+			
+			<p>
+				Please note that markups will not be included in the printout.
+			</p>
+		</div>
+		<div style="width: 50%; float: left;">
+			<p>
+				<img src="images/printer-big.png"><br>Bitte nutzen Sie zum Drucken die Druckvorschau ihres Browsers (Datei&nbsp;→&nbsp;Druckvorschau) und nehmen Sie dort die nötigen Einstellungen zum Seitenformat und zur Vergrößerung vor, um die gewählten Bilder vollständig auf die Druckseite zu bekommen. 
+			</p>
+			<p>
+				Zum Drucken bei zweiseitiger Ansicht empfehlen wir die Einstellung <i>Querformat</i>.
+			</p>
+			<p>
+				Zum Erstellen gut lesbarer Ausdrucke empfehlen wir folgendes Vorgehen: mind. dreifache Vergrößerung des Digitalisates (<img src="images/magnifier-zoom-in.png">-Schaltfläche dreimal drücken), dann in den Druckeinstellungen des Browsers  (Datei&nbsp;→&nbsp;Druckvorschau) unter "Skalierung" die Vorgabe "Auf Seitengröße verkleinern" auswählen.
+			</p>
+			
+			<p>
+				Bitte beachten Sie, dass Markierungen nicht mitgedruckt werden.
+			</p>
+		</div>
+	</div></div>
+
+		<div id="content-digilib">
+		<table>
+			<tbody>
+				<tr>
+					<td>
+						<!-- In dieses div wird standardmäßig das Bild eingefügt -->
+						<div id="digilib1"></div>
+					</td>
+					<td>
+						<!-- Bei zweiseitiger Anzeige wird in dieses div das zweite Bild eingefügt -->
+						<div id="digilib2"></div>
+					</td>
+					<td class="addKorr">
+						<!-- Bei bestehende Addenda wird hier die entsprechende Seite angezeigt. -->
+						<div id="digilib_addKorr"></div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<script type="text/javascript">
+	/*################### Hier sind die "Stellschrauben" ################### */
+
+	url="https://digilib.bbaw.de/digitallibrary/servlet/Scaler?fn=/silo10/cmg/Ped_Diosc_De_mat_med_Wellmann_Lib_I_II/&pn=";
+	urlx="http://cmg.bbaw.de/epubl/online/PDF/Ped_Diosc_De_mat_med_Wellmann_Lib_I_II/ped_diosc_mat_med_wellmann_bd1_";		
+		
+	overhead=6;													// Anzahl römisch nummerierter Seiten zu Beginn
+	ende_real=255;													// Anzahl arabisch nummerierter Seiten
+	anf_real=1;														// Seite, die beim ersten Laden (ohne URL-Parameter) angezeigt wird
+	ende = ende_real; anf = anf_real;
+	arabisch = new Boolean(false);									// "true" falls ein arabischer Band angezeigt wird (relevant für Seitenblättern...)
+	
+	</script>
+
+	<script type="text/javascript">
+		addKorr_exist=false;		addKorr_exist2=false;		addKorr_exist3=false;	</script>
+	
+	<script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="js/jquery.mobile-1.0.1.min.js"></script>
+  
+	<script type="text/javascript" src="js/helper-scripts.js"></script>
+	<script type="text/javascript" src="js/scripts.js"></script>
+	<script type="text/javascript">
+		
+	$(document).ready(function() {
+		
+		Initialize();
+		loadInitialPage();
+	});
+	</script>
+	
+</body>
+
+</html>

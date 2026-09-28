@@ -1,0 +1,169 @@
+{
+  "assignments": [
+    {
+      "eva_token": "olchc",
+      "expected_output": "olchc",
+      "forbidden_source_units": "mr",
+      "identity": "PSEUDO_085_ID_001",
+      "label_id": "STAR_f68r2_12465",
+      "lexicon_id": "PSEUDO_085_001",
+      "panel_id": "PSEUDO_085",
+      "profile_id": "S059",
+      "required_mappings": "i->h;k->o;t->c;u->l",
+      "scorer_trace": [
+        [
+          "INPUT",
+          "cumtriti"
+        ],
+        [
+          "ARTICLE_DROP_AL",
+          "cumtriti"
+        ],
+        [
+          "VELAR_COLLAPSE",
+          "cumtriti"
+        ],
+        [
+          "VELAR_COLLAPSE",
+          "kumtriti"
+        ],
+        [
+          "VOWELS_KEEP",
+          "kumtriti"
+        ],
+        [
+          "STRIP_LATIN:i",
+          "kumtrit"
+        ]
+      ],
+      "source_form": "cumtriti",
+      "transformed_source": "kumtrit"
+    },
+    {
+      "eva_token": "chol",
+      "expected_output": "chol",
+      "forbidden_source_units": "aeln",
+      "identity": "PSEUDO_085_ID_014",
+      "label_id": "STAR_f68r2_12486",
+      "lexicon_id": "PSEUDO_085_014",
+      "panel_id": "PSEUDO_085",
+      "profile_id": "S059",
+      "required_mappings": "i->h;k->o;t->c;u->l",
+      "scorer_trace": [
+        [
+          "INPUT",
+          "alenticul"
+        ],
+        [
+          "ARTICLE_DROP_AL",
+          "alenticul"
+        ],
+        [
+          "VELAR_COLLAPSE",
+          "alenticul"
+        ],
+        [
+          "VELAR_COLLAPSE",
+          "alentikul"
+        ],
+        [
+          "VOWELS_KEEP",
+          "alentikul"
+        ],
+        [
+          "STRIP_LATIN:none",
+          "alentikul"
+        ]
+      ],
+      "source_form": "alenticul",
+      "transformed_source": "alentikul"
+    }
+  ],
+  "replay": {
+    "note": "full e3_search.replay",
+    "panel_id": "PSEUDO_085",
+    "profile_id": "S059",
+    "replayed_assignments": 2,
+    "status": "PASS"
+  },
+  "result": {
+    "bound": 2.0,
+    "generation_s": 0.047956,
+    "incumbent": 2,
+    "maximum_status": "EXACT_MAXIMUM_CERTIFIED",
+    "panel_id": "PSEUDO_085",
+    "path_count": 1071,
+    "profile_id": "S059",
+    "reachable_labels": 11,
+    "replay": "PASS",
+    "search_budget_s": 10.0,
+    "solve_s": 0.073648,
+    "solver_status": "OPTIMAL"
+  },
+  "rules": [
+    {
+      "distinct_eva_token_types": 2,
+      "panel_id": "PSEUDO_085",
+      "profile_id": "S059",
+      "rule": "i->h",
+      "status": "PASS"
+    },
+    {
+      "distinct_eva_token_types": 2,
+      "panel_id": "PSEUDO_085",
+      "profile_id": "S059",
+      "rule": "k->o",
+      "status": "PASS"
+    },
+    {
+      "distinct_eva_token_types": 2,
+      "panel_id": "PSEUDO_085",
+      "profile_id": "S059",
+      "rule": "t->c",
+      "status": "PASS"
+    },
+    {
+      "distinct_eva_token_types": 2,
+      "panel_id": "PSEUDO_085",
+      "profile_id": "S059",
+      "rule": "u->l",
+      "status": "PASS"
+    },
+    {
+      "distinct_eva_token_types": 2,
+      "panel_id": "PSEUDO_085",
+      "profile_id": "S059",
+      "rule": "i->h",
+      "status": "PASS"
+    },
+    {
+      "distinct_eva_token_types": 2,
+      "panel_id": "PSEUDO_085",
+      "profile_id": "S059",
+      "rule": "k->o",
+      "status": "PASS"
+    },
+    {
+      "distinct_eva_token_types": 2,
+      "panel_id": "PSEUDO_085",
+      "profile_id": "S059",
+      "rule": "t->c",
+      "status": "PASS"
+    },
+    {
+      "distinct_eva_token_types": 2,
+      "panel_id": "PSEUDO_085",
+      "profile_id": "S059",
+      "rule": "u->l",
+      "status": "PASS"
+    }
+  ],
+  "stability": {
+    "coverage": 2,
+    "identity_set": "PSEUDO_085_ID_001;PSEUDO_085_ID_014",
+    "label_set": "STAR_f68r2_12465;STAR_f68r2_12486",
+    "mapping_family": "i->h;k->o;t->c;u->l",
+    "panel_id": "PSEUDO_085",
+    "profile_id": "S059"
+  }
+}

@@ -1,0 +1,13 @@
+# Branch closure
+
+`f68r2_cross_domain_synthesis_v1` closes the historical-dictionary global-form search branch.
+
+`HAPAX_ENRICHMENT_STATUS=POSITIVE_STRUCTURAL_RESULT`  
+`DICTIONARY_SEARCH_STATUS=NEGATIVE_WITHIN_TESTED_MODEL_CLASS`  
+`PAGE_THEMATIC_INTERPRETATION=NOT_RESOLVED`  
+`REAL_CROSS_DOMAIN_SEARCH_EXECUTED=YES`  
+`DECIPHERMENT_CLAIM=NONE`  
+`DOMAIN_SPECIFIC_SIGNAL=NONE`  
+`RESULT_STATUS=NEGATIVE_WITHIN_TESTED_MODEL_CLASS`
+
+No claim is made that the manuscript’s subject matter has been disproved.

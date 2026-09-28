@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "release_id": "publication-site-v1.1.0",
-  "publication_date": "2026-08-30",
+  "release_id": "publication-site-v1.2.0",
+  "publication_date": "2026-09-28",
   "canonical_language": "en",
   "site_url": "https://voynich.lite.systems/",
   "research_source_commit": "56e0a1e97362ac7c2791e9ec1b1574e57ed71570",
-  "scientific_scope": "Frozen Phase I and Phase II synthesis plus the descriptive VM Structural Catalog V1; the catalog does not perform mechanism identification",
+  "scientific_scope": "Frozen Phase I and Phase II synthesis, the descriptive VM Structural Catalog V1, and the bounded f68r2 historical-dictionary synthesis; no decipherment or page-theme identification",
   "phase1_release": "phase1-v1.0-rc1",
   "phase2_synthesis": "Task84",
   "phase2_authoritative_fingerprint": "Task83b deterministic Fingerprint V2.1 refreeze",
@@ -18,13 +18,26 @@
     "observed_zero_policy": "Every enumerated zero remains an explicit corpus rule independent of inferred statistical status",
     "mechanism_interpretation": "NOT_PERFORMED"
   },
+  "historical_dictionary_synthesis": {
+    "artifact_directory": "cross-domain-dictionary/",
+    "hapax_status": "POSITIVE_STRUCTURAL_RESULT",
+    "dictionary_search_status": "NEGATIVE_WITHIN_TESTED_MODEL_CLASS",
+    "astronomical_maximum": "0/27",
+    "botanical_maximum": "0/27",
+    "historical_control_maximum": "3/27",
+    "pseudo_controls": 99,
+    "page_theme_disproved": false,
+    "decipherment_claim": "NONE",
+    "domain_specific_signal": "NONE",
+    "result_status": "NEGATIVE_WITHIN_TESTED_MODEL_CLASS"
+  },
   "terminal_results": {
     "BEST_SUPPORTED_CLASS": "INCONCLUSIVE",
     "MECHANISM_IDENTIFICATION_FROM_F2": "NOT_IDENTIFIABLE"
   },
   "primary_limitation": "3/13 CORE direct metrics in one edit family",
   "checksums_file": "SHA256SUMS",
-  "artifact_count": 30,
+  "artifact_count": 53,
   "license_note": "Project code license is included for provenance. Documentation and scientific-content rights are not silently reassigned by this publication package.",
   "data_availability": {
     "public_now": "Curated reports, summaries, registries, maps, references, manifests, provenance guides and the complete deterministic structural-catalog bundle in this directory",

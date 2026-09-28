@@ -23,10 +23,10 @@ private/research working paths.
 
 ## Release identity
 
-- publication release: `publication-site-v1.1.0`
-- publication date: `2026-08-30`
+- publication release: `publication-site-v1.2.0`
+- publication date: `2026-09-28`
 - canonical scientific language: English
-- scientific scope: frozen Phase I/II synthesis plus Structural Catalog V1
+- scientific scope: frozen Phase I/II synthesis, Structural Catalog V1 and the bounded f68r2 historical-dictionary synthesis
 - research-source commit: `56e0a1e97362ac7c2791e9ec1b1574e57ed71570`
 
 The public artifact list is `artifacts/RELEASE_MANIFEST.json`; individual

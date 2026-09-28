@@ -1,0 +1,24 @@
+{
+  "status": "NOT_READY_NO_VERIFIED_FORMS",
+  "I_available_botanical_canonical_identities": 0,
+  "F_available_verified_botanical_forms": 0,
+  "COMMON_IDENTITIES": 0,
+  "COMMON_FORMS": 0,
+  "panel_domains": [
+    "botanical",
+    "astronomy",
+    "historical_non_domain",
+    "pseudo_control"
+  ],
+  "matching": {
+    "algorithm": "deterministic minimum-cost matching",
+    "seed": 20260928,
+    "tie_breaking": [
+      "fixed seed",
+      "lexicographic order"
+    ],
+    "weights_frozen": true
+  },
+  "astronomy_historical_baseline": "3/27 retained as historical baseline; matched astronomy search not executed",
+  "real_search_executed": false
+}

@@ -23,7 +23,8 @@ done || fail=1
 (cd "$site_dir/artifacts" && sha256sum -c SHA256SUMS) || fail=1
 (cd "$site_dir" && sha256sum -c SITE_FILES_SHA256SUMS) || fail=1
 
-grep -q '"release_id": "publication-site-v1.1.0"' "$site_dir/artifacts/RELEASE_MANIFEST.json" || fail=1
+grep -q '"release_id": "publication-site-v1.2.0"' "$site_dir/artifacts/RELEASE_MANIFEST.json" || fail=1
+grep -q '"publication_date": "2026-09-28"' "$site_dir/artifacts/RELEASE_MANIFEST.json" || fail=1
 grep -q '"BEST_SUPPORTED_CLASS": "INCONCLUSIVE"' "$site_dir/artifacts/RELEASE_MANIFEST.json" || fail=1
 grep -q '"MECHANISM_IDENTIFICATION_FROM_F2": "NOT_IDENTIFIABLE"' "$site_dir/artifacts/RELEASE_MANIFEST.json" || fail=1
 grep -q 'BEST_SUPPORTED_CLASS = INCONCLUSIVE' "$site_dir/index.html" || fail=1
@@ -36,6 +37,19 @@ grep -q 'does not generalize to all possible external-memory systems' "$site_dir
 grep -q 'OBSERVED_COUNT = 0 IS A RESULT' "$site_dir/structure/index.html" || fail=1
 grep -q '67,935,111' "$site_dir/structure/index.html" || fail=1
 grep -q '"mechanism_interpretation": "NOT_PERFORMED"' "$site_dir/artifacts/RELEASE_MANIFEST.json" || fail=1
+grep -q '"dictionary_search_status": "NEGATIVE_WITHIN_TESTED_MODEL_CLASS"' "$site_dir/artifacts/RELEASE_MANIFEST.json" || fail=1
+grep -q '"decipherment_claim": "NONE"' "$site_dir/artifacts/RELEASE_MANIFEST.json" || fail=1
+grep -q '"domain_specific_signal": "NONE"' "$site_dir/artifacts/RELEASE_MANIFEST.json" || fail=1
+grep -q '"result_status": "NEGATIVE_WITHIN_TESTED_MODEL_CLASS"' "$site_dir/artifacts/RELEASE_MANIFEST.json" || fail=1
+grep -q '0 / 27' "$site_dir/dictionary-search/index.html" || fail=1
+grep -q 'Hapax enrichment is not a dictionary match' "$site_dir/dictionary-search/index.html" || fail=1
+grep -q 'HD-C001' "$site_dir/claims/index.html" || fail=1
+grep -q 'HD-C002' "$site_dir/claims/index.html" || fail=1
+grep -q 'HD-C003' "$site_dir/claims/index.html" || fail=1
+grep -q 'publication-site-v1.2.0' "$site_dir/about/index.html" || fail=1
+grep -q '2026-09-28' "$site_dir/index.html" || fail=1
+grep -q 'CROSS_DOMAIN_RESULTS_REPORT.md' "$site_dir/downloads/index.html" || fail=1
+grep -q 'STOLFI_ASTRO_LABEL_HAPAX_BY_PANEL.tsv' "$site_dir/downloads/index.html" || fail=1
 
 gzip -t "$site_dir/artifacts/structure-catalog/VM_STRUCTURAL_RULES.tsv.gz" || fail=1
 gzip -t "$site_dir/artifacts/structure-catalog/TOKEN_TRANSITION_COMPLEMENT.json.gz" || fail=1

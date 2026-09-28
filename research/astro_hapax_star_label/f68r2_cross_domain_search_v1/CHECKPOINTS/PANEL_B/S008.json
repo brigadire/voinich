@@ -1,0 +1,203 @@
+{
+  "assignments": [
+    {
+      "eva_token": "o",
+      "expected_output": "o",
+      "forbidden_source_units": "ceorx",
+      "identity": "ISC_CTL_028",
+      "label_id": "STAR_f68r2_12463",
+      "lexicon_id": "PANEL_B_028",
+      "panel_id": "PANEL_B",
+      "profile_id": "S008",
+      "required_mappings": "t->o",
+      "scorer_trace": [
+        [
+          "INPUT",
+          "cortex"
+        ],
+        [
+          "ARTICLE_KEEP",
+          "cortex"
+        ],
+        [
+          "IJ_UV",
+          "cortex"
+        ],
+        [
+          "VOWELS_KEEP",
+          "cortex"
+        ],
+        [
+          "ABBREVIATION_NONE",
+          "cortex"
+        ]
+      ],
+      "source_form": "cortex",
+      "transformed_source": "cortex"
+    },
+    {
+      "eva_token": "olchc",
+      "expected_output": "olchc",
+      "forbidden_source_units": "lmprs",
+      "identity": "ISC_CTL_006",
+      "label_id": "STAR_f68r2_12465",
+      "lexicon_id": "PANEL_B_006",
+      "panel_id": "PANEL_B",
+      "profile_id": "S008",
+      "required_mappings": "a->h;i->l;t->o;u->c",
+      "scorer_trace": [
+        [
+          "INPUT",
+          "stipularum"
+        ],
+        [
+          "ARTICLE_KEEP",
+          "stipularum"
+        ],
+        [
+          "IJ_UV",
+          "stipularum"
+        ],
+        [
+          "VOWELS_KEEP",
+          "stipularum"
+        ],
+        [
+          "ABBREVIATION_NONE",
+          "stipularum"
+        ]
+      ],
+      "source_form": "stipularum",
+      "transformed_source": "stipularum"
+    },
+    {
+      "eva_token": "chol",
+      "expected_output": "chol",
+      "forbidden_source_units": "cnor",
+      "identity": "ISC_CTL_009",
+      "label_id": "STAR_f68r2_12486",
+      "lexicon_id": "PANEL_B_009",
+      "panel_id": "PANEL_B",
+      "profile_id": "S008",
+      "required_mappings": "a->h;i->l;t->o;u->c",
+      "scorer_trace": [
+        [
+          "INPUT",
+          "runcatio"
+        ],
+        [
+          "ARTICLE_KEEP",
+          "runcatio"
+        ],
+        [
+          "IJ_UV",
+          "runcatio"
+        ],
+        [
+          "VOWELS_KEEP",
+          "runcatio"
+        ],
+        [
+          "ABBREVIATION_NONE",
+          "runcatio"
+        ]
+      ],
+      "source_form": "runcatio",
+      "transformed_source": "runcatio"
+    }
+  ],
+  "replay": {
+    "note": "full e3_search.replay",
+    "panel_id": "PANEL_B",
+    "profile_id": "S008",
+    "replayed_assignments": 3,
+    "status": "PASS"
+  },
+  "result": {
+    "bound": 3.0,
+    "generation_s": 0.102039,
+    "incumbent": 3,
+    "maximum_status": "EXACT_MAXIMUM_CERTIFIED",
+    "panel_id": "PANEL_B",
+    "path_count": 1398,
+    "profile_id": "S008",
+    "reachable_labels": 15,
+    "replay": "PASS",
+    "search_budget_s": 10.0,
+    "solve_s": 0.165821,
+    "solver_status": "OPTIMAL"
+  },
+  "rules": [
+    {
+      "distinct_eva_token_types": 3,
+      "panel_id": "PANEL_B",
+      "profile_id": "S008",
+      "rule": "t->o",
+      "status": "PASS"
+    },
+    {
+      "distinct_eva_token_types": 2,
+      "panel_id": "PANEL_B",
+      "profile_id": "S008",
+      "rule": "a->h",
+      "status": "PASS"
+    },
+    {
+      "distinct_eva_token_types": 2,
+      "panel_id": "PANEL_B",
+      "profile_id": "S008",
+      "rule": "i->l",
+      "status": "PASS"
+    },
+    {
+      "distinct_eva_token_types": 3,
+      "panel_id": "PANEL_B",
+      "profile_id": "S008",
+      "rule": "t->o",
+      "status": "PASS"
+    },
+    {
+      "distinct_eva_token_types": 2,
+      "panel_id": "PANEL_B",
+      "profile_id": "S008",
+      "rule": "u->c",
+      "status": "PASS"
+    },
+    {
+      "distinct_eva_token_types": 2,
+      "panel_id": "PANEL_B",
+      "profile_id": "S008",
+      "rule": "a->h",
+      "status": "PASS"
+    },
+    {
+      "distinct_eva_token_types": 2,
+      "panel_id": "PANEL_B",
+      "profile_id": "S008",
+      "rule": "i->l",
+      "status": "PASS"
+    },
+    {
+      "distinct_eva_token_types": 3,
+      "panel_id": "PANEL_B",
+      "profile_id": "S008",
+      "rule": "t->o",
+      "status": "PASS"
+    },
+    {
+      "distinct_eva_token_types": 2,
+      "panel_id": "PANEL_B",
+      "profile_id": "S008",
+      "rule": "u->c",
+      "status": "PASS"
+    }
+  ],
+  "stability": {
+    "coverage": 3,
+    "identity_set": "ISC_CTL_006;ISC_CTL_009;ISC_CTL_028",
+    "label_set": "STAR_f68r2_12463;STAR_f68r2_12465;STAR_f68r2_12486",
+    "mapping_family": "a->h;i->l;t->o;u->c;t->o",
+    "panel_id": "PANEL_B",
+    "profile_id": "S008"
+  }
+}

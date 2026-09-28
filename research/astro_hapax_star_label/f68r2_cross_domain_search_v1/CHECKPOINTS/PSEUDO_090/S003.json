@@ -1,0 +1,161 @@
+{
+  "assignments": [
+    {
+      "eva_token": "olchc",
+      "expected_output": "olchc",
+      "forbidden_source_units": "il",
+      "identity": "PSEUDO_090_ID_018",
+      "label_id": "STAR_f68r2_12465",
+      "lexicon_id": "PSEUDO_090_018",
+      "panel_id": "PSEUDO_090",
+      "profile_id": "S003",
+      "required_mappings": "m->h;n->l;p->o;u->c",
+      "scorer_trace": [
+        [
+          "INPUT",
+          "pinumlu"
+        ],
+        [
+          "ARTICLE_KEEP",
+          "pinumlu"
+        ],
+        [
+          "IDENTITY",
+          "pinumlu"
+        ],
+        [
+          "VOWELS_KEEP",
+          "pinumlu"
+        ],
+        [
+          "STRIP_LATIN:none",
+          "pinumlu"
+        ]
+      ],
+      "source_form": "pinumlu",
+      "transformed_source": "pinumlu"
+    },
+    {
+      "eva_token": "chol",
+      "expected_output": "chol",
+      "forbidden_source_units": "aci",
+      "identity": "PSEUDO_090_ID_010",
+      "label_id": "STAR_f68r2_12486",
+      "lexicon_id": "PSEUDO_090_010",
+      "panel_id": "PSEUDO_090",
+      "profile_id": "S003",
+      "required_mappings": "m->h;n->l;p->o;u->c",
+      "scorer_trace": [
+        [
+          "INPUT",
+          "iciumpan"
+        ],
+        [
+          "ARTICLE_KEEP",
+          "iciumpan"
+        ],
+        [
+          "IDENTITY",
+          "iciumpan"
+        ],
+        [
+          "VOWELS_KEEP",
+          "iciumpan"
+        ],
+        [
+          "STRIP_LATIN:none",
+          "iciumpan"
+        ]
+      ],
+      "source_form": "iciumpan",
+      "transformed_source": "iciumpan"
+    }
+  ],
+  "replay": {
+    "note": "full e3_search.replay",
+    "panel_id": "PSEUDO_090",
+    "profile_id": "S003",
+    "replayed_assignments": 2,
+    "status": "PASS"
+  },
+  "result": {
+    "bound": 2.0,
+    "generation_s": 0.040986,
+    "incumbent": 2,
+    "maximum_status": "EXACT_MAXIMUM_CERTIFIED",
+    "panel_id": "PSEUDO_090",
+    "path_count": 1041,
+    "profile_id": "S003",
+    "reachable_labels": 12,
+    "replay": "PASS",
+    "search_budget_s": 10.0,
+    "solve_s": 0.072373,
+    "solver_status": "OPTIMAL"
+  },
+  "rules": [
+    {
+      "distinct_eva_token_types": 2,
+      "panel_id": "PSEUDO_090",
+      "profile_id": "S003",
+      "rule": "m->h",
+      "status": "PASS"
+    },
+    {
+      "distinct_eva_token_types": 2,
+      "panel_id": "PSEUDO_090",
+      "profile_id": "S003",
+      "rule": "n->l",
+      "status": "PASS"
+    },
+    {
+      "distinct_eva_token_types": 2,
+      "panel_id": "PSEUDO_090",
+      "profile_id": "S003",
+      "rule": "p->o",
+      "status": "PASS"
+    },
+    {
+      "distinct_eva_token_types": 2,
+      "panel_id": "PSEUDO_090",
+      "profile_id": "S003",
+      "rule": "u->c",
+      "status": "PASS"
+    },
+    {
+      "distinct_eva_token_types": 2,
+      "panel_id": "PSEUDO_090",
+      "profile_id": "S003",
+      "rule": "m->h",
+      "status": "PASS"
+    },
+    {
+      "distinct_eva_token_types": 2,
+      "panel_id": "PSEUDO_090",
+      "profile_id": "S003",
+      "rule": "n->l",
+      "status": "PASS"
+    },
+    {
+      "distinct_eva_token_types": 2,
+      "panel_id": "PSEUDO_090",
+      "profile_id": "S003",
+      "rule": "p->o",
+      "status": "PASS"
+    },
+    {
+      "distinct_eva_token_types": 2,
+      "panel_id": "PSEUDO_090",
+      "profile_id": "S003",
+      "rule": "u->c",
+      "status": "PASS"
+    }
+  ],
+  "stability": {
+    "coverage": 2,
+    "identity_set": "PSEUDO_090_ID_010;PSEUDO_090_ID_018",
+    "label_set": "STAR_f68r2_12465;STAR_f68r2_12486",
+    "mapping_family": "m->h;n->l;p->o;u->c",
+    "panel_id": "PSEUDO_090",
+    "profile_id": "S003"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "corrected_global_mapping_semantics": "functional/injective global mapping; DROP_UNMAPPED; exact certified coverage only; UNKNOWN retained and never silently counted as exact",
+  "profiles": "same frozen E3_OPERATION_PROFILES.tsv, exactly 64 systems",
+  "target": "same 27 f68r2 LABEL occurrences",
+  "domains": [
+    "astronomy",
+    "botanical",
+    "historical_control",
+    "pseudo_control_x99"
+  ],
+  "panel_size": {
+    "identities": 30,
+    "forms": 30
+  },
+  "budget": "identical per domain and per profile; no domain-specific budget",
+  "stop_conditions": "identical solver/scorer completion, timeout, infeasibility, and UNKNOWN handling",
+  "assignments": "persist every profile assignment and perform full independent scorer replay before aggregation",
+  "astronomy_baseline": "old 3/27 result is not imported; matched astronomy panel requires a fresh future run",
+  "status": "FROZEN_NO_SEARCH_EXECUTED"
+}

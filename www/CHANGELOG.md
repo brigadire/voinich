@@ -1,5 +1,13 @@
 # Publication site changelog
 
+## publication-site-v1.2.0 — 2026-09-28
+
+- Added the historical-dictionary brute-force comparison and its final synthesis page.
+- Published the separate positive hapax-enrichment result and the negative botanical/astronomical dictionary result within the tested model class.
+- Recorded withdrawn legacy results, including the unmatched astronomy `3/27` and Caesar pseudo-controls.
+- Clarified that the dictionary result does not disprove any page theme and closed the current global-form branch.
+- Listed independently justified future model families: abbreviation, mnemonic/notational and morpheme-compositional systems.
+
 ## Presentation correction — 2026-08-30
 
 - Restricted sticky table positioning to column headers inside `thead`; row headers in `tbody` now remain in normal flow and no longer overlap informational cells in desktop browsers.
