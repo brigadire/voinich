@@ -1,0 +1,70 @@
+{
+  "ALL_INCLUDED_MODES_HAVE_EXACT_VERIFIER": "NO",
+  "EXACT_SCOPE_DEFINED": "YES",
+  "NEIGHBORHOOD_ONLY_MODES_EXCLUDED": "YES",
+  "blocking_finding": "No CP-SAT package or frozen exact-verifier implementation is present in this checkout. The available M1 implementation uses bounded beam search and cannot emit GLOBAL_OPTIMUM_CERTIFIED.",
+  "complexity_limits": {
+    "output_width_max": 2,
+    "table_size_max": 16,
+    "time_limit_seconds": 60
+  },
+  "excluded_modes": [
+    {
+      "mode": "SELECTIVE_DELETION",
+      "reason": "neighborhood-only; no exact certificate in the frozen engine"
+    },
+    {
+      "mode": "ABBREVIATION",
+      "reason": "neighborhood-only; selective shortening is not CP-SAT modeled exactly"
+    },
+    {
+      "mode": "MULTI_STAGE_COMPOSITION",
+      "reason": "not a single frozen transformation table"
+    },
+    {
+      "mode": "CONTEXTUAL_TRANSFORMATION",
+      "reason": "requires local context and neighborhood search"
+    },
+    {
+      "mode": "PAGE_TERM_LABEL_SINGLETON_RULE",
+      "reason": "explicitly prohibited page/term/label-specific rule"
+    }
+  ],
+  "global_certificate": "GLOBAL_OPTIMUM_CERTIFIED only when the exact verifier proves optimality and reports feasible status",
+  "included_transformation_modes": [
+    {
+      "fully_modeled": true,
+      "id": "ONE_TO_ONE_GRAPHEME_SUBSTITUTION",
+      "source_units": "single source graphemes",
+      "target_units": "single target graphemes"
+    },
+    {
+      "fully_modeled": true,
+      "id": "ONE_TO_TWO_FIXED_SEGMENT_SUBSTITUTION",
+      "source_units": "single source graphemes or frozen source digraphs",
+      "target_units": "one or two target graphemes"
+    }
+  ],
+  "injectivity_capacity": "each dictionary object can be assigned at most once per instance; mapping is deterministic",
+  "matching": "maximum-cardinality bipartite matching, lexicographic tie break on (label_id, object_id)",
+  "objective": "maximize matched labels; then minimize table size; then lexicographically minimize mapping and assignment",
+  "schema": "exact-scope-spec-v1",
+  "source_alphabet": [
+    "a",
+    "b",
+    "c",
+    "d"
+  ],
+  "substitution_table_sizes": {
+    "allowed_values": "integer",
+    "maximum": 16,
+    "minimum": 1
+  },
+  "target_alphabet": [
+    "w",
+    "x",
+    "y",
+    "z"
+  ],
+  "unmapped_symbols": "instance is infeasible; no implicit identity or deletion"
+}

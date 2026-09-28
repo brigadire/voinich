@@ -1,0 +1,119 @@
+{
+  "manifest_version": "v3_structural_freeze",
+  "description": "Structural profile of frozen star label target scope without any dictionary scoring",
+  "target_source_file": "research/astro_hapax_star_label/restricted_dictionary_bruteforce_v2/TARGET_SCOPE.tsv",
+  "occurrences_total": 57,
+  "unique_tokens_total": 56,
+  "page_split": {
+    "f68r1": 30,
+    "f68r2": 27
+  },
+  "eva_alphabet": {
+    "symbols": [
+      "a",
+      "c",
+      "d",
+      "e",
+      "f",
+      "h",
+      "i",
+      "k",
+      "l",
+      "n",
+      "o",
+      "p",
+      "r",
+      "s",
+      "t",
+      "y"
+    ],
+    "size": 16,
+    "symbol_counts": {
+      "a": 15,
+      "c": 33,
+      "d": 26,
+      "e": 34,
+      "f": 3,
+      "h": 38,
+      "i": 9,
+      "k": 12,
+      "l": 17,
+      "n": 3,
+      "o": 79,
+      "p": 4,
+      "r": 18,
+      "s": 9,
+      "t": 19,
+      "y": 33
+    }
+  },
+  "length_distribution": {
+    "min": 1,
+    "max": 10,
+    "mean": 6.1754,
+    "median": 6,
+    "mode": 6,
+    "stdev": 1.774,
+    "histogram": {
+      "1": 1,
+      "2": 2,
+      "4": 5,
+      "5": 9,
+      "6": 17,
+      "7": 9,
+      "8": 10,
+      "9": 3,
+      "10": 1
+    }
+  },
+  "distinct_symbols_distribution": {
+    "min": 1,
+    "max": 8,
+    "mean": 5.1404,
+    "median": 5,
+    "histogram": {
+      "1": 1,
+      "2": 2,
+      "3": 4,
+      "4": 8,
+      "5": 20,
+      "6": 12,
+      "7": 8,
+      "8": 2
+    }
+  },
+  "hapax_distribution": {
+    "total_hapax": 26,
+    "total_non_hapax": 31,
+    "by_page": {
+      "f68r1": {
+        "occurrences": 30,
+        "hapax": 11,
+        "non_hapax": 19
+      },
+      "f68r2": {
+        "occurrences": 27,
+        "hapax": 15,
+        "non_hapax": 12
+      }
+    }
+  },
+  "page_profiles": {
+    "f68r1": {
+      "occurrences": 30,
+      "lengths_mean": 6.1,
+      "distinct_symbols_mean": 5.2333
+    },
+    "f68r2": {
+      "occurrences": 27,
+      "lengths_mean": 6.2593,
+      "distinct_symbols_mean": 5.037
+    }
+  },
+  "restrictions_enforced": {
+    "dictionary_scores_calculated": false,
+    "assignments_generated": false,
+    "substitutions_optimized_on_real_data": false,
+    "real_data_search_authorized": false
+  }
+}

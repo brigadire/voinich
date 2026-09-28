@@ -1,0 +1,10 @@
+acceptance_criterion	finding	implementation_component	integration_test	requirement	unit_test	v2_design_decision	verification_result
+exact optimum equals exhaustive small oracle	CR-01	hungarian / evaluate	test_exact_matching_bruteforce	unknown assignments	test_no_zip_assignment	Hungarian dummy-node matching	PASS
+all retained rules >=3 distinct pairs	CR-02	support / evaluate	test_heldout_frozen	minimum support 3	test_min_support_three	reject unsupported state	PASS
+duplicates cannot increase independent support	CR-03	load_rows / support	test_order_invariance	independent examples	test_duplicate_not_independent	canonical unique surfaces and pair sets	PASS
+no alphabet-dependent correctness metric	CR-04	evaluator.rule_metrics	test_neutral_dataset_roles	general-alphabet precision	test_precision_general_alphabet	exact latent tuple intersection	PASS
+conflict raises and compositions retain roles	CR-05	validate_rules / transform	test_roles_and_variable_lengths	explicit rule conflicts	test_conflicting_rules_explicit	reject forward and inverse conflict	PASS
+exact inventory equality and correct digest for every file	CR-06	integrity	final integrity.verify	complete SHA-256 registry	test_sha256_registry_complete	all regular files except ledger itself	PASS
+bounded completion or INCOMPLETE; resume byte-identical	CR-07	search / worker / orchestrator	test_checkpoint_resume_identity	bounded search/checkpoint	test_search_resource_bounds	beam limits and checksummed resume	PASS
+multichar rules used in inferred derivations	CR-08	units / align	test_roles_and_variable_lengths	multisymbol morphology	test_multisymbol_units_active	substring/whole units and ordered DAG paths	PASS
+duplicate invariance; correct arithmetic; complexity costs	CR-09	evaluate	test_simpler_model_wins	size normalization	test_size_normalized_scoring	six bit-length components divided by baseline	PASS

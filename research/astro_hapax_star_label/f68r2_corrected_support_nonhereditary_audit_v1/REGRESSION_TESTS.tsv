@@ -1,0 +1,8 @@
+test	result	detail
+support_valid_triple_without_support_valid_pair	PASS	A/B/C has each rule in two of three paths; every pair has a singleton-supported rule
+coverage_3_not_closed_by_pair_bound	PASS	counterexample prevents subset inference
+required_forbidden_conflict	IMPLEMENTED	checked by direct triple validator
+injectivity_conflict	IMPLEMENTED	checked by direct triple validator
+extra_global_output	IMPLEMENTED	full scorer replay required
+three_distinct_tokens	IMPLEMENTED	triple validator requires distinct EVA tokens
+small_exhaustive_agreement	PASS	small support-aware enumeration agrees with direct validator

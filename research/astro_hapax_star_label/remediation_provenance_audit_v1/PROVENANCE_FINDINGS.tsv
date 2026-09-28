@@ -1,0 +1,12 @@
+finding_id	severity	claim	evidence	result
+P01	PASS	CP-SAT source exists	scripts/solver_cpsat.py	present; imports ortools.sat.python.cp_model
+P02	PASS	OR-Tools environment exists	/home/brigadire/.venv/bin/python3	9.15.6755
+P03	PASS	fresh CP-SAT/oracle smoke parity	run_cpsat_vs_oracle.py 10	10/10 agree; rc=0
+P04	PASS	fresh branch-and-bound exact smoke validation	run_exact_validation.py 20	20/20 agree; rc=0
+P05	PASS	raw hidden predictions are linked to solver output schema	HIDDEN_PREDICTIONS.tsv	180 rows; verifier modes={'EXACT_FULL_SPACE': 155, 'NEIGHBORHOOD(radius=1)': 25}
+P06	PASS	raw hidden metrics are present	HIDDEN_RESULTS.tsv	180 rows; classifications={'GLOBAL_OPTIMUM_CERTIFIED': 153, 'BOUNDED_GAP_CERTIFIED': 2, 'NO_IMPROVEMENT_FOUND': 12, 'LOCAL_NEIGHBORHOOD_OPTIMUM': 13}
+P07	FAIL	package is git-tracked	git ls-files remediation_v1	0 tracked files; current package cannot be tied to a commit
+P08	FAIL	package SHA256SUMS verifies all listed files	SHA256SUMS	60/61 listed entries pass
+P09	FAIL	frozen code ledger remains consistent	FROZEN_CODE_SHA256SUMS.txt	7/8 entries pass; SEALED_BENCHMARK_PROTOCOL.md differs
+P10	WARN	package ledger covers every file	SHA256SUMS vs package tree	27 files unlisted, including generated hidden/checkpoint artifacts
+P11	WARN	raw output contains solver version and command execution log	HIDDEN_RESULTS.tsv / protocol	not embedded in raw rows; provenance relies on external protocol and ledgers

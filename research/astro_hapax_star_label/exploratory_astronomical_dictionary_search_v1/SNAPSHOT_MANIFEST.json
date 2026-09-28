@@ -1,0 +1,19 @@
+{
+  "builder_python": "3.14.7",
+  "canonical_tree_sha256": "b4391cc35324bb43a1e5229a55b262b38125b60af40fab1d76233527ba101e8f",
+  "freeze_rule": "files immutable after freeze; changes require v2 package",
+  "git_commit_binding": "UNAVAILABLE_NOT_REQUIRED",
+  "ortools_version": "from snapshot/DEPENDENCY_LOCK.json",
+  "snapshot_type": "CONTENT_BOUND",
+  "solver_files": [
+    "snapshot/solver_cpsat.py",
+    "snapshot/oracle_bb.py",
+    "snapshot/scorer.py"
+  ],
+  "solver_hashes": {
+    "snapshot/oracle_bb.py": "b14c9a97bca34bfc16b3caaa2c4c1c0cd546665d2754604d7280e577800db38d",
+    "snapshot/scorer.py": "d2759dd3267f7ed3d952e16d10762455bce7c690370c3fed2bd70ec9b1abe9b7",
+    "snapshot/solver_cpsat.py": "370ed7507c164378e17c2b2030a464c214fbf4c9e4627ca31510f2186c4d60b8"
+  },
+  "source_cp_sat_snapshot": "research/astro_hapax_star_label/exact_scope_qualification_v2/snapshot"
+}

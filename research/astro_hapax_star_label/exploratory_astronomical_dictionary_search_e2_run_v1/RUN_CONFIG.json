@@ -1,0 +1,48 @@
+{
+  "abbreviation": "NONE",
+  "allow_unmatched": true,
+  "capacity_modes": [
+    "PER_PAGE_CAPACITY_1",
+    "GLOBAL_CAPACITY_1"
+  ],
+  "cooptimal_limit": 500,
+  "deletion_mode": "DROP_UNMAPPED",
+  "e2_only": true,
+  "e3_e4_executed": false,
+  "mapping_mode": "INJECTIVE",
+  "memory_limit_mb": 8192,
+  "minimum_independent_support": 2,
+  "near_optimal_gap": 0,
+  "num_workers": 1,
+  "profiles": [
+    "CONSERVATIVE",
+    "BALANCED",
+    "RECALL_ORIENTED"
+  ],
+  "run_version": "1",
+  "stage": "E2_EXACT_EXPANSION",
+  "table_sizes": [
+    5,
+    6
+  ],
+  "top_k": 50,
+  "wall_time_limit_sec": 60,
+  "warm_start_source": "astro_hapax_star_label/exploratory_astronomical_dictionary_search_e0_e1_run_v1/RULE_DEFINITIONS.tsv",
+  "warm_start_tables": {
+    "K5": {
+      "b": "a",
+      "d": "y",
+      "f": "c",
+      "g": "d",
+      "s": "h"
+    },
+    "K6": {
+      "b": "a",
+      "d": "y",
+      "f": "c",
+      "g": "d",
+      "j": "e",
+      "s": "h"
+    }
+  }
+}

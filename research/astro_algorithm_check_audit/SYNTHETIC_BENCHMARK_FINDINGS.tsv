@@ -1,0 +1,8 @@
+finding_id	severity	finding	evidence	required_fix
+F01	MAJOR	single replicate	Manifest replicates=1; noise values are not stable estimates	Repeat >=30 per condition
+F02	CRITICAL	random null construction	Current synthetic random P95=0.95 and max=1.0; positive/random overlap	Use calibrated nulls and redesign model before real search
+F03	MAJOR	dictionary capacity	31 concepts cap 40/10 at .775 and 80/20 at .3875	Use >=1.25x concepts for scalability
+F04	MAJOR	sample-size interpretation	80/20 observed .3625 is near capacity ceiling, not optimiser failure	Report capacity-adjusted recovery
+F05	MODERATE	held-out semantics	Synthetic held-out is generated from same hidden system and dictionary; unlike real anonymous object-disjoint test	Treat as generative generalisation only
+F06	MODERATE	family aggregation	Headline clean result is S0 only; complex families are heterogeneous	Report each family separately
+F07	NO_ISSUE	ground truth metrics	Existing mapping recovery is parameter-level and does not test functional equivalence	Add explicit exact/output/assignment fields

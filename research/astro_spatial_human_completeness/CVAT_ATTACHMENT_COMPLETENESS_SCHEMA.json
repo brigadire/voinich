@@ -1,0 +1,102 @@
+[
+  {
+    "attributes": [
+      {
+        "default_value": "UNSET",
+        "input_type": "text",
+        "mutable": false,
+        "name": "reference_id",
+        "values": [
+          "UNSET"
+        ]
+      },
+      {
+        "default_value": "3",
+        "input_type": "text",
+        "mutable": false,
+        "name": "relation_protocol_version",
+        "values": [
+          "3"
+        ]
+      }
+    ],
+    "color": "#349866",
+    "name": "STAR_REFERENCE",
+    "type": "rectangle"
+  },
+  {
+    "attributes": [
+      {
+        "default_value": "UNSET",
+        "input_type": "text",
+        "mutable": false,
+        "name": "reference_id",
+        "values": [
+          "UNSET"
+        ]
+      },
+      {
+        "default_value": "3",
+        "input_type": "text",
+        "mutable": false,
+        "name": "relation_protocol_version",
+        "values": [
+          "3"
+        ]
+      }
+    ],
+    "color": "#3578b8",
+    "name": "LABEL_REFERENCE",
+    "type": "any"
+  },
+  {
+    "attributes": [
+      {
+        "default_value": "UNSET",
+        "input_type": "text",
+        "mutable": false,
+        "name": "pair_id",
+        "values": [
+          "UNSET"
+        ]
+      },
+      {
+        "default_value": "3",
+        "input_type": "text",
+        "mutable": false,
+        "name": "relation_protocol_version",
+        "values": [
+          "3"
+        ]
+      },
+      {
+        "default_value": "UNREVIEWED",
+        "input_type": "select",
+        "mutable": true,
+        "name": "decision",
+        "values": [
+          "UNREVIEWED",
+          "VISUAL_LABEL_OF",
+          "UNASSIGNED",
+          "UNCERTAIN",
+          "NOT_APPLICABLE_REGION"
+        ]
+      },
+      {
+        "default_value": "UNSET",
+        "input_type": "select",
+        "mutable": true,
+        "name": "human_confidence",
+        "values": [
+          "UNSET",
+          "LOW",
+          "MEDIUM",
+          "HIGH"
+        ]
+      }
+    ],
+    "color": "#555555",
+    "name": "PAIR_ATTACHMENT",
+    "type": "tag"
+  }
+]

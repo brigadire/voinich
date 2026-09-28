@@ -1,0 +1,9 @@
+task_id	description	n_pairs	true_rules_count	true_gain	true_total_mdl	bounded_rules_count	bounded_gain	bounded_found_global	global_rules_count	global_gain	global_total_mdl	truth_is_global_optimum	num_global_optima	false_structure_type	dominant_score_component	failure_classification
+T1_cartesian_2x2	Small 2x2 Cartesian product (4 pairs, 4 rules, symmetric)	4	4	0.1462	218.58	4	0.1462	YES	4	0.1462	218.58	YES	4	SYMMETRIC_PERMUTATION_MODEL	RULE_CODE_LENGTH_SAVINGS	NON_IDENTIFIABLE
+T2_cartesian_3x2	3x2 Cartesian product (6 pairs, 5 rules, asymmetric initial/final)	6	5	0.2404	291.69	3	0.1466	NO	5	0.2404	291.69	YES	2	NONE	RULE_CODE_LENGTH_SAVINGS	SEARCH_FAILURE
+T3_cartesian_3x3	3x3 Cartesian product (9 pairs, 6 rules, min support 3, highly symmetric)	9	6	0.3337	383.79	6	0.3337	YES	6	0.3337	383.79	YES	2	NONE	RULE_CODE_LENGTH_SAVINGS	NON_IDENTIFIABLE
+T4_broken_symmetry	3x3 product with 1 pair missing (8 pairs, breaks Cartesian symmetry)	8	6	0.2838	366.72	4	0.1978	NO	6	0.2838	366.72	YES	4	SYMMETRIC_PERMUTATION_MODEL	RULE_CODE_LENGTH_SAVINGS	SEARCH_FAILURE
+T5_hapax_rich	Hapax-rich instance (7 pairs, some affixes appear only 1-2 times)	7	6	0.2188	350.0	3	0.1629	NO	5	0.2411	340.0	NO	2	COMPACT_PARTIAL_MODEL	RULE_CODE_LENGTH_SAVINGS	SEARCH_FAILURE
+T6_three_role_composition	2x2x2 three-role composition (8 pairs, 6 rules: 2 init, 2 med, 2 fin)	8	6	0.2117	302.72	4	0.0554	NO	6	0.2117	302.72	YES	4	SYMMETRIC_PERMUTATION_MODEL	RULE_CODE_LENGTH_SAVINGS	SEARCH_FAILURE
+T7_distractor_noise	3x2 product + 1 unmatchable noise pair (7 pairs, 5 rules)	7	5	0.2009	358.0	3	0.1205	NO	5	0.2009	358.0	YES	2	NONE	RULE_CODE_LENGTH_SAVINGS	SEARCH_FAILURE
+T8_shuffled_assignment_null	Same surfaces as T3 but scrambled pairings (anonymous null control)	9	6	0.3337	383.79	6	0.3337	YES	6	0.3337	383.79	YES	2	NONE	RULE_CODE_LENGTH_SAVINGS	NON_IDENTIFIABLE

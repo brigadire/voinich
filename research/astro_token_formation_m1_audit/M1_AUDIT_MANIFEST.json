@@ -1,0 +1,37 @@
+{
+  "artifact_sha256": {
+    "M1_AUDIT_DIAGNOSTICS.tsv": "617a489fdcd615df6985674d7fbe6aa70a1631f3d8624809b993e0a65b8992e3",
+    "M1_AUDIT_FINDINGS.tsv": "3c05fda4bbdd8346467ed12e0798eae0cdfdaaa27af25e559b23b84a6f8a917c",
+    "M1_AUDIT_MATCHING_REVIEW.md": "e1949343afea478ee0a8ca183dbeb3dc467939d57da192f74150d8a7fb878a11",
+    "M1_AUDIT_NULL_REVIEW.md": "487582a385d5b067c31f318d3333c1bf33ea6c5bc6bffc3049a6d4dceb7294f3",
+    "M1_AUDIT_PERCLASS_NULL.tsv": "ecf50518d760e8d10c389477376d0283af6a7e63a3a39fc1f369ebeacdac41f6",
+    "M1_METHODOLOGICAL_AUDIT.md": "6dd0d55845d85e73640ca156335e7d957758ab4d841360ad7b63970d8db2fe87",
+    "audit_diagnostics.py": "94bff8703bed3b5734b5793e1ee05603f65f3f5e579cba5801e9eb6e17cb597f",
+    "audit_per_class_null.py": "16ce4665838ef43c2a1a209f61ddfbefa4748d8b1d2a35bcbe02a7c781db6087"
+  },
+  "audit": "m1-methodological-audit-v1",
+  "diagnostics_note": "All computation performed for this audit is tagged run_type=AUDIT_ONLY in M1_AUDIT_DIAGNOSTICS.tsv and M1_AUDIT_PERCLASS_NULL.tsv. No new expanded brute-force search was run; all reruns reuse the frozen M0/M1 corpus, rule grid, and (for null diagnostics) the same seed_for() function as the frozen production run.",
+  "generated_utc": "2026-09-01T11:02:30+00:00",
+  "known_manifest_discrepancy": "research/astro_token_formation_m1/M1_MANIFEST.json records an input_sha256 for research/astro_token_formation_m1/main.py that does not match the currently committed file (see M1_AUDIT_FINDINGS.tsv F11); this audit's REPRODUCIBILITY_BEAM64 diagnostic independently reruns the current main.py and reproduces the frozen M1_001 result exactly.",
+  "reviewed_input_sha256": {
+    "research/astro_token_formation/ASTRO_LABEL_TRAIN_TEST_SPLIT.tsv": "2917f874c5fa944e1d7a60bdfba26b191e998308d28e30381e0a3f2000e4f8a6",
+    "research/astro_token_formation/ASTRO_TERM_CORPUS.tsv": "444ec857399e7eae06ab71a5f63414bc052b4d389616cc83475cf698a969844d",
+    "research/astro_token_formation/TOKEN_FORMATION_MANIFEST.json": "129507d15185c44d5f5442b2b03844bb2deed02f1f008c21db95e35df282f036",
+    "research/astro_token_formation/TOKEN_FORMATION_MODELS.tsv": "fdd21a96063f3a63139943d26054254514fd55bd5c1e83993317b82b5896745a",
+    "research/astro_token_formation/TOKEN_FORMATION_RULE_SPACE.md": "9c27ec0886e722c81c58b97eb6640d3394405dc82234ee57146c4b5c6b7f4e41",
+    "research/astro_token_formation_m1/M1_COMPARISON_WITH_M0.md": "71ab008da4ddd5f5d9337cd2ef0f8beb61708f3f7b822bf07ffc1aa87b4a9dc9",
+    "research/astro_token_formation_m1/M1_GRAPHEME_INVENTORY.tsv": "403299d5e419f443953b6cd89c2f783a52c516c45beb7caa0633215c6aa45d35",
+    "research/astro_token_formation_m1/M1_HELDOUT_RESULTS.tsv": "e7588908a6b5d8c1f9b9339d28079713eeafecaaba901092caf7d1b171d2a7e9",
+    "research/astro_token_formation_m1/M1_LABEL_TERM_ASSIGNMENTS.tsv": "b35c173fc12dee9d7650e2cb7df91b63edfe39c0f2b8f14f9566f79de01ecd56",
+    "research/astro_token_formation_m1/M1_MANIFEST.json": "5a0ec3196c1c531887c7bb6016ab90d22c726a2c7daf1390a778cfca7e54e506",
+    "research/astro_token_formation_m1/M1_NULL_RESULTS.tsv": "33009b1474f32112b3971cdb72018132fe0a0b405e0393ec4667ac8ed3fe34ad",
+    "research/astro_token_formation_m1/M1_SEARCH_CONFIG.yaml": "b8afce412ba25370c16b0b6b73b66c7d8bbea20d0778ab42c6758d2099916f2d",
+    "research/astro_token_formation_m1/M1_SUBSTITUTION_RULE_SPACE.md": "b6479f6eb230e046bcc4a94575bad1f1bcdc0ef42fcf33cbf972a8cbea078d27",
+    "research/astro_token_formation_m1/M1_TOKEN_FORMATION_MODELS.tsv": "9b90ecef24eca059cbc3914723fdd0264edbd09e6ab14553f5f1cecd0d149698",
+    "research/astro_token_formation_m1/M1_TOKEN_FORMATION_REPORT.md": "8cb9f36945b39c14de52c7f13c522f5936efd303fc39f0a421353e8c0f5f9a13",
+    "research/astro_token_formation_m1/M1_UNEXPLAINED_LABELS.tsv": "891dc67f89a455460c74904da1a53e5ea063b965f669b407fe00fe16e59fd74e",
+    "research/astro_token_formation_m1/main.py": "5eb7a764141a1adfe7f99e31fac1d4bc894c1850e05ad44a12125989c7729058",
+    "research/stolfi_label_inventory/STOLFI_ASTRO_LABEL_MATCHES.tsv": "4b78659807f83ea16da872eaf29dc259393bef96a10bc96361919a79db822000"
+  },
+  "scope": "Independent methodological audit of research/astro_token_formation_m1 and its research/astro_token_formation (M0) foundation, per tasks_other/brutforce-astronomical-labels-M1-audit.md. No frozen M0/M1 artifact, corpus, rule, or threshold was modified."
+}

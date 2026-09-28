@@ -1,0 +1,170 @@
+{
+  "all_nine_family_search_budget_parity": "PASS",
+  "audit_script_sha256": "157ee7cd711e6ddadb6ea008c194dd1451a651dbf7d66c3f2e44a0972fa6d72e",
+  "automated_tests": 16,
+  "checkpoint_shards": 900,
+  "conservative_null_rows": 90000,
+  "frozen_engine_unmodified": "YES",
+  "full_resume_deterministic_outputs": {
+    "CROSS_PAGE_RESULTS.tsv": "f4a299760f34a748a82ba4696ea3f49b53e5515ff9aa28704e13e86cc84bc85f",
+    "HAPAX_STRATIFIED_RESULTS.tsv": "eb27b63e689fadcd43a1bc66483ff14c5087d0351ce1bba6bdc6b42c7d1313ef",
+    "INFERENCE_RESULTS.tsv": "773f73ce62d5631099a23895821a9baf13b607331c94facb91b4e7b8373d1ce7",
+    "INVARIANCE_RESULTS.tsv": "04d51caa5be0b067fd84547205c087571466449ece528fa7d72a1c994831065c",
+    "JOINT_RESULTS.tsv": "2bf00c571f1d7ef302898bb657159d01a1810cb82603608bb4566e8d43aad593",
+    "LEAVE_ONE_OUT_RESULTS.tsv": "987095f4b873ad4c73a08f863cedc7882998b042229a55c9b55f5e5a9ab376d0",
+    "NULL_RESULTS.tsv": "5cc0ab78d9f8ed8c9617069f78c87fedbda27ccbee8267ba0dd539f0f570dd46",
+    "PAIR_ALTERNATIVES.tsv": "735044c41efdfb4dda97c3662caa6b9188b2ee677fb1043dbd9af321ab148df1",
+    "PAIR_CANDIDATES.tsv": "646d579b20807e3eac44c6bb1a154bc5b706380d17192b2ae54cfcbb1c5e6400",
+    "PAIR_STABILITY.tsv": "6fa2b9d682e737daeda925cd9fc90f48ea29a7fa3c939f1d3a887539e27c7b52",
+    "RESAMPLING_RESULTS.tsv": "6cef02b55b978e3a07eda3b58e80f7852212d6faf90b0e07cfd9cad294f04586",
+    "RESULTS_REPORT.md": "0c415c1fd82eeb869cc10cb218ad84cf6bec944ec595a0bdc2832d12e4d3efe4",
+    "SUMMARY.json": "5bd9a4cf5370c69966ac57410de90930517d6d44f0d4773efee1c3ed47b915e2",
+    "SYNTHETIC_RECOVERY_RESULTS.tsv": "d31d0583d9b972621cb7d1a062215b6762551c7100bbf546649b7c99c8979918",
+    "SYSTEM_RESULTS.tsv": "36a20019a803418d362f5c8fc1b2b689d76c42552edd1a13df4a583effef6f4c"
+  },
+  "historical_capacity_monotonicity": "PASS",
+  "independent_matching_oracle_graphs": 80,
+  "independent_scope_and_hapax_recount": "PASS",
+  "independently_replayed_datasets": [
+    {
+      "family": "LENGTH_ENDPOINT",
+      "result": "BYTE_EQUIVALENT_STRUCTURED_ROWS",
+      "seed": 570000
+    },
+    {
+      "family": "LENGTH_ENDPOINT",
+      "result": "BYTE_EQUIVALENT_STRUCTURED_ROWS",
+      "seed": 575000
+    },
+    {
+      "family": "LENGTH_ENDPOINT",
+      "result": "BYTE_EQUIVALENT_STRUCTURED_ROWS",
+      "seed": 579999
+    },
+    {
+      "family": "UNIGRAM",
+      "result": "BYTE_EQUIVALENT_STRUCTURED_ROWS",
+      "seed": 670000
+    },
+    {
+      "family": "UNIGRAM",
+      "result": "BYTE_EQUIVALENT_STRUCTURED_ROWS",
+      "seed": 675000
+    },
+    {
+      "family": "UNIGRAM",
+      "result": "BYTE_EQUIVALENT_STRUCTURED_ROWS",
+      "seed": 679999
+    },
+    {
+      "family": "BIGRAM",
+      "result": "BYTE_EQUIVALENT_STRUCTURED_ROWS",
+      "seed": 770000
+    },
+    {
+      "family": "BIGRAM",
+      "result": "BYTE_EQUIVALENT_STRUCTURED_ROWS",
+      "seed": 775000
+    },
+    {
+      "family": "BIGRAM",
+      "result": "BYTE_EQUIVALENT_STRUCTURED_ROWS",
+      "seed": 779999
+    },
+    {
+      "family": "HISTORICAL_NAMES",
+      "result": "BYTE_EQUIVALENT_STRUCTURED_ROWS",
+      "seed": 870000
+    },
+    {
+      "family": "HISTORICAL_NAMES",
+      "result": "BYTE_EQUIVALENT_STRUCTURED_ROWS",
+      "seed": 875000
+    },
+    {
+      "family": "HISTORICAL_NAMES",
+      "result": "BYTE_EQUIVALENT_STRUCTURED_ROWS",
+      "seed": 879999
+    },
+    {
+      "family": "MEDIEVAL_LATIN",
+      "result": "BYTE_EQUIVALENT_STRUCTURED_ROWS",
+      "seed": 970000
+    },
+    {
+      "family": "MEDIEVAL_LATIN",
+      "result": "BYTE_EQUIVALENT_STRUCTURED_ROWS",
+      "seed": 975000
+    },
+    {
+      "family": "MEDIEVAL_LATIN",
+      "result": "BYTE_EQUIVALENT_STRUCTURED_ROWS",
+      "seed": 979999
+    },
+    {
+      "family": "ARABO_LATIN",
+      "result": "BYTE_EQUIVALENT_STRUCTURED_ROWS",
+      "seed": 1070000
+    },
+    {
+      "family": "ARABO_LATIN",
+      "result": "BYTE_EQUIVALENT_STRUCTURED_ROWS",
+      "seed": 1075000
+    },
+    {
+      "family": "ARABO_LATIN",
+      "result": "BYTE_EQUIVALENT_STRUCTURED_ROWS",
+      "seed": 1079999
+    },
+    {
+      "family": "OTHER_SECTION_LABEL",
+      "result": "BYTE_EQUIVALENT_STRUCTURED_ROWS",
+      "seed": 1170000
+    },
+    {
+      "family": "OTHER_SECTION_LABEL",
+      "result": "BYTE_EQUIVALENT_STRUCTURED_ROWS",
+      "seed": 1175000
+    },
+    {
+      "family": "OTHER_SECTION_LABEL",
+      "result": "BYTE_EQUIVALENT_STRUCTURED_ROWS",
+      "seed": 1179999
+    },
+    {
+      "family": "CIRCULAR_TEXT",
+      "result": "BYTE_EQUIVALENT_STRUCTURED_ROWS",
+      "seed": 1270000
+    },
+    {
+      "family": "CIRCULAR_TEXT",
+      "result": "BYTE_EQUIVALENT_STRUCTURED_ROWS",
+      "seed": 1275000
+    },
+    {
+      "family": "CIRCULAR_TEXT",
+      "result": "BYTE_EQUIVALENT_STRUCTURED_ROWS",
+      "seed": 1279999
+    },
+    {
+      "family": "INTRO_PROSE",
+      "result": "BYTE_EQUIVALENT_STRUCTURED_ROWS",
+      "seed": 1370000
+    },
+    {
+      "family": "INTRO_PROSE",
+      "result": "BYTE_EQUIVALENT_STRUCTURED_ROWS",
+      "seed": 1375000
+    },
+    {
+      "family": "INTRO_PROSE",
+      "result": "BYTE_EQUIVALENT_STRUCTURED_ROWS",
+      "seed": 1379999
+    }
+  ],
+  "multiplicity_recalculation": "PASS",
+  "primary_null_rows": 270000,
+  "repeated_seed_cases": 27,
+  "status": "PASS",
+  "upstream_unchanged": "YES"
+}

@@ -1,0 +1,9 @@
+task_id	n_pairs	true_rules_count	num_global_optima	num_equivalence_classes	truth_class_size	truth_rank	solutions_within_1bit	solutions_within_5bit	solutions_within_10bit	shuffled_assignment_same_score	strict_assignment_accuracy	quotiented_assignment_accuracy	symmetry_type
+T1_cartesian_2x2	4	4	4	2	4	2	4	4	8	NO	0.0	1.0	CARTESIAN_AUTOMORPHISM
+T2_cartesian_3x2	6	5	2	1	2	1	2	2	2	NO	0.3333	0.3333	CARTESIAN_AUTOMORPHISM
+T3_cartesian_3x3	9	6	2	1	2	1	2	2	2	NO	0.0	1.0	CARTESIAN_AUTOMORPHISM
+T4_broken_symmetry	8	6	4	2	4	2	4	4	4	NO	0.25	0.25	BROKEN_ASYMMETRY
+T5_hapax_rich	7	6	2	1	0	3	2	2	4	NO	0.4286	0.4286	RIGID_UNIQUE
+T6_three_role_composition	8	6	4	2	4	2	4	4	4	NO	0.0	0.0	RIGID_UNIQUE
+T7_distractor_noise	7	5	2	1	2	1	2	2	2	NO	0.2857	0.2857	RIGID_UNIQUE
+T8_shuffled_assignment_null	9	6	2	1	2	1	2	2	2	YES	0.0	1.0	SHUFFLED_INVARIANCE

@@ -1,0 +1,7 @@
+rule	semantic_condition	test	status
+mapped_repeat	assigned source type must emit same target	complete small exhaustive	PASS
+injective_target	different source types cannot share target	complete small exhaustive	PASS
+unmapped_type	first unmapped decision is global for all repeats	complete small exhaustive	PASS
+prefix_output	generated output prefix equals target prefix	complete small exhaustive	PASS
+remaining_length	remaining output length cannot exceed source capacity	complete small exhaustive	PASS
+memo_state	canonical state includes position,target,mapping,used targets,unmapped types	complete small exhaustive	PASS

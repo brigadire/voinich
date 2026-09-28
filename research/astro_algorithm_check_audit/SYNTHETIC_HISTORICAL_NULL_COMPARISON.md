@@ -1,0 +1,3 @@
+# Historical versus synthetic null
+
+Historical M1 D1 nulls had maximum coverage around 0.50, while the current synthetic null has P95 0.95 and maximum 1.00. Confirmed contributors are (1) the synthetic labels are generated with the same EVA unit inventory and length-conditioned output channel as the positive system, (2) the 20-label / 31-concept ratio gives many compatible random mappings, and (3) synthetic forms are short and homogeneous. Historical terms have longer, heterogeneous multiword morphology and a more restrictive observed token-length profile. The relative effect sizes are not identifiable from the one-replicate original benchmark; alternative-generator results are in `SYNTHETIC_NULL_GENERATOR_COMPARISON.tsv`.

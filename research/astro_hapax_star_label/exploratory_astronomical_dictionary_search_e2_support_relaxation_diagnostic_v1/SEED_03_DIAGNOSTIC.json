@@ -1,0 +1,290 @@
+{
+  "budget_sec_per_threshold": 30,
+  "config": {
+    "capacity": "GLOBAL_CAPACITY_1",
+    "k": 5,
+    "profile": "BALANCED"
+  },
+  "records": [
+    {
+      "elapsed_sec": 0.1354,
+      "metrics": {
+        "assignment": [
+          [
+            "STAR_CANOPUS",
+            "STAR_f68r2_12463"
+          ]
+        ],
+        "assignment_hash": "a0fdd80a264aa03e20c41acf1931d1ac365f306138f8c48815f41b631cbd6891",
+        "coverage_after_removing_unsupported_rules": 0,
+        "dependencies": [
+          {
+            "depends_on_rules": [
+              "s"
+            ],
+            "eva_token": "o",
+            "identity": "STAR_CANOPUS",
+            "label_id": "STAR_f68r2_12463"
+          }
+        ],
+        "raw_coverage": 1,
+        "support_audit": [
+          {
+            "distinct_eva_type_count": 0,
+            "eva_unit": "c",
+            "source_unit": "e",
+            "status": "REJECTED_SUPPORT_THRESHOLD",
+            "support_types": ""
+          },
+          {
+            "distinct_eva_type_count": 0,
+            "eva_unit": "y",
+            "source_unit": "h",
+            "status": "REJECTED_SUPPORT_THRESHOLD",
+            "support_types": ""
+          },
+          {
+            "distinct_eva_type_count": 0,
+            "eva_unit": "s",
+            "source_unit": "l",
+            "status": "REJECTED_SUPPORT_THRESHOLD",
+            "support_types": ""
+          },
+          {
+            "distinct_eva_type_count": 0,
+            "eva_unit": "n",
+            "source_unit": "r",
+            "status": "REJECTED_SUPPORT_THRESHOLD",
+            "support_types": ""
+          },
+          {
+            "distinct_eva_type_count": 1,
+            "eva_unit": "o",
+            "source_unit": "s",
+            "status": "REJECTED_SUPPORT_THRESHOLD",
+            "support_types": "o"
+          }
+        ],
+        "support_counts": {
+          "0": 4,
+          "1": 1,
+          "2_plus": 0
+        },
+        "support_valid_coverage": 0,
+        "support_violations": 5,
+        "table": {
+          "e": "c",
+          "h": "y",
+          "l": "s",
+          "r": "n",
+          "s": "o"
+        }
+      },
+      "oracle": "DETERMINISTIC_MAX_MATCHING",
+      "search_status": "HEURISTIC_RANDOM_TABLE_PROBE",
+      "seed": 3,
+      "sequence": 1,
+      "support_threshold": 0
+    },
+    {
+      "elapsed_sec": 2.5549,
+      "metrics": {
+        "assignment": [
+          [
+            "STAR_ACUBENS",
+            "STAR_f68r2_12463"
+          ],
+          [
+            "STAR_SIRIUS",
+            "STAR_f68r1_12405"
+          ]
+        ],
+        "assignment_hash": "895556085fb07247807c0c1a7fe82af61cdc7bb74854b7ef0dd169a9071903f0",
+        "coverage_after_removing_unsupported_rules": 0,
+        "dependencies": [
+          {
+            "depends_on_rules": [
+              "e"
+            ],
+            "eva_token": "o",
+            "identity": "STAR_ACUBENS",
+            "label_id": "STAR_f68r2_12463"
+          },
+          {
+            "depends_on_rules": [
+              "b",
+              "o"
+            ],
+            "eva_token": "hy",
+            "identity": "STAR_SIRIUS",
+            "label_id": "STAR_f68r1_12405"
+          }
+        ],
+        "raw_coverage": 2,
+        "support_audit": [
+          {
+            "distinct_eva_type_count": 1,
+            "eva_unit": "h",
+            "source_unit": "b",
+            "status": "REJECTED_SUPPORT_THRESHOLD",
+            "support_types": "hy"
+          },
+          {
+            "distinct_eva_type_count": 1,
+            "eva_unit": "o",
+            "source_unit": "e",
+            "status": "REJECTED_SUPPORT_THRESHOLD",
+            "support_types": "o"
+          },
+          {
+            "distinct_eva_type_count": 0,
+            "eva_unit": "n",
+            "source_unit": "k",
+            "status": "REJECTED_SUPPORT_THRESHOLD",
+            "support_types": ""
+          },
+          {
+            "distinct_eva_type_count": 1,
+            "eva_unit": "y",
+            "source_unit": "o",
+            "status": "REJECTED_SUPPORT_THRESHOLD",
+            "support_types": "hy"
+          },
+          {
+            "distinct_eva_type_count": 0,
+            "eva_unit": "p",
+            "source_unit": "u",
+            "status": "REJECTED_SUPPORT_THRESHOLD",
+            "support_types": ""
+          }
+        ],
+        "support_counts": {
+          "0": 2,
+          "1": 3,
+          "2_plus": 0
+        },
+        "support_valid_coverage": 0,
+        "support_violations": 5,
+        "table": {
+          "b": "h",
+          "e": "o",
+          "k": "n",
+          "o": "y",
+          "u": "p"
+        }
+      },
+      "oracle": "DETERMINISTIC_MAX_MATCHING",
+      "search_status": "HEURISTIC_RANDOM_TABLE_PROBE",
+      "seed": 3,
+      "sequence": 2,
+      "support_threshold": 0
+    },
+    {
+      "elapsed_sec": 28.8475,
+      "metrics": {
+        "assignment": [
+          [
+            "STAR_ALPHERATZ",
+            "STAR_f68r2_12463"
+          ],
+          [
+            "STAR_REGULUS",
+            "STAR_f68r2_12467"
+          ],
+          [
+            "STAR_RIGEL",
+            "STAR_f68r1_12405"
+          ]
+        ],
+        "assignment_hash": "8a14e76e7596b04e47a2e1d07b431b46213d3ad616ad7a3da1f0976660b70d13",
+        "coverage_after_removing_unsupported_rules": 0,
+        "dependencies": [
+          {
+            "depends_on_rules": [
+              "m"
+            ],
+            "eva_token": "o",
+            "identity": "STAR_ALPHERATZ",
+            "label_id": "STAR_f68r2_12463"
+          },
+          {
+            "depends_on_rules": [
+              "g",
+              "r"
+            ],
+            "eva_token": "hy",
+            "identity": "STAR_REGULUS",
+            "label_id": "STAR_f68r2_12467"
+          },
+          {
+            "depends_on_rules": [
+              "g",
+              "r"
+            ],
+            "eva_token": "hy",
+            "identity": "STAR_RIGEL",
+            "label_id": "STAR_f68r1_12405"
+          }
+        ],
+        "raw_coverage": 3,
+        "support_audit": [
+          {
+            "distinct_eva_type_count": 0,
+            "eva_unit": "p",
+            "source_unit": "a",
+            "status": "REJECTED_SUPPORT_THRESHOLD",
+            "support_types": ""
+          },
+          {
+            "distinct_eva_type_count": 1,
+            "eva_unit": "y",
+            "source_unit": "g",
+            "status": "REJECTED_SUPPORT_THRESHOLD",
+            "support_types": "hy"
+          },
+          {
+            "distinct_eva_type_count": 1,
+            "eva_unit": "o",
+            "source_unit": "m",
+            "status": "REJECTED_SUPPORT_THRESHOLD",
+            "support_types": "o"
+          },
+          {
+            "distinct_eva_type_count": 1,
+            "eva_unit": "h",
+            "source_unit": "r",
+            "status": "REJECTED_SUPPORT_THRESHOLD",
+            "support_types": "hy"
+          },
+          {
+            "distinct_eva_type_count": 0,
+            "eva_unit": "t",
+            "source_unit": "z",
+            "status": "REJECTED_SUPPORT_THRESHOLD",
+            "support_types": ""
+          }
+        ],
+        "support_counts": {
+          "0": 2,
+          "1": 3,
+          "2_plus": 0
+        },
+        "support_valid_coverage": 0,
+        "support_violations": 5,
+        "table": {
+          "a": "p",
+          "g": "y",
+          "m": "o",
+          "r": "h",
+          "z": "t"
+        }
+      },
+      "oracle": "DETERMINISTIC_MAX_MATCHING",
+      "search_status": "HEURISTIC_RANDOM_TABLE_PROBE",
+      "seed": 3,
+      "sequence": 3,
+      "support_threshold": 0
+    }
+  ],
+  "seed": 3
+}

@@ -1,0 +1,6 @@
+test_id	description	nominal_support	independent_support	rules_passed	k2_allowed	verdict
+MS1_DUPLICATE_ROWS	1 unique pair repeated 3 times	3	1	5	NO	FAIL_PASSES_ON_DUPLICATE_TOKENS
+MS2_LABEL_VARIANTS	1 term with 3 label variants	3	1	4	NO	FAIL_PASSES_ON_SINGLE_TERM
+MS3_INTERNAL_FRAGMENTS	Single pair with character repeated 3 times internally	3	1	1	NO	FAIL_PASSES_ON_INTRA_TOKEN_REPETITION
+MS4_TRULY_INDEPENDENT	3 distinct independent pairs sharing initial a->x	3	3	1	NO	PASS_VALID_INDEPENDENT_SUPPORT
+MS5_SEARCH_K2_LOOPHOLE	Engine search tests k in (2,3,4), admitting support=2	2	2	1	YES	FAIL_SEARCH_ALLOWS_SUPPORT_2

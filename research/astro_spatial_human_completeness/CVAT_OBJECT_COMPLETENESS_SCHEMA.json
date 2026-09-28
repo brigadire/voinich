@@ -1,0 +1,229 @@
+[
+  {
+    "attributes": [
+      {
+        "default_value": "UNSET",
+        "input_type": "text",
+        "mutable": false,
+        "name": "reference_id",
+        "values": [
+          "UNSET"
+        ]
+      },
+      {
+        "default_value": "C1.0",
+        "input_type": "text",
+        "mutable": false,
+        "name": "object_protocol_version",
+        "values": [
+          "C1.0"
+        ]
+      }
+    ],
+    "color": "#349866",
+    "name": "STAR_REFERENCE",
+    "type": "rectangle"
+  },
+  {
+    "attributes": [
+      {
+        "default_value": "UNSET",
+        "input_type": "text",
+        "mutable": false,
+        "name": "reference_id",
+        "values": [
+          "UNSET"
+        ]
+      },
+      {
+        "default_value": "C1.0",
+        "input_type": "text",
+        "mutable": false,
+        "name": "object_protocol_version",
+        "values": [
+          "C1.0"
+        ]
+      }
+    ],
+    "color": "#3578b8",
+    "name": "LABEL_REFERENCE",
+    "type": "any"
+  },
+  {
+    "attributes": [
+      {
+        "default_value": "UNSET",
+        "input_type": "text",
+        "mutable": false,
+        "name": "reference_id",
+        "values": [
+          "UNSET"
+        ]
+      },
+      {
+        "default_value": "C1.0",
+        "input_type": "text",
+        "mutable": false,
+        "name": "object_protocol_version",
+        "values": [
+          "C1.0"
+        ]
+      }
+    ],
+    "color": "#888888",
+    "name": "UNCERTAIN_REFERENCE",
+    "type": "any"
+  },
+  {
+    "attributes": [
+      {
+        "default_value": "PROPOSED_NEW",
+        "input_type": "select",
+        "mutable": true,
+        "name": "addition_status",
+        "values": [
+          "PROPOSED_NEW",
+          "UNCERTAIN_NEW",
+          "POSSIBLE_DUPLICATE_NEW"
+        ]
+      },
+      {
+        "default_value": "UNSET",
+        "input_type": "select",
+        "mutable": true,
+        "name": "human_confidence",
+        "values": [
+          "UNSET",
+          "LOW",
+          "MEDIUM",
+          "HIGH"
+        ]
+      },
+      {
+        "default_value": "C1.0",
+        "input_type": "text",
+        "mutable": false,
+        "name": "object_protocol_version",
+        "values": [
+          "C1.0"
+        ]
+      }
+    ],
+    "color": "#ed7532",
+    "name": "STAR_HUMAN_ADDED",
+    "type": "rectangle"
+  },
+  {
+    "attributes": [
+      {
+        "default_value": "PROPOSED_NEW",
+        "input_type": "select",
+        "mutable": true,
+        "name": "addition_status",
+        "values": [
+          "PROPOSED_NEW",
+          "UNCERTAIN_NEW",
+          "POSSIBLE_DUPLICATE_NEW"
+        ]
+      },
+      {
+        "default_value": "UNSET",
+        "input_type": "select",
+        "mutable": true,
+        "name": "human_confidence",
+        "values": [
+          "UNSET",
+          "LOW",
+          "MEDIUM",
+          "HIGH"
+        ]
+      },
+      {
+        "default_value": "C1.0",
+        "input_type": "text",
+        "mutable": false,
+        "name": "object_protocol_version",
+        "values": [
+          "C1.0"
+        ]
+      }
+    ],
+    "color": "#b25dda",
+    "name": "LABEL_HUMAN_ADDED",
+    "type": "any"
+  },
+  {
+    "attributes": [
+      {
+        "default_value": "NOT_STARTED",
+        "input_type": "select",
+        "mutable": true,
+        "name": "completion_status",
+        "values": [
+          "NOT_STARTED",
+          "COMPLETE_NO_NEW_OBJECTS",
+          "COMPLETE_WITH_NEW_OBJECTS",
+          "INCOMPLETE_TECHNICAL",
+          "INCOMPLETE_REVIEWER_UNCERTAINTY"
+        ]
+      },
+      {
+        "default_value": "C1.0",
+        "input_type": "text",
+        "mutable": false,
+        "name": "object_protocol_version",
+        "values": [
+          "C1.0"
+        ]
+      },
+      {
+        "default_value": "false",
+        "input_type": "checkbox",
+        "mutable": true,
+        "name": "star_review_done",
+        "values": [
+          "false"
+        ]
+      },
+      {
+        "default_value": "false",
+        "input_type": "checkbox",
+        "mutable": true,
+        "name": "label_review_done",
+        "values": [
+          "false"
+        ]
+      },
+      {
+        "default_value": "false",
+        "input_type": "checkbox",
+        "mutable": true,
+        "name": "edges_checked",
+        "values": [
+          "false"
+        ]
+      },
+      {
+        "default_value": "false",
+        "input_type": "checkbox",
+        "mutable": true,
+        "name": "circular_regions_checked",
+        "values": [
+          "false"
+        ]
+      },
+      {
+        "default_value": "false",
+        "input_type": "checkbox",
+        "mutable": true,
+        "name": "weak_contrast_checked",
+        "values": [
+          "false"
+        ]
+      }
+    ],
+    "color": "#555555",
+    "name": "PANEL_COMPLETENESS",
+    "type": "tag"
+  }
+]

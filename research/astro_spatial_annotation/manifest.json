@@ -1,0 +1,62 @@
+{
+  "artifact_sha256": {
+    "ASTRO_ANNOTATION_AGREEMENT.tsv": "a8ccac65e1646ace8d970193c6f5f978af7f63feac7d92cf52d398496e5c340b",
+    "ASTRO_ANNOTATION_PROTOCOL.md": "1d3bf893550203a18523e3b30c31553894480ffa399cdc827f28a360a401050b",
+    "ASTRO_CYCLIC_ORDER.tsv": "c25d30e370a07cc7413a2c873ef9fb3ff0c030eba1d1388f2459ed5fe7266d85",
+    "ASTRO_LABELS_SPATIAL.tsv": "a0bc01f4c4a34b8df293f3fd1b918345f778bbf5c4950aabb067f7f739aec034",
+    "ASTRO_LABEL_OBJECT_RELATIONS.tsv": "f8a03ee20510f559437592de60a306466c17fceb000c5613e77b833577173d9b",
+    "ASTRO_MANUAL_SEED.tsv": "8cd5ce1c9b2784125d12ece2140ee8f059b321e8695662b321300a3942b59698",
+    "ASTRO_OBJECTS.tsv": "572c5c6aceb98f1e2e09356f6746bbe1e393ed90c07b6e67b2f476744b9feba6",
+    "ASTRO_OBJECT_ONTOLOGY.md": "c374f6fab6021163abcd43ab229d491cef0a7d6faf00cffed25064070b00c0c4",
+    "ASTRO_POLAR_COORDINATES.tsv": "227c6ccf7ef8ef0f6d2a78b70e8bd5332c65ccf272f2cba8b82e5937c01837ee",
+    "ASTRO_RINGS.tsv": "79fad40de01d7ddccbbe3d4d7a709b17fd1c8a0bdc069b43be70dbac051c2eea",
+    "ASTRO_SPATIAL_CLUSTERS.tsv": "d5442dbaadd3a934ebac42d8dfdd5228f5137bf230fbf8e9dcc06bf52162a268",
+    "ASTRO_SPATIAL_NEIGHBORS.tsv": "0f487a78bf5db579fa4e19de4a7aadc0da49c126343c429b8ee9fd51a3cc1833",
+    "ASTRO_SPATIAL_QUALITY_REPORT.md": "873995d2c9cd4a90b00f3cb7e69fb446e964d6ef442b793371f74ed57df2d945",
+    "ASTRO_SPATIAL_SOURCE_REGISTRY.tsv": "863f3c33b54cb27cc16345a5c498f9dafdf96803fb06f84dc02f4797c375494e",
+    "ASTRO_STAR_SPATIAL_DATASET.tsv": "bcaca72c55867a264171d0cb8c7859b3c67f0ad23f403b264d39629cf20e97fc",
+    "ASTRO_STOLFI_SPATIAL_BRIDGE.tsv": "ad884723669500b53d3b33f7b52c2521293e93a987ce4c37beac16760a7f5fd2",
+    "ASTRO_STRUCTURAL_ELIGIBILITY.md": "2715f64a440a97822c8dcb0f7907c7b1ff25f3a7d20f0cd5f71450c520612f2a",
+    "ASTRO_ZL3B_SPATIAL_BRIDGE.tsv": "3fa93083de3969268cf0601337f5c36cb7232c37714fe7f2ee5c315b9e64cb11"
+  },
+  "coordinate_system": {
+    "clockwise": true,
+    "normalized": "x/crop_width,y/crop_height",
+    "origin": "panel_crop_top_left",
+    "theta_zero": "image_top",
+    "x": "right",
+    "y": "down"
+  },
+  "experiment": "astro-spatial-annotation-v1",
+  "frozen_parameters": {
+    "derived_cluster_radius_norm": 0.12,
+    "knn": [
+      1,
+      2,
+      3
+    ],
+    "radius_graph": [
+      0.05,
+      0.1,
+      0.2
+    ]
+  },
+  "generated_utc": "2026-09-02T08:00:00+00:00",
+  "quality_gate": "FAIL",
+  "scope": [
+    "f67r1",
+    "f67r2",
+    "f67v1",
+    "f68r1",
+    "f68r2",
+    "f68r3",
+    "f68v1",
+    "f68v2"
+  ],
+  "source_input": {
+    "manual_seed": "research/astro_spatial_annotation/ASTRO_MANUAL_SEED.tsv",
+    "manual_seed_sha256": "8cd5ce1c9b2784125d12ece2140ee8f059b321e8695662b321300a3942b59698",
+    "stolfi_matches": "research/stolfi_label_inventory/STOLFI_ASTRO_LABEL_MATCHES.tsv",
+    "stolfi_matches_sha256": "4b78659807f83ea16da872eaf29dc259393bef96a10bc96361919a79db822000"
+  }
+}

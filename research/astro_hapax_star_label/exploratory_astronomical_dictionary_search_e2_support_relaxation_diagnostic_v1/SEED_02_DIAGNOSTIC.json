@@ -1,0 +1,171 @@
+{
+  "budget_sec_per_threshold": 30,
+  "config": {
+    "capacity": "GLOBAL_CAPACITY_1",
+    "k": 5,
+    "profile": "BALANCED"
+  },
+  "records": [
+    {
+      "elapsed_sec": 0.1345,
+      "metrics": {
+        "assignment": [],
+        "assignment_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "coverage_after_removing_unsupported_rules": 0,
+        "dependencies": [],
+        "raw_coverage": 0,
+        "support_audit": [
+          {
+            "distinct_eva_type_count": 0,
+            "eva_unit": "n",
+            "source_unit": "b",
+            "status": "REJECTED_SUPPORT_THRESHOLD",
+            "support_types": ""
+          },
+          {
+            "distinct_eva_type_count": 0,
+            "eva_unit": "f",
+            "source_unit": "c",
+            "status": "REJECTED_SUPPORT_THRESHOLD",
+            "support_types": ""
+          },
+          {
+            "distinct_eva_type_count": 0,
+            "eva_unit": "e",
+            "source_unit": "f",
+            "status": "REJECTED_SUPPORT_THRESHOLD",
+            "support_types": ""
+          },
+          {
+            "distinct_eva_type_count": 0,
+            "eva_unit": "y",
+            "source_unit": "l",
+            "status": "REJECTED_SUPPORT_THRESHOLD",
+            "support_types": ""
+          },
+          {
+            "distinct_eva_type_count": 0,
+            "eva_unit": "s",
+            "source_unit": "x",
+            "status": "REJECTED_SUPPORT_THRESHOLD",
+            "support_types": ""
+          }
+        ],
+        "support_counts": {
+          "0": 5,
+          "1": 0,
+          "2_plus": 0
+        },
+        "support_valid_coverage": 0,
+        "support_violations": 5,
+        "table": {
+          "b": "n",
+          "c": "f",
+          "f": "e",
+          "l": "y",
+          "x": "s"
+        }
+      },
+      "oracle": "DETERMINISTIC_MAX_MATCHING",
+      "search_status": "HEURISTIC_RANDOM_TABLE_PROBE",
+      "seed": 2,
+      "sequence": 1,
+      "support_threshold": 0
+    },
+    {
+      "elapsed_sec": 0.2739,
+      "metrics": {
+        "assignment": [
+          [
+            "STAR_ALHENA",
+            "STAR_f68r2_12467"
+          ],
+          [
+            "STAR_ANTARES",
+            "STAR_f68r1_12405"
+          ]
+        ],
+        "assignment_hash": "41dc107c586e9f9023c40a8bab55e2e9db38f6f268c3a6aafb7405e840be7f25",
+        "coverage_after_removing_unsupported_rules": 0,
+        "dependencies": [
+          {
+            "depends_on_rules": [
+              "n",
+              "s"
+            ],
+            "eva_token": "hy",
+            "identity": "STAR_ALHENA",
+            "label_id": "STAR_f68r2_12467"
+          },
+          {
+            "depends_on_rules": [
+              "n",
+              "s"
+            ],
+            "eva_token": "hy",
+            "identity": "STAR_ANTARES",
+            "label_id": "STAR_f68r1_12405"
+          }
+        ],
+        "raw_coverage": 2,
+        "support_audit": [
+          {
+            "distinct_eva_type_count": 0,
+            "eva_unit": "r",
+            "source_unit": "b",
+            "status": "REJECTED_SUPPORT_THRESHOLD",
+            "support_types": ""
+          },
+          {
+            "distinct_eva_type_count": 0,
+            "eva_unit": "l",
+            "source_unit": "f",
+            "status": "REJECTED_SUPPORT_THRESHOLD",
+            "support_types": ""
+          },
+          {
+            "distinct_eva_type_count": 1,
+            "eva_unit": "h",
+            "source_unit": "n",
+            "status": "REJECTED_SUPPORT_THRESHOLD",
+            "support_types": "hy"
+          },
+          {
+            "distinct_eva_type_count": 1,
+            "eva_unit": "y",
+            "source_unit": "s",
+            "status": "REJECTED_SUPPORT_THRESHOLD",
+            "support_types": "hy"
+          },
+          {
+            "distinct_eva_type_count": 0,
+            "eva_unit": "p",
+            "source_unit": "v",
+            "status": "REJECTED_SUPPORT_THRESHOLD",
+            "support_types": ""
+          }
+        ],
+        "support_counts": {
+          "0": 3,
+          "1": 2,
+          "2_plus": 0
+        },
+        "support_valid_coverage": 0,
+        "support_violations": 5,
+        "table": {
+          "b": "r",
+          "f": "l",
+          "n": "h",
+          "s": "y",
+          "v": "p"
+        }
+      },
+      "oracle": "DETERMINISTIC_MAX_MATCHING",
+      "search_status": "HEURISTIC_RANDOM_TABLE_PROBE",
+      "seed": 2,
+      "sequence": 2,
+      "support_threshold": 0
+    }
+  ],
+  "seed": 2
+}

@@ -1,0 +1,9 @@
+test	status	detail
+interrupt_during_generation	PASS_ON_FIXTURE	temporary directory remains non-committed
+interrupt_after_graph	PASS_ON_FIXTURE	resume repeats or quarantines incomplete stage
+interrupt_during_solver	PASS_ON_FIXTURE	no committed profile before replay
+interrupt_before_replay	PASS_ON_FIXTURE	no committed profile before replay
+interrupt_before_atomic_rename	PASS_ON_FIXTURE	atomic rename is commit boundary
+corrupt_committed_file	PASS	verify-checkpoints detects checksum mismatch
+rerun_committed_profile	PASS	profile is immutable and skipped
+resume_equivalence	PASS_ON_FIXTURE	completed fixture equals uninterrupted result

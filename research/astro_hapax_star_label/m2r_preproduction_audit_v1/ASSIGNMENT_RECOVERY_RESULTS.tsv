@@ -1,0 +1,4 @@
+test_id	description	exact_assignment_accuracy	top_k_accuracy	latent_rule_recovery	alternative_multiplicity	ambiguity_preserved	verdict
+PRE_ALIGNED_INPUT	Default inputs with 1:1 index alignment	1.000 (trivial by zip)	1.000	1.000	1	NO_AMBIGUITY_CAPABILITY	VALID_ONLY_UNDER_PREALIGNMENT
+UNALIGNED_BAG_INPUT	Unpaired terms and labels in shuffled order	0.000 (engine cannot align)	0.000	0.000	NA	NO	FAIL_NO_ASSIGNMENT_SEARCH
+SYMMETRIC_AMBIGUITY	Multiple symmetric assignments with identical coverage	0.000 (arbitrary tie-break)	0.000	0.000	NA	NO	FAIL_AMBIGUITY_UNSUPPORTED

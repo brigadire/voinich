@@ -1,0 +1,17 @@
+[
+  {
+    "name": "LABEL",
+    "color": "#03a9f4",
+    "type": "any",
+    "attributes": [
+      {"name": "candidate_id", "input_type": "text", "mutable": false, "default_value": "", "values": [""]},
+      {"name": "decision", "input_type": "select", "mutable": true, "default_value": "UNCERTAIN", "values": ["ACCEPT", "REJECT", "MODIFY", "UNCERTAIN", "SPLIT", "MERGE"]},
+      {"name": "human_confidence", "input_type": "select", "mutable": true, "default_value": "UNSET", "values": ["UNSET", "LOW", "MEDIUM", "HIGH"]},
+      {"name": "priority", "input_type": "select", "mutable": false, "default_value": "UNSET", "values": ["UNSET", "HIGH", "MEDIUM", "LOW"]},
+      {"name": "split_required", "input_type": "checkbox", "mutable": true, "default_value": "false", "values": ["false"]},
+      {"name": "merge_required", "input_type": "checkbox", "mutable": true, "default_value": "false", "values": ["false"]},
+      {"name": "uncertain", "input_type": "checkbox", "mutable": true, "default_value": "false", "values": ["false"]},
+      {"name": "notes", "input_type": "text", "mutable": true, "default_value": "", "values": [""]}
+    ]
+  }
+]

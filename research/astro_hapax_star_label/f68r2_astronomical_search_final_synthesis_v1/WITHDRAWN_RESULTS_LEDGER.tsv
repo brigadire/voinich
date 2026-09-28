@@ -1,0 +1,7 @@
+result_id	withdrawn_result	reason	corrective_package
+W01	old 5/27 S2/S3/E3 maximum	violated globally replay-valid scorer semantics; local mappings composed incorrectly	f68r2_corrected_e3_search_v1 / f68r2_corrected_e3_full_search_v1
+W02	S043 witness	rejected by corrected global mapping propagation/replay	f68r2_corrected_e3_path_generator_remediation_v1
+W03	Achernar/Diphda subsequence witness	positional subsequence alignment and hidden deletions	f68r2_corrected_e3_path_generator_remediation_v1
+W04	legacy local alignment assignments	not a single functional injective global mapping	f68r2_corrected_signature_search_v1
+W05	support-feasibility witness	support was evaluated locally/potentially rather than on selected assignment	f68r2_corrected_support_aware_maximum_v2
+W06	closure from UNKNOWN + bound=0.0	raw solver response and objective metadata were absent; zero can be sentinel/default	f68r2_corrected_e3_bound_audit_v1

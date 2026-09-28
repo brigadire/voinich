@@ -1,0 +1,23 @@
+{
+  "version": "v2",
+  "beam": 256,
+  "max_table_entries": 4,
+  "max_complexity": 8,
+  "max_support_single_mapping": 2,
+  "systems": "64 orthographic x bounded global substitution tables x global deletion/abbreviation",
+  "table_modes": [
+    "INJECTIVE",
+    "MERGE"
+  ],
+  "abbreviations": [
+    "NONE",
+    "DROP_FINAL",
+    "PREFIX_4"
+  ],
+  "selection": "100*matched-complexity",
+  "seeds": {
+    "production": 570000,
+    "synthetic": 800000,
+    "resampling": 900000
+  }
+}

@@ -1,0 +1,5 @@
+test_id	description	expected_score	engine_score	fit	unexpl	complexity	monotonic_supported	monotonic_unsupported	verdict
+TOY_SINGLE_PAIR	Single pair below support threshold	-4	-4	0	2	0	YES	YES	PASS_ARITHMETIC_MATCH
+MONOTONICITY_SUPPORT_2	Rule with support=2 increases score over no rules	-24 (strictly rejected)	-20	2	10	2	NO	NO	FAIL_UNSUPPORTED_RULE_INCREASES_SCORE
+DUPLICATE_ROW_SUPPORT	Single pair duplicated 3 times passes min_support=3	0 (rejected as duplicate)	6	9	0	3	NO	NO	FAIL_FICTIVE_SUPPORT_FROM_DUPLICATES
+SPEC_FORMULA_CHECK	Compression gain & exception penalty missing	SPEC_COMPLIANT	SUBSET_IMPLEMENTED	YES	YES	NO	NO	NO	FAIL_MISSING_SPEC_COMPONENTS

@@ -1,0 +1,103 @@
+[
+  {
+    "name": "STAR_REFERENCE",
+    "type": "rectangle",
+    "color": "#349866",
+    "attributes": [
+      {
+        "name": "reference_id",
+        "input_type": "text",
+        "default_value": "UNSET",
+        "values": [
+          "UNSET"
+        ],
+        "mutable": false
+      },
+      {
+        "name": "relation_group_protocol_version",
+        "input_type": "text",
+        "default_value": "3G1",
+        "values": [
+          "3G1"
+        ],
+        "mutable": false
+      }
+    ]
+  },
+  {
+    "name": "LABEL_REFERENCE",
+    "type": "any",
+    "color": "#3578b8",
+    "attributes": [
+      {
+        "name": "reference_id",
+        "input_type": "text",
+        "default_value": "UNSET",
+        "values": [
+          "UNSET"
+        ],
+        "mutable": false
+      },
+      {
+        "name": "relation_group_protocol_version",
+        "input_type": "text",
+        "default_value": "3G1",
+        "values": [
+          "3G1"
+        ],
+        "mutable": false
+      }
+    ]
+  },
+  {
+    "name": "PAGE_RELATION_REVIEW",
+    "type": "tag",
+    "color": "#555555",
+    "attributes": [
+      {
+        "name": "panel",
+        "input_type": "select",
+        "default_value": "f68r1",
+        "values": [
+          "f68r1",
+          "f68r2",
+          "f68r3"
+        ],
+        "mutable": false
+      },
+      {
+        "name": "relation_group_protocol_version",
+        "input_type": "text",
+        "default_value": "3G1",
+        "values": [
+          "3G1"
+        ],
+        "mutable": false
+      },
+      {
+        "name": "completion_status",
+        "input_type": "select",
+        "default_value": "NOT_STARTED",
+        "values": [
+          "NOT_STARTED",
+          "COMPLETE",
+          "INCOMPLETE_TECHNICAL",
+          "INCOMPLETE_REVIEWER_UNCERTAINTY"
+        ],
+        "mutable": true
+      },
+      {
+        "name": "human_confidence",
+        "input_type": "select",
+        "default_value": "UNSET",
+        "values": [
+          "UNSET",
+          "LOW",
+          "MEDIUM",
+          "HIGH"
+        ],
+        "mutable": true
+      }
+    ]
+  }
+]

@@ -1,0 +1,8 @@
+gate_id	gate_name	status	details
+P1	INTEGRITY	FAIL	Engine unchanged and sealed inputs isolated, but frozen package lacked SHA256SUMS ledger (CR-06).
+P2	INFERENCE_VALIDITY	FAIL	Engine lacks assignment inference; operates purely on pre-aligned 1:1 character pairs.
+P3	ADVERSARIAL_VALIDITY	FAIL	Minimum support >= 3 violated (k=2 active in 20.0% of nulls); fictive support from duplicate rows; 7 open blockers.
+P4	OPERATIONAL_PARITY	FAIL	No size normalization for 29 vs 57 vs 68 tokens; no production orchestration or interpretation matrix.
+P5	REPRODUCIBILITY	PASS	Synthetic development run is 100% byte-reproducible across seeds 11001 and 22001.
+FINAL	M2R_PREPRODUCTION_AUDIT	FAIL	Production run rejected due to 7 open BLOCKERS across P1-P4.
+DECISION	REAL_DATA_SEARCH_AUTHORIZED	NO	Engine is prohibited from executing on sealed real tokens.

@@ -1,0 +1,3 @@
+# Analysis plan
+
+Freeze the separately validated C1.0 object endpoint snapshot, join prior objects to the frozen constrained AI provenance, classify all confirmed completeness additions only after explicit distinct-object reconciliation, and calculate assisted human-reference recall. Analyze 3G1 as membership sets/hyperedges and crosswalk attachment-v2 without pair expansion. Primary scopes are all eight panels, calibration, production, and the three relation pages. Uncertainty uses Wilson intervals and deterministic panel-cluster bootstrap. No transcription, semantics, astronomical interpretation, new matching, or old-file mutation.

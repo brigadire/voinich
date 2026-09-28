@@ -1,0 +1,160 @@
+<?xml version='1.0' encoding='utf-8'?>
+<annotations>
+  <version>1.1</version>
+  <meta>
+    <task>
+      <name>astronomical-label-medium-h1</name>
+      <size>8</size>
+      <mode>annotation</mode>
+      <overlap>0</overlap>
+      <flipped>False</flipped>
+      <labels>
+        <label>
+          <name>LABEL</name>
+          <color>#03a9f4</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>candidate_id</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value />
+              <values />
+            </attribute>
+            <attribute>
+              <name>decision</name>
+              <mutable>True</mutable>
+              <input_type>select</input_type>
+              <default_value>UNCERTAIN</default_value>
+              <values>ACCEPT
+REJECT
+MODIFY
+UNCERTAIN
+SPLIT
+MERGE</values>
+            </attribute>
+            <attribute>
+              <name>human_confidence</name>
+              <mutable>True</mutable>
+              <input_type>select</input_type>
+              <default_value>UNSET</default_value>
+              <values>UNSET
+LOW
+MEDIUM
+HIGH</values>
+            </attribute>
+            <attribute>
+              <name>priority</name>
+              <mutable>False</mutable>
+              <input_type>select</input_type>
+              <default_value>UNSET</default_value>
+              <values>UNSET
+HIGH
+MEDIUM
+LOW</values>
+            </attribute>
+            <attribute>
+              <name>split_required</name>
+              <mutable>True</mutable>
+              <input_type>checkbox</input_type>
+              <default_value>false</default_value>
+              <values>false</values>
+            </attribute>
+            <attribute>
+              <name>merge_required</name>
+              <mutable>True</mutable>
+              <input_type>checkbox</input_type>
+              <default_value>false</default_value>
+              <values>false</values>
+            </attribute>
+            <attribute>
+              <name>uncertain</name>
+              <mutable>True</mutable>
+              <input_type>checkbox</input_type>
+              <default_value>false</default_value>
+              <values>false</values>
+            </attribute>
+            <attribute>
+              <name>notes</name>
+              <mutable>True</mutable>
+              <input_type>text</input_type>
+              <default_value />
+              <values />
+            </attribute>
+          </attributes>
+        </label>
+      </labels>
+    </task>
+  </meta>
+  <image id="0" name="f67r1.jpg" width="2486" height="3738" />
+  <image id="1" name="f67r2.jpg" width="2486" height="3738">
+    <box label="LABEL" source="manual" occluded="0" z_order="0" xtl="1300.469333" ytl="1019.040769" xbr="1433.469333" ybr="1111.040769" rotation="152.500000">
+      <attribute name="candidate_id">HLABEL_f67r2_7B55A59E7BCE</attribute>
+      <attribute name="decision">UNCERTAIN</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+      <attribute name="priority">UNSET</attribute>
+      <attribute name="split_required">false</attribute>
+      <attribute name="merge_required">false</attribute>
+      <attribute name="uncertain">false</attribute>
+      <attribute name="notes" />
+    </box>
+    <box label="LABEL" source="manual" occluded="0" z_order="0" xtl="1042.030667" ytl="1014.540769" xbr="1162.530667" ybr="1098.540769" rotation="122.000000">
+      <attribute name="candidate_id">HLABEL_f67r2_B87A74947AD0</attribute>
+      <attribute name="decision">UNCERTAIN</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+      <attribute name="priority">UNSET</attribute>
+      <attribute name="split_required">false</attribute>
+      <attribute name="merge_required">false</attribute>
+      <attribute name="uncertain">false</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="2" name="f67v1.jpg" width="2565" height="3753" />
+  <image id="3" name="f68r1.jpg" width="2462" height="3828" />
+  <image id="4" name="f68r2.jpg" width="2078" height="3828">
+    <box label="LABEL" source="manual" occluded="0" z_order="0" xtl="1700.000000" ytl="1562.500000" xbr="1880.000000" ybr="1620.000000" rotation="0.000000">
+      <attribute name="candidate_id">HLABEL_f68r2_1D28C267C6D8</attribute>
+      <attribute name="decision">UNCERTAIN</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+      <attribute name="priority">UNSET</attribute>
+      <attribute name="split_required">false</attribute>
+      <attribute name="merge_required">false</attribute>
+      <attribute name="uncertain">false</attribute>
+      <attribute name="notes" />
+    </box>
+    <box label="LABEL" source="manual" occluded="0" z_order="0" xtl="882.500000" ytl="1255.000000" xbr="1022.500000" ybr="1305.000000" rotation="0.000000">
+      <attribute name="candidate_id">HLABEL_f68r2_5F8B54190BA3</attribute>
+      <attribute name="decision">UNCERTAIN</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+      <attribute name="priority">UNSET</attribute>
+      <attribute name="split_required">false</attribute>
+      <attribute name="merge_required">false</attribute>
+      <attribute name="uncertain">false</attribute>
+      <attribute name="notes" />
+    </box>
+    <box label="LABEL" source="manual" occluded="0" z_order="0" xtl="1655.000000" ytl="1912.500000" xbr="1835.000000" ybr="1967.500000" rotation="0.000000">
+      <attribute name="candidate_id">HLABEL_f68r2_FBE4D3094C89</attribute>
+      <attribute name="decision">UNCERTAIN</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+      <attribute name="priority">UNSET</attribute>
+      <attribute name="split_required">false</attribute>
+      <attribute name="merge_required">false</attribute>
+      <attribute name="uncertain">false</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="5" name="f68r3.jpg" width="3453" height="3828" />
+  <image id="6" name="f68v1.jpg" width="2530" height="3843">
+    <box label="LABEL" source="manual" occluded="0" z_order="0" xtl="371.500000" ytl="1739.000000" xbr="629.000000" ybr="1825.000000" rotation="131.000000">
+      <attribute name="candidate_id">HLABEL_f68v1_611D9DD15C69</attribute>
+      <attribute name="decision">UNCERTAIN</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+      <attribute name="priority">UNSET</attribute>
+      <attribute name="split_required">false</attribute>
+      <attribute name="merge_required">false</attribute>
+      <attribute name="uncertain">false</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="7" name="f68v2.jpg" width="2083" height="3843" />
+</annotations>

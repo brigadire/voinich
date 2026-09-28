@@ -1,0 +1,13 @@
+{
+  "zero_noise_exact_recovery": {"operator": ">=", "threshold": 0.85},
+  "noisy_exact_recovery": {"operator": ">=", "threshold": 0.75},
+  "mapping_precision": {"operator": ">=", "threshold": 0.90},
+  "mapping_recall": {"operator": ">=", "threshold": 0.75},
+  "held_out_coverage": {"operator": ">=", "threshold": 0.60},
+  "false_global_certificates": {"operator": "=", "threshold": 0},
+  "hard_negative_false_accepts": {"operator": "=", "threshold": 0},
+  "small_instance_objective_agreement": {"operator": "=", "threshold": 1.0},
+  "ground_truth_feasibility": {"operator": "=", "threshold": 1.0},
+  "dev_hidden_config_drift": {"operator": "=", "threshold": 0},
+  "all_included_modes_exactly_verifiable": {"operator": "=", "threshold": "YES"}
+}

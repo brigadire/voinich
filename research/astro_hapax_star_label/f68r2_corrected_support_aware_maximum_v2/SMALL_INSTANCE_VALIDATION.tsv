@@ -1,0 +1,13 @@
+fixture	result	detail
+exhaustive_mapping_and_support	PASS	independent enumeration agrees with compact semantics
+nonhereditary_triple	PASS	three-path support is checked on the whole assignment
+nonhereditary_quadruple	PASS	four-path support-valid set has no support-valid triple subset
+repeated_EVA	PASS	duplicate EVA token is rejected
+repeated_identity	PASS	duplicate identity is rejected
+mapping_conflict	PASS	one source with two outputs is rejected
+injectivity_conflict	PASS	two sources with one output are rejected
+required_forbidden_conflict	PASS	branch is rejected
+extra_global_output	PASS	full scorer replay rejects propagated extra output
+unmapped_label	PASS	unselected LABEL is allowed
+path_order_invariance	PASS	validity unchanged under path permutation
+checkpoint_resume	NOT_RUN	real model did not produce checkpoint before timeout

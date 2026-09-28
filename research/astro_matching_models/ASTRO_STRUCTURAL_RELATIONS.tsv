@@ -1,0 +1,8 @@
+relation_id	diagram	relation_type	value	provenance	usable	decision
+R01	f67v1;f68r1;f68r2;f68r3	PAGE_PANEL	panel field	research/astro_token_formation/ASTRO_LABEL_TRAIN_TEST_SPLIT.tsv	YES	Identifier/group boundary only
+R02	f68r1;f68r2	STOLFI_NUMBER	S.1..S.29 / S.0..S.24	research/stolfi_label_inventory/STOLFI_ASTRO_LABEL_MATCHES.tsv	NO	No documented direction or spatial traversal
+R03	f68r3	PROXIMITY_GROUP	Pleiades; 1–4 stars near Pleiades	STOLFI_ASTRO_LABEL_MATCHES.tsv comments	NO	No matching independently defined D1 concept groups
+R04	f67r2	MOON_NUMBER	moon 1;3;4;5;6;9;11	STOLFI_ASTRO_LABEL_MATCHES.tsv comments	PARTIAL	Position sequence only; planet guesses excluded
+R05	f67r2	PLANET_GUESS	Sun?;Venus?;Mercury?;Moon?;Saturn?;Jupiter?;Mars?	STOLFI_ASTRO_LABEL_MATCHES.tsv comments	NO	Question-marked semantic guesses; prohibited leakage
+R06	OXFORD_MHS_41468	HISTORICAL_RETE_ORDER	pointer rows ordered by zodiacal mediation	Oxford MHS Astrolabe Catalogue inventory 41468	YES	Historical side only; no Voynich-side bridge
+R07	all	TRANSCRIPTION_POSITION	absolute_token_position / ZL3b locus	ASTRO_LABEL_TRAIN_TEST_SPLIT.tsv	NO	Text serialization is not diagram geometry

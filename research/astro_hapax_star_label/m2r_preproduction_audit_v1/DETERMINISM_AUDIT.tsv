@@ -1,0 +1,5 @@
+test_id	perturbation	identical_rules	identical_scores	identical_outputs	verdict
+BASE_RUN	Identical repeat of original input	YES	YES	YES	PASS_DETERMINISTIC
+REVERSE_ORDER	Reversed pair order	YES	YES	YES	PASS_ORDER_INVARIANT_WITHIN_PAIRS
+RANDOM_PERMUTATION	Random permutation of pairs	YES	YES	YES	PASS_ORDER_INVARIANT_WITHIN_PAIRS
+UNPAIRED_PERMUTATION	Independent permutation of terms (broken pairing)	NO	NO	NO	FAIL_UNPAIRED_ORDER_DEPENDENT

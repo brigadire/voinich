@@ -1,0 +1,82 @@
+{
+  "manifest_version": "1.0",
+  "package_type": "AI2_INPUT_PACKAGE",
+  "created_at": "2026-09-02T13:09:50.696112+00:00",
+  "annotator_id": "ANNOTATOR_B_AI_2",
+  "model_name": "Claude Opus 5",
+  "model_version_if_known": "claude-opus-5",
+  "provider": "Anthropic (invoked as a fresh, context-free Claude Code subagent, model override 'opus')",
+  "run_timestamp": "see AI2_STAGE1_MANIFEST.json (frozen_at) / AI2_STAGE2_MANIFEST.json (frozen_at) for exact pass timestamps",
+  "independence_note": "Distinct model family from the ANNOTATOR_B_AI (AI_1) pass and from the orchestrating session (Claude Sonnet 5). Launched as a brand-new agent instance with no conversation history, given only this package directory.",
+  "same_canonical_image_bytes_as_ai_b_1": true,
+  "files": {
+    "crops/f67r1.jpg": {
+      "sha256": "4049ca0d5fde0d6cc45cd5a69aed3335c15a113e44caff4895ce8f42ae35746d",
+      "width": 2486,
+      "height": 3738,
+      "bytes": 4124555
+    },
+    "crops/f67r2.jpg": {
+      "sha256": "ffd4e793fe08743ab0cf61213593d8df2cbf81f57195696d800743c57bde05b2",
+      "width": 2486,
+      "height": 3738,
+      "bytes": 4128694
+    },
+    "crops/f67v1.jpg": {
+      "sha256": "59dce81c368aa53ea28eeea80998cd9f621dcc72a70e441099ef5b804fc213f2",
+      "width": 2565,
+      "height": 3753,
+      "bytes": 5010883
+    },
+    "crops/f68r1.jpg": {
+      "sha256": "b72cc6b6ea965f144bbd9682280cbe555b39d9adb66546be6ccafc8059eb6bd6",
+      "width": 2462,
+      "height": 3828,
+      "bytes": 4135029
+    },
+    "crops/f68r2.jpg": {
+      "sha256": "5d6fc428b83c3f78de088e9a780043ae6089dfbfe8ba13fe72f7a61812562c52",
+      "width": 2078,
+      "height": 3828,
+      "bytes": 4188311
+    },
+    "crops/f68r3.jpg": {
+      "sha256": "ef23e7889735a656c6d2a4d8c055921d1f07c60e6083ae3a6823f57799f32fa4",
+      "width": 3453,
+      "height": 3828,
+      "bytes": 6997439
+    },
+    "crops/f68v1.jpg": {
+      "sha256": "5c2615b7350d49e3f90b01563694aa43de0fe7bfc0a1556b068642613c4a5763",
+      "width": 2530,
+      "height": 3843,
+      "bytes": 4000882
+    },
+    "crops/f68v2.jpg": {
+      "sha256": "4a10b81107de7cfde68e247831bd9f5ec6c9a582367e59d799776dc4bec8f4b0",
+      "width": 2083,
+      "height": 3843,
+      "bytes": 3496796
+    },
+    "ANNOTATOR_B_AI_2_INSTRUCTIONS.md": {
+      "sha256": "60851ddf78258bc52b5d4f0d9c9264033764126d2cd8f6d86212cf512ee1640e",
+      "bytes": 2726
+    },
+    "OBJECT_ONTOLOGY_CLEAN.md": {
+      "sha256": "f7affeb6387f4c2b6c3afb56ea753a0e0da0578c6d0bbfcaea4cd5c17b261b47",
+      "bytes": 1632
+    },
+    "schemas/AI2_OBJECTS_SCHEMA.tsv": {
+      "sha256": "ddde8b62762859672e92d4144ebbb757bc54946169ddb0795514d4247d4f2e33",
+      "bytes": 124
+    },
+    "schemas/AI2_LABELS_SCHEMA.tsv": {
+      "sha256": "5f88723fe11e086c27e72775e6f4dcb5c422ef78f0d14e14b0b1c953138114f4",
+      "bytes": 128
+    },
+    "schemas/AI2_LABEL_OBJECT_RELATIONS_SCHEMA.tsv": {
+      "sha256": "6baa99a7f54b72c002eae5d411cc82bf650b0d1dc7446d1ad1675de7ab6f3ab1",
+      "bytes": 53
+    }
+  }
+}

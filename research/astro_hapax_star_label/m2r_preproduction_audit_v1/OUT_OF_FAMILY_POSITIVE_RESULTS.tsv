@@ -1,0 +1,6 @@
+test_id	description	rule_precision	rule_recall	assignment_accuracy	heldout_coverage	compression	accepted_profile	verdict
+OFP1	8-character alphabet	1.0000	1.0000	NA(pre-aligned)	1.0000	0.0	YES	RECOVERED_DEV_PREC_METRIC_BROKEN(dev_prec=0.0)
+OFP2	Variable lengths (3-12)	1.0000	1.0000	NA(pre-aligned)	1.0000	0.0	YES	RECOVERED
+OFP3	Partial coverage (noise gaps)	0.9231	1.0000	NA(pre-aligned)	1.0000	0.0	YES	RECOVERED
+OFP4	Skewed support distribution	1.0000	1.0000	NA(pre-aligned)	1.0000	0.0	YES	RECOVERED
+OFP5	Role asymmetry (initial/final only)	0.3333	1.0000	NA(pre-aligned)	0.4833	0.0	NO	DEGRADED_PERFORMANCE

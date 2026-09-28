@@ -1,0 +1,68 @@
+{
+  "version": "1.0.0",
+  "seed": 20260831,
+  "thresholds": [
+    [
+      "CORE_20",
+      20,
+      3,
+      5
+    ],
+    [
+      "CORE_50",
+      50,
+      3,
+      8
+    ],
+    [
+      "CORE_100",
+      100,
+      4,
+      10
+    ]
+  ],
+  "inputs_frozen": true,
+  "inputs": {
+    "experiments/fingerprint-v2-task79-v1/canonical-out/occurrence_metadata.jsonl": "ba0342e15d8c468ec4e9f741e97cdb4a11938fe1f0ae3ac4338b73aaf1bd773a",
+    "research/visual_context/VISUAL_CONTEXT_TAXONOMY.tsv": "ac4b3a7c4f95a7154a793c6b79743e759a6505d266d99f77ad6712fa089de6cb",
+    "research/section-conditioned/main.py": "44b01865bf7bf3b079dad9fe91cbfae2deff73361dc723a58ac0425fc8c641b6",
+    "research/section_role/SECTION_ROLE_EXPERIMENT_PROTOCOL.md": "55495902826efae46325175588e8aa165320e9845b7a9794bbd5d1b2a957768c",
+    "research/section_role/SECTION_ROLE_PROFILE_SPEC.md": "05f51d54b4342ebebd50b2ddf0b8d91ef56c174c83cd526d478ba700f244f797"
+  },
+  "status": {
+    "SECTION_ROLE_INPUTS_FROZEN": true,
+    "SECTION_ROLE_PROTOCOL_FROZEN": true,
+    "SECTION_ROLE_PRODUCTION_RUN_EXECUTED": true,
+    "SECTION_ROLE_PRODUCTION_RUN_VALID": true,
+    "SECTION_ROLE_REPRODUCIBLE": true,
+    "STRUCTURE_MODEL_UPDATED": false,
+    "STRUCTURE_PUBLICATION_UPDATE_PREPARED": false
+  },
+  "decision": {
+    "SECTION_ROLE_MODEL": "R3_MIXED_ROLE_STABILITY",
+    "SECTION_EFFECT_BEYOND_FREQUENCY": "LIMITED",
+    "POSITIONAL_ROLE_SECTION_DEPENDENCE": "INCONCLUSIVE",
+    "CONTEXT_DIVERSITY_SECTION_DEPENDENCE": "LIMITED",
+    "STRUCTURAL_CLASS_GRAMMAR_SECTION_DEPENDENCE": "NOT_APPLICABLE"
+  },
+  "outputs": [
+    "SECTION_ROLE_CLASS_TRANSITIONS.tsv",
+    "SECTION_ROLE_CONFOUNDER_ANALYSIS.tsv",
+    "SECTION_ROLE_CONTEXT_ENTROPY.tsv",
+    "SECTION_ROLE_EXISTING_EVIDENCE_AUDIT.md",
+    "SECTION_ROLE_EXPERIMENT_PROTOCOL.md",
+    "SECTION_ROLE_INPUT_MANIFEST.json",
+    "SECTION_ROLE_PAGE_REGISTRY.tsv",
+    "SECTION_ROLE_POSITIONAL_STABILITY.tsv",
+    "SECTION_ROLE_POWER_DIAGNOSTIC.tsv",
+    "SECTION_ROLE_PRIMARY_TEST.tsv",
+    "SECTION_ROLE_PROFILES.tsv",
+    "SECTION_ROLE_PROFILE_SPEC.md",
+    "SECTION_ROLE_RAREFACTION.tsv",
+    "SECTION_ROLE_REPLICATION.tsv",
+    "SECTION_ROLE_REPORT.md",
+    "SECTION_ROLE_SHARED_TOKEN_CORE.tsv",
+    "SECTION_ROLE_STRUCTURAL_CLASS_REGISTRY.tsv",
+    "STRUCTURE_UPDATE_FROM_SECTION_ROLE.md"
+  ]
+}

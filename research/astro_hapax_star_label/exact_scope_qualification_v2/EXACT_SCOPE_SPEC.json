@@ -1,0 +1,21 @@
+{
+  "scope_id": "EXACT_SCOPE_V2",
+  "included_modes": ["INJECTIVE", "MERGE_1"],
+  "deletion_mode": "DROP_UNMAPPED",
+  "abbreviation": "NONE",
+  "source_alphabet": "single-character synthetic source units",
+  "target_alphabet": "fixed synthetic target alphabet",
+  "table_size": "1..4 in diagnostic and qualification pilot cells",
+  "capacity_policies": ["PER_PAGE_CAPACITY_1", "GLOBAL_CAPACITY_1"],
+  "objective": "maximize matched assignments, then minimize exact solver complexity",
+  "certificate": "GLOBAL_OPTIMUM_CERTIFIED only on OR-Tools CP-SAT OPTIMAL status",
+  "time_limit_seconds": 60,
+  "num_workers": 1,
+  "excluded": {
+    "selective_deletion": "outside CP-SAT model",
+    "abbreviation": "outside CP-SAT model",
+    "multi_stage_composition": "outside CP-SAT model",
+    "contextual_rules": "outside exact global table model",
+    "page_term_label_singletons": "prohibited"
+  }
+}

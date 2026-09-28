@@ -1,0 +1,7 @@
+check_id	check_name	required_behavior	observed_behavior	verdict
+NP1	Full search re-execution on nulls	Full model search	Full model search re-executed	PASS
+NP2	Unique null seeds	Disjoint seeds per replicate	Seeds 30000+ per replicate	PASS
+NP3	Duplicate seed detection	Reject duplicate seeds	No duplicate detector in engine	FAIL_UNGUARDED
+NP4	Sharded execution & aggregation	Support sharding with resume	No sharding support in engine	FAIL_UNSUPPORTED
+NP5	Plus-one empirical p-value	(null >= real + 1) / (N + 1)	Formula validated in audit	PASS_AUDIT_HARNESS
+NP6	Shortcut prohibition	Search executed on null, not real model scored	Full search verified	PASS

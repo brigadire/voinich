@@ -1,0 +1,31 @@
+{
+  "allow_singletons": false,
+  "allow_unmatched": true,
+  "forbidden": [
+    "page-specific rules",
+    "term-specific rules",
+    "label-specific rules",
+    "singleton evidence",
+    "EVA similarity thresholding"
+  ],
+  "identity_capacity_and_relaxed_attestation_capacity_separate": true,
+  "minimum_independent_support": 2,
+  "mode": "GLOBAL_SUBSTITUTION_ONLY",
+  "one_to_one": true,
+  "scope_version": "1",
+  "stages": {
+    "E0": "compatibility precompute safe filters",
+    "E1": "exact global substitution; CP-SAT/oracle certifiable; sizes 1-4",
+    "E2": "exact local expansion; sizes 5-6; separate branch",
+    "E3": "near local one-error; diagnostic candidates",
+    "E4": "weak local two-error; separate branch, never silently mixed"
+  },
+  "target_table_sizes": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ]
+}

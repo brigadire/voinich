@@ -1,0 +1,38 @@
+{
+  "artifact_sha256": {
+    "ASTRO_TERM_CORPUS_AUDIT.md": "b6b0371b1cf52cb754f0ad855b225209127176fe4bea69c68371d2cb551d67d6",
+    "ASTRO_TERM_CORPUS_EXPANDED.tsv": "9a2b97b0c5accd66565c8556ba1f857b44a833970c5690caedd6a5f1e2317b59",
+    "ASTRO_TERM_CORPUS_EXPANSION_SOURCES.md": "f1df3df9c04e63ebb1cf3fb8b96f2a705629ac4019af1d4a76268df4a03948cc",
+    "D1_HELDOUT_RESULTS.tsv": "4adcdf14ffb83e683e73dbb181237be1e0f54bbf194344c8863009e9e1112ab0",
+    "D1_LABEL_TERM_ASSIGNMENTS.tsv": "bfaeb3ededbc37be19dcb2f45160b879d3b5e935a22dff7455f9906089446191",
+    "D1_NEWLY_EXPLAINED_LABELS.tsv": "ec3acb0436cd0d44052069728544065031fb439a2cda6d10a9398e92c5c3bab9",
+    "D1_NULL_RESULTS.tsv": "e8f3ba1ebfd9c5f4194b773ea9089bd2592e183b192059f33f13ebcd224291fa",
+    "D1_TOKEN_FORMATION_MODELS.tsv": "be94d9c70d55454d71394035b1f4ecbf0ce333334d2f20395b039c30547e3e04",
+    "D1_TOKEN_FORMATION_REPORT.md": "1eb31fd9c8c035b395eab95ab2aa4be2fde081192054ce45deaac0d37eb79ef2",
+    "DICTIONARY_D0_D1_COMPARISON.tsv": "1cf4100aa57f92e1407a2c5b39abe1d5d8c3f2cb37f2c167cb815e61ed3b404a"
+  },
+  "audit_verdict": "VALID_WITH_LIMITATIONS",
+  "dictionary_expansion_authorized": true,
+  "experiment": "astro-dictionary-expansion-m1-v2",
+  "frozen_protocol": {
+    "beam_width": 64,
+    "controls": [
+      "RANDOM_VOYNICH_SET",
+      "SHUFFLED_TERMS",
+      "PSEUDODICTIONARY"
+    ],
+    "finalists_per_pipeline": 4,
+    "pipelines": 640,
+    "retained_models": 25
+  },
+  "generated_utc": "2026-09-01T13:06:24+00:00",
+  "input_sha256": {
+    "research/astro_dictionary_expansion_m1/main.py": "83077f3c26800c9d05d08457e949f21307034ade9a85a0314c222c2a6e6a09db",
+    "research/astro_token_formation/ASTRO_LABEL_TRAIN_TEST_SPLIT.tsv": "2917f874c5fa944e1d7a60bdfba26b191e998308d28e30381e0a3f2000e4f8a6",
+    "research/astro_token_formation/ASTRO_TERM_CORPUS.tsv": "444ec857399e7eae06ab71a5f63414bc052b4d389616cc83475cf698a969844d",
+    "research/astro_token_formation_m1/main.py": "5eb7a764141a1adfe7f99e31fac1d4bc894c1850e05ad44a12125989c7729058",
+    "research/astro_token_formation_m1_audit/M1_METHODOLOGICAL_AUDIT.md": "6dd0d55845d85e73640ca156335e7d957758ab4d841360ad7b63970d8db2fe87"
+  },
+  "null_replicates_per_control": 100,
+  "seed": 20260901
+}

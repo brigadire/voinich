@@ -1,0 +1,8 @@
+test	result	detail
+coverage_4_without_valid_triple	PASS	A/B/C/D supports each rule twice; every triple has a singleton-supported rule
+subset_bound_rejection	PASS	coverage-3 infeasibility does not close coverage-4
+pairwise_mapping_conflict	PASS	incompatible source/target mappings reject edge
+forbidden_source_conflict	PASS	mapping a forbidden by the other path rejects edge
+identity_label_token_injectivity	PASS	duplicate LABEL/identity/token rejects edge
+pairwise_clique_replay_small	PASS	all small compatible cliques replay under one global map
+support_is_hypergraph_property	PASS	pairwise graph does not encode support validity

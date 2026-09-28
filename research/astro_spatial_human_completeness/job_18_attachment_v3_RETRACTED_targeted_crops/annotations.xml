@@ -1,0 +1,1011 @@
+<?xml version='1.0' encoding='utf-8'?>
+<annotations>
+  <version>1.1</version>
+  <meta>
+    <task>
+      <name>human-attachment-completeness-v3-PRODUCTION_AFTER_OBJECT_FREEZE</name>
+      <size>57</size>
+      <mode>annotation</mode>
+      <overlap>0</overlap>
+      <flipped>False</flipped>
+      <labels>
+        <label>
+          <name>STAR_REFERENCE</name>
+          <color>#349866</color>
+          <type>rectangle</type>
+          <attributes>
+            <attribute>
+              <name>reference_id</name>
+              <input_type>text</input_type>
+              <default_value>UNSET</default_value>
+              <mutable>false</mutable>
+              <values>UNSET</values>
+            </attribute>
+            <attribute>
+              <name>relation_protocol_version</name>
+              <input_type>text</input_type>
+              <default_value>3</default_value>
+              <mutable>false</mutable>
+              <values>3</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>LABEL_REFERENCE</name>
+          <color>#3578b8</color>
+          <type>any</type>
+          <attributes>
+            <attribute>
+              <name>reference_id</name>
+              <input_type>text</input_type>
+              <default_value>UNSET</default_value>
+              <mutable>false</mutable>
+              <values>UNSET</values>
+            </attribute>
+            <attribute>
+              <name>relation_protocol_version</name>
+              <input_type>text</input_type>
+              <default_value>3</default_value>
+              <mutable>false</mutable>
+              <values>3</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>PAIR_ATTACHMENT</name>
+          <color>#555555</color>
+          <type>tag</type>
+          <attributes>
+            <attribute>
+              <name>pair_id</name>
+              <input_type>text</input_type>
+              <default_value>UNSET</default_value>
+              <mutable>false</mutable>
+              <values>UNSET</values>
+            </attribute>
+            <attribute>
+              <name>relation_protocol_version</name>
+              <input_type>text</input_type>
+              <default_value>3</default_value>
+              <mutable>false</mutable>
+              <values>3</values>
+            </attribute>
+            <attribute>
+              <name>decision</name>
+              <input_type>select</input_type>
+              <default_value>UNREVIEWED</default_value>
+              <mutable>true</mutable>
+              <values>UNREVIEWED
+VISUAL_LABEL_OF
+UNASSIGNED
+UNCERTAIN
+NOT_APPLICABLE_REGION</values>
+            </attribute>
+            <attribute>
+              <name>human_confidence</name>
+              <input_type>select</input_type>
+              <default_value>UNSET</default_value>
+              <mutable>true</mutable>
+              <values>UNSET
+LOW
+MEDIUM
+HIGH</values>
+            </attribute>
+          </attributes>
+        </label>
+      </labels>
+    </task>
+  </meta>
+  <image id="0" name="HC_REL_109161A9C2085F72.jpg" width="539" height="341">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="80.600000" ytl="80.800000" xbr="272.700000" ybr="260.100000" group_id="1">
+      <attribute name="reference_id">REF_F478DAA4FAC95B86</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="252.330000" ytl="148.900000" xbr="458.500000" ybr="221.330000" group_id="1">
+      <attribute name="reference_id">REF_838B710D33248CD4</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_109161A9C2085F72</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="1" name="HC_REL_1892A070077F9544.jpg" width="442" height="302">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="80.200000" ytl="80.300000" xbr="195.670000" ybr="221.670000" group_id="2">
+      <attribute name="reference_id">REF_8E3D5D2248E8C9E3</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="188.590000" ytl="111.800000" xbr="361.930000" ybr="197.960000" group_id="2">
+      <attribute name="reference_id">REF_9554119A3738F55A</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_1892A070077F9544</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="2" name="HC_REL_2128D1ABE4574508.jpg" width="540" height="339">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="80.600000" ytl="80.100000" xbr="268.200000" ybr="258.670000" group_id="3">
+      <attribute name="reference_id">REF_A8AA8B63C1190006</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="274.170000" ytl="98.300000" xbr="459.170000" ybr="171.730000" group_id="3">
+      <attribute name="reference_id">REF_36B74A39E9CC1AC2</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_2128D1ABE4574508</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="3" name="HC_REL_26F90E922B9214B0.jpg" width="450" height="309">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="80.000000" ytl="80.800000" xbr="195.000000" ybr="228.330000" group_id="4">
+      <attribute name="reference_id">REF_0D14283A54FE8C2D</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="199.670000" ytl="121.500000" xbr="369.670000" ybr="206.000000" group_id="4">
+      <attribute name="reference_id">REF_21D0F87A454E8F84</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_26F90E922B9214B0</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="4" name="HC_REL_33475C15F9E6BB3C.jpg" width="450" height="357">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="80.100000" ytl="85.700000" xbr="252.000000" ybr="276.100000" group_id="5">
+      <attribute name="reference_id">REF_120592AECC8AAE5C</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="253.670000" ytl="80.400000" xbr="394.330000" ybr="187.330000" group_id="5">
+      <attribute name="reference_id">REF_040982523F692F7B</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_33475C15F9E6BB3C</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="5" name="HC_REL_3DF185B40ED3FC53.jpg" width="504" height="322">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="80.000000" ytl="80.500000" xbr="238.400000" ybr="241.330000" group_id="6">
+      <attribute name="reference_id">REF_BA3695E43D4E8706</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="213.420000" ytl="86.000000" xbr="423.200000" ybr="205.620000" group_id="6">
+      <attribute name="reference_id">REF_B2E4CC9090DCF1C4</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_3DF185B40ED3FC53</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="6" name="HC_REL_41D4AB5E18532136.jpg" width="493" height="289">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="80.000000" ytl="110.500000" xbr="206.000000" ybr="209.000000" group_id="7">
+      <attribute name="reference_id">REF_D0EFCE954A6E731D</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="200.200000" ytl="80.500000" xbr="413.000000" ybr="165.330000" group_id="7">
+      <attribute name="reference_id">REF_13634DCD1BE907BC</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_41D4AB5E18532136</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="7" name="HC_REL_59B84C79F32999CF.jpg" width="553" height="315">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="80.000000" ytl="80.000000" xbr="241.670000" ybr="235.000000" group_id="8">
+      <attribute name="reference_id">REF_8A43546DEDC60DA6</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="236.300000" ytl="82.700000" xbr="472.800000" ybr="207.670000" group_id="8">
+      <attribute name="reference_id">REF_BC0F902DD3351009</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_59B84C79F32999CF</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="8" name="HC_REL_59C7F34A4C097907.jpg" width="338" height="327">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="80.000000" ytl="80.400000" xbr="185.670000" ybr="246.330000" group_id="9">
+      <attribute name="reference_id">REF_50B2486548D334CC</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="164.500000" ytl="112.600000" xbr="257.200000" ybr="170.270000" group_id="9">
+      <attribute name="reference_id">REF_5D92A100693F7CC1</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_59C7F34A4C097907</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="9" name="HC_REL_5DBBC68DF3D3D7D2.jpg" width="476" height="317">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="80.400000" ytl="80.700000" xbr="240.700000" ybr="237.000000" group_id="10">
+      <attribute name="reference_id">REF_C13D117CD0410B97</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="210.500000" ytl="111.800000" xbr="395.500000" ybr="211.000000" group_id="10">
+      <attribute name="reference_id">REF_2C6B37C912AB2763</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_5DBBC68DF3D3D7D2</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="10" name="HC_REL_6927B458F8EFE678.jpg" width="398" height="302">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="80.200000" ytl="80.400000" xbr="199.670000" ybr="221.330000" group_id="11">
+      <attribute name="reference_id">REF_487CB1B7B42E1DAA</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="160.450000" ytl="113.800000" xbr="317.120000" ybr="209.650000" group_id="11">
+      <attribute name="reference_id">REF_A3AB41FD04BB483F</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_6927B458F8EFE678</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="11" name="HC_REL_6A2BB605206F8C94.jpg" width="529" height="346">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="80.000000" ytl="80.200000" xbr="254.000000" ybr="265.700000" group_id="12">
+      <attribute name="reference_id">REF_9E3DF3E9309F622D</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="262.000000" ytl="96.000000" xbr="448.670000" ybr="215.000000" group_id="12">
+      <attribute name="reference_id">REF_473C9A7F2A2ED5FE</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_6A2BB605206F8C94</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="12" name="HC_REL_7C4809A35709A028.jpg" width="444" height="342">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="80.000000" ytl="80.900000" xbr="192.330000" ybr="230.670000" group_id="13">
+      <attribute name="reference_id">REF_8EBB6DCE3B70B016</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="190.330000" ytl="160.670000" xbr="363.670000" ybr="261.200000" group_id="13">
+      <attribute name="reference_id">REF_5C03723E1D850EB7</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_7C4809A35709A028</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="13" name="HC_REL_836ACFA9AE81707A.jpg" width="557" height="364">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="80.700000" ytl="96.900000" xbr="240.200000" ybr="284.000000" group_id="14">
+      <attribute name="reference_id">REF_AA27C68AA780F9C1</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="241.100000" ytl="80.600000" xbr="476.900000" ybr="221.670000" group_id="14">
+      <attribute name="reference_id">REF_84BAF6CA5D616072</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_836ACFA9AE81707A</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="14" name="HC_REL_96B3DEB4C7553270.jpg" width="507" height="307">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="80.670000" ytl="80.900000" xbr="174.670000" ybr="226.330000" group_id="15">
+      <attribute name="reference_id">REF_1A69977763B15ADD</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="333.500000" ytl="147.600000" xbr="426.200000" ybr="205.270000" group_id="15">
+      <attribute name="reference_id">REF_5D92A100693F7CC1</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_96B3DEB4C7553270</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="15" name="HC_REL_A75B4D5E5F441E70.jpg" width="452" height="330">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="80.800000" ytl="80.800000" xbr="191.670000" ybr="249.300000" group_id="16">
+      <attribute name="reference_id">REF_68349D81276DFED8</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="203.000000" ytl="130.200000" xbr="371.330000" ybr="211.000000" group_id="16">
+      <attribute name="reference_id">REF_93C6F207FA03985B</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_A75B4D5E5F441E70</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="16" name="HC_REL_A7F8528757DEFE7B.jpg" width="313" height="307">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="80.670000" ytl="80.900000" xbr="174.670000" ybr="226.330000" group_id="17">
+      <attribute name="reference_id">REF_1A69977763B15ADD</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="143.000000" ytl="94.800000" xbr="233.000000" ybr="193.000000" group_id="17">
+      <attribute name="reference_id">REF_DD4C37E3FE7352CD</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_A7F8528757DEFE7B</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="17" name="HC_REL_A916DC9A7EB68B3A.jpg" width="373" height="340">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="80.670000" ytl="80.600000" xbr="174.670000" ybr="241.000000" group_id="18">
+      <attribute name="reference_id">REF_D11C8B9502C8CA55</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="158.200000" ytl="141.900000" xbr="292.400000" ybr="259.500000" group_id="18">
+      <attribute name="reference_id">REF_8777CFA1764D7A7D</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_A916DC9A7EB68B3A</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="18" name="HC_REL_B34742282BDAE7E5.jpg" width="457" height="332">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="80.840000" ytl="80.800000" xbr="189.340000" ybr="220.500000" group_id="19">
+      <attribute name="reference_id">REF_85F98B2F380A0DCB</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="194.000000" ytl="121.100000" xbr="376.500000" ybr="251.100000" group_id="19">
+      <attribute name="reference_id">REF_2EF3AE31C1D14D7F</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_B34742282BDAE7E5</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="19" name="HC_REL_BA7C82F7F4545C19.jpg" width="433" height="312">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="80.330000" ytl="80.500000" xbr="174.330000" ybr="212.330000" group_id="20">
+      <attribute name="reference_id">REF_2164EB62771432A4</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="180.670000" ytl="124.600000" xbr="352.330000" ybr="231.500000" group_id="20">
+      <attribute name="reference_id">REF_220510A37F5E7F19</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_BA7C82F7F4545C19</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="20" name="HC_REL_BE755B82B6BDF852.jpg" width="586" height="342">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="80.600000" ytl="80.800000" xbr="258.670000" ybr="261.800000" group_id="21">
+      <attribute name="reference_id">REF_C0732159C7D6A2AE</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="265.300000" ytl="80.300000" xbr="505.900000" ybr="236.000000" group_id="21">
+      <attribute name="reference_id">REF_1623D3398D48E702</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_BE755B82B6BDF852</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="21" name="HC_REL_C802E22AD8642A66.jpg" width="503" height="314">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="80.300000" ytl="106.200000" xbr="221.670000" ybr="234.000000" group_id="22">
+      <attribute name="reference_id">REF_D2ECFCE867B8F3C0</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="220.000000" ytl="80.000000" xbr="423.000000" ybr="201.670000" group_id="22">
+      <attribute name="reference_id">REF_B0950F01FC02E9D2</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_C802E22AD8642A66</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="22" name="HC_REL_C8E10863F2AFB8D5.jpg" width="421" height="332">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="80.000000" ytl="80.900000" xbr="174.000000" ybr="251.100000" group_id="23">
+      <attribute name="reference_id">REF_5CED7AA6C2913A5C</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="177.000000" ytl="123.200000" xbr="340.330000" ybr="217.330000" group_id="23">
+      <attribute name="reference_id">REF_95FAD70D305B0D54</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_C8E10863F2AFB8D5</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="23" name="HC_REL_CB0EFACF521C7068.jpg" width="497" height="389">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="80.300000" ytl="80.700000" xbr="274.100000" ybr="308.800000" group_id="24">
+      <attribute name="reference_id">REF_0B078850559493F1</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="238.000000" ytl="143.100000" xbr="416.330000" ybr="249.330000" group_id="24">
+      <attribute name="reference_id">REF_CEC21709A872F808</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_CB0EFACF521C7068</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="24" name="HC_REL_DADC5D3EC2908605.jpg" width="501" height="314">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="80.500000" ytl="80.600000" xbr="228.000000" ybr="233.330000" group_id="25">
+      <attribute name="reference_id">REF_97D386A9F9DA2F6B</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="210.300000" ytl="131.200000" xbr="420.670000" ybr="220.670000" group_id="25">
+      <attribute name="reference_id">REF_E583943878EB186F</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_DADC5D3EC2908605</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="25" name="HC_REL_DB263372903AAD2C.jpg" width="521" height="343">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="80.800000" ytl="87.400000" xbr="253.100000" ybr="262.600000" group_id="26">
+      <attribute name="reference_id">REF_6A27C6FEAA01225D</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="257.080000" ytl="80.300000" xbr="440.420000" ybr="198.610000" group_id="26">
+      <attribute name="reference_id">REF_68468E26946F126F</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_DB263372903AAD2C</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="26" name="HC_REL_DB8E96043E3EC754.jpg" width="516" height="303">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="80.800000" ytl="80.300000" xbr="251.000000" ybr="222.330000" group_id="27">
+      <attribute name="reference_id">REF_EC216AE65DAA7787</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="242.600000" ytl="102.400000" xbr="435.330000" ybr="203.000000" group_id="27">
+      <attribute name="reference_id">REF_B99991175A3BDDF3</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_DB8E96043E3EC754</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="27" name="HC_REL_DD35FD8B918C2AC8.jpg" width="562" height="342">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="80.600000" ytl="80.800000" xbr="254.100000" ybr="261.800000" group_id="28">
+      <attribute name="reference_id">REF_628CC7A14F08CA08</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="248.410000" ytl="125.500000" xbr="481.600000" ybr="205.570000" group_id="28">
+      <attribute name="reference_id">REF_06896060E10E24BD</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_DD35FD8B918C2AC8</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="28" name="HC_REL_F18BA2F34BBDCEB0.jpg" width="509" height="294">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="80.000000" ytl="80.670000" xbr="224.500000" ybr="214.000000" group_id="29">
+      <attribute name="reference_id">REF_4C78169B5217328F</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="224.800000" ytl="116.400000" xbr="428.200000" ybr="202.160000" group_id="29">
+      <attribute name="reference_id">REF_367E52DC6984DFA2</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_F18BA2F34BBDCEB0</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="29" name="HC_REL_1544517F4A4BBEAB.jpg" width="398" height="423">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="82.100000" ytl="80.700000" xbr="210.000000" ybr="214.900000" group_id="30">
+      <attribute name="reference_id">REF_0B1D650F62E8C3E8</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="339.10" xtl="85.650000" ytl="233.030000" xbr="312.430000" ybr="304.060000" group_id="30">
+      <attribute name="reference_id">REF_C82E595F2C228D11</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_1544517F4A4BBEAB</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="30" name="HC_REL_1FA9630E333D5C72.jpg" width="454" height="358">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0.000000" xtl="80.740000" ytl="137.840000" xbr="215.890000" ybr="277.020000" group_id="31">
+      <attribute name="reference_id">REF_DEF5BE3732BD2E51</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="347.40" xtl="200.380000" ytl="97.080000" xbr="362.280000" ybr="215.680000" group_id="31">
+      <attribute name="reference_id">REF_EF521955D63525BC</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_1FA9630E333D5C72</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="31" name="HC_REL_2AFC6C7A827232D4.jpg" width="437" height="304">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="80.700000" ytl="93.700000" xbr="201.600000" ybr="223.200000" group_id="32">
+      <attribute name="reference_id">REF_02637034F36873CD</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="349.30" xtl="183.600000" ytl="95.770000" xbr="351.240000" ybr="163.340000" group_id="32">
+      <attribute name="reference_id">REF_10884D1C3C353CB9</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_2AFC6C7A827232D4</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="32" name="HC_REL_43FD45BA1B44BFD9.jpg" width="475" height="330">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="80.000000" ytl="105.200000" xbr="209.200000" ybr="249.500000" group_id="33">
+      <attribute name="reference_id">REF_DEA5EA4EA1CC9AC1</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="345.80" xtl="197.600000" ytl="101.810000" xbr="386.200000" ybr="196.810000" group_id="33">
+      <attribute name="reference_id">REF_58AFFC8DDF550184</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_43FD45BA1B44BFD9</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="33" name="HC_REL_4BEE30C52ED90300.jpg" width="533" height="348">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="80.800000" ytl="117.200000" xbr="221.200000" ybr="267.700000" group_id="34">
+      <attribute name="reference_id">REF_7BCC4A71A6696D4A</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="339.10" xtl="220.650000" ytl="119.030000" xbr="447.430000" ybr="190.060000" group_id="34">
+      <attribute name="reference_id">REF_C82E595F2C228D11</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_4BEE30C52ED90300</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="34" name="HC_REL_5057E7B6F0103645.jpg" width="433" height="301">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="80.700000" ytl="80.700000" xbr="188.500000" ybr="220.800000" group_id="35">
+      <attribute name="reference_id">REF_DA6B72BAF9293551</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="349.70" xtl="201.570000" ytl="94.600000" xbr="346.860000" ybr="165.700000" group_id="35">
+      <attribute name="reference_id">REF_4BD5A7192279A484</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_5057E7B6F0103645</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="35" name="HC_REL_544CADDA88E1D40A.jpg" width="471" height="302">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0.000000" xtl="80.000000" ytl="86.170000" xbr="203.190000" ybr="221.050000" group_id="36">
+      <attribute name="reference_id">REF_1274E143A08DF64A</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="353.20" xtl="207.600000" ytl="90.260000" xbr="385.700000" ybr="178.370000" group_id="36">
+      <attribute name="reference_id">REF_1CB590EE36CB2BA1</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_544CADDA88E1D40A</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="36" name="HC_REL_5FC5497EB000DCA5.jpg" width="478" height="293">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0.000000" xtl="80.760000" ytl="80.660000" xbr="231.040000" ybr="212.780000" group_id="37">
+      <attribute name="reference_id">REF_C02EB50D47BA2848</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="211.500000" ytl="135.400000" xbr="397.600000" ybr="195.000000" group_id="37">
+      <attribute name="reference_id">REF_03E209521915028E</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_5FC5497EB000DCA5</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="37" name="HC_REL_70821AFC7BC89CDF.jpg" width="541" height="350">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="80.500000" ytl="126.100000" xbr="232.500000" ybr="269.500000" group_id="38">
+      <attribute name="reference_id">REF_CE097D9AADE36D09</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="347.50" xtl="228.310000" ytl="103.820000" xbr="451.720000" ybr="213.420000" group_id="38">
+      <attribute name="reference_id">REF_E194F5C050FF3C38</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_70821AFC7BC89CDF</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="38" name="HC_REL_899ED2B3DDA172AB.jpg" width="538" height="355">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="80.300000" ytl="110.100000" xbr="249.600000" ybr="274.700000" group_id="39">
+      <attribute name="reference_id">REF_ABDF75E9095D7A29</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="345.40" xtl="220.060000" ytl="108.500000" xbr="450.060000" ybr="196.800000" group_id="39">
+      <attribute name="reference_id">REF_2280231B8BE654FF</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_899ED2B3DDA172AB</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="39" name="HC_REL_8D83427E912FFE63.jpg" width="514" height="375">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0.000000" xtl="80.040000" ytl="143.300000" xbr="217.850000" ybr="294.360000" group_id="40">
+      <attribute name="reference_id">REF_731A21234C629C6B</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="346.40" xtl="186.360000" ytl="106.000000" xbr="420.660000" ybr="239.240000" group_id="40">
+      <attribute name="reference_id">REF_93883B4BCB368FED</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_8D83427E912FFE63</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="40" name="HC_REL_A4407D55F68AF3DD.jpg" width="569" height="328">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0.000000" xtl="80.250000" ytl="80.600000" xbr="245.920000" ybr="247.710000" group_id="41">
+      <attribute name="reference_id">REF_C42F4FE72EE0ACB0</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="350.20" xtl="239.900000" ytl="118.510000" xbr="483.100000" ybr="204.580000" group_id="41">
+      <attribute name="reference_id">REF_0F3E5AE66FB6140A</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_A4407D55F68AF3DD</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="41" name="HC_REL_A992A2DF0320378B.jpg" width="430" height="296">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="80.700000" ytl="108.500000" xbr="211.500000" ybr="215.600000" group_id="42">
+      <attribute name="reference_id">REF_10705F428DAF70BD</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="356.20" xtl="196.570000" ytl="85.630000" xbr="346.570000" ybr="165.310000" group_id="42">
+      <attribute name="reference_id">REF_CD062B2C10119298</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_A992A2DF0320378B</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="42" name="HC_REL_AD54855190F1F130.jpg" width="574" height="351">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="80.200000" ytl="108.000000" xbr="229.400000" ybr="271.000000" group_id="43">
+      <attribute name="reference_id">REF_A6C1B7E291C7CBF8</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="344.80" xtl="219.400000" ytl="112.800000" xbr="482.700000" ybr="232.300000" group_id="43">
+      <attribute name="reference_id">REF_72B340CF825A2862</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_AD54855190F1F130</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="43" name="HC_REL_AF177D9E6D65DFAA.jpg" width="455" height="338">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="80.100000" ytl="137.000000" xbr="199.000000" ybr="257.200000" group_id="44">
+      <attribute name="reference_id">REF_87C37A79D1E921A6</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="341.70" xtl="189.020000" ytl="106.120000" xbr="364.920000" ybr="194.440000" group_id="44">
+      <attribute name="reference_id">REF_399F2A6A6C79CC05</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_AF177D9E6D65DFAA</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="44" name="HC_REL_B7061C6404698D36.jpg" width="454" height="442">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="80.500000" ytl="248.000000" xbr="219.700000" ybr="362.000000" group_id="45">
+      <attribute name="reference_id">REF_C5829F3B746F1E67</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="344.80" xtl="99.400000" ytl="112.800000" xbr="362.700000" ybr="232.300000" group_id="45">
+      <attribute name="reference_id">REF_72B340CF825A2862</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_B7061C6404698D36</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="45" name="HC_REL_B76C67DF27EB09CC.jpg" width="430" height="337">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="80.000000" ytl="116.200000" xbr="210.400000" ybr="256.600000" group_id="46">
+      <attribute name="reference_id">REF_005C1F650147BC7D</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="339.40" xtl="183.050000" ytl="105.350000" xbr="339.480000" ybr="193.150000" group_id="46">
+      <attribute name="reference_id">REF_BCF38EF418F27BF5</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_B76C67DF27EB09CC</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="46" name="HC_REL_B8486DA59AFC8FC0.jpg" width="426" height="308">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0.000000" xtl="80.430000" ytl="102.600000" xbr="201.500000" ybr="227.600000" group_id="47">
+      <attribute name="reference_id">REF_2ADD9D5BCA7E74B2</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="351.00" xtl="186.590000" ytl="91.670000" xbr="339.090000" ybr="182.770000" group_id="47">
+      <attribute name="reference_id">REF_9A015918CF63BA3E</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_B8486DA59AFC8FC0</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="47" name="HC_REL_B8C8D6BA106572E0.jpg" width="563" height="368">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="80.900000" ytl="80.300000" xbr="309.600000" ybr="287.600000" group_id="48">
+      <attribute name="reference_id">REF_C928DF1C69A467E0</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="345.60" xtl="295.830000" ytl="118.490000" xbr="471.720000" ybr="225.370000" group_id="48">
+      <attribute name="reference_id">REF_701C2608ED084BB7</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_B8C8D6BA106572E0</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="48" name="HC_REL_BC1F504CD84AA1F2.jpg" width="446" height="447">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="128.700000" ytl="80.000000" xbr="245.000000" ybr="207.700000" group_id="49">
+      <attribute name="reference_id">REF_CD565B4C9C114F31</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="344.80" xtl="91.400000" ytl="214.800000" xbr="354.700000" ybr="334.300000" group_id="49">
+      <attribute name="reference_id">REF_72B340CF825A2862</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_BC1F504CD84AA1F2</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="49" name="HC_REL_BD50034E8164555C.jpg" width="447" height="296">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="80.200000" ytl="80.100000" xbr="227.200000" ybr="216.000000" group_id="50">
+      <attribute name="reference_id">REF_5AA425B25BBBC63C</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="227.500000" ytl="98.900000" xbr="366.600000" ybr="181.000000" group_id="50">
+      <attribute name="reference_id">REF_FE2E7F354D70632A</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_BD50034E8164555C</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="50" name="HC_REL_C80D08537C5ACCAE.jpg" width="460" height="336">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="80.300000" ytl="121.800000" xbr="220.800000" ybr="256.000000" group_id="51">
+      <attribute name="reference_id">REF_7C91C0C2F4DFC3AC</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="348.80" xtl="188.940000" ytl="97.650000" xbr="370.940000" ybr="199.180000" group_id="51">
+      <attribute name="reference_id">REF_5D672DF6B7475A15</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_C80D08537C5ACCAE</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="51" name="HC_REL_DCB9773A3F7B601B.jpg" width="441" height="448">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0.000000" xtl="220.800000" ytl="80.100000" xbr="360.090000" ybr="200.300000" group_id="52">
+      <attribute name="reference_id">REF_3514D3B39A59A125</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="339.10" xtl="85.650000" ytl="258.030000" xbr="312.430000" ybr="329.060000" group_id="52">
+      <attribute name="reference_id">REF_C82E595F2C228D11</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_DCB9773A3F7B601B</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="52" name="HC_REL_E41CBD45490A0D33.jpg" width="546" height="346">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="80.900000" ytl="122.300000" xbr="197.500000" ybr="265.300000" group_id="53">
+      <attribute name="reference_id">REF_452B699CECABBE31</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="347.700000" xtl="190.770000" ytl="108.960000" xbr="461.660000" ybr="176.300000" group_id="53">
+      <attribute name="reference_id">REF_F6591E0F07D774A3</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_E41CBD45490A0D33</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="53" name="HC_REL_E51D7FB3AC495CF3.jpg" width="524" height="344">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="80.710000" ytl="99.370000" xbr="209.610000" ybr="263.870000" group_id="54">
+      <attribute name="reference_id">REF_EA42F91437F3EDD0</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="347.80" xtl="225.900000" ytl="101.640000" xbr="435.800000" ybr="199.840000" group_id="54">
+      <attribute name="reference_id">REF_4A267924E1AEFF94</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_E51D7FB3AC495CF3</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="54" name="HC_REL_EADC3867366E892B.jpg" width="493" height="364">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="80.900000" ytl="160.700000" xbr="211.500000" ybr="283.500000" group_id="55">
+      <attribute name="reference_id">REF_99D3988439E6CF5C</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="347.20" xtl="185.920000" ytl="103.530000" xbr="405.020000" ybr="194.760000" group_id="55">
+      <attribute name="reference_id">REF_F4AC6AC3365953C7</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_EADC3867366E892B</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="55" name="HC_REL_EE214AB57842A090.jpg" width="486" height="370">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="80.000000" ytl="80.000000" xbr="194.000000" ybr="194.000000" group_id="56">
+      <attribute name="reference_id">REF_EA390030B547C553</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="348.80" xtl="214.940000" ytl="171.650000" xbr="396.940000" ybr="273.180000" group_id="56">
+      <attribute name="reference_id">REF_5D672DF6B7475A15</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_EE214AB57842A090</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+  <image id="56" name="HC_REL_F47D1A01028B45E3.jpg" width="473" height="288">
+    <box label="STAR_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0" xtl="80.300000" ytl="80.990000" xbr="199.500000" ybr="198.290000" group_id="57">
+      <attribute name="reference_id">REF_26EF158B1052D79C</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <box label="LABEL_REFERENCE" source="manual" occluded="0" z_order="0" rotation="0.000000" xtl="183.390000" ytl="102.600000" xbr="392.160000" ybr="207.480000" group_id="57">
+      <attribute name="reference_id">REF_778EDC05D0E2734C</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+    </box>
+    <tag label="PAIR_ATTACHMENT" source="manual">
+      <attribute name="pair_id">HC_REL_F47D1A01028B45E3</attribute>
+      <attribute name="relation_protocol_version">3</attribute>
+      <attribute name="decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">UNSET</attribute>
+    </tag>
+  </image>
+</annotations>

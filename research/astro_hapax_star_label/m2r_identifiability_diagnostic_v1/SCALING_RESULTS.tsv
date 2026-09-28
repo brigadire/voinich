@@ -1,0 +1,14 @@
+config_id	n_pairs	heldout_pairs	min_support	active_rules	distractor_rate	hapax_rate	num_seeds	completion_rate	mean_candidate_recall	mean_rule_precision	mean_rule_recall	mean_strict_assignment	mean_quotiented_assignment	mean_train_coverage	mean_heldout_coverage	mean_gain	mean_runtime_s	mean_peak_rss_mb	real_scope_simulation
+SCALE_N06	6	4	2	6	0.0	0.0	5	1.0	0.5333	0.6	0.1	0.0	0.0	0.0	0.0	0.1177	0.1182	24.77	NO
+SCALE_N12	12	6	2	9	0.0	0.0	5	1.0	0.4444	1.0	0.1111	0.1167	0.1167	0.0	0.0	0.105	0.2758	40.2	NO
+SCALE_N20	20	10	3	9	0.0	0.0	5	1.0	0.4667	0.4	0.0444	0.0	0.0	0.0	0.0	0.0913	0.6192	57.48	NO
+SCALE_N29	29	15	3	15	0.0	0.0	20	1.0	0.2667	0.7	0.0467	0.0345	0.0345	0.0	0.0	0.0701	1.0153	59.7	NO
+SCALE_N57	57	24	3	15	0.0	0.0	20	1.0	0.2867	0.25	0.0167	0.0061	0.0061	0.0	0.0	0.07	3.8497	85.83	NO
+SCALE_N100	100	25	3	15	0.0	0.0	5	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0006	0.0	NO
+SUP_THRESH_1	57	24	1	15	0.0	0.0	5	1.0	0.2667	0.0	0.0	0.0	0.0	0.0	0.0	0.0668	4.0112	108.22	NO
+SUP_THRESH_2	57	24	2	15	0.0	0.0	5	1.0	0.2667	0.0	0.0	0.0	0.0	0.0	0.0	0.0668	3.8871	108.12	NO
+DIST_10PCT	57	24	3	15	0.1	0.0	5	1.0	0.2667	0.0	0.0	0.0	0.0	0.0	0.0	0.0638	4.3245	107.45	NO
+DIST_20PCT	57	24	3	15	0.2	0.0	5	1.0	0.2667	0.0	0.0	0.0	0.0	0.0	0.0	0.0606	5.0321	106.59	NO
+HAPAX_50PCT	57	24	3	15	0.0	0.5	5	1.0	0.2667	0.0	0.0	0.0	0.0	0.0	0.0	0.0668	3.7661	106.42	NO
+HAPAX_90PCT	57	24	3	15	0.0	0.9	20	1.0	0.2867	0.25	0.0167	0.0061	0.0061	0.0	0.0	0.07	3.9263	104.7	NO
+REAL_SCOPE_57_STAR_LABELS	57	24	3	15	0.1	0.95	20	1.0	0.2867	0.25	0.0167	0.0061	0.0061	0.0	0.0	0.0669	4.4774	103.62	YES

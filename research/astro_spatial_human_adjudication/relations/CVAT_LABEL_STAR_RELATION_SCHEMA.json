@@ -1,0 +1,147 @@
+[
+  {
+    "name": "LABEL_ENDPOINT",
+    "type": "any",
+    "color": "#03a9f4",
+    "attributes": [
+      {
+        "name": "relation_candidate_id",
+        "input_type": "text",
+        "mutable": false,
+        "default_value": "",
+        "values": [
+          ""
+        ]
+      },
+      {
+        "name": "label_candidate_id",
+        "input_type": "text",
+        "mutable": false,
+        "default_value": "",
+        "values": [
+          ""
+        ]
+      },
+      {
+        "name": "object_candidate_id",
+        "input_type": "text",
+        "mutable": false,
+        "default_value": "",
+        "values": [
+          ""
+        ]
+      }
+    ]
+  },
+  {
+    "name": "STAR_ENDPOINT",
+    "type": "rectangle",
+    "color": "#ff9800",
+    "attributes": [
+      {
+        "name": "relation_candidate_id",
+        "input_type": "text",
+        "mutable": false,
+        "default_value": "",
+        "values": [
+          ""
+        ]
+      },
+      {
+        "name": "label_candidate_id",
+        "input_type": "text",
+        "mutable": false,
+        "default_value": "",
+        "values": [
+          ""
+        ]
+      },
+      {
+        "name": "object_candidate_id",
+        "input_type": "text",
+        "mutable": false,
+        "default_value": "",
+        "values": [
+          ""
+        ]
+      },
+      {
+        "name": "relation_decision",
+        "input_type": "select",
+        "mutable": true,
+        "default_value": "UNREVIEWED",
+        "values": [
+          "UNREVIEWED",
+          "ASSIGNED",
+          "UNASSIGNED",
+          "UNCERTAIN"
+        ]
+      },
+      {
+        "name": "adjacent_to",
+        "input_type": "checkbox",
+        "mutable": true,
+        "default_value": "false",
+        "values": [
+          "false"
+        ]
+      },
+      {
+        "name": "nearest_object",
+        "input_type": "checkbox",
+        "mutable": true,
+        "default_value": "false",
+        "values": [
+          "false"
+        ]
+      },
+      {
+        "name": "between_objects",
+        "input_type": "checkbox",
+        "mutable": true,
+        "default_value": "false",
+        "values": [
+          "false"
+        ]
+      },
+      {
+        "name": "on_object",
+        "input_type": "checkbox",
+        "mutable": true,
+        "default_value": "false",
+        "values": [
+          "false"
+        ]
+      },
+      {
+        "name": "inside_object",
+        "input_type": "checkbox",
+        "mutable": true,
+        "default_value": "false",
+        "values": [
+          "false"
+        ]
+      },
+      {
+        "name": "human_confidence",
+        "input_type": "select",
+        "mutable": true,
+        "default_value": "HIGH",
+        "values": [
+          "LOW",
+          "MEDIUM",
+          "HIGH"
+        ]
+      },
+      {
+        "name": "notes",
+        "input_type": "text",
+        "mutable": true,
+        "default_value": "",
+        "values": [
+          ""
+        ]
+      }
+    ]
+  }
+]

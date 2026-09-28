@@ -1,0 +1,1797 @@
+<?xml version='1.0' encoding='utf-8'?>
+<annotations>
+  <version>1.1</version>
+  <meta>
+    <task>
+      <name>label-star-attachment-v2-main</name>
+      <mode>annotation</mode>
+      <overlap>0</overlap>
+      <flipped>False</flipped>
+      <labels>
+        <label>
+          <name>LABEL_ENDPOINT</name>
+          <type>any</type>
+          <color>#03a9f4</color>
+          <attributes>
+            <attribute>
+              <name>relation_candidate_id</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value />
+              <values />
+            </attribute>
+            <attribute>
+              <name>label_candidate_id</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value />
+              <values />
+            </attribute>
+            <attribute>
+              <name>object_candidate_id</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value />
+              <values />
+            </attribute>
+            <attribute>
+              <name>panel</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value />
+              <values />
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>STAR_ENDPOINT</name>
+          <type>rectangle</type>
+          <color>#ff9800</color>
+          <attributes>
+            <attribute>
+              <name>relation_candidate_id</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value />
+              <values />
+            </attribute>
+            <attribute>
+              <name>label_candidate_id</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value />
+              <values />
+            </attribute>
+            <attribute>
+              <name>object_candidate_id</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value />
+              <values />
+            </attribute>
+            <attribute>
+              <name>panel</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value />
+              <values />
+            </attribute>
+            <attribute>
+              <name>relation_decision</name>
+              <mutable>True</mutable>
+              <input_type>select</input_type>
+              <default_value>UNREVIEWED</default_value>
+              <values>UNREVIEWED
+ASSIGNED
+UNASSIGNED
+UNCERTAIN</values>
+            </attribute>
+            <attribute>
+              <name>human_confidence</name>
+              <mutable>True</mutable>
+              <input_type>select</input_type>
+              <default_value>HIGH</default_value>
+              <values>LOW
+MEDIUM
+HIGH</values>
+            </attribute>
+            <attribute>
+              <name>notes</name>
+              <mutable>True</mutable>
+              <input_type>text</input_type>
+              <default_value />
+              <values />
+            </attribute>
+          </attributes>
+        </label>
+      </labels>
+      <size>102</size>
+    </task>
+  </meta>
+  <image id="0" name="HREL_053DFC9161E1.png" width="1206" height="1308">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="1" xtl="169.360000" ytl="604.570000" xbr="1027.520000" ybr="703.470000" rotation="50.90">
+      <attribute name="relation_candidate_id">HREL_053DFC9161E1</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_7B9685B49E9E</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_35A0EA6D7DAB</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="1" xtl="802.000000" ytl="715.000000" xbr="917.000000" ybr="837.000000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_053DFC9161E1</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_7B9685B49E9E</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_35A0EA6D7DAB</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="1" name="HREL_080AF5D80554.png" width="822" height="647">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="2" xtl="401.680000" ytl="289.420000" xbr="559.180000" ybr="357.700000" rotation="28.00">
+      <attribute name="relation_candidate_id">HREL_080AF5D80554</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_FAC96A3ED16E</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_032DBFCF1665</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="2" xtl="256.500000" ytl="280.870000" xbr="313.900000" ybr="343.800000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_080AF5D80554</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_FAC96A3ED16E</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_032DBFCF1665</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="2" name="HREL_08CEA4C75079.png" width="782" height="648">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="3" xtl="372.570000" ytl="261.630000" xbr="522.570000" ybr="341.310000" rotation="356.20">
+      <attribute name="relation_candidate_id">HREL_08CEA4C75079</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r2_B0EE724D7403</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r2_ADBB083AC840</attribute>
+      <attribute name="panel">f68r2</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="3" xtl="256.700000" ytl="284.500000" xbr="387.500000" ybr="391.600000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_08CEA4C75079</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r2_B0EE724D7403</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r2_ADBB083AC840</attribute>
+      <attribute name="panel">f68r2</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="3" name="HREL_0989231B630C.png" width="785" height="664">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="4" xtl="356.670000" ytl="300.600000" xbr="528.330000" ybr="407.500000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_0989231B630C</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_B2142F9557C7</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_DBC3503D1FA1</attribute>
+      <attribute name="panel">f68r1</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="4" xtl="256.330000" ytl="256.500000" xbr="350.330000" ybr="388.330000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_0989231B630C</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_B2142F9557C7</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_DBC3503D1FA1</attribute>
+      <attribute name="panel">f68r1</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="4" name="HREL_0A661693F295.png" width="905" height="667">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="5" xtl="412.300000" ytl="258.700000" xbr="648.800000" ybr="383.670000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_0A661693F295</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_E1F8D2559E4A</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_9059F2F824EC</attribute>
+      <attribute name="panel">f68r1</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="5" xtl="256.000000" ytl="256.000000" xbr="417.670000" ybr="411.000000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_0A661693F295</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_E1F8D2559E4A</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_9059F2F824EC</attribute>
+      <attribute name="panel">f68r1</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="5" name="HREL_0E820FDD8856.png" width="929" height="1504">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="6" xtl="84.970000" ytl="684.230000" xbr="956.570000" ybr="820.230000" rotation="93.70">
+      <attribute name="relation_candidate_id">HREL_0E820FDD8856</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_C14838DBD11C</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_9088530E9177</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="6" xtl="312.000000" ytl="962.000000" xbr="416.000000" ybr="1080.000000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_0E820FDD8856</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_C14838DBD11C</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_9088530E9177</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="6" name="HREL_0EAF0EFD7A0F.png" width="1319" height="1456">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="7" xtl="206.630000" ytl="671.560000" xbr="1112.330000" ybr="784.770000" rotation="52.00">
+      <attribute name="relation_candidate_id">HREL_0EAF0EFD7A0F</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_C217BD43FE7F</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_9BE1C497E282</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="7" xtl="812.300000" ytl="416.300000" xbr="958.100000" ybr="543.500000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_0EAF0EFD7A0F</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_C217BD43FE7F</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_9BE1C497E282</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="7" name="HREL_0FCE58748C19.png" width="796" height="674">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="8" xtl="389.420000" ytl="262.000000" xbr="599.200000" ybr="381.620000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_0FCE58748C19</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_5C72D2D46ED7</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_56FE9D975510</attribute>
+      <attribute name="panel">f68r1</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="8" xtl="256.000000" ytl="256.500000" xbr="414.400000" ybr="417.330000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_0FCE58748C19</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_5C72D2D46ED7</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_56FE9D975510</attribute>
+      <attribute name="panel">f68r1</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="8" name="HREL_1149A2EB5587.png" width="1131" height="1242">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="9" xtl="136.360000" ytl="571.570000" xbr="994.520000" ybr="670.470000" rotation="50.90">
+      <attribute name="relation_candidate_id">HREL_1149A2EB5587</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_7B9685B49E9E</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_24A68EDE1782</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="9" xtl="520.000000" ytl="415.000000" xbr="629.000000" ybr="540.000000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_1149A2EB5587</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_7B9685B49E9E</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_24A68EDE1782</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="9" name="HREL_118FB3814811.png" width="1189" height="1326">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="10" xtl="141.630000" ytl="606.560000" xbr="1047.330000" ybr="719.770000" rotation="52.00">
+      <attribute name="relation_candidate_id">HREL_118FB3814811</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_C217BD43FE7F</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_9176521AEDB1</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="10" xtl="283.170000" ytl="500.700000" xbr="402.800000" ybr="628.400000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_118FB3814811</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_C217BD43FE7F</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_9176521AEDB1</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="10" name="HREL_135E6853FD38.png" width="794" height="654">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="11" xtl="364.590000" ytl="287.800000" xbr="537.930000" ybr="373.960000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_135E6853FD38</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_D16E5E8CBA26</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_62EA56EE4C90</attribute>
+      <attribute name="panel">f68r1</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="11" xtl="256.200000" ytl="256.300000" xbr="371.670000" ybr="397.670000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_135E6853FD38</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_D16E5E8CBA26</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_62EA56EE4C90</attribute>
+      <attribute name="panel">f68r1</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="11" name="HREL_1684618424C5.png" width="725" height="775">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="12" xtl="261.650000" ytl="409.030000" xbr="488.430000" ybr="480.060000" rotation="339.10">
+      <attribute name="relation_candidate_id">HREL_1684618424C5</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r2_FBE4D3094C89</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r2_5B71A9B9C654</attribute>
+      <attribute name="panel">f68r2</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="12" xtl="258.100000" ytl="256.700000" xbr="386.000000" ybr="390.900000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_1684618424C5</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r2_FBE4D3094C89</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r2_5B71A9B9C654</attribute>
+      <attribute name="panel">f68r2</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="12" name="HREL_1D5D94F4E9DB.png" width="853" height="666">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="13" xtl="386.300000" ytl="307.200000" xbr="596.670000" ybr="396.670000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_1D5D94F4E9DB</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_599A90270FF5</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_BBA9BDF4EB9B</attribute>
+      <attribute name="panel">f68r1</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="13" xtl="256.500000" ytl="256.600000" xbr="404.000000" ybr="409.330000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_1D5D94F4E9DB</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_599A90270FF5</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_BBA9BDF4EB9B</attribute>
+      <attribute name="panel">f68r1</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="13" name="HREL_1EF732373F58.png" width="789" height="656">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="14" xtl="359.600000" ytl="271.770000" xbr="527.240000" ybr="339.340000" rotation="349.30">
+      <attribute name="relation_candidate_id">HREL_1EF732373F58</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r2_7FBA483B0E1D</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r2_F20B79A67067</attribute>
+      <attribute name="panel">f68r2</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="14" xtl="256.700000" ytl="269.700000" xbr="377.600000" ybr="399.200000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_1EF732373F58</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r2_7FBA483B0E1D</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r2_F20B79A67067</attribute>
+      <attribute name="panel">f68r2</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="14" name="HREL_2019FBE597FE.png" width="791" height="692">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="15" xtl="263.430000" ytl="304.500000" xbr="471.430000" ybr="387.500000" rotation="31.00">
+      <attribute name="relation_candidate_id">HREL_2019FBE597FE</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_45BF62F0A08A</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_C68D251510AC</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="15" xtl="486.100000" ytl="293.660000" xbr="534.900000" ybr="362.100000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_2019FBE597FE</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_45BF62F0A08A</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_C68D251510AC</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="15" name="HREL_26B916F971C9.png" width="804" height="682">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="16" xtl="379.000000" ytl="306.200000" xbr="547.330000" ybr="387.000000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_26B916F971C9</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_2818552D1622</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_E16D23AE18A1</attribute>
+      <attribute name="panel">f68r1</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="16" xtl="256.800000" ytl="256.800000" xbr="367.670000" ybr="425.300000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_26B916F971C9</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_2818552D1622</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_E16D23AE18A1</attribute>
+      <attribute name="panel">f68r1</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="16" name="HREL_271085788AFD.png" width="914" height="694">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="17" xtl="424.410000" ytl="301.500000" xbr="657.600000" ybr="381.570000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_271085788AFD</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_7D5A07415F6B</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_5A4B2BED8FB7</attribute>
+      <attribute name="panel">f68r1</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="17" xtl="256.600000" ytl="256.800000" xbr="430.100000" ybr="437.800000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_271085788AFD</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_7D5A07415F6B</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_5A4B2BED8FB7</attribute>
+      <attribute name="panel">f68r1</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="17" name="HREL_2C09300FAFD3.png" width="868" height="655">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="18" xtl="418.600000" ytl="278.400000" xbr="611.330000" ybr="379.000000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_2C09300FAFD3</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_94FF807CB77C</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_9571A3F0AA59</attribute>
+      <attribute name="panel">f68r1</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="18" xtl="256.800000" ytl="256.300000" xbr="427.000000" ybr="398.330000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_2C09300FAFD3</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_94FF807CB77C</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_9571A3F0AA59</attribute>
+      <attribute name="panel">f68r1</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="18" name="HREL_2F82AFA633B2.png" width="812" height="688">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="19" xtl="364.940000" ytl="273.650000" xbr="546.940000" ybr="375.180000" rotation="348.80">
+      <attribute name="relation_candidate_id">HREL_2F82AFA633B2</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r2_5F37A798ABF6</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r2_CEF2CDEC37D1</attribute>
+      <attribute name="panel">f68r2</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="19" xtl="256.300000" ytl="297.800000" xbr="396.800000" ybr="432.000000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_2F82AFA633B2</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r2_5F37A798ABF6</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r2_CEF2CDEC37D1</attribute>
+      <attribute name="panel">f68r2</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="19" name="HREL_381DAD02F755.png" width="884" height="818">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="20" xtl="385.600000" ytl="440.360000" xbr="614.370000" ybr="502.360000" rotation="26.50">
+      <attribute name="relation_candidate_id">HREL_381DAD02F755</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_9915A6D9710D</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_032DBFCF1665</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="20" xtl="267.500000" ytl="267.870000" xbr="324.900000" ybr="330.800000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_381DAD02F755</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_9915A6D9710D</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_032DBFCF1665</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="20" name="HREL_3BDF791DF8CA.png" width="1797" height="1145">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="21" xtl="429.680000" ytl="560.790000" xbr="1367.380000" ybr="693.670000" rotation="3.00">
+      <attribute name="relation_candidate_id">HREL_3BDF791DF8CA</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_26829C8B0ED5</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_165C1FCA31A5</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="21" xtl="441.000000" ytl="426.000000" xbr="553.000000" ybr="549.000000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_3BDF791DF8CA</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_26829C8B0ED5</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_165C1FCA31A5</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="21" name="HREL_3BFF396809D1.png" width="766" height="666">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="22" xtl="396.000000" ytl="256.000000" xbr="599.000000" ybr="377.670000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_3BFF396809D1</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_3226D0F6FF82</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_045FE36E94DB</attribute>
+      <attribute name="panel">f68r1</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="22" xtl="256.300000" ytl="282.200000" xbr="397.670000" ybr="410.000000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_3BFF396809D1</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_3226D0F6FF82</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_045FE36E94DB</attribute>
+      <attribute name="panel">f68r1</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="22" name="HREL_3C860C3C3E9B.png" width="890" height="707">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="23" xtl="396.060000" ytl="284.500000" xbr="626.060000" ybr="372.800000" rotation="345.40">
+      <attribute name="relation_candidate_id">HREL_3C860C3C3E9B</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r2_29B446230B4F</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r2_A6DE74CF4696</attribute>
+      <attribute name="panel">f68r2</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="23" xtl="256.300000" ytl="286.100000" xbr="425.600000" ybr="450.700000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_3C860C3C3E9B</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r2_29B446230B4F</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r2_A6DE74CF4696</attribute>
+      <attribute name="panel">f68r2</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="23" name="HREL_3D61EDB66906.png" width="1499" height="1076">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="24" xtl="217.080000" ytl="416.980000" xbr="1095.190000" ybr="523.090000" rotation="178.00">
+      <attribute name="relation_candidate_id">HREL_3D61EDB66906</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_605AEBF1F790</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_568472087E7C</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="24" xtl="956.400000" ytl="564.800000" xbr="1098.000000" ybr="675.000000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_3D61EDB66906</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_605AEBF1F790</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_568472087E7C</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="24" name="HREL_3E67CC1AFCB7.png" width="1131" height="1242">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="25" xtl="136.360000" ytl="571.570000" xbr="994.520000" ybr="670.470000" rotation="50.90">
+      <attribute name="relation_candidate_id">HREL_3E67CC1AFCB7</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_7B9685B49E9E</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_0422AC3FEB33</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="25" xtl="673.000000" ytl="613.000000" xbr="786.000000" ybr="729.000000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_3E67CC1AFCB7</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_7B9685B49E9E</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_0422AC3FEB33</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="25" name="HREL_3ECF2B986CF3.png" width="1147" height="1738">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="26" xtl="18.830000" ytl="807.070000" xbr="952.720000" ybr="931.570000" rotation="93.00">
+      <attribute name="relation_candidate_id">HREL_3ECF2B986CF3</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_F59D510F9867</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_0489E7D20520</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="26" xtl="630.100000" ytl="469.600000" xbr="747.800000" ybr="584.000000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_3ECF2B986CF3</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_F59D510F9867</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_0489E7D20520</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="26" name="HREL_41861F8671D0.png" width="915" height="720">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="27" xtl="471.830000" ytl="294.490000" xbr="647.720000" ybr="401.370000" rotation="345.60">
+      <attribute name="relation_candidate_id">HREL_41861F8671D0</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r2_C1B3A2E8B3D1</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r2_3D99EB05EB58</attribute>
+      <attribute name="panel">f68r2</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="27" xtl="256.900000" ytl="256.300000" xbr="485.600000" ybr="463.600000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_41861F8671D0</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r2_C1B3A2E8B3D1</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r2_3D99EB05EB58</attribute>
+      <attribute name="panel">f68r2</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="27" name="HREL_49E284182411.png" width="773" height="684">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="28" xtl="353.000000" ytl="299.200000" xbr="516.330000" ybr="393.330000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_49E284182411</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_829A1F808609</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_A54B63666498</attribute>
+      <attribute name="panel">f68r1</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="28" xtl="256.000000" ytl="256.900000" xbr="350.000000" ybr="427.100000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_49E284182411</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_829A1F808609</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_A54B63666498</attribute>
+      <attribute name="panel">f68r1</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="28" name="HREL_51FCEFDD471F.png" width="807" height="690">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="29" xtl="365.020000" ytl="282.120000" xbr="540.920000" ybr="370.440000" rotation="341.70">
+      <attribute name="relation_candidate_id">HREL_51FCEFDD471F</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r2_E54E22DD90B7</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r2_187A53DAA101</attribute>
+      <attribute name="panel">f68r2</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="29" xtl="256.100000" ytl="313.000000" xbr="375.000000" ybr="433.200000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_51FCEFDD471F</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r2_E54E22DD90B7</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r2_187A53DAA101</attribute>
+      <attribute name="panel">f68r2</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="29" name="HREL_5263B5BA26CC.png" width="759" height="647">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="30" xtl="338.680000" ytl="289.420000" xbr="496.180000" ybr="357.700000" rotation="28.00">
+      <attribute name="relation_candidate_id">HREL_5263B5BA26CC</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_FAC96A3ED16E</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_1A2E80DC48AA</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="30" xtl="256.990000" ytl="286.130000" xbr="316.990000" ybr="346.130000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_5263B5BA26CC</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_FAC96A3ED16E</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_1A2E80DC48AA</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="30" name="HREL_52C95CAD230F.png" width="1159" height="1296">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="31" xtl="126.630000" ytl="591.560000" xbr="1032.330000" ybr="704.770000" rotation="52.00">
+      <attribute name="relation_candidate_id">HREL_52C95CAD230F</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_C217BD43FE7F</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_E262CE222F8D</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="31" xtl="375.070000" ytl="625.700000" xbr="500.800000" ybr="759.500000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_52C95CAD230F</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_C217BD43FE7F</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_E262CE222F8D</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="31" name="HREL_5A851945C38E.png" width="873" height="695">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="32" xtl="433.080000" ytl="256.300000" xbr="616.420000" ybr="374.610000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_5A851945C38E</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_768FED558FE0</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_A46A6CCCCD6B</attribute>
+      <attribute name="panel">f68r1</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="32" xtl="256.800000" ytl="263.400000" xbr="429.100000" ybr="438.600000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_5A851945C38E</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_768FED558FE0</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_A46A6CCCCD6B</attribute>
+      <attribute name="panel">f68r1</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="32" name="HREL_5AF3E1B9BF6E.png" width="909" height="716">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="33" xtl="417.100000" ytl="256.600000" xbr="652.900000" ybr="397.670000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_5AF3E1B9BF6E</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_9CE300F85236</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_572D3F1F8DE6</attribute>
+      <attribute name="panel">f68r1</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="33" xtl="256.700000" ytl="272.900000" xbr="416.200000" ybr="460.000000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_5AF3E1B9BF6E</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_9CE300F85236</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_572D3F1F8DE6</attribute>
+      <attribute name="panel">f68r1</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="33" name="HREL_601DECED2C95.png" width="1353" height="743">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="34" xtl="217.080000" ytl="271.980000" xbr="1095.190000" ybr="378.090000" rotation="178.00">
+      <attribute name="relation_candidate_id">HREL_601DECED2C95</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_605AEBF1F790</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_22684DE74ACA</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="34" xtl="458.500000" ytl="371.400000" xbr="586.700000" ybr="486.700000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_601DECED2C95</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_605AEBF1F790</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_22684DE74ACA</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="34" name="HREL_6090550A8C66.png" width="1353" height="756">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="35" xtl="217.080000" ytl="271.980000" xbr="1095.190000" ybr="378.090000" rotation="178.00">
+      <attribute name="relation_candidate_id">HREL_6090550A8C66</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_605AEBF1F790</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_84047676538D</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="35" xtl="793.500000" ytl="379.500000" xbr="918.900000" ybr="499.700000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_6090550A8C66</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_605AEBF1F790</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_84047676538D</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="35" name="HREL_61979E57282D.png" width="1353" height="683">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="36" xtl="217.080000" ytl="271.980000" xbr="1095.190000" ybr="378.090000" rotation="178.00">
+      <attribute name="relation_candidate_id">HREL_61979E57282D</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_605AEBF1F790</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_03C31059FF7B</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="36" xtl="625.000000" ytl="340.500000" xbr="710.500000" ybr="427.000000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_61979E57282D</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_605AEBF1F790</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_03C31059FF7B</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="36" name="HREL_622E126FC2ED.png" width="757" height="688">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="37" xtl="336.680000" ytl="330.420000" xbr="494.180000" ybr="398.700000" rotation="28.00">
+      <attribute name="relation_candidate_id">HREL_622E126FC2ED</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_FAC96A3ED16E</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_991122EA80DE</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="37" xtl="256.350000" ytl="256.340000" xbr="316.350000" ybr="316.340000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_622E126FC2ED</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_FAC96A3ED16E</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_991122EA80DE</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="37" name="HREL_6296B7F8C4F4.png" width="2159" height="2125">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="38" xtl="313.170000" ytl="965.630000" xbr="1185.200000" ybr="1080.560000" rotation="142.90">
+      <attribute name="relation_candidate_id">HREL_6296B7F8C4F4</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_D1A7C209B256</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_859973C82170</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="38" xtl="1320.100000" ytl="1291.600000" xbr="1445.000000" ybr="1411.000000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_6296B7F8C4F4</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_D1A7C209B256</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_859973C82170</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="38" name="HREL_64EF6C40CF59.png" width="859" height="659">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="39" xtl="509.500000" ytl="323.600000" xbr="602.200000" ybr="381.270000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_64EF6C40CF59</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_E9FEC7295FC3</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_8AB54EE0159A</attribute>
+      <attribute name="panel">f68r1</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="39" xtl="256.670000" ytl="256.900000" xbr="350.670000" ybr="402.330000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_64EF6C40CF59</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_E9FEC7295FC3</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_8AB54EE0159A</attribute>
+      <attribute name="panel">f68r1</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="39" name="HREL_64FEFD640E3E.png" width="802" height="1452">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="40" xtl="-124.170000" ytl="664.070000" xbr="809.720000" ybr="788.570000" rotation="93.00">
+      <attribute name="relation_candidate_id">HREL_64FEFD640E3E</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_F59D510F9867</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_859973C82170</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="40" xtl="421.100000" ytl="692.600000" xbr="546.000000" ybr="812.000000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_64FEFD640E3E</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_F59D510F9867</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_859973C82170</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="40" name="HREL_68BD06396134.png" width="850" height="1452">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="41" xtl="-124.170000" ytl="664.070000" xbr="809.720000" ybr="788.570000" rotation="93.00">
+      <attribute name="relation_candidate_id">HREL_68BD06396134</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_F59D510F9867</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_C1D20B14679B</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="41" xtl="461.000000" ytl="501.500000" xbr="593.300000" ybr="618.500000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_68BD06396134</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_F59D510F9867</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_C1D20B14679B</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="41" name="HREL_69578074B9CB.png" width="1263" height="1336">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="42" xtl="183.360000" ytl="618.570000" xbr="1041.520000" ybr="717.470000" rotation="50.90">
+      <attribute name="relation_candidate_id">HREL_69578074B9CB</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_7B9685B49E9E</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_056F8CB4822A</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="42" xtl="836.490000" ytl="515.400000" xbr="959.900000" ybr="619.970000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_69578074B9CB</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_7B9685B49E9E</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_056F8CB4822A</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="42" name="HREL_6B4049A24363.png" width="881" height="698">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="43" xtl="438.000000" ytl="272.000000" xbr="624.670000" ybr="391.000000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_6B4049A24363</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_F8C9C8361135</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_620CC013B0AF</attribute>
+      <attribute name="panel">f68r1</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="43" xtl="256.000000" ytl="256.200000" xbr="430.000000" ybr="441.700000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_6B4049A24363</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_F8C9C8361135</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_620CC013B0AF</attribute>
+      <attribute name="panel">f68r1</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="43" name="HREL_6BBF367816C2.png" width="778" height="1392">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="44" xtl="-10.030000" ytl="628.230000" xbr="861.570000" ybr="764.230000" rotation="93.70">
+      <attribute name="relation_candidate_id">HREL_6BBF367816C2</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_C14838DBD11C</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_04089F9E3CB9</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="44" xtl="256.500000" ytl="643.000000" xbr="373.300000" ybr="774.500000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_6BBF367816C2</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_C14838DBD11C</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_04089F9E3CB9</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="44" name="HREL_6C2FF076F73E.png" width="796" height="694">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="45" xtl="366.330000" ytl="336.670000" xbr="539.670000" ybr="437.200000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_6C2FF076F73E</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_B685BDFB1F46</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_429CE38123FF</attribute>
+      <attribute name="panel">f68r1</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="45" xtl="256.000000" ytl="256.900000" xbr="368.330000" ybr="406.670000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_6C2FF076F73E</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_B685BDFB1F46</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_429CE38123FF</attribute>
+      <attribute name="panel">f68r1</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="45" name="HREL_6DD987933811.png" width="806" height="794">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="46" xtl="275.400000" ytl="288.800000" xbr="538.700000" ybr="408.300000" rotation="344.80">
+      <attribute name="relation_candidate_id">HREL_6DD987933811</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r2_B774D6DBC14A</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r2_E6C00366696B</attribute>
+      <attribute name="panel">f68r2</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="46" xtl="256.500000" ytl="424.000000" xbr="395.700000" ybr="538.000000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_6DD987933811</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r2_B774D6DBC14A</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r2_E6C00366696B</attribute>
+      <attribute name="panel">f68r2</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="46" name="HREL_6E565F920B53.png" width="1457" height="772">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="47" xtl="259.680000" ytl="357.790000" xbr="1197.380000" ybr="490.670000" rotation="3.00">
+      <attribute name="relation_candidate_id">HREL_6E565F920B53</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_26829C8B0ED5</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_218D660E68DA</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="47" xtl="777.800000" ytl="256.300000" xbr="885.000000" ybr="370.500000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_6E565F920B53</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_26829C8B0ED5</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_218D660E68DA</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="47" name="HREL_6E8DBFA9F8E9.png" width="1264" height="1147">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="48" xtl="199.670000" ytl="513.260000" xbr="1063.730000" ybr="634.520000" rotation="141.40">
+      <attribute name="relation_candidate_id">HREL_6E8DBFA9F8E9</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_379FBFD2857F</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_5A96054BDAB4</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="48" xtl="688.000000" ytl="601.800000" xbr="808.800000" ybr="717.500000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_6E8DBFA9F8E9</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_379FBFD2857F</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_5A96054BDAB4</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="48" name="HREL_70179A693FC6.png" width="861" height="646">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="49" xtl="400.800000" ytl="292.400000" xbr="604.200000" ybr="378.160000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_70179A693FC6</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_41BC06EDAF55</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_42593179D17A</attribute>
+      <attribute name="panel">f68r1</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="49" xtl="256.000000" ytl="256.670000" xbr="400.500000" ybr="390.000000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_70179A693FC6</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_41BC06EDAF55</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_42593179D17A</attribute>
+      <attribute name="panel">f68r1</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="49" name="HREL_70CE31C526E6.png" width="845" height="716">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="50" xtl="361.920000" ytl="279.530000" xbr="581.020000" ybr="370.760000" rotation="347.20">
+      <attribute name="relation_candidate_id">HREL_70CE31C526E6</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r2_280AA6C2E597</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r2_741BC5BEBE14</attribute>
+      <attribute name="panel">f68r2</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="50" xtl="256.900000" ytl="336.700000" xbr="387.500000" ybr="459.500000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_70CE31C526E6</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r2_280AA6C2E597</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r2_741BC5BEBE14</attribute>
+      <attribute name="panel">f68r2</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="50" name="HREL_7544B2724CFC.png" width="1332" height="1215">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="51" xtl="233.670000" ytl="547.260000" xbr="1097.730000" ybr="668.520000" rotation="141.40">
+      <attribute name="relation_candidate_id">HREL_7544B2724CFC</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_379FBFD2857F</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_BCEAA4192CA1</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="51" xtl="768.000000" ytl="792.000000" xbr="870.000000" ybr="914.000000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_7544B2724CFC</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_379FBFD2857F</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_BCEAA4192CA1</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="51" name="HREL_7683BFF416FC.png" width="1394" height="1246">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="52" xtl="261.170000" ytl="565.630000" xbr="1133.200000" ybr="680.560000" rotation="142.90">
+      <attribute name="relation_candidate_id">HREL_7683BFF416FC</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_D1A7C209B256</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_8FD1DD21650B</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="52" xtl="942.800000" ytl="594.800000" xbr="1071.300000" ybr="745.400000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_7683BFF416FC</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_D1A7C209B256</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_8FD1DD21650B</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="52" name="HREL_7836B7506E79.png" width="847" height="702">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="53" xtl="404.310000" ytl="279.820000" xbr="627.720000" ybr="389.420000" rotation="347.50">
+      <attribute name="relation_candidate_id">HREL_7836B7506E79</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r2_1D28C267C6D8</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r2_51D8B8874DA2</attribute>
+      <attribute name="panel">f68r2</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="53" xtl="256.500000" ytl="302.100000" xbr="408.500000" ybr="445.500000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_7836B7506E79</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r2_1D28C267C6D8</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r2_51D8B8874DA2</attribute>
+      <attribute name="panel">f68r2</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="53" name="HREL_7C73704A112C.png" width="665" height="659">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="54" xtl="319.000000" ytl="270.800000" xbr="409.000000" ybr="369.000000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_7C73704A112C</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_B31814B413F8</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_8AB54EE0159A</attribute>
+      <attribute name="panel">f68r1</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="54" xtl="256.670000" ytl="256.900000" xbr="350.670000" ybr="402.330000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_7C73704A112C</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_B31814B413F8</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_8AB54EE0159A</attribute>
+      <attribute name="panel">f68r1</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="54" name="HREL_7F18D8A79C26.png" width="799" height="648">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="55" xtl="403.500000" ytl="274.900000" xbr="542.600000" ybr="357.000000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_7F18D8A79C26</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r2_42EB5D08575A</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r2_F513A719E5D4</attribute>
+      <attribute name="panel">f68r2</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="55" xtl="256.200000" ytl="256.100000" xbr="403.200000" ybr="392.000000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_7F18D8A79C26</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r2_42EB5D08575A</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r2_F513A719E5D4</attribute>
+      <attribute name="panel">f68r2</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="55" name="HREL_7F5A955FF2A4.png" width="845" height="641">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="56" xtl="376.200000" ytl="256.500000" xbr="589.000000" ybr="341.330000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_7F5A955FF2A4</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_AEA2EECB77C4</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_0AF8536C9FEC</attribute>
+      <attribute name="panel">f68r1</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="56" xtl="256.000000" ytl="286.500000" xbr="382.000000" ybr="385.000000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_7F5A955FF2A4</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_AEA2EECB77C4</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_0AF8536C9FEC</attribute>
+      <attribute name="panel">f68r1</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="56" name="HREL_80080CAA4F33.png" width="793" height="1478">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="57" xtl="-111.170000" ytl="677.070000" xbr="822.720000" ybr="801.570000" rotation="93.00">
+      <attribute name="relation_candidate_id">HREL_80080CAA4F33</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_F59D510F9867</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_1A7539F82D2E</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="57" xtl="404.000000" ytl="918.000000" xbr="524.000000" ybr="1051.000000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_80080CAA4F33</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_F59D510F9867</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_1A7539F82D2E</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="57" name="HREL_8389EE287829.png" width="876" height="696">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="58" xtl="401.900000" ytl="277.640000" xbr="611.800000" ybr="375.840000" rotation="347.80">
+      <attribute name="relation_candidate_id">HREL_8389EE287829</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r2_5B59D2A6823C</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r2_39476885B40C</attribute>
+      <attribute name="panel">f68r2</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="58" xtl="256.710000" ytl="275.370000" xbr="385.610000" ybr="439.870000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_8389EE287829</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r2_5B59D2A6823C</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r2_39476885B40C</attribute>
+      <attribute name="panel">f68r2</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="58" name="HREL_85BB80FB9F4B.png" width="1457" height="803">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="59" xtl="259.680000" ytl="388.790000" xbr="1197.380000" ybr="521.670000" rotation="3.00">
+      <attribute name="relation_candidate_id">HREL_85BB80FB9F4B</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_26829C8B0ED5</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_ABC1A4D02F84</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="59" xtl="503.080000" ytl="256.560000" xbr="614.080000" ybr="379.560000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_85BB80FB9F4B</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_26829C8B0ED5</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_ABC1A4D02F84</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="59" name="HREL_8CA601B473D5.png" width="725" height="692">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="60" xtl="334.200000" ytl="317.900000" xbr="468.400000" ybr="435.500000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_8CA601B473D5</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_7F0B3B7B8236</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_B592D9992D0A</attribute>
+      <attribute name="panel">f68r1</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="60" xtl="256.670000" ytl="256.600000" xbr="350.670000" ybr="417.000000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_8CA601B473D5</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_7F0B3B7B8236</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_B592D9992D0A</attribute>
+      <attribute name="panel">f68r1</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="60" name="HREL_8D97BF7AF609.png" width="626" height="709">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="61" xtl="429.670000" ytl="256.400000" xbr="570.330000" ybr="363.330000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_8D97BF7AF609</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_74BC9BB1AD80</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_EFE31B3115DD</attribute>
+      <attribute name="panel">f68r1</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="61" xtl="256.100000" ytl="261.700000" xbr="428.000000" ybr="452.100000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_8D97BF7AF609</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_74BC9BB1AD80</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_EFE31B3115DD</attribute>
+      <attribute name="panel">f68r1</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="61" name="HREL_8FE034814C60.png" width="892" height="691">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="62" xtl="450.170000" ytl="274.300000" xbr="635.170000" ybr="347.730000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_8FE034814C60</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_838C2F2B50FD</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_A8F524B1B89C</attribute>
+      <attribute name="panel">f68r1</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="62" xtl="256.600000" ytl="256.100000" xbr="444.200000" ybr="434.670000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_8FE034814C60</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_838C2F2B50FD</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_A8F524B1B89C</attribute>
+      <attribute name="panel">f68r1</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="62" name="HREL_903DB2DDDF39.png" width="849" height="741">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="63" xtl="414.000000" ytl="319.100000" xbr="592.330000" ybr="425.330000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_903DB2DDDF39</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_4F82A210FFB0</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_D9420792465B</attribute>
+      <attribute name="panel">f68r1</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="63" xtl="256.300000" ytl="256.700000" xbr="450.100000" ybr="484.800000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_903DB2DDDF39</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_4F82A210FFB0</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_D9420792465B</attribute>
+      <attribute name="panel">f68r1</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="63" name="HREL_9385149094D0.png" width="828" height="669">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="64" xtl="386.500000" ytl="287.800000" xbr="571.500000" ybr="387.000000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_9385149094D0</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_A60C4082FBB1</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_DFB0F00A8DCD</attribute>
+      <attribute name="panel">f68r1</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="64" xtl="256.400000" ytl="256.700000" xbr="416.700000" ybr="413.000000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_9385149094D0</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_A60C4082FBB1</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_DFB0F00A8DCD</attribute>
+      <attribute name="panel">f68r1</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="64" name="HREL_950A3C984871.png" width="906" height="758">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="65" xtl="266.630000" ytl="316.620000" xbr="639.830000" ybr="440.120000" rotation="20.00">
+      <attribute name="relation_candidate_id">HREL_950A3C984871</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_9AD81914FAC2</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_241914F95B79</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="65" xtl="480.000000" ytl="375.000000" xbr="622.200000" ybr="502.000000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_950A3C984871</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_9AD81914FAC2</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_241914F95B79</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="65" name="HREL_96AB8CDDE272.png" width="1057" height="791">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="66" xtl="407.630000" ytl="326.620000" xbr="780.830000" ybr="450.120000" rotation="20.00">
+      <attribute name="relation_candidate_id">HREL_96AB8CDDE272</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_9AD81914FAC2</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_9BE1C497E282</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="66" xtl="266.300000" ytl="397.300000" xbr="412.100000" ybr="524.500000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_96AB8CDDE272</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_9AD81914FAC2</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_9BE1C497E282</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="66" name="HREL_98FE6A52AB66.png" width="891" height="693">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="67" xtl="428.330000" ytl="324.900000" xbr="634.500000" ybr="397.330000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_98FE6A52AB66</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_0097692B4BA6</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_C4AC29CB49BE</attribute>
+      <attribute name="panel">f68r1</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="67" xtl="256.600000" ytl="256.800000" xbr="448.700000" ybr="436.100000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_98FE6A52AB66</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_0097692B4BA6</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_C4AC29CB49BE</attribute>
+      <attribute name="panel">f68r1</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="67" name="HREL_9E7C8361844B.png" width="783" height="767">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="68" xtl="312.430000" ytl="379.500000" xbr="520.430000" ybr="462.500000" rotation="31.00">
+      <attribute name="relation_candidate_id">HREL_9E7C8361844B</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_45BF62F0A08A</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_53BF64FEE701</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="68" xtl="256.000000" ytl="256.000000" xbr="369.000000" ybr="378.000000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_9E7C8361844B</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_45BF62F0A08A</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_53BF64FEE701</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="68" name="HREL_9F09D6FFCE91.png" width="842" height="692">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="69" xtl="263.430000" ytl="304.500000" xbr="471.430000" ybr="387.500000" rotation="31.00">
+      <attribute name="relation_candidate_id">HREL_9F09D6FFCE91</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_45BF62F0A08A</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_032DBFCF1665</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="69" xtl="528.500000" ytl="296.870000" xbr="585.900000" ybr="359.800000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_9F09D6FFCE91</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_45BF62F0A08A</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_032DBFCF1665</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="69" name="HREL_9FF1165CCBCC.png" width="838" height="722">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="70" xtl="390.940000" ytl="347.650000" xbr="572.940000" ybr="449.180000" rotation="348.80">
+      <attribute name="relation_candidate_id">HREL_9FF1165CCBCC</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r2_5F37A798ABF6</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r2_CA59FCCC6F79</attribute>
+      <attribute name="panel">f68r2</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="70" xtl="256.000000" ytl="256.000000" xbr="370.000000" ybr="370.000000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_9FF1165CCBCC</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r2_5F37A798ABF6</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r2_CA59FCCC6F79</attribute>
+      <attribute name="panel">f68r2</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="70" name="HREL_A1E28D46E5E2.png" width="1503" height="791">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="71" xtl="282.680000" ytl="353.790000" xbr="1220.380000" ybr="486.670000" rotation="3.00">
+      <attribute name="relation_candidate_id">HREL_A1E28D46E5E2</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_26829C8B0ED5</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_0B4357DDB2F8</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="71" xtl="442.150000" ytl="279.900000" xbr="535.100000" ybr="375.500000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_A1E28D46E5E2</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_26829C8B0ED5</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_0B4357DDB2F8</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="71" name="HREL_A689AA4443B0.png" width="827" height="682">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="72" xtl="373.600000" ytl="277.810000" xbr="562.200000" ybr="372.810000" rotation="345.80">
+      <attribute name="relation_candidate_id">HREL_A689AA4443B0</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r2_2A5B418160F2</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r2_F4C39C76B8F3</attribute>
+      <attribute name="panel">f68r2</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="72" xtl="256.000000" ytl="281.200000" xbr="385.200000" ybr="425.500000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_A689AA4443B0</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r2_2A5B418160F2</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r2_F4C39C76B8F3</attribute>
+      <attribute name="panel">f68r2</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="72" name="HREL_A9F689129DB2.png" width="2184" height="2000">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="73" xtl="313.170000" ytl="942.630000" xbr="1185.200000" ybr="1057.560000" rotation="142.90">
+      <attribute name="relation_candidate_id">HREL_A9F689129DB2</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_D1A7C209B256</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_C1D20B14679B</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="73" xtl="1360.000000" ytl="1077.500000" xbr="1492.300000" ybr="1194.500000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_A9F689129DB2</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_D1A7C209B256</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_C1D20B14679B</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="73" name="HREL_ADEB0D4CA235.png" width="1278" height="1130">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="74" xtl="203.170000" ytl="507.630000" xbr="1075.200000" ybr="622.560000" rotation="142.90">
+      <attribute name="relation_candidate_id">HREL_ADEB0D4CA235</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_D1A7C209B256</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_5A950C8A2F4C</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="74" xtl="697.000000" ytl="324.000000" xbr="813.000000" ybr="447.000000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_ADEB0D4CA235</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_D1A7C209B256</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_5A950C8A2F4C</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="74" name="HREL_B0A01B6B96B0.png" width="1456" height="1380">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="75" xtl="292.170000" ytl="596.630000" xbr="1164.200000" ybr="711.560000" rotation="142.90">
+      <attribute name="relation_candidate_id">HREL_B0A01B6B96B0</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_D1A7C209B256</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_BFE80B81867F</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="75" xtl="826.100000" ytl="872.900000" xbr="971.200000" ybr="1034.100000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_B0A01B6B96B0</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_D1A7C209B256</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_BFE80B81867F</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="75" name="HREL_BC0C8D31EC5F.png" width="938" height="694">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="76" xtl="441.300000" ytl="256.300000" xbr="681.900000" ybr="412.000000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_BC0C8D31EC5F</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_8EE95BA94B80</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_89D212B1F433</attribute>
+      <attribute name="panel">f68r1</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="76" xtl="256.600000" ytl="256.800000" xbr="434.670000" ybr="437.800000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_BC0C8D31EC5F</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_8EE95BA94B80</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_89D212B1F433</attribute>
+      <attribute name="panel">f68r1</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="76" name="HREL_BEBCFAB356B2.png" width="802" height="661">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="77" xtl="375.670000" ytl="297.500000" xbr="545.670000" ybr="382.000000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_BEBCFAB356B2</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_D69699B6B3F6</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_B92C40C81C21</attribute>
+      <attribute name="panel">f68r1</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="77" xtl="256.000000" ytl="256.800000" xbr="371.000000" ybr="404.330000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_BEBCFAB356B2</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_D69699B6B3F6</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_B92C40C81C21</attribute>
+      <attribute name="panel">f68r1</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="77" name="HREL_C0D41FF08E1B.png" width="1264" height="1147">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="78" xtl="199.670000" ytl="513.260000" xbr="1063.730000" ybr="634.520000" rotation="141.40">
+      <attribute name="relation_candidate_id">HREL_C0D41FF08E1B</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_379FBFD2857F</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_E1AF153103B2</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="78" xtl="569.000000" ytl="596.000000" xbr="678.000000" ybr="724.000000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_C0D41FF08E1B</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_379FBFD2857F</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_E1AF153103B2</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="78" name="HREL_C0FFA777D644.png" width="846" height="745">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="79" xtl="263.430000" ytl="357.500000" xbr="471.430000" ybr="440.500000" rotation="31.00">
+      <attribute name="relation_candidate_id">HREL_C0FFA777D644</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_45BF62F0A08A</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_AD3118AC6996</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="79" xtl="529.140000" ytl="256.600000" xbr="589.140000" ybr="308.760000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_C0FFA777D644</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_45BF62F0A08A</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_AD3118AC6996</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="79" name="HREL_C4BB6AE82618.png" width="822" height="776">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="80" xtl="263.680000" ytl="418.420000" xbr="421.180000" ybr="486.700000" rotation="28.00">
+      <attribute name="relation_candidate_id">HREL_C4BB6AE82618</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_FAC96A3ED16E</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_0422AC3FEB33</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="80" xtl="453.000000" ytl="256.000000" xbr="566.000000" ybr="372.000000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_C4BB6AE82618</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_FAC96A3ED16E</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_0422AC3FEB33</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="80" name="HREL_C756E432B58D.png" width="1264" height="1147">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="81" xtl="199.670000" ytl="513.260000" xbr="1063.730000" ybr="634.520000" rotation="141.40">
+      <attribute name="relation_candidate_id">HREL_C756E432B58D</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_379FBFD2857F</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_FEB7DFD3D690</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="81" xtl="477.000000" ytl="728.000000" xbr="588.000000" ybr="841.000000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_C756E432B58D</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_379FBFD2857F</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_FEB7DFD3D690</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="81" name="HREL_C7662D39AD88.png" width="1159" height="1296">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="82" xtl="126.630000" ytl="591.560000" xbr="1032.330000" ybr="704.770000" rotation="52.00">
+      <attribute name="relation_candidate_id">HREL_C7662D39AD88</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_C217BD43FE7F</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_3E5BCCA75F77</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="82" xtl="530.000000" ytl="750.500000" xbr="642.600000" ybr="888.500000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_C7662D39AD88</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_C217BD43FE7F</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_3E5BCCA75F77</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="82" name="HREL_C95EC00AF82A.png" width="779" height="1392">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="83" xtl="-9.030000" ytl="628.230000" xbr="862.570000" ybr="764.230000" rotation="93.70">
+      <attribute name="relation_candidate_id">HREL_C95EC00AF82A</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_C14838DBD11C</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_ABEE1A7C6ED7</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="83" xtl="256.500000" ytl="782.000000" xbr="369.400000" ybr="883.500000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_C95EC00AF82A</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_C14838DBD11C</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_ABEE1A7C6ED7</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="83" name="HREL_C9C963A1AC52.png" width="750" height="654">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="84" xtl="336.450000" ytl="289.800000" xbr="493.120000" ybr="385.650000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_C9C963A1AC52</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_070702191A0A</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_9577F9FF3A3E</attribute>
+      <attribute name="panel">f68r1</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="84" xtl="256.200000" ytl="256.400000" xbr="375.670000" ybr="397.330000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_C9C963A1AC52</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_070702191A0A</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_9577F9FF3A3E</attribute>
+      <attribute name="panel">f68r1</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="84" name="HREL_CA07AB1E742C.png" width="926" height="703">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="85" xtl="395.400000" ytl="288.800000" xbr="658.700000" ybr="408.300000" rotation="344.80">
+      <attribute name="relation_candidate_id">HREL_CA07AB1E742C</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r2_B774D6DBC14A</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r2_4192FE9E5570</attribute>
+      <attribute name="panel">f68r2</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="85" xtl="256.200000" ytl="284.000000" xbr="405.400000" ybr="447.000000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_CA07AB1E742C</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r2_B774D6DBC14A</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r2_4192FE9E5570</attribute>
+      <attribute name="panel">f68r2</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="85" name="HREL_CD5AB4BD8D25.png" width="690" height="679">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="86" xtl="340.500000" ytl="288.600000" xbr="433.200000" ybr="346.270000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_CD5AB4BD8D25</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_E9FEC7295FC3</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_7DA2F63507A1</attribute>
+      <attribute name="panel">f68r1</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="86" xtl="256.000000" ytl="256.400000" xbr="361.670000" ybr="422.330000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_CD5AB4BD8D25</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_E9FEC7295FC3</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_7DA2F63507A1</attribute>
+      <attribute name="panel">f68r1</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="86" name="HREL_CEC8C40AAFC2.png" width="798" height="799">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="87" xtl="267.400000" ytl="390.800000" xbr="530.700000" ybr="510.300000" rotation="344.80">
+      <attribute name="relation_candidate_id">HREL_CEC8C40AAFC2</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r2_B774D6DBC14A</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r2_F0A9F4FD1654</attribute>
+      <attribute name="panel">f68r2</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="87" xtl="304.700000" ytl="256.000000" xbr="421.000000" ybr="383.700000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_CEC8C40AAFC2</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r2_B774D6DBC14A</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r2_F0A9F4FD1654</attribute>
+      <attribute name="panel">f68r2</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="87" name="HREL_D295A87BEAAC.png" width="1082" height="1610">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="88" xtl="-45.170000" ytl="743.070000" xbr="888.720000" ybr="867.570000" rotation="93.00">
+      <attribute name="relation_candidate_id">HREL_D295A87BEAAC</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_F59D510F9867</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_6709F54C220E</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="88" xtl="638.000000" ytl="933.500000" xbr="746.700000" ybr="1068.900000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_D295A87BEAAC</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_F59D510F9867</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_6709F54C220E</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="88" name="HREL_D550E0F999B0.png" width="1131" height="1242">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="89" xtl="136.360000" ytl="571.570000" xbr="994.520000" ybr="670.470000" rotation="50.90">
+      <attribute name="relation_candidate_id">HREL_D550E0F999B0</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_7B9685B49E9E</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_457563CB8D81</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="89" xtl="635.000000" ytl="490.000000" xbr="755.000000" ybr="608.000000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_D550E0F999B0</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_7B9685B49E9E</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_457563CB8D81</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="89" name="HREL_DAC4A3F4CB8F.png" width="764" height="689">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="90" xtl="359.050000" ytl="281.350000" xbr="515.480000" ybr="369.150000" rotation="339.40">
+      <attribute name="relation_candidate_id">HREL_DAC4A3F4CB8F</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r2_33AD045D1FA0</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r2_A31BBBFD8871</attribute>
+      <attribute name="panel">f68r2</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="90" xtl="256.000000" ytl="292.200000" xbr="386.400000" ybr="432.600000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_DAC4A3F4CB8F</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r2_33AD045D1FA0</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r2_A31BBBFD8871</attribute>
+      <attribute name="panel">f68r2</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="90" name="HREL_DC58DF874C51.png" width="809" height="684">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="91" xtl="370.000000" ytl="297.100000" xbr="552.500000" ybr="427.100000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_DC58DF874C51</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_87A9A3C329D0</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_9B96054D7F5D</attribute>
+      <attribute name="panel">f68r1</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="91" xtl="256.840000" ytl="256.800000" xbr="365.340000" ybr="396.500000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_DC58DF874C51</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r1_87A9A3C329D0</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r1_9B96054D7F5D</attribute>
+      <attribute name="panel">f68r1</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="91" name="HREL_DC5F2F5F9A5C.png" width="801" height="662">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="92" xtl="380.680000" ytl="304.420000" xbr="538.180000" ybr="372.700000" rotation="28.00">
+      <attribute name="relation_candidate_id">HREL_DC5F2F5F9A5C</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_FAC96A3ED16E</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_1D54154E6EB2</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="92" xtl="256.490000" ytl="256.600000" xbr="311.800000" ybr="309.540000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_DC5F2F5F9A5C</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_FAC96A3ED16E</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_1D54154E6EB2</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="92" name="HREL_DE1F905F7E82.png" width="813" height="702">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="93" xtl="263.430000" ytl="314.500000" xbr="471.430000" ybr="397.500000" rotation="31.00">
+      <attribute name="relation_candidate_id">HREL_DE1F905F7E82</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_45BF62F0A08A</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_69F33B71A5DB</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="93" xtl="496.200000" ytl="256.620000" xbr="556.200000" ybr="316.620000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_DE1F905F7E82</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_45BF62F0A08A</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_69F33B71A5DB</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="93" name="HREL_DF94F8399F86.png" width="969" height="1520">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="94" xtl="116.970000" ytl="692.230000" xbr="988.570000" ybr="828.230000" rotation="93.70">
+      <attribute name="relation_candidate_id">HREL_DF94F8399F86</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_C14838DBD11C</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_6FD9008FDD57</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="94" xtl="320.400000" ytl="408.800000" xbr="462.700000" ybr="558.900000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_DF94F8399F86</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_C14838DBD11C</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_6FD9008FDD57</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="94" name="HREL_EB160D44C97E.png" width="1452" height="983">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="95" xtl="217.080000" ytl="370.980000" xbr="1095.190000" ybr="477.090000" rotation="178.00">
+      <attribute name="relation_candidate_id">HREL_EB160D44C97E</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_605AEBF1F790</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_BB513C32563D</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="95" xtl="279.000000" ytl="512.000000" xbr="387.000000" ybr="628.000000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_EB160D44C97E</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_605AEBF1F790</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_BB513C32563D</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="95" name="HREL_EB6F99F77796.png" width="785" height="653">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="96" xtl="377.570000" ytl="270.600000" xbr="522.860000" ybr="341.700000" rotation="349.70">
+      <attribute name="relation_candidate_id">HREL_EB6F99F77796</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r2_5F8B54190BA3</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r2_5ABB9F910C2D</attribute>
+      <attribute name="panel">f68r2</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="96" xtl="256.700000" ytl="256.700000" xbr="364.500000" ybr="396.800000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_EB6F99F77796</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r2_5F8B54190BA3</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r2_5ABB9F910C2D</attribute>
+      <attribute name="panel">f68r2</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="96" name="HREL_EC60DA3D98D9.png" width="1050" height="1560">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="97" xtl="0.970000" ytl="712.230000" xbr="872.570000" ybr="848.230000" rotation="93.70">
+      <attribute name="relation_candidate_id">HREL_EC60DA3D98D9</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_C14838DBD11C</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_A21F7E1C3EDF</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="97" xtl="543.600000" ytl="993.700000" xbr="709.200000" ybr="1130.000000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_EC60DA3D98D9</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_C14838DBD11C</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_A21F7E1C3EDF</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="97" name="HREL_F49854066641.png" width="860" height="700">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="98" xtl="396.650000" ytl="295.030000" xbr="623.430000" ybr="366.060000" rotation="339.10">
+      <attribute name="relation_candidate_id">HREL_F49854066641</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r2_FBE4D3094C89</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r2_E1FC76A02E50</attribute>
+      <attribute name="panel">f68r2</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="98" xtl="256.800000" ytl="293.200000" xbr="397.200000" ybr="443.700000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_F49854066641</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r2_FBE4D3094C89</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r2_E1FC76A02E50</attribute>
+      <attribute name="panel">f68r2</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="98" name="HREL_F7503CE1DAB8.png" width="1268" height="1151">
+    <box label="LABEL_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="99" xtl="201.670000" ytl="515.260000" xbr="1065.730000" ybr="636.520000" rotation="141.40">
+      <attribute name="relation_candidate_id">HREL_F7503CE1DAB8</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_379FBFD2857F</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_508C19D45A47</attribute>
+      <attribute name="panel">f68r3</attribute>
+    </box>
+    <box label="STAR_ENDPOINT" source="manual" occluded="0" z_order="0" group_id="99" xtl="810.300000" ytl="590.000000" xbr="947.200000" ybr="721.500000" rotation="0">
+      <attribute name="relation_candidate_id">HREL_F7503CE1DAB8</attribute>
+      <attribute name="label_candidate_id">HLABEL_f68r3_379FBFD2857F</attribute>
+      <attribute name="object_candidate_id">HOBJ_f68r3_508C19D45A47</attribute>
+      <attribute name="panel">f68r3</attribute>
+      <attribute name="relation_decision">UNREVIEWED</attribute>
+      <attribute name="human_confidence">HIGH</attribute>
+      <attribute name="notes" />
+    </box>
+  </image>
+  <image id="99" name="ZZ_CONTEXT_f68r1.jpg" width="2462" height="3828" />
+  <image id="100" name="ZZ_CONTEXT_f68r2.jpg" width="2078" height="3828" />
+  <image id="101" name="ZZ_CONTEXT_f68r3.jpg" width="3453" height="3828" />
+</annotations>

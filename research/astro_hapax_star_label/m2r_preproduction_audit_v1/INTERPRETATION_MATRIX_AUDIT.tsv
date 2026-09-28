@@ -1,0 +1,8 @@
+status_name	condition_tested	engine_support	correctly_assigned	verdict
+STAR_NAMING_SPECIFIC_SIGNAL	Positive star score above null, circular & intro below null	NO(missing from engine)	NO(hardcoded BLOCKED in manifest)	FAIL_NO_DECISION_LOGIC_IN_ENGINE
+GENERAL_DIAGRAM_INTERNAL_SIGNAL	Both star and circular above null, intro below null	NO(missing from engine)	NO(hardcoded BLOCKED in manifest)	FAIL_NO_DECISION_LOGIC_IN_ENGINE
+PAGE_SPECIFIC_IN_SAMPLE_SIGNAL	High train score, heldout fails to exceed null	NO(missing from engine)	NO(hardcoded BLOCKED in manifest)	FAIL_NO_DECISION_LOGIC_IN_ENGINE
+NULL_COMPATIBLE	Scores within null distribution (p > 0.05)	NO(missing from engine)	NO(hardcoded BLOCKED in manifest)	FAIL_NO_DECISION_LOGIC_IN_ENGINE
+TRAIN_OVERFIT	Train coverage high, heldout coverage near zero	NO(missing from engine)	NO(hardcoded BLOCKED in manifest)	FAIL_NO_DECISION_LOGIC_IN_ENGINE
+NO_MODEL	No rules satisfy support or complexity threshold	NO(missing from engine)	NO(hardcoded BLOCKED in manifest)	FAIL_NO_DECISION_LOGIC_IN_ENGINE
+BLOCKED	Pre-production audit fails, authorization denied	NO(missing from engine)	NO(hardcoded BLOCKED in manifest)	FAIL_NO_DECISION_LOGIC_IN_ENGINE

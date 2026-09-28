@@ -1,0 +1,8 @@
+negative_id	name	failure_mode_expected	train_score	heldout_score	rules_inferred	mean_support	profile_accepted	failure_mode_observed	verdict
+HN1	Broken global consistency	Incompatible cross-pair rules	86	0.2602	41	11.80	REJECTED	Score=86, rules=41, ho_cov=0.260	REJECTED_AS_EXPECTED
+HN2	Singleton mosaic	Rules rejected due to support < 3	466	0.0000	14	34.29	REJECTED	Score=466, rules=14, ho_cov=0.000	REJECTED_AS_EXPECTED
+HN3	Role violation	Incompatible positional role transformations	205	0.5083	24	20.00	REJECTED	Score=205, rules=24, ho_cov=0.508	REJECTED_AS_EXPECTED
+HN4	Train-only morphology	Held-out rejection despite high train score	541	0.0000	12	46.08	REJECTED	Train score=541 (train accepted=True), held-out cov=0.000 (heldout rejected)	ENGINE_LACKS_HELDOUT_GATE
+HN5	Accidental recurrent fragments	Low coverage and high unexplained penalty	179	0.4387	10	40.10	REJECTED	Score=179, rules=10, ho_cov=0.439	REJECTED_AS_EXPECTED
+HN6	Wrong composition order	Role and positional mismatch	90	0.1784	42	11.98	REJECTED	Score=90, rules=42, ho_cov=0.178	REJECTED_AS_EXPECTED
+HN7	Mixed-system dataset	Conflict penalty and reduced fit	219	0.4643	24	21.17	REJECTED	Score=219, rules=24, ho_cov=0.464	REJECTED_AS_EXPECTED

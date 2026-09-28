@@ -1,0 +1,26 @@
+stage	dataset	peak_rss_kb	actual_vm_rss_kb	runtime_s	oom_observed	cause_of_v2_oom	checkpoint_identical	order_invariance_result
+candidate_generation	d71001	19840	19840	0.0448	NO	M2R-v2 accumulated parent RSS beyond 512MB limit, causing child to immediately abort via ru_maxrss	PASS	PASS
+beam_search_optimization	d71001	26112	26112	0.4997	NO	M2R-v2 accumulated parent RSS beyond 512MB limit, causing child to immediately abort via ru_maxrss	PASS	PASS
+heldout_evaluation	d71001	29568	29568	0.2535	NO	M2R-v2 accumulated parent RSS beyond 512MB limit, causing child to immediately abort via ru_maxrss	PASS	PASS
+candidate_generation	d71002	31360	31360	0.0489	NO	M2R-v2 accumulated parent RSS beyond 512MB limit, causing child to immediately abort via ru_maxrss	PASS	PASS
+beam_search_optimization	d71002	54144	54144	3.9018	NO	M2R-v2 accumulated parent RSS beyond 512MB limit, causing child to immediately abort via ru_maxrss	PASS	PASS
+heldout_evaluation	d71002	54784	54784	0.2868	NO	M2R-v2 accumulated parent RSS beyond 512MB limit, causing child to immediately abort via ru_maxrss	PASS	PASS
+candidate_generation	d71003	54784	54784	0.063	NO	M2R-v2 accumulated parent RSS beyond 512MB limit, causing child to immediately abort via ru_maxrss	PASS	PASS
+beam_search_optimization	d71003	93624	93624	11.8934	NO	M2R-v2 accumulated parent RSS beyond 512MB limit, causing child to immediately abort via ru_maxrss	PASS	PASS
+heldout_evaluation	d71003	91692	91692	0.2894	NO	M2R-v2 accumulated parent RSS beyond 512MB limit, causing child to immediately abort via ru_maxrss	PASS	PASS
+candidate_generation	d71004	91692	91692	0.0263	NO	M2R-v2 accumulated parent RSS beyond 512MB limit, causing child to immediately abort via ru_maxrss	PASS	PASS
+beam_search_optimization	d71004	93096	93096	2.5278	NO	M2R-v2 accumulated parent RSS beyond 512MB limit, causing child to immediately abort via ru_maxrss	PASS	PASS
+heldout_evaluation	d71004	93096	93096	0.2952	NO	M2R-v2 accumulated parent RSS beyond 512MB limit, causing child to immediately abort via ru_maxrss	PASS	PASS
+candidate_generation	d71005	93352	93352	0.0693	NO	M2R-v2 accumulated parent RSS beyond 512MB limit, causing child to immediately abort via ru_maxrss	PASS	PASS
+beam_search_optimization	d71005	93864	93864	15.2143	NO	M2R-v2 accumulated parent RSS beyond 512MB limit, causing child to immediately abort via ru_maxrss	PASS	PASS
+heldout_evaluation	d71005	93864	93864	0.2859	NO	M2R-v2 accumulated parent RSS beyond 512MB limit, causing child to immediately abort via ru_maxrss	PASS	PASS
+candidate_generation	d71006	93864	93864	0.0574	NO	M2R-v2 accumulated parent RSS beyond 512MB limit, causing child to immediately abort via ru_maxrss	PASS	PASS
+beam_search_optimization	d71006	137768	137768	59.369	NO	M2R-v2 accumulated parent RSS beyond 512MB limit, causing child to immediately abort via ru_maxrss	PASS	PASS
+heldout_evaluation	d71006	137768	137768	0.3033	NO	M2R-v2 accumulated parent RSS beyond 512MB limit, causing child to immediately abort via ru_maxrss	PASS	PASS
+candidate_generation	d71007	137768	137768	0.0393	NO	M2R-v2 accumulated parent RSS beyond 512MB limit, causing child to immediately abort via ru_maxrss	PASS	PASS
+beam_search_optimization	d71007	137768	137768	3.7175	NO	M2R-v2 accumulated parent RSS beyond 512MB limit, causing child to immediately abort via ru_maxrss	PASS	PASS
+heldout_evaluation	d71007	137768	137768	0.2966	NO	M2R-v2 accumulated parent RSS beyond 512MB limit, causing child to immediately abort via ru_maxrss	PASS	PASS
+candidate_generation	d71008	137768	137768	0.057	NO	M2R-v2 accumulated parent RSS beyond 512MB limit, causing child to immediately abort via ru_maxrss	PASS	PASS
+beam_search_optimization	d71008	137768	137768	3.4417	NO	M2R-v2 accumulated parent RSS beyond 512MB limit, causing child to immediately abort via ru_maxrss	PASS	PASS
+heldout_evaluation	d71008	137768	137768	0.246	NO	M2R-v2 accumulated parent RSS beyond 512MB limit, causing child to immediately abort via ru_maxrss	PASS	PASS
+invariance_and_checkpoint_verification	d71001	139044	139044	0.05	NO	None in diagnostic suite. M2R-v2 failed due to lifetime max RSS leak.	PASS	PASS

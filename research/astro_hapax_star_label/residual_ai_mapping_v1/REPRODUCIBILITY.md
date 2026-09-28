@@ -1,0 +1,3 @@
+# Reproducibility
+
+Run `python3 scripts/prepare_pipeline.py` before AI annotation, then the separately recorded context-free sessions, `python3 scripts/prepare_adjudication.py`, `python3 scripts/prepare_negative_controls.py`, and finally `python3 scripts/finalize_calibration.py`. The deterministic split, candidate orders, crops, manifests, scoring, and reports are reproducible from frozen inputs. Model outputs are checksum-frozen but stochastic; a required repeated AI run was not attempted because first-run accuracy and stability had already failed the immutable gate. Therefore `RESULTS_REPRODUCIBLE=NO` refers to the AI result, not to the deterministic preparation/scoring code.

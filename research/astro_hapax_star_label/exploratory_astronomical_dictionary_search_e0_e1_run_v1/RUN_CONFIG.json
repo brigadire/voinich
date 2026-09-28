@@ -1,0 +1,35 @@
+{
+  "abbreviation": "NONE",
+  "allow_unmatched": true,
+  "capacity_modes": [
+    "PER_PAGE_CAPACITY_1",
+    "GLOBAL_CAPACITY_1"
+  ],
+  "checkpoint_interval": "per configuration; atomic output",
+  "cooptimal_limit": 500,
+  "deletion_mode": "DROP_UNMAPPED",
+  "equivalence": "rule table, assignment, explained-label set, identity set, score decomposition",
+  "mapping_mode": "INJECTIVE",
+  "memory_limit_mb": 8192,
+  "minimum_independent_support": 2,
+  "near_optimal_gap": 0,
+  "num_workers": 1,
+  "prepared_package_sha256": "fc2d3778b1781aaf520bee3d57dc6b79d86033bf779717939ad46071a5b718df",
+  "profiles": [
+    "CONSERVATIVE",
+    "BALANCED",
+    "RECALL_ORIENTED"
+  ],
+  "run_version": "1",
+  "scope": "E0_E1_ONLY",
+  "seed_policy": "deterministic; CP-SAT default seed; one worker",
+  "table_sizes": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "tie_breaking": "CP-SAT default; output tables canonicalized lexicographically",
+  "top_k": 50,
+  "wall_time_limit_sec": 60.0
+}

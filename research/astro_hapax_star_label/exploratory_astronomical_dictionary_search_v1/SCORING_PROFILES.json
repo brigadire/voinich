@@ -1,0 +1,33 @@
+{
+  "formula": "exact_reward*EXACT + near_reward*NEAR + weak_reward*WEAK + unmatched_penalty*UNMATCHED - complexity_penalty",
+  "ordering": "EXACT_GLOBAL > NEAR_LOCAL_1 > WEAK_LOCAL_2; weak is not automatically preferred to unmatched",
+  "profiles": [
+    {
+      "exact_reward": 1000,
+      "near_reward": 25,
+      "preregister_before_real_run": true,
+      "profile": "CONSERVATIVE",
+      "unmatched_penalty": -20,
+      "weak_can_be_worse_than_unmatched": true,
+      "weak_reward": 0
+    },
+    {
+      "exact_reward": 1000,
+      "near_reward": 30,
+      "preregister_before_real_run": true,
+      "profile": "BALANCED",
+      "unmatched_penalty": -12,
+      "weak_can_be_worse_than_unmatched": true,
+      "weak_reward": 5
+    },
+    {
+      "exact_reward": 1000,
+      "near_reward": 35,
+      "preregister_before_real_run": true,
+      "profile": "RECALL_ORIENTED",
+      "unmatched_penalty": -8,
+      "weak_can_be_worse_than_unmatched": true,
+      "weak_reward": 8
+    }
+  ]
+}

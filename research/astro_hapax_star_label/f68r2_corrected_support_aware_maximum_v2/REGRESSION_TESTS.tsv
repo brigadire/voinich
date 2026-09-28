@@ -1,0 +1,11 @@
+test	result	detail
+nonhereditary_triple	PASS	A/B/C support each rule twice but no pair is support-valid
+nonhereditary_quadruple	PASS	A/B/C/D support each rule twice but no triple is support-valid
+repeated_EVA	PASS	duplicate EVA token rejected
+repeated_identity	PASS	duplicate identity rejected
+mapping_conflict	PASS	one source with two outputs rejected
+injectivity_conflict	PASS	two sources with one output rejected
+required_forbidden_conflict	PASS	branch rejected
+extra_global_output	PASS	full replay rejects propagated output
+unmapped_label	PASS	unselected LABEL allowed
+path_order_invariance	PASS	validity preserved under permutation
